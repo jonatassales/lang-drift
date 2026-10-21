@@ -68,6 +68,16 @@ jobs:
         run: >
           git ls-files -z -- '*.sh' platform/cli/drift 'platform/versioning/.husky/*'
           | xargs -0 shellcheck --shell=sh --external-sources --source-path=platform/cli/src
+      - name: Go formatting (gofmt)
+        run: |
+          unformatted=$(gofmt -l packages/ex/src)
+          if [ -n "$unformatted" ]; then
+            printf 'gofmt needed:\n%s\n' "$unformatted" >&2
+            exit 1
+          fi
+      - name: Go vulnerabilities (govulncheck)
+        working-directory: packages/ex
+        run: go run golang.org/x/vuln/cmd/govulncheck@v1.9.0 ./...
       - name: Workflows (actionlint)
         run: >
           docker run --rm --volume "$PWD:/repo" --workdir /repo

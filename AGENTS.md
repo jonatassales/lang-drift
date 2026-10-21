@@ -8,7 +8,7 @@ AI harness web OS for your agentic journey. LangDrift is a suite of products und
 
 ## Status
 
-Monorepo skeleton with no workspaces or packages yet. Planned products, each with an empty folder:
+Monorepo with one package, `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and no product workspaces yet. Planned products, each with an empty folder:
 
 - `products/vision`: LangDrift Vision
 - `products/finops`: LangDrift FinOps
@@ -41,6 +41,7 @@ Run from the repository root:
 - `products/<product>/<kind>/<workspace>/`: a product's workspaces, grouped by kind. Apps go in `apps/`; another kind, such as microservices, gets its own folder when its first workspace appears. `pnpm-workspace.yaml` picks up any kind through `products/*/*/*`.
 - `packages/<capability>/`: shared across products, never inside one.
 - Planned packages: `ui`, `tokens`, `shell`, `account`, `runtime`, `contracts`.
+- `packages/ex` is Go: Turborepo runs its `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds it (no Go toolchain required for frontend work).
 - A package takes a product name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
 - Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.

@@ -4,9 +4,8 @@
 	"private": true,
 	"scripts": {
 		"build": "go build -o dist/ex ./src",
-		"test": "go test ./...",
-		"typecheck": "go vet -tags e2e ./...",
-		"postinstall": "sh build.sh"
+		"test": "go test -race ./...",
+		"typecheck": "go vet -tags e2e ./..."
 	},
 	"files": [
 		"src",
