@@ -1,0 +1,32 @@
+{
+	"lg": {
+		"color": {
+			"$type": "color",
+			"gray": {
+				"50": { "$value": "#fafafa" },
+				"100": { "$value": "#f5f5f5" },
+				"200": { "$value": "#e5e5e5" },
+				"400": { "$value": "#a3a3a3" },
+				"800": { "$value": "#262626" },
+				"900": { "$value": "#171717" },
+				"950": { "$value": "#0a0a0a" }
+			}
+		},
+		"typography": {
+			"font": {
+				"$type": "fontFamily",
+				"body": { "$value": "system-ui, sans-serif" }
+			}
+		},
+		"effects": {
+			"shadow": {
+				"$type": "shadow",
+				"sm": { "$value": "0px 1px 2px #00000014" }
+			},
+			"easing": {
+				"$type": "cubicBezier",
+				"standard": { "$value": "cubic-bezier(0.2, 0, 0, 1)" }
+			}
+		}
+	}
+}
