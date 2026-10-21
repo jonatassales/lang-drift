@@ -1,5 +1,6 @@
 packages:
-  - apps/*
+  # products/<product>/<kind>/<workspace>, e.g. products/vision/apps/web
+  - products/*/*/*
   - packages/*
 
 engineStrict: true

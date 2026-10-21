@@ -8,10 +8,10 @@ AI harness web OS for your agentic journey. LangDrift is a suite of products und
 
 ## Status
 
-Monorepo skeleton with no apps or packages yet. Planned apps:
+Monorepo skeleton with no workspaces or packages yet. Planned products, each with an empty folder:
 
-- `apps/vision`: LangDrift Vision
-- `apps/finops`: LangDrift FinOps
+- `products/vision`: LangDrift Vision
+- `products/finops`: LangDrift FinOps
 
 ## Toolchain and commands
 
@@ -38,8 +38,9 @@ Run from the repository root:
 
 ## Layout
 
-- `apps/<product>/`: one app per product.
-- `packages/<capability>/`: `ui`, `tokens`, `shell`, `account`, `runtime`, `contracts`.
+- `products/<product>/<kind>/<workspace>/`: a product's workspaces, grouped by kind. Apps go in `apps/`; another kind, such as microservices, gets its own folder when its first workspace appears. `pnpm-workspace.yaml` picks up any kind through `products/*/*/*`.
+- `packages/<capability>/`: shared across products, never inside one.
+- Planned packages: `ui`, `tokens`, `shell`, `account`, `runtime`, `contracts`.
 - A package takes a product name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
 - Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
@@ -71,7 +72,7 @@ Workflow: `research` when a question needs primary sources, then `grill-with-doc
 - `grill-with-docs`, `grill-me`, `to-spec`, `to-tickets` and `implement` run only when the owner invokes them.
 - A direct request to build or change application code enters the workflow: start with the `grilling` skill, plus `domain-modeling` when terms or decisions settle, instead of writing code.
 - `.claude/hooks/guard-implement-effort.sh` blocks `implement` for the current session until `.agents/prompts/llm-effort-analyzer.prompt.md` has recorded its result at `.agents/workflow/.effort-log/<session_id>.md`.
-- The commit-msg hook rejects a commit that changes `apps/` or `packages/` without a `Ticket: <NNNN>` trailer naming an existing ticket.
+- The commit-msg hook rejects a commit that changes `products/` or `packages/` without a `Ticket: <NNNN>` trailer naming an existing ticket.
 
 ## Agent skills
 

@@ -18,7 +18,7 @@ for commit in $(git rev-list --reverse "$1..$2"); do
     status=1
   fi
 
-  if git diff-tree --root --no-commit-id --name-only -r "$commit" | drift_touches_products &&
+  if git diff-tree --root --no-commit-id --name-only -r "$commit" | drift_touches_workspaces &&
     ! git log -1 --format=%B "$commit" | drift_names_ticket; then
     drift_print_error "$commit_title: $DRIFT_TICKET_ERROR"
     status=1
