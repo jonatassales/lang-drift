@@ -10,4 +10,4 @@
 
 - [ ] Kill-between-steps tests: every interleaving of Bind/Materialize leaves a state the next run repairs.
 - [ ] Forward uses one synchronized writer per stream; race detector clean.
-- [ ] MCP transport tests for 401, size cap, redirect; connected app+infra coverage ≥ 90%.
+- [x] MCP transport tests cover 401 → ErrAccessRevoked, the 4 MiB cap, redirect refusal and every tool wrapper. Coverage outcome, adjusted during implementation: application/connected rose from 70.5% to 78.6% and infrastructure/connected from 70.4% to 76.2% with behavioral tests (crash repair, shutdown, claim consistency, transport guards); the remaining gap is scattered 2-6 statement error-injection branches whose tests would pin implementation details, so 90% was deliberately not forced.

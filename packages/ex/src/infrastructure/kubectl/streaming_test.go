@@ -67,7 +67,19 @@ func TestClient_Forward(t *testing.T) {
 		"port-forward", "service/web", "9090:8080", "--address=127.0.0.1",
 	}
 
-	if !slices.Equal(recorded.args, want) || recorded.stdout != &diagnostics || recorded.stderr != &diagnostics || recorded.deadline != 0 {
+	if !slices.Equal(recorded.args, want) || recorded.stdout == nil || recorded.deadline != 0 {
 		t.Fatalf("call = %+v, want a localhost-only tunnel whose streams are diagnostics", recorded)
+	}
+
+	// Both pipes write concurrently, so they must share one synchronized
+	// writer that still reaches the diagnostics stream.
+	if recorded.stdout != recorded.stderr {
+		t.Fatalf("stdout %p and stderr %p are separate writers; the shared destination would race", recorded.stdout, recorded.stderr)
+	}
+	if _, err := recorded.stdout.Write([]byte("tunnel ready")); err != nil {
+		t.Fatal(err)
+	}
+	if diagnostics.String() != "tunnel ready" {
+		t.Fatalf("diagnostics = %q, want the forwarded text", diagnostics.String())
 	}
 }

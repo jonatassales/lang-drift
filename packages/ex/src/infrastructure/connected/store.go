@@ -130,7 +130,15 @@ func (store Store) Bind(ctx context.Context, owner project.Project, record app.C
 	}
 	env := filepath.Join(directory, ".env")
 	if _, err = os.Lstat(env); err == nil {
-		return errors.New("runtime .env already exists; refusing to replace private settings")
+		// A .env with a saved record is a connected runtime; one without is the
+		// orphan of an interrupted bind, and the retry replaces it.
+		recordPath, err := statePath(owner, record.RuntimeID)
+		if err != nil {
+			return err
+		}
+		if _, err := os.Lstat(recordPath); !errors.Is(err, fs.ErrNotExist) {
+			return errors.New("runtime .env already exists; refusing to replace private settings")
+		}
 	} else if !errors.Is(err, fs.ErrNotExist) {
 		return err
 	}

@@ -34,8 +34,11 @@ func (client Client) Logs(ctx context.Context, target application.Target, resour
 func (client Client) Forward(ctx context.Context, target application.Target, resource microruntime.Resource, localPort, remotePort int, diagnostics io.Writer) error {
 	arguments := append(streamTarget(target), "port-forward", "service/"+resource.Name,
 		fmt.Sprintf("%d:%d", localPort, remotePort), "--address=127.0.0.1")
+	// Both pipes copy concurrently into one destination, so the shared writer
+	// must serialize them.
+	shared := process.SyncWriter(diagnostics)
 	_, err := client.Runner.Run(ctx, process.Command{
-		Name: "kubectl", Args: arguments, Stdout: diagnostics, Stderr: diagnostics,
+		Name: "kubectl", Args: arguments, Stdout: shared, Stderr: shared,
 	})
 
 	return err

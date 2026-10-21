@@ -181,19 +181,28 @@ func (native Native) Materialize(ctx context.Context, owner project.Project, rec
 	if err != nil {
 		return nil, "", err
 	}
-	// Validate all writes and removals before changing any file.
+	// Validate all writes and removals before changing any file. A file left
+	// by an interrupted materialization matches the recorded intent and is
+	// adopted rather than reported as a conflict.
 	names := make([]string, 0, len(rendered))
 	for name := range rendered {
 		names = append(names, name)
 	}
 	sort.Strings(names)
+	intent, err := native.readIntent(owner, config.RuntimeID)
+	if err != nil {
+		return nil, "", err
+	}
+	ours := func(name string, data []byte) bool {
+		return record.Managed[name] == digest(data) || intent[name] == digest(data)
+	}
 	for name, prior := range record.Managed {
 		target, err := files.Existing(directory, name)
 		if err != nil {
 			return nil, "", fmt.Errorf("local configuration conflict: %w", err)
 		}
 		data, err := files.ReadBounded(target, 4<<20)
-		if err != nil || digest(data) != prior {
+		if err != nil || (digest(data) != prior && intent[name] != digest(data)) {
 			return nil, "", fmt.Errorf("local configuration conflict at %s", name)
 		}
 	}
@@ -206,17 +215,24 @@ func (native Native) Materialize(ctx context.Context, owner project.Project, rec
 		if err != nil && !errors.Is(err, fs.ErrNotExist) {
 			return nil, "", err
 		}
-		if err == nil && record.Managed[name] == "" && digest(data) != digest(rendered[name]) && !(migrating && name == "schema.json") {
+		if err == nil && record.Managed[name] == "" && digest(data) != digest(rendered[name]) && !ours(name, data) && !(migrating && name == "schema.json") {
 			return nil, "", fmt.Errorf("unmanaged local configuration conflicts at %s", name)
 		}
 	}
+	// The intent persists before the first write, so a crash between writes
+	// leaves files the next attempt recognizes as its own.
 	managed := map[string]string{}
+	for _, name := range names {
+		managed[name] = digest(rendered[name])
+	}
+	if err := native.writeIntent(owner, config.RuntimeID, managed); err != nil {
+		return nil, "", err
+	}
 	for _, name := range names {
 		target, _ := files.Within(directory, name)
 		if err := atomicWrite(target, rendered[name], 0o644); err != nil {
 			return nil, "", err
 		}
-		managed[name] = digest(rendered[name])
 	}
 	for name := range record.Managed {
 		if _, keep := rendered[name]; !keep {
@@ -646,6 +662,42 @@ func (native Native) migrationSource(owner project.Project, runtime microruntime
 	}
 	active, readErr := files.ReadBounded(activePath, 4<<20)
 	return descriptor, readErr == nil && digest(active) == digest(original), err
+}
+
+// readIntent loads the digests an earlier materialization intended to write.
+func (native Native) readIntent(owner project.Project, runtime string) (map[string]string, error) {
+	path, err := files.Within(owner.Root, ".langdrift/state/runtimes/"+runtime+"/materialize-intent.json")
+	if err != nil {
+		return nil, err
+	}
+	data, err := files.ReadBounded(path, 4<<20)
+	if errors.Is(err, fs.ErrNotExist) {
+		return map[string]string{}, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+	intent := map[string]string{}
+	if err := json.Unmarshal(data, &intent); err != nil {
+		return nil, fmt.Errorf("materialize intent is unreadable: %w", err)
+	}
+	return intent, nil
+}
+
+// writeIntent records what the current materialization is about to write.
+func (native Native) writeIntent(owner project.Project, runtime string, managed map[string]string) error {
+	path, err := files.Within(owner.Root, ".langdrift/state/runtimes/"+runtime+"/materialize-intent.json")
+	if err != nil {
+		return err
+	}
+	if err := os.MkdirAll(filepath.Dir(path), 0o700); err != nil {
+		return err
+	}
+	data, err := json.MarshalIndent(managed, "", "  ")
+	if err != nil {
+		return err
+	}
+	return atomicWrite(path, append(data, '\n'), 0o600)
 }
 
 // buildLog opens the runtime's private build log for one start.
