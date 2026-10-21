@@ -4,11 +4,11 @@ AI harness web OS for your agentic journey. LangDrift is a suite of products und
 
 ## General rules
 
-`.claude/rules/` holds the rules that always apply, read first in every session. `00-general.rule.md` covers code and tooling, `01-filesystem.rule.md` naming and paths, and `02-frontend.rule.md` React and Next.js styling.
+`.claude/rules/` holds the rules that always apply, read first in every session. `00-general.rule.md` covers code and tooling, `01-filesystem.rule.md` naming and paths, `02-frontend.rule.md` React and Next.js styling, and `03-tailwind.rule.md` what Tailwind's theme may override.
 
 ## Status
 
-Monorepo skeleton with no workspaces or packages yet. Planned products, each with an empty folder:
+Monorepo with one package, `@langdrift/tokens`, and no product workspaces yet. Planned products, each with an empty folder:
 
 - `products/vision`: LangDrift Vision
 - `products/finops`: LangDrift FinOps
@@ -40,7 +40,7 @@ Run from the repository root:
 
 - `products/<product>/<kind>/<workspace>/`: a product's workspaces, grouped by kind. Apps go in `apps/`; another kind, such as microservices, gets its own folder when its first workspace appears. `pnpm-workspace.yaml` picks up any kind through `products/*/*/*`.
 - `packages/<capability>/`: shared across products, never inside one.
-- Planned packages: `ui`, `tokens`, `shell`, `account`, `runtime`, `contracts`.
+- Packages: `tokens` exists; `ui`, `shell`, `account`, `runtime` and `contracts` are planned.
 - A package takes a product name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
 - Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
@@ -54,10 +54,12 @@ When the shell resolves `drift` to another program (a link from an older checkou
 
 ## Design and tokens
 
-- Components use semantic roles, never a brand color directly.
-- Neutral scales and roles are shared. Each product defines only its brand in `packages/tokens/themes/`.
-- Token prefix: `--lg-*`.
+- `@langdrift/tokens` builds the tokens with Style Dictionary. Each product's app imports one self-contained stylesheet: `@langdrift/tokens/vision.css` or `@langdrift/tokens/finops.css`.
+- Components use roles, never a foundation or a brand color directly. Roles take shadcn's names (`background`, `foreground`, `primary`, `muted-foreground`, …) because the web apps use SmoothUI and shadcn components.
+- Prefixes: shared tokens are `--lg-*`; product themes are `--viz-*` (Vision) and `--fp-*` (FinOps). Each product theme lives in `packages/tokens/themes/` and today defines only primary and primary hover, which `--lg-color-primary` points to.
 - Status colors (`--lg-status-*`) are fixed across products and never inherit a brand color.
+- Light is declared in `:root` and dark in `.dark`. Apps render with the `.dark` class, so dark is the default.
+- Each stylesheet also bridges the roles to shadcn's unprefixed variables and sets Tailwind's theme. The native color palette is reset, so only roles and status colors exist as Tailwind colors. See ADR 0001 and `03-tailwind.rule.md`.
 
 ## Navigation and session
 
