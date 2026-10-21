@@ -315,38 +315,52 @@ describe('build', () => {
 })
 
 describe('product themes', () => {
-	test("bind the shared primary roles to Vision's brand", () => {
-		const css = built('vision')
-		for (const [selector, primary, hover] of [
-			[':root', '#6D0AD6', '#5408A5'],
-			['.dark', '#A66BF0', '#B98AF4'],
-		]) {
-			assert.deepEqual(pick(declarations(css, selector), brandRoles), {
-				'--viz-color-primary': primary,
-				'--viz-color-primary-hover': hover,
-				'--lg-color-primary': 'var(--viz-color-primary)',
-				'--lg-color-primary-hover': 'var(--viz-color-primary-hover)',
-				'--lg-color-ring': 'var(--lg-color-primary)',
-				'--lg-color-sidebar-primary': 'var(--lg-color-primary)',
-				'--lg-color-sidebar-ring': 'var(--lg-color-primary)',
-				'--lg-color-chart-1': 'var(--lg-color-primary)',
-			})
-		}
-	})
+	for (const [product, prefix, other] of [
+		['vision', 'viz', 'fp'],
+		['finops', 'fp', 'viz'],
+	]) {
+		test(`bind the shared primary roles to ${product}'s brand`, () => {
+			const css = built(product)
+			for (const [selector, primary, hover] of [
+				[':root', '#6D0AD6', '#5408A5'],
+				['.dark', '#A66BF0', '#B98AF4'],
+			]) {
+				assert.deepEqual(
+					pick(declarations(css, selector), brandRoles(prefix)),
+					{
+						[`--${prefix}-color-primary`]: primary,
+						[`--${prefix}-color-primary-hover`]: hover,
+						'--lg-color-primary': `var(--${prefix}-color-primary)`,
+						'--lg-color-primary-hover': `var(--${prefix}-color-primary-hover)`,
+						'--lg-color-ring': 'var(--lg-color-primary)',
+						'--lg-color-sidebar-primary': 'var(--lg-color-primary)',
+						'--lg-color-sidebar-ring': 'var(--lg-color-primary)',
+						'--lg-color-chart-1': 'var(--lg-color-primary)',
+					},
+				)
+			}
+		})
+
+		test(`keep ${product}'s stylesheet free of the other product theme`, () => {
+			assert.doesNotMatch(built(product), new RegExp(`--${other}-`))
+		})
+	}
 })
 
-const brandRoles = [
-	'--viz-color-primary',
-	'--viz-color-primary-hover',
-	...[
-		'primary',
-		'primary-hover',
-		'ring',
-		'sidebar-primary',
-		'sidebar-ring',
-		'chart-1',
-	].map((role) => `--lg-color-${role}`),
-]
+function brandRoles(prefix) {
+	return [
+		`--${prefix}-color-primary`,
+		`--${prefix}-color-primary-hover`,
+		...[
+			'primary',
+			'primary-hover',
+			'ring',
+			'sidebar-primary',
+			'sidebar-ring',
+			'chart-1',
+		].map((role) => `--lg-color-${role}`),
+	]
+}
 
 describe('status colors', () => {
 	let light

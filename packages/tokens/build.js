@@ -3,7 +3,7 @@ import { getReferences, usesReferences } from 'style-dictionary/utils'
 
 // Each product gets one stylesheet built from the shared tokens and its own
 // product theme.
-const products = ['vision']
+const products = ['vision', 'finops']
 
 // A token under a color scheme group changes with the scheme. The group names
 // the selector it is emitted under and is left out of the variable name.

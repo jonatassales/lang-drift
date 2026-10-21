@@ -4,7 +4,8 @@
 	"private": true,
 	"type": "module",
 	"exports": {
-		"./vision.css": "./dist/vision.css"
+		"./vision.css": "./dist/vision.css",
+		"./finops.css": "./dist/finops.css"
 	},
 	"files": [
 		"dist"
