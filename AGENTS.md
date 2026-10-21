@@ -8,7 +8,7 @@ AI harness web OS for your agentic journey. LangDrift is a suite of products und
 
 ## Status
 
-Monorepo with one package, `@langdrift/tokens`, and no product workspaces yet. Planned products, each with an empty folder:
+Monorepo with two packages, `@langdrift/tokens` and `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and no product workspaces yet. Planned products, each with an empty folder:
 
 - `products/vision`: LangDrift Vision
 - `products/finops`: LangDrift FinOps
@@ -40,7 +40,8 @@ Run from the repository root:
 
 - `products/<product>/<kind>/<workspace>/`: a product's workspaces, grouped by kind. Apps go in `apps/`; another kind, such as microservices, gets its own folder when its first workspace appears. `pnpm-workspace.yaml` picks up any kind through `products/*/*/*`.
 - `packages/<capability>/`: shared across products, never inside one.
-- Packages: `tokens` exists; `ui`, `shell`, `account`, `runtime` and `contracts` are planned.
+- Packages: `tokens` and `ex` exist; `ui`, `shell`, `account`, `runtime` and `contracts` are planned.
+- `packages/ex` is Go: Turborepo runs its `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds it (no Go toolchain required for frontend work).
 - A package takes a product name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
 - Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
@@ -122,7 +123,9 @@ Single context. The glossary is the `## Glossary` section of `.agents/context.md
 | Harness | `drift doctor --ci`, ShellCheck on the POSIX scripts, actionlint on the workflows |
 | Guardrails | `drift git lint-history` over the pull request's commits |
 
-Actions and container images are pinned to full commit SHAs or digests, with the version in a comment. The workflow token is read-only.
+A second workflow, `e2e.yml`, runs the ex CLI's e2e-tagged suite against a kind cluster on manual dispatch and a weekly schedule.
+
+Actions, container images and downloaded tools are pinned to full commit SHAs, digests or checksums, with the version in a comment. The workflow tokens are read-only.
 
 ## Git
 

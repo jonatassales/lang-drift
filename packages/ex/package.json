@@ -1,0 +1,21 @@
+{
+	"name": "@langdrift/ex",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"build": "go build -o dist/ex ./src",
+		"test": "go test -race ./...",
+		"typecheck": "go vet -tags e2e ./..."
+	},
+	"files": [
+		"src",
+		"go.mod",
+		"go.sum",
+		"build.sh",
+		"README.md"
+	],
+	"os": [
+		"darwin",
+		"linux"
+	]
+}

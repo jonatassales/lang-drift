@@ -35,3 +35,25 @@ _Avoid_: Feedback color, alert color
 **Color scheme**:
 Light or dark. Dark is the default in every product.
 _Avoid_: Theme, mode
+
+### Ex CLI
+
+**Microruntime**:
+One console-defined workload unit that ex runs on the project's local cluster: its configuration, execution and cleanup.
+_Avoid_: Runtime (alone, in new writing), service
+
+**Connected agent**:
+The long-running `ex agent` process that supervises a project's microruntimes from authenticated console intent.
+_Avoid_: Daemon, worker
+
+**Build recipe**:
+The console-supplied command that builds a microruntime's image. Only a committed project script or an allowlisted tool may run.
+_Avoid_: Build command, build step
+
+**Execution ledger**:
+The on-disk record of what an operation created, written before side effects and settled afterwards. Cleanup acts only on what the ledger owns.
+_Avoid_: State file, journal
+
+**Evidence**:
+The token-free record ex keeps of every lifecycle operation and inspection, for later audit.
+_Avoid_: Log, report
