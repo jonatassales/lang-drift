@@ -69,7 +69,7 @@ When the shell resolves `drift` to another program (a link from an older checkou
 
 Workflow: `research` when a question needs primary sources, then `grill-with-docs` (or `grill-me` for plans outside the code), `to-spec`, `to-tickets`, `implement` and `code-review`.
 
-- `grill-with-docs`, `grill-me`, `to-spec`, `to-tickets` and `implement` run only when the owner invokes them.
+- `.agents/workflow/human-in-the-loop.policy.md` sets where the owner takes part, which stages run on their own and what gates them. It belongs to this project and team; the skills read it instead of assuming.
 - A direct request to build or change application code enters the workflow: start with the `grilling` skill, plus `domain-modeling` when terms or decisions settle, instead of writing code.
 - `.claude/hooks/guard-implement-effort.sh` blocks `implement` for the current session until `.agents/prompts/llm-effort-analyzer.prompt.md` has recorded its result at `.agents/workflow/.effort-log/<session_id>.md`.
 - The commit-msg hook rejects a commit that changes `products/` or `packages/` without a `Ticket: <NNNN>` trailer naming an existing ticket.
@@ -125,7 +125,7 @@ Actions and container images are pinned to full commit SHAs or digests, with the
 ## Git
 
 - No commit, pull request or contribution carries an AI-generated signature, trailer or footer. This includes `Co-Authored-By` and "Generated with".
-- Commit, push, pull request, merge and release each need explicit authorization every time.
+- Inside the spec-driven workflow, commit, push and pull request follow `.agents/workflow/human-in-the-loop.policy.md`. Outside it, each needs explicit authorization every time. Merge and release always need it.
 - The hooks in `platform/versioning/.husky/` call `drift`. `drift git pre-commit` runs Biome on the staged files through lint-staged. `drift git commit-msg` rejects AI signatures, enforces the ticket trailer above and requires Conventional Commits through commitlint; its checks live in `platform/cli/src/core/commit-rules.sh`, which `drift git lint-history` also applies to every commit in a range. Husky installs the hooks on `pnpm install` once the folder is a Git repository. Neither lint-staged nor commitlint finds its config by itself: `drift` passes `--config`, so run them through `drift` rather than `pnpm exec`.
 
 ## Boundaries
