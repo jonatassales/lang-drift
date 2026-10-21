@@ -28,7 +28,8 @@ func TestNativeLifecycleFixture(t *testing.T) {
 		}
 	}
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-	status := executeNativeCatalogs(ctx, args, support.Options{Version: version, Input: process.Input{Context: ctx, File: os.Stdin}, Output: os.Stdout, Diagnostics: os.Stderr}, useCases())
+	cases, native := useCases()
+	status := executeNativeCatalogs(ctx, args, support.Options{Version: version, Input: process.Input{Context: ctx, File: os.Stdin}, Output: os.Stdout, Diagnostics: os.Stderr}, cases, native)
 	cancel()
 	os.Exit(status)
 }

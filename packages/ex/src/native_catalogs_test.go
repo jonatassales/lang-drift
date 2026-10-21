@@ -16,7 +16,7 @@ import (
 
 // executeNativeCatalogs is a test-only adapter for retained native lifecycle
 // contracts. Public console-agent behavior is covered by separate tests.
-func executeNativeCatalogs(ctx context.Context, args []string, options support.Options, cases cli.UseCases) int {
+func executeNativeCatalogs(ctx context.Context, args []string, options support.Options, cases cli.UseCases, native lifecycles) int {
 	if len(args) == 0 || args[0] != "runtime" {
 		return cli.Execute(ctx, args, options, cases)
 	}
@@ -26,7 +26,7 @@ func executeNativeCatalogs(ctx context.Context, args []string, options support.O
 	root.PersistentFlags().StringVar(&globals.Project, "project", "", "project root")
 	root.PersistentFlags().BoolVar(&globals.JSON, "json", false, "JSON results")
 	root.PersistentFlags().DurationVar(&globals.Timeout, "timeout", 2*time.Minute, "finite operation deadline")
-	root.AddCommand(catalog.NewRuntimeInitCommand(cases.RuntimeInit, &globals), catalog.NewRuntimeValidateCommand(cases.RuntimeValidate, &globals), catalog.NewRuntimeUpCommand(cases.RuntimeUp, &globals), catalog.NewRuntimeDownCommand(cases.RuntimeDown, &globals), catalog.NewRuntimeInspectCommand(cases.RuntimeInspect, &globals), catalog.NewRuntimeLogsCommand(cases.RuntimeLogs, &globals), catalog.NewRuntimeForwardCommand(cases.RuntimeForward, &globals), catalog.NewRuntimeHookCommand(cases.RuntimeHook, &globals))
+	root.AddCommand(catalog.NewRuntimeInitCommand(native.Init, &globals), catalog.NewRuntimeValidateCommand(native.Validate, &globals), catalog.NewRuntimeUpCommand(native.Up, &globals), catalog.NewRuntimeDownCommand(native.Down, &globals), catalog.NewRuntimeInspectCommand(native.Inspect, &globals), catalog.NewRuntimeLogsCommand(native.Logs, &globals), catalog.NewRuntimeForwardCommand(native.Forward, &globals), catalog.NewRuntimeHookCommand(native.Hook, &globals))
 	root.SetArgs(args[1:])
 	root.SetIn(options.Input)
 	root.SetOut(options.Output)

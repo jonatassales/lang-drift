@@ -19,7 +19,7 @@ import (
 // useCases is the composition root: the only place that knows every concrete
 // adapter. It builds each adapter once and hands every use case exactly the
 // ports it declares.
-func useCases() cli.UseCases {
+func useCases() (cli.UseCases, lifecycles) {
 	runner := process.Local{}
 
 	var (
@@ -38,27 +38,16 @@ func useCases() cli.UseCases {
 		extensions  = hooks.Executor{Runner: runner}
 	)
 
-	cases := cli.UseCases{
-		ProjectInit: application.InitializeProject{
-			Projects:  projects,
-			Creator:   projects,
-			Bootstrap: scaffold.Connected{},
-		},
-		Doctor: application.Diagnose{
-			Prerequisites: tools,
-			Projects:      projects,
-			Clusters:      clusters,
-			Observer:      kubernetes,
-		},
-		RuntimeInit: application.InitializeRuntime{
+	native := lifecycles{
+		Init: application.InitializeRuntime{
 			Projects:   projects,
 			Scaffolder: scaffolder,
 		},
-		RuntimeValidate: application.ValidateRuntime{
+		Validate: application.ValidateRuntime{
 			Projects:      projects,
 			Configuration: files,
 		},
-		RuntimeUp: application.StartRuntime{
+		Up: application.StartRuntime{
 			Projects:      projects,
 			Locks:         locks,
 			Configuration: files,
@@ -71,7 +60,7 @@ func useCases() cli.UseCases {
 			Evidence:      evidence,
 			Tools:         tools,
 		},
-		RuntimeDown: application.StopRuntime{
+		Down: application.StopRuntime{
 			Projects:      projects,
 			Locks:         locks,
 			Configuration: files,
@@ -83,7 +72,7 @@ func useCases() cli.UseCases {
 			Evidence:      evidence,
 			Tools:         tools,
 		},
-		RuntimeInspect: application.InspectRuntime{
+		Inspect: application.InspectRuntime{
 			Projects:   projects,
 			Clusters:   clusters,
 			Observer:   kubernetes,
@@ -92,19 +81,33 @@ func useCases() cli.UseCases {
 			Evidence:   evidence,
 			Tools:      tools,
 		},
-		RuntimeLogs: application.ReadRuntimeLogs{
+		Logs: application.ReadRuntimeLogs{
 			Projects: projects, Locks: locks, Configuration: files,
 			Clusters: clusters, Observer: kubernetes, Executions: executions,
 			Objects: kubernetes, Logs: kubernetes,
 		},
-		RuntimeForward: application.ForwardRuntime{
+		Forward: application.ForwardRuntime{
 			Projects: projects, Locks: locks, Configuration: files,
 			Clusters: clusters, Observer: kubernetes, Executions: executions,
 			Objects: kubernetes, Forwarder: kubernetes,
 		},
-		RuntimeHook: application.RunRuntimeHook{
+		Hook: application.RunRuntimeHook{
 			Projects: projects, Locks: locks, Configuration: files,
 			Scripts: files, Executor: extensions, Evidence: evidence,
+		},
+	}
+
+	cases := cli.UseCases{
+		ProjectInit: application.InitializeProject{
+			Projects:  projects,
+			Creator:   projects,
+			Bootstrap: scaffold.Connected{},
+		},
+		Doctor: application.Diagnose{
+			Prerequisites: tools,
+			Projects:      projects,
+			Clusters:      clusters,
+			Observer:      kubernetes,
 		},
 		ClusterCreate: application.CreateCluster{
 			Projects:    projects,
@@ -142,8 +145,22 @@ func useCases() cli.UseCases {
 	}
 	projectConsole := &connectedinfra.MCP{}
 	cases.ProjectAgent = connectedapp.Service{Projects: projects, Store: connectedinfra.Store{Runner: runner}, Console: projectConsole, ProjectConsole: projectConsole, Native: connectedinfra.Native{
-		Create: cases.ClusterCreate, Load: cases.ClusterLoadImage, StartRuntime: cases.RuntimeUp, StopRuntime: cases.RuntimeDown, Inspect: cases.RuntimeInspect, Executions: executions, Runner: runner,
+		Create: cases.ClusterCreate, Load: cases.ClusterLoadImage, StartRuntime: native.Up, StopRuntime: native.Down, Inspect: native.Inspect, Executions: executions, Runner: runner,
 	}}
-	return cases
 
+	return cases, native
+}
+
+// lifecycles are the native runtime use cases. The connected agent is their
+// only production consumer; the e2e suite drives them directly through its
+// retained catalog harness.
+type lifecycles struct {
+	Init     application.InitializeRuntime
+	Validate application.ValidateRuntime
+	Up       application.StartRuntime
+	Down     application.StopRuntime
+	Inspect  application.InspectRuntime
+	Logs     application.ReadRuntimeLogs
+	Forward  application.ForwardRuntime
+	Hook     application.RunRuntimeHook
 }

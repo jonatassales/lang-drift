@@ -20,14 +20,6 @@ type UseCases struct {
 	ProjectInit      catalog.ProjectInitializer
 	ProjectAgent     catalog.ProjectAgent
 	Doctor           catalog.Diagnoser
-	RuntimeInit      catalog.RuntimeInitializer
-	RuntimeValidate  catalog.RuntimeValidator
-	RuntimeUp        catalog.RuntimeStarter
-	RuntimeDown      catalog.RuntimeStopper
-	RuntimeInspect   catalog.RuntimeInspector
-	RuntimeLogs      catalog.RuntimeLogReader
-	RuntimeForward   catalog.RuntimeForwarder
-	RuntimeHook      catalog.RuntimeHookRunner
 	ClusterCreate    catalog.ClusterCreator
 	ClusterDelete    catalog.ClusterDeleter
 	ClusterInspect   catalog.ClusterInspector

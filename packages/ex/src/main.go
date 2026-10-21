@@ -21,6 +21,7 @@ func main() {
 		syscall.SIGTERM,
 	)
 
+	cases, _ := useCases()
 	exitStatus := cli.Execute(
 		applicationContext,
 		os.Args[1:],
@@ -30,7 +31,7 @@ func main() {
 			Output:      os.Stdout,
 			Diagnostics: os.Stderr,
 		},
-		useCases(),
+		cases,
 	)
 
 	stopSignals()

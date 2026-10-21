@@ -42,13 +42,14 @@ func (p project) ex(input string, arguments ...string) (int, string, string) {
 	p.t.Helper()
 
 	var stdout, stderr bytes.Buffer
+	cases, native := useCases()
 	status := executeNativeCatalogs(context.Background(), arguments, support.Options{
 		Version:     version,
 		Directory:   p.root,
 		Input:       strings.NewReader(input),
 		Output:      &stdout,
 		Diagnostics: &stderr,
-	}, useCases())
+	}, cases, native)
 
 	return status, stdout.String(), stderr.String()
 }

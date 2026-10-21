@@ -12,6 +12,12 @@ import (
 	"testing"
 )
 
+// mainUseCases is the production composition, without the e2e lifecycles.
+func mainUseCases() cli.UseCases {
+	cases, _ := useCases()
+	return cases
+}
+
 func TestCommand(t *testing.T) {
 	tests := []struct {
 		name   string
@@ -33,7 +39,7 @@ func TestCommand(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var out, err bytes.Buffer
-			status := cli.Execute(context.Background(), tt.args, support.Options{Version: version, Directory: t.TempDir(), Output: &out, Diagnostics: &err}, useCases())
+			status := cli.Execute(context.Background(), tt.args, support.Options{Version: version, Directory: t.TempDir(), Output: &out, Diagnostics: &err}, mainUseCases())
 			if status != tt.status || !strings.Contains(out.String(), tt.stdout) || !strings.Contains(err.String(), tt.stderr) {
 				t.Fatalf("run(%q) = (%d, %q, %q), want status %d and substrings %q, %q", tt.args, status, out.String(), err.String(), tt.status, tt.stdout, tt.stderr)
 			}
@@ -57,7 +63,7 @@ func TestOutputFailure(t *testing.T) {
 	for _, command := range []string{"help", "version"} {
 		t.Run(command, func(t *testing.T) {
 			var diagnostics bytes.Buffer
-			if status := cli.Execute(context.Background(), []string{command}, support.Options{Version: version, Output: failingWriter{}, Diagnostics: &diagnostics}, useCases()); status != 1 {
+			if status := cli.Execute(context.Background(), []string{command}, support.Options{Version: version, Output: failingWriter{}, Diagnostics: &diagnostics}, mainUseCases()); status != 1 {
 				t.Fatalf("failed output returned status %d, want 1", status)
 			}
 			if !strings.Contains(diagnostics.String(), "output unavailable") {
@@ -93,7 +99,7 @@ func TestRuntimeCommandsAreRetired(t *testing.T) {
 	for _, verb := range []string{"init", "validate", "up", "down", "inspect", "logs", "forward", "hook"} {
 		t.Run(verb, func(t *testing.T) {
 			var out, diagnostics bytes.Buffer
-			status := cli.Execute(context.Background(), []string{"runtime", verb, "demo"}, support.Options{Output: &out, Diagnostics: &diagnostics}, useCases())
+			status := cli.Execute(context.Background(), []string{"runtime", verb, "demo"}, support.Options{Output: &out, Diagnostics: &diagnostics}, mainUseCases())
 			if status != 1 || !strings.Contains(diagnostics.String(), "moved to the console") {
 				t.Fatalf("retired command = %d %s", status, diagnostics.String())
 			}
