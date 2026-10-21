@@ -113,7 +113,7 @@ func (store Store) Bind(ctx context.Context, owner project.Project, record app.C
 		if store.Runner == nil {
 			return errors.New("credential storage requires a Git index reader")
 		}
-		tracked, err := store.Runner.Run(ctx, process.Command{Name: "git", Args: []string{"ls-files", "-z", "--", privatePath}, Dir: owner.Root, UnsetEnv: []string{"GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE", "GIT_COMMON_DIR", "GIT_CONFIG_COUNT", "GIT_NAMESPACE"}})
+		tracked, err := store.Runner.Run(ctx, process.Command{Name: "git", Args: []string{"ls-files", "-z", "--", privatePath}, Dir: owner.Root})
 		if err != nil {
 			return errors.New("cannot verify the private credential path against the Git index")
 		}

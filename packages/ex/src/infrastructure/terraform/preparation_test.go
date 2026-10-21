@@ -132,13 +132,25 @@ func TestPreparation_Apply(t *testing.T) {
 			t.Errorf("command %d = %s %v in %s, want %v in the preparation root", index, command.Name, command.Args, command.Dir, wantArguments[index])
 		}
 
-		for _, neutralized := range []string{
-			"KUBECONFIG=", "KUBE_CONFIG_PATH=", "TF_CLI_ARGS=", "TF_CLI_ARGS_plan=", "TF_WORKSPACE=default",
-			"TF_DATA_DIR=" + filepath.Join(state, "terraform-data"), "TF_IN_AUTOMATION=1", "TF_INPUT=0",
+		for _, pinned := range []string{
+			"TF_WORKSPACE=default", "TF_DATA_DIR=" + filepath.Join(state, "terraform-data"),
+			"TF_IN_AUTOMATION=1", "TF_INPUT=0",
 		} {
-			if !slices.Contains(command.Env, neutralized) {
-				t.Errorf("command %d environment lacks %s", index, neutralized)
+			if !slices.Contains(command.Env, pinned) {
+				t.Errorf("command %d environment lacks %s", index, pinned)
 			}
+		}
+
+		// Children get a minimal explicit environment, so a redirection the old
+		// code had to blank must simply never be declared.
+		for _, entry := range command.Env {
+			name, _, _ := strings.Cut(entry, "=")
+			if name == "KUBECONFIG" || name == "TERRAFORMRC" || name == "TF_CLI_CONFIG_FILE" || strings.HasPrefix(name, "KUBE_") || strings.HasPrefix(name, "TF_CLI_ARGS") || strings.HasPrefix(name, "TF_LOG") {
+				t.Errorf("command %d declares %s; redirections must stay undeclared", index, entry)
+			}
+		}
+		if len(command.PassEnv) != 0 {
+			t.Errorf("command %d passes parent variables %v; terraform declares none", index, command.PassEnv)
 		}
 	}
 

@@ -21,6 +21,9 @@ type Executor struct{ Runner Runner }
 
 // Run waits for the script with bounded output capture and explicit runtime
 // correlation. The caller owns its deadline and the project mutation lock.
+// The script sees only the minimal process base plus the LANGDRIFT_*
+// correlation variables; a hook that needs more will declare it in its
+// configuration when a live hook surface returns (ADR 0002).
 func (executor Executor) Run(ctx context.Context, invocation application.HookInvocation) (application.HookResult, error) {
 	result, err := executor.Runner.Run(ctx, process.Command{
 		Name: "sh",

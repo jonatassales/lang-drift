@@ -159,7 +159,7 @@ func (native Native) localBuildTree(ctx context.Context, owner project.Project) 
 	}
 	var names []string
 	if git {
-		result, readErr := native.Runner.Run(ctx, process.Command{Name: "git", Args: []string{"ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", "."}, Dir: owner.Root, UnsetEnv: []string{"GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE", "GIT_COMMON_DIR", "GIT_CONFIG_COUNT", "GIT_NAMESPACE"}})
+		result, readErr := native.Runner.Run(ctx, process.Command{Name: "git", Args: []string{"ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", "."}, Dir: owner.Root})
 		if readErr != nil {
 			return "", nil, "", readErr
 		}

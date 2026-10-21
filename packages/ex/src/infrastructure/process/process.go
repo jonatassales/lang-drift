@@ -25,18 +25,21 @@ const (
 )
 
 // Command describes one direct executable invocation. Args are never shell
-// text. Env adds explicit overrides to the inherited environment. Stdout and
+// text. A child never inherits the agent's environment: it gets the minimal
+// base (see baseEnvironment), the parent values PassEnv names ("DOCKER_*"
+// passes a prefix), and the literal Env entries, in that order. Stdout and
 // Stderr, when set, receive the streams as they are produced.
 type Command struct {
 	Name string
 	Args []string
 	Dir  string
-	Env  []string
-	// UnsetEnv removes inherited credentials before explicit Env overrides.
-	UnsetEnv []string
-	Stdin    io.Reader
-	Stdout   io.Writer
-	Stderr   io.Writer
+	// Env appends explicit NAME=value entries to the minimal base.
+	Env []string
+	// PassEnv copies named parent variables; a trailing * passes a prefix.
+	PassEnv []string
+	Stdin   io.Reader
+	Stdout  io.Writer
+	Stderr  io.Writer
 }
 
 // Result records a completed process. A negative ExitCode means it did not
@@ -158,17 +161,49 @@ func (capture *capture) String() string {
 	return capture.data.String()
 }
 
+// baseEnvironment is what every child may see without declaring anything:
+// lookup, workspace and locale basics, and proxy settings for tools that
+// reach a network. Credentials are never in it; see ADR 0002.
+var baseEnvironment = []string{
+	"PATH",
+	"HOME",
+	"TMPDIR",
+	"USER",
+	"LOGNAME",
+	"LANG",
+	"LC_*",
+	"HTTP_PROXY",
+	"HTTPS_PROXY",
+	"NO_PROXY",
+	"http_proxy",
+	"https_proxy",
+	"no_proxy",
+}
+
 func commandEnvironment(command Command) []string {
-	excluded := map[string]bool{}
-	for _, name := range command.UnsetEnv {
-		excluded[name] = true
+	patterns := append(append([]string{}, baseEnvironment...), command.PassEnv...)
+
+	passes := func(name string) bool {
+		for _, pattern := range patterns {
+			if prefix, wildcard := strings.CutSuffix(pattern, "*"); wildcard {
+				if strings.HasPrefix(name, prefix) {
+					return true
+				}
+			} else if name == pattern {
+				return true
+			}
+		}
+
+		return false
 	}
-	environment := make([]string, 0, len(os.Environ())+len(command.Env))
+
+	environment := make([]string, 0, len(baseEnvironment)+len(command.Env))
 	for _, entry := range os.Environ() {
 		name, _, _ := strings.Cut(entry, "=")
-		if !excluded[name] {
+		if passes(name) {
 			environment = append(environment, entry)
 		}
 	}
+
 	return append(environment, command.Env...)
 }

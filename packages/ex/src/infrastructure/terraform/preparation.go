@@ -10,7 +10,6 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
@@ -167,33 +166,14 @@ func (invocation invocation) terraform(ctx context.Context, arguments ...string)
 	return result, nil
 }
 
-// environment neutralizes every variable that could redirect Terraform or the
-// Kubernetes provider away from the explicit runtime target.
+// environment pins Terraform to the explicit runtime target. Children no
+// longer inherit the agent's environment, so TF_*, TERRAFORMRC, KUBECONFIG
+// and KUBE_* redirections never reach Terraform at all; only these pins do.
 func (invocation invocation) environment() []string {
-	environment := []string{
+	return []string{
 		"TF_IN_AUTOMATION=1",
 		"TF_INPUT=0",
 		"TF_DATA_DIR=" + filepath.Join(invocation.state, dataDirectory),
-		"TF_CLI_ARGS=",
-		"TF_CLI_ARGS_init=",
-		"TF_CLI_ARGS_plan=",
-		"TF_CLI_ARGS_apply=",
-		"TF_CLI_ARGS_show=",
 		"TF_WORKSPACE=default",
-		"TF_LOG=",
-		"TF_LOG_PATH=",
-		"TF_LOG_CORE=",
-		"TF_LOG_PROVIDER=",
-		"KUBECONFIG=",
-		"KUBERNETES_MASTER=",
 	}
-
-	for _, entry := range os.Environ() {
-		name, _, _ := strings.Cut(entry, "=")
-		if strings.HasPrefix(name, "KUBE_") {
-			environment = append(environment, name+"=")
-		}
-	}
-
-	return environment
 }

@@ -126,8 +126,9 @@ func (toolchain Toolchain) engineReachable(ctx context.Context) bool {
 	defer cancel()
 
 	_, err := toolchain.Runner.Run(probeContext, process.Command{
-		Name: "docker",
-		Args: []string{"info", "--format", "{{.ServerVersion}}"},
+		Name:    "docker",
+		Args:    []string{"info", "--format", "{{.ServerVersion}}"},
+		PassEnv: []string{"DOCKER_*"},
 	})
 
 	return err == nil

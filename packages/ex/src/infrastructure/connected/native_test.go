@@ -5,6 +5,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -416,6 +417,9 @@ func TestNative_CommittedScriptRecipeResolvesInsideTheCheckout(t *testing.T) {
 	}
 	if !filepath.IsAbs(build.Name) || !strings.HasSuffix(build.Name, "/build.sh") {
 		t.Fatalf("script ran as %q, want the resolved absolute path", build.Name)
+	}
+	if !slices.Equal(build.PassEnv, []string{"DOCKER_*"}) || len(build.Env) != 0 {
+		t.Fatalf("recipe environment PassEnv=%v Env=%v, want only the container engine pass-through", build.PassEnv, build.Env)
 	}
 	if rel, err := filepath.Rel(owner.Root, build.Name); err != nil || strings.HasPrefix(rel, "..") {
 		t.Fatalf("script %q resolved outside the checkout", build.Name)

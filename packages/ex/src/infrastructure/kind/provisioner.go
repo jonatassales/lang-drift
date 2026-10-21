@@ -91,7 +91,7 @@ func (provisioner Provisioner) RequireImages(ctx context.Context, clusterName st
 		}
 
 		for _, node := range nodes {
-			probe := process.Command{Name: "docker", Args: []string{"exec", node, "crictl", "inspecti", image}}
+			probe := process.Command{Name: "docker", Args: []string{"exec", node, "crictl", "inspecti", image}, PassEnv: []string{"DOCKER_*"}}
 
 			if result, err := provisioner.Runner.Run(ctx, probe); err != nil {
 				return process.Explain(fmt.Sprintf("image %q is not loaded on node %s", image, node), result, err)
@@ -117,7 +117,9 @@ func (provisioner Provisioner) nodes(ctx context.Context, clusterName string) ([
 }
 
 func (provisioner Provisioner) kind(ctx context.Context, action string, arguments ...string) (process.Result, error) {
-	result, err := provisioner.Runner.Run(ctx, process.Command{Name: "kind", Args: arguments})
+	// kind drives the container engine, so the engine's own selection
+	// variables pass through with the minimal base.
+	result, err := provisioner.Runner.Run(ctx, process.Command{Name: "kind", Args: arguments, PassEnv: []string{"DOCKER_*", "KIND_*"}})
 	if err != nil {
 		return result, process.Explain(action, result, err)
 	}

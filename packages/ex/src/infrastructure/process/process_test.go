@@ -241,12 +241,36 @@ func (writer *firstWrite) Write(data []byte) (int, error) {
 	return len(data), nil
 }
 
-func TestLocal_RunRemovesInheritedCredentials(t *testing.T) {
-	t.Setenv("LANGDRIFT_TEST_SECRET", "private-value")
-	command := shell(`if [ "${LANGDRIFT_TEST_SECRET+x}" = x ]; then exit 3; fi; printf safe`)
-	command.UnsetEnv = []string{"LANGDRIFT_TEST_SECRET"}
+func TestLocal_ChildrenNeverInheritUndeclaredVariables(t *testing.T) {
+	t.Setenv("PROJECT_SECRET", "private-value")
+	t.Setenv("AWS_SECRET_ACCESS_KEY", "private-value")
+	t.Setenv("LANGDRIFT_TEST_PASS", "declared-value")
+
+	command := shell(`printf '%s|%s|%s|%s' "${PROJECT_SECRET-unset}" "${AWS_SECRET_ACCESS_KEY-unset}" "${LANGDRIFT_TEST_PASS-unset}" "${HOME-missing}"`)
+	command.PassEnv = []string{"LANGDRIFT_TEST_*"}
+
 	result, err := (process.Local{}).Run(context.Background(), command)
-	if err != nil || result.Stdout != "safe" {
-		t.Fatalf("credential was inherited: %+v %v", result, err)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fields := strings.Split(result.Stdout, "|")
+	if fields[0] != "unset" || fields[1] != "unset" {
+		t.Fatalf("a credential was inherited: %q", result.Stdout)
+	}
+	if fields[2] != "declared-value" {
+		t.Fatalf("declared pass-through missing: %q", result.Stdout)
+	}
+	if fields[3] == "missing" || fields[3] == "" {
+		t.Fatal("the minimal base must keep HOME")
+	}
+}
+
+func TestLocal_ExplicitAdditionsJoinTheMinimalBase(t *testing.T) {
+	command := shell(`printf '%s|%s' "$LANGDRIFT_TEST" "${PATH:+present}"`)
+	command.Env = []string{"LANGDRIFT_TEST=explicit"}
+
+	result, err := (process.Local{}).Run(context.Background(), command)
+	if err != nil || result.Stdout != "explicit|present" {
+		t.Fatalf("Run() = %q, %v", result.Stdout, err)
 	}
 }

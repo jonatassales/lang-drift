@@ -360,7 +360,14 @@ func (native Native) Start(ctx context.Context, owner project.Project, record ap
 				return errors.New("declared Docker build requires an existing Dockerfile")
 			}
 		}
-		command := process.Command{Name: component.Build.Executable, Args: component.Build.Args, Dir: directory, UnsetEnv: credentialEnvironment()}
+		command := process.Command{
+			Name: component.Build.Executable,
+			Args: component.Build.Args,
+			Dir:  directory,
+			// Recipes see the minimal base plus the container engine's own
+			// selection variables, never the agent's credentials.
+			PassEnv: []string{"DOCKER_*"},
+		}
 		// A committed script resolves inside the component's checkout directory,
 		// through the symlink-refusing resolver, and runs by absolute path.
 		if strings.Contains(component.Build.Executable, "/") {
@@ -779,20 +786,6 @@ func copyBuildTree(ctx context.Context, owner project.Project, names []string) (
 		}
 	}
 	return root, cleanup, nil
-}
-func credentialEnvironment() []string {
-	names := []string{"RUNTIME_SECRET", "AGENT_CREDENTIAL", "GITHUB_TOKEN", "GH_TOKEN"}
-	for _, entry := range os.Environ() {
-		name, _, _ := strings.Cut(entry, "=")
-		upper := strings.ToUpper(name)
-		for _, suffix := range []string{"_TOKEN", "_SECRET", "_PASSWORD", "_API_KEY"} {
-			if strings.HasSuffix(upper, suffix) {
-				names = append(names, name)
-				break
-			}
-		}
-	}
-	return names
 }
 
 func verifyManaged(owner project.Project, record app.Connection) error {

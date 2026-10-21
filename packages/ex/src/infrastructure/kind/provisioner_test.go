@@ -164,3 +164,32 @@ func TestProvisioner_RequireImages(t *testing.T) {
 		t.Fatal("RequireImages() probed an option-like image")
 	}
 }
+
+func TestProvisioner_PassesOnlyContainerEngineVariables(t *testing.T) {
+	t.Parallel()
+
+	var passed [][]string
+	recorder := &recorder{respond: nil}
+	runner := runFunc(func(command process.Command) (process.Result, error) {
+		passed = append(passed, command.PassEnv)
+		return recorder.Run(context.Background(), command)
+	})
+	provisioner := kind.Provisioner{Runner: runner}
+	_, _ = provisioner.Clusters(context.Background())
+
+	if len(passed) == 0 {
+		t.Fatal("no command recorded")
+	}
+	for _, passEnv := range passed {
+		if !slices.Equal(passEnv, []string{"DOCKER_*", "KIND_*"}) {
+			t.Fatalf("kind PassEnv = %v, want the container engine selection only", passEnv)
+		}
+	}
+}
+
+// runFunc adapts a function to the Runner contract.
+type runFunc func(process.Command) (process.Result, error)
+
+func (run runFunc) Run(_ context.Context, command process.Command) (process.Result, error) {
+	return run(command)
+}

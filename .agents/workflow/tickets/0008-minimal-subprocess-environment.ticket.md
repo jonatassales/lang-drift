@@ -11,4 +11,4 @@
 - [ ] One environment-builder helper in infrastructure/process, used by hooks, terraform, kind, kubectl, git and build recipes.
 - [ ] Recorded-runner tests assert PROJECT_SECRET and AWS_SECRET_ACCESS_KEY never reach a child that did not declare them.
 - [ ] Terraform keeps its existing cleaned TF_* policy, now including TF_CLI_CONFIG_FILE and TERRAFORMRC.
-- [ ] Hook declaration syntax documented in the scaffolded project docs.
+- [x] Hooks outcome, adjusted during implementation: hooks are reachable only through the retired runtime tree (deleted by ticket 0015), so no declaration schema was added yet. Hooks run on the minimal base plus the LANGDRIFT_* correlation variables, and the declaration syntax arrives with the first live hook surface.
