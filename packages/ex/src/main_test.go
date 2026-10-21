@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"context"
 	"errors"
-	"github.com/exphere/ex/src/presentation/cli"
-	"github.com/exphere/ex/src/presentation/cli/support"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -20,7 +20,7 @@ func TestCommand(t *testing.T) {
 		stdout string
 		stderr string
 	}{
-		{name: "help on no args", status: 0, stdout: "Exphere CLI"},
+		{name: "help on no args", status: 0, stdout: "LangDrift CLI"},
 		{name: "explicit help", args: []string{"--help"}, status: 0, stdout: "Usage:"},
 		{name: "version", args: []string{"version"}, status: 0, stdout: "ex 0.0.0-dev"},
 		{name: "init initialized", args: []string{"init"}, status: 0, stdout: "initialized"},

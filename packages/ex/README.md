@@ -1,6 +1,6 @@
-# Exphere CLI
+# LangDrift CLI
 
-This Go module bootstraps projects and runs the independent agent connected to the Exphere console. The console owns microruntime creation, composition, configuration and requested lifecycle; the agent builds explicit project recipes and reuses the bounded local kind/Terraform/Kubernetes lifecycle. The SDK remains postponed and applications need no Exphere dependency. This is a local development candidate, not a published release or a claim of operational readiness.
+This Go module, adopted from the Exphere repository, bootstraps projects and runs the independent agent connected to the LangDrift console. The console owns microruntime creation, composition, configuration and requested lifecycle; the agent builds explicit project recipes and reuses the bounded local kind/Terraform/Kubernetes lifecycle. The SDK remains postponed and applications need no LangDrift dependency. This is a local development candidate, not a published release or a claim of operational readiness.
 
 ## Build and checks
 
@@ -13,8 +13,8 @@ GOTOOLCHAIN=local go test ./...
 GOTOOLCHAIN=local go vet ./...
 ```
 
-The module retains its standalone identity, `github.com/exphere/ex`, and is
-integrated here as the private workspace package `@exphere/ex`. This does not
+The module retains its standalone identity, `github.com/jonatassales/tao/packages/ex`, and is
+integrated here as the private workspace package `@langdrift/ex`. This does not
 imply a published release. Native Go commands own the build and checks. Building does not install infrastructure tools, alter shell
 profiles, or change PATH. Use `./dist/ex` to avoid invoking the unrelated system
 editor also named `ex`.
@@ -24,8 +24,8 @@ editor also named `ex`.
 The package holds only the Go module, its source, and `build.sh`. Installing
 the workspace runs `build.sh`, which builds `dist/ex` with an existing Go
 toolchain, never installs Go or tools, and never changes shell profiles. Set
-`EXPHERE_SKIP_CLI_BUILD=1` to skip it. From the workspace root,
-`pnpm --filter @exphere/ex build` rebuilds the executable.
+`LANGDRIFT_SKIP_EX_BUILD=1` to skip it. From the workspace root,
+`pnpm --filter @langdrift/ex build` rebuilds the executable.
 
 This package declares no npm bin. Run `packages/ex/dist/ex` directly from this
 repository. The separate SDK package and its bridge were removed on October 21, 2026. The former shell-setup command,
@@ -56,9 +56,9 @@ Without `--project`, the nearest parent project is discovered. Finite commands d
 
 The standalone binary can be built directly with Go and placed in a user-selected executable directory as `ex`; Node, pnpm and the SDK are unnecessary in consumer projects. Builds do not modify a shell profile or PATH. No binary download, package publication or personal installation was performed in this delivery.
 
-The local console normally handles bootstrap and agent launch. One project has one `.exphere` and one agent; a process lock prevents a second project agent or legacy `agent run` from concurrently owning the same checkout. The agent admits at most 128 runtime workers, polls membership every five seconds, and joins its workers on cancellation. A console-owned stdin pipe also cancels the agent if its parent disappears. This process does not install dependencies or start workloads merely by connecting.
+The local console normally handles bootstrap and agent launch. One project has one `.langdrift` and one agent; a process lock prevents a second project agent or legacy `agent run` from concurrently owning the same checkout. The agent admits at most 128 runtime workers, polls membership every five seconds, and joins its workers on cancellation. A console-owned stdin pipe also cancels the agent if its parent disappears. This process does not install dependencies or start workloads merely by connecting.
 
-Local project bindings validate the canonical folder instead of requiring a GitHub origin, clean Git tree, or commit. Builds snapshot current tracked and nonignored untracked files, or bounded plain-folder contents without Git. Private `.exphere` state, dotenv files, dependency/cache directories, and symlinks are excluded. Each local build records a content fingerprint. Legacy GitHub bindings retain their original source checks until the console explicitly associates a stopped project with a local folder.
+Local project bindings validate the canonical folder instead of requiring a GitHub origin, clean Git tree, or commit. Builds snapshot current tracked and nonignored untracked files, or bounded plain-folder contents without Git. Private `.langdrift` state, dotenv files, dependency/cache directories, and symlinks are excluded. Each local build records a content fingerprint. Legacy GitHub bindings retain their original source checks until the console explicitly associates a stopped project with a local folder.
 
 The following runtime-specific connection flow remains for compatibility:
 
@@ -72,7 +72,7 @@ unset RUNTIME_SECRET
 ./dist/ex agent run
 ```
 
-Use the console's newly generated runtime credential. The agent writes it and the restricted environment recovery credential to `.exphere/runtimes/<runtime-id>/.env` with private permissions and a local ignore rule. A preexisting `.env` is preserved and reported as a conflict. Never pass credentials as command arguments.
+Use the console's newly generated runtime credential. The agent writes it and the restricted environment recovery credential to `.langdrift/runtimes/<runtime-id>/.env` with private permissions and a local ignore rule. A preexisting `.env` is preserved and reported as a conflict. Never pass credentials as command arguments.
 
 Exit codes are 0 for success, 1 for operational errors, 2 for invalid usage,
 and 130 for interruption. Results use stdout; diagnostics use stderr.
@@ -95,13 +95,13 @@ module is private and unpublished, so only this repository builds it.
 
 ## Configuration and recovery
 
-Each runtime has a stable console UID, native runtime ID, environment identity and distinct execution identities. Binding preserves the existing local project identity. MCP uses HTTPS (HTTP only for explicit loopback development), bounded JSON-RPC Streamable HTTP responses, initialization and tool calls `exphere.bind`, `exphere.sync`, and `exphere.claim`. Redirects are refused. The recovery credential can report cleanup after revocation; it cannot claim another start.
+Each runtime has a stable console UID, native runtime ID, environment identity and distinct execution identities. Binding preserves the existing local project identity. MCP uses HTTPS (HTTP only for explicit loopback development), bounded JSON-RPC Streamable HTTP responses, initialization and tool calls `langdrift.bind`, `langdrift.sync`, and `langdrift.claim`. Redirects are refused. The recovery credential can report cleanup after revocation; it cannot claim another start.
 
-Authored configuration is `.exphere/runtimes/<id>/runtime.md`, containing exactly one `exphere` JSON fence. Free prose is retained but never executed or sent to an LLM by this agent. The fence declares identity, revision, component paths, existing build recipes and images, ports/readiness, aggregate CPU/memory per execution, and the Exphere agent model/effort. The console recommendation service uses that model setting; this deterministic interpreter makes no paid model call. Between one and sixteen components, at most 64 CPU cores, and at most 1,048,576 MiB are accepted. Generated Deployments use one replica per component and explicit resource shares whose sum equals the envelope; resource quotas do not establish monetary limits or observed capacity.
+Authored configuration is `.langdrift/runtimes/<id>/runtime.md`, containing exactly one `langdrift` JSON fence. Free prose is retained but never executed or sent to an LLM by this agent. The fence declares identity, revision, component paths, existing build recipes and images, ports/readiness, aggregate CPU/memory per execution, and the LangDrift agent model/effort. The console recommendation service uses that model setting; this deterministic interpreter makes no paid model call. Between one and sixteen components, at most 64 CPU cores, and at most 1,048,576 MiB are accepted. Generated Deployments use one replica per component and explicit resource shares whose sum equals the envelope; resource quotas do not establish monetary limits or observed capacity.
 
-The agent records the authored Markdown hash, interpreted revision, source commit and concrete native fingerprint. Repository origin and HEAD must match the console's imported commit. Dirty source is an explicit conflict; generated `.exphere` files are excluded from that check. Root components and distinct paths with equal basenames are supported. New unit identities derive from source paths.
+The agent records the authored Markdown hash, interpreted revision, source commit and concrete native fingerprint. Repository origin and HEAD must match the console's imported commit. Dirty source is an explicit conflict; generated `.langdrift` files are excluded from that check. Root components and distinct paths with equal basenames are supported. New unit identities derive from source paths.
 
-Builds receive a disposable copy of Git-tracked source, excluding `.exphere` and dotenv credential files. Existing `.dockerignore` and executable modes are preserved. The supported context is bounded to 8 MiB per source file and 128 MiB total; symlinks and external build contexts/credential mounts are refused. Explicit commands run with argv, never an implicit shell; project programs remain trusted consumer code, not sandboxed code. Inherited runtime, agent and common provider-secret variables are removed. Recipes must produce the configured local images. Missing tools, Dockerfiles, incompatible recipes and unsuccessful builds are explicit failures; no fallback build or tool installation occurs.
+Builds receive a disposable copy of Git-tracked source, excluding `.langdrift` and dotenv credential files. Existing `.dockerignore` and executable modes are preserved. The supported context is bounded to 8 MiB per source file and 128 MiB total; symlinks and external build contexts/credential mounts are refused. Explicit commands run with argv, never an implicit shell; project programs remain trusted consumer code, not sandboxed code. Inherited runtime, agent and common provider-secret variables are removed. Recipes must produce the configured local images. Missing tools, Dockerfiles, incompatible recipes and unsuccessful builds are explicit failures; no fallback build or tool installation occurs.
 
 Every five seconds the agent synchronizes up to 100 durable events and current observations. A 15-second communication lease operates independently of finite native work. Confirmed lease loss cancels startup and attempts ownership-aware cleanup; cleanup failure remains unknown. The console cannot infer a stopped execution from a disconnected transport. Requests/results and user start/stop, connection loss, reconnect, deletion and revocation have distinct causes. Pending events keep stable IDs, increasing per-environment sequences, occurrence times and purge epochs. They are acknowledged before a new start claim. After reconnect, a new claim requires current intent and the acknowledged configuration revision; user stop, deletion or revocation prevents resume. Availability is reported only after native readiness. Missing metrics stay unavailable. Resource aggregates require complete samples for every running pod and container; native measurement timestamps and windows are retained, and repeated stale samples do not become new observations. Private connection state has a shared 4 MiB read/write limit with reserved capacity for cleanup and shutdown outcomes. A lost start-claim response is reconciled using the console execution identity before another start can be attempted.
 
@@ -109,7 +109,7 @@ Only confirmed stopped executions may materialize another revision. Existing aut
 
 For v2 migration, run `ex agent migrate <id>` (or explicitly `ex agent migrate <id> --recover` for an active/unsettled legacy execution), select **Existing JSON v2 runtime ID** in the console, and configure the same project components and their explicit build recipes. The active descriptor is archived privately; original native files remain unchanged and discoverable. The new descriptor points to generated `console-units` and `console-terraform` paths, retaining existing matching unit names and namespace/context. Console resource changes apply to these new outputs. Consumer workload settings outside image, replica and resource fields are retained; ambiguous multi-workload or multi-container units refuse automatic migration. Historical execution records and evidence remain intact, and migration creates no usage measurements.
 
-Private kubeconfig, operation ledgers, connection records and pending events live under `.exphere/state`. Evidence lives in `.audits/evidence/runs`. Preserve operational ownership until cleanup succeeds. Permanent console history deletion advances a purge fence: buffered old events may reconcile cleanup but cannot restore erased history. Already acknowledged local event copies are removed; operational state remains separate from history.
+Private kubeconfig, operation ledgers, connection records and pending events live under `.langdrift/state`. Evidence lives in `.audits/evidence/runs`. Preserve operational ownership until cleanup succeeds. Permanent console history deletion advances a purge fence: buffered old events may reconcile cleanup but cannot restore erased history. Already acknowledged local event copies are removed; operational state remains separate from history.
 
 ## Tests and verification limits
 
@@ -135,7 +135,7 @@ Benchmarks need no infrastructure and run only when requested. They cover
 process startup, command dispatch, cluster inventory parsing, cluster
 deletion reconciliation, process spawn and cancellation, the project lock,
 and the durable state write. The recorded baseline and its limits are in
-[SPEC-EX-HARDENING](../../.exphere/artifacts/specs/0039-SPEC-ex-hardening.spec.md).
+[SPEC-EX-HARDENING](../../.langdrift/artifacts/specs/0039-SPEC-ex-hardening.spec.md).
 
 ```sh
 GOTOOLCHAIN=local go test -run '^$' -bench . -count=10 ./...

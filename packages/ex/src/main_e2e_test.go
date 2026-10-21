@@ -208,7 +208,7 @@ func (h *harness) prepareRuntime(webImage, taskImage string) {
 	}
 
 	answers := strings.Join([]string{
-		"exphere-e2e",
+		"langdrift-e2e",
 		h.cluster.Context,
 		h.namespace(),
 		"components/" + webUnit + ", components/" + taskUnit,

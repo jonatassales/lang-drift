@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/exphere/ex/src/domain/microruntime"
-	"github.com/exphere/ex/src/infrastructure/kubectl"
-	"github.com/exphere/ex/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kubectl"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
 func deploymentResource() microruntime.Resource {
@@ -93,8 +93,8 @@ func TestClient_DryRunAndCreate(t *testing.T) {
 		t.Fatalf("Create() = %v, %v", created, err)
 	}
 
-	wantDryRun := append(targetFlags("demo-local"), "apply", "--server-side", "--field-manager=exphere", "--dry-run=server", "-f", "-", "-o", "json")
-	wantCreate := append(targetFlags("demo-local"), "create", "--field-manager=exphere", "-f", "-", "-o", "json")
+	wantDryRun := append(targetFlags("demo-local"), "apply", "--server-side", "--field-manager=langdrift", "--dry-run=server", "-f", "-", "-o", "json")
+	wantCreate := append(targetFlags("demo-local"), "create", "--field-manager=langdrift", "-f", "-", "-o", "json")
 
 	if !slices.Equal(runner.calls[0].args, wantDryRun) || !slices.Equal(runner.calls[1].args, wantCreate) {
 		t.Errorf("args = %v and %v, want a server dry run, then a create that never adopts", runner.calls[0].args, runner.calls[1].args)

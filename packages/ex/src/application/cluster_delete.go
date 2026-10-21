@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/exphere/ex/src/domain/cluster"
-	"github.com/exphere/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/cluster"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 // DeleteCluster removes the project's cluster once every runtime is cleaned

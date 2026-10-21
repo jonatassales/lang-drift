@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/exphere/ex/src/domain/project"
-	"github.com/exphere/ex/src/infrastructure/storage"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/storage"
 )
 
 func TestLayout_RuntimeState(t *testing.T) {
@@ -14,7 +14,7 @@ func TestLayout_RuntimeState(t *testing.T) {
 	owner := project.Project{Root: "/workspace"}
 	runtime := runtimeID(t, "demo")
 
-	if got := storage.LayoutOf(owner).RuntimeState(runtime); got != filepath.FromSlash("/workspace/.exphere/state/runtimes/demo") {
+	if got := storage.LayoutOf(owner).RuntimeState(runtime); got != filepath.FromSlash("/workspace/.langdrift/state/runtimes/demo") {
 		t.Fatalf("RuntimeState() = %q", got)
 	}
 }

@@ -5,7 +5,7 @@ configuration and has independent pinned dependencies and an npm lockfile. The
 scaffold does not install packages, build images, start a cluster, or run the graph.
 
 The finite graph performs two deterministic steps and reports a JSON outcome on
-stdout. It requires EXPHERE_RUNTIME_ID and EXPHERE_RUN_ID; the runtime lifecycle
+stdout. It requires LANGDRIFT_RUNTIME_ID and LANGDRIFT_RUN_ID; the runtime lifecycle
 injects them into the Job. It contains no model calls, MCP connections, remote
 memory, hosted telemetry, credentials, persistent state, or HTTP server. Unknown
 financial cost is null; zero model calls does not prove zero infrastructure cost.

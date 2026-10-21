@@ -1,6 +1,6 @@
 # Technical specification
 
-Save the artifact using the SPEC pattern and sequence in the artifact tracker (consumer-owned reference: `../../.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md`).
+Save the artifact using the SPEC pattern and sequence in the artifact tracker (consumer-owned reference: `../../.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md`).
 
 - ID: `SPEC-<id>`
 - State: `draft`

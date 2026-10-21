@@ -9,9 +9,9 @@ Actively build and sharpen the project's domain model as you design. This is the
 
 ## File structure
 
-Read `.exphere/artifacts/design/0007-DD-domain-model.dd.md` for the available domain context and `.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md` for artifact conventions.
+Read `.langdrift/artifacts/design/0007-DD-domain-model.dd.md` for the available domain context and `.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md` for artifact conventions.
 
-Project design documents, including architectural decisions, live in `.exphere/artifacts/design/` and use `NNNN-DD-<lowercase-english-slug>.dd.md`. Allocate the next available DD number across all artifact directories. Preserve an existing decision ID inside the document when relocating it.
+Project design documents, including architectural decisions, live in `.langdrift/artifacts/design/` and use `NNNN-DD-<lowercase-english-slug>.dd.md`. Allocate the next available DD number across all artifact directories. Preserve an existing decision ID inside the document when relocating it.
 
 If a glossary or context map exists, use its definitions and ownership boundaries. If it is absent, use the configured domain references; do not automatically recreate a removed glossary. Create a new glossary only when the authorized domain-modeling scope requires one. All project content uses en-US.
 
@@ -35,7 +35,7 @@ When the user states how something works, check whether the code agrees. If you 
 
 ### Update GLOSSARY.md inline
 
-When a term is resolved, update the authorized glossary or domain record as part of the current discussion. Follow the configured artifact contract when that record is under `.exphere/artifacts/`. Use the format in [GLOSSARY-FORMAT.md](GLOSSARY-FORMAT.md).
+When a term is resolved, update the authorized glossary or domain record as part of the current discussion. Follow the configured artifact contract when that record is under `.langdrift/artifacts/`. Use the format in [GLOSSARY-FORMAT.md](GLOSSARY-FORMAT.md).
 
 `GLOSSARY.md` should be totally devoid of implementation details. Do not treat `GLOSSARY.md` as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else.
 

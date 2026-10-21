@@ -11,8 +11,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/exphere/ex/src/domain/connection"
-	"github.com/exphere/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 func identifier() (string, error) {

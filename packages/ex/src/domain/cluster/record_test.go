@@ -4,11 +4,11 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/exphere/ex/src/domain/cluster"
-	"github.com/exphere/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/cluster"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
-const kubeconfig = "/workspace/.exphere/state/cluster.kubeconfig"
+const kubeconfig = "/workspace/.langdrift/state/cluster.kubeconfig"
 
 func testProject(t *testing.T, text string) project.Project {
 	t.Helper()

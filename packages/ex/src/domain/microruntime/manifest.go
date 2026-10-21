@@ -8,15 +8,15 @@ import (
 
 // Ownership labels mark every object an execution creates.
 const (
-	LabelRuntime        = "exphere.dev/runtime"
-	LabelUnit           = "exphere.dev/unit"
-	LabelOwnershipToken = "exphere.dev/ownership-token"
+	LabelRuntime        = "langdrift.dev/runtime"
+	LabelUnit           = "langdrift.dev/unit"
+	LabelOwnershipToken = "langdrift.dev/ownership-token"
 )
 
 // Job containers receive these variables so their output can be correlated.
 const (
-	EnvironmentRuntimeID = "EXPHERE_RUNTIME_ID"
-	EnvironmentRunID     = "EXPHERE_RUN_ID"
+	EnvironmentRuntimeID = "LANGDRIFT_RUNTIME_ID"
+	EnvironmentRunID     = "LANGDRIFT_RUN_ID"
 )
 
 // apiVersions lists the kinds EX creates and the one API version accepted for

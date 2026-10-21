@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/exphere/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 )
 
 func TestEncodeAndDecodeDescriptor(t *testing.T) {

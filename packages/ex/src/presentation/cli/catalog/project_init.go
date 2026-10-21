@@ -3,8 +3,8 @@ package catalog
 import (
 	"context"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/presentation/cli/support"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 
 	"github.com/spf13/cobra"
 )

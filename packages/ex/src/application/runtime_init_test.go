@@ -5,9 +5,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/domain/microruntime"
-	"github.com/exphere/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 type fakeScaffolder struct {
@@ -19,13 +19,13 @@ type fakeScaffolder struct {
 func (scaffolder *fakeScaffolder) Scaffold(_ project.Project, descriptor microruntime.Descriptor) (string, error) {
 	scaffolder.scaffolded = append(scaffolder.scaffolded, descriptor)
 
-	return projectRoot + "/.exphere/runtimes/" + descriptor.ID.String(), scaffolder.err
+	return projectRoot + "/.langdrift/runtimes/" + descriptor.ID.String(), scaffolder.err
 }
 
 func (scaffolder *fakeScaffolder) Generate(_ project.Project, runtime microruntime.Identifier, blueprint microruntime.Blueprint) (string, error) {
 	scaffolder.generated = append(scaffolder.generated, blueprint)
 
-	return projectRoot + "/.exphere/runtimes/" + runtime.String(), scaffolder.err
+	return projectRoot + "/.langdrift/runtimes/" + runtime.String(), scaffolder.err
 }
 
 type fakeGuide struct {
@@ -69,7 +69,7 @@ func TestInitializeRuntime_ScaffoldsAnIncompleteDescriptor(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if result.Guided || result.Runtime != "demo" || result.Path != projectRoot+"/.exphere/runtimes/demo" {
+	if result.Guided || result.Runtime != "demo" || result.Path != projectRoot+"/.langdrift/runtimes/demo" {
 		t.Errorf("result = %+v, want the unguided scaffold location", result)
 	}
 

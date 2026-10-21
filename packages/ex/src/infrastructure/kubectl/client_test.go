@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/infrastructure/kubectl"
-	"github.com/exphere/ex/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kubectl"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
 // call is one recorded kubectl invocation.
@@ -82,7 +82,7 @@ func answer(stdout string) func([]string) (process.Result, error) {
 }
 
 var target = application.Target{
-	ClusterAccess: application.ClusterAccess{Kubeconfig: "/workspace/.exphere/state/cluster.kubeconfig", Context: "kind-ex-0123456789ab"},
+	ClusterAccess: application.ClusterAccess{Kubeconfig: "/workspace/.langdrift/state/cluster.kubeconfig", Context: "kind-ex-0123456789ab"},
 	Namespace:     "demo-local",
 }
 

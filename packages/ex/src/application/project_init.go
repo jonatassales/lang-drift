@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/exphere/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 // InitializeProject records a project's identity in a directory, or reports

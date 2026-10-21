@@ -15,28 +15,31 @@
 		{
 			"id": "captured",
 			"label": "Capture",
-			"templates": [".exphere/templates/intake.md"],
+			"templates": [".langdrift/templates/intake.md"],
 			"skills": [],
 			"proposedExitConditions": ["source-recorded", "owner-identified"]
 		},
 		{
 			"id": "discovery",
 			"label": "Discovery",
-			"templates": [".exphere/templates/discovery.md"],
+			"templates": [".langdrift/templates/discovery.md"],
 			"skills": ["research", "grill-with-docs"],
 			"proposedExitConditions": ["evidence-linked", "open-questions-recorded"]
 		},
 		{
 			"id": "proposed",
 			"label": "Priority decision",
-			"templates": [".exphere/templates/decision.md"],
+			"templates": [".langdrift/templates/decision.md"],
 			"skills": [],
 			"proposedExitConditions": ["authorized-priority-decision"]
 		},
 		{
 			"id": "specified",
 			"label": "Specification and criteria",
-			"templates": [".exphere/templates/prd.md", ".exphere/templates/spec.md"],
+			"templates": [
+				".langdrift/templates/prd.md",
+				".langdrift/templates/spec.md"
+			],
 			"skills": ["to-spec"],
 			"proposedExitConditions": [
 				"scope-reviewed",
@@ -61,8 +64,8 @@
 			"id": "verifying",
 			"label": "Verification and review",
 			"templates": [
-				".exphere/templates/verification-plan.md",
-				".exphere/templates/review.md"
+				".langdrift/templates/verification-plan.md",
+				".langdrift/templates/review.md"
 			],
 			"skills": ["code-review"],
 			"proposedExitConditions": [
@@ -88,7 +91,7 @@
 		{
 			"id": "reviewed",
 			"label": "Retrospective",
-			"templates": [".exphere/templates/retrospective.md"],
+			"templates": [".langdrift/templates/retrospective.md"],
 			"skills": ["retro"],
 			"proposedExitConditions": ["outcome-reviewed"]
 		}
@@ -166,6 +169,6 @@
 		"strategy": "incremental-adoption",
 		"blanketBanOnLocalWorkflows": null,
 		"blanketBanDecision": "unresolved",
-		"profilesProposal": ".exphere/artifacts/design/0004-DD-workflow-profiles.dd.md"
+		"profilesProposal": ".langdrift/artifacts/design/0004-DD-workflow-profiles.dd.md"
 	}
 }

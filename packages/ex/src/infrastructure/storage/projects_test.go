@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/domain/project"
-	"github.com/exphere/ex/src/infrastructure/storage"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/storage"
 )
 
 const projectIDText = "0123456789abcdef0123456789abcdef"
@@ -76,17 +76,17 @@ func TestProjects_Create(t *testing.T) {
 		t.Errorf("Create() = %+v, want the canonical root and the given ID", created)
 	}
 
-	metadata, err := os.ReadFile(filepath.Join(root, ".exphere", "config.json"))
+	metadata, err := os.ReadFile(filepath.Join(root, ".langdrift", "config.json"))
 	if err != nil || !strings.Contains(string(metadata), `"version": 1`) || !strings.Contains(string(metadata), projectIDText) {
 		t.Errorf("metadata = %s, %v; want version 1 and the ID", metadata, err)
 	}
 
-	ignore, err := os.ReadFile(filepath.Join(root, ".exphere", "state", ".gitignore"))
+	ignore, err := os.ReadFile(filepath.Join(root, ".langdrift", "state", ".gitignore"))
 	if err != nil || string(ignore) != "*\n" {
 		t.Errorf("state ignore = %q, %v; want every private file ignored", ignore, err)
 	}
 
-	info, err := os.Stat(filepath.Join(root, ".exphere", "state"))
+	info, err := os.Stat(filepath.Join(root, ".langdrift", "state"))
 	if err != nil || info.Mode().Perm() != 0o700 {
 		t.Errorf("state directory mode = %v, %v; want 0700", info.Mode().Perm(), err)
 	}
@@ -100,14 +100,14 @@ func TestProjects_CreateKeepsAnExistingStateIgnore(t *testing.T) {
 	t.Parallel()
 
 	root := tempDir(t)
-	writeFile(t, filepath.Join(root, ".exphere", "state", ".gitignore"), "*\n")
+	writeFile(t, filepath.Join(root, ".langdrift", "state", ".gitignore"), "*\n")
 
 	if _, err := (storage.Projects{}).Create(root, projectID(t)); err != nil {
 		t.Fatalf("Create() with a matching state ignore = %v", err)
 	}
 
 	other := tempDir(t)
-	writeFile(t, filepath.Join(other, ".exphere", "state", ".gitignore"), "*.log\n")
+	writeFile(t, filepath.Join(other, ".langdrift", "state", ".gitignore"), "*.log\n")
 
 	if _, err := (storage.Projects{}).Create(other, projectID(t)); err == nil {
 		t.Fatal("Create() accepted a state ignore file that does not ignore every private file")
@@ -118,12 +118,12 @@ func TestProjects_CreateRefusesSymlinkedMetadata(t *testing.T) {
 	t.Parallel()
 
 	root := tempDir(t)
-	if err := os.Symlink(tempDir(t), filepath.Join(root, ".exphere")); err != nil {
+	if err := os.Symlink(tempDir(t), filepath.Join(root, ".langdrift")); err != nil {
 		t.Fatal(err)
 	}
 
 	if _, err := (storage.Projects{}).Create(root, projectID(t)); err == nil {
-		t.Fatal("Create() wrote through a symlinked .exphere directory")
+		t.Fatal("Create() wrote through a symlinked .langdrift directory")
 	}
 }
 
@@ -183,9 +183,9 @@ func TestProjects_OpenRefusesUntrustedMetadata(t *testing.T) {
 			t.Parallel()
 
 			parent := tempDir(t)
-			writeFile(t, filepath.Join(parent, ".exphere", "config.json"), `{"version": 1, "id": "`+projectIDText+`"}`)
+			writeFile(t, filepath.Join(parent, ".langdrift", "config.json"), `{"version": 1, "id": "`+projectIDText+`"}`)
 			root := filepath.Join(parent, "child")
-			writeFile(t, filepath.Join(root, ".exphere", "config.json"), tt.metadata)
+			writeFile(t, filepath.Join(root, ".langdrift", "config.json"), tt.metadata)
 
 			_, err := storage.Projects{}.Open(application.ProjectSelection{Directory: root})
 			if err == nil || errors.Is(err, application.ErrNotFound) {
@@ -202,11 +202,11 @@ func TestProjects_OpenRefusesSymlinkedMetadataFile(t *testing.T) {
 	elsewhere := filepath.Join(tempDir(t), "config.json")
 	writeFile(t, elsewhere, `{"version": 1, "id": "`+projectIDText+`"}`)
 
-	if err := os.MkdirAll(filepath.Join(root, ".exphere"), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Join(root, ".langdrift"), 0o755); err != nil {
 		t.Fatal(err)
 	}
 
-	if err := os.Symlink(elsewhere, filepath.Join(root, ".exphere", "config.json")); err != nil {
+	if err := os.Symlink(elsewhere, filepath.Join(root, ".langdrift", "config.json")); err != nil {
 		t.Fatal(err)
 	}
 

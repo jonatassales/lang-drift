@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/exphere/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 )
 
 // identifier parses text that the test knows to be valid.

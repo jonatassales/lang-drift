@@ -6,9 +6,9 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/infrastructure/hooks"
-	"github.com/exphere/ex/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/hooks"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
 type recorder struct {
@@ -27,7 +27,7 @@ func TestExecutor_Run(t *testing.T) {
 	t.Parallel()
 
 	invocation := application.HookInvocation{
-		Script:      application.HookScript{Path: "/workspace/.exphere/runtimes/demo/hooks/seed.sh", Directory: "/workspace/.exphere/runtimes/demo"},
+		Script:      application.HookScript{Path: "/workspace/.langdrift/runtimes/demo/hooks/seed.sh", Directory: "/workspace/.langdrift/runtimes/demo"},
 		ProjectRoot: "/workspace",
 		Runtime:     "demo",
 		RunID:       "run-1",
@@ -45,7 +45,7 @@ func TestExecutor_Run(t *testing.T) {
 		t.Errorf("command = %+v, want sh running the script from the runtime directory", command)
 	}
 
-	wantEnvironment := []string{"EXPHERE_RUNTIME_ID=demo", "EXPHERE_RUN_ID=run-1", "EXPHERE_PROJECT_ROOT=/workspace"}
+	wantEnvironment := []string{"LANGDRIFT_RUNTIME_ID=demo", "LANGDRIFT_RUN_ID=run-1", "LANGDRIFT_PROJECT_ROOT=/workspace"}
 	if !slices.Equal(command.Env, wantEnvironment) {
 		t.Errorf("environment = %v, want %v", command.Env, wantEnvironment)
 	}

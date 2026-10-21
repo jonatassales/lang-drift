@@ -7,9 +7,9 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/domain/cluster"
-	"github.com/exphere/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/cluster"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 )
 
 func (w *world) readLogs() application.ReadRuntimeLogs {

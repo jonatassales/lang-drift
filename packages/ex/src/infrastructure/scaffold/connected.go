@@ -8,8 +8,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/exphere/ex/src/domain/project"
-	"github.com/exphere/ex/src/infrastructure/files"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/files"
 )
 
 //go:embed all:assets/connected
@@ -31,7 +31,7 @@ func (Connected) Prepare(owner project.Project) error {
 		if err != nil {
 			return err
 		}
-		target, err := files.Within(owner.Root, filepath.Join(".exphere", relative))
+		target, err := files.Within(owner.Root, filepath.Join(".langdrift", relative))
 		if err != nil {
 			return err
 		}

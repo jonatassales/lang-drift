@@ -15,7 +15,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	app "github.com/exphere/ex/src/application/connected"
+	app "github.com/jonatassales/tao/packages/ex/src/application/connected"
 )
 
 // MCP uses bounded Streamable HTTP JSON responses with no credential-bearing
@@ -144,28 +144,28 @@ func (client *MCP) tool(ctx context.Context, url, credential, name string, args,
 func (client *MCP) Bind(ctx context.Context, url, secret, environment string) (app.Binding, error) {
 	var result app.Binding
 
-	err := client.tool(ctx, url, secret, "exphere.bind", map[string]any{"environmentId": environment}, &result)
+	err := client.tool(ctx, url, secret, "langdrift.bind", map[string]any{"environmentId": environment}, &result)
 	return result, err
 }
 func (client *MCP) Sync(ctx context.Context, record app.Connection, request app.Sync) (app.Intent, error) {
 	var result app.Intent
-	err := client.tool(ctx, record.URL, record.Credential, "exphere.sync", request, &result)
+	err := client.tool(ctx, record.URL, record.Credential, "langdrift.sync", request, &result)
 	return result, err
 }
 func (client *MCP) Claim(ctx context.Context, record app.Connection, intent app.Intent) (app.Claim, error) {
 	var result app.Claim
-	err := client.tool(ctx, record.URL, record.Credential, "exphere.claim", map[string]any{"environmentId": record.EnvironmentID, "intentVersion": intent.IntentVersion, "revision": intent.Revision}, &result)
+	err := client.tool(ctx, record.URL, record.Credential, "langdrift.claim", map[string]any{"environmentId": record.EnvironmentID, "intentVersion": intent.IntentVersion, "revision": intent.Revision}, &result)
 	return result, err
 }
 
 func (client *MCP) ProjectSync(ctx context.Context, url, secret string) (app.ProjectMembership, error) {
 	var result app.ProjectMembership
-	err := client.tool(ctx, url, secret, "exphere.project.sync", map[string]any{}, &result)
+	err := client.tool(ctx, url, secret, "langdrift.project.sync", map[string]any{}, &result)
 	return result, err
 }
 func (client *MCP) ProjectBind(ctx context.Context, url, secret, runtime, environment string) (app.Binding, error) {
 	var result app.Binding
-	err := client.tool(ctx, url, secret, "exphere.project.bind", map[string]any{"runtimeId": runtime, "environmentId": environment}, &result)
+	err := client.tool(ctx, url, secret, "langdrift.project.bind", map[string]any{"runtimeId": runtime, "environmentId": environment}, &result)
 	return result, err
 }
 
@@ -179,7 +179,7 @@ func (client *MCP) initialize(ctx context.Context, raw, credential string) error
 	var result struct {
 		ProtocolVersion string `json:"protocolVersion"`
 	}
-	if err := client.call(ctx, raw, credential, "initialize", map[string]any{"protocolVersion": "2025-11-25", "capabilities": map[string]any{}, "clientInfo": map[string]string{"name": "exphere-project-agent", "version": "1"}}, &result); err != nil {
+	if err := client.call(ctx, raw, credential, "initialize", map[string]any{"protocolVersion": "2025-11-25", "capabilities": map[string]any{}, "clientInfo": map[string]string{"name": "langdrift-project-agent", "version": "1"}}, &result); err != nil {
 		return err
 	}
 	if result.ProtocolVersion != "2025-11-25" {

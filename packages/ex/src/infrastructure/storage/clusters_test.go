@@ -7,14 +7,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/domain/cluster"
-	"github.com/exphere/ex/src/domain/project"
-	"github.com/exphere/ex/src/infrastructure/storage"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/cluster"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/storage"
 )
 
 func kubeconfigOf(owner project.Project) string {
-	return filepath.Join(owner.Root, ".exphere", "state", "cluster.kubeconfig")
+	return filepath.Join(owner.Root, ".langdrift", "state", "cluster.kubeconfig")
 }
 
 func readyCluster(t *testing.T, owner project.Project) cluster.Record {
@@ -78,7 +78,7 @@ func TestClusters_LoadReportsAMissingRecord(t *testing.T) {
 func recordAt(t *testing.T, owner project.Project, document string) {
 	t.Helper()
 
-	writeFile(t, filepath.Join(owner.Root, ".exphere", "state", "cluster.json"), document)
+	writeFile(t, filepath.Join(owner.Root, ".langdrift", "state", "cluster.json"), document)
 }
 
 func TestClusters_LoadEarlierFormats(t *testing.T) {

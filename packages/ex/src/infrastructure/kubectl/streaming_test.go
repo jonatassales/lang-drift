@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/exphere/ex/src/infrastructure/kubectl"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kubectl"
 )
 
 func TestClient_Logs(t *testing.T) {

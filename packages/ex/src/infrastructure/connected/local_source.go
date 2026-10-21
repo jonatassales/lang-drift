@@ -12,9 +12,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/exphere/ex/src/domain/project"
-	"github.com/exphere/ex/src/infrastructure/files"
-	"github.com/exphere/ex/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/files"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
 func hasGitRoot(root string) (bool, error) {
@@ -38,7 +38,7 @@ func excludedSource(name string) bool {
 			return true
 		}
 		switch part {
-		case ".git", ".exphere", "node_modules", "vendor", ".next", "dist", "build", "target", ".cache", ".venv", "venv", "__pycache__":
+		case ".git", ".langdrift", "node_modules", "vendor", ".next", "dist", "build", "target", ".cache", ".venv", "venv", "__pycache__":
 			return true
 		}
 	}

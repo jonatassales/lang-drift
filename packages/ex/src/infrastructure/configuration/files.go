@@ -14,10 +14,10 @@ import (
 
 	"go.yaml.in/yaml/v3"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/domain/microruntime"
-	"github.com/exphere/ex/src/domain/project"
-	"github.com/exphere/ex/src/infrastructure/files"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/files"
 )
 
 const (
@@ -32,7 +32,7 @@ const (
 // manifestExtensions are the native manifest formats EX reads.
 var manifestExtensions = map[string]bool{".json": true, ".yaml": true, ".yml": true}
 
-// Files reads the configuration consumers author under .exphere/runtimes.
+// Files reads the configuration consumers author under .langdrift/runtimes.
 // It checks that references exist and parses native files; the policy those
 // files must satisfy belongs to the domain.
 type Files struct{}

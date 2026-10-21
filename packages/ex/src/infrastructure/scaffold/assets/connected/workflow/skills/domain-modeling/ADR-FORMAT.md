@@ -1,6 +1,6 @@
 # ADR Format
 
-Architectural decisions are design documents in `.exphere/artifacts/design/`, named `NNNN-DD-<lowercase-english-slug>.dd.md`. Use en-US and the numbering rules in `.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md`. Preserve any existing decision ID inside the document.
+Architectural decisions are design documents in `.langdrift/artifacts/design/`, named `NNNN-DD-<lowercase-english-slug>.dd.md`. Use en-US and the numbering rules in `.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md`. Preserve any existing decision ID inside the document.
 
 Create only the decision document required by the authorized scope; use the existing design directory.
 
@@ -24,7 +24,7 @@ Only include these when they add genuine value. Most ADRs won't need them.
 
 ## Numbering
 
-Scan all DD artifacts under `.exphere/artifacts/` for the highest existing DD number and increment it. Use four digits and do not overwrite an existing artifact.
+Scan all DD artifacts under `.langdrift/artifacts/` for the highest existing DD number and increment it. Use four digits and do not overwrite an existing artifact.
 
 ## When to offer an ADR
 

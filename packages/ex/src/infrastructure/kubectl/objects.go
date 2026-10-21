@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 )
 
-const fieldManager = "--field-manager=exphere"
+const fieldManager = "--field-manager=langdrift"
 
 // plurals maps the kinds EX deletes to their API resource names.
 var plurals = map[string]string{

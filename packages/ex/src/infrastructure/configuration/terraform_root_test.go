@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/exphere/ex/src/domain/microruntime"
-	"github.com/exphere/ex/src/infrastructure/terraform"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/terraform"
 )
 
 // generatedRootDocument is the root generation writes, as a JSON document

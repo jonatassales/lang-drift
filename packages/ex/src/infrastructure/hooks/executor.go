@@ -5,8 +5,8 @@ package hooks
 import (
 	"context"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
 // Runner is the direct native execution contract this adapter consumes.
@@ -27,9 +27,9 @@ func (executor Executor) Run(ctx context.Context, invocation application.HookInv
 		Args: []string{invocation.Script.Path},
 		Dir:  invocation.Script.Directory,
 		Env: []string{
-			"EXPHERE_RUNTIME_ID=" + invocation.Runtime,
-			"EXPHERE_RUN_ID=" + invocation.RunID,
-			"EXPHERE_PROJECT_ROOT=" + invocation.ProjectRoot,
+			"LANGDRIFT_RUNTIME_ID=" + invocation.Runtime,
+			"LANGDRIFT_RUN_ID=" + invocation.RunID,
+			"LANGDRIFT_PROJECT_ROOT=" + invocation.ProjectRoot,
 		},
 	})
 

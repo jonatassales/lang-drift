@@ -10,9 +10,9 @@ import (
 	"io"
 	"time"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/domain/microruntime"
-	"github.com/exphere/ex/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
 const (

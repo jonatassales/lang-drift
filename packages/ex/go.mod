@@ -1,4 +1,4 @@
-module github.com/exphere/ex
+module github.com/jonatassales/tao/packages/ex
 
 go 1.23.0
 

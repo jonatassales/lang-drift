@@ -7,9 +7,9 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/exphere/ex/src/domain/microruntime"
-	"github.com/exphere/ex/src/domain/project"
-	"github.com/exphere/ex/src/infrastructure/scaffold"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/scaffold"
 )
 
 func TestAgents_Scaffold(t *testing.T) {
@@ -26,7 +26,7 @@ func TestAgents_Scaffold(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if location != filepath.Join(owner.Root, ".exphere", "agents", "researcher") {
+	if location != filepath.Join(owner.Root, ".langdrift", "agents", "researcher") {
 		t.Fatalf("Scaffold() location = %q", location)
 	}
 

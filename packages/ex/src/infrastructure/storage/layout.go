@@ -6,8 +6,8 @@ package storage
 import (
 	"path/filepath"
 
-	"github.com/exphere/ex/src/domain/microruntime"
-	"github.com/exphere/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 // Layout names EX's private files inside one project.
@@ -25,7 +25,7 @@ func (layout Layout) RuntimeState(runtime microruntime.Identifier) string {
 }
 
 func (layout Layout) metadataDirectory() string {
-	return filepath.Join(layout.root, ".exphere")
+	return filepath.Join(layout.root, ".langdrift")
 }
 
 func (layout Layout) metadata() string {

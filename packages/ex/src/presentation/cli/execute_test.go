@@ -13,8 +13,8 @@ import (
 	"testing"
 	"time"
 
-	app "github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/presentation/cli/support"
+	app "github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
 
 const workingDirectory = "/workspace/project"

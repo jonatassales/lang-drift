@@ -42,8 +42,8 @@ process.once("SIGTERM", cancel);
 try {
   const result = await graph.invoke(
     {
-      runtimeId: required("EXPHERE_RUNTIME_ID"),
-      runId: required("EXPHERE_RUN_ID"),
+      runtimeId: required("LANGDRIFT_RUNTIME_ID"),
+      runId: required("LANGDRIFT_RUN_ID"),
       inspected: false,
       outcome: "pending",
     },
@@ -61,8 +61,8 @@ try {
 } catch (error) {
   console.error(JSON.stringify({
     schemaVersion: 1,
-    runtimeId: process.env.EXPHERE_RUNTIME_ID ?? null,
-    runId: process.env.EXPHERE_RUN_ID ?? null,
+    runtimeId: process.env.LANGDRIFT_RUNTIME_ID ?? null,
+    runId: process.env.LANGDRIFT_RUN_ID ?? null,
     outcome: controller.signal.aborted ? "interrupted" : "failed",
     error: error instanceof Error ? error.message : String(error),
   }));

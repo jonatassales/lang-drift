@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/exphere/ex/src/infrastructure/files"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/files"
 )
 
 // Permissions of published, consumer-owned content.
@@ -46,7 +46,7 @@ func Publish(root, relative string, build func(stage string) error) (location st
 		return "", err
 	}
 
-	staging, err := os.MkdirTemp(parent, ".exphere-stage-")
+	staging, err := os.MkdirTemp(parent, ".langdrift-stage-")
 	if err != nil {
 		return "", err
 	}

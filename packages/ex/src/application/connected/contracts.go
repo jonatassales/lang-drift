@@ -7,9 +7,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/domain/connection"
-	"github.com/exphere/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 // Event is an immutable, durable observation. Its ID and sequence survive retries.

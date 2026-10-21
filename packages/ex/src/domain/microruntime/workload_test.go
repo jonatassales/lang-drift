@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/exphere/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 )
 
 func deploymentWorkload(t testing.TB) microruntime.Workload {
@@ -42,7 +42,7 @@ func TestWorkload_Validate(t *testing.T) {
 	t.Parallel()
 
 	otherComponent := relativePath(t, "services/api")
-	insideConfiguration := relativePath(t, ".exphere/runtimes/web")
+	insideConfiguration := relativePath(t, ".langdrift/runtimes/web")
 
 	tests := []struct {
 		name    string

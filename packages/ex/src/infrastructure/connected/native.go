@@ -16,14 +16,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/exphere/ex/src/application"
-	app "github.com/exphere/ex/src/application/connected"
-	"github.com/exphere/ex/src/domain/connection"
-	"github.com/exphere/ex/src/domain/microruntime"
-	"github.com/exphere/ex/src/domain/project"
-	"github.com/exphere/ex/src/infrastructure/configuration"
-	"github.com/exphere/ex/src/infrastructure/files"
-	"github.com/exphere/ex/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	app "github.com/jonatassales/tao/packages/ex/src/application/connected"
+	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/configuration"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/files"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
 type clusterCreator interface {
@@ -91,9 +91,9 @@ func (native Native) VerifyRepository(ctx context.Context, owner project.Project
 	if repository.Ref != "" && strings.TrimSpace(head.Stdout) != repository.Ref {
 		return errors.New("local HEAD differs from the imported repository revision")
 	}
-	dirty, err := native.Runner.Run(ctx, process.Command{Name: "git", Args: []string{"status", "--porcelain", "--untracked-files=normal", "--", ".", ":(exclude).exphere"}, Dir: owner.Root})
+	dirty, err := native.Runner.Run(ctx, process.Command{Name: "git", Args: []string{"status", "--porcelain", "--untracked-files=normal", "--", ".", ":(exclude).langdrift"}, Dir: owner.Root})
 	if err != nil || strings.TrimSpace(dirty.Stdout) != "" {
-		return errors.New("source changes must be committed and imported before execution; generated .exphere files are excluded")
+		return errors.New("source changes must be committed and imported before execution; generated .langdrift files are excluded")
 	}
 	return nil
 }
@@ -570,7 +570,7 @@ func (native Native) Migrate(ctx context.Context, owner project.Project, id stri
 // references. Existing native files, source paths and evidence remain intact.
 func (native Native) migrationSource(owner project.Project, runtime microruntime.Identifier) (microruntime.Descriptor, bool, error) {
 	source := configuration.Files{}
-	target, err := files.Within(owner.Root, ".exphere/state/migrations/"+runtime.String()+"/schema.json")
+	target, err := files.Within(owner.Root, ".langdrift/state/migrations/"+runtime.String()+"/schema.json")
 	if err != nil {
 		return microruntime.Descriptor{}, false, err
 	}
@@ -713,7 +713,7 @@ func (native Native) buildTree(ctx context.Context, owner project.Project) (stri
 }
 
 func copyBuildTree(ctx context.Context, owner project.Project, names []string) (string, func(), error) {
-	parent, err := files.Within(owner.Root, ".exphere/state/builds")
+	parent, err := files.Within(owner.Root, ".langdrift/state/builds")
 	if err != nil {
 		return "", nil, err
 	}
@@ -731,7 +731,7 @@ func copyBuildTree(ctx context.Context, owner project.Project, names []string) (
 			cleanup()
 			return "", nil, err
 		}
-		if name == "" || name == ".exphere" || strings.HasPrefix(name, ".exphere/") {
+		if name == "" || name == ".langdrift" || strings.HasPrefix(name, ".langdrift/") {
 			continue
 		}
 		base := filepath.Base(name)
@@ -786,7 +786,7 @@ func credentialEnvironment() []string {
 }
 
 func verifyManaged(owner project.Project, record app.Connection) error {
-	root, err := files.Existing(owner.Root, ".exphere/runtimes/"+record.RuntimeID)
+	root, err := files.Existing(owner.Root, ".langdrift/runtimes/"+record.RuntimeID)
 	if err != nil {
 		return err
 	}

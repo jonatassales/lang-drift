@@ -19,7 +19,7 @@ const (
 )
 
 var (
-	configurationRoot         = mustRelativePath(".exphere/runtimes")
+	configurationRoot         = mustRelativePath(".langdrift/runtimes")
 	defaultTerraformDirectory = mustRelativePath("terraform")
 )
 

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/exphere/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 )
 
 // relativePath parses text that the test knows to be valid.
@@ -83,17 +83,17 @@ func TestRelativePath_Accessors(t *testing.T) {
 func TestRelativePath_IsWithin(t *testing.T) {
 	t.Parallel()
 
-	runtimes := relativePath(t, ".exphere/runtimes")
+	runtimes := relativePath(t, ".langdrift/runtimes")
 
 	tests := []struct {
 		name string
 		path string
 		want bool
 	}{
-		{name: "the directory itself", path: ".exphere/runtimes", want: true},
-		{name: "a descendant", path: ".exphere/runtimes/demo/units", want: true},
-		{name: "a sibling sharing a prefix", path: ".exphere/runtimes-old", want: false},
-		{name: "the parent", path: ".exphere", want: false},
+		{name: "the directory itself", path: ".langdrift/runtimes", want: true},
+		{name: "a descendant", path: ".langdrift/runtimes/demo/units", want: true},
+		{name: "a sibling sharing a prefix", path: ".langdrift/runtimes-old", want: false},
+		{name: "the parent", path: ".langdrift", want: false},
 		{name: "an unrelated path", path: "services/web", want: false},
 	}
 

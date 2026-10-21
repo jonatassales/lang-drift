@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/exphere/ex/src/presentation/cli/support"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 
 	"github.com/spf13/cobra"
 )

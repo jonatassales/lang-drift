@@ -4,9 +4,9 @@ description: Move issues and external PRs through a state machine of triage role
 disable-model-invocation: true
 ---
 
-## Exphere configuration
+## LangDrift configuration
 
-Read `.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md` and `.exphere/artifacts/design/0007-DD-domain-model.dd.md` for this repository's existing local tracker and domain layout. These take precedence over the generic setup and remote-tracker examples below. Keep typed artifacts under `.exphere/artifacts/`, reuse stable IDs and existing authorization, and preserve the owner's phase boundaries. A setup skill is not a prerequisite to already configured work. Remote writes, new helper scripts, and tests need their corresponding authorized scope. `writing-for-agents` is intentionally unavailable.
+Read `.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md` and `.langdrift/artifacts/design/0007-DD-domain-model.dd.md` for this repository's existing local tracker and domain layout. These take precedence over the generic setup and remote-tracker examples below. Keep typed artifacts under `.langdrift/artifacts/`, reuse stable IDs and existing authorization, and preserve the owner's phase boundaries. A setup skill is not a prerequisite to already configured work. Remote writes, new helper scripts, and tests need their corresponding authorized scope. `writing-for-agents` is intentionally unavailable.
 
 
 # Triage

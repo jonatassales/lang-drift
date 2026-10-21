@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/exphere/ex/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
 func shell(script string) process.Command {
@@ -54,8 +54,8 @@ func TestLocal_Run(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		command := shell(`printf '%s|%s|' "$PWD" "$EXPHERE_TEST"; cat`)
-		command.Dir, command.Env, command.Stdin = directory, []string{"EXPHERE_TEST=explicit"}, strings.NewReader("input")
+		command := shell(`printf '%s|%s|' "$PWD" "$LANGDRIFT_TEST"; cat`)
+		command.Dir, command.Env, command.Stdin = directory, []string{"LANGDRIFT_TEST=explicit"}, strings.NewReader("input")
 
 		result, err := process.Local{}.Run(context.Background(), command)
 		if err != nil || result.Stdout != directory+"|explicit|input" {
@@ -87,7 +87,7 @@ func TestLocal_Run(t *testing.T) {
 	t.Run("reports a missing executable", func(t *testing.T) {
 		t.Parallel()
 
-		result, err := process.Local{}.Run(context.Background(), process.Command{Name: "exphere-test-missing-tool"})
+		result, err := process.Local{}.Run(context.Background(), process.Command{Name: "langdrift-test-missing-tool"})
 		if err == nil || result.ExitCode != -1 {
 			t.Fatalf("Run() = %+v, %v; want a failure without an exit code", result, err)
 		}
@@ -242,9 +242,9 @@ func (writer *firstWrite) Write(data []byte) (int, error) {
 }
 
 func TestLocal_RunRemovesInheritedCredentials(t *testing.T) {
-	t.Setenv("EXPHERE_TEST_SECRET", "private-value")
-	command := shell(`if [ "${EXPHERE_TEST_SECRET+x}" = x ]; then exit 3; fi; printf safe`)
-	command.UnsetEnv = []string{"EXPHERE_TEST_SECRET"}
+	t.Setenv("LANGDRIFT_TEST_SECRET", "private-value")
+	command := shell(`if [ "${LANGDRIFT_TEST_SECRET+x}" = x ]; then exit 3; fi; printf safe`)
+	command.UnsetEnv = []string{"LANGDRIFT_TEST_SECRET"}
 	result, err := (process.Local{}).Run(context.Background(), command)
 	if err != nil || result.Stdout != "safe" {
 		t.Fatalf("credential was inherited: %+v %v", result, err)

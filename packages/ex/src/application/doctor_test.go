@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/exphere/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/application"
 )
 
 func (w *world) diagnose() application.Diagnose {
@@ -36,7 +36,7 @@ func TestDiagnose_ReportsFindingsWithoutFailing(t *testing.T) {
 		{Name: "kind", Status: application.ToolAvailable},
 		{Name: "terraform", Status: application.ToolMissing, Install: "https://developer.hashicorp.com/terraform/install"},
 	}}
-	w.projects.err = application.NotFound("no Exphere project at or above %s", projectRoot)
+	w.projects.err = application.NotFound("no LangDrift project at or above %s", projectRoot)
 
 	diagnosis, err := w.diagnose().Execute(context.Background(), application.DiagnoseRequest{Project: w.clusterRequest().Project})
 	if err != nil {
@@ -44,7 +44,7 @@ func TestDiagnose_ReportsFindingsWithoutFailing(t *testing.T) {
 	}
 
 	if diagnosis.ToolsAvailable || diagnosis.ContainerEngine != "unavailable" || diagnosis.Cluster != nil ||
-		!strings.Contains(diagnosis.ClusterNote, "no Exphere project") {
+		!strings.Contains(diagnosis.ClusterNote, "no LangDrift project") {
 		t.Fatalf("diagnosis = %+v, want the missing tool, the engine, and the project noted", diagnosis)
 	}
 }

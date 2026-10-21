@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/exphere/ex/src/domain/microruntime"
-	"github.com/exphere/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 const hookTimeout = 5 * time.Minute

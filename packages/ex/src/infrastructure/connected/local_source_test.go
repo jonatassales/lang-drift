@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	app "github.com/exphere/ex/src/application/connected"
+	app "github.com/jonatassales/tao/packages/ex/src/application/connected"
 )
 
 func TestLocalSourceIncludesEditsAndExcludesPrivateIgnoredAndLinkedFiles(t *testing.T) {
@@ -33,7 +33,7 @@ func TestLocalSourceIncludesEditsAndExcludesPrivateIgnoredAndLinkedFiles(t *test
 		t.Fatal(err)
 	}
 	defer cleanup()
-	for _, name := range []string{".env", "ignored", "debug.log", "node_modules", "linked", ".exphere"} {
+	for _, name := range []string{".env", "ignored", "debug.log", "node_modules", "linked", ".langdrift"} {
 		if _, err := os.Stat(filepath.Join(root, name)); !os.IsNotExist(err) {
 			t.Errorf("excluded source was copied: %s", name)
 		}

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/exphere/ex/src/presentation/cli/support"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
 
 type failingWriter struct{ err error }

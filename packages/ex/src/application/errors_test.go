@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/exphere/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/application"
 )
 
 func TestConditionErrors(t *testing.T) {

@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/exphere/ex/src/infrastructure/files"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/files"
 )
 
 // tempDir returns a fresh directory with symlinks resolved, because these

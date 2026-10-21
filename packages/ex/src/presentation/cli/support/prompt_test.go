@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/exphere/ex/src/presentation/cli/support"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
 
 func TestPrompter(t *testing.T) {

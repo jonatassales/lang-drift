@@ -9,12 +9,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/exphere/ex/src/application"
-	app "github.com/exphere/ex/src/application/connected"
-	"github.com/exphere/ex/src/domain/connection"
-	"github.com/exphere/ex/src/domain/project"
-	"github.com/exphere/ex/src/infrastructure/process"
-	"github.com/exphere/ex/src/infrastructure/storage"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	app "github.com/jonatassales/tao/packages/ex/src/application/connected"
+	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/storage"
 )
 
 type fakeRunner struct {
@@ -81,7 +81,7 @@ func TestNative_MaterializationPreservesCustomizationAndBounds(t *testing.T) {
 	if len(snapshot.Manifests) != 2 {
 		t.Fatalf("objects=%d", len(snapshot.Manifests))
 	}
-	path := filepath.Join(owner.Root, ".exphere/runtimes/runtime/runtime.md")
+	path := filepath.Join(owner.Root, ".langdrift/runtimes/runtime/runtime.md")
 	custom := []byte("custom authored content\n")
 	if err = os.WriteFile(path, custom, 0o644); err != nil {
 		t.Fatal(err)
@@ -116,14 +116,14 @@ func TestStore_SecretsArePrivateAndNotOperationalJSON(t *testing.T) {
 	if err := store.Bind(context.Background(), owner, record); err != nil {
 		t.Fatal(err)
 	}
-	data, err := os.ReadFile(filepath.Join(owner.Root, ".exphere/state/connections/runtime.json"))
+	data, err := os.ReadFile(filepath.Join(owner.Root, ".langdrift/state/connections/runtime.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	if strings.Contains(string(data), "secret") {
 		t.Fatal("credentials leaked into state")
 	}
-	info, _ := os.Stat(filepath.Join(owner.Root, ".exphere/runtimes/runtime/.env"))
+	info, _ := os.Stat(filepath.Join(owner.Root, ".langdrift/runtimes/runtime/.env"))
 	if info.Mode().Perm() != 0o600 {
 		t.Fatalf("secret mode=%v", info.Mode())
 	}
@@ -145,10 +145,10 @@ func TestNative_MigrationKeepsOriginalFilesAndAppliesConsoleEnvelope(t *testing.
 		t.Fatal(err)
 	}
 	// Treat the generated v2 tree as an existing independently authored runtime.
-	if err = os.Remove(filepath.Join(owner.Root, ".exphere/runtimes/runtime/runtime.md")); err != nil {
+	if err = os.Remove(filepath.Join(owner.Root, ".langdrift/runtimes/runtime/runtime.md")); err != nil {
 		t.Fatal(err)
 	}
-	original, err := os.ReadFile(filepath.Join(owner.Root, ".exphere/runtimes/runtime/schema.json"))
+	original, err := os.ReadFile(filepath.Join(owner.Root, ".langdrift/runtimes/runtime/schema.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -158,7 +158,7 @@ func TestNative_MigrationKeepsOriginalFilesAndAppliesConsoleEnvelope(t *testing.
 	if err != nil {
 		t.Fatal(err)
 	}
-	archived, err := os.ReadFile(filepath.Join(owner.Root, ".exphere/state/migrations/runtime/schema.json"))
+	archived, err := os.ReadFile(filepath.Join(owner.Root, ".langdrift/state/migrations/runtime/schema.json"))
 	if err != nil || string(archived) != string(original) {
 		t.Fatal("original descriptor not preserved")
 	}
@@ -171,7 +171,7 @@ func TestNative_MigrationKeepsOriginalFilesAndAppliesConsoleEnvelope(t *testing.
 	if _, _, err = native.Materialize(context.Background(), owner, record, config, config.Markdown()); err != nil {
 		t.Fatal(err)
 	}
-	migrated, err := os.ReadFile(filepath.Join(owner.Root, ".exphere/runtimes/runtime/console-terraform/main.tf.json"))
+	migrated, err := os.ReadFile(filepath.Join(owner.Root, ".langdrift/runtimes/runtime/console-terraform/main.tf.json"))
 	if err != nil || !strings.Contains(string(migrated), "3000m") {
 		t.Fatal("console resource edit was ignored")
 	}
@@ -190,7 +190,7 @@ func TestNative_StartRechecksAuthoredMarkdownBeforeBuild(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err = os.WriteFile(filepath.Join(owner.Root, ".exphere/runtimes/runtime/runtime.md"), []byte(config.Markdown()+"local change\n"), 0o644); err != nil {
+	if err = os.WriteFile(filepath.Join(owner.Root, ".langdrift/runtimes/runtime/runtime.md"), []byte(config.Markdown()+"local change\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	reports := 0
@@ -245,7 +245,7 @@ func TestNative_BuildContextExcludesPlatformAndDotenvCredentials(t *testing.T) {
 	if _, err := os.Stat(filepath.Join(root, ".env")); !os.IsNotExist(err) {
 		t.Fatal("dotenv entered source context")
 	}
-	if _, err := os.Stat(filepath.Join(root, ".exphere")); !os.IsNotExist(err) {
+	if _, err := os.Stat(filepath.Join(root, ".langdrift")); !os.IsNotExist(err) {
 		t.Fatal("platform state entered source context")
 	}
 }
@@ -253,7 +253,7 @@ func TestNative_BuildContextExcludesPlatformAndDotenvCredentials(t *testing.T) {
 type contextRunner struct{}
 
 func (*contextRunner) Run(context.Context, process.Command) (process.Result, error) {
-	return process.Result{Stdout: "build.sh\x00.env\x00.exphere/state/private.json\x00"}, nil
+	return process.Result{Stdout: "build.sh\x00.env\x00.langdrift/state/private.json\x00"}, nil
 }
 
 // untrackedRunner models an empty Git index for private storage tests.
@@ -364,7 +364,7 @@ func TestStore_RefusesDeletedButGitTrackedCredentialPath(t *testing.T) {
 		return result
 	}
 	run("init", "-q")
-	relative := ".exphere/runtimes/runtime/.env"
+	relative := ".langdrift/runtimes/runtime/.env"
 	absolute := filepath.Join(owner.Root, relative)
 	if err := os.MkdirAll(filepath.Dir(absolute), 0o700); err != nil {
 		t.Fatal(err)

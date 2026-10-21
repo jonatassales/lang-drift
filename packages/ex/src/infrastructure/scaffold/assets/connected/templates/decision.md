@@ -1,6 +1,6 @@
 # Decision record
 
-Use this format in a DD or the relevant typed artifact, following the artifact tracker (consumer-owned reference: `../../.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md`). Architectural decision documents use the DD filename pattern; preserve existing decision IDs inside their documents.
+Use this format in a DD or the relevant typed artifact, following the artifact tracker (consumer-owned reference: `../../.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md`). Architectural decision documents use the DD filename pattern; preserve existing decision IDs inside their documents.
 
 - Section ID: `DEC-<id>`
 - Type: `<priority | scope | architecture | exception>`

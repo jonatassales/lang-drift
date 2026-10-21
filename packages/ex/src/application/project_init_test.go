@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 type fakeCreator struct {
@@ -48,7 +48,7 @@ func TestInitializeProject_Execute(t *testing.T) {
 	t.Parallel()
 
 	existing := newWorld(t).owner
-	notFound := application.NotFound("no Exphere project at %s", projectRoot)
+	notFound := application.NotFound("no LangDrift project at %s", projectRoot)
 
 	tests := []struct {
 		name        string

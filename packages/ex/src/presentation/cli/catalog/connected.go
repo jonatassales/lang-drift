@@ -5,9 +5,9 @@ import (
 	"io"
 	"os"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/application/connected"
-	"github.com/exphere/ex/src/presentation/cli/support"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/application/connected"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 	"github.com/spf13/cobra"
 )
 
@@ -46,7 +46,7 @@ func NewAgentMigrateCommand(agent ProjectAgent, globals *support.Globals) *cobra
 	return command
 }
 
-// NewAgentProjectCommand runs the single agent belonging to this project's .exphere.
+// NewAgentProjectCommand runs the single agent belonging to this project's .langdrift.
 // A supervising console owns stdin; its closure cancels work even after a crash.
 func NewAgentProjectCommand(agent ProjectAgent, globals *support.Globals) *cobra.Command {
 	var supervised bool

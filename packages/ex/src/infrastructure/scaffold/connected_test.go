@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/exphere/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 func TestConnected_PreparePreservesConsumerFilesAndAttribution(t *testing.T) {
@@ -19,15 +19,15 @@ func TestConnected_PreparePreservesConsumerFilesAndAttribution(t *testing.T) {
 	if err = bootstrap.Prepare(owner); err != nil {
 		t.Fatal(err)
 	}
-	skills, err := filepath.Glob(filepath.Join(root, ".exphere/workflow/skills/*/SKILL.md"))
+	skills, err := filepath.Glob(filepath.Join(root, ".langdrift/workflow/skills/*/SKILL.md"))
 	if err != nil || len(skills) != 26 {
 		t.Fatalf("skill count=%d err=%v", len(skills), err)
 	}
-	license, err := os.ReadFile(filepath.Join(root, ".exphere/workflow/skills/UPSTREAM-LICENSE"))
+	license, err := os.ReadFile(filepath.Join(root, ".langdrift/workflow/skills/UPSTREAM-LICENSE"))
 	if err != nil || !strings.Contains(string(license), "MIT") {
 		t.Fatal("upstream license missing")
 	}
-	target := filepath.Join(root, ".exphere/workflow/README.md")
+	target := filepath.Join(root, ".langdrift/workflow/README.md")
 	if err = os.WriteFile(target, []byte("consumer customization\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}

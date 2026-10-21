@@ -1,6 +1,6 @@
 # Request intake
 
-Use this format as a section of the relevant typed artifact. File names and document IDs follow the artifact tracker (consumer-owned reference: `../../.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md`); the section ID below does not introduce another file type.
+Use this format as a section of the relevant typed artifact. File names and document IDs follow the artifact tracker (consumer-owned reference: `../../.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md`); the section ID below does not introduce another file type.
 
 - Section ID: `INT-<id>`
 - State: `draft`

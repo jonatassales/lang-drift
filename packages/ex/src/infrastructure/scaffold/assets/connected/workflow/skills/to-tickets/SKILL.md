@@ -8,13 +8,13 @@ disable-model-invocation: true
 
 Break a plan, spec, or conversation into a set of **tickets**: tracer-bullet vertical slices, each declaring the tickets that **block** it.
 
-Read `.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md` for the configured tracker, artifact paths and states. If it is missing, report that configuration gap; do not infer a remote tracker.
+Read `.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md` for the configured tracker, artifact paths and states. If it is missing, report that configuration gap; do not infer a remote tracker.
 
 ## Process
 
 ### 1. Gather context
 
-Work from whatever is already in the conversation context. Read the supplied spec or the matching existing spec under `.exphere/artifacts/specs/` when present and follow `.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md`. If the user passes a reference (a spec path, an issue number or URL) as an argument, fetch it and read its full body and comments.
+Work from whatever is already in the conversation context. Read the supplied spec or the matching existing spec under `.langdrift/artifacts/specs/` when present and follow `.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md`. If the user passes a reference (a spec path, an issue number or URL) as an argument, fetch it and read its full body and comments.
 
 ### 2. Explore the codebase (optional)
 
@@ -57,9 +57,9 @@ Save the proposed breakdown as local draft tickets so the user can review a conc
 
 ### 5. Save tickets and record their actual state
 
-Follow `.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md`:
+Follow `.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md`:
 
-- **Local files** → write one en-US file per ticket in `.exphere/artifacts/tickets/`, using `NNNN-TICKET-<lowercase-english-slug>.ticket.md`. Continue the global TICKET sequence with four-digit numbers in dependency order (blockers first); do not restart numbering for each initiative. Preserve existing IDs and ticket edits. Each file's "Blocked by" lists the numbers/titles it depends on. Use the per-ticket file template below: one ticket per file, never a single combined file.
+- **Local files** → write one en-US file per ticket in `.langdrift/artifacts/tickets/`, using `NNNN-TICKET-<lowercase-english-slug>.ticket.md`. Continue the global TICKET sequence with four-digit numbers in dependency order (blockers first); do not restart numbering for each initiative. Preserve existing IDs and ticket edits. Each file's "Blocked by" lists the numbers/titles it depends on. Use the per-ticket file template below: one ticket per file, never a single combined file.
 - **A remote issue tracker**, only when explicitly configured and publication authorized → publish one issue per ticket in dependency order. Use native blocking relationships where supported, or list the blocking identifiers. If the source was an existing issue, follow the tracker configuration for parent relationships. Do not apply readiness labels automatically.
 
 New tickets remain `draft` until approval of their scope and breakdown is recorded with a reference to actual authorization. Existing authorization in the session counts. Use the configured readiness state only after the required approvals and prerequisites hold; this skill does not grant its own approval or start implementation. A scope change requires reconsidering any earlier approval.

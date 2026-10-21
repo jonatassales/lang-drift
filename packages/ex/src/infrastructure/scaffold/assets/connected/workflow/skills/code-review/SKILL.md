@@ -10,7 +10,7 @@ Two-axis review of a scoped change against a fixed point, including relevant unc
 
 Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
 
-Read `.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md` for the configured tracker, artifact paths and states. If it is missing, report that configuration gap; do not infer a remote tracker.
+Read `.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md` for the configured tracker, artifact paths and states. If it is missing, report that configuration gap; do not infer a remote tracker.
 
 ## Process
 
@@ -36,7 +36,7 @@ Look for the originating spec, in this order:
 
 1. Issue references in the commit messages (`#123`, `Closes #45`, GitLab `!67`, etc.), fetched via the workflow in the tracker doc.
 2. A path the user passed as an argument.
-3. The matching existing spec under `.exphere/artifacts/specs/`, following `.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md`; use other locations only when the project explicitly configures them.
+3. The matching existing spec under `.langdrift/artifacts/specs/`, following `.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md`; use other locations only when the project explicitly configures them.
 4. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
 
 ### 3. Identify the standards sources

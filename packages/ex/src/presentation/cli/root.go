@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/exphere/ex/src/presentation/cli/catalog"
-	"github.com/exphere/ex/src/presentation/cli/support"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/catalog"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 
 	"github.com/spf13/cobra"
 )
@@ -23,8 +23,8 @@ type application struct {
 func (cliApplication *application) command() *cobra.Command {
 	rootCommand := &cobra.Command{
 		Use:           "ex",
-		Short:         "Exphere CLI",
-		Long:          "Exphere CLI — project setup and connected console agent",
+		Short:         "LangDrift CLI",
+		Long:          "LangDrift CLI — project setup and connected console agent",
 		SilenceErrors: true,
 		SilenceUsage:  true,
 		Args:          validateRootArgs,

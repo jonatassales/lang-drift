@@ -6,8 +6,8 @@ import (
 	"path"
 	"strings"
 
-	"github.com/exphere/ex/src/domain/microruntime"
-	"github.com/exphere/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 // agentTemplates holds the editable TypeScript LangGraph runner shipped with EX.
@@ -24,12 +24,12 @@ const (
 // skips hidden files still embeds them.
 var hiddenTemplates = map[string]bool{"gitignore": true, "dockerignore": true}
 
-// Agents publishes agent projects under .exphere/agents.
+// Agents publishes agent projects under .langdrift/agents.
 type Agents struct{}
 
 // Scaffold copies the embedded templates; nothing is installed or executed.
 func (Agents) Scaffold(owner project.Project, name microruntime.Identifier) (string, error) {
-	return Publish(owner.Root, path.Join(".exphere", "agents", name.String()), copyAgentTemplates)
+	return Publish(owner.Root, path.Join(".langdrift", "agents", name.String()), copyAgentTemplates)
 }
 
 func copyAgentTemplates(stage string) error {

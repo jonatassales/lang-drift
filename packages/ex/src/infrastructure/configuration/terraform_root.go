@@ -8,9 +8,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/exphere/ex/src/domain/microruntime"
-	"github.com/exphere/ex/src/infrastructure/files"
-	"github.com/exphere/ex/src/infrastructure/terraform"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/files"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/terraform"
 )
 
 const (
@@ -282,7 +282,7 @@ func generateTerraformRoot(runtime microruntime.Identifier, quotas microruntime.
 					"metadata": []any{map[string]any{
 						"name":        variableReference(terraform.VariableNamespace),
 						"labels":      labels,
-						"annotations": map[string]any{"exphere.dev/owner": variableReference(terraform.VariableOwner)},
+						"annotations": map[string]any{"langdrift.dev/owner": variableReference(terraform.VariableOwner)},
 					}},
 				},
 			},

@@ -298,7 +298,7 @@ func (h *harness) cliCommand(ctx context.Context, arguments []string) (*exec.Cmd
 
 	command := exec.CommandContext(ctx, h.binary, append([]string{"-test.run=^TestNativeLifecycleFixture$", "--"}, arguments...)...)
 	command.Dir = h.project
-	command.Env = append(environment, "EXPHERE_NATIVE_FIXTURE=1")
+	command.Env = append(environment, "LANGDRIFT_NATIVE_FIXTURE=1")
 	command.Cancel = func() error { return command.Process.Signal(os.Interrupt) }
 	command.WaitDelay = interruptGrace
 
@@ -545,7 +545,7 @@ func (h *harness) buildImage(name string, preparation string, command []string) 
 		h.t.Fatal(err)
 	}
 
-	dockerfile := fmt.Sprintf("FROM %s\n%sLABEL io.exphere.e2e.run=%q\nCMD %s\n", h.baseImage, preparation, h.nonce, commandJSON)
+	dockerfile := fmt.Sprintf("FROM %s\n%sLABEL io.langdrift.e2e.run=%q\nCMD %s\n", h.baseImage, preparation, h.nonce, commandJSON)
 	if err := os.WriteFile(filepath.Join(buildContext, "Dockerfile"), []byte(dockerfile), 0o600); err != nil {
 		h.t.Fatal(err)
 	}

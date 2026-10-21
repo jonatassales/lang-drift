@@ -5,9 +5,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/domain/microruntime"
-	"github.com/exphere/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 type fakeAgents struct {
@@ -18,7 +18,7 @@ type fakeAgents struct {
 func (agents *fakeAgents) Scaffold(_ project.Project, name microruntime.Identifier) (string, error) {
 	agents.scaffolded = append(agents.scaffolded, name.String())
 
-	return projectRoot + "/.exphere/agents/" + name.String(), agents.err
+	return projectRoot + "/.langdrift/agents/" + name.String(), agents.err
 }
 
 func TestInitializeAgent_Execute(t *testing.T) {
@@ -53,7 +53,7 @@ func TestInitializeAgent_Execute(t *testing.T) {
 				t.Fatalf("Execute() error = %v, want %v", err, tt.wantErr)
 			}
 
-			if tt.wantAgent && (result.Agent != "researcher" || result.Path != projectRoot+"/.exphere/agents/researcher") {
+			if tt.wantAgent && (result.Agent != "researcher" || result.Path != projectRoot+"/.langdrift/agents/researcher") {
 				t.Fatalf("result = %+v, want the published agent", result)
 			}
 		})

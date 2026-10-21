@@ -4,4 +4,4 @@ description: A relentless interview to sharpen a plan or design, which also crea
 disable-model-invocation: true
 ---
 
-Use `grilling` and `domain-modeling`. Invoke each through the Skill tool when available; otherwise read and follow `.exphere/workflow/skills/grilling/SKILL.md` and `.exphere/workflow/skills/domain-modeling/SKILL.md`. This loads the two reusable disciplines; it does not invoke another user-only phase.
+Use `grilling` and `domain-modeling`. Invoke each through the Skill tool when available; otherwise read and follow `.langdrift/workflow/skills/grilling/SKILL.md` and `.langdrift/workflow/skills/domain-modeling/SKILL.md`. This loads the two reusable disciplines; it does not invoke another user-only phase.

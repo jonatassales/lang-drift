@@ -1,6 +1,6 @@
 # Pilot or delivery retrospective
 
-Use this format within the relevant typed artifact, following the artifact tracker (consumer-owned reference: `../../.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md`).
+Use this format within the relevant typed artifact, following the artifact tracker (consumer-owned reference: `../../.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md`).
 
 - Section ID: `RETRO-<id>`
 - State: `draft`

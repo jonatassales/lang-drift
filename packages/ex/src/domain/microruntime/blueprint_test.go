@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/exphere/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 )
 
 func validBlueprint(t testing.TB) microruntime.Blueprint {

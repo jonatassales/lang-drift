@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/exphere/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 // SystemNamespace is the namespace whose UID identifies a cluster.

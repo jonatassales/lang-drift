@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"path"
 
-	"github.com/exphere/ex/src/domain/microruntime"
-	"github.com/exphere/ex/src/domain/project"
-	"github.com/exphere/ex/src/infrastructure/scaffold"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/scaffold"
 )
 
 const (
@@ -104,7 +104,7 @@ scheduling. Terraform owns the namespace and quotas, and receives the context,
 namespace, kubeconfig, owner, and ownership_token input variables. Only the
 hashicorp/kubernetes provider with namespace and quota resources is supported;
 modules, provisioners, data sources, and remote backends are rejected. Use a
-local backend; operational state belongs to .exphere/state, never here.
+local backend; operational state belongs to .langdrift/state, never here.
 Quotas limit resources, not monetary spend. Application and agent sources stay
 outside this runtime. Hooks are optional explicit .sh references and never run
 implicitly. Only stateless Deployments, ClusterIP Services, and finite Jobs are
@@ -130,7 +130,7 @@ and quotas.
 
 Terraform receives explicit context, namespace, kubeconfig, owner, and
 ownership_token variables from the lifecycle. Do not store secrets here.
-Operational state lives outside this configuration under .exphere/state and is
+Operational state lives outside this configuration under .langdrift/state and is
 required for safe cleanup; deleting configuration is not cleanup. Stopping a
 runtime preserves the project cluster.
 

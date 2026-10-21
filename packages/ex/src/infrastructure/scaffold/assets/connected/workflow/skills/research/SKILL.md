@@ -9,4 +9,4 @@ Its job:
 
 1. Investigate the question against **primary sources** (official docs, source code, specs, first-party APIs), not a secondary write-up of them. Follow every claim back to the source that owns it.
 2. Write the findings to a single Markdown file, citing each claim's source.
-3. Save the findings in en-US under `.exphere/artifacts/research/` as `NNNN-RSC-<lowercase-english-slug>.rsc.md`. Allocate the next available RSC number using `.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md`. Preserve existing artifact IDs and distinguish historical findings from newly verified evidence.
+3. Save the findings in en-US under `.langdrift/artifacts/research/` as `NNNN-RSC-<lowercase-english-slug>.rsc.md`. Allocate the next available RSC number using `.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md`. Preserve existing artifact IDs and distinguish historical findings from newly verified evidence.

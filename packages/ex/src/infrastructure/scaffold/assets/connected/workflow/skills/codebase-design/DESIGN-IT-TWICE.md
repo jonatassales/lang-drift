@@ -27,7 +27,7 @@ Prompt each sub-agent with a separate technical brief (file paths, coupling deta
 - Agent 3: "Optimize for the most common caller: make the default case trivial."
 - Agent 4 (if applicable): "Design around ports & adapters for cross-seam dependencies."
 
-Include both [SKILL.md](SKILL.md) vocabulary and the project domain context configured in `.exphere/artifacts/design/0007-DD-domain-model.dd.md`. Use glossary vocabulary when a glossary exists; do not require a removed file. Each sub-agent should use consistent architecture and domain terminology.
+Include both [SKILL.md](SKILL.md) vocabulary and the project domain context configured in `.langdrift/artifacts/design/0007-DD-domain-model.dd.md`. Use glossary vocabulary when a glossary exists; do not require a removed file. Each sub-agent should use consistent architecture and domain terminology.
 
 Each sub-agent outputs:
 

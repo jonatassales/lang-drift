@@ -10,7 +10,7 @@ import (
 	"math"
 	"strings"
 
-	"github.com/exphere/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 )
 
 // Configuration is the concrete contract inside an authored Markdown document.
@@ -55,16 +55,16 @@ type Native struct {
 	RuntimeID string `json:"runtimeId"`
 }
 
-// Parse requires one explicit exphere JSON fence, rejects ambiguous or unknown
+// Parse requires one explicit langdrift JSON fence, rejects ambiguous or unknown
 // fields, and bounds the document. Markdown never grants execution authority.
 func Parse(markdown string) (Configuration, error) {
 	var config Configuration
 	if len(markdown) > 1<<20 {
 		return config, errors.New("Markdown exceeds 1 MiB")
 	}
-	const fence = "```exphere\n"
+	const fence = "```langdrift\n"
 	if strings.Count(markdown, fence) != 1 {
-		return config, errors.New("Markdown requires exactly one exphere JSON fence")
+		return config, errors.New("Markdown requires exactly one langdrift JSON fence")
 	}
 	after := strings.SplitN(markdown, fence, 2)[1]
 	end := strings.Index(after, "\n```")
@@ -85,7 +85,7 @@ func Parse(markdown string) (Configuration, error) {
 // Markdown renders the portable, editable migration/configuration format.
 func (config Configuration) Markdown() string {
 	data, _ := json.MarshalIndent(config, "", "  ")
-	return "# " + strings.ReplaceAll(config.Name, "\n", " ") + "\n\nConfiguration is interpreted by the connected project agent. Prose does not execute commands.\n\n```exphere\n" + string(data) + "\n```\n"
+	return "# " + strings.ReplaceAll(config.Name, "\n", " ") + "\n\nConfiguration is interpreted by the connected project agent. Prose does not execute commands.\n\n```langdrift\n" + string(data) + "\n```\n"
 }
 
 // Validate bounds resources and makes all execution choices explicit.
@@ -119,8 +119,8 @@ func (config Configuration) Validate() error {
 		if _, err := microruntime.ParseComponentPath(component.Path); err != nil {
 			return err
 		}
-		if strings.HasPrefix(component.Path, ".exphere/") || names[component.Path] {
-			return errors.New("component sources must be outside .exphere and have unique source paths")
+		if strings.HasPrefix(component.Path, ".langdrift/") || names[component.Path] {
+			return errors.New("component sources must be outside .langdrift and have unique source paths")
 		}
 		names[component.Path] = true
 		if !microruntime.IsImageReference(component.Image) {

@@ -7,7 +7,7 @@ description: Generate an interactive bash wizard that walks a human through step
 
 A **wizard** is a bash script that walks a human, step by step, through a manual procedure that's tedious to do by hand and tedious to re-explain to an AI every time. It opens each URL, says exactly what to click and copy, captures the values, writes them where they belong (`.env`, GitHub secrets), confirms at every stage, and shows how many stages are left. It might configure third-party services, run a one-off migration, or move the project from one state to another.
 
-The [upstream template](https://github.com/mattpocock/skills/blob/49dd158d1076134a641b33efb035946536778336/skills/engineering/wizard/template.sh) is intentionally not installed: this repository reserves helper scripts for the Exphere CLI. Use this skill to specify the manual stages. Generating an executable wizard requires a separately authorized CLI-owned scope and an inspected template; installation does not authorize credential or infrastructure changes.
+The [upstream template](https://github.com/mattpocock/skills/blob/49dd158d1076134a641b33efb035946536778336/skills/engineering/wizard/template.sh) is intentionally not installed: this repository reserves helper scripts for the LangDrift CLI. Use this skill to specify the manual stages. Generating an executable wizard requires a separately authorized CLI-owned scope and an inspected template; installation does not authorize credential or infrastructure changes.
 
 Keep the procedure in the relevant typed artifact. If the owner authorizes an executable CLI helper, place it within `packages/ex/` and follow the repository script contract.
 

@@ -6,9 +6,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/exphere/ex/src/infrastructure/process"
-	"github.com/exphere/ex/src/presentation/cli"
-	"github.com/exphere/ex/src/presentation/cli/support"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
 
 // version can be injected at build time; an unversioned build stays explicit.

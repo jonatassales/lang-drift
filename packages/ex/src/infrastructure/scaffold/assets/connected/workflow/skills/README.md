@@ -15,7 +15,7 @@ Source: [mattpocock/skills](https://github.com/mattpocock/skills/tree/49dd158d10
 | Productivity | `grill-me`, `handoff`, `to-questionnaire`, `teach`, `wait-what` |
 | Reference | `pr`, `codebase-design`, `domain-modeling`, `grilling`, `tdd` |
 
-The 11 preexisting local adaptations (`code-review`, `codebase-design`, `domain-modeling`, `grill-with-docs`, `grilling`, `implement`, `research`, `retro`, `tdd`, `to-spec`, `to-tickets`) were relocated from `.exphere/harness/skills/` with their support files. They were not overwritten by upstream downloads. The other 15 were installed from the pinned repository using the skill installer during PR #19 completion.
+The 11 preexisting local adaptations (`code-review`, `codebase-design`, `domain-modeling`, `grill-with-docs`, `grilling`, `implement`, `research`, `retro`, `tdd`, `to-spec`, `to-tickets`) were relocated from `.langdrift/harness/skills/` with their support files. They were not overwritten by upstream downloads. The other 15 were installed from the pinned repository using the skill installer during PR #19 completion.
 
 ## Local adaptations and limits
 

@@ -1,8 +1,8 @@
 package storage
 
 import (
-	"github.com/exphere/ex/src/domain/project"
-	"github.com/exphere/ex/src/infrastructure/files"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/files"
 )
 
 // Locker serializes every cluster and runtime change of one project across

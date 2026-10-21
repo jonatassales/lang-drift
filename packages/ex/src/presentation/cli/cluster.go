@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"github.com/exphere/ex/src/presentation/cli/catalog"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/catalog"
 
 	"github.com/spf13/cobra"
 )

@@ -12,11 +12,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	app "github.com/exphere/ex/src/application/connected"
-	"github.com/exphere/ex/src/domain/microruntime"
-	"github.com/exphere/ex/src/domain/project"
-	"github.com/exphere/ex/src/infrastructure/files"
-	"github.com/exphere/ex/src/infrastructure/process"
+	app "github.com/jonatassales/tao/packages/ex/src/application/connected"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/files"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
 // Store persists operational state separately from the runtime's ignored .env.
@@ -26,10 +26,10 @@ func statePath(owner project.Project, id string) (string, error) {
 	if _, err := microruntime.ParseIdentifier(id); err != nil {
 		return "", err
 	}
-	return files.Within(owner.Root, ".exphere/state/connections/"+id+".json")
+	return files.Within(owner.Root, ".langdrift/state/connections/"+id+".json")
 }
 func (Store) List(owner project.Project) ([]app.Connection, error) {
-	directory, err := files.Within(owner.Root, ".exphere/state/connections")
+	directory, err := files.Within(owner.Root, ".langdrift/state/connections")
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (Store) List(owner project.Project) ([]app.Connection, error) {
 		if entry.Name() != record.RuntimeID+".json" {
 			return nil, errors.New("connection identity differs from filename")
 		}
-		envPath, err := files.Existing(owner.Root, ".exphere/runtimes/"+record.RuntimeID+"/.env")
+		envPath, err := files.Existing(owner.Root, ".langdrift/runtimes/"+record.RuntimeID+"/.env")
 		if err != nil {
 			return nil, err
 		}
@@ -101,7 +101,7 @@ func (store Store) Bind(ctx context.Context, owner project.Project, record app.C
 	if strings.ContainsAny(record.Credential+record.Secret, "\n\r\x00") {
 		return errors.New("credential contains unsupported control characters")
 	}
-	privatePath := ".exphere/runtimes/" + record.RuntimeID + "/.env"
+	privatePath := ".langdrift/runtimes/" + record.RuntimeID + "/.env"
 	if _, err := files.Within(owner.Root, privatePath); err != nil {
 		return err
 	}
@@ -121,7 +121,7 @@ func (store Store) Bind(ctx context.Context, owner project.Project, record app.C
 			return errors.New("runtime .env is tracked by Git; remove it from the index before connecting (existing index and files were preserved)")
 		}
 	}
-	directory, err := files.Within(owner.Root, ".exphere/runtimes/"+record.RuntimeID)
+	directory, err := files.Within(owner.Root, ".langdrift/runtimes/"+record.RuntimeID)
 	if err != nil {
 		return err
 	}
@@ -154,7 +154,7 @@ func (Store) Lock(owner project.Project, id string) (func(), error) {
 	if strings.ContainsAny(id, "/\\.") {
 		return nil, errors.New("invalid runtime UID")
 	}
-	path, err := files.Within(owner.Root, ".exphere/state/connections/"+id+".lock")
+	path, err := files.Within(owner.Root, ".langdrift/state/connections/"+id+".lock")
 	if err != nil {
 		return nil, err
 	}

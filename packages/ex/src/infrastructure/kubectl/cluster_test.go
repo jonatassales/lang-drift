@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/exphere/ex/src/infrastructure/kubectl"
-	"github.com/exphere/ex/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kubectl"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
 func TestClient_Namespaces(t *testing.T) {

@@ -4,9 +4,9 @@ description: Plan a huge chunk of work (more than one agent session can hold) as
 disable-model-invocation: true
 ---
 
-## Exphere configuration
+## LangDrift configuration
 
-Read `.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md` and `.exphere/artifacts/design/0007-DD-domain-model.dd.md` for this repository's existing local tracker and domain layout. These take precedence over the generic setup and remote-tracker examples below. Keep typed artifacts under `.exphere/artifacts/`, reuse stable IDs and existing authorization, and preserve the owner's phase boundaries. A setup skill is not a prerequisite to already configured work. Remote writes, new helper scripts, and tests need their corresponding authorized scope. `writing-for-agents` is intentionally unavailable.
+Read `.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md` and `.langdrift/artifacts/design/0007-DD-domain-model.dd.md` for this repository's existing local tracker and domain layout. These take precedence over the generic setup and remote-tracker examples below. Keep typed artifacts under `.langdrift/artifacts/`, reuse stable IDs and existing authorization, and preserve the owner's phase boundaries. A setup skill is not a prerequisite to already configured work. Remote writes, new helper scripts, and tests need their corresponding authorized scope. `writing-for-agents` is intentionally unavailable.
 
 
 A loose idea has arrived, too big for one agent session, and wrapped in fog: the way from here to the **destination** isn't visible yet. Wayfinding is about finding that way, not charging at the destination. This skill charts the way as a **shared map** on the repo's issue tracker, then works its **decision tickets** (questions whose resolution is a decision, not slices of a build to execute) one at a time until the route is clear.

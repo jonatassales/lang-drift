@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/exphere/ex/src/domain/microruntime"
-	"github.com/exphere/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 // InitializeRuntime publishes a new runtime configuration. Without a guide it

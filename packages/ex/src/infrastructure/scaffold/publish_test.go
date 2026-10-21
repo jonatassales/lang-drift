@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/exphere/ex/src/infrastructure/scaffold"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/scaffold"
 )
 
 // tempDir returns a fresh directory with symlinks resolved, because the
@@ -65,12 +65,12 @@ func TestPublish(t *testing.T) {
 
 	root := tempDir(t)
 
-	location, err := scaffold.Publish(root, ".exphere/runtimes/demo", buildTwoFiles)
+	location, err := scaffold.Publish(root, ".langdrift/runtimes/demo", buildTwoFiles)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if location != filepath.Join(root, ".exphere", "runtimes", "demo") {
+	if location != filepath.Join(root, ".langdrift", "runtimes", "demo") {
 		t.Fatalf("Publish() location = %q", location)
 	}
 
@@ -92,7 +92,7 @@ func TestPublish_NeverReplacesADestination(t *testing.T) {
 	t.Parallel()
 
 	root := tempDir(t)
-	existing := filepath.Join(root, ".exphere", "agents", "researcher")
+	existing := filepath.Join(root, ".langdrift", "agents", "researcher")
 	if err := os.MkdirAll(existing, 0o755); err != nil {
 		t.Fatal(err)
 	}
@@ -102,7 +102,7 @@ func TestPublish_NeverReplacesADestination(t *testing.T) {
 	}
 
 	built := false
-	_, err := scaffold.Publish(root, ".exphere/agents/researcher", func(stage string) error {
+	_, err := scaffold.Publish(root, ".langdrift/agents/researcher", func(stage string) error {
 		built = true
 
 		return buildTwoFiles(stage)
@@ -122,7 +122,7 @@ func TestPublish_LeavesNothingWhenTheBuildFails(t *testing.T) {
 	root := tempDir(t)
 	failure := errors.New("template failed")
 
-	_, err := scaffold.Publish(root, ".exphere/runtimes/demo", func(stage string) error {
+	_, err := scaffold.Publish(root, ".langdrift/runtimes/demo", func(stage string) error {
 		if err := scaffold.WriteFile(stage, "README.md", []byte("partial")); err != nil {
 			return err
 		}
@@ -133,7 +133,7 @@ func TestPublish_LeavesNothingWhenTheBuildFails(t *testing.T) {
 		t.Fatalf("Publish() error = %v, want the build failure", err)
 	}
 
-	if got := entries(t, filepath.Join(root, ".exphere", "runtimes")); len(got) != 0 {
+	if got := entries(t, filepath.Join(root, ".langdrift", "runtimes")); len(got) != 0 {
 		t.Fatalf("runtimes directory = %v, want no destination or staging left", got)
 	}
 }
@@ -141,18 +141,18 @@ func TestPublish_LeavesNothingWhenTheBuildFails(t *testing.T) {
 func TestPublish_RefusesUnsafeDestinations(t *testing.T) {
 	t.Parallel()
 
-	for _, relative := range []string{"../escape", "/absolute", ".exphere//runtimes", ".exphere/./runtimes", `.exphere\runtimes`, ""} {
+	for _, relative := range []string{"../escape", "/absolute", ".langdrift//runtimes", ".langdrift/./runtimes", `.langdrift\runtimes`, ""} {
 		if _, err := scaffold.Publish(tempDir(t), relative, buildTwoFiles); err == nil {
 			t.Errorf("Publish(%q) succeeded", relative)
 		}
 	}
 
 	root := tempDir(t)
-	if err := os.Symlink(tempDir(t), filepath.Join(root, ".exphere")); err != nil {
+	if err := os.Symlink(tempDir(t), filepath.Join(root, ".langdrift")); err != nil {
 		t.Fatal(err)
 	}
 
-	if _, err := scaffold.Publish(root, ".exphere/runtimes/demo", buildTwoFiles); err == nil {
+	if _, err := scaffold.Publish(root, ".langdrift/runtimes/demo", buildTwoFiles); err == nil {
 		t.Error("Publish() wrote through a symlinked parent")
 	}
 }
@@ -186,7 +186,7 @@ func TestPublish_RollsBackAPartialPublication(t *testing.T) {
 
 	root := tempDir(t)
 
-	_, err := scaffold.Publish(root, ".exphere/runtimes/demo", func(stage string) error {
+	_, err := scaffold.Publish(root, ".langdrift/runtimes/demo", func(stage string) error {
 		if err := buildTwoFiles(stage); err != nil {
 			return err
 		}
@@ -199,7 +199,7 @@ func TestPublish_RollsBackAPartialPublication(t *testing.T) {
 		t.Fatalf("Publish() error = %v, want the unsupported entry reported", err)
 	}
 
-	if got := entries(t, filepath.Join(root, ".exphere", "runtimes")); len(got) != 0 {
+	if got := entries(t, filepath.Join(root, ".langdrift", "runtimes")); len(got) != 0 {
 		t.Fatalf("runtimes directory = %v, want the partial publication removed", got)
 	}
 }

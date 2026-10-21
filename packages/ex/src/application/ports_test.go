@@ -16,15 +16,15 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/domain/cluster"
-	"github.com/exphere/ex/src/domain/microruntime"
-	"github.com/exphere/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/cluster"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 const (
 	projectRoot    = "/workspace"
-	kubeconfigPath = "/workspace/.exphere/state/cluster.kubeconfig"
+	kubeconfigPath = "/workspace/.langdrift/state/cluster.kubeconfig"
 	namespaceName  = "demo-local"
 	kubeSystemUID  = "uid-kube-system"
 )
@@ -287,7 +287,7 @@ func (configuration *fakeConfiguration) Snapshot(project.Project, microruntime.D
 
 	return application.Snapshot{
 		Manifests:            configuration.manifests(),
-		PreparationDirectory: projectRoot + "/.exphere/runtimes/demo/terraform",
+		PreparationDirectory: projectRoot + "/.langdrift/runtimes/demo/terraform",
 		Hash:                 configuration.hash,
 		CompatibleHashes:     slices.Clone(configuration.compatible),
 	}, nil

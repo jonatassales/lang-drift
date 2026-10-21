@@ -5,7 +5,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/exphere/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 )
 
 // The authored objects below are shaped as a YAML decoder returns them:

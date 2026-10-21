@@ -8,9 +8,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/domain/project"
-	"github.com/exphere/ex/src/infrastructure/files"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/files"
 )
 
 // projectMetadataVersion is the only project metadata format EX reads.
@@ -28,7 +28,7 @@ type projectMetadata struct {
 	ID      string `json:"id"`
 }
 
-// Projects keeps project identity in .exphere/config.json.
+// Projects keeps project identity in .langdrift/config.json.
 type Projects struct{}
 
 // Open reads the project at the selected directory, or the nearest one above it.
@@ -55,7 +55,7 @@ func (Projects) Create(directory string, id project.ID) (project.Project, error)
 
 	layout := layoutAt(root)
 
-	if _, err := files.Within(root, filepath.Join(".exphere", "state")); err != nil {
+	if _, err := files.Within(root, filepath.Join(".langdrift", "state")); err != nil {
 		return project.Project{}, err
 	}
 
@@ -106,7 +106,7 @@ func discover(start string) (project.Project, error) {
 
 		case root == filepath.Dir(root):
 			return project.Project{}, application.NotFound(
-				"no Exphere project at or above %s; initialize one at the project root",
+				"no LangDrift project at or above %s; initialize one at the project root",
 				start,
 			)
 		}
@@ -122,7 +122,7 @@ func openAt(root string) (project.Project, error) {
 
 	switch {
 	case errors.Is(err, fs.ErrNotExist):
-		return project.Project{}, application.NotFound("no Exphere project at %s", root)
+		return project.Project{}, application.NotFound("no LangDrift project at %s", root)
 
 	case err != nil:
 		return project.Project{}, fmt.Errorf("open project: %w", err)
@@ -136,7 +136,7 @@ func openAt(root string) (project.Project, error) {
 		return project.Project{}, err
 	}
 
-	if _, err := files.Within(root, filepath.Join(".exphere", "state")); err != nil {
+	if _, err := files.Within(root, filepath.Join(".langdrift", "state")); err != nil {
 		return project.Project{}, err
 	}
 

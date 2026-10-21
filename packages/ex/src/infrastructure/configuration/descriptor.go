@@ -1,5 +1,5 @@
 // Package configuration reads and writes the runtime configuration consumers
-// author under .exphere/runtimes: the schema.json descriptor, native
+// author under .langdrift/runtimes: the schema.json descriptor, native
 // Kubernetes manifests, and the native Terraform preparation root.
 package configuration
 
@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/exphere/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 )
 
 // descriptorFile is the schema.json format. The domain descriptor is flatter;

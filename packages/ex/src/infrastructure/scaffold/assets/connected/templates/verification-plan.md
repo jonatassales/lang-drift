@@ -1,6 +1,6 @@
 # Verification plan
 
-Use this format as a section of the relevant spec or DD, following the artifact tracker (consumer-owned reference: `../../.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md`).
+Use this format as a section of the relevant spec or DD, following the artifact tracker (consumer-owned reference: `../../.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md`).
 
 - Section ID: `VER-<id>`; state: `draft`
 - PRD/spec and versions: `<references>`

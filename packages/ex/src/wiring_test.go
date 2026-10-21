@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/exphere/ex/src/presentation/cli/support"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
 
 // project is a consumer project driven through the composed CLI. Only
@@ -115,7 +115,7 @@ func TestGuidedRuntimeGenerationValidates(t *testing.T) {
 		t.Fatalf("a second ex runtime init = %d, %s; want the existing runtime kept", status, stderr)
 	}
 
-	workload := filepath.Join(p.root, ".exphere", "runtimes", "demo", "units", "web", "kubernetes", "workload.json")
+	workload := filepath.Join(p.root, ".langdrift", "runtimes", "demo", "units", "web", "kubernetes", "workload.json")
 	data, err := os.ReadFile(workload)
 	if err != nil {
 		t.Fatal(err)
@@ -141,7 +141,7 @@ func TestCommandsStopBeforeInfrastructureWithoutAProject(t *testing.T) {
 		{"cluster", "inspect"},
 		{"agent", "init", "researcher"},
 	} {
-		if status, _, stderr := p.ex("", arguments...); status != 1 || !strings.Contains(stderr, "no Exphere project") {
+		if status, _, stderr := p.ex("", arguments...); status != 1 || !strings.Contains(stderr, "no LangDrift project") {
 			t.Errorf("ex %v = %d, %q; want the missing project reported", arguments, status, stderr)
 		}
 	}
@@ -175,7 +175,7 @@ func TestCommandsStopBeforeInfrastructureWithoutACluster(t *testing.T) {
 		}
 	}
 
-	if _, err := os.Stat(filepath.Join(p.root, ".exphere", "state", "runtimes")); !os.IsNotExist(err) {
+	if _, err := os.Stat(filepath.Join(p.root, ".langdrift", "state", "runtimes")); !os.IsNotExist(err) {
 		t.Errorf("a refused command recorded runtime state: %v", err)
 	}
 }
@@ -189,11 +189,11 @@ func TestAgentScaffoldIsPublishedInsideTheProject(t *testing.T) {
 	}
 
 	status, stdout, stderr := p.ex("", "agent", "init", "researcher")
-	if status != 0 || !strings.Contains(stdout, filepath.Join(p.root, ".exphere", "agents", "researcher")) {
+	if status != 0 || !strings.Contains(stdout, filepath.Join(p.root, ".langdrift", "agents", "researcher")) {
 		t.Fatalf("ex agent init = %d, %s%s", status, stdout, stderr)
 	}
 
-	if _, err := os.Stat(filepath.Join(p.root, ".exphere", "agents", "researcher", "Dockerfile")); err != nil {
+	if _, err := os.Stat(filepath.Join(p.root, ".langdrift", "agents", "researcher", "Dockerfile")); err != nil {
 		t.Fatalf("the agent scaffold is incomplete: %v", err)
 	}
 }

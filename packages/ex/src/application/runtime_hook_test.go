@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/exphere/ex/src/application"
-	"github.com/exphere/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 )
 
 type fakeHookExecutor struct {
@@ -40,7 +40,7 @@ func TestRunRuntimeHook_RunsTheDeclaredScript(t *testing.T) {
 	t.Parallel()
 
 	w := newWorld(t)
-	w.configuration.hook = application.HookScript{Path: "/workspace/.exphere/runtimes/demo/hooks/seed.sh", Directory: "/workspace/.exphere/runtimes/demo"}
+	w.configuration.hook = application.HookScript{Path: "/workspace/.langdrift/runtimes/demo/hooks/seed.sh", Directory: "/workspace/.langdrift/runtimes/demo"}
 	executor := &fakeHookExecutor{result: application.HookResult{Stdout: "seeded", ExitCode: 0}}
 
 	result, err := w.runHook(executor).Execute(context.Background(), w.hookRequest("seed"))

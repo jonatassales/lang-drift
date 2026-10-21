@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
-	domainproject "github.com/exphere/ex/src/domain/project"
+	domainproject "github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 // foreignLabelKey marks the namespaces the run creates to stand for objects
 // EX did not create; its value is the run nonce.
-const foreignLabelKey = "exphere.e2e/foreign"
+const foreignLabelKey = "langdrift.e2e/foreign"
 
 // foreignSelector selects exactly the foreign namespaces this run created.
 func (h *harness) foreignSelector() string {

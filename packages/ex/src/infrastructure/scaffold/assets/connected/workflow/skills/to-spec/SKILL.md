@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 This skill takes the current conversation context and codebase understanding and produces a spec. Do NOT interview the user; just synthesize what you already know.
 
-Read `.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md` for the configured tracker, artifact paths and states. If it is missing, report that configuration gap; do not infer a remote tracker.
+Read `.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md` for the configured tracker, artifact paths and states. If it is missing, report that configuration gap; do not infer a remote tracker.
 
 ## Process
 
@@ -16,7 +16,7 @@ Read `.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md` for the configur
 
 Reuse explicit agreement on these seams already present in the session. If no agreement exists, record them as proposed in the draft and ask for confirmation before implementation; drafting need not wait for that confirmation.
 
-3. Write the spec in en-US under `.exphere/artifacts/specs/`, using `NNNN-SPEC-<lowercase-english-slug>.spec.md`. Allocate the next available four-digit SPEC number according to the configured tracker; preserve an existing spec and its stable ID when updating it. Follow `.exphere/artifacts/design/0006-DD-artifact-tracker.dd.md`. When `.agents/templates/spec.md` exists, use it as the canonical format and preserve its fields, identifiers and state conventions; use the guidance below to fill its corresponding sections without replacing its structure. Use the inline template only when no local spec template exists. Use the existing initiative ID when present. New content is a draft by default. Record approval only when explicit user authorization covers this spec and scope; cite that authorization in the record, including prior authorization in the session when applicable. Do not invent an approval or grant `ready-for-agent` merely because a document was generated. Approval of a previous version does not approve a changed scope. External publication follows separately authorized tracker operations.
+3. Write the spec in en-US under `.langdrift/artifacts/specs/`, using `NNNN-SPEC-<lowercase-english-slug>.spec.md`. Allocate the next available four-digit SPEC number according to the configured tracker; preserve an existing spec and its stable ID when updating it. Follow `.langdrift/artifacts/design/0006-DD-artifact-tracker.dd.md`. When `.agents/templates/spec.md` exists, use it as the canonical format and preserve its fields, identifiers and state conventions; use the guidance below to fill its corresponding sections without replacing its structure. Use the inline template only when no local spec template exists. Use the existing initiative ID when present. New content is a draft by default. Record approval only when explicit user authorization covers this spec and scope; cite that authorization in the record, including prior authorization in the session when applicable. Do not invent an approval or grant `ready-for-agent` merely because a document was generated. Approval of a previous version does not approve a changed scope. External publication follows separately authorized tracker operations.
 
 <spec-template>
 
