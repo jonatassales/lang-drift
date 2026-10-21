@@ -1,0 +1,50 @@
+{
+	"dark": {
+		"lg": {
+			"color": {
+				"$type": "color",
+				"background": { "$value": "{lg.color.gray.950}" },
+				"foreground": { "$value": "{lg.color.gray.50}" },
+				"card": { "$value": "{lg.color.gray.900}" },
+				"card-foreground": { "$value": "{dark.lg.color.foreground}" },
+				"popover": { "$value": "{lg.color.gray.900}" },
+				"popover-foreground": { "$value": "{dark.lg.color.foreground}" },
+				"primary-foreground": { "$value": "{lg.color.gray.950}" },
+				"secondary": { "$value": "{lg.color.gray.800}" },
+				"secondary-foreground": { "$value": "{dark.lg.color.foreground}" },
+				"muted": { "$value": "{lg.color.gray.800}" },
+				"muted-foreground": { "$value": "{lg.color.gray.400}" },
+				"accent": { "$value": "{lg.color.gray.800}" },
+				"accent-foreground": { "$value": "{dark.lg.color.foreground}" },
+				"destructive": { "$value": "{dark.lg.status.danger}" },
+				"border": { "$value": "{lg.color.gray.800}" },
+				"input": { "$value": "{dark.lg.color.border}" },
+				"ring": { "$value": "{dark.lg.color.primary}" },
+				"chart-1": { "$value": "{dark.lg.color.primary}" },
+				"chart-2": { "$value": "#2DD4BF" },
+				"chart-3": { "$value": "#FBBF24" },
+				"chart-4": { "$value": "#38BDF8" },
+				"chart-5": { "$value": "#FB7185" },
+				"sidebar": { "$value": "{dark.lg.color.card}" },
+				"sidebar-foreground": { "$value": "{dark.lg.color.foreground}" },
+				"sidebar-primary": { "$value": "{dark.lg.color.primary}" },
+				"sidebar-primary-foreground": {
+					"$value": "{dark.lg.color.primary-foreground}"
+				},
+				"sidebar-accent": { "$value": "{dark.lg.color.accent}" },
+				"sidebar-accent-foreground": {
+					"$value": "{dark.lg.color.accent-foreground}"
+				},
+				"sidebar-border": { "$value": "{dark.lg.color.border}" },
+				"sidebar-ring": { "$value": "{dark.lg.color.primary}" }
+			},
+			"status": {
+				"$type": "color",
+				"success": { "$value": "#4ADE80" },
+				"warning": { "$value": "#FBBF24" },
+				"danger": { "$value": "#F87171" },
+				"info": { "$value": "#60A5FA" }
+			}
+		}
+	}
+}

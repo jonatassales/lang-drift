@@ -4,11 +4,11 @@ AI harness web OS for your agentic journey. LangDrift is a suite of products und
 
 ## General rules
 
-`.claude/rules/` holds the rules that always apply, read first in every session. `00-general.rule.md` covers code and tooling, `01-filesystem.rule.md` naming and paths, and `02-frontend.rule.md` React and Next.js styling.
+`.claude/rules/` holds the rules that always apply, read first in every session. `00-general.rule.md` covers code and tooling, `01-filesystem.rule.md` naming and paths, `02-frontend.rule.md` React and Next.js styling, and `03-tailwind.rule.md` what Tailwind's theme may override.
 
 ## Status
 
-Monorepo skeleton with no workspaces or packages yet. Planned products, each with an empty folder:
+Monorepo with one package, `@langdrift/tokens`, and no product workspaces yet. Planned products, each with an empty folder:
 
 - `products/vision`: LangDrift Vision
 - `products/finops`: LangDrift FinOps
@@ -40,7 +40,7 @@ Run from the repository root:
 
 - `products/<product>/<kind>/<workspace>/`: a product's workspaces, grouped by kind. Apps go in `apps/`; another kind, such as microservices, gets its own folder when its first workspace appears. `pnpm-workspace.yaml` picks up any kind through `products/*/*/*`.
 - `packages/<capability>/`: shared across products, never inside one.
-- Planned packages: `ui`, `tokens`, `shell`, `account`, `runtime`, `contracts`.
+- Packages: `tokens` exists; `ui`, `shell`, `account`, `runtime` and `contracts` are planned.
 - A package takes a product name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
 - Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
@@ -54,10 +54,12 @@ When the shell resolves `drift` to another program (a link from an older checkou
 
 ## Design and tokens
 
-- Components use semantic roles, never a brand color directly.
-- Neutral scales and roles are shared. Each product defines only its brand in `packages/tokens/themes/`.
-- Token prefix: `--lg-*`.
+- `@langdrift/tokens` builds the tokens with Style Dictionary. Each product's app imports one self-contained stylesheet: `@langdrift/tokens/vision.css` or `@langdrift/tokens/finops.css`.
+- Components use roles, never a foundation or a brand color directly. Roles take shadcn's names (`background`, `foreground`, `primary`, `muted-foreground`, …) because the web apps use SmoothUI and shadcn components.
+- Prefixes: shared tokens are `--lg-*`; product themes are `--viz-*` (Vision) and `--fp-*` (FinOps). Each product theme lives in `packages/tokens/themes/` and today defines only primary and primary hover, which `--lg-color-primary` points to.
 - Status colors (`--lg-status-*`) are fixed across products and never inherit a brand color.
+- Light is declared in `:root` and dark in `.dark`. Apps render with the `.dark` class, so dark is the default.
+- Each stylesheet also bridges the roles to shadcn's unprefixed variables and sets Tailwind's theme. The native color palette is reset, so only roles and status colors exist as Tailwind colors. See ADR 0001 and `03-tailwind.rule.md`.
 
 ## Navigation and session
 
@@ -69,7 +71,7 @@ When the shell resolves `drift` to another program (a link from an older checkou
 
 Workflow: `research` when a question needs primary sources, then `grill-with-docs` (or `grill-me` for plans outside the code), `to-spec`, `to-tickets`, `implement` and `code-review`.
 
-- `grill-with-docs`, `grill-me`, `to-spec`, `to-tickets` and `implement` run only when the owner invokes them.
+- `.agents/workflow/human-in-the-loop.policy.md` sets where the owner takes part, which stages run on their own and what gates them. It belongs to this project and team; the skills read it instead of assuming.
 - A direct request to build or change application code enters the workflow: start with the `grilling` skill, plus `domain-modeling` when terms or decisions settle, instead of writing code.
 - `.claude/hooks/guard-implement-effort.sh` blocks `implement` for the current session until `.agents/prompts/llm-effort-analyzer.prompt.md` has recorded its result at `.agents/workflow/.effort-log/<session_id>.md`.
 - The commit-msg hook rejects a commit that changes `products/` or `packages/` without a `Ticket: <NNNN>` trailer naming an existing ticket.
@@ -125,7 +127,7 @@ Actions and container images are pinned to full commit SHAs or digests, with the
 ## Git
 
 - No commit, pull request or contribution carries an AI-generated signature, trailer or footer. This includes `Co-Authored-By` and "Generated with".
-- Commit, push, pull request, merge and release each need explicit authorization every time.
+- Inside the spec-driven workflow, commit, push and pull request follow `.agents/workflow/human-in-the-loop.policy.md`. Outside it, each needs explicit authorization every time. Merge and release always need it.
 - The hooks in `platform/versioning/.husky/` call `drift`. `drift git pre-commit` runs Biome on the staged files through lint-staged. `drift git commit-msg` rejects AI signatures, enforces the ticket trailer above and requires Conventional Commits through commitlint; its checks live in `platform/cli/src/core/commit-rules.sh`, which `drift git lint-history` also applies to every commit in a range. Husky installs the hooks on `pnpm install` once the folder is a Git repository. Neither lint-staged nor commitlint finds its config by itself: `drift` passes `--config`, so run them through `drift` rather than `pnpm exec`.
 
 ## Boundaries

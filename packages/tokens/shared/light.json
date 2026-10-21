@@ -1,0 +1,50 @@
+{
+	"light": {
+		"lg": {
+			"color": {
+				"$type": "color",
+				"background": { "$value": "#FFFFFF" },
+				"foreground": { "$value": "#27262A" },
+				"card": { "$value": "#F9F9F9" },
+				"card-foreground": { "$value": "{light.lg.color.foreground}" },
+				"popover": { "$value": "#FFFFFF" },
+				"popover-foreground": { "$value": "{light.lg.color.foreground}" },
+				"primary-foreground": { "$value": "#FFFFFF" },
+				"secondary": { "$value": "{lg.color.gray.100}" },
+				"secondary-foreground": { "$value": "{light.lg.color.foreground}" },
+				"muted": { "$value": "{lg.color.gray.100}" },
+				"muted-foreground": { "$value": "#535257" },
+				"accent": { "$value": "{lg.color.gray.100}" },
+				"accent-foreground": { "$value": "{light.lg.color.foreground}" },
+				"destructive": { "$value": "{light.lg.status.danger}" },
+				"border": { "$value": "#DDDDDD" },
+				"input": { "$value": "{light.lg.color.border}" },
+				"ring": { "$value": "{light.lg.color.primary}" },
+				"chart-1": { "$value": "{light.lg.color.primary}" },
+				"chart-2": { "$value": "#0D9488" },
+				"chart-3": { "$value": "#D97706" },
+				"chart-4": { "$value": "#0284C7" },
+				"chart-5": { "$value": "#E11D48" },
+				"sidebar": { "$value": "{light.lg.color.card}" },
+				"sidebar-foreground": { "$value": "{light.lg.color.foreground}" },
+				"sidebar-primary": { "$value": "{light.lg.color.primary}" },
+				"sidebar-primary-foreground": {
+					"$value": "{light.lg.color.primary-foreground}"
+				},
+				"sidebar-accent": { "$value": "{light.lg.color.accent}" },
+				"sidebar-accent-foreground": {
+					"$value": "{light.lg.color.accent-foreground}"
+				},
+				"sidebar-border": { "$value": "{light.lg.color.border}" },
+				"sidebar-ring": { "$value": "{light.lg.color.primary}" }
+			},
+			"status": {
+				"$type": "color",
+				"success": { "$value": "#15803D" },
+				"warning": { "$value": "#B45309" },
+				"danger": { "$value": "#B91C1C" },
+				"info": { "$value": "#1D4ED8" }
+			}
+		}
+	}
+}
