@@ -2,7 +2,7 @@
 
 **Spec:** .agents/workflow/specs/0002-ex-hardening.spec.md
 
-**What to build:** doctor, cluster inspect, runtime inspect and version print human-readable text by default; --json keeps the machine form; every other command keeps JSON. Errors render as one line of cause plus a hint line.
+**What to build:** doctor, cluster inspect and version print human-readable text by default; --json keeps the machine form; every other command keeps JSON. Errors render as one line of cause plus a hint line. Adjusted during implementation: runtime inspect lives only in the retired tree that ticket 0015 deletes, so it keeps JSON.
 
 **Blocked by:** 0005.
 

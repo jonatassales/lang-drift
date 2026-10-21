@@ -65,4 +65,21 @@ func reportError(
 	}
 
 	_, _ = fmt.Fprintf(diagnostics, "ex: %v\n", executionError)
+	if hint := hintFor(exitStatus); hint != "" {
+		_, _ = fmt.Fprintf(diagnostics, "hint: %s\n", hint)
+	}
+}
+
+// hintFor turns the exit class into the one next step a person can take.
+func hintFor(exitStatus int) string {
+	switch exitStatus {
+	case 2:
+		return "run ex --help for usage"
+	case 3:
+		return "ex refused to change what it does not own; inspect the current state before retrying"
+	case 4:
+		return "a prerequisite is missing; run ex doctor"
+	default:
+		return ""
+	}
 }

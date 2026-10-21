@@ -198,7 +198,13 @@ func TestExecute_MapsEveryCommandToItsRequest(t *testing.T) {
 				t.Fatalf("requests = %+v, want %+v", got, tt.want)
 			}
 
-			if !json.Valid([]byte(stdout)) {
+			// doctor and cluster inspect render for people by default; every
+			// other command emits one JSON document.
+			if tt.arguments[0] == "doctor" || (tt.arguments[0] == "cluster" && tt.arguments[1] == "inspect") {
+				if stdout == "" || strings.Contains(stdout, "{") {
+					t.Errorf("stdout = %q, want human text", stdout)
+				}
+			} else if !json.Valid([]byte(stdout)) {
 				t.Errorf("stdout = %q, want one JSON result", stdout)
 			}
 		})
@@ -227,15 +233,15 @@ func TestExecute_RendersResults(t *testing.T) {
 	t.Parallel()
 
 	h := &harness{}
-	h.clusterInspect.result = app.ClusterResult{Name: "ex-0123456789ab", Status: "ready"}
+	h.runtimeInspect.result = app.Inspection{ObservationID: "obs-1"}
 
-	_, indented, _ := h.run("cluster", "inspect")
-	if !strings.Contains(indented, "\n  \"name\": \"ex-0123456789ab\",\n") || !strings.HasSuffix(indented, "}\n") {
+	_, indented, _ := h.run("runtime", "inspect", "demo")
+	if !strings.Contains(indented, "\"observationId\": \"obs-1\"") || !strings.HasSuffix(indented, "}\n") {
 		t.Errorf("default output = %q, want indented JSON", indented)
 	}
 
-	_, compact, _ := h.run("--json", "cluster", "inspect")
-	if strings.Count(compact, "\n") != 1 || !strings.Contains(compact, `"name":"ex-0123456789ab"`) {
+	_, compact, _ := h.run("--json", "runtime", "inspect", "demo")
+	if strings.Count(compact, "\n") != 1 || !strings.Contains(compact, `"observationId":"obs-1"`) {
 		t.Errorf("--json output = %q, want one compact line", compact)
 	}
 }
@@ -538,5 +544,111 @@ func BenchmarkExecute(b *testing.B) {
 				}
 			}
 		})
+	}
+}
+
+func TestExecute_RendersDoctorForPeople(t *testing.T) {
+	t.Parallel()
+
+	h := &harness{}
+	h.doctor.result = app.Diagnosis{
+		Tools: []app.ToolStatus{
+			{Name: "docker", Status: app.ToolAvailable, Version: "27.0", Path: "/usr/local/bin/docker"},
+			{Name: "kind", Status: app.ToolMissing, Install: "https://kind.sigs.k8s.io"},
+		},
+		ContainerEngine: "reachable",
+		ClusterNote:     "no verified project cluster: no cluster is recorded for this project",
+		Installation:    "manual; no tools were installed",
+	}
+
+	status, stdout, _ := h.run("doctor")
+	if status != 0 {
+		t.Fatalf("status %d", status)
+	}
+	for _, want := range []string{
+		"ok       docker 27.0 (/usr/local/bin/docker)",
+		"missing  kind — install: https://kind.sigs.k8s.io",
+		"Container engine: reachable",
+		"Cluster: none — no verified project cluster: no cluster is recorded for this project",
+		"Installation: manual; no tools were installed",
+	} {
+		if !strings.Contains(stdout, want) {
+			t.Fatalf("doctor output %q lacks %q", stdout, want)
+		}
+	}
+	if strings.Contains(stdout, "{") {
+		t.Fatalf("doctor output still renders JSON: %q", stdout)
+	}
+
+	h = &harness{}
+	h.doctor.result = app.Diagnosis{Installation: "manual; no tools were installed"}
+	if _, stdout, _ = h.run("doctor", "--json"); !strings.HasPrefix(stdout, `{"tools":null`) {
+		t.Fatalf("doctor --json = %q, want the compact document", stdout)
+	}
+}
+
+func TestExecute_RendersClusterInspectionForPeople(t *testing.T) {
+	t.Parallel()
+
+	h := &harness{}
+	h.clusterInspect.result = app.ClusterResult{
+		Name:             "kind-demo",
+		Context:          "kind-demo",
+		Status:           "ready",
+		UID:              "uid-123",
+		Kubeconfig:       "/private/kubeconfig",
+		NamespaceUIDs:    map[string]string{"demo-local": "ns-1"},
+		InventoryVersion: 7,
+		ResourceTypes:    []string{"pods", "services"},
+	}
+
+	status, stdout, _ := h.run("cluster", "inspect")
+	if status != 0 {
+		t.Fatalf("status %d", status)
+	}
+	for _, want := range []string{
+		"Cluster kind-demo",
+		"Context:    kind-demo",
+		"Status:     ready",
+		"UID:        uid-123",
+		"Kubeconfig: /private/kubeconfig",
+		"Namespaces: 1",
+		"Inventory:  version 7, 2 resource types",
+	} {
+		if !strings.Contains(stdout, want) {
+			t.Fatalf("inspect output %q lacks %q", stdout, want)
+		}
+	}
+}
+
+func TestExecute_ErrorsCarryAHint(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		failure  error
+		wantHint string
+	}{
+		{"refusal points at inspection", fmt.Errorf("x: %w", app.ErrAdoptionRefused), "refused to change what it does not own"},
+		{"missing prerequisite points at doctor", app.NotFound("no cluster"), "run ex doctor"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			h := &harness{}
+			h.clusterInspect.err = tt.failure
+			_, _, stderr := h.run("cluster", "inspect")
+			if !strings.Contains(stderr, "hint: ") || !strings.Contains(stderr, tt.wantHint) {
+				t.Fatalf("stderr %q lacks hint %q", stderr, tt.wantHint)
+			}
+		})
+	}
+
+	h := &harness{}
+	h.clusterInspect.err = app.NotFound("no cluster")
+	_, _, stderr := h.run("--json", "cluster", "inspect")
+	if strings.Contains(stderr, "hint") {
+		t.Fatalf("JSON diagnostics must stay structured: %q", stderr)
 	}
 }

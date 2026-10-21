@@ -6,6 +6,7 @@ package catalog
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
@@ -49,4 +50,34 @@ func run[Result any](
 	}
 
 	return support.Render(command.OutOrStdout(), result, globals.JSON)
+}
+
+// runFiniteRendered is runFinite with a human rendering for the default mode;
+// --json keeps the compact document.
+func runFiniteRendered[Result any](
+	command *cobra.Command,
+	globals *support.Globals,
+	operation projectOperation[Result],
+	humanize func(Result) string,
+) error {
+	ctx, cancel := globals.Bounded(command.Context())
+	defer cancel()
+
+	selection, err := globals.Selection()
+	if err != nil {
+		return err
+	}
+
+	result, err := operation(ctx, selection)
+	if err != nil {
+		return err
+	}
+
+	if globals.JSON {
+		return support.Render(command.OutOrStdout(), result, true)
+	}
+
+	_, err = fmt.Fprint(command.OutOrStdout(), humanize(result))
+
+	return err
 }

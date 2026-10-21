@@ -21,9 +21,9 @@ func NewDoctorCommand(runDiagnostics Diagnoser, globals *support.Globals) *cobra
 		Short: "Check local prerequisites without installing anything",
 		Args:  validateNoArguments,
 		RunE: func(command *cobra.Command, _ []string) error {
-			return runFinite(command, globals, func(ctx context.Context, project application.ProjectSelection) (application.Diagnosis, error) {
+			return runFiniteRendered(command, globals, func(ctx context.Context, project application.ProjectSelection) (application.Diagnosis, error) {
 				return runDiagnostics.Execute(ctx, application.DiagnoseRequest{Project: project})
-			})
+			}, humanDiagnosis)
 		},
 	}
 }

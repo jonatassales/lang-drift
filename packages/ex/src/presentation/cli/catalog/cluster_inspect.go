@@ -21,9 +21,9 @@ func NewClusterInspectCommand(inspectCluster ClusterInspector, globals *support.
 		Short: "Verify and report the recorded cluster identity",
 		Args:  validateNoArguments,
 		RunE: func(command *cobra.Command, _ []string) error {
-			return runFinite(command, globals, func(ctx context.Context, project application.ProjectSelection) (application.ClusterResult, error) {
+			return runFiniteRendered(command, globals, func(ctx context.Context, project application.ProjectSelection) (application.ClusterResult, error) {
 				return inspectCluster.Execute(ctx, application.ClusterRequest{Project: project})
-			})
+			}, humanCluster)
 		},
 	}
 }
