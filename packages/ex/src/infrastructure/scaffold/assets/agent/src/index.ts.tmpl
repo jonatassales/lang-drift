@@ -1,0 +1,73 @@
+// Disable ambient hosted tracing before loading LangGraph. This local runner has
+// no model, connector, checkpoint service, or network operation in its graph.
+process.env.LANGSMITH_TRACING = "false";
+process.env.LANGCHAIN_TRACING_V2 = "false";
+
+const { END, START, StateGraph, StateSchema } = await import("@langchain/langgraph");
+const { z } = await import("zod");
+
+function required(name: string): string {
+  const value = process.env[name];
+  if (!value?.trim() || /[\u0000-\u001f\u007f]/u.test(value)) {
+    throw new Error(`Required correlation value ${name} is missing or invalid`);
+  }
+  return value;
+}
+
+const State = new StateSchema({
+  runtimeId: z.string(),
+  runId: z.string(),
+  inspected: z.boolean(),
+  outcome: z.enum(["pending", "completed"]),
+});
+
+// Two deterministic nodes demonstrate orchestration without a paid call.
+// Replace their work explicitly when adding an authorized agent capability.
+const graph = new StateGraph(State)
+  .addNode("inspect", () => ({ inspected: true }))
+  .addNode("complete", (state) => {
+    if (!state.inspected) throw new Error("Inspection must finish before reporting");
+    return { outcome: "completed" as const };
+  })
+  .addEdge(START, "inspect")
+  .addEdge("inspect", "complete")
+  .addEdge("complete", END)
+  .compile();
+
+const controller = new AbortController();
+const cancel = () => controller.abort();
+process.once("SIGINT", cancel);
+process.once("SIGTERM", cancel);
+
+try {
+  const result = await graph.invoke(
+    {
+      runtimeId: required("EXPHERE_RUNTIME_ID"),
+      runId: required("EXPHERE_RUN_ID"),
+      inspected: false,
+      outcome: "pending",
+    },
+    { signal: controller.signal, recursionLimit: 4 },
+  );
+  console.log(JSON.stringify({
+    schemaVersion: 1,
+    runtimeId: result.runtimeId,
+    runId: result.runId,
+    outcome: result.outcome,
+    inspected: result.inspected,
+    modelCalls: 0,
+    financialCost: null,
+  }));
+} catch (error) {
+  console.error(JSON.stringify({
+    schemaVersion: 1,
+    runtimeId: process.env.EXPHERE_RUNTIME_ID ?? null,
+    runId: process.env.EXPHERE_RUN_ID ?? null,
+    outcome: controller.signal.aborted ? "interrupted" : "failed",
+    error: error instanceof Error ? error.message : String(error),
+  }));
+  process.exitCode = controller.signal.aborted ? 130 : 1;
+} finally {
+  process.off("SIGINT", cancel);
+  process.off("SIGTERM", cancel);
+}

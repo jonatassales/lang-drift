@@ -1,0 +1,31 @@
+# Local LangGraph runner
+
+This editable TypeScript source belongs to the consumer. It stays outside runtime
+configuration and has independent pinned dependencies and an npm lockfile. The
+scaffold does not install packages, build images, start a cluster, or run the graph.
+
+The finite graph performs two deterministic steps and reports a JSON outcome on
+stdout. It requires EXPHERE_RUNTIME_ID and EXPHERE_RUN_ID; the runtime lifecycle
+injects them into the Job. It contains no model calls, MCP connections, remote
+memory, hosted telemetry, credentials, persistent state, or HTTP server. Unknown
+financial cost is null; zero model calls does not prove zero infrastructure cost.
+Failures go to stderr; termination signals request cancellation.
+
+## Consumer build
+
+Run `npm ci --ignore-scripts` and `npm run build` in this directory to inspect the
+compiled source, or build the supplied Dockerfile with your chosen local image tag.
+Image construction is a separate consumer action with network and resource costs.
+The Dockerfile base tag is mutable: select a reviewed digest for reproducible builds.
+
+Use `ex cluster load-image <your-image>` after explicitly creating the project
+cluster. In guided runtime initialization select this directory as the component,
+use its directory name as the unit name, choose Job, and supply the image and resource
+requests/limits. A Job has no HTTP readiness path, service port, or replicas input.
+Native Job files own deadline, retry, and parallelism settings. The generated defaults
+are one completion, one worker, no retries, and a 120-second deadline.
+
+Dependencies: LangGraph 1.5.0, LangChain Core 1.2.17, Zod 4.6.7, TypeScript 5.9.3,
+and Node 22 types 22.19.11. Runtime target: Node 22. Read the upstream graph model at
+https://docs.langchain.com/oss/javascript/langgraph/graph-api before extending it.
+Generation and compilation do not demonstrate Kubernetes execution or cleanup.

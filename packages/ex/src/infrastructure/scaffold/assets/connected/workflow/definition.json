@@ -1,0 +1,171 @@
+{
+	"formatVersion": 1,
+	"id": "factory-reference-workflow",
+	"architecture": "spec-driven-development",
+	"status": "proposal",
+	"executable": false,
+	"purpose": "Common SDD cycle, without an implemented engine or enforcement. Domain adaptations preserve the cycle and specialize checks, checkpoints, artifacts, and integrations. The template and skill associations below are initial software references to adapt for each domain.",
+	"inputs": ["leadership-objectives", "team-needs", "operational-evidence"],
+	"authority": {
+		"roadmap": "authorized-humans",
+		"language-model": "proposal-and-bounded-execution",
+		"gate-enforcement": "not-implemented"
+	},
+	"stages": [
+		{
+			"id": "captured",
+			"label": "Capture",
+			"templates": [".exphere/templates/intake.md"],
+			"skills": [],
+			"proposedExitConditions": ["source-recorded", "owner-identified"]
+		},
+		{
+			"id": "discovery",
+			"label": "Discovery",
+			"templates": [".exphere/templates/discovery.md"],
+			"skills": ["research", "grill-with-docs"],
+			"proposedExitConditions": ["evidence-linked", "open-questions-recorded"]
+		},
+		{
+			"id": "proposed",
+			"label": "Priority decision",
+			"templates": [".exphere/templates/decision.md"],
+			"skills": [],
+			"proposedExitConditions": ["authorized-priority-decision"]
+		},
+		{
+			"id": "specified",
+			"label": "Specification and criteria",
+			"templates": [".exphere/templates/prd.md", ".exphere/templates/spec.md"],
+			"skills": ["to-spec"],
+			"proposedExitConditions": [
+				"scope-reviewed",
+				"acceptance-criteria-recorded"
+			]
+		},
+		{
+			"id": "ready",
+			"label": "Preparation and execution authorization",
+			"templates": [],
+			"skills": ["to-tickets"],
+			"proposedExitConditions": ["execution-authorized", "spec-revision-linked"]
+		},
+		{
+			"id": "implementing",
+			"label": "Specification execution",
+			"templates": [],
+			"skills": ["implement"],
+			"proposedExitConditions": ["scope-respected"]
+		},
+		{
+			"id": "verifying",
+			"label": "Verification and review",
+			"templates": [
+				".exphere/templates/verification-plan.md",
+				".exphere/templates/review.md"
+			],
+			"skills": ["code-review"],
+			"proposedExitConditions": [
+				"required-evidence-present",
+				"criteria-satisfied",
+				"review-recorded"
+			]
+		},
+		{
+			"id": "delivery-approved",
+			"label": "Delivery",
+			"templates": [],
+			"skills": [],
+			"proposedExitConditions": ["environment-authorization-recorded"]
+		},
+		{
+			"id": "observing",
+			"label": "Observation",
+			"templates": [],
+			"skills": [],
+			"proposedExitConditions": ["operational-evidence-linked"]
+		},
+		{
+			"id": "reviewed",
+			"label": "Retrospective",
+			"templates": [".exphere/templates/retrospective.md"],
+			"skills": ["retro"],
+			"proposedExitConditions": ["outcome-reviewed"]
+		}
+	],
+	"transitions": [
+		{
+			"from": "captured",
+			"to": "discovery"
+		},
+		{
+			"from": "discovery",
+			"to": "proposed"
+		},
+		{
+			"from": "proposed",
+			"to": "specified"
+		},
+		{
+			"from": "specified",
+			"to": "ready"
+		},
+		{
+			"from": "ready",
+			"to": "implementing"
+		},
+		{
+			"from": "implementing",
+			"to": "verifying"
+		},
+		{
+			"from": "verifying",
+			"to": "delivery-approved"
+		},
+		{
+			"from": "delivery-approved",
+			"to": "observing"
+		},
+		{
+			"from": "observing",
+			"to": "reviewed"
+		},
+		{
+			"from": "verifying",
+			"to": "implementing",
+			"reason": "verification-or-review-failed"
+		},
+		{
+			"from": "verifying",
+			"to": "specified",
+			"reason": "scope-or-criteria-change"
+		},
+		{
+			"from": "reviewed",
+			"to": "captured",
+			"reason": "new-evidence-or-iteration"
+		}
+	],
+	"blocking": {
+		"allowedAtAnyStage": true,
+		"preserveStage": true,
+		"requires": ["reason", "resumeCondition"]
+	},
+	"verificationResults": ["passed", "failed", "inconclusive"],
+	"roadmapStatuses": [
+		"draft",
+		"proposed",
+		"approved",
+		"in-progress",
+		"paused",
+		"completed",
+		"cancelled"
+	],
+	"extensionPolicy": {
+		"status": "open-question",
+		"strategy": "incremental-adoption",
+		"blanketBanOnLocalWorkflows": null,
+		"blanketBanDecision": "unresolved",
+		"profilesProposal": ".exphere/artifacts/design/0004-DD-workflow-profiles.dd.md"
+	}
+}
