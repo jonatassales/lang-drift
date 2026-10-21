@@ -207,3 +207,37 @@ func commandEnvironment(command Command) []string {
 
 	return append(environment, command.Env...)
 }
+
+// SyncWriter serializes writes from the stdout and stderr pipe goroutines, so
+// both streams can share one destination, such as a log file.
+func SyncWriter(destination io.Writer) io.Writer {
+	return &syncWriter{destination: destination}
+}
+
+type syncWriter struct {
+	mutex       sync.Mutex
+	destination io.Writer
+}
+
+func (writer *syncWriter) Write(data []byte) (int, error) {
+	writer.mutex.Lock()
+	defer writer.mutex.Unlock()
+
+	return writer.destination.Write(data)
+}
+
+// Tail returns the last lines of output that fit the budget, for error
+// messages that must stay bounded while naming the real cause.
+func Tail(output string, budget int) string {
+	trimmed := strings.TrimSpace(output)
+	if len(trimmed) <= budget {
+		return trimmed
+	}
+
+	cut := trimmed[len(trimmed)-budget:]
+	if newline := strings.IndexByte(cut, '\n'); newline >= 0 && newline < len(cut)-1 {
+		cut = cut[newline+1:]
+	}
+
+	return cut
+}

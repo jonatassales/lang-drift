@@ -74,7 +74,7 @@ func (native Native) VerifyRepository(ctx context.Context, owner project.Project
 	}
 	result, err := native.Runner.Run(ctx, process.Command{Name: "git", Args: []string{"config", "--get", "remote.origin.url"}, Dir: owner.Root})
 	if err != nil {
-		return errors.New("project requires the connected GitHub repository as origin")
+		return fmt.Errorf("project requires the connected GitHub repository as origin: %w", err)
 	}
 	origin := strings.TrimSpace(result.Stdout)
 	origin = strings.TrimSuffix(origin, ".git")
@@ -86,7 +86,7 @@ func (native Native) VerifyRepository(ctx context.Context, owner project.Project
 	}
 	head, err := native.Runner.Run(ctx, process.Command{Name: "git", Args: []string{"rev-parse", "HEAD"}, Dir: owner.Root})
 	if err != nil {
-		return errors.New("local source revision is unavailable")
+		return fmt.Errorf("local source revision is unavailable: %w", err)
 	}
 	if repository.Ref != "" && strings.TrimSpace(head.Stdout) != repository.Ref {
 		return errors.New("local HEAD differs from the imported repository revision")
@@ -348,6 +348,14 @@ func (native Native) Start(ctx context.Context, owner project.Project, record ap
 	if err := report("build_started", revision); err != nil {
 		return err
 	}
+	// The whole build's output streams to one private log, so a verbose build
+	// never fails on capture limits and a failed one names its evidence.
+	buildLog, logPath, err := native.buildLog(owner, record.RuntimeID)
+	if err != nil {
+		return err
+	}
+	defer buildLog.Close()
+	logWriter := process.SyncWriter(buildLog)
 	for _, component := range config.Components {
 		directory, err := files.Existing(buildRoot, component.Path)
 		if err != nil {
@@ -367,6 +375,8 @@ func (native Native) Start(ctx context.Context, owner project.Project, record ap
 			// Recipes see the minimal base plus the container engine's own
 			// selection variables, never the agent's credentials.
 			PassEnv: []string{"DOCKER_*"},
+			Stdout:  logWriter,
+			Stderr:  logWriter,
 		}
 		// A committed script resolves inside the component's checkout directory,
 		// through the symlink-refusing resolver, and runs by absolute path.
@@ -377,9 +387,13 @@ func (native Native) Start(ctx context.Context, owner project.Project, record ap
 			}
 			command.Name = resolved
 		}
-		if _, err := native.Runner.Run(ctx, command); err != nil {
+		if result, err := native.Runner.Run(ctx, command); err != nil {
 			_ = report("build_failed", "build_failed")
-			return errors.New("declared build recipe failed; no runtime was started")
+			failure := fmt.Errorf("build recipe %s failed for %s; no runtime was started (full output: %s)", component.Build.Executable, component.Path, logPath)
+			if tail := process.Tail(result.Stderr, 2048); tail != "" {
+				return fmt.Errorf("%w\n%s", failure, tail)
+			}
+			return failure
 		}
 	}
 	if err := report("build_succeeded", "build_completed"); err != nil {
@@ -634,16 +648,53 @@ func (native Native) migrationSource(owner project.Project, runtime microruntime
 	return descriptor, readErr == nil && digest(active) == digest(original), err
 }
 
+// buildLog opens the runtime's private build log for one start.
+func (native Native) buildLog(owner project.Project, runtime string) (*os.File, string, error) {
+	directory, err := files.Within(owner.Root, ".langdrift/state/runtimes/"+runtime)
+	if err != nil {
+		return nil, "", err
+	}
+	if err := os.MkdirAll(directory, 0o700); err != nil {
+		return nil, "", err
+	}
+	path := filepath.Join(directory, "build.log")
+	file, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o600)
+	if err != nil {
+		return nil, "", err
+	}
+	return file, path, nil
+}
+
 func relocateMigration(rendered map[string][]byte) (map[string][]byte, error) {
 	var descriptor map[string]any
 	if err := json.Unmarshal(rendered["schema.json"], &descriptor); err != nil {
 		return nil, err
 	}
-	descriptor["terraform"].(map[string]any)["directory"] = "console-terraform"
-	for _, value := range descriptor["units"].(map[string]any) {
-		unit := value.(map[string]any)
-		kubernetes := unit["kubernetes"].(map[string]any)
-		kubernetes["manifests"] = "console-" + kubernetes["manifests"].(string)
+	// The schema was rendered by this process, but a shape check beats a panic
+	// if rendering and relocation ever drift apart.
+	terraform, ok := descriptor["terraform"].(map[string]any)
+	if !ok {
+		return nil, errors.New("rendered schema lacks a terraform object")
+	}
+	terraform["directory"] = "console-terraform"
+	units, ok := descriptor["units"].(map[string]any)
+	if !ok {
+		return nil, errors.New("rendered schema lacks a units object")
+	}
+	for name, value := range units {
+		unit, ok := value.(map[string]any)
+		if !ok {
+			return nil, fmt.Errorf("rendered unit %s is not an object", name)
+		}
+		kubernetes, ok := unit["kubernetes"].(map[string]any)
+		if !ok {
+			return nil, fmt.Errorf("rendered unit %s lacks a kubernetes object", name)
+		}
+		manifests, ok := kubernetes["manifests"].(string)
+		if !ok {
+			return nil, fmt.Errorf("rendered unit %s lacks a manifests path", name)
+		}
+		kubernetes["manifests"] = "console-" + manifests
 	}
 	data, err := json.MarshalIndent(descriptor, "", "  ")
 	if err != nil {
@@ -724,7 +775,7 @@ func (native Native) preserveNative(owner project.Project, original microruntime
 func (native Native) buildTree(ctx context.Context, owner project.Project) (string, func(), error) {
 	result, err := native.Runner.Run(ctx, process.Command{Name: "git", Args: []string{"ls-files", "-z"}, Dir: owner.Root})
 	if err != nil {
-		return "", nil, errors.New("cannot enumerate committed build source")
+		return "", nil, fmt.Errorf("cannot enumerate committed build source: %w", err)
 	}
 	return copyBuildTree(ctx, owner, strings.Split(result.Stdout, "\x00"))
 }

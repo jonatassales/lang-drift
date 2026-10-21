@@ -19,8 +19,9 @@ import (
 )
 
 type fakeRunner struct {
-	commands  []process.Command
-	failBuild bool
+	commands    []process.Command
+	failBuild   bool
+	buildStderr string
 }
 
 func (r *fakeRunner) Run(_ context.Context, c process.Command) (process.Result, error) {
@@ -38,7 +39,10 @@ func (r *fakeRunner) Run(_ context.Context, c process.Command) (process.Result, 
 		return process.Result{Stdout: strings.Repeat("a", 40)}, nil
 	}
 	if r.failBuild {
-		return process.Result{}, errors.New("build error")
+		if c.Stderr != nil {
+			_, _ = c.Stderr.Write([]byte(r.buildStderr))
+		}
+		return process.Result{Stderr: r.buildStderr}, errors.New("build error")
 	}
 	return process.Result{}, nil
 }
@@ -443,5 +447,47 @@ func TestNative_MissingCommittedScriptFailsBeforeRunning(t *testing.T) {
 		if command.Name != "git" {
 			t.Fatalf("a non-git command ran: %v", command.Name)
 		}
+	}
+}
+
+func TestNative_FailedBuildExplainsItself(t *testing.T) {
+	owner := ownerForTest(t)
+	runner := &fakeRunner{failBuild: true, buildStderr: "compile exploded\nmissing header"}
+	native := Native{Runner: runner, Executions: storage.Executions{}}
+	config := nativeConfig()
+	record := app.Connection{RuntimeID: config.RuntimeID, Repository: app.Repository{FullName: "owner/repository"}}
+	record.Managed, record.ConcreteHash, _ = native.Materialize(context.Background(), owner, record, config, config.Markdown())
+
+	err := native.Start(context.Background(), owner, record, config, func(string, string) error { return nil })
+	if err == nil {
+		t.Fatal("build failure reported success")
+	}
+	for _, want := range []string{"./build.sh", "missing header", "build.log"} {
+		if !strings.Contains(err.Error(), want) {
+			t.Fatalf("error %q does not name %q", err, want)
+		}
+	}
+
+	log, readErr := os.ReadFile(filepath.Join(owner.Root, ".langdrift", "state", "runtimes", config.RuntimeID, "build.log"))
+	if readErr != nil {
+		t.Fatalf("build log: %v", readErr)
+	}
+	if !strings.Contains(string(log), "compile exploded") {
+		t.Fatalf("build log %q lacks the tool output", log)
+	}
+}
+
+func TestRelocateMigration_RefusesUnexpectedShapes(t *testing.T) {
+	for name, schema := range map[string]string{
+		"terraform not an object": `{"terraform": "text", "units": {}}`,
+		"unit not an object":      `{"terraform": {"directory": "d"}, "units": {"api": 7}}`,
+		"manifests not text":      `{"terraform": {"directory": "d"}, "units": {"api": {"kubernetes": {"manifests": 7}}}}`,
+		"missing kubernetes":      `{"terraform": {"directory": "d"}, "units": {"api": {}}}`,
+	} {
+		t.Run(name, func(t *testing.T) {
+			if _, err := relocateMigration(map[string][]byte{"schema.json": []byte(schema)}); err == nil {
+				t.Fatal("unexpected shape accepted")
+			}
+		})
 	}
 }
