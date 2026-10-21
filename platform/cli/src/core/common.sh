@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck disable=SC2034 # Its variables are read by the scripts that source it.
 
 : "${DRIFT_PROJECT_ROOT:?DRIFT_PROJECT_ROOT must be set by platform/cli/src/drift.sh}"
 : "${DRIFT_CLI_DIR:?DRIFT_CLI_DIR must be set by platform/cli/src/drift.sh}"

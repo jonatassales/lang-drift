@@ -1,0 +1,13 @@
+name: Set up workspace
+description: Install pnpm and Node.js, then the workspace dependencies from the lockfile.
+
+runs:
+  using: composite
+  steps:
+    # pnpm's version comes from devEngines.packageManager in package.json.
+    # Node.js 24 is the floor that engines.node accepts.
+    - uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
+      with:
+        runtime: node@24
+        cache: true
+        require-lockfile: true

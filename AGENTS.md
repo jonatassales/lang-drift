@@ -4,7 +4,7 @@ AI harness web OS for your agentic journey. LangDrift is a suite of products und
 
 ## General rules
 
-`.claude/rules/` holds the rules that always apply, read first in every session. `00-general.rule.md` covers code, `01-filesystem.rule.md` naming and paths, and `02-frontend.rule.md` React and Next.js styling.
+`.claude/rules/` holds the rules that always apply, read first in every session. `00-general.rule.md` covers code and tooling, `01-filesystem.rule.md` naming and paths, and `02-frontend.rule.md` React and Next.js styling.
 
 ## Status
 
@@ -42,6 +42,7 @@ Run from the repository root:
 - `packages/<capability>/`: `ui`, `tokens`, `shell`, `account`, `runtime`, `contracts`.
 - A package takes a product name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
 - Package scope: `@langdrift/*`.
+- `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
 - `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, `quality/` the lint-staged config and the Biome plugin, `versioning/` the commitlint config and the Git hooks (`.husky/`).
 
 ## Platform CLI
@@ -106,11 +107,25 @@ Single context. The glossary is the `## Glossary` section of `.agents/context.md
 - The harness (checks, guardrails, scripts) stays a draft until the owner promotes a piece of it to a rule.
 - Rules are added only when the owner asks.
 
+## Continuous integration
+
+`.github/workflows/pull-request.yml` runs on every pull request into `main`, one job per concern:
+
+| Job | Runs |
+| --- | --- |
+| Build | `pnpm turbo run build` |
+| Check | `pnpm turbo run check`, then `pnpm turbo run typecheck` |
+| Test | `pnpm turbo run test` |
+| Harness | `drift doctor --ci`, ShellCheck on the POSIX scripts, actionlint on the workflows |
+| Guardrails | `drift git lint-history` over the pull request's commits |
+
+Actions and container images are pinned to full commit SHAs or digests, with the version in a comment. The workflow token is read-only.
+
 ## Git
 
 - No commit, pull request or contribution carries an AI-generated signature, trailer or footer. This includes `Co-Authored-By` and "Generated with".
 - Commit, push, pull request, merge and release each need explicit authorization every time.
-- The hooks in `platform/versioning/.husky/` call `drift`. `drift git pre-commit` runs Biome on the staged files through lint-staged. `drift git commit-msg` rejects AI signatures, enforces the ticket trailer above and requires Conventional Commits through commitlint; its checks live in `platform/cli/src/commands/git-commit-msg.sh`. Husky installs the hooks on `pnpm install` once the folder is a Git repository. Neither lint-staged nor commitlint finds its config by itself: `drift` passes `--config`, so run them through `drift` rather than `pnpm exec`.
+- The hooks in `platform/versioning/.husky/` call `drift`. `drift git pre-commit` runs Biome on the staged files through lint-staged. `drift git commit-msg` rejects AI signatures, enforces the ticket trailer above and requires Conventional Commits through commitlint; its checks live in `platform/cli/src/core/commit-rules.sh`, which `drift git lint-history` also applies to every commit in a range. Husky installs the hooks on `pnpm install` once the folder is a Git repository. Neither lint-staged nor commitlint finds its config by itself: `drift` passes `--config`, so run them through `drift` rather than `pnpm exec`.
 
 ## Boundaries
 
@@ -121,3 +136,14 @@ Single context. The glossary is the `## Glossary` section of `.agents/context.md
 ## Open
 
 - Domain layout: subdomains under one domain, or separate domains per product.
+
+<!-- BEGIN:turborepo-agent-rules -->
+
+# This is NOT the Turborepo you know
+
+Turborepo configuration, task behavior, and CLI commands can vary between installed versions and may differ from your training data. Resolve the `turbo` package from this file's directory or relevant workspace; in monorepos, it may not be visible from the repository root. For example, run `node -p "require.resolve('turbo/package.json')"` from a workspace that depends on `turbo`.
+
+Read `docs/README.md` inside that installed package first, then read the relevant pages from its `docs/` directory before changing Turborepo configuration or commands. Heed deprecation notices. These bundled docs match the installed package version and are available without network access.
+
+This block is written and re-added by `turbo` before repository-scoped commands when an AI agent is detected. In the Turborepo source repository, its template is defined in `crates/turborepo-cli/src/cli/agent_guidance.rs`. Removing the managed block while updates are enabled means a later qualifying invocation will add it again. Set `"agentGuidance": false` in the root `turbo.json` or `turbo.jsonc` to opt out; this does not remove an existing block. Keep the block committed with your work to avoid an uncommitted change on the next agent invocation.
+<!-- END:turborepo-agent-rules -->

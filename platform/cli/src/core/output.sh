@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck disable=SC2034 # Its variables are read by the scripts that source it.
 
 : "${DRIFT_LOGS:=false}"
 
