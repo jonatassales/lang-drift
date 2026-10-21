@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"math"
+	"path"
 	"strings"
 
 	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
@@ -143,29 +144,61 @@ func (config Configuration) Validate() error {
 	return nil
 }
 
-// Validate refuses command-line context escapes. Repository programs themselves
-// remain trusted consumer code; this is not an operating-system sandbox.
+// ErrRecipeRefused marks a build recipe outside the allowlist policy, so
+// callers can distinguish refusal from failure.
+var ErrRecipeRefused = errors.New("build recipe refused by policy")
+
+// The only tools a recipe may name. Anything else runs through a committed
+// project script, which code review then sees. See ADR 0002.
+var allowedBuildTools = map[string]bool{
+	"docker": true,
+	"go":     true,
+	"npm":    true,
+	"pnpm":   true,
+	"make":   true,
+}
+
+// Validate allows exactly two recipe shapes: a committed project script
+// (a relative path containing a slash, resolved inside the checkout at build
+// time) or an allowlisted tool. Repository programs themselves remain trusted
+// consumer code; this is not an operating-system sandbox.
 func (build Build) Validate() error {
-	if strings.ContainsAny(build.Executable, "/\\") {
-		return errors.New("build executable must be a tool name resolved from PATH")
+	refuse := func(reason string) error {
+		return fmt.Errorf("%w: %s", ErrRecipeRefused, reason)
 	}
+
 	for _, arg := range build.Args {
 		value := arg
 		if _, after, ok := strings.Cut(value, "="); ok {
 			value = after
 		}
 		if strings.HasPrefix(value, "/") || strings.Contains(value, "../") || value == ".." || strings.Contains(value, "://") {
-			return errors.New("build arguments must stay within the committed source context")
+			return refuse("build arguments must stay within the committed source context")
 		}
 		if strings.HasPrefix(arg, "--secret") || strings.HasPrefix(arg, "--ssh") || strings.HasPrefix(arg, "--build-context") {
-			return errors.New("external build credential/context mounts are unsupported")
+			return refuse("external build credential/context mounts are unsupported")
 		}
 	}
-	if (build.Executable == "sh" || build.Executable == "bash" || build.Executable == "zsh") && len(build.Args) > 0 && strings.HasPrefix(build.Args[0], "-") {
-		return errors.New("shell build recipes must name an existing project script")
+
+	if strings.Contains(build.Executable, "/") {
+		if strings.Contains(build.Executable, "\\") {
+			return refuse("a committed script is named by a slash-separated relative path")
+		}
+		cleaned := path.Clean(build.Executable)
+		if strings.HasPrefix(build.Executable, "/") || cleaned == "." || cleaned == ".." || strings.HasPrefix(cleaned, "../") {
+			return refuse("a committed script must resolve inside the checkout")
+		}
+		return nil
+	}
+
+	if !allowedBuildTools[build.Executable] {
+		return refuse("the executable is neither a committed script (./name) nor an allowed build tool (docker, go, npm, pnpm, make)")
+	}
+	if len(build.Args) > 0 && strings.HasPrefix(build.Args[0], "-") {
+		return refuse("an allowed tool refuses a flag as its first argument")
 	}
 	if build.Executable == "docker" && (len(build.Args) == 0 || build.Args[0] != "build") {
-		return errors.New("Docker recipes must use docker build")
+		return refuse("Docker recipes must use docker build")
 	}
 	return nil
 }

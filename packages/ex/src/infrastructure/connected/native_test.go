@@ -58,7 +58,7 @@ func ownerForTest(t *testing.T) project.Project {
 	return owner
 }
 func nativeConfig() connection.Configuration {
-	return connection.Configuration{Version: 1, RuntimeUID: "runtime-uid", RuntimeID: "runtime", ProjectID: "project", Revision: 1, Name: "Example", CPUMillis: 1200, MemoryMiB: 512, Model: "test-model", Effort: "low", Components: []connection.Component{{Path: ".", Image: "api:local", Port: 8080, ReadinessPath: "/health", Build: &connection.Build{Executable: "sh", Args: []string{"build.sh"}}}}}
+	return connection.Configuration{Version: 1, RuntimeUID: "runtime-uid", RuntimeID: "runtime", ProjectID: "project", Revision: 1, Name: "Example", CPUMillis: 1200, MemoryMiB: 512, Model: "test-model", Effort: "low", Components: []connection.Component{{Path: ".", Image: "api:local", Port: 8080, ReadinessPath: "/health", Build: &connection.Build{Executable: "./build.sh"}}}}
 }
 func TestNative_MaterializationPreservesCustomizationAndBounds(t *testing.T) {
 	owner := ownerForTest(t)
@@ -386,5 +386,58 @@ func TestStore_RefusesDeletedButGitTrackedCredentialPath(t *testing.T) {
 	}
 	if run("ls-files", "--", relative).Stdout != relative+"\n" {
 		t.Fatal("consumer Git index was changed")
+	}
+}
+
+func TestNative_CommittedScriptRecipeResolvesInsideTheCheckout(t *testing.T) {
+	owner := ownerForTest(t)
+	// failBuild stops Start right after the build phase, before the nil
+	// infrastructure ports; the resolved command is recorded either way.
+	runner := &fakeRunner{failBuild: true}
+	native := Native{Runner: runner, Executions: storage.Executions{}}
+	config := nativeConfig()
+	record := app.Connection{RuntimeID: config.RuntimeID, Repository: app.Repository{FullName: "owner/repository"}}
+	record.Managed, record.ConcreteHash, _ = native.Materialize(context.Background(), owner, record, config, config.Markdown())
+
+	if err := native.Start(context.Background(), owner, record, config, func(string, string) error { return nil }); err == nil {
+		t.Fatal("start succeeded with a failing build")
+	}
+
+	var build *process.Command
+	for index, command := range runner.commands {
+		if command.Name != "git" {
+			build = &runner.commands[index]
+
+			break
+		}
+	}
+	if build == nil {
+		t.Fatal("no build command ran")
+	}
+	if !filepath.IsAbs(build.Name) || !strings.HasSuffix(build.Name, "/build.sh") {
+		t.Fatalf("script ran as %q, want the resolved absolute path", build.Name)
+	}
+	if rel, err := filepath.Rel(owner.Root, build.Name); err != nil || strings.HasPrefix(rel, "..") {
+		t.Fatalf("script %q resolved outside the checkout", build.Name)
+	}
+}
+
+func TestNative_MissingCommittedScriptFailsBeforeRunning(t *testing.T) {
+	owner := ownerForTest(t)
+	runner := &fakeRunner{}
+	native := Native{Runner: runner, Executions: storage.Executions{}}
+	config := nativeConfig()
+	config.Components[0].Build = &connection.Build{Executable: "./absent.sh"}
+	record := app.Connection{RuntimeID: config.RuntimeID, Repository: app.Repository{FullName: "owner/repository"}}
+	record.Managed, record.ConcreteHash, _ = native.Materialize(context.Background(), owner, record, config, config.Markdown())
+
+	err := native.Start(context.Background(), owner, record, config, func(string, string) error { return nil })
+	if err == nil || !strings.Contains(err.Error(), "committed build script") {
+		t.Fatalf("err=%v, want a committed-script resolution failure", err)
+	}
+	for _, command := range runner.commands {
+		if command.Name != "git" {
+			t.Fatalf("a non-git command ran: %v", command.Name)
+		}
 	}
 }

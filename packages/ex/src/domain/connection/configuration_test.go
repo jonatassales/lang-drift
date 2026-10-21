@@ -1,6 +1,7 @@
 package connection
 
 import (
+	"errors"
 	"strings"
 	"testing"
 )
@@ -37,3 +38,47 @@ func TestConfiguration_DuplicateBasenamesRemainSeparate(t *testing.T) {
 		t.Fatal("duplicate source accepted")
 	}
 }
+
+func TestBuild_RecipePolicy(t *testing.T) {
+	refused := []Build{
+		{Executable: "python3", Args: []string{"-c", "print(1)"}},
+		{Executable: "node", Args: []string{"-e", "fetch('x')"}},
+		{Executable: "sh", Args: []string{"-c", "id"}},
+		{Executable: "sh", Args: []string{"build.sh"}},
+		{Executable: "bash", Args: []string{"build.sh"}},
+		{Executable: "curl", Args: []string{"example.com"}},
+		{Executable: "npx", Args: []string{"vite", "build"}},
+		{Executable: "docker", Args: []string{"run", "api:local"}},
+		{Executable: "go", Args: []string{"-modfile", "x"}},
+		{Executable: "make", Args: []string{"-j4"}},
+		{Executable: "build.sh"},
+		{Executable: "/usr/local/bin/build.sh"},
+		{Executable: "../build.sh"},
+		{Executable: "./tools/../../build.sh"},
+		{Executable: "./build.sh", Args: []string{"--output", "/tmp"}},
+		{Executable: `.\build.cmd`},
+	}
+	for _, build := range refused {
+		if err := build.Validate(); !errorsIsRefused(err) {
+			t.Fatalf("%v accepted, want ErrRecipeRefused", build)
+		}
+	}
+
+	accepted := []Build{
+		{Executable: "./build.sh"},
+		{Executable: "./scripts/release.sh", Args: []string{"--prod"}},
+		{Executable: "docker", Args: []string{"build", "-t", "api:local", "."}},
+		{Executable: "go", Args: []string{"build", "./..."}},
+		{Executable: "npm", Args: []string{"run", "build"}},
+		{Executable: "pnpm", Args: []string{"build"}},
+		{Executable: "make", Args: []string{"image"}},
+		{Executable: "make"},
+	}
+	for _, build := range accepted {
+		if err := build.Validate(); err != nil {
+			t.Fatalf("%v refused: %v", build, err)
+		}
+	}
+}
+
+func errorsIsRefused(err error) bool { return errors.Is(err, ErrRecipeRefused) }

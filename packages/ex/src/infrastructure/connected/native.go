@@ -360,7 +360,17 @@ func (native Native) Start(ctx context.Context, owner project.Project, record ap
 				return errors.New("declared Docker build requires an existing Dockerfile")
 			}
 		}
-		if _, err := native.Runner.Run(ctx, process.Command{Name: component.Build.Executable, Args: component.Build.Args, Dir: directory, UnsetEnv: credentialEnvironment()}); err != nil {
+		command := process.Command{Name: component.Build.Executable, Args: component.Build.Args, Dir: directory, UnsetEnv: credentialEnvironment()}
+		// A committed script resolves inside the component's checkout directory,
+		// through the symlink-refusing resolver, and runs by absolute path.
+		if strings.Contains(component.Build.Executable, "/") {
+			resolved, err := files.Existing(directory, component.Build.Executable)
+			if err != nil {
+				return fmt.Errorf("committed build script: %w", err)
+			}
+			command.Name = resolved
+		}
+		if _, err := native.Runner.Run(ctx, command); err != nil {
 			_ = report("build_failed", "build_failed")
 			return errors.New("declared build recipe failed; no runtime was started")
 		}

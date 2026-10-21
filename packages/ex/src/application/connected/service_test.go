@@ -140,7 +140,7 @@ func (c *consoleFake) Claim(_ context.Context, _ Connection, intent Intent) (Cla
 }
 
 func configForTest() connection.Configuration {
-	return connection.Configuration{Version: 1, RuntimeUID: "runtime-uid", RuntimeID: "runtime", ProjectID: "console-project", Revision: 1, Name: "Example", CPUMillis: 1000, MemoryMiB: 512, Model: "test-model", Effort: "low", Components: []connection.Component{{Path: "api", Image: "api:local", Port: 3000, ReadinessPath: "/", Build: &connection.Build{Executable: "sh", Args: []string{"build.sh"}}}}}
+	return connection.Configuration{Version: 1, RuntimeUID: "runtime-uid", RuntimeID: "runtime", ProjectID: "console-project", Revision: 1, Name: "Example", CPUMillis: 1000, MemoryMiB: 512, Model: "test-model", Effort: "low", Components: []connection.Component{{Path: "api", Image: "api:local", Port: 3000, ReadinessPath: "/", Build: &connection.Build{Executable: "./build.sh"}}}}
 }
 
 func TestService_DisconnectionReplaysBeforeConditionalResume(t *testing.T) {
