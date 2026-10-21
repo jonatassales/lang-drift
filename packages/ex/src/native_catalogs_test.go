@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/jonatassales/tao/packages/ex/src/application"
 	"github.com/jonatassales/tao/packages/ex/src/presentation/cli"
 	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/catalog"
 	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
@@ -31,12 +32,19 @@ func executeNativeCatalogs(ctx context.Context, args []string, options support.O
 	root.SetOut(options.Output)
 	root.SetErr(options.Diagnostics)
 	if err := root.ExecuteContext(ctx); err != nil {
+		// Mirrors the real CLI's documented contract until this retained
+		// adapter is deleted with the retired runtime tree.
 		status := 1
 		var usage support.UsageError
-		if ctx.Err() != nil || errors.Is(err, context.Canceled) {
+		switch {
+		case ctx.Err() != nil || errors.Is(err, context.Canceled):
 			status = 130
-		} else if errors.As(err, &usage) {
+		case errors.As(err, &usage):
 			status = 2
+		case errors.Is(err, application.ErrAdoptionRefused) || errors.Is(err, application.ErrTargetMismatch) || errors.Is(err, application.ErrConfigurationChanged) || errors.Is(err, application.ErrAlreadyExists):
+			status = 3
+		case errors.Is(err, application.ErrNotFound):
+			status = 4
 		}
 		if globals.JSON {
 			_ = json.NewEncoder(options.Diagnostics).Encode(map[string]any{"error": err.Error(), "exitCode": status})

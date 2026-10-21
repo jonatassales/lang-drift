@@ -141,7 +141,7 @@ func TestCommandsStopBeforeInfrastructureWithoutAProject(t *testing.T) {
 		{"cluster", "inspect"},
 		{"agent", "init", "researcher"},
 	} {
-		if status, _, stderr := p.ex("", arguments...); status != 1 || !strings.Contains(stderr, "no LangDrift project") {
+		if status, _, stderr := p.ex("", arguments...); status != 4 || !strings.Contains(stderr, "no LangDrift project") {
 			t.Errorf("ex %v = %d, %q; want the missing project reported", arguments, status, stderr)
 		}
 	}
@@ -163,6 +163,7 @@ func TestCommandsStopBeforeInfrastructureWithoutACluster(t *testing.T) {
 		arguments []string
 		stderr    string
 	}{
+		// A missing record is a missing prerequisite: exit 4 by contract.
 		{arguments: []string{"cluster", "inspect"}, stderr: "no cluster is recorded"},
 		{arguments: []string{"runtime", "up", "demo"}, stderr: "no cluster is recorded"},
 		{arguments: []string{"runtime", "down", "demo"}, stderr: "runtime demo has no execution record"},
@@ -170,7 +171,7 @@ func TestCommandsStopBeforeInfrastructureWithoutACluster(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		if status, _, stderr := p.ex("", tt.arguments...); status != 1 || !strings.Contains(stderr, tt.stderr) {
+		if status, _, stderr := p.ex("", tt.arguments...); status != 4 || !strings.Contains(stderr, tt.stderr) {
 			t.Errorf("ex %v = %d, %q; want %q", tt.arguments, status, stderr, tt.stderr)
 		}
 	}

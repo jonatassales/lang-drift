@@ -6,11 +6,18 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"os/exec"
 
+	app "github.com/jonatassales/tao/packages/ex/src/application"
+	connected "github.com/jonatassales/tao/packages/ex/src/application/connected"
+	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
 	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
 
-// exitCode maps execution failures to process exit codes.
+// exitCode maps execution failures to the documented contract: 0 success,
+// 1 operation failed, 2 invalid usage, 3 refused by a guard or policy,
+// 4 missing prerequisite, 130 interrupted. Scripts react to the code; the
+// message stays for people.
 func exitCode(
 	applicationContext context.Context,
 	executionError error,
@@ -24,6 +31,18 @@ func exitCode(
 
 	case errors.As(executionError, &invalidUsage):
 		return 2
+
+	case errors.Is(executionError, app.ErrAdoptionRefused) ||
+		errors.Is(executionError, app.ErrTargetMismatch) ||
+		errors.Is(executionError, app.ErrConfigurationChanged) ||
+		errors.Is(executionError, app.ErrAlreadyExists) ||
+		errors.Is(executionError, connection.ErrRecipeRefused) ||
+		errors.Is(executionError, connected.ErrAccessRevoked):
+		return 3
+
+	case errors.Is(executionError, app.ErrNotFound) ||
+		errors.Is(executionError, exec.ErrNotFound):
+		return 4
 
 	default:
 		return 1

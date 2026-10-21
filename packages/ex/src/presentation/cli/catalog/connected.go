@@ -20,7 +20,7 @@ type ProjectAgent interface {
 }
 
 func NewAgentConnectCommand(agent ProjectAgent, globals *support.Globals) *cobra.Command {
-	return &cobra.Command{Use: "connect <console-url>", Short: "Bind this checkout using RUNTIME_SECRET from the environment", Args: cobra.ExactArgs(1), RunE: func(command *cobra.Command, args []string) error {
+	return &cobra.Command{Use: "connect <console-url>", Short: "Bind this checkout using RUNTIME_SECRET from the environment", Args: support.ExactArguments(1), RunE: func(command *cobra.Command, args []string) error {
 		return runFinite(command, globals, func(ctx context.Context, selection application.ProjectSelection) (connected.Result, error) {
 			return agent.Connect(ctx, connected.ConnectRequest{Project: selection, URL: args[0], Secret: os.Getenv("RUNTIME_SECRET")})
 		})
@@ -37,7 +37,7 @@ func NewAgentRunCommand(agent ProjectAgent, globals *support.Globals) *cobra.Com
 }
 func NewAgentMigrateCommand(agent ProjectAgent, globals *support.Globals) *cobra.Command {
 	var recover bool
-	command := &cobra.Command{Use: "migrate <runtime-id>", Short: "Prepare migration of a stopped JSON v2 runtime without changing native files", Args: cobra.ExactArgs(1), RunE: func(command *cobra.Command, args []string) error {
+	command := &cobra.Command{Use: "migrate <runtime-id>", Short: "Prepare migration of a stopped JSON v2 runtime without changing native files", Args: support.ExactArguments(1), RunE: func(command *cobra.Command, args []string) error {
 		return runFinite(command, globals, func(ctx context.Context, selection application.ProjectSelection) (connected.Result, error) {
 			return agent.Migrate(ctx, connected.MigrateRequest{Project: selection, Runtime: args[0], Recover: recover})
 		})
@@ -50,7 +50,7 @@ func NewAgentMigrateCommand(agent ProjectAgent, globals *support.Globals) *cobra
 // A supervising console owns stdin; its closure cancels work even after a crash.
 func NewAgentProjectCommand(agent ProjectAgent, globals *support.Globals) *cobra.Command {
 	var supervised bool
-	command := &cobra.Command{Use: "project <console-url>", Short: "Connect this project and synchronize all its microruntimes", Args: cobra.ExactArgs(1), RunE: func(command *cobra.Command, args []string) error {
+	command := &cobra.Command{Use: "project <console-url>", Short: "Connect this project and synchronize all its microruntimes", Args: support.ExactArguments(1), RunE: func(command *cobra.Command, args []string) error {
 		selection, err := globals.Selection()
 		if err != nil {
 			return err

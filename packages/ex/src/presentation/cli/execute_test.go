@@ -13,11 +13,29 @@ import (
 	"testing"
 	"time"
 
+	"os/exec"
+
 	app "github.com/jonatassales/tao/packages/ex/src/application"
+	connectedapp "github.com/jonatassales/tao/packages/ex/src/application/connected"
+	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
 	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
 
 const workingDirectory = "/workspace/project"
+
+// fakeProjectAgent mounts the agent commands; the failure tests never reach it.
+type fakeProjectAgent struct{}
+
+func (*fakeProjectAgent) Connect(context.Context, connectedapp.ConnectRequest) (connectedapp.Result, error) {
+	return connectedapp.Result{}, nil
+}
+func (*fakeProjectAgent) Run(context.Context, connectedapp.RunRequest) error { return nil }
+func (*fakeProjectAgent) RunProject(context.Context, connectedapp.ProjectRunRequest) error {
+	return nil
+}
+func (*fakeProjectAgent) Migrate(context.Context, connectedapp.MigrateRequest) (connectedapp.Result, error) {
+	return connectedapp.Result{}, nil
+}
 
 // operation records the requests a finite use case receives and whether its
 // context carried a deadline.
@@ -78,6 +96,7 @@ type harness struct {
 	clusterInspect   operation[app.ClusterRequest, app.ClusterResult]
 	clusterLoadImage operation[app.LoadClusterImageRequest, app.ImageResult]
 	agentInit        operation[app.InitializeAgentRequest, app.AgentResult]
+	projectAgent     fakeProjectAgent
 	input            string
 }
 
@@ -89,6 +108,7 @@ func (h *harness) useCases() UseCases {
 		RuntimeForward: &h.runtimeForward, RuntimeHook: &h.runtimeHook,
 		ClusterCreate: &h.clusterCreate, ClusterDelete: &h.clusterDelete, ClusterInspect: &h.clusterInspect,
 		ClusterLoadImage: &h.clusterLoadImage, AgentInit: &h.agentInit,
+		ProjectAgent: &h.projectAgent,
 	}
 }
 
@@ -243,7 +263,16 @@ func TestExecute_ClassifiesFailures(t *testing.T) {
 		{name: "logs as JSON", arguments: []string{"runtime", "logs", "demo", "--unit", "web", "--json"}, wantStatus: 2, wantStderr: "--json is unsupported"},
 		{name: "forward without a unit", arguments: []string{"runtime", "forward", "demo"}, wantStatus: 2, wantStderr: "--unit is required"},
 		{name: "unknown help topic", arguments: []string{"help", "deploy"}, wantStatus: 2, wantStderr: "unknown help command"},
+		{name: "agent connect without URL", arguments: []string{"agent", "connect"}, wantStatus: 2, wantStderr: "ex agent connect requires 1 argument(s)"},
+		{name: "agent migrate without runtime", arguments: []string{"agent", "migrate"}, wantStatus: 2, wantStderr: "ex agent migrate requires 1 argument(s)"},
 		{name: "operational failure", arguments: []string{"runtime", "up", "demo"}, failure: errors.New("cluster is not ready"), wantStatus: 1, wantStderr: "ex: cluster is not ready\n"},
+		{name: "adoption refused", arguments: []string{"runtime", "up", "demo"}, failure: fmt.Errorf("namespace exists: %w", app.ErrAdoptionRefused), wantStatus: 3, wantStderr: "refusing to adopt"},
+		{name: "target mismatch refused", arguments: []string{"runtime", "up", "demo"}, failure: fmt.Errorf("guard: %w", app.ErrTargetMismatch), wantStatus: 3, wantStderr: "target differs"},
+		{name: "build recipe refused", arguments: []string{"runtime", "up", "demo"}, failure: fmt.Errorf("component api: %w", connection.ErrRecipeRefused), wantStatus: 3, wantStderr: "refused by policy"},
+		{name: "console access revoked", arguments: []string{"runtime", "up", "demo"}, failure: fmt.Errorf("sync: %w", connectedapp.ErrAccessRevoked), wantStatus: 3, wantStderr: "revoked"},
+		{name: "replacement refused", arguments: []string{"runtime", "up", "demo"}, failure: fmt.Errorf("record: %w", app.ErrAlreadyExists), wantStatus: 3, wantStderr: "already exists"},
+		{name: "missing prerequisite record", arguments: []string{"runtime", "up", "demo"}, failure: app.NotFound("no cluster for this project"), wantStatus: 4, wantStderr: "no cluster"},
+		{name: "missing tool", arguments: []string{"runtime", "up", "demo"}, failure: fmt.Errorf("kind failed: %w", exec.ErrNotFound), wantStatus: 4, wantStderr: "executable file not found"},
 		{name: "interruption", arguments: []string{"runtime", "up", "demo"}, failure: fmt.Errorf("await: %w", context.Canceled), wantStatus: 130},
 		{name: "deadline", arguments: []string{"runtime", "up", "demo"}, failure: context.DeadlineExceeded, wantStatus: 1, wantStderr: "deadline exceeded"},
 	}

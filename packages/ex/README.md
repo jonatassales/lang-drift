@@ -51,6 +51,17 @@ In the commands below, `ex` means this tree's compiled `./dist/ex` executable.
 
 All previous `ex runtime ...` creation, configuration and operation commands now refuse with console/migration guidance. Their native use cases remain internal to the connected agent and test fixtures.
 
+## Exit codes
+
+| Code | Meaning |
+| --- | --- |
+| 0 | Success. |
+| 1 | The operation failed. |
+| 2 | Invalid usage: unknown command, flag, or argument shape. |
+| 3 | Refused by a guard or policy: adoption of unowned resources, a changed configuration, a build recipe outside the allowlist, revoked console access. |
+| 4 | A prerequisite is missing: a required tool is not installed, or a required project, cluster or runtime record does not exist. |
+| 130 | Interrupted. |
+
 Global flags are `--project <directory>`, `--json`, and `--timeout <duration>`.
 Without `--project`, the nearest parent project is discovered. Finite commands default to two minutes. `ex agent run` owns a foreground process until interrupted; each native operation is separately bounded to two minutes and cleanup uses its own bounded context.
 
