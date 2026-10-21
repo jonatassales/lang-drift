@@ -61,16 +61,16 @@ type Native struct {
 func Parse(markdown string) (Configuration, error) {
 	var config Configuration
 	if len(markdown) > 1<<20 {
-		return config, errors.New("Markdown exceeds 1 MiB")
+		return config, invalid("Markdown exceeds 1 MiB")
 	}
 	const fence = "```langdrift\n"
 	if strings.Count(markdown, fence) != 1 {
-		return config, errors.New("Markdown requires exactly one langdrift JSON fence")
+		return config, invalid("Markdown requires exactly one langdrift JSON fence")
 	}
 	after := strings.SplitN(markdown, fence, 2)[1]
 	end := strings.Index(after, "\n```")
 	if end < 0 {
-		return config, errors.New("configuration fence is not closed")
+		return config, invalid("configuration fence is not closed")
 	}
 	decoder := json.NewDecoder(strings.NewReader(after[:end]))
 	decoder.DisallowUnknownFields()
@@ -78,7 +78,7 @@ func Parse(markdown string) (Configuration, error) {
 		return config, fmt.Errorf("configuration block: %w", err)
 	}
 	if err := decoder.Decode(new(any)); !errors.Is(err, io.EOF) {
-		return config, errors.New("configuration block must contain one JSON object")
+		return config, invalid("configuration block must contain one JSON object")
 	}
 	return config, config.Validate()
 }
@@ -92,56 +92,65 @@ func (config Configuration) Markdown() string {
 // Validate bounds resources and makes all execution choices explicit.
 func (config Configuration) Validate() error {
 	if config.Version != 1 || config.Revision < 1 || config.RuntimeUID == "" || config.ProjectID == "" || strings.TrimSpace(config.Name) == "" {
-		return errors.New("version 1, identities, revision and name are required")
+		return invalid("version 1, identities, revision and name are required")
 	}
 	if _, err := microruntime.ParseIdentifier(config.RuntimeID); err != nil {
 		return err
 	}
 	if config.CPUMillis < 1 || config.CPUMillis > 64_000 || config.MemoryMiB < 1 || config.MemoryMiB > 1_048_576 {
-		return errors.New("CPU and memory must be positive bounded per-execution limits")
+		return invalid("CPU and memory must be positive bounded per-execution limits")
 	}
 	if config.LLMBudgetUSD != nil && (math.IsNaN(*config.LLMBudgetUSD) || *config.LLMBudgetUSD < 0.01 || *config.LLMBudgetUSD > 1_000_000) {
-		return errors.New("LLM budget must be positive bounded USD")
+		return invalid("LLM budget must be positive bounded USD")
 	}
 	if config.Model == "" || (config.Effort != "low" && config.Effort != "medium" && config.Effort != "high") {
-		return errors.New("explicit agent model and low, medium, or high effort are required")
+		return invalid("explicit agent model and low, medium, or high effort are required")
 	}
 	if len(config.Components) == 0 || len(config.Components) > 16 {
-		return errors.New("select between 1 and 16 components")
+		return invalid("select between 1 and 16 components")
 	}
 	if config.Native != nil && config.Native.RuntimeID != config.RuntimeID {
-		return errors.New("migration must preserve the native runtime ID")
+		return invalid("migration must preserve the native runtime ID")
 	}
 	if config.CPUMillis < len(config.Components) || config.MemoryMiB < len(config.Components) {
-		return errors.New("resource envelope must allocate at least 1m CPU and 1 MiB per component")
+		return invalid("resource envelope must allocate at least 1m CPU and 1 MiB per component")
 	}
 	names := map[string]bool{}
 	for _, component := range config.Components {
 		if _, err := microruntime.ParseComponentPath(component.Path); err != nil {
 			return err
 		}
-		if strings.HasPrefix(component.Path, ".langdrift/") || names[component.Path] {
-			return errors.New("component sources must be outside .langdrift and have unique source paths")
+		if microruntime.IsPlatformPath(component.Path) || names[component.Path] {
+			return invalid("component sources must be outside .langdrift and have unique source paths")
 		}
 		names[component.Path] = true
 		if !microruntime.IsImageReference(component.Image) {
-			return errors.New("each component requires an explicit image")
+			return invalid("each component requires an explicit image")
 		}
-		if component.Port < 1 || component.Port > 65535 || !strings.HasPrefix(component.ReadinessPath, "/") {
-			return errors.New("each component requires a port and readiness path")
+		if !microruntime.ValidPort(component.Port) || !strings.HasPrefix(component.ReadinessPath, "/") {
+			return invalid("each component requires a port and readiness path")
 		}
 		if component.Build == nil || component.Build.Executable == "" || len(component.Build.Args) > 128 || strings.ContainsAny(component.Build.Executable, "\n\r\x00") {
-			return errors.New("each component requires an explicit existing build recipe")
+			return invalid("each component requires an explicit existing build recipe")
 		}
 		if err := component.Build.Validate(); err != nil {
 			return err
 		}
 		encoded, _ := json.Marshal(component.Build)
 		if len(encoded) > 16384 || bytes.Contains(encoded, []byte(`\u0000`)) {
-			return errors.New("build recipe exceeds supported limits")
+			return invalid("build recipe exceeds supported limits")
 		}
 	}
 	return nil
+}
+
+// ErrInvalidConfiguration classifies every authored-configuration rejection,
+// so callers match the class with errors.Is and read the reason in the text.
+var ErrInvalidConfiguration = errors.New("invalid runtime configuration")
+
+// invalid rejects an authored configuration with its reason.
+func invalid(reason string) error {
+	return fmt.Errorf("%w: %s", ErrInvalidConfiguration, reason)
 }
 
 // ErrRecipeRefused marks a build recipe outside the allowlist policy, so

@@ -20,6 +20,9 @@ type DeleteCluster struct {
 	Executions  ExecutionLister
 	Provisioner ClusterProvisioner
 	Observer    ClusterObserver
+
+	// Clock is injectable for tests; nil uses the real time.
+	Clock Clock
 }
 
 // Execute deletes the cluster, or reconciles a record whose cluster is already gone.
@@ -70,7 +73,7 @@ func (useCase DeleteCluster) Execute(ctx context.Context, request ClusterRequest
 	}
 
 	record.MarkDeleting()
-	if err := saveCluster(useCase.Clusters, owner, &record); err != nil {
+	if err := saveCluster(useCase.Clusters, owner, &record, useCase.Clock); err != nil {
 		return ClusterResult{}, err
 	}
 
@@ -78,7 +81,7 @@ func (useCase DeleteCluster) Execute(ctx context.Context, request ClusterRequest
 	defer cancel()
 
 	if err := useCase.destroy(operationContext, record.Name); err != nil {
-		return ClusterResult{}, recordFailure(useCase.Clusters, owner, &record, err)
+		return ClusterResult{}, recordFailure(useCase.Clusters, owner, &record, err, useCase.Clock)
 	}
 
 	return useCase.forget(owner, &record)
@@ -150,7 +153,7 @@ func (useCase DeleteCluster) exists(ctx context.Context, name string) (bool, err
 func (useCase DeleteCluster) forget(owner project.Project, record *cluster.Record) (ClusterResult, error) {
 	record.MarkDeleted()
 
-	if err := saveCluster(useCase.Clusters, owner, record); err != nil {
+	if err := saveCluster(useCase.Clusters, owner, record, useCase.Clock); err != nil {
 		return ClusterResult{}, err
 	}
 

@@ -29,7 +29,7 @@ func (execution *Execution) SelectResource(unit Identifier, workload bool) (Reso
 // It does not infer a target for an ambiguous or malformed Service.
 func (object Object) ForwardPort(explicit int) (int, error) {
 	if explicit != 0 {
-		if explicit < 1 || explicit > 65535 {
+		if !ValidPort(explicit) {
 			return 0, reject(ErrUnsupportedManifest, "ports must be between 1 and 65535")
 		}
 		return explicit, nil

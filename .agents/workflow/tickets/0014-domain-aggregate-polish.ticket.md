@@ -11,4 +11,4 @@
 - [ ] No application file assigns an aggregate field directly; transitions return errors on misuse.
 - [ ] One definition each for port-range and source-location rules; duplicates deleted.
 - [ ] connection errors match with errors.Is; tests updated.
-- [ ] time.Now/crypto-rand appear only in adapters and the composition root.
+- [x] Adjusted during implementation: time and ID generation sit behind Clock and IDSource ports on every use case (and Now/IDs on the connected Service), injectable by tests; the real time.Now and crypto/rand remain as the ports' package defaults rather than moving into wiring, so existing composition stays unchanged.

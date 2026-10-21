@@ -13,6 +13,9 @@ type InitializeProject struct {
 	Projects  ProjectOpener
 	Creator   ProjectCreator
 	Bootstrap ProjectBootstrapper
+
+	// Injectable for tests; nil uses the real sources.
+	IDs IDSource
 }
 
 // InitializeProjectRequest names the directory that becomes the project root.
@@ -60,7 +63,7 @@ func (useCase InitializeProject) Execute(_ context.Context, request InitializePr
 }
 
 func (useCase InitializeProject) create(directory string) (project.Project, error) {
-	text, err := newID()
+	text, err := useCase.IDs.id()
 	if err != nil {
 		return project.Project{}, err
 	}

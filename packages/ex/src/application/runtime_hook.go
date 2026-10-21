@@ -70,6 +70,9 @@ type RunRuntimeHook struct {
 	Scripts       HookResolver
 	Executor      HookExecutor
 	Evidence      HookEvidence
+
+	// Injectable for tests; nil uses the real sources.
+	IDs IDSource
 }
 
 // RunRuntimeHookRequest identifies the declared extension to execute.
@@ -115,7 +118,7 @@ func (useCase RunRuntimeHook) Execute(ctx context.Context, request RunRuntimeHoo
 
 	hookContext, cancel := context.WithTimeout(ctx, hookTimeout)
 	defer cancel()
-	runID, err := newID()
+	runID, err := useCase.IDs.id()
 	if err != nil {
 		return HookResult{}, err
 	}

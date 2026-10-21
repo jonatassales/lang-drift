@@ -92,7 +92,7 @@ func (workload Workload) Validate() error {
 func (workload Workload) validateDeployment() error {
 	service := workload.Service
 
-	if service.Port < 1 || service.Port > 65535 || service.Replicas < 1 {
+	if !ValidPort(service.Port) || service.Replicas < 1 {
 		return reject(
 			ErrInvalidBlueprint,
 			"workload %s requires a valid port and positive replicas",

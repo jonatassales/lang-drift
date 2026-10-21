@@ -20,6 +20,8 @@ type lifecycleSources struct {
 	guard         clusterGuard
 	ledger        ExecutionLedger
 	evidence      ExecutionEvidence
+	ids           IDSource
+	clock         Clock
 }
 
 // lifecycle is the shared context of one locked up or down. Once its
@@ -32,6 +34,8 @@ type lifecycle struct {
 	target     Target
 	ledger     ExecutionLedger
 	evidence   ExecutionEvidence
+	ids        IDSource
+	clock      Clock
 	execution  *microruntime.Execution
 }
 
@@ -66,11 +70,13 @@ func (sources lifecycleSources) open(
 		target:     Target{ClusterAccess: accessOf(record), Namespace: descriptor.Target.Namespace.String()},
 		ledger:     sources.ledger,
 		evidence:   sources.evidence,
+		ids:        sources.ids,
+		clock:      sources.clock,
 	}, nil
 }
 
 func (run *lifecycle) save() error {
-	run.execution.UpdatedAt = time.Now().UTC()
+	run.execution.Touch(run.clock.now())
 
 	return run.ledger.Save(run.owner, run.execution)
 }

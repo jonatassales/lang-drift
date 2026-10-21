@@ -8,6 +8,7 @@ package cluster
 import (
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
@@ -156,6 +157,23 @@ func (record *Record) Complete(bootstrap Inventory) error {
 }
 
 // Fail records why the last operation stopped.
+// Provisioned records the context name the provisioner created the cluster
+// under. An empty name would make every later kubectl call ambiguous.
+func (record *Record) Provisioned(contextName string) error {
+	if strings.TrimSpace(contextName) == "" {
+		return errors.New("provisioning reported no context name")
+	}
+
+	record.Context = contextName
+
+	return nil
+}
+
+// Touch records when the record was last persisted.
+func (record *Record) Touch(now time.Time) {
+	record.UpdatedAt = now
+}
+
 func (record *Record) Fail(cause error, interrupted bool) {
 	record.Status = StatusFailed
 	if interrupted {

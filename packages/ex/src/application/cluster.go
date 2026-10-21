@@ -138,18 +138,18 @@ func (guard clusterGuard) verify(ctx context.Context, record cluster.Record) err
 }
 
 // recordFailure persists why a cluster operation stopped without hiding the cause.
-func recordFailure(store ClusterWriter, owner project.Project, record *cluster.Record, cause error) error {
+func recordFailure(store ClusterWriter, owner project.Project, record *cluster.Record, cause error, clock Clock) error {
 	record.Fail(cause, isInterruption(cause))
 
-	if err := saveCluster(store, owner, record); err != nil {
+	if err := saveCluster(store, owner, record, clock); err != nil {
 		return errors.Join(cause, fmt.Errorf("record cluster failure: %w", err))
 	}
 
 	return cause
 }
 
-func saveCluster(store ClusterWriter, owner project.Project, record *cluster.Record) error {
-	record.UpdatedAt = time.Now().UTC()
+func saveCluster(store ClusterWriter, owner project.Project, record *cluster.Record, clock Clock) error {
+	record.Touch(clock.now())
 
 	return store.Save(owner, *record)
 }

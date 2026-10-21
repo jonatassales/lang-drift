@@ -24,6 +24,10 @@ type StartRuntime struct {
 	Preparation   Preparer
 	Evidence      ExecutionEvidence
 	Tools         ToolVersions
+
+	// IDs and Clock are injectable for tests; nil uses the real sources.
+	IDs   IDSource
+	Clock Clock
 }
 
 // Execute checks everything that can be checked without side effects, then
@@ -73,6 +77,8 @@ func (useCase StartRuntime) sources() lifecycleSources {
 		guard:         clusterGuard{records: useCase.Clusters, observer: useCase.Observer},
 		ledger:        useCase.Executions,
 		evidence:      useCase.Evidence,
+		ids:           useCase.IDs,
+		clock:         useCase.Clock,
 	}
 }
 
@@ -146,12 +152,12 @@ func (run *startup) run(ctx context.Context, tools map[string]microruntime.ToolV
 
 // begin claims every manifest and writes the obligations before anything is created.
 func (run *startup) begin(tools map[string]microruntime.ToolVersion) error {
-	token, err := newID()
+	token, err := run.ids.id()
 	if err != nil {
 		return err
 	}
 
-	runID, err := newID()
+	runID, err := run.ids.id()
 	if err != nil {
 		return err
 	}
@@ -215,9 +221,7 @@ func (run *startup) prepareNamespace(ctx context.Context) error {
 func (run *startup) validateObjects(ctx context.Context) error {
 	for _, manifest := range run.snapshot.Manifests {
 		if err := run.objects.DryRun(ctx, run.target, manifest.Object); err != nil {
-			run.execution.MarkUnit(manifest.Unit, microruntime.UnitFailed)
-
-			return err
+			return errors.Join(err, run.execution.MarkUnit(manifest.Unit, microruntime.UnitFailed))
 		}
 	}
 
@@ -250,16 +254,16 @@ func (run *startup) createObject(ctx context.Context, index int, manifest micror
 		return fmt.Errorf("%w: %s already exists", ErrAdoptionRefused, manifest.Key())
 	}
 
-	run.execution.MarkUnit(manifest.Unit, microruntime.UnitRunning)
+	if err := run.execution.MarkUnit(manifest.Unit, microruntime.UnitRunning); err != nil {
+		return err
+	}
 	if err := run.save(); err != nil {
 		return err
 	}
 
 	created, err := run.objects.Create(ctx, run.target, manifest.Object)
 	if err != nil {
-		run.execution.MarkUnit(manifest.Unit, microruntime.UnitFailed)
-
-		return err
+		return errors.Join(err, run.execution.MarkUnit(manifest.Unit, microruntime.UnitFailed))
 	}
 
 	if err := run.execution.RecordCreated(index, created); err != nil {
@@ -277,14 +281,14 @@ func (run *startup) awaitWorkloads(ctx context.Context) error {
 	for _, resource := range run.execution.Resources {
 		if resource.IsWorkload() {
 			if err := run.awaitReady(ctx, resource); err != nil {
-				run.execution.MarkUnit(resource.Unit, microruntime.UnitFailed)
-
-				return err
+				return errors.Join(err, run.execution.MarkUnit(resource.Unit, microruntime.UnitFailed))
 			}
 		}
 
 		if progress.Finish(resource.Unit) {
-			run.execution.MarkUnit(resource.Unit, microruntime.UnitCompleted)
+			if err := run.execution.MarkUnit(resource.Unit, microruntime.UnitCompleted); err != nil {
+				return err
+			}
 
 			if err := run.save(); err != nil {
 				return err
@@ -312,7 +316,7 @@ func (run *startup) observeImages(ctx context.Context) error {
 		return fmt.Errorf("workloads became ready but image observation failed: %w", err)
 	}
 
-	run.execution.Images = microruntime.MergeContainers(run.execution.Images, observed)
+	run.execution.ObserveImages(observed)
 
 	return nil
 }
@@ -325,6 +329,6 @@ func (run *startup) keepObservedImages(ctx context.Context) {
 	}
 
 	if observed, _, err := observeContainers(ctx, run.objects, run.target, run.execution); err == nil {
-		run.execution.Images = microruntime.MergeContainers(run.execution.Images, observed)
+		run.execution.ObserveImages(observed)
 	}
 }

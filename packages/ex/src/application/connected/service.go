@@ -16,12 +16,21 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
+// identifier generates event and environment identities; Service.IDs
+// overrides it in tests.
 func identifier() (string, error) {
 	var b [16]byte
 	if _, err := rand.Read(b[:]); err != nil {
 		return "", err
 	}
 	return hex.EncodeToString(b[:]), nil
+}
+
+func (service Service) identifier() (string, error) {
+	if service.IDs != nil {
+		return service.IDs()
+	}
+	return identifier()
 }
 
 // Connect binds one checkout without changing its native project identity. The
@@ -34,7 +43,7 @@ func (service Service) Connect(ctx context.Context, request ConnectRequest) (Res
 	if err != nil {
 		return Result{}, err
 	}
-	env, err := identifier()
+	env, err := service.identifier()
 	if err != nil {
 		return Result{}, err
 	}
@@ -180,7 +189,7 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 	}
 	save := func() error { return service.Store.Save(owner, record) }
 	appendEvent := func(kind string, cause connection.Cause, detail string) error {
-		eventID, err := identifier()
+		eventID, err := service.identifier()
 		if err != nil {
 			return err
 		}
@@ -195,7 +204,7 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 		if cause == connection.CauseConfiguration {
 			eventExecution = ""
 		}
-		event := Event{ID: eventID, Sequence: record.Sequence + 1, PurgeEpoch: record.PurgeEpoch, ExecutionID: eventExecution, Kind: kind, Cause: string(cause), OccurredAt: time.Now().UTC(), Revision: eventRevision, IntentVersion: record.IntentVersion, Detail: detail, OperationID: record.OperationID, ConcreteHash: record.ConcreteHash, MarkdownHash: markdownHash(record.Markdown)}
+		event := Event{ID: eventID, Sequence: record.Sequence + 1, PurgeEpoch: record.PurgeEpoch, ExecutionID: eventExecution, Kind: kind, Cause: string(cause), OccurredAt: service.now().UTC(), Revision: eventRevision, IntentVersion: record.IntentVersion, Detail: detail, OperationID: record.OperationID, ConcreteHash: record.ConcreteHash, MarkdownHash: markdownHash(record.Markdown)}
 		if kind == "build_started" && (len(detail) == 40 || len(detail) == 64) {
 			event.SourceRevision = detail
 			event.Detail = "build_started"

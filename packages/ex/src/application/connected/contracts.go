@@ -189,6 +189,7 @@ type Service struct {
 	PollInterval     time.Duration
 	OperationTimeout time.Duration
 	Now              func() time.Time
+	IDs              func() (string, error)
 }
 type ConnectRequest struct {
 	Project application.ProjectSelection

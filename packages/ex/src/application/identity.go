@@ -4,7 +4,31 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"fmt"
+	"time"
 )
+
+// IDSource generates opaque identifiers. Use cases call it through id(), so a
+// test injects a deterministic source and production uses the default below.
+type IDSource func() (string, error)
+
+func (source IDSource) id() (string, error) {
+	if source != nil {
+		return source()
+	}
+
+	return newID()
+}
+
+// Clock supplies the current time the same way.
+type Clock func() time.Time
+
+func (clock Clock) now() time.Time {
+	if clock != nil {
+		return clock()
+	}
+
+	return time.Now().UTC()
+}
 
 // newID returns an opaque 128-bit identifier in lowercase hex. Project IDs,
 // ownership tokens, run IDs, and observation IDs all use it.

@@ -38,3 +38,15 @@ func isPlainText(text string) bool {
 	return strings.TrimSpace(text) != "" &&
 		strings.IndexFunc(text, unicode.IsControl) == -1
 }
+
+// ValidPort reports whether a TCP port is usable. Every port a consumer or
+// the console declares goes through this one definition.
+func ValidPort(port int) bool {
+	return port >= 1 && port <= 65535
+}
+
+// IsPlatformPath reports whether a path lies inside the platform's own
+// .langdrift directory, which consumer sources never may.
+func IsPlatformPath(path string) bool {
+	return path == ".langdrift" || strings.HasPrefix(path, ".langdrift/")
+}

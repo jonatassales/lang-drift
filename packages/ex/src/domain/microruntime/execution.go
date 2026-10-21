@@ -218,14 +218,21 @@ func (execution *Execution) AuthorizeDown(recoverPartial bool) error {
 	return nil
 }
 
-// BeginDown starts a cleanup run: every unit is pending again until proven otherwise.
-func (execution *Execution) BeginDown(runID string, tools map[string]ToolVersion) {
+// BeginDown starts a cleanup run: every unit is pending again until proven
+// otherwise. A cleanup without its own run identity is refused.
+func (execution *Execution) BeginDown(runID string, tools map[string]ToolVersion) error {
+	if runID == "" {
+		return reject(ErrInconsistentExecution, "cleanup requires a run identity")
+	}
+
 	execution.RunID = runID
 	execution.Operation = OperationDown
 	execution.ToolVersions = tools
 	execution.Status = StatusCleaning
 	execution.Settled = false
 	execution.markAllUnits(UnitNotAttempted)
+
+	return nil
 }
 
 // CompleteDown records that the runtime no longer owns anything.
@@ -236,9 +243,17 @@ func (execution *Execution) CompleteDown() {
 	execution.markAllUnits(UnitCompleted)
 }
 
-// MarkUnit records how far the current operation got with one unit.
-func (execution *Execution) MarkUnit(unit Identifier, status UnitStatus) {
+// MarkUnit records how far the current operation got with one unit. A unit
+// this execution never claimed cannot be marked; recording it would invent
+// ownership the ledger must not carry.
+func (execution *Execution) MarkUnit(unit Identifier, status UnitStatus) error {
+	if _, claimed := execution.Units[unit]; !claimed {
+		return reject(ErrInconsistentExecution, "unit %s is not part of this execution", unit)
+	}
+
 	execution.Units[unit] = status
+
+	return nil
 }
 
 func (execution *Execution) markAllUnits(status UnitStatus) {
@@ -267,17 +282,19 @@ func (execution *Execution) Settle(failure error, interrupted bool) {
 }
 
 // RecordNamespace records the namespace that preparation created; later
-// cleanup is conditioned on its UID.
+// cleanup is conditioned on its UID. Ownership is proven before the UID is
+// recorded, so a refused namespace never enters the ledger.
 func (execution *Execution) RecordNamespace(live Object) error {
 	if live == nil {
 		return reject(ErrOwnershipChanged, "preparation did not create namespace %s", execution.Namespace)
 	}
 
-	execution.NamespaceUID = live.UID()
-
-	if !live.IsOwnedBy(execution.NamespaceUID, execution.Token) {
+	uid := live.UID()
+	if !live.IsOwnedBy(uid, execution.Token) {
 		return reject(ErrOwnershipChanged, "namespace %s does not carry the runtime's ownership", execution.Namespace)
 	}
+
+	execution.NamespaceUID = uid
 
 	return nil
 }
@@ -299,6 +316,10 @@ func (execution *Execution) ConfirmNamespace(live Object) error {
 
 // RecordCreated records the identity the API server gave a created object.
 func (execution *Execution) RecordCreated(index int, created Object) error {
+	if index < 0 || index >= len(execution.Resources) {
+		return reject(ErrInconsistentExecution, "no claimed resource at position %d", index)
+	}
+
 	resource := ResourceOf(created, execution.Resources[index].Unit)
 	execution.Resources[index] = resource
 
@@ -352,4 +373,15 @@ func (progress UnitProgress) Finish(unit Identifier) bool {
 	progress[unit]--
 
 	return progress[unit] == 0
+}
+
+// Touch records when the ledger was last persisted.
+func (execution *Execution) Touch(now time.Time) {
+	execution.UpdatedAt = now
+}
+
+// ObserveImages merges container observations into the record, keeping the
+// ledger the only writer of its own image evidence.
+func (execution *Execution) ObserveImages(observed []ContainerObservation) {
+	execution.Images = MergeContainers(execution.Images, observed)
 }

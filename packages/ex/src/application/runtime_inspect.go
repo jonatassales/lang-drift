@@ -20,6 +20,10 @@ type InspectRuntime struct {
 	Objects    WorkloadObserver
 	Evidence   InspectionEvidence
 	Tools      ToolVersions
+
+	// Injectable for tests; nil uses the real sources.
+	IDs   IDSource
+	Clock Clock
 }
 
 // Inspection is a sanitized observation of one runtime. Missing metrics and
@@ -169,7 +173,7 @@ func (useCase InspectRuntime) Execute(ctx context.Context, request RuntimeReques
 		return Inspection{}, fmt.Errorf("%w: inspection must target the cluster the execution used", ErrTargetMismatch)
 	}
 
-	observationID, err := newID()
+	observationID, err := useCase.IDs.id()
 	if err != nil {
 		return Inspection{}, err
 	}
@@ -178,7 +182,7 @@ func (useCase InspectRuntime) Execute(ctx context.Context, request RuntimeReques
 		Runtime:        runtime.String(),
 		ExecutionRunID: execution.RunID,
 		ObservationID:  observationID,
-		ObservedAt:     time.Now().UTC(),
+		ObservedAt:     useCase.Clock.now(),
 		Execution:      outcomeOf(execution),
 		ToolVersions:   toolVersionResultsOf(useCase.Tools.Versions(ctx)),
 		Cost:           "unavailable: no billing source",

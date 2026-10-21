@@ -22,6 +22,10 @@ type StopRuntime struct {
 	Preparation   PreparationCleaner
 	Evidence      ExecutionEvidence
 	Tools         ToolVersions
+
+	// IDs and Clock are injectable for tests; nil uses the real sources.
+	IDs   IDSource
+	Clock Clock
 }
 
 // StopRuntimeRequest names the runtime to stop.
@@ -86,6 +90,8 @@ func (useCase StopRuntime) sources() lifecycleSources {
 		guard:         clusterGuard{records: useCase.Clusters, observer: useCase.Observer},
 		ledger:        useCase.Executions,
 		evidence:      useCase.Evidence,
+		ids:           useCase.IDs,
+		clock:         useCase.Clock,
 	}
 }
 
@@ -116,12 +122,14 @@ type shutdown struct {
 // disk, the run always settles the record and writes the evidence, whatever
 // the cleanup returned.
 func (run *shutdown) run(ctx context.Context, tools map[string]microruntime.ToolVersion) (ExecutionOutcome, error) {
-	runID, err := newID()
+	runID, err := run.ids.id()
 	if err != nil {
 		return ExecutionOutcome{}, err
 	}
 
-	run.execution.BeginDown(runID, tools)
+	if err := run.execution.BeginDown(runID, tools); err != nil {
+		return ExecutionOutcome{}, err
+	}
 	if err := run.save(); err != nil {
 		return ExecutionOutcome{}, err
 	}
@@ -221,7 +229,9 @@ func (run *shutdown) deleteResources(ctx context.Context) error {
 	progress := run.execution.Progress()
 
 	for _, resource := range run.execution.Resources {
-		run.execution.MarkUnit(resource.Unit, microruntime.UnitRunning)
+		if err := run.execution.MarkUnit(resource.Unit, microruntime.UnitRunning); err != nil {
+			return err
+		}
 		if err := run.save(); err != nil {
 			return err
 		}
@@ -231,7 +241,9 @@ func (run *shutdown) deleteResources(ctx context.Context) error {
 		}
 
 		if progress.Finish(resource.Unit) {
-			run.execution.MarkUnit(resource.Unit, microruntime.UnitCompleted)
+			if err := run.execution.MarkUnit(resource.Unit, microruntime.UnitCompleted); err != nil {
+				return err
+			}
 		}
 
 		if err := run.save(); err != nil {

@@ -20,6 +20,9 @@ type CreateCluster struct {
 	Credentials ClusterCredentials
 	Provisioner ClusterProvisioner
 	Observer    ClusterObserver
+
+	// Clock is injectable for tests; nil uses the real time.
+	Clock Clock
 }
 
 // Execute creates or reuses the cluster.
@@ -63,7 +66,7 @@ func (useCase CreateCluster) Execute(ctx context.Context, request ClusterRequest
 	}
 
 	record := cluster.Begin(owner, kubeconfig)
-	if err := saveCluster(useCase.Clusters, owner, &record); err != nil {
+	if err := saveCluster(useCase.Clusters, owner, &record, useCase.Clock); err != nil {
 		return ClusterResult{}, err
 	}
 
@@ -71,7 +74,7 @@ func (useCase CreateCluster) Execute(ctx context.Context, request ClusterRequest
 	defer cancel()
 
 	if err := useCase.provision(operationContext, owner, &record); err != nil {
-		return ClusterResult{}, recordFailure(useCase.Clusters, owner, &record, err)
+		return ClusterResult{}, recordFailure(useCase.Clusters, owner, &record, err, useCase.Clock)
 	}
 
 	return clusterResultOf(record), nil
@@ -139,7 +142,9 @@ func (useCase CreateCluster) provision(ctx context.Context, owner project.Projec
 		return err
 	}
 
-	record.Context = contextName
+	if err := record.Provisioned(contextName); err != nil {
+		return err
+	}
 
 	namespaces, err := useCase.Observer.Namespaces(ctx, accessOf(*record))
 	if err != nil {
@@ -150,7 +155,7 @@ func (useCase CreateCluster) provision(ctx context.Context, owner project.Projec
 		return err
 	}
 
-	if err := saveCluster(useCase.Clusters, owner, record); err != nil {
+	if err := saveCluster(useCase.Clusters, owner, record, useCase.Clock); err != nil {
 		return err
 	}
 
@@ -163,5 +168,5 @@ func (useCase CreateCluster) provision(ctx context.Context, owner project.Projec
 		return err
 	}
 
-	return saveCluster(useCase.Clusters, owner, record)
+	return saveCluster(useCase.Clusters, owner, record, useCase.Clock)
 }
