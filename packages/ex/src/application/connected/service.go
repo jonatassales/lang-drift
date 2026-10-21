@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
@@ -56,7 +57,7 @@ func (service Service) Connect(ctx context.Context, request ConnectRequest) (Res
 			return Result{}, errors.New("runtime is already connected in this checkout")
 		}
 	}
-	record := Connection{URL: request.URL, EnvironmentID: env, RuntimeUID: binding.RuntimeUID, RuntimeID: binding.RuntimeID, ProjectID: binding.ProjectID, Repository: binding.Repository, Credential: binding.Credential, Secret: request.Secret, State: "stopped", Managed: map[string]string{}, Outbox: []Event{}}
+	record := Connection{URL: request.URL, EnvironmentID: env, RuntimeUID: binding.RuntimeUID, RuntimeID: binding.RuntimeID, ProjectID: binding.ProjectID, Repository: binding.Repository, Credential: binding.Credential, Secret: request.Secret, State: connection.StateStopped, Managed: map[string]string{}, Outbox: []Event{}}
 	if err = service.Store.Bind(ctx, owner, record); err != nil {
 		return Result{}, err
 	}
@@ -106,12 +107,23 @@ func (service Service) Migrate(ctx context.Context, request MigrateRequest) (Res
 	if err != nil {
 		return Result{}, err
 	}
+	runtime, err := microruntime.ParseIdentifier(request.Runtime)
+	if err != nil {
+		return Result{}, err
+	}
+	// Migration and the supervisor exclude each other through the same lock
+	// the agent holds while it runs.
+	unlock, err := service.Store.Lock(owner, "project-agent")
+	if err != nil {
+		return Result{}, err
+	}
+	defer unlock()
 	if request.Recover {
-		if err := service.Native.Stop(ctx, owner, Connection{RuntimeID: request.Runtime}); err != nil {
+		if err := service.Native.Stop(ctx, owner, Connection{RuntimeID: runtime.String()}); err != nil {
 			return Result{}, err
 		}
 	}
-	path, err := service.Native.Migrate(ctx, owner, request.Runtime)
+	path, err := service.Native.Migrate(ctx, owner, runtime.String())
 	if err != nil {
 		return Result{}, err
 	}
@@ -136,8 +148,8 @@ type workerEvent struct {
 	ack          chan error
 }
 type workerResult struct {
-	action      string
-	cause       string
+	action      connection.AgentAction
+	cause       connection.Cause
 	operationID string
 	err         error
 	observation *Observation
@@ -158,32 +170,32 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 	lease := 15 * time.Second
 	var intent Intent
 	online := false
-	stopCause := ""
-	activeCause := ""
+	var stopCause connection.Cause
+	var activeCause connection.Cause
 	activeOperation := ""
-	activeAction := ""
-	if record.State != "stopped" {
-		record.State = "unknown"
-		stopCause = "agent_restart"
+	var activeAction connection.AgentAction
+	if record.State != connection.StateStopped {
+		record.State = connection.StateUnknown
+		stopCause = connection.CauseAgentRestart
 	}
 	save := func() error { return service.Store.Save(owner, record) }
-	appendEvent := func(kind, cause, detail string) error {
+	appendEvent := func(kind string, cause connection.Cause, detail string) error {
 		eventID, err := identifier()
 		if err != nil {
 			return err
 		}
 		eventRevision := record.Revision
-		if eventRevision < 1 || cause == "configuration" {
+		if eventRevision < 1 || cause == connection.CauseConfiguration {
 			eventRevision = intent.Revision
 		}
 		if eventRevision < 1 {
 			eventRevision = 1
 		}
 		eventExecution := record.ExecutionID
-		if cause == "configuration" {
+		if cause == connection.CauseConfiguration {
 			eventExecution = ""
 		}
-		event := Event{ID: eventID, Sequence: record.Sequence + 1, PurgeEpoch: record.PurgeEpoch, ExecutionID: eventExecution, Kind: kind, Cause: cause, OccurredAt: time.Now().UTC(), Revision: eventRevision, IntentVersion: record.IntentVersion, Detail: detail, OperationID: record.OperationID, ConcreteHash: record.ConcreteHash, MarkdownHash: markdownHash(record.Markdown)}
+		event := Event{ID: eventID, Sequence: record.Sequence + 1, PurgeEpoch: record.PurgeEpoch, ExecutionID: eventExecution, Kind: kind, Cause: string(cause), OccurredAt: time.Now().UTC(), Revision: eventRevision, IntentVersion: record.IntentVersion, Detail: detail, OperationID: record.OperationID, ConcreteHash: record.ConcreteHash, MarkdownHash: markdownHash(record.Markdown)}
 		if kind == "build_started" && (len(detail) == 40 || len(detail) == 64) {
 			event.SourceRevision = detail
 			event.Detail = "build_started"
@@ -193,16 +205,20 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 		}
 		return save()
 	}
-	launch := func(action, cause string, config connection.Configuration) error {
+	launch := func(action connection.AgentAction, cause connection.Cause, config connection.Configuration) error {
 		if active != nil {
 			return errors.New("operation already active")
 		}
-		record.State = map[string]string{"start": "starting", "stop": "stopping", "observe": "running"}[action]
+		next, err := record.State.Launch(action)
+		if err != nil {
+			return err
+		}
+		record.State = next
 		activeAction = action
 		activeCause = cause
 		activeOperation = record.OperationID
-		if action != "observe" {
-			if err := appendEvent(action+"_started", cause, ""); err != nil {
+		if action != connection.ActionObserve {
+			if err := appendEvent(string(action)+"_started", cause, ""); err != nil {
 				return err
 			}
 		}
@@ -228,11 +244,11 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 				}
 			}
 			switch action {
-			case "start":
+			case connection.ActionStart:
 				result.err = service.Native.Start(workerCtx, owner, snapshot, config, report)
-			case "stop":
+			case connection.ActionStop:
 				result.err = service.Native.Stop(workerCtx, owner, snapshot)
-			case "observe":
+			case connection.ActionObserve:
 				result.observation, result.err = service.Native.Observe(workerCtx, owner, snapshot)
 			}
 			completed <- result
@@ -251,21 +267,21 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 				}
 			}
 		}
-		if record.State == "stopped" {
+		if record.State == connection.StateStopped {
 			return save()
 		}
-		record.State = "stopping"
-		eventErr := appendEvent("stop_started", "agent_shutdown", "")
+		record.State = connection.StateStopping
+		eventErr := appendEvent("stop_started", connection.CauseAgentShutdown, "")
 		cleanup, cancel := context.WithTimeout(context.WithoutCancel(ctx), service.timeout())
 		defer cancel()
 		stopErr := service.Native.Stop(cleanup, owner, record)
 		if stopErr != nil {
-			record.State = "unknown"
-			_ = appendEvent("failed", "agent_shutdown", "operation_failed")
+			record.State = connection.StateUnknown
+			_ = appendEvent("failed", connection.CauseAgentShutdown, "operation_failed")
 			return errors.Join(eventErr, stopErr)
 		}
-		record.State = "stopped"
-		if err := appendEvent("stopped", "agent_shutdown", ""); err != nil {
+		record.State = connection.StateStopped
+		if err := appendEvent("stopped", connection.CauseAgentShutdown, ""); err != nil {
 			return errors.Join(eventErr, err)
 		}
 		response, syncErr := service.Console.Sync(cleanup, record, syncOf(record))
@@ -275,8 +291,8 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 		}
 		return eventErr
 	}
-	if record.State == "unknown" {
-		if err := launch("stop", stopCause, connection.Configuration{}); err != nil {
+	if record.State == connection.StateUnknown {
+		if err := launch(connection.ActionStop, stopCause, connection.Configuration{}); err != nil {
 			return err
 		}
 	}
@@ -298,49 +314,58 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 			results = nil
 			record.OperationID = result.operationID
 			switch result.action {
-			case "start":
+			case connection.ActionStart:
+				next, err := record.State.Settle(result.action, result.err == nil)
+				if err != nil {
+					return errors.Join(err, shutdown())
+				}
+				record.State = next
 				if result.err != nil {
-					record.State = "unknown"
 					if stopCause == "" {
-						stopCause = "start_failed"
+						stopCause = connection.CauseStartFailed
 					}
 					if err := appendEvent("failed", stopCause, "operation_failed"); err != nil {
 						return errors.Join(err, shutdown())
 					}
-				} else {
-					record.State = "running"
-					if err := appendEvent("started", result.cause, "native_ready"); err != nil {
-						return errors.Join(err, shutdown())
-					}
+				} else if err := appendEvent("started", result.cause, "native_ready"); err != nil {
+					return errors.Join(err, shutdown())
 				}
-			case "stop":
+			case connection.ActionStop:
+				next, err := record.State.Settle(result.action, result.err == nil)
+				if err != nil {
+					return errors.Join(err, shutdown())
+				}
+				record.State = next
 				if result.err != nil {
-					record.State = "unknown"
 					if err := appendEvent("failed", result.cause, "operation_failed"); err != nil {
 						return errors.Join(err, shutdown())
 					}
 				} else {
-					record.State = "stopped"
 					record.Observation = nil
 					if err := appendEvent("stopped", result.cause, ""); err != nil {
 						return err
 					}
-					if result.cause == "connection_lost" {
+					if result.cause == connection.CauseConnectionLost {
 						record.ResumeEligible = true
 					}
 					stopCause = ""
 				}
-			case "observe":
+			case connection.ActionObserve:
 				if result.err != nil && stopCause != "" {
 					record.Observation = nil
 					continue
 				}
-				if result.err == nil && (result.observation == nil || result.observation.State == "" || result.observation.State == "running") {
+				healthy := result.err == nil && (result.observation == nil || result.observation.State == "" || result.observation.State == "running")
+				if healthy {
 					record.Observation = result.observation
 				} else {
+					next, err := record.State.Settle(result.action, false)
+					if err != nil {
+						return errors.Join(err, shutdown())
+					}
+					record.State = next
 					record.Observation = nil
-					record.State = "unknown"
-					stopCause = "runtime_failure"
+					stopCause = connection.CauseRuntimeFailure
 					if err := appendEvent("failed", stopCause, "operation_failed"); err != nil {
 						return errors.Join(err, shutdown())
 					}
@@ -353,13 +378,13 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 			response, syncErr := service.Console.Sync(ctx, record, syncOf(record))
 			if syncErr != nil {
 				online = false
-				if service.now().Sub(lastContact) >= lease && record.State != "stopped" {
-					stopCause = "connection_lost"
+				if service.now().Sub(lastContact) >= lease && record.State != connection.StateStopped {
+					stopCause = connection.CauseConnectionLost
 					if active != nil {
-						if activeAction != "stop" {
+						if activeAction != connection.ActionStop {
 							active()
 						}
-					} else if err := launch("stop", stopCause, connection.Configuration{}); err != nil {
+					} else if err := launch(connection.ActionStop, stopCause, connection.Configuration{}); err != nil {
 						return errors.Join(err, shutdown())
 					}
 				}
@@ -384,7 +409,7 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 					return errors.Join(errors.New("console returned an invalid reconciliation identity"), shutdown())
 				}
 				if active != nil {
-					if activeAction != "stop" {
+					if activeAction != connection.ActionStop {
 						active()
 					}
 					continue
@@ -396,10 +421,10 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 				record.Revision = pending.Revision
 				record.LastAttempt = pending.IntentVersion
 				record.OperationID = response.Operation.ID
-				record.State = "unknown"
+				record.State = connection.StateUnknown
 				record.Observation = nil
 				record.ResumeEligible = !response.Revoked && !response.Deleted && response.DesiredState == "running"
-				stopCause = "agent_restart"
+				stopCause = connection.CauseAgentRestart
 				if err := save(); err != nil {
 					return errors.Join(err, shutdown())
 				}
@@ -407,19 +432,19 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 			if response.Revoked || response.Deleted || response.DesiredState != "running" {
 				record.ResumeEligible = false
 				record.OperationID = response.Operation.ID
-				cause := "user_stop"
+				cause := connection.CauseUserStop
 				if response.Deleted {
-					cause = "deleted"
+					cause = connection.CauseDeleted
 				} else if response.Revoked {
-					cause = "revoked"
+					cause = connection.CauseRevoked
 				}
-				if record.State != "stopped" {
+				if record.State != connection.StateStopped {
 					stopCause = cause
 					if active != nil {
-						if activeAction != "stop" {
+						if activeAction != connection.ActionStop {
 							active()
 						}
-					} else if err := launch("stop", cause, connection.Configuration{}); err != nil {
+					} else if err := launch(connection.ActionStop, cause, connection.Configuration{}); err != nil {
 						return errors.Join(err, shutdown())
 					}
 				}
@@ -427,8 +452,8 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 			if active != nil {
 				continue
 			}
-			if stopCause != "" && record.State != "stopped" {
-				if err := launch("stop", stopCause, connection.Configuration{}); err != nil {
+			if stopCause != "" && record.State != connection.StateStopped {
+				if err := launch(connection.ActionStop, stopCause, connection.Configuration{}); err != nil {
 					return errors.Join(err, shutdown())
 				}
 				continue
@@ -436,7 +461,7 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 			if response.Revoked || response.Deleted || len(record.Outbox) > 0 {
 				continue
 			}
-			if record.State == "stopped" && response.Revision != record.Revision {
+			if record.State == connection.StateStopped && response.Revision != record.Revision {
 				config, err := connection.Parse(response.Markdown)
 				if err == nil && (config.RuntimeUID != record.RuntimeUID || config.RuntimeID != record.RuntimeID || config.ProjectID != record.ProjectID || config.Revision != response.Revision) {
 					err = errors.New("configuration identities differ from binding")
@@ -447,7 +472,7 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 				if err != nil {
 					if record.FailureRevision != response.Revision {
 						record.FailureRevision = response.Revision
-						if err := appendEvent("failed", "configuration", "configuration_conflict"); err != nil {
+						if err := appendEvent("failed", connection.CauseConfiguration, "configuration_conflict"); err != nil {
 							return err
 						}
 					}
@@ -457,12 +482,12 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 				record.ExecutionID = ""
 				record.OperationID = response.Operation.ID
 				record.Markdown = response.Markdown
-				if err := appendEvent("configured", "configuration", "configuration_applied"); err != nil {
+				if err := appendEvent("configured", connection.CauseConfiguration, "configuration_applied"); err != nil {
 					return err
 				}
 				continue // acknowledge materialization before claiming a start
 			}
-			if response.DesiredState == "running" && record.State == "stopped" && response.Revision == record.Revision && (record.LastAttempt != response.IntentVersion || record.ResumeEligible) {
+			if response.DesiredState == "running" && record.State == connection.StateStopped && response.Revision == record.Revision && (record.LastAttempt != response.IntentVersion || record.ResumeEligible) {
 				config, err := connection.Parse(record.Markdown)
 				if err != nil {
 					return err
@@ -478,19 +503,19 @@ func (service Service) runOne(ctx context.Context, owner project.Project, record
 				record.IntentVersion = claim.IntentVersion
 				record.LastAttempt = claim.IntentVersion
 				record.OperationID = response.Operation.ID
-				cause := response.Operation.Cause
+				cause := connection.Cause(response.Operation.Cause)
 				if record.ResumeEligible {
-					cause = "reconnect"
+					cause = connection.CauseReconnect
 					record.ResumeEligible = false
 				}
 				if cause == "" {
-					cause = "user_start"
+					cause = connection.CauseUserStart
 				}
-				if err := launch("start", cause, config); err != nil {
+				if err := launch(connection.ActionStart, cause, config); err != nil {
 					return errors.Join(err, shutdown())
 				}
-			} else if online && record.State == "running" {
-				if err := launch("observe", "observation", connection.Configuration{}); err != nil {
+			} else if online && record.State == connection.StateRunning {
+				if err := launch(connection.ActionObserve, connection.CauseObservation, connection.Configuration{}); err != nil {
 					return errors.Join(err, shutdown())
 				}
 			}

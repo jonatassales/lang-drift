@@ -103,41 +103,41 @@ type Claim struct {
 	Revision      int    `json:"revision"`
 }
 type Sync struct {
-	EnvironmentID string       `json:"environmentId"`
-	Events        []Event      `json:"events"`
-	State         string       `json:"state"`
-	ExecutionID   string       `json:"executionId,omitempty"`
-	LastRevision  int          `json:"lastRevision"`
-	PurgeEpoch    int          `json:"purgeEpoch"`
-	Observation   *Observation `json:"observation,omitempty"`
+	EnvironmentID string                `json:"environmentId"`
+	Events        []Event               `json:"events"`
+	State         connection.AgentState `json:"state"`
+	ExecutionID   string                `json:"executionId,omitempty"`
+	LastRevision  int                   `json:"lastRevision"`
+	PurgeEpoch    int                   `json:"purgeEpoch"`
+	Observation   *Observation          `json:"observation,omitempty"`
 }
 
 // Connection retains operational ownership separately from history. Credentials
 // are loaded from the ignored runtime .env and excluded from JSON state.
 type Connection struct {
-	URL             string            `json:"url"`
-	EnvironmentID   string            `json:"environmentId"`
-	RuntimeUID      string            `json:"runtimeUid"`
-	RuntimeID       string            `json:"runtimeId"`
-	ProjectID       string            `json:"projectId"`
-	Repository      Repository        `json:"repository"`
-	Credential      string            `json:"-"`
-	Secret          string            `json:"-"`
-	State           string            `json:"state"`
-	ExecutionID     string            `json:"executionId,omitempty"`
-	Revision        int               `json:"revision"`
-	IntentVersion   int               `json:"intentVersion"`
-	LastAttempt     int               `json:"lastAttempt"`
-	FailureRevision int               `json:"failureRevision"`
-	ResumeEligible  bool              `json:"resumeEligible"`
-	OperationID     string            `json:"operationId"`
-	Sequence        uint64            `json:"sequence"`
-	PurgeEpoch      int               `json:"purgeEpoch"`
-	Markdown        string            `json:"markdown"`
-	ConcreteHash    string            `json:"concreteHash"`
-	Managed         map[string]string `json:"managed"`
-	Outbox          []Event           `json:"outbox"`
-	Observation     *Observation      `json:"observation,omitempty"`
+	URL             string                `json:"url"`
+	EnvironmentID   string                `json:"environmentId"`
+	RuntimeUID      string                `json:"runtimeUid"`
+	RuntimeID       string                `json:"runtimeId"`
+	ProjectID       string                `json:"projectId"`
+	Repository      Repository            `json:"repository"`
+	Credential      string                `json:"-"`
+	Secret          string                `json:"-"`
+	State           connection.AgentState `json:"state"`
+	ExecutionID     string                `json:"executionId,omitempty"`
+	Revision        int                   `json:"revision"`
+	IntentVersion   int                   `json:"intentVersion"`
+	LastAttempt     int                   `json:"lastAttempt"`
+	FailureRevision int                   `json:"failureRevision"`
+	ResumeEligible  bool                  `json:"resumeEligible"`
+	OperationID     string                `json:"operationId"`
+	Sequence        uint64                `json:"sequence"`
+	PurgeEpoch      int                   `json:"purgeEpoch"`
+	Markdown        string                `json:"markdown"`
+	ConcreteHash    string                `json:"concreteHash"`
+	Managed         map[string]string     `json:"managed"`
+	Outbox          []Event               `json:"outbox"`
+	Observation     *Observation          `json:"observation,omitempty"`
 }
 
 // Console scopes every call to one immutable endpoint and credential.

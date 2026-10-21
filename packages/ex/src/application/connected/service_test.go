@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"slices"
 	"sync"
 	"testing"
 	"time"
@@ -20,6 +21,7 @@ func (p projectFake) Open(application.ProjectSelection) (project.Project, error)
 type storeFake struct {
 	mu     sync.Mutex
 	record Connection
+	locks  []string
 }
 
 func (s *storeFake) List(project.Project) ([]Connection, error) { return []Connection{s.record}, nil }
@@ -33,7 +35,10 @@ func (s *storeFake) Save(_ project.Project, record Connection) error {
 func (s *storeFake) Bind(_ context.Context, p project.Project, r Connection) error {
 	return s.Save(p, r)
 }
-func (s *storeFake) Lock(project.Project, string) (func(), error) { return func() {}, nil }
+func (s *storeFake) Lock(_ project.Project, id string) (func(), error) {
+	s.locks = append(s.locks, id)
+	return func() {}, nil
+}
 
 type nativeFake struct {
 	mu            sync.Mutex
@@ -226,7 +231,7 @@ func TestSync_BatchesOutboxWithoutLosingRemainder(t *testing.T) {
 
 func TestService_MigrationRecoveryIsExplicit(t *testing.T) {
 	native := &nativeFake{}
-	service := Service{Projects: projectFake{}, Native: native}
+	service := Service{Projects: projectFake{}, Store: &storeFake{}, Native: native}
 	if _, err := service.Migrate(context.Background(), MigrateRequest{Runtime: "legacy"}); err != nil {
 		t.Fatal(err)
 	}
@@ -238,6 +243,22 @@ func TestService_MigrationRecoveryIsExplicit(t *testing.T) {
 	}
 	if native.stops != 1 {
 		t.Fatal("explicit migration recovery did not invoke owned cleanup")
+	}
+}
+
+func TestService_MigrationTakesTheSupervisorLockAndParsesItsRuntime(t *testing.T) {
+	store := &storeFake{}
+	service := Service{Projects: projectFake{}, Store: store, Native: &nativeFake{}}
+
+	if _, err := service.Migrate(context.Background(), MigrateRequest{Runtime: "not a valid id!"}); err == nil {
+		t.Fatal("an unparseable runtime id was accepted")
+	}
+
+	if _, err := service.Migrate(context.Background(), MigrateRequest{Runtime: "legacy"}); err != nil {
+		t.Fatal(err)
+	}
+	if !slices.Contains(store.locks, "project-agent") {
+		t.Fatalf("locks = %v, want the supervisor's project-agent lock", store.locks)
 	}
 }
 
