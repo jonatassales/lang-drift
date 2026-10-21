@@ -1,0 +1,2 @@
+# Biome checks the staged files through drift (see platform/cli).
+platform/cli/drift git pre-commit

@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+.next/
+next-env.d.ts
+*.tsbuildinfo
+
+# Caches and reports
+.turbo/
+coverage/
+
+# Environment: only the example file is tracked
+.env
+.env.*
+!.env.example
+
+# Operating system
+.DS_Store
+
+# Per-session markers written by the LLM effort analyzer
+.agents/workflow/.effort-log/*
+!.agents/workflow/.effort-log/.gitkeep

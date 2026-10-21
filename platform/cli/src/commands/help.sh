@@ -1,0 +1,23 @@
+#!/bin/sh
+set -eu
+. "$DRIFT_CLI_DIR/core/common.sh"
+[ "$#" -eq 0 ] || drift_die "Help does not accept arguments." 2
+
+drift_print_opening_logo
+
+command_line() {
+  printf '  %-30s %s\n' "$1" "$2"
+}
+
+printf '\n%s\n' 'Commands:'
+command_line setup 'Link the drift launcher into your bin directory'
+command_line 'doctor [--ci]' 'Check the toolchain and repository layout'
+command_line cleanup 'Remove generated workspace state'
+command_line 'env setup' 'Create each .env from its .env.example'
+command_line 'env validate' 'Check that each .env.example has its .env'
+command_line 'git setup' 'Install the Git hooks'
+command_line 'git doctor' 'Check the Git hooks'
+command_line 'git pre-commit' 'Run the pre-commit checks'
+command_line 'git commit-msg <file>' 'Run the commit message guardrails'
+command_line 'git lint-history <from> <to>' 'Lint the commit messages in a range'
+printf '\n%s\n' 'Add --logs to any command to print debug logs.'

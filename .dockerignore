@@ -1,0 +1,31 @@
+# Version control and editors
+.git
+.vscode
+.DS_Store
+
+# Agent harness and repository tooling (not part of any image)
+.agents
+.claude
+platform/cli
+platform/quality
+platform/versioning
+
+# Dependencies: images install their own
+**/node_modules
+.pnpm-store
+
+# Build output
+**/dist
+**/.next
+**/next-env.d.ts
+**/*.tsbuildinfo
+
+# Caches, reports and logs
+**/.turbo
+**/coverage
+**/*.log
+
+# Environment: secrets never enter the build context
+**/.env
+**/.env.*
+!**/.env.example

@@ -1,0 +1,28 @@
+{
+	"name": "langdrift",
+	"private": true,
+	"engines": {
+		"node": ">=24"
+	},
+	"devEngines": {
+		"packageManager": {
+			"name": "pnpm",
+			"version": "^12.4.2",
+			"onFail": "error"
+		}
+	},
+	"scripts": {
+		"postinstall": "sh platform/cli/drift setup",
+		"prepare": "husky platform/versioning/.husky",
+		"check": "biome check .",
+		"fix": "biome check --write ."
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.5.15",
+		"@commitlint/cli": "21.2.3",
+		"@commitlint/config-conventional": "21.2.3",
+		"husky": "9.1.7",
+		"lint-staged": "17.6.0",
+		"turbo": "2.11.7"
+	}
+}

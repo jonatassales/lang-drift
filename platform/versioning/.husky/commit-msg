@@ -1,0 +1,2 @@
+# Commit message guardrails live in platform/cli/src/commands/git-commit-msg.sh.
+platform/cli/drift git commit-msg "$1"
