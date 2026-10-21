@@ -201,6 +201,98 @@ describe('vision.css', () => {
 	})
 })
 
+describe('shadcn bridge', () => {
+	test('declares every shadcn variable as a reference to its role', () => {
+		const bridge = declarations(built('vision'), ':root, .dark')
+		for (const variable of shadcnVariables) {
+			assert.equal(bridge[variable], `var(--lg-color-${variable.slice(2)})`)
+		}
+	})
+
+	test('leaves the radius to Tailwind', () => {
+		assert.doesNotMatch(built('vision'), /--radius/)
+	})
+})
+
+describe('Tailwind theme', () => {
+	let theme
+
+	before(() => {
+		theme = Object.entries(declarations(built('vision'), '@theme inline'))
+	})
+
+	test('resets the native palette before any token color', () => {
+		assert.deepEqual(theme[0], ['--color-*', 'initial'])
+	})
+
+	test('exposes every role and status color, and no foundation', () => {
+		const colors = Object.fromEntries(
+			theme.filter(
+				([name]) => name.startsWith('--color-') && name !== '--color-*',
+			),
+		)
+		for (const variable of shadcnVariables) {
+			assert.equal(colors[`--color-${variable.slice(2)}`], `var(${variable})`)
+		}
+		assert.equal(colors['--color-primary-hover'], 'var(--primary-hover)')
+		for (const status of statuses) {
+			assert.equal(
+				colors[`--color-status-${status.slice('--lg-status-'.length)}`],
+				`var(${status})`,
+			)
+		}
+		assert.equal(
+			Object.keys(colors).some((name) => name.includes('gray')),
+			false,
+		)
+	})
+
+	test('maps the font, shadow and easing, and nothing else', () => {
+		assert.deepEqual(
+			theme.filter(([name]) => !name.startsWith('--color-')),
+			[
+				['--font-sans', 'var(--lg-typography-font-body)'],
+				['--shadow-sm', 'var(--lg-effects-shadow-sm)'],
+				['--ease-standard', 'var(--lg-effects-easing-standard)'],
+			],
+		)
+	})
+})
+
+const shadcnVariables = [
+	'background',
+	'foreground',
+	'card',
+	'card-foreground',
+	'popover',
+	'popover-foreground',
+	'primary',
+	'primary-foreground',
+	'secondary',
+	'secondary-foreground',
+	'muted',
+	'muted-foreground',
+	'accent',
+	'accent-foreground',
+	'destructive',
+	'border',
+	'input',
+	'ring',
+	'chart-1',
+	'chart-2',
+	'chart-3',
+	'chart-4',
+	'chart-5',
+	'sidebar',
+	'sidebar-foreground',
+	'sidebar-primary',
+	'sidebar-primary-foreground',
+	'sidebar-accent',
+	'sidebar-accent-foreground',
+	'sidebar-border',
+	'sidebar-ring',
+].map((name) => `--${name}`)
+
 describe('build', () => {
 	test('yields identical output from unchanged sources', () => {
 		const copy = copyPackage('rebuild')

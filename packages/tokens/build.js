@@ -34,20 +34,54 @@ StyleDictionary.registerFormat({
 			})
 			return `var(--${target.name})`
 		}
-		const rule = (selector, tokens) =>
-			`${selector} {\n${tokens
-				.map((token) => `  --${token.name}: ${cssValue(token)};`)
+		const variable = (token) => [`--${token.name}`, cssValue(token)]
+		const rule = (selector, declarations) =>
+			`${selector} {\n${declarations
+				.map(([name, value]) => `  ${name}: ${value};`)
 				.join('\n')}\n}\n`
 
-		const rootTokens = dictionary.allTokens.filter(
-			(token) => schemeOf(token) !== 'dark',
+		const tokens = dictionary.allTokens
+		const light = tokens.filter((token) => schemeOf(token) === 'light')
+		const dark = tokens.filter((token) => schemeOf(token) === 'dark')
+		// Roles and status colors, named without their prefix and group.
+		const namesIn = (group) =>
+			light
+				.filter((token) => token.path.slice(1, 3).join('.') === group)
+				.map((token) => token.path.slice(3).join('-'))
+		const roles = namesIn('lg.color')
+		const statuses = namesIn('lg.status')
+		// Other tokens name the Tailwind theme variable they set.
+		const themed = tokens.filter(
+			(token) => token.$extensions?.['dev.langdrift.tailwind'],
 		)
-		const darkTokens = dictionary.allTokens.filter(
-			(token) => schemeOf(token) === 'dark',
-		)
+
 		return [
-			rule(schemes.get('light'), rootTokens),
-			rule(schemes.get('dark'), darkTokens),
+			rule(schemes.get('light'), [
+				...tokens.filter((token) => !schemeOf(token)).map(variable),
+				...light.map(variable),
+			]),
+			rule(schemes.get('dark'), dark.map(variable)),
+			// Declared under both selectors so the references resolve against the
+			// scheme of the element, including a `.dark` subtree.
+			`/* Shadcn and SmoothUI components read these variables. */\n${rule(
+				':root, .dark',
+				roles.map((role) => [`--${role}`, `var(--lg-color-${role})`]),
+			)}`,
+			`/* Tailwind keeps its layout scales; only the tokens set its colors. */\n${rule(
+				'@theme inline',
+				[
+					['--color-*', 'initial'],
+					...roles.map((role) => [`--color-${role}`, `var(--${role})`]),
+					...statuses.map((status) => [
+						`--color-status-${status}`,
+						`var(--lg-status-${status})`,
+					]),
+					...themed.map((token) => [
+						token.$extensions['dev.langdrift.tailwind'],
+						`var(--${token.name})`,
+					]),
+				],
+			)}`,
 		].join('\n')
 	},
 })
