@@ -13,6 +13,9 @@ const schemes = new Map([
 	['dark', '.dark'],
 ])
 
+// A token naming a Tailwind theme variable here sets that variable.
+const tailwindExtension = 'dev.langdrift.tailwind'
+
 const schemeOf = (token) => (schemes.has(token.path[0]) ? token.path[0] : null)
 
 StyleDictionary.registerTransform({
@@ -44,15 +47,14 @@ StyleDictionary.registerFormat({
 		const light = tokens.filter((token) => schemeOf(token) === 'light')
 		const dark = tokens.filter((token) => schemeOf(token) === 'dark')
 		// Roles and status colors, named without their prefix and group.
-		const namesIn = (group) =>
+		const namesInGroup = (group) =>
 			light
 				.filter((token) => token.path.slice(1, 3).join('.') === group)
 				.map((token) => token.path.slice(3).join('-'))
-		const roles = namesIn('lg.color')
-		const statuses = namesIn('lg.status')
-		// Other tokens name the Tailwind theme variable they set.
-		const themed = tokens.filter(
-			(token) => token.$extensions?.['dev.langdrift.tailwind'],
+		const roles = namesInGroup('lg.color')
+		const statuses = namesInGroup('lg.status')
+		const tailwindTokens = tokens.filter(
+			(token) => token.$extensions?.[tailwindExtension],
 		)
 
 		return [
@@ -64,7 +66,7 @@ StyleDictionary.registerFormat({
 			// Declared under both selectors so the references resolve against the
 			// scheme of the element, including a `.dark` subtree.
 			`/* Shadcn and SmoothUI components read these variables. */\n${rule(
-				':root, .dark',
+				[...schemes.values()].join(', '),
 				roles.map((role) => [`--${role}`, `var(--lg-color-${role})`]),
 			)}`,
 			`/* Tailwind keeps its layout scales; only the tokens set its colors. */\n${rule(
@@ -76,8 +78,8 @@ StyleDictionary.registerFormat({
 						`--color-status-${status}`,
 						`var(--lg-status-${status})`,
 					]),
-					...themed.map((token) => [
-						token.$extensions['dev.langdrift.tailwind'],
+					...tailwindTokens.map((token) => [
+						token.$extensions[tailwindExtension],
 						`var(--${token.name})`,
 					]),
 				],
@@ -87,7 +89,7 @@ StyleDictionary.registerFormat({
 })
 
 for (const product of products) {
-	const tokens = new StyleDictionary({
+	const styleDictionary = new StyleDictionary({
 		source: ['shared/*.json', `themes/${product}.json`],
 		usesDtcg: true,
 		// Every scheme-dependent token shares its name with its counterpart in the
@@ -110,5 +112,5 @@ for (const product of products) {
 			},
 		},
 	})
-	await tokens.buildAllPlatforms()
+	await styleDictionary.buildAllPlatforms()
 }

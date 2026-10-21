@@ -95,7 +95,7 @@ Vision and FinOps start with identical values and can diverge later by editing o
 
   Theme variables reference the shadcn or `--lg-*` variables, so they follow the color scheme at runtime. Nothing else in Tailwind's theme is touched; spacing, radius and the type scale stay native.
 - **Outputs.** Two public exports, `@langdrift/tokens/vision.css` and `@langdrift/tokens/finops.css`, each self-contained. No JSON or JavaScript export.
-- **Build.** Style Dictionary builds both stylesheets. It is configured in its own config file, in the language its CLI requires, with custom formats where the predefined CSS format cannot emit the schemes, the bridge and the Tailwind theme together. Build output goes to the package's `dist`, which Turborepo already caches and Git ignores. The build fails on broken or circular references; there is no other value validation.
+- **Build.** Style Dictionary builds both stylesheets through its API, from a build program that creates one dictionary per product. Its CLI builds a single dictionary, and each product needs its own because both bind the shared primary role. A custom format emits the schemes, the bridge and the Tailwind theme together, which the predefined CSS format cannot. Build output goes to the package's `dist`, which Turborepo already caches and Git ignores. The build fails on broken or circular references; there is no other value validation.
 - **Rules and docs.**
   - Add `03-tailwind.rule.md` with the approved text: layout stays native, and only design tokens override the theme.
   - Update rule 2 of `02-frontend.rule.md` to say that an app's CSS holds its Tailwind entry point, its product's tokens import and its Tailwind directives.
