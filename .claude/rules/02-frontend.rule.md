@@ -4,7 +4,7 @@ Rules for React and Next.js code in this repository. Loaded in every session.
 
 1. **Style components with Tailwind CSS.** Do not write plain CSS for components: no hand-written stylesheets, CSS Modules or CSS-in-JS.
 
-2. **CSS files only configure Tailwind.** An app's CSS holds its Tailwind entry point, the import of its product's tokens file from `@langdrift/tokens` and Tailwind directives, nothing else.
+2. **CSS files only configure Tailwind.** An app's CSS holds its Tailwind entry point, the import of its app's stylesheet from `@langdrift/tokens` and Tailwind directives, nothing else.
 
 3. **`cn()` composes conditional classes.** It is `clsx` plus `tailwind-merge`, exported by `@langdrift/web` (`@pack/react/utilities` in the website). A static class string needs no wrapper.
 
@@ -25,6 +25,8 @@ Rules for React and Next.js code in this repository. Loaded in every session.
    - `apps/website/src/app/lib/components/website-footer.css`
    - `apps/website/src/app/lib/components/website-header.css`
    - `apps/website/src/app/responsive.css`
+   - `apps/website/src/app/template/tailwind/base.css` (the body base layer)
+   - `apps/website/src/app/template/tailwind/utilities.css` (empty; the home of an approved `@utility`)
    - `packages/web/src/styles.css`
    - `packages/web/src/ui/product-experience.css`
    - `packages/web/src/ui/product-vision-curve/product-vision-curve.css`

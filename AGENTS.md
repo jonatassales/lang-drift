@@ -38,7 +38,7 @@ Run from the repository root:
 
 - `apps/<app>/`: one deployable app each, with its own URL. `pnpm-workspace.yaml` picks them up through `apps/*`.
 - `packages/<capability>/`: shared across apps, never inside one.
-- Packages: `tokens` and `ex` exist; `web`, `shell`, `account`, `runtime` and `contracts` are planned.
+- Packages: `tokens`, `web` and `ex` exist; `shell`, `account`, `runtime` and `contracts` are planned.
 - `packages/ex` is Go: Turborepo runs its `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds it (no Go toolchain required for frontend work).
 - A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
 - Package scope: `@langdrift/*`.
