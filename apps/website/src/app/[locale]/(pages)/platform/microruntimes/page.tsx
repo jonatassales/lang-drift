@@ -1,4 +1,5 @@
-import { DetailList } from '@langdrift/web/ui/detail-list'
+import { Eyebrow } from '@langdrift/web/ui/eyebrow'
+import { cn } from '@langdrift/web/utilities'
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import { createTranslator, hasLocale } from 'next-intl'
@@ -14,6 +15,9 @@ import { PillarScenarios } from '@components/product-page/pillar-scenarios'
 import { ProductFaqSection } from '@components/product-page/product-faq-section'
 import { ProductHero } from '@components/product-page/product-hero'
 import { ProductSection } from '@components/product-page/product-section'
+import { RecordCard } from '@components/product-page/record-card'
+import { SectionOutro } from '@components/product-page/section-outro'
+import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
 import {
@@ -22,6 +26,7 @@ import {
 	lifecycleScenarioIds,
 	microruntimesFaqIds,
 	ownershipRowIds,
+	type StateCardId,
 	stateCardIds,
 } from '@data/microruntimes-content'
 import { microruntimesMessages } from '@i18n/messages/index'
@@ -31,30 +36,36 @@ interface MicroruntimesPageProps {
 	params: Promise<{ locale: string }>
 }
 
-const stateTones = {
+const stateTones: Record<StateCardId, string> = {
 	requested: 'text-foreground',
 	observed: 'text-status-success',
 	unknown: 'text-status-warning',
-} as const
+}
+
+const headerCell = 'px-5 py-3 font-normal'
 
 export async function generateMetadata(
 	{ params }: MicroruntimesPageProps,
 	parent: ResolvingMetadata,
 ): Promise<Metadata> {
 	const { locale } = await params
+
 	if (!hasLocale(routing.locales, locale)) notFound()
 
-	return pageMetadata('microruntimes', locale, await socialImages(parent))
+	const images = await socialImages(parent)
+
+	return pageMetadata('microruntimes', locale, images)
 }
 
 export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 	const { params } = props
 
 	const { locale } = await params
+
 	if (!hasLocale(routing.locales, locale)) notFound()
 	setRequestLocale(locale)
 	const copy = microruntimesMessages[locale]
-	const evidence = createTranslator({
+	const formatEvidence = createTranslator({
 		locale,
 		messages: copy.evidence,
 	})
@@ -70,30 +81,14 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 
 	return (
 		<>
-			<a
-				className="fixed top-0 left-3 z-200 max-w-[calc(100vw-1.5rem)] -translate-y-full bg-foreground px-2.5 py-2 whitespace-normal text-card focus-visible:top-3 focus-visible:translate-y-0"
-				href="#lifecycle"
-			>
-				{copy.skip}
-			</a>
+			<SkipLink href="#lifecycle">{copy.skip}</SkipLink>
 			<WebsiteHeader />
 			<main id="top">
 				<ProductHero
-					caption={copy.hero.caption}
+					copy={copy.hero}
 					headingId="microruntimes-hero-heading"
-					lead={copy.hero.lead}
-					primaryCta={{
-						href: '#lifecycle',
-						label: copy.hero.primaryCta,
-					}}
-					secondaryCta={{
-						href: '#ownership',
-						label: copy.hero.secondaryCta,
-					}}
-					summary={copy.hero.summary}
-					titleEnd={copy.hero.titleEnd}
-					titleHighlight={copy.hero.titleHighlight}
-					titleStart={copy.hero.titleStart}
+					primaryFragment="lifecycle"
+					secondaryFragment="ownership"
 				>
 					<LifecycleDemo copy={copy.lifecycle} locale={locale} />
 				</ProductHero>
@@ -108,32 +103,19 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 							id,
 							label: copy.scenarios.phases[id],
 						}))}
-						scenarios={lifecycleScenarioIds.map((id) => {
-							const scenario = copy.scenarios.items[id]
-
-							return {
-								cells: {
-									compose: scenario.compose,
-									run: scenario.run,
-									inspect: scenario.inspect,
-									cleanup: scenario.cleanup,
-								},
-								context: scenario.context,
-								id,
-								tabLabel: scenario.tabLabel,
-							}
-						})}
+						scenarios={lifecycleScenarioIds.map((id) => ({
+							cells: copy.scenarios.items[id],
+							context: copy.scenarios.items[id].context,
+							id,
+							tabLabel: copy.scenarios.items[id].tabLabel,
+						}))}
 						selectorLabel={copy.scenarios.selectorLabel}
 					/>
-					<div className="mt-8 flex flex-wrap items-center justify-between gap-x-8 gap-y-3">
-						<p className="m-0 max-w-[640px] text-[13px] leading-[1.6] text-muted-foreground">
-							{copy.scenarios.outro}
-						</p>
-						<a className="smooth-text-link" href="#state">
-							{copy.scenarios.outroLink}
-							<span aria-hidden="true"> ↗</span>
-						</a>
-					</div>
+					<SectionOutro
+						fragment="state"
+						link={copy.scenarios.outroLink}
+						text={copy.scenarios.outro}
+					/>
 				</ProductSection>
 
 				<ProductSection
@@ -155,23 +137,16 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 						<table className="w-full min-w-[640px] border-collapse text-left text-[13px] leading-[1.55]">
 							<thead>
 								<tr className="border-b border-border">
-									<th
-										className="px-5 py-3 font-mono text-[9px] font-normal tracking-[0.08em] text-muted-foreground uppercase"
-										scope="col"
-									>
-										{copy.ownership.concern}
+									<th className={headerCell} scope="col">
+										<Eyebrow>{copy.ownership.concern}</Eyebrow>
 									</th>
-									<th
-										className="px-5 py-3 font-mono text-[9px] font-normal tracking-[0.08em] text-muted-foreground uppercase"
-										scope="col"
-									>
-										{copy.ownership.consumer}
+									<th className={headerCell} scope="col">
+										<Eyebrow>{copy.ownership.consumer}</Eyebrow>
 									</th>
-									<th
-										className="px-5 py-3 font-mono text-[9px] font-normal tracking-[0.08em] text-primary uppercase"
-										scope="col"
-									>
-										{copy.ownership.platform}
+									<th className={headerCell} scope="col">
+										<Eyebrow className="text-primary">
+											{copy.ownership.platform}
+										</Eyebrow>
 									</th>
 								</tr>
 							</thead>
@@ -212,11 +187,12 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 								className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6"
 								key={id}
 							>
-								<span className="font-mono text-[9px] tracking-[0.08em] text-muted-foreground uppercase">
-									{copy.state.cards[id].eyebrow}
-								</span>
+								<Eyebrow>{copy.state.cards[id].eyebrow}</Eyebrow>
 								<strong
-									className={`text-[22px] leading-tight font-medium tracking-[-0.02em] ${stateTones[id]}`}
+									className={cn(
+										'text-[22px] leading-tight font-medium tracking-[-0.02em]',
+										stateTones[id],
+									)}
 								>
 									{copy.state.cards[id].title}
 								</strong>
@@ -234,69 +210,60 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 					lead={copy.evidence.lead}
 					title={copy.evidence.title}
 				>
-					<article className="mt-11 rounded-2xl border border-border bg-card p-6 sm:p-8">
-						<div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-border pb-4">
-							<strong className="text-lg font-medium tracking-[-0.02em]">
-								{copy.evidence.ledgerTitle}
-							</strong>
-							<span className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-								{copy.evidence.ledgerPeriod}
-							</span>
-						</div>
-						<DetailList
-							className="mt-1"
-							items={[
-								{
-									detail: evidence('executionValue', {
-										execution: executionLedger.executionId,
-										revision: executionLedger.revision,
-									}),
-									id: 'execution',
-									term: copy.evidence.rows.execution,
-								},
-								{
-									detail: dateTime.format(executionLedger.startedAt),
-									id: 'started',
-									term: copy.evidence.rows.started,
-								},
-								{
-									detail: dateTime.format(executionLedger.stoppedAt),
-									id: 'stopped',
-									term: copy.evidence.rows.stopped,
-								},
-								{
-									detail: evidence('resources', {
-										count: executionLedger.ownedResources,
-									}),
-									id: 'owned',
-									term: copy.evidence.rows.owned,
-								},
-								{
-									detail: evidence('resources', {
-										count: executionLedger.removedResources,
-									}),
-									id: 'removed',
-									term: copy.evidence.rows.removed,
-									tone: 'success',
-								},
-								{
-									detail: copy.evidence.noLeftovers,
-									id: 'leftovers',
-									term: copy.evidence.rows.leftovers,
-									tone: 'success',
-								},
-								{
-									detail: (
-										<code className="font-mono text-[12px] break-all">
-											{executionLedger.evidencePath}
-										</code>
-									),
-									id: 'evidence',
-									term: copy.evidence.rows.evidence,
-								},
-							]}
-						/>
-					</article>
+					<RecordCard
+						items={[
+							{
+								detail: formatEvidence('executionValue', {
+									execution: executionLedger.executionId,
+									revision: executionLedger.revision,
+								}),
+								id: 'execution',
+								term: copy.evidence.rows.execution,
+							},
+							{
+								detail: dateTime.format(executionLedger.startedAt),
+								id: 'started',
+								term: copy.evidence.rows.started,
+							},
+							{
+								detail: dateTime.format(executionLedger.stoppedAt),
+								id: 'stopped',
+								term: copy.evidence.rows.stopped,
+							},
+							{
+								detail: formatEvidence('resources', {
+									count: executionLedger.ownedResources,
+								}),
+								id: 'owned',
+								term: copy.evidence.rows.owned,
+							},
+							{
+								detail: formatEvidence('resources', {
+									count: executionLedger.removedResources,
+								}),
+								id: 'removed',
+								term: copy.evidence.rows.removed,
+								tone: 'success',
+							},
+							{
+								detail: copy.evidence.noLeftovers,
+								id: 'leftovers',
+								term: copy.evidence.rows.leftovers,
+								tone: 'success',
+							},
+							{
+								detail: (
+									<code className="font-mono text-[12px] break-all">
+										{executionLedger.evidencePath}
+									</code>
+								),
+								id: 'evidence',
+								term: copy.evidence.rows.evidence,
+							},
+						]}
+						period={copy.evidence.ledgerPeriod}
+						title={copy.evidence.ledgerTitle}
+					/>
 					<StageEvidence
 						copy={copy.evidence}
 						stageLabels={copy.lifecycle.stages}
@@ -315,9 +282,8 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 				<ProductFaqSection
 					description={copy.faq.description}
 					items={microruntimesFaqIds.map((id) => ({
-						answer: copy.faq.items[id].answer,
+						...copy.faq.items[id],
 						id,
-						question: copy.faq.items[id].question,
 					}))}
 					title={copy.faq.title}
 				/>

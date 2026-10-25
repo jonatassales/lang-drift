@@ -172,8 +172,10 @@ export interface MicroruntimesMessages {
 			observed: string
 		}
 		componentsValue: string
-		states: { running: string; unknown: string }
-		unknownDetail: string
+		cpuValue: string
+		memoryValue: string
+		states: { stopped: string; cleanedUp: string }
+		observedDetail: string
 		whatItDoes: string
 		evidenceItLeaves: string
 	}

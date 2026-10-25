@@ -25,6 +25,7 @@ function mount() {
 			/>
 		</Provider>,
 	)
+
 	return store
 }
 
@@ -54,6 +55,11 @@ describe('FinOps ledger and receipt', () => {
 			.closest('article')
 		expect(receipt?.textContent).toContain('Unknown · awaiting reconciliation')
 		expect(receipt?.textContent).not.toMatch(/\$0\b/)
+	})
+
+	it('formats the model tier and effort through the catalog', () => {
+		mount()
+		expect(screen.getByText('Deep reasoning · High')).toBeTruthy()
 	})
 
 	it('counts retries with the plural copy', () => {

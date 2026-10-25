@@ -1,24 +1,21 @@
-import { cn } from '@langdrift/web/utilities'
+import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 
 export interface SectionHeadingProps {
-	className?: string
 	headingId: string
 	kicker?: string
 	lead?: string
 	title: string
 }
 
-// The head of a product-page section: an optional small mono kicker, the heading and an
-// optional lead, in the website's section rhythm.
+// The head of a page section: an optional mono kicker, the heading and an
+// optional lead.
 export function SectionHeading(props: SectionHeadingProps) {
-	const { className, headingId, kicker, lead, title } = props
+	const { headingId, kicker, lead, title } = props
 
 	return (
-		<div className={cn('max-w-[760px]', className)}>
+		<div className="max-w-[760px]">
 			{kicker ? (
-				<span className="font-mono text-[10px] tracking-[0.11em] text-muted-foreground uppercase">
-					{kicker}
-				</span>
+				<Eyebrow className="text-[10px] tracking-[0.11em]">{kicker}</Eyebrow>
 			) : null}
 			<h2
 				className="my-[18px] text-[clamp(38px,5vw,62px)] leading-[1.02] font-normal tracking-[-0.035em] text-balance text-foreground"

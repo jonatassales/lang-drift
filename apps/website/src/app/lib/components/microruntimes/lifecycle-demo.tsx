@@ -1,9 +1,11 @@
 'use client'
 
+import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { cn } from '@langdrift/web/utilities'
 import { useAtom } from 'jotai'
 import { createTranslator } from 'next-intl'
 
+import { ChoiceButton } from '@components/product-page/choice-button'
 import {
 	lifecycleStageIds,
 	type MicroruntimesMessages,
@@ -17,68 +19,68 @@ interface LifecycleDemoProps {
 	locale: WebsiteLocale
 }
 
-const term =
-	'font-mono text-[9px] tracking-[0.08em] text-muted-foreground uppercase'
-
-// The Microruntimes hero demo: an illustrative runtime's summary, its six
-// lifecycle steps, and what the selected step does and leaves behind.
+// The Microruntimes hero demo: an illustrative runtime's last execution, its
+// six lifecycle steps, and what the selected step does and leaves behind.
 // Selecting a step drives the evidence section further down the page.
 export function LifecycleDemo(props: LifecycleDemoProps) {
 	const { copy, locale } = props
 
 	const [selectedId, setSelectedId] = useAtom(selectedLifecycleStageAtom)
-	const t = createTranslator({
+	const lifecycle = createTranslator({
 		locale,
 		messages: copy,
 	})
 	const number = new Intl.NumberFormat(locale)
 	const stage = copy.stages[selectedId]
+	const summary = [
+		{
+			id: 'components',
+			term: copy.summary.components,
+			value: lifecycle('componentsValue', {
+				count: runtimeDescriptor.components.length,
+			}),
+		},
+		{
+			id: 'cpu',
+			term: copy.summary.cpu,
+			value: lifecycle('cpuValue', {
+				value: number.format(runtimeDescriptor.cpuMillis),
+			}),
+		},
+		{
+			id: 'memory',
+			term: copy.summary.memory,
+			value: lifecycle('memoryValue', {
+				value: number.format(runtimeDescriptor.memoryMiB),
+			}),
+		},
+		{
+			id: 'desired',
+			term: copy.summary.desired,
+			value: copy.states.stopped,
+		},
+	]
 
 	return (
 		<article className="mx-auto max-w-[1040px] rounded-2xl border border-border bg-card p-5 text-left sm:p-7">
-			<header className="flex flex-wrap items-center justify-between gap-3">
-				<span className="font-mono text-[12px] text-foreground">
-					{copy.label}
-				</span>
-				<span className="inline-flex items-center gap-2 rounded-full border border-border px-2.5 py-1 text-[11px] text-status-warning">
-					<span
-						aria-hidden="true"
-						className="size-1.5 rounded-full bg-status-warning"
-					/>
-					{copy.states.unknown}
-				</span>
-			</header>
+			<span className="font-mono text-[12px] text-foreground">
+				{copy.label}
+			</span>
 
 			<dl className="m-0 mt-5 grid grid-cols-2 gap-x-6 gap-y-4 border-y border-border py-4 sm:grid-cols-5">
-				<div className="grid gap-1">
-					<dt className={term}>{copy.summary.components}</dt>
-					<dd className="m-0 text-[14px]">
-						{t('componentsValue', {
-							count: runtimeDescriptor.components.length,
-						})}
-					</dd>
-				</div>
-				<div className="grid gap-1">
-					<dt className={term}>{copy.summary.cpu}</dt>
-					<dd className="m-0 font-mono text-[14px] tabular-nums">
-						{number.format(runtimeDescriptor.cpuMillis)}m
-					</dd>
-				</div>
-				<div className="grid gap-1">
-					<dt className={term}>{copy.summary.memory}</dt>
-					<dd className="m-0 font-mono text-[14px] tabular-nums">
-						{number.format(runtimeDescriptor.memoryMiB)} MiB
-					</dd>
-				</div>
-				<div className="grid gap-1">
-					<dt className={term}>{copy.summary.desired}</dt>
-					<dd className="m-0 text-[14px]">{copy.states.running}</dd>
-				</div>
+				{summary.map((entry) => (
+					<div className="grid gap-1" key={entry.id}>
+						<Eyebrow as="dt">{entry.term}</Eyebrow>
+						<dd className="m-0 font-mono text-[14px] tabular-nums">
+							{entry.value}
+						</dd>
+					</div>
+				))}
 				<div className="col-span-2 grid gap-1 sm:col-span-1">
-					<dt className={term}>{copy.summary.observed}</dt>
-					<dd className="m-0 grid text-[14px] text-status-warning">
-						{copy.states.unknown}
-						<span className="text-[11px]">{copy.unknownDetail}</span>
+					<Eyebrow as="dt">{copy.summary.observed}</Eyebrow>
+					<dd className="m-0 grid text-[14px] text-status-success">
+						{copy.states.cleanedUp}
+						<span className="text-[11px]">{copy.observedDetail}</span>
 					</dd>
 				</div>
 			</dl>
@@ -92,16 +94,11 @@ export function LifecycleDemo(props: LifecycleDemoProps) {
 
 					return (
 						<li key={id}>
-							<button
-								aria-current={selected ? 'step' : undefined}
-								className={cn(
-									'flex w-full cursor-pointer items-center gap-2.5 rounded-xl border border-border px-3 py-2.5 text-left text-[13px] text-foreground motion-safe:transition-colors',
-									'hover:bg-foreground/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
-									selected &&
-										'border-primary/60 bg-primary/10 hover:bg-primary/10',
-								)}
-								onClick={() => setSelectedId(id)}
-								type="button"
+							<ChoiceButton
+								className="flex items-center gap-2.5 border-border px-3 py-2.5 text-[13px]"
+								kind="step"
+								onSelect={() => setSelectedId(id)}
+								selected={selected}
 							>
 								<span
 									className={cn(
@@ -113,7 +110,7 @@ export function LifecycleDemo(props: LifecycleDemoProps) {
 									{index + 1}
 								</span>
 								{copy.stages[id].label}
-							</button>
+							</ChoiceButton>
 						</li>
 					)
 				})}
@@ -125,11 +122,11 @@ export function LifecycleDemo(props: LifecycleDemoProps) {
 				className="mt-5 grid gap-4 rounded-xl bg-foreground/[0.03] p-4 sm:grid-cols-2 sm:p-5"
 			>
 				<div className="grid content-start gap-1.5">
-					<span className={term}>{copy.whatItDoes}</span>
+					<Eyebrow>{copy.whatItDoes}</Eyebrow>
 					<p className="m-0 text-[13px] leading-[1.6]">{stage.does}</p>
 				</div>
 				<div className="grid content-start gap-1.5">
-					<span className={term}>{copy.evidenceItLeaves}</span>
+					<Eyebrow>{copy.evidenceItLeaves}</Eyebrow>
 					<p className="m-0 text-[13px] leading-[1.6]">{stage.leaves}</p>
 				</div>
 			</div>

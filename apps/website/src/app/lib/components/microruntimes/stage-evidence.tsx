@@ -1,5 +1,6 @@
 'use client'
 
+import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { useAtomValue } from 'jotai'
 
 import {
@@ -27,9 +28,7 @@ export function StageEvidence(props: StageEvidenceProps) {
 			className="mt-3 grid gap-2 rounded-2xl border border-border bg-card p-6 sm:p-8"
 		>
 			<div className="flex flex-wrap items-center gap-3">
-				<span className="font-mono text-[9px] tracking-[0.08em] text-muted-foreground uppercase">
-					{copy.selectedStage}
-				</span>
+				<Eyebrow>{copy.selectedStage}</Eyebrow>
 				<span className="rounded-full border border-border px-2 py-[3px] text-[11px]">
 					{stageLabels[selectedId].label}
 				</span>

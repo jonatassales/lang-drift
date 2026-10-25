@@ -1,3 +1,4 @@
+import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { cn } from '@langdrift/web/utilities'
 import type { ReactNode } from 'react'
 
@@ -34,9 +35,7 @@ export function DetailList(props: DetailListProps) {
 					className="grid gap-1 border-t border-border py-3 first:border-t-0 sm:grid-cols-[minmax(0,0.4fr)_minmax(0,1fr)] sm:gap-4"
 					key={item.id}
 				>
-					<dt className="font-mono text-[9px] tracking-[0.08em] text-muted-foreground uppercase">
-						{item.term}
-					</dt>
+					<Eyebrow as="dt">{item.term}</Eyebrow>
 					<dd
 						className={cn(
 							'm-0 text-[13px] leading-[1.55]',

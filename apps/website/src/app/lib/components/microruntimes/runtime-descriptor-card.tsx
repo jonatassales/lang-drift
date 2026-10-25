@@ -1,3 +1,5 @@
+import { Eyebrow } from '@langdrift/web/ui/eyebrow'
+
 import {
 	descriptorAnnotationIds,
 	formatDescriptor,
@@ -22,9 +24,9 @@ export function RuntimeDescriptorCard(props: RuntimeDescriptorCardProps) {
 					<code className="truncate font-mono text-[12px] text-muted-foreground">
 						{runtimeFilePath}
 					</code>
-					<span className="shrink-0 rounded-full border border-border px-2 py-[3px] font-mono text-[9px] tracking-[0.08em] text-muted-foreground uppercase">
+					<Eyebrow className="shrink-0 rounded-full border border-border px-2 py-[3px]">
 						{copy.illustrative}
-					</span>
+					</Eyebrow>
 				</figcaption>
 				<pre className="m-0 max-h-[560px] overflow-auto p-5 font-mono text-[12px] leading-[1.65] text-foreground">
 					<code>

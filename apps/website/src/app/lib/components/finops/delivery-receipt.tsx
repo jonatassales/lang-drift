@@ -1,10 +1,11 @@
 'use client'
 
 import { DetailList } from '@langdrift/web/ui/detail-list'
+import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { useAtomValue } from 'jotai'
 import { createTranslator } from 'next-intl'
 
-import { type FinopsMessages, workItems } from '@data/finops-content'
+import { dollars, type FinopsMessages, workItems } from '@data/finops-content'
 import type { WebsiteLocale } from '@i18n/routing'
 import { selectedWorkItemAtom } from '@state'
 
@@ -23,16 +24,12 @@ export function DeliveryReceipt(props: DeliveryReceiptProps) {
 	const item = workItems.find((workItem) => workItem.id === selectedId)
 	if (!item) return null
 
-	const t = createTranslator({
+	const receipt = createTranslator({
 		locale,
 		messages: copy,
 	})
-	const money = new Intl.NumberFormat(locale, {
-		currency: 'USD',
-		maximumFractionDigits: 0,
-		style: 'currency',
-	})
-	const names = items[item.id]
+	const money = dollars(locale)
+	const itemCopy = items[item.id]
 
 	return (
 		<article
@@ -42,18 +39,16 @@ export function DeliveryReceipt(props: DeliveryReceiptProps) {
 		>
 			<div className="flex items-start justify-between gap-6 max-md:flex-col">
 				<div className="grid gap-[7px]">
-					<span className="font-mono text-[9px] tracking-[0.08em] text-muted-foreground uppercase">
-						{copy.selected}
-					</span>
+					<Eyebrow>{copy.selected}</Eyebrow>
 					<h3 className="m-0 text-[28px] font-medium tracking-[-0.025em]">
-						{names.title}
+						{itemCopy.title}
 					</h3>
-					<p className="m-0 text-[12px] text-muted-foreground">{names.owner}</p>
+					<p className="m-0 text-[12px] text-muted-foreground">
+						{itemCopy.owner}
+					</p>
 				</div>
 				<div className="grid justify-items-end gap-[7px] max-md:justify-items-start">
-					<span className="font-mono text-[9px] tracking-[0.08em] text-muted-foreground uppercase">
-						{copy.labels.observed}
-					</span>
+					<Eyebrow>{copy.labels.observed}</Eyebrow>
 					{item.observed === null ? (
 						<strong className="text-[18px] font-medium text-status-warning">
 							{copy.unknownObserved}
@@ -79,12 +74,15 @@ export function DeliveryReceipt(props: DeliveryReceiptProps) {
 						term: copy.labels.reserved,
 					},
 					{
-						detail: `${copy.tiers[item.tier]} · ${copy.efforts[item.effort]}`,
+						detail: receipt('modelValue', {
+							effort: copy.efforts[item.effort],
+							tier: copy.tiers[item.tier],
+						}),
 						id: 'model',
-						term: `${copy.labels.model} · ${copy.labels.effort}`,
+						term: copy.labels.modelEffort,
 					},
 					{
-						detail: t('retries', { count: item.retries }),
+						detail: receipt('retries', { count: item.retries }),
 						id: 'retries',
 						term: copy.labels.retries,
 					},

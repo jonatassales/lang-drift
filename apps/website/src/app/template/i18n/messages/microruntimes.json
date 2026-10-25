@@ -9,10 +9,10 @@
 			"primaryCta": "See the lifecycle",
 			"secondaryCta": "Who owns what",
 			"caption": "Illustrative runtime. Names, limits and observations are simulated to show how a run moves from configuration to cleanup.",
-			"summary": "An illustrative runtime named checkout-preview with three components, 1,500 millicores and 2,048 MiB. Its requested state is running and its observed state is unknown. Six lifecycle steps, configure, validate, prepare, execute, inspect and clean up, can be selected to read what each step does and the evidence it leaves."
+			"summary": "An illustrative runtime named checkout-preview with three components, 1,500 millicores and 2,048 MiB. Its last execution ran from configure to clean up: the requested state is stopped and the cleanup is confirmed. Six lifecycle steps, configure, validate, prepare, execute, inspect and clean up, can be selected to read what each step does and the evidence it leaves."
 		},
 		"lifecycle": {
-			"label": "checkout-preview · revision 3",
+			"label": "checkout-preview · revision 3 · exec-41b2",
 			"stepperLabel": "Lifecycle steps",
 			"stages": {
 				"configure": {
@@ -54,18 +54,20 @@
 				"observed": "Observed"
 			},
 			"componentsValue": "{count, plural, one {# component} other {# components}}",
+			"cpuValue": "{value}m",
+			"memoryValue": "{value} MiB",
 			"states": {
-				"running": "Running",
-				"unknown": "Unknown"
+				"stopped": "Stopped",
+				"cleanedUp": "Cleaned up"
 			},
-			"unknownDetail": "lease expired · cleanup unconfirmed",
+			"observedDetail": "7 of 7 owned resources removed",
 			"whatItDoes": "What it does",
 			"evidenceItLeaves": "Evidence it leaves"
 		},
 		"scenarios": {
 			"title": "Compose → Run → Inspect → Clean up",
 			"lead": "A microruntime keeps the same four phases whether a change goes smoothly or not. Explore how a new component, a failed preparation and a lost connection each stay visible from the request to the cleanup.",
-			"selectorLabel": "Explore a scenario",
+			"selectorLabel": "Explore an illustrative scenario",
 			"phases": {
 				"compose": "Compose",
 				"run": "Run",
@@ -75,11 +77,11 @@
 			"items": {
 				"add-component": {
 					"tabLabel": "Add a component",
-					"context": "The team adds a payments stub to the checkout preview.",
-					"compose": "The console adds services/payments-stub with its image, port, readiness path and an allowlisted build recipe. The revision moves to 4.",
+					"context": "The team adds a search service to the checkout preview.",
+					"compose": "The console adds services/search with its image, port, readiness path and an allowlisted build recipe. The revision moves to 4.",
 					"run": "The change applies only to a stopped runtime. After the next start request, the agent claims revision 4 and builds the new image.",
-					"inspect": "Readiness is reported per component only once the cluster confirms it: the stub is ready, checkout is still starting.",
-					"cleanup": "Stopping removes the three workloads, then the namespace and quotas. The cluster stays for the next run."
+					"inspect": "Readiness is reported per component only once the cluster confirms it: search is ready, checkout is still starting.",
+					"cleanup": "Stopping removes the four workloads, then the namespace and quotas. The cluster stays for the next run."
 				},
 				"preparation-fails": {
 					"tabLabel": "Preparation fails",
@@ -140,7 +142,7 @@
 				"source": {
 					"concern": "Application source",
 					"consumer": "It stays in your repository; a component is referenced by its path.",
-					"platform": "Never copies it into the runtime."
+					"platform": "Builds from a disposable snapshot of your tracked files; keeps no second copy."
 				},
 				"composition": {
 					"concern": "Composition",
@@ -172,7 +174,7 @@
 		"state": {
 			"kicker": "Desired is not observed",
 			"title": "Requested, observed, unknown.",
-			"lead": "A start request is not a running runtime, and a lost connection is not a stop. The three states stay apart, so nobody mistakes what was asked for with what happened.",
+			"lead": "A start request is not a running runtime, and a lost connection is not a stop. The three states stay apart, so nobody mistakes what was asked for with what happened. The examples below are illustrative.",
 			"cards": {
 				"requested": {
 					"eyebrow": "Requested",
@@ -289,7 +291,7 @@
 				},
 				"source": {
 					"question": "Does it copy my code?",
-					"answer": "No. A component is referenced by its path in your repository. The application stays where it is, with its own build."
+					"answer": "Not into the runtime. A component is referenced by its path, and the application stays in your repository with its own build. To build an image, the agent works from a disposable snapshot of your tracked files that leaves out private state and credential files."
 				},
 				"stacks": {
 					"question": "Which stacks are supported?",
@@ -316,10 +318,10 @@
 			"primaryCta": "Ver o ciclo de vida",
 			"secondaryCta": "Quem é dono do quê",
 			"caption": "Runtime ilustrativo. Nomes, limites e observações são simulados para mostrar como uma execução vai da configuração à limpeza.",
-			"summary": "Um runtime ilustrativo chamado checkout-preview, com três componentes, 1.500 milicores e 2.048 MiB. O estado solicitado é em execução e o estado observado é desconhecido. Seis etapas do ciclo de vida, configurar, validar, preparar, executar, inspecionar e limpar, podem ser selecionadas para ler o que cada uma faz e a evidência que deixa."
+			"summary": "Um runtime ilustrativo chamado checkout-preview, com três componentes, 1.500 milicores e 2.048 MiB. Sua última execução foi da configuração à limpeza: o estado solicitado é parado e a limpeza está confirmada. Seis etapas do ciclo de vida, configurar, validar, preparar, executar, inspecionar e limpar, podem ser selecionadas para ler o que cada uma faz e a evidência que deixa."
 		},
 		"lifecycle": {
-			"label": "checkout-preview · revisão 3",
+			"label": "checkout-preview · revisão 3 · exec-41b2",
 			"stepperLabel": "Etapas do ciclo de vida",
 			"stages": {
 				"configure": {
@@ -361,18 +363,20 @@
 				"observed": "Observado"
 			},
 			"componentsValue": "{count, plural, one {# componente} other {# componentes}}",
+			"cpuValue": "{value}m",
+			"memoryValue": "{value} MiB",
 			"states": {
-				"running": "Em execução",
-				"unknown": "Desconhecido"
+				"stopped": "Parado",
+				"cleanedUp": "Limpo"
 			},
-			"unknownDetail": "lease expirado · limpeza não confirmada",
+			"observedDetail": "7 de 7 recursos próprios removidos",
 			"whatItDoes": "O que faz",
 			"evidenceItLeaves": "Evidência que deixa"
 		},
 		"scenarios": {
 			"title": "Compor → Executar → Inspecionar → Limpar",
 			"lead": "Um microruntime mantém as mesmas quatro fases, quer a mudança corra bem ou não. Veja como um novo componente, uma preparação que falha e uma conexão perdida continuam visíveis da solicitação à limpeza.",
-			"selectorLabel": "Explore um cenário",
+			"selectorLabel": "Explore um cenário ilustrativo",
 			"phases": {
 				"compose": "Compor",
 				"run": "Executar",
@@ -382,11 +386,11 @@
 			"items": {
 				"add-component": {
 					"tabLabel": "Adicionar um componente",
-					"context": "O time adiciona um stub de pagamentos ao checkout preview.",
-					"compose": "O console adiciona services/payments-stub com sua imagem, porta, caminho de prontidão e uma receita de build permitida. A revisão passa para 4.",
+					"context": "O time adiciona um serviço de busca ao checkout preview.",
+					"compose": "O console adiciona services/search com sua imagem, porta, caminho de prontidão e uma receita de build permitida. A revisão passa para 4.",
 					"run": "A mudança só se aplica a um runtime parado. Após a próxima solicitação de início, o agente reivindica a revisão 4 e constrói a nova imagem.",
-					"inspect": "A prontidão é informada por componente só depois que o cluster a confirma: o stub está pronto, o checkout ainda está iniciando.",
-					"cleanup": "Parar remove as três cargas de trabalho, depois o namespace e as cotas. O cluster fica para a próxima execução."
+					"inspect": "A prontidão é informada por componente só depois que o cluster a confirma: a busca está pronta, o checkout ainda está iniciando.",
+					"cleanup": "Parar remove as quatro cargas de trabalho, depois o namespace e as cotas. O cluster fica para a próxima execução."
 				},
 				"preparation-fails": {
 					"tabLabel": "A preparação falha",
@@ -447,7 +451,7 @@
 				"source": {
 					"concern": "Código da aplicação",
 					"consumer": "Fica no seu repositório; um componente é referenciado pelo caminho.",
-					"platform": "Nunca o copia para dentro do runtime."
+					"platform": "Faz o build a partir de um snapshot descartável dos seus arquivos versionados; não guarda uma segunda cópia."
 				},
 				"composition": {
 					"concern": "Composição",
@@ -479,7 +483,7 @@
 		"state": {
 			"kicker": "Desejado não é observado",
 			"title": "Solicitado, observado, desconhecido.",
-			"lead": "Uma solicitação de início não é um runtime em execução, e uma conexão perdida não é uma parada. Os três estados ficam separados, para que ninguém confunda o que foi pedido com o que aconteceu.",
+			"lead": "Uma solicitação de início não é um runtime em execução, e uma conexão perdida não é uma parada. Os três estados ficam separados, para que ninguém confunda o que foi pedido com o que aconteceu. Os exemplos abaixo são ilustrativos.",
 			"cards": {
 				"requested": {
 					"eyebrow": "Solicitado",
@@ -596,7 +600,7 @@
 				},
 				"source": {
 					"question": "Ele copia o meu código?",
-					"answer": "Não. Um componente é referenciado pelo caminho no seu repositório. A aplicação fica onde está, com o seu próprio build."
+					"answer": "Não para dentro do runtime. Um componente é referenciado pelo caminho, e a aplicação fica no seu repositório com o seu próprio build. Para construir uma imagem, o agente trabalha a partir de um snapshot descartável dos seus arquivos versionados, que deixa de fora o estado privado e os arquivos de credenciais."
 				},
 				"stacks": {
 					"question": "Quais stacks são suportadas?",
@@ -623,10 +627,10 @@
 			"primaryCta": "查看生命週期",
 			"secondaryCta": "誰擁有什麼",
 			"caption": "示意 runtime。名稱、限制與觀測皆為模擬，用來呈現一次執行如何從設定走到清理。",
-			"summary": "一個名為 checkout-preview 的示意 runtime，含三個元件、1,500 毫核心與 2,048 MiB。它的請求狀態為執行中，觀測狀態為未知。可選取六個生命週期步驟：設定、驗證、準備、執行、檢查與清理，閱讀每一步做什麼以及留下的證據。"
+			"summary": "一個名為 checkout-preview 的示意 runtime，含三個元件、1,500 毫核心與 2,048 MiB。它的上一次執行從設定走到清理：請求狀態為已停止，清理已確認。可選取六個生命週期步驟：設定、驗證、準備、執行、檢查與清理，閱讀每一步做什麼以及留下的證據。"
 		},
 		"lifecycle": {
-			"label": "checkout-preview · 第 3 版",
+			"label": "checkout-preview · 第 3 版 · exec-41b2",
 			"stepperLabel": "生命週期步驟",
 			"stages": {
 				"configure": {
@@ -668,18 +672,20 @@
 				"observed": "觀測"
 			},
 			"componentsValue": "{count, plural, other {# 個元件}}",
+			"cpuValue": "{value}m",
+			"memoryValue": "{value} MiB",
 			"states": {
-				"running": "執行中",
-				"unknown": "未知"
+				"stopped": "已停止",
+				"cleanedUp": "已清理"
 			},
-			"unknownDetail": "租約已過期 · 清理未確認",
+			"observedDetail": "7 個擁有的資源中已移除 7 個",
 			"whatItDoes": "它做什麼",
 			"evidenceItLeaves": "留下的證據"
 		},
 		"scenarios": {
 			"title": "組成 → 執行 → 檢查 → 清理",
 			"lead": "無論變更是否順利，microruntime 都保持相同的四個階段。看看新增元件、準備失敗與連線中斷，如何從請求到清理都保持可見。",
-			"selectorLabel": "探索一個情境",
+			"selectorLabel": "探索一個示意情境",
 			"phases": {
 				"compose": "組成",
 				"run": "執行",
@@ -689,11 +695,11 @@
 			"items": {
 				"add-component": {
 					"tabLabel": "新增元件",
-					"context": "團隊在 checkout preview 中加入一個付款 stub。",
-					"compose": "主控台加入 services/payments-stub，附上它的映像、連接埠、就緒路徑與一個允許的建置配方。版本更新為 4。",
+					"context": "團隊在 checkout preview 中加入一個搜尋服務。",
+					"compose": "主控台加入 services/search，附上它的映像、連接埠、就緒路徑與一個允許的建置配方。版本更新為 4。",
 					"run": "變更只會套用到已停止的 runtime。下一次啟動請求後，代理認領第 4 版並建置新映像。",
-					"inspect": "就緒狀態只在叢集確認後才按元件回報：stub 已就緒，checkout 仍在啟動中。",
-					"cleanup": "停止時先移除三個工作負載，再移除命名空間與配額。叢集保留給下一次執行。"
+					"inspect": "就緒狀態只在叢集確認後才按元件回報：搜尋已就緒，checkout 仍在啟動中。",
+					"cleanup": "停止時先移除四個工作負載，再移除命名空間與配額。叢集保留給下一次執行。"
 				},
 				"preparation-fails": {
 					"tabLabel": "準備失敗",
@@ -754,7 +760,7 @@
 				"source": {
 					"concern": "應用程式原始碼",
 					"consumer": "留在你的儲存庫中；元件以路徑參照。",
-					"platform": "從不將它複製到 runtime 中。"
+					"platform": "從你已追蹤檔案的一次性快照建置；不保留第二份複本。"
 				},
 				"composition": {
 					"concern": "組成",
@@ -786,7 +792,7 @@
 		"state": {
 			"kicker": "期望不等於觀測",
 			"title": "請求、觀測、未知。",
-			"lead": "啟動請求不等於執行中的 runtime，連線中斷也不等於停止。三種狀態彼此分開，所以沒有人會把要求的事與發生的事混為一談。",
+			"lead": "啟動請求不等於執行中的 runtime，連線中斷也不等於停止。三種狀態彼此分開，所以沒有人會把要求的事與發生的事混為一談。以下範例皆為示意。",
 			"cards": {
 				"requested": {
 					"eyebrow": "請求",
@@ -903,7 +909,7 @@
 				},
 				"source": {
 					"question": "它會複製我的程式碼嗎？",
-					"answer": "不會。元件以它在你儲存庫中的路徑參照。應用程式留在原處，使用它自己的建置。"
+					"answer": "不會複製到 runtime 中。元件以路徑參照，應用程式留在你的儲存庫，使用它自己的建置。為了建置映像，代理會使用你已追蹤檔案的一次性快照，其中排除私有狀態與憑證檔案。"
 				},
 				"stacks": {
 					"question": "支援哪些技術堆疊？",
@@ -930,10 +936,10 @@
 			"primaryCta": "ライフサイクルを見る",
 			"secondaryCta": "誰が何を持つか",
 			"caption": "runtime はイメージです。名前、上限、観測値はシミュレーションで、実行が設定からクリーンアップへどう進むかを示すためのものです。",
-			"summary": "checkout-preview という名前のイメージ上の runtime で、3 つのコンポーネント、1,500 ミリコア、2,048 MiB を持ちます。要求された状態は実行中、観測された状態は不明です。設定・検証・準備・実行・検査・クリーンアップの 6 つのステップを選ぶと、各ステップが何をし、どんな証拠を残すかを読めます。"
+			"summary": "checkout-preview という名前のイメージ上の runtime で、3 つのコンポーネント、1,500 ミリコア、2,048 MiB を持ちます。直近の実行は設定からクリーンアップまで進みました。要求された状態は停止、クリーンアップは確認済みです。設定・検証・準備・実行・検査・クリーンアップの 6 つのステップを選ぶと、各ステップが何をし、どんな証拠を残すかを読めます。"
 		},
 		"lifecycle": {
-			"label": "checkout-preview · リビジョン 3",
+			"label": "checkout-preview · リビジョン 3 · exec-41b2",
 			"stepperLabel": "ライフサイクルのステップ",
 			"stages": {
 				"configure": {
@@ -975,18 +981,20 @@
 				"observed": "観測"
 			},
 			"componentsValue": "{count, plural, other {# 個のコンポーネント}}",
+			"cpuValue": "{value}m",
+			"memoryValue": "{value} MiB",
 			"states": {
-				"running": "実行中",
-				"unknown": "不明"
+				"stopped": "停止",
+				"cleanedUp": "クリーンアップ済み"
 			},
-			"unknownDetail": "リース期限切れ · クリーンアップ未確認",
+			"observedDetail": "所有する 7 個のうち 7 個を削除",
 			"whatItDoes": "何をするか",
 			"evidenceItLeaves": "残す証拠"
 		},
 		"scenarios": {
 			"title": "構成 → 実行 → 検査 → クリーンアップ",
 			"lead": "変更がうまくいってもいかなくても、microruntime は同じ 4 つのフェーズを保ちます。新しいコンポーネント、準備の失敗、接続の喪失が、要求からクリーンアップまでどう見え続けるかを確かめてください。",
-			"selectorLabel": "シナリオを選ぶ",
+			"selectorLabel": "イメージのシナリオを選ぶ",
 			"phases": {
 				"compose": "構成",
 				"run": "実行",
@@ -996,11 +1004,11 @@
 			"items": {
 				"add-component": {
 					"tabLabel": "コンポーネントを追加",
-					"context": "チームが checkout preview に決済のスタブを追加します。",
-					"compose": "コンソールが services/payments-stub を、そのイメージ、ポート、レディネスパス、許可されたビルドレシピとともに追加します。リビジョンは 4 になります。",
+					"context": "チームが checkout preview に検索サービスを追加します。",
+					"compose": "コンソールが services/search を、そのイメージ、ポート、レディネスパス、許可されたビルドレシピとともに追加します。リビジョンは 4 になります。",
 					"run": "変更は停止中の runtime にのみ適用されます。次の開始要求の後、エージェントはリビジョン 4 を確保し、新しいイメージをビルドします。",
-					"inspect": "レディネスはクラスターが確認して初めてコンポーネントごとに報告されます。スタブは準備完了、checkout はまだ起動中です。",
-					"cleanup": "停止すると 3 つのワークロード、次に名前空間とクォータが削除されます。クラスターは次の実行のために残ります。"
+					"inspect": "レディネスはクラスターが確認して初めてコンポーネントごとに報告されます。検索は準備完了、checkout はまだ起動中です。",
+					"cleanup": "停止すると 4 つのワークロード、次に名前空間とクォータが削除されます。クラスターは次の実行のために残ります。"
 				},
 				"preparation-fails": {
 					"tabLabel": "準備が失敗する",
@@ -1061,7 +1069,7 @@
 				"source": {
 					"concern": "アプリケーションのソース",
 					"consumer": "リポジトリにとどまり、コンポーネントはパスで参照されます。",
-					"platform": "runtime にコピーすることはありません。"
+					"platform": "追跡対象ファイルの使い捨てスナップショットからビルドし、二つ目のコピーは残しません。"
 				},
 				"composition": {
 					"concern": "構成",
@@ -1093,7 +1101,7 @@
 		"state": {
 			"kicker": "望んだ状態は観測ではない",
 			"title": "要求、観測、不明。",
-			"lead": "開始要求は実行中の runtime ではなく、接続の喪失は停止ではありません。3 つの状態を分けておくことで、求めたことと起きたことを誰も取り違えません。",
+			"lead": "開始要求は実行中の runtime ではなく、接続の喪失は停止ではありません。3 つの状態を分けておくことで、求めたことと起きたことを誰も取り違えません。以下の例はイメージです。",
 			"cards": {
 				"requested": {
 					"eyebrow": "要求",
@@ -1210,7 +1218,7 @@
 				},
 				"source": {
 					"question": "コードはコピーされますか？",
-					"answer": "いいえ。コンポーネントはリポジトリ内のパスで参照されます。アプリケーションは元の場所に、独自のビルドとともにとどまります。"
+					"answer": "runtime にはコピーされません。コンポーネントはパスで参照され、アプリケーションは独自のビルドとともにリポジトリにとどまります。イメージをビルドするとき、エージェントは追跡対象ファイルの使い捨てスナップショットを使い、非公開の状態と認証情報のファイルは除外します。"
 				},
 				"stacks": {
 					"question": "どの技術スタックに対応していますか？",
@@ -1237,10 +1245,10 @@
 			"primaryCta": "Xem vòng đời",
 			"secondaryCta": "Ai sở hữu gì",
 			"caption": "Runtime minh họa. Tên, giới hạn và các quan sát đều được mô phỏng để cho thấy một lần chạy đi từ cấu hình đến dọn dẹp ra sao.",
-			"summary": "Một runtime minh họa tên checkout-preview với ba thành phần, 1.500 millicore và 2.048 MiB. Trạng thái được yêu cầu là đang chạy và trạng thái quan sát được là chưa rõ. Có thể chọn sáu bước của vòng đời, cấu hình, xác thực, chuẩn bị, thực thi, kiểm tra và dọn dẹp, để đọc mỗi bước làm gì và để lại bằng chứng gì."
+			"summary": "Một runtime minh họa tên checkout-preview với ba thành phần, 1.500 millicore và 2.048 MiB. Lần thực thi gần nhất của nó đã đi từ cấu hình đến dọn dẹp: trạng thái được yêu cầu là đã dừng và việc dọn dẹp đã được xác nhận. Có thể chọn sáu bước của vòng đời, cấu hình, xác thực, chuẩn bị, thực thi, kiểm tra và dọn dẹp, để đọc mỗi bước làm gì và để lại bằng chứng gì."
 		},
 		"lifecycle": {
-			"label": "checkout-preview · bản sửa đổi 3",
+			"label": "checkout-preview · bản sửa đổi 3 · exec-41b2",
 			"stepperLabel": "Các bước của vòng đời",
 			"stages": {
 				"configure": {
@@ -1282,18 +1290,20 @@
 				"observed": "Quan sát được"
 			},
 			"componentsValue": "{count, plural, other {# thành phần}}",
+			"cpuValue": "{value}m",
+			"memoryValue": "{value} MiB",
 			"states": {
-				"running": "Đang chạy",
-				"unknown": "Chưa rõ"
+				"stopped": "Đã dừng",
+				"cleanedUp": "Đã dọn dẹp"
 			},
-			"unknownDetail": "lease đã hết hạn · chưa xác nhận dọn dẹp",
+			"observedDetail": "Đã gỡ 7 trên 7 tài nguyên sở hữu",
 			"whatItDoes": "Bước này làm gì",
 			"evidenceItLeaves": "Bằng chứng để lại"
 		},
 		"scenarios": {
 			"title": "Dựng → Chạy → Kiểm tra → Dọn dẹp",
 			"lead": "Một microruntime giữ nguyên bốn giai đoạn dù thay đổi suôn sẻ hay không. Hãy xem một thành phần mới, một lần chuẩn bị thất bại và một kết nối bị mất đều vẫn hiện rõ từ yêu cầu đến dọn dẹp.",
-			"selectorLabel": "Khám phá một kịch bản",
+			"selectorLabel": "Khám phá một kịch bản minh họa",
 			"phases": {
 				"compose": "Dựng",
 				"run": "Chạy",
@@ -1303,11 +1313,11 @@
 			"items": {
 				"add-component": {
 					"tabLabel": "Thêm một thành phần",
-					"context": "Đội thêm một stub thanh toán vào checkout preview.",
-					"compose": "Bảng điều khiển thêm services/payments-stub cùng image, cổng, đường dẫn sẵn sàng và một công thức build được cho phép. Bản sửa đổi chuyển sang 4.",
+					"context": "Đội thêm một dịch vụ tìm kiếm vào checkout preview.",
+					"compose": "Bảng điều khiển thêm services/search cùng image, cổng, đường dẫn sẵn sàng và một công thức build được cho phép. Bản sửa đổi chuyển sang 4.",
 					"run": "Thay đổi chỉ áp dụng cho một runtime đã dừng. Sau yêu cầu khởi động tiếp theo, tác tử nhận bản sửa đổi 4 và build image mới.",
-					"inspect": "Trạng thái sẵn sàng chỉ được báo cho từng thành phần sau khi cụm xác nhận: stub đã sẵn sàng, checkout vẫn đang khởi động.",
-					"cleanup": "Dừng lại sẽ gỡ ba workload, sau đó là namespace và hạn ngạch. Cụm được giữ cho lần chạy sau."
+					"inspect": "Trạng thái sẵn sàng chỉ được báo cho từng thành phần sau khi cụm xác nhận: tìm kiếm đã sẵn sàng, checkout vẫn đang khởi động.",
+					"cleanup": "Dừng lại sẽ gỡ bốn workload, sau đó là namespace và hạn ngạch. Cụm được giữ cho lần chạy sau."
 				},
 				"preparation-fails": {
 					"tabLabel": "Chuẩn bị thất bại",
@@ -1368,7 +1378,7 @@
 				"source": {
 					"concern": "Mã nguồn ứng dụng",
 					"consumer": "Nằm trong kho mã của bạn; một thành phần được tham chiếu bằng đường dẫn.",
-					"platform": "Không bao giờ sao chép nó vào runtime."
+					"platform": "Build từ một ảnh chụp dùng một lần của các tệp được theo dõi; không giữ bản sao thứ hai."
 				},
 				"composition": {
 					"concern": "Cấu thành",
@@ -1400,7 +1410,7 @@
 		"state": {
 			"kicker": "Mong muốn không phải là quan sát",
 			"title": "Được yêu cầu, quan sát được, chưa rõ.",
-			"lead": "Một yêu cầu khởi động không phải là một runtime đang chạy, và một kết nối bị mất không phải là việc dừng. Ba trạng thái được giữ tách biệt, để không ai nhầm điều đã yêu cầu với điều đã xảy ra.",
+			"lead": "Một yêu cầu khởi động không phải là một runtime đang chạy, và một kết nối bị mất không phải là việc dừng. Ba trạng thái được giữ tách biệt, để không ai nhầm điều đã yêu cầu với điều đã xảy ra. Các ví dụ dưới đây là minh họa.",
 			"cards": {
 				"requested": {
 					"eyebrow": "Được yêu cầu",
@@ -1517,7 +1527,7 @@
 				},
 				"source": {
 					"question": "Nó có sao chép mã của tôi không?",
-					"answer": "Không. Một thành phần được tham chiếu bằng đường dẫn trong kho mã của bạn. Ứng dụng vẫn ở nguyên chỗ, với cách build riêng của nó."
+					"answer": "Không sao chép vào runtime. Một thành phần được tham chiếu bằng đường dẫn, và ứng dụng vẫn nằm trong kho mã của bạn với cách build riêng. Để build một image, tác tử làm việc từ một ảnh chụp dùng một lần của các tệp được theo dõi, loại trừ trạng thái riêng tư và các tệp thông tin xác thực."
 				},
 				"stacks": {
 					"question": "Những stack nào được hỗ trợ?",

@@ -1,4 +1,6 @@
 import { LogoMark } from '@langdrift/web/ui/brand'
+import { Eyebrow } from '@langdrift/web/ui/eyebrow'
+import { ArrowRightIcon } from '@langdrift/web/ui/icons/arrow'
 import { MicroruntimesIcon } from '@langdrift/web/ui/icons/platform'
 import { InfoCards } from '@langdrift/web/ui/info-cards'
 import { Fragment } from 'react'
@@ -13,28 +15,14 @@ interface AuthoringFlowProps {
 	copy: MicroruntimesMessages['flow']
 }
 
-const card = 'flex flex-col gap-2 rounded-2xl border border-border bg-card p-6'
-const arrow = (
+const flowCard =
+	'flex flex-col gap-2 rounded-2xl border border-border bg-card p-6'
+const flowArrow = (
 	<li
 		aria-hidden="true"
 		className="flex items-center justify-center text-muted-foreground"
 	>
-		<svg
-			aria-hidden="true"
-			className="rotate-90 lg:rotate-0"
-			fill="none"
-			height="20"
-			viewBox="0 0 24 24"
-			width="20"
-		>
-			<path
-				d="M4 12h16m-6-6 6 6-6 6"
-				stroke="currentColor"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				strokeWidth="1.5"
-			/>
-		</svg>
+		<ArrowRightIcon className="rotate-90 lg:rotate-0" size={20} />
 	</li>
 )
 
@@ -61,7 +49,7 @@ export function AuthoringFlow(props: AuthoringFlowProps) {
 			<ol className="m-0 mt-11 grid list-none gap-3 p-0 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1.2fr)]">
 				{steps.map((step) => (
 					<Fragment key={step.id}>
-						<li className={card}>
+						<li className={flowCard}>
 							<span className="mb-2 inline-flex size-9 items-center justify-center rounded-lg bg-foreground/5 text-foreground">
 								{step.icon}
 							</span>
@@ -72,13 +60,11 @@ export function AuthoringFlow(props: AuthoringFlowProps) {
 								{step.description}
 							</p>
 						</li>
-						{arrow}
+						{flowArrow}
 					</Fragment>
 				))}
-				<li className={card}>
-					<span className="font-mono text-[9px] tracking-[0.08em] text-muted-foreground uppercase">
-						{copy.targetsTitle}
-					</span>
+				<li className={flowCard}>
+					<Eyebrow>{copy.targetsTitle}</Eyebrow>
 					<ul className="m-0 mt-1 grid list-none gap-3 p-0">
 						{flowTargetIds.map((id) => (
 							<li

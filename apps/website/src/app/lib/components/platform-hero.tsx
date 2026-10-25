@@ -1,4 +1,5 @@
 import { HeroShader } from '@langdrift/web/ui/hero-shader'
+import { ArrowRightIcon } from '@langdrift/web/ui/icons/arrow'
 import { RotatingText } from '@langdrift/web/ui/rotating-text'
 import { GravityStars } from '@langdrift/web/vendors/smoothui/gravity-stars'
 import { MagneticField } from '@langdrift/web/vendors/smoothui/magnetic-field'
@@ -73,21 +74,7 @@ export function PlatformHero(props: PlatformHeroProps) {
 							locale={locale}
 						>
 							{copy.primaryCta}
-							<svg
-								aria-hidden="true"
-								fill="none"
-								height="16"
-								viewBox="0 0 24 24"
-								width="16"
-							>
-								<path
-									d="M4 12h16m-6-6 6 6-6 6"
-									stroke="currentColor"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth="1.5"
-								/>
-							</svg>
+							<ArrowRightIcon />
 						</Link>
 						<Link
 							className="smooth-text-link"

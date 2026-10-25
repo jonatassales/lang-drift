@@ -1,41 +1,33 @@
+import { ArrowRightIcon } from '@langdrift/web/ui/icons/arrow'
 import { ChromaText } from '@langdrift/web/vendors/smoothui/chroma-text'
 import type { ReactNode } from 'react'
 
-export interface ProductHeroCta {
-	href: string
-	label: string
+export interface ProductHeroCopy {
+	titleStart: string
+	titleHighlight: string
+	titleEnd: string
+	lead: string
+	primaryCta: string
+	secondaryCta: string
+	caption: string
+	summary: string
 }
 
 interface ProductHeroProps {
-	caption?: string
-	children?: ReactNode
+	children: ReactNode
+	copy: ProductHeroCopy
 	headingId: string
-	lead: string
-	primaryCta: ProductHeroCta
-	secondaryCta: ProductHeroCta
-	summary?: string
-	titleEnd: string
-	titleHighlight: string
-	titleStart: string
+	primaryFragment: string
+	secondaryFragment: string
 }
 
 // The hero of a product page, in the Vision hero's layout: a centered
-// question headline with one highlighted phrase, a lead, two calls to action,
-// then the illustrative demo described by its caption and a summary for
-// screen readers.
+// question headline with one highlighted phrase, a lead, two calls to action
+// to sections of the same page, then the illustrative demo described by its
+// caption and a summary for screen readers.
 export function ProductHero(props: ProductHeroProps) {
-	const {
-		caption,
-		children,
-		headingId,
-		lead,
-		primaryCta,
-		secondaryCta,
-		summary,
-		titleEnd,
-		titleHighlight,
-		titleStart,
-	} = props
+	const { children, copy, headingId, primaryFragment, secondaryFragment } =
+		props
 
 	const captionId = `${headingId}-demo-caption`
 	const summaryId = `${headingId}-demo-summary`
@@ -50,54 +42,41 @@ export function ProductHero(props: ProductHeroProps) {
 					className="m-0 text-[clamp(28px,3.2vw,43px)] leading-[1.16] font-medium tracking-[-0.045em] text-balance"
 					id={headingId}
 				>
-					{titleStart}
-					<ChromaText>{titleHighlight}</ChromaText>
-					{titleEnd}
+					{copy.titleStart}
+					<ChromaText>{copy.titleHighlight}</ChromaText>
+					{copy.titleEnd}
 				</h1>
 				<p className="mx-auto mt-[23px] mb-0 max-w-[750px] text-base leading-[1.65] text-pretty text-muted-foreground">
-					{lead}
+					{copy.lead}
 				</p>
 				<div className="mt-[25px] flex flex-wrap items-center justify-center gap-x-[26px] gap-y-4">
-					<a className="smooth-primary-button min-h-11" href={primaryCta.href}>
-						{primaryCta.label}
-						<svg
-							aria-hidden="true"
-							fill="none"
-							height="16"
-							viewBox="0 0 24 24"
-							width="16"
-						>
-							<path
-								d="M4 12h16m-6-6 6 6-6 6"
-								stroke="currentColor"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth="1.5"
-							/>
-						</svg>
+					<a
+						className="smooth-primary-button min-h-11"
+						href={`#${primaryFragment}`}
+					>
+						{copy.primaryCta}
+						<ArrowRightIcon />
 					</a>
 					<a
 						className="smooth-text-link inline-flex min-h-11 items-center"
-						href={secondaryCta.href}
+						href={`#${secondaryFragment}`}
 					>
-						{secondaryCta.label}
+						{copy.secondaryCta}
 					</a>
 				</div>
 			</div>
-			{children ? (
-				<div aria-describedby={`${captionId} ${summaryId}`} className="mt-12">
-					{children}
-					<p
-						className="mx-auto mt-5 mb-0 max-w-[880px] text-center text-xs leading-[1.65] text-muted-foreground"
-						id={captionId}
-					>
-						{caption}
-					</p>
-					<p className="sr-only" id={summaryId}>
-						{summary}
-					</p>
-				</div>
-			) : null}
+			<div aria-describedby={`${captionId} ${summaryId}`} className="mt-12">
+				{children}
+				<p
+					className="mx-auto mt-5 mb-0 max-w-[880px] text-center text-xs leading-[1.65] text-muted-foreground"
+					id={captionId}
+				>
+					{copy.caption}
+				</p>
+				<p className="sr-only" id={summaryId}>
+					{copy.summary}
+				</p>
+			</div>
 		</section>
 	)
 }

@@ -3,6 +3,15 @@
 // what a reader does not read as prose. Amounts are simulated US dollars, and
 // an observed spend of null is unknown, never zero.
 
+// Amounts on the FinOps page are simulated US dollars, whole only.
+export function dollars(locale: string) {
+	return new Intl.NumberFormat(locale, {
+		currency: 'USD',
+		maximumFractionDigits: 0,
+		style: 'currency',
+	})
+}
+
 export const envelopeSegmentIds = [
 	'spent',
 	'reserved',
@@ -64,7 +73,7 @@ export const workItems = [
 		evidencePath: 'receipts/2026-10-14/checkout-retries',
 		id: 'checkout-retries',
 		observed: 2460,
-		reserved: 2100,
+		reserved: 2600,
 		retries: 2,
 		tier: 'deep',
 		verified: true,
@@ -122,7 +131,7 @@ export const chainScenarioIds = [
 	'pause-and-replan',
 	'unknown-spend',
 ] as const
-const faqIds = [
+export const finopsFaqIds = [
 	'budget',
 	'spending',
 	'unknown',
@@ -130,9 +139,12 @@ const faqIds = [
 	'availability',
 ] as const
 
+export const budgetCardIds = ['envelope', 'allocation', 'reservation'] as const
+export const authorizationCardIds = ['recommend', 'gate', 'reconcile'] as const
+
 export type ChainPillarId = (typeof chainPillarIds)[number]
 export type ChainScenarioId = (typeof chainScenarioIds)[number]
-export type FinopsFaqId = (typeof faqIds)[number]
+export type FinopsFaqId = (typeof finopsFaqIds)[number]
 
 export interface FinopsCard {
 	description: string
@@ -189,8 +201,7 @@ export interface FinopsMessages {
 			estimate: string
 			reserved: string
 			observed: string
-			model: string
-			effort: string
+			modelEffort: string
 			retries: string
 			verification: string
 			cleanup: string
@@ -198,6 +209,7 @@ export interface FinopsMessages {
 		}
 		tiers: Record<ModelTier, string>
 		efforts: Record<Effort, string>
+		modelValue: string
 		verification: { verified: string; pending: string }
 		cleanup: Record<CleanupState, string>
 		retries: string
@@ -207,13 +219,13 @@ export interface FinopsMessages {
 		kicker: string
 		title: string
 		lead: string
-		cards: Record<'envelope' | 'allocation' | 'reservation', FinopsCard>
+		cards: Record<(typeof budgetCardIds)[number], FinopsCard>
 	}
 	authorization: {
 		kicker: string
 		title: string
 		lead: string
-		cards: Record<'recommend' | 'gate' | 'reconcile', FinopsCard>
+		cards: Record<(typeof authorizationCardIds)[number], FinopsCard>
 	}
 	report: {
 		kicker: string

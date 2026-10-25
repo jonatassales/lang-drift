@@ -1,3 +1,4 @@
+import { ArrowRightIcon } from '@langdrift/web/ui/icons/arrow'
 import { driftSign } from '@langdrift/web/utilities'
 import { AnimatedAvatarGroup } from '@langdrift/web/vendors/smoothui/animated-avatar-group'
 import { ChromaText } from '@langdrift/web/vendors/smoothui/chroma-text'
@@ -19,6 +20,7 @@ import { HeroSinapsiGraph } from '@components/hero-sinapsi-graph'
 import { IntegrationsSection } from '@components/integrations-section'
 import { RoiSection } from '@components/roi-section'
 import { SelectedMovement } from '@components/selected-movement'
+import { SkipLink } from '@components/skip-link'
 import { VisionLoopEvidenceSection } from '@components/vision-loop-evidence-section'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
@@ -54,12 +56,7 @@ export default async function VisionPage(props: VisionPageProps) {
 
 	return (
 		<>
-			<a
-				className="fixed top-0 left-3 z-200 max-w-[calc(100vw-1.5rem)] -translate-y-full bg-foreground px-2.5 py-2 whitespace-normal text-card focus-visible:top-3 focus-visible:translate-y-0"
-				href="#why"
-			>
-				{t('skip')}
-			</a>
+			<SkipLink href="#why">{t('skip')}</SkipLink>
 			<WebsiteHeader />
 			<main id="top">
 				<section aria-labelledby="hero-heading" className="website-hero">
@@ -73,21 +70,7 @@ export default async function VisionPage(props: VisionPageProps) {
 						<div className="website-hero-actions">
 							<a className="smooth-primary-button" href="#why">
 								{t('hero.seeMovement')}
-								<svg
-									aria-hidden="true"
-									fill="none"
-									height="16"
-									viewBox="0 0 24 24"
-									width="16"
-								>
-									<path
-										d="M4 12h16m-6-6 6 6-6 6"
-										stroke="currentColor"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										strokeWidth="1.5"
-									/>
-								</svg>
+								<ArrowRightIcon />
 							</a>
 							<a className="smooth-text-link" href="#attribution">
 								{t('hero.howItWorks')}

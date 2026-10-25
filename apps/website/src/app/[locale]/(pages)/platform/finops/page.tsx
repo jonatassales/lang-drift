@@ -1,4 +1,4 @@
-import { DetailList, type DetailListItem } from '@langdrift/web/ui/detail-list'
+import type { DetailListItem } from '@langdrift/web/ui/detail-list'
 import { InfoCards } from '@langdrift/web/ui/info-cards'
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -13,14 +13,19 @@ import { PillarScenarios } from '@components/product-page/pillar-scenarios'
 import { ProductFaqSection } from '@components/product-page/product-faq-section'
 import { ProductHero } from '@components/product-page/product-hero'
 import { ProductSection } from '@components/product-page/product-section'
+import { RecordCard } from '@components/product-page/record-card'
+import { SectionOutro } from '@components/product-page/section-outro'
+import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
 import {
+	authorizationCardIds,
+	budgetCardIds,
 	chainPillarIds,
 	chainScenarioIds,
 	envelope,
 	envelopeSegments,
-	type FinopsFaqId,
+	finopsFaqIds,
 	workItems,
 } from '@data/finops-content'
 import { finopsMessages } from '@i18n/messages/index'
@@ -31,34 +36,28 @@ interface FinopsPageProps {
 	params: Promise<{ locale: string }>
 }
 
-const budgetCards = ['envelope', 'allocation', 'reservation'] as const
-const authorizationCards = ['recommend', 'gate', 'reconcile'] as const
-const faqItems: readonly FinopsFaqId[] = [
-	'budget',
-	'spending',
-	'unknown',
-	'authorization',
-	'availability',
-]
-
 export async function generateMetadata(
 	{ params }: FinopsPageProps,
 	parent: ResolvingMetadata,
 ): Promise<Metadata> {
 	const { locale } = await params
+
 	if (!hasLocale(routing.locales, locale)) notFound()
 
-	return pageMetadata('finops', locale, await socialImages(parent))
+	const images = await socialImages(parent)
+
+	return pageMetadata('finops', locale, images)
 }
 
 export default async function FinopsPage(props: FinopsPageProps) {
 	const { params } = props
 
 	const { locale } = await params
+
 	if (!hasLocale(routing.locales, locale)) notFound()
 	setRequestLocale(locale)
 	const copy = finopsMessages[locale]
-	const report = createTranslator({
+	const formatReport = createTranslator({
 		locale,
 		messages: copy.report,
 	})
@@ -84,7 +83,7 @@ export default async function FinopsPage(props: FinopsPageProps) {
 	const unknownCharges = workItems.length - observedItems.length
 	const reportRows: readonly DetailListItem[] = [
 		{
-			detail: report('rows.envelopeUsed.detail', {
+			detail: formatReport('rows.envelopeUsed.detail', {
 				used: percent.format(
 					(segments.spent + segments.reserved) / envelope.authorized,
 				),
@@ -94,7 +93,7 @@ export default async function FinopsPage(props: FinopsPageProps) {
 			term: copy.report.rows.envelopeUsed.term,
 		},
 		{
-			detail: report('rows.largestConsumer.detail', {
+			detail: formatReport('rows.largestConsumer.detail', {
 				item: copy.ledger.items[largestConsumer.id].title,
 				count: largestConsumer.retries + 1,
 			}),
@@ -102,7 +101,9 @@ export default async function FinopsPage(props: FinopsPageProps) {
 			term: copy.report.rows.largestConsumer.term,
 		},
 		{
-			detail: report('rows.unknownCharges.detail', { count: unknownCharges }),
+			detail: formatReport('rows.unknownCharges.detail', {
+				count: unknownCharges,
+			}),
 			id: 'unknown',
 			term: copy.report.rows.unknownCharges.term,
 			tone: unknownCharges > 0 ? 'warning' : 'success',
@@ -117,30 +118,14 @@ export default async function FinopsPage(props: FinopsPageProps) {
 
 	return (
 		<>
-			<a
-				className="fixed top-0 left-3 z-200 max-w-[calc(100vw-1.5rem)] -translate-y-full bg-foreground px-2.5 py-2 whitespace-normal text-card focus-visible:top-3 focus-visible:translate-y-0"
-				href="#budget"
-			>
-				{copy.skip}
-			</a>
+			<SkipLink href="#chain">{copy.skip}</SkipLink>
 			<WebsiteHeader />
 			<main id="top">
 				<ProductHero
-					caption={copy.hero.caption}
+					copy={copy.hero}
 					headingId="finops-hero-heading"
-					lead={copy.hero.lead}
-					primaryCta={{
-						href: '#budget',
-						label: copy.hero.primaryCta,
-					}}
-					secondaryCta={{
-						href: '#chain',
-						label: copy.hero.secondaryCta,
-					}}
-					summary={copy.hero.summary}
-					titleEnd={copy.hero.titleEnd}
-					titleHighlight={copy.hero.titleHighlight}
-					titleStart={copy.hero.titleStart}
+					primaryFragment="budget"
+					secondaryFragment="chain"
 				>
 					<BudgetLedgerDemo copy={copy.ledger} locale={locale} />
 				</ProductHero>
@@ -159,12 +144,7 @@ export default async function FinopsPage(props: FinopsPageProps) {
 							const scenario = copy.chain.scenarios[id]
 
 							return {
-								cells: {
-									intent: scenario.intent,
-									delivery: scenario.delivery,
-									evidence: scenario.evidence,
-									outcome: scenario.outcome,
-								},
+								cells: scenario,
 								context: scenario.context,
 								id,
 								tabLabel: scenario.tabLabel,
@@ -172,15 +152,11 @@ export default async function FinopsPage(props: FinopsPageProps) {
 						})}
 						selectorLabel={copy.chain.selectorLabel}
 					/>
-					<div className="mt-8 flex flex-wrap items-center justify-between gap-x-8 gap-y-3">
-						<p className="m-0 max-w-[640px] text-[13px] leading-[1.6] text-muted-foreground">
-							{copy.chain.outro}
-						</p>
-						<a className="smooth-text-link" href="#authorization">
-							{copy.chain.outroLink}
-							<span aria-hidden="true"> ↗</span>
-						</a>
-					</div>
+					<SectionOutro
+						fragment="authorization"
+						link={copy.chain.outroLink}
+						text={copy.chain.outro}
+					/>
 				</ProductSection>
 
 				<ProductSection
@@ -204,11 +180,9 @@ export default async function FinopsPage(props: FinopsPageProps) {
 				>
 					<InfoCards
 						className="mt-11"
-						items={budgetCards.map((id) => ({
-							description: copy.budget.cards[id].description,
-							eyebrow: copy.budget.cards[id].eyebrow,
+						items={budgetCardIds.map((id) => ({
+							...copy.budget.cards[id],
 							id,
-							title: copy.budget.cards[id].title,
 						}))}
 					/>
 				</ProductSection>
@@ -221,11 +195,9 @@ export default async function FinopsPage(props: FinopsPageProps) {
 				>
 					<InfoCards
 						className="mt-11"
-						items={authorizationCards.map((id) => ({
-							description: copy.authorization.cards[id].description,
-							eyebrow: copy.authorization.cards[id].eyebrow,
+						items={authorizationCardIds.map((id) => ({
+							...copy.authorization.cards[id],
 							id,
-							title: copy.authorization.cards[id].title,
 						}))}
 						ordered
 					/>
@@ -237,17 +209,11 @@ export default async function FinopsPage(props: FinopsPageProps) {
 					lead={copy.report.lead}
 					title={copy.report.title}
 				>
-					<article className="mt-11 rounded-2xl border border-border bg-card p-6 sm:p-8">
-						<div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-border pb-4">
-							<strong className="text-lg font-medium tracking-[-0.02em]">
-								{copy.report.weekly}
-							</strong>
-							<span className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-								{copy.report.period}
-							</span>
-						</div>
-						<DetailList className="mt-1" items={reportRows} />
-					</article>
+					<RecordCard
+						items={reportRows}
+						period={copy.report.period}
+						title={copy.report.weekly}
+					/>
 				</ProductSection>
 
 				<ProductSection
@@ -261,9 +227,8 @@ export default async function FinopsPage(props: FinopsPageProps) {
 						columns={4}
 						items={[
 							{
-								description: copy.sources.items.providers.description,
+								...copy.sources.items.providers,
 								id: 'providers',
-								title: copy.sources.items.providers.title,
 							},
 							{
 								description: copy.sources.items.microruntimes.description,
@@ -280,14 +245,12 @@ export default async function FinopsPage(props: FinopsPageProps) {
 								title: copy.sources.items.microruntimes.title,
 							},
 							{
-								description: copy.sources.items.evidence.description,
+								...copy.sources.items.evidence,
 								id: 'evidence',
-								title: copy.sources.items.evidence.title,
 							},
 							{
-								description: copy.sources.items.billing.description,
+								...copy.sources.items.billing,
 								id: 'billing',
-								title: copy.sources.items.billing.title,
 							},
 						]}
 					/>
@@ -298,10 +261,9 @@ export default async function FinopsPage(props: FinopsPageProps) {
 
 				<ProductFaqSection
 					description={copy.faq.description}
-					items={faqItems.map((id) => ({
-						answer: copy.faq.items[id].answer,
+					items={finopsFaqIds.map((id) => ({
+						...copy.faq.items[id],
 						id,
-						question: copy.faq.items[id].question,
 					}))}
 					title={copy.faq.title}
 				/>

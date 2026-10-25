@@ -6,6 +6,7 @@ import { setRequestLocale } from 'next-intl/server'
 import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
 import { PlatformFeatures } from '@components/platform-features'
 import { PlatformHero } from '@components/platform-hero'
+import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
 import { WebsiteStructuredData } from '@components/website-structured-data'
@@ -37,12 +38,7 @@ export default async function WebsitePage(props: WebsitePageProps) {
 	return (
 		<>
 			<WebsiteStructuredData />
-			<a
-				className="fixed top-0 left-3 z-200 max-w-[calc(100vw-1.5rem)] -translate-y-full bg-foreground px-2.5 py-2 whitespace-normal text-card focus-visible:top-3 focus-visible:translate-y-0"
-				href="#top"
-			>
-				{copy.skip}
-			</a>
+			<SkipLink href="#top">{copy.skip}</SkipLink>
 			<WebsiteHeader />
 			<main id="top">
 				<PlatformHero locale={locale} />

@@ -1,24 +1,28 @@
 'use client'
 
+import { Eyebrow } from '@langdrift/web/ui/eyebrow'
+import { ArrowRightIcon } from '@langdrift/web/ui/icons/arrow'
 import { AnimatedTabs } from '@langdrift/web/vendors/smoothui/animated-tabs'
 import { useId, useState } from 'react'
 
-export interface PillarScenario {
-	cells: Record<string, string>
+export interface PillarScenario<PillarId extends string> {
+	cells: Record<PillarId, string>
 	context: string
 	id: string
 	tabLabel: string
 }
 
-interface PillarScenariosProps {
-	pillars: readonly { id: string; label: string }[]
-	scenarios: readonly PillarScenario[]
+interface PillarScenariosProps<PillarId extends string> {
+	pillars: readonly { id: PillarId; label: string }[]
+	scenarios: readonly PillarScenario<PillarId>[]
 	selectorLabel: string
 }
 
 // Scenario tabs over a row of pillars: each scenario tells one story across
 // the same columns (intent to outcome, compose to clean up).
-export function PillarScenarios(props: PillarScenariosProps) {
+export function PillarScenarios<PillarId extends string>(
+	props: PillarScenariosProps<PillarId>,
+) {
 	const { pillars, scenarios, selectorLabel } = props
 
 	const layoutId = useId()
@@ -26,9 +30,7 @@ export function PillarScenarios(props: PillarScenariosProps) {
 
 	return (
 		<div className="mt-11">
-			<span className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-				{selectorLabel}
-			</span>
+			<Eyebrow className="text-[10px]">{selectorLabel}</Eyebrow>
 			<AnimatedTabs
 				activeTab={activeId}
 				ariaLabel={selectorLabel}
@@ -72,12 +74,7 @@ export function PillarScenarios(props: PillarScenariosProps) {
 													{pillar.label}
 												</h3>
 												{index < pillars.length - 1 ? (
-													<span
-														aria-hidden="true"
-														className="hidden text-muted-foreground lg:inline"
-													>
-														→
-													</span>
+													<ArrowRightIcon className="hidden text-muted-foreground lg:block" />
 												) : null}
 											</div>
 											<p className="m-0 text-[13px] leading-[1.6] text-muted-foreground">

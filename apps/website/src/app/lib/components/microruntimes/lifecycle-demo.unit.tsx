@@ -21,6 +21,7 @@ function mount() {
 			<StageEvidence copy={copy.evidence} stageLabels={copy.lifecycle.stages} />
 		</Provider>,
 	)
+
 	return store
 }
 
@@ -37,10 +38,12 @@ describe('Microruntimes lifecycle demo', () => {
 		).toBeTruthy()
 	})
 
-	it('keeps requested and observed apart, with observed unknown', () => {
+	it('shows the requested and the observed state of the last run apart', () => {
 		mount()
-		expect(screen.getByText('Running')).toBeTruthy()
-		expect(screen.getByText('lease expired · cleanup unconfirmed')).toBeTruthy()
+		expect(screen.getByText('Stopped')).toBeTruthy()
+		expect(screen.getByText('7 of 7 owned resources removed')).toBeTruthy()
 		expect(screen.getByText('3 components')).toBeTruthy()
+		expect(screen.getByText('1,500m')).toBeTruthy()
+		expect(screen.getByText('2,048 MiB')).toBeTruthy()
 	})
 })

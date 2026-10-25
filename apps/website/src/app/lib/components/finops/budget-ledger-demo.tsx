@@ -1,9 +1,12 @@
 'use client'
 
+import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { cn } from '@langdrift/web/utilities'
 import { useAtom } from 'jotai'
 
+import { ChoiceButton } from '@components/product-page/choice-button'
 import {
+	dollars,
 	type EnvelopeSegmentId,
 	envelope,
 	envelopeSegmentIds,
@@ -26,7 +29,7 @@ const segmentColors: Record<EnvelopeSegmentId, string> = {
 	available: 'bg-foreground/10',
 }
 
-const cell = 'font-mono text-[13px] tabular-nums sm:text-right'
+const amountColumn = 'font-mono text-[13px] tabular-nums sm:text-right'
 
 // The FinOps hero demo: an illustrative team envelope as a stacked bar, then
 // the work items drawing on it. Selecting an item drives the receipt below.
@@ -34,11 +37,7 @@ export function BudgetLedgerDemo(props: BudgetLedgerDemoProps) {
 	const { copy, locale } = props
 
 	const [selectedId, setSelectedId] = useAtom(selectedWorkItemAtom)
-	const money = new Intl.NumberFormat(locale, {
-		currency: 'USD',
-		maximumFractionDigits: 0,
-		style: 'currency',
-	})
+	const money = dollars(locale)
 	const percent = new Intl.NumberFormat(locale, {
 		maximumFractionDigits: 0,
 		style: 'percent',
@@ -52,17 +51,13 @@ export function BudgetLedgerDemo(props: BudgetLedgerDemoProps) {
 		<article className="mx-auto max-w-[1040px] rounded-2xl border border-border bg-card p-5 text-left sm:p-7">
 			<header className="flex flex-wrap items-end justify-between gap-4">
 				<div className="grid gap-1.5">
-					<span className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-						{copy.label}
-					</span>
+					<Eyebrow className="text-[10px]">{copy.label}</Eyebrow>
 					<span className="text-[13px] text-muted-foreground">
 						{copy.period}
 					</span>
 				</div>
 				<div className="grid justify-items-end gap-1.5">
-					<span className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-						{copy.authorized}
-					</span>
+					<Eyebrow className="text-[10px]">{copy.authorized}</Eyebrow>
 					<strong className="font-mono text-[28px] leading-none font-medium tracking-[-0.02em]">
 						{money.format(envelope.authorized)}
 					</strong>
@@ -107,52 +102,48 @@ export function BudgetLedgerDemo(props: BudgetLedgerDemoProps) {
 			<div className="mt-7 border-t border-border pt-4">
 				<div
 					aria-hidden="true"
-					className="hidden grid-cols-[minmax(0,1.6fr)_repeat(3,minmax(0,0.8fr))] gap-4 px-3 pb-2 font-mono text-[9px] tracking-[0.08em] text-muted-foreground uppercase sm:grid"
+					className="hidden grid-cols-[minmax(0,1.6fr)_repeat(3,minmax(0,0.8fr))] gap-4 px-3 pb-2 sm:grid"
 				>
-					<span>{copy.columns.item}</span>
-					<span className="text-right">{copy.columns.estimate}</span>
-					<span className="text-right">{copy.columns.reserved}</span>
-					<span className="text-right">{copy.columns.observed}</span>
+					<Eyebrow>{copy.columns.item}</Eyebrow>
+					<Eyebrow className="text-right">{copy.columns.estimate}</Eyebrow>
+					<Eyebrow className="text-right">{copy.columns.reserved}</Eyebrow>
+					<Eyebrow className="text-right">{copy.columns.observed}</Eyebrow>
 				</div>
 				<ul className="m-0 grid list-none gap-1 p-0">
 					{workItems.map((item) => {
-						const selected = item.id === selectedId
-						const names = copy.items[item.id]
+						const itemCopy = copy.items[item.id]
 
 						return (
 							<li key={item.id}>
-								<button
-									aria-pressed={selected}
-									className={cn(
-										'grid w-full cursor-pointer grid-cols-2 gap-x-4 gap-y-1.5 rounded-xl border border-transparent px-3 py-3 text-left text-foreground motion-safe:transition-colors sm:grid-cols-[minmax(0,1.6fr)_repeat(3,minmax(0,0.8fr))] sm:items-center',
-										'hover:bg-foreground/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
-										selected &&
-											'border-primary/60 bg-primary/10 hover:bg-primary/10',
-									)}
-									onClick={() => setSelectedId(item.id)}
-									type="button"
+								<ChoiceButton
+									className="grid grid-cols-2 gap-x-4 gap-y-1.5 border-transparent px-3 py-3 sm:grid-cols-[minmax(0,1.6fr)_repeat(3,minmax(0,0.8fr))] sm:items-center"
+									kind="toggle"
+									onSelect={() => setSelectedId(item.id)}
+									selected={item.id === selectedId}
 								>
 									<span className="col-span-2 grid gap-0.5 sm:col-span-1">
 										<span className="text-[14px] font-medium">
-											{names.title}
+											{itemCopy.title}
 										</span>
 										<span className="text-[12px] text-muted-foreground">
-											{names.owner}
+											{itemCopy.owner}
 										</span>
 									</span>
-									<span className={cell}>
+									<span className={amountColumn}>
 										<span className="text-muted-foreground sm:sr-only">
 											{copy.columns.estimate}{' '}
 										</span>
 										{money.format(item.estimate)}
 									</span>
-									<span className={cell}>
+									<span className={amountColumn}>
 										<span className="text-muted-foreground sm:sr-only">
 											{copy.columns.reserved}{' '}
 										</span>
 										{money.format(item.reserved)}
 									</span>
-									<span className={cn(cell, 'col-span-2 sm:col-span-1')}>
+									<span
+										className={cn(amountColumn, 'col-span-2 sm:col-span-1')}
+									>
 										<span className="text-muted-foreground sm:sr-only">
 											{copy.columns.observed}{' '}
 										</span>
@@ -167,7 +158,7 @@ export function BudgetLedgerDemo(props: BudgetLedgerDemoProps) {
 											money.format(item.observed)
 										)}
 									</span>
-								</button>
+								</ChoiceButton>
 							</li>
 						)
 					})}
