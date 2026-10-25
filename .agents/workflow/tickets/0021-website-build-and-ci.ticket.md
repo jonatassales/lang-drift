@@ -1,0 +1,13 @@
+# 0021: Website build, CI and container
+
+**Spec:** .agents/workflow/specs/0003-langdrift-website-on-apps.spec.md
+
+**What to build:** Turborepo, CI and the website's Dockerfile know the website: its build environment is declared, `dev` builds the tokens first, CI builds it with safe values, and the container builds from this repository's paths with pinned inputs.
+
+**Blocked by:** 0020 (The website app).
+
+**Status:** ready-for-agent
+
+- [ ] The website's build declares its environment variables; `dev` depends on upstream builds.
+- [ ] The pull-request workflow sets the safe values (local build, early access paused, sign-up disabled, a local Docs origin).
+- [ ] The Dockerfile uses this repository's paths, a digest-pinned Node image and a checksum-pinned pnpm, and no Corepack.
