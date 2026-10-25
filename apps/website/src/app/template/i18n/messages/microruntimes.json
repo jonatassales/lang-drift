@@ -1,0 +1,1537 @@
+{
+	"en": {
+		"skip": "Skip to the lifecycle",
+		"hero": {
+			"titleStart": "What is running right now, and ",
+			"titleHighlight": "who cleans it up?",
+			"titleEnd": "",
+			"lead": "A microruntime is a bounded execution environment composed around the components you already have. You choose the components and their limits; LangDrift prepares, runs, inspects and cleans up, and keeps the evidence. Your source stays where it is.",
+			"primaryCta": "See the lifecycle",
+			"secondaryCta": "Who owns what",
+			"caption": "Illustrative runtime. Names, limits and observations are simulated to show how a run moves from configuration to cleanup.",
+			"summary": "An illustrative runtime named checkout-preview with three components, 1,500 millicores and 2,048 MiB. Its requested state is running and its observed state is unknown. Six lifecycle steps, configure, validate, prepare, execute, inspect and clean up, can be selected to read what each step does and the evidence it leaves."
+		},
+		"lifecycle": {
+			"label": "checkout-preview · revision 3",
+			"stepperLabel": "Lifecycle steps",
+			"stages": {
+				"configure": {
+					"label": "Configure",
+					"does": "The console writes runtime.md: the components, their images, ports and readiness paths, the build recipes, and one CPU and memory envelope.",
+					"leaves": "A new configuration revision the agent must acknowledge before it runs anything."
+				},
+				"validate": {
+					"label": "Validate",
+					"does": "The agent parses the single langdrift fence and checks paths, ports, limits and build recipes before any side effect.",
+					"leaves": "Accepted, or refused with the exact field and the reason."
+				},
+				"prepare": {
+					"label": "Prepare",
+					"does": "kind provides the project's local cluster; Terraform prepares the namespace and its resource quotas.",
+					"leaves": "Owned resource identities, written to the execution ledger before the resources exist."
+				},
+				"execute": {
+					"label": "Execute",
+					"does": "Allowlisted recipes build the images; Kubernetes runs one Deployment per component with an explicit share of the envelope.",
+					"leaves": "The claimed start, tied to the requested intent and the configuration revision."
+				},
+				"inspect": {
+					"label": "Inspect",
+					"does": "Readiness, events, logs and CPU and memory samples are read from the cluster for every running container.",
+					"leaves": "Observations with their native timestamps; a missing metric stays unavailable."
+				},
+				"cleanup": {
+					"label": "Clean up",
+					"does": "Workloads go first, then the namespace and quotas; the shared cluster stays for the next run.",
+					"leaves": "Removed and remaining resources, with a confirmation or an unknown outcome."
+				}
+			},
+			"summary": {
+				"components": "Components",
+				"cpu": "CPU",
+				"memory": "Memory",
+				"desired": "Requested",
+				"observed": "Observed"
+			},
+			"componentsValue": "{count, plural, one {# component} other {# components}}",
+			"states": {
+				"running": "Running",
+				"unknown": "Unknown"
+			},
+			"unknownDetail": "lease expired · cleanup unconfirmed",
+			"whatItDoes": "What it does",
+			"evidenceItLeaves": "Evidence it leaves"
+		},
+		"scenarios": {
+			"title": "Compose → Run → Inspect → Clean up",
+			"lead": "A microruntime keeps the same four phases whether a change goes smoothly or not. Explore how a new component, a failed preparation and a lost connection each stay visible from the request to the cleanup.",
+			"selectorLabel": "Explore a scenario",
+			"phases": {
+				"compose": "Compose",
+				"run": "Run",
+				"inspect": "Inspect",
+				"cleanup": "Clean up"
+			},
+			"items": {
+				"add-component": {
+					"tabLabel": "Add a component",
+					"context": "The team adds a payments stub to the checkout preview.",
+					"compose": "The console adds services/payments-stub with its image, port, readiness path and an allowlisted build recipe. The revision moves to 4.",
+					"run": "The change applies only to a stopped runtime. After the next start request, the agent claims revision 4 and builds the new image.",
+					"inspect": "Readiness is reported per component only once the cluster confirms it: the stub is ready, checkout is still starting.",
+					"cleanup": "Stopping removes the three workloads, then the namespace and quotas. The cluster stays for the next run."
+				},
+				"preparation-fails": {
+					"tabLabel": "Preparation fails",
+					"context": "Terraform cannot create the namespace's resource quota.",
+					"compose": "The configuration is valid and asks for 1,500 millicores and 2,048 MiB across three components.",
+					"run": "Preparation fails, so no workload is applied. The partial namespace is already in the ledger, because intent is recorded before side effects.",
+					"inspect": "The failure names the step, the resource and the reason. The components are recorded as not attempted, not as failed.",
+					"cleanup": "Cleanup removes what preparation created and reports anything it could not confirm."
+				},
+				"lease-lost": {
+					"tabLabel": "The agent loses its lease",
+					"context": "The laptop sleeps and the agent stops hearing from the console.",
+					"compose": "Nothing changed in the configuration; revision 3 is still the requested one.",
+					"run": "After 15 seconds without contact the lease expires. The agent cancels startup and attempts ownership-aware cleanup.",
+					"inspect": "The console cannot infer a stop from a lost connection, so the execution reads unknown, not stopped.",
+					"cleanup": "If cleanup cannot be confirmed, the outcome stays unknown and the obligation is reconciled when the agent reconnects."
+				}
+			},
+			"outro": "Requested is not observed: the console records what you asked for, and only the cluster can confirm what happened.",
+			"outroLink": "See the three states"
+		},
+		"descriptor": {
+			"kicker": "Know what runs",
+			"title": "One file says what the runtime is.",
+			"lead": "The console authors runtime.md with exactly one langdrift JSON fence. Prose around it is kept as context and never executed. The connected agent reads the fence, and only the fence.",
+			"illustrative": "Illustrative",
+			"annotations": {
+				"identity": {
+					"title": "Identity and revision",
+					"description": "runtimeId, projectId and revision name the runtime. A change needs the current revision and a stopped runtime."
+				},
+				"components": {
+					"title": "Components by path",
+					"description": "Each component points at existing source. Nothing is copied into the runtime."
+				},
+				"build": {
+					"title": "Build recipes",
+					"description": "A committed script or an allowlisted tool, docker, go, npm, pnpm or make, with explicit arguments."
+				},
+				"resources": {
+					"title": "One resource envelope",
+					"description": "cpuMillis and memoryMiB bound the whole execution and are shared among the components. Quotas limit resources, not money."
+				},
+				"reasoning": {
+					"title": "Model and effort",
+					"description": "They configure the console's recommendation reasoning. The agent executes deterministically and makes no paid model call."
+				}
+			}
+		},
+		"ownership": {
+			"kicker": "Know who owns it",
+			"title": "The platform owns the boundary. You own the application.",
+			"lead": "LangDrift does not choose your stack. It defines the contract under which your components run, are observed and are cleaned up, and leaves every application decision with your team.",
+			"concern": "Concern",
+			"consumer": "You own",
+			"platform": "LangDrift owns",
+			"rows": {
+				"source": {
+					"concern": "Application source",
+					"consumer": "It stays in your repository; a component is referenced by its path.",
+					"platform": "Never copies it into the runtime."
+				},
+				"composition": {
+					"concern": "Composition",
+					"consumer": "Which components run, their images, ports and limits.",
+					"platform": "Validates paths, ports and limits before anything changes."
+				},
+				"build": {
+					"concern": "Build",
+					"consumer": "The recipe: a committed script or an allowlisted tool.",
+					"platform": "Runs it with explicit arguments and a minimal environment."
+				},
+				"lifecycle": {
+					"concern": "Start and stop",
+					"consumer": "You request them in the console.",
+					"platform": "The connected agent claims each request and executes it on your machine."
+				},
+				"cleanup": {
+					"concern": "Cleanup",
+					"consumer": "When a runtime stops or is deleted.",
+					"platform": "Removes only what its ledger owns and reports anything uncertain."
+				},
+				"evidence": {
+					"concern": "Evidence",
+					"consumer": "Yours to keep, inside your project.",
+					"platform": "A token-free record of every operation and inspection."
+				}
+			}
+		},
+		"state": {
+			"kicker": "Desired is not observed",
+			"title": "Requested, observed, unknown.",
+			"lead": "A start request is not a running runtime, and a lost connection is not a stop. The three states stay apart, so nobody mistakes what was asked for with what happened.",
+			"cards": {
+				"requested": {
+					"eyebrow": "Requested",
+					"title": "Running · revision 3",
+					"description": "What the console recorded. It authorizes the agent to claim a start; it confirms nothing."
+				},
+				"observed": {
+					"eyebrow": "Observed",
+					"title": "1 of 3 ready · 12 s ago",
+					"description": "What the cluster confirmed, with its own timestamp. An old sample never becomes fresh again."
+				},
+				"unknown": {
+					"eyebrow": "Unknown",
+					"title": "Lease expired · cleanup unconfirmed",
+					"description": "Missing or stale evidence. It is shown as unknown, never as stopped or as zero, until the agent reconciles it."
+				}
+			}
+		},
+		"evidence": {
+			"kicker": "Evidence after cleanup",
+			"title": "A run ends with a record, not a guess.",
+			"lead": "The execution ledger is written before the first side effect and settled after the last. Cleanup acts only on what it owns, and the evidence stays in your project after the resources are gone.",
+			"ledgerTitle": "Execution ledger",
+			"ledgerPeriod": "Illustrative",
+			"rows": {
+				"execution": "Execution",
+				"started": "Started",
+				"stopped": "Stopped",
+				"owned": "Owned resources",
+				"removed": "Removed",
+				"leftovers": "Leftovers",
+				"evidence": "Evidence"
+			},
+			"executionValue": "{execution} · revision {revision}",
+			"resources": "{count, plural, one {# resource} other {# resources}}",
+			"noLeftovers": "None",
+			"selectedStage": "Selected step",
+			"stages": {
+				"configure": {
+					"kind": "Configuration",
+					"title": "runtime.md, revision 3, acknowledged"
+				},
+				"validate": {
+					"kind": "Validation",
+					"title": "Fence accepted: 3 components, 1,500 millicores, 2,048 MiB"
+				},
+				"prepare": {
+					"kind": "Preparation",
+					"title": "Namespace and quota recorded before creation"
+				},
+				"execute": {
+					"kind": "Execution",
+					"title": "Start claimed for intent 12 at revision 3"
+				},
+				"inspect": {
+					"kind": "Inspection",
+					"title": "Readiness and samples with native timestamps"
+				},
+				"cleanup": {
+					"kind": "Cleanup",
+					"title": "7 of 7 owned resources removed, cluster kept"
+				}
+			}
+		},
+		"flow": {
+			"kicker": "Console authors, the agent executes",
+			"title": "Nothing starts because a page was opened.",
+			"lead": "The console records configuration and requests. The connected agent, running on your machine, turns an authorized request into a bounded local execution, and reports what it observed.",
+			"console": {
+				"title": "LangDrift console",
+				"description": "Authors runtime.md, records requested starts and stops, and keeps the history."
+			},
+			"agent": {
+				"title": "ex connected agent",
+				"description": "Claims each request against the current revision and executes it deterministically on your machine."
+			},
+			"targetsTitle": "Local execution",
+			"targets": {
+				"kind": {
+					"title": "kind",
+					"description": "The project's local cluster."
+				},
+				"terraform": {
+					"title": "Terraform",
+					"description": "Namespace and resource quotas."
+				},
+				"kubernetes": {
+					"title": "Kubernetes",
+					"description": "Deployments, Services and Jobs."
+				}
+			},
+			"guarantees": {
+				"claims": {
+					"title": "Claims and leases",
+					"description": "A start needs a claim on the current intent and revision; a 15-second lease cancels work the console can no longer see."
+				},
+				"events": {
+					"title": "Idempotent events",
+					"description": "Events carry stable ids and increasing sequences, so a replay never duplicates a record or revives old state."
+				},
+				"ownership": {
+					"title": "No deletion by name",
+					"description": "Cleanup acts on recorded identities. Foreign or unexplained resources block it instead of being removed."
+				}
+			}
+		},
+		"faq": {
+			"title": "A few things worth knowing.",
+			"description": "What a microruntime is, what it does with your code, and what this page shows.",
+			"items": {
+				"what": {
+					"question": "What is a microruntime?",
+					"answer": "A bounded execution environment composed around components you already have: their configuration, execution and cleanup, defined in the console and run by the connected agent on your machine."
+				},
+				"source": {
+					"question": "Does it copy my code?",
+					"answer": "No. A component is referenced by its path in your repository. The application stays where it is, with its own build."
+				},
+				"stacks": {
+					"question": "Which stacks are supported?",
+					"answer": "Any component that has a container image and a build recipe the agent may run. Execution targets a local kind cluster with Terraform and Kubernetes; other targets are not claimed."
+				},
+				"sandbox": {
+					"question": "Is it a sandbox?",
+					"answer": "No. Limits, quotas and an allowlisted build recipe bound the run, but your build code is still trusted code. A microruntime is not an operating-system sandbox."
+				},
+				"availability": {
+					"question": "Can I use LangDrift Microruntimes today?",
+					"answer": "The connected agent exists as a local development candidate, not a published release. The values on this page are illustrative, and demo requests are paused for now."
+				}
+			}
+		}
+	},
+	"pt-BR": {
+		"skip": "Pular para o ciclo de vida",
+		"hero": {
+			"titleStart": "O que está rodando agora, e ",
+			"titleHighlight": "quem limpa depois?",
+			"titleEnd": "",
+			"lead": "Um microruntime é um ambiente de execução delimitado, composto em torno dos componentes que você já tem. Você escolhe os componentes e seus limites; o LangDrift prepara, executa, inspeciona e limpa, e guarda a evidência. Seu código-fonte fica onde está.",
+			"primaryCta": "Ver o ciclo de vida",
+			"secondaryCta": "Quem é dono do quê",
+			"caption": "Runtime ilustrativo. Nomes, limites e observações são simulados para mostrar como uma execução vai da configuração à limpeza.",
+			"summary": "Um runtime ilustrativo chamado checkout-preview, com três componentes, 1.500 milicores e 2.048 MiB. O estado solicitado é em execução e o estado observado é desconhecido. Seis etapas do ciclo de vida, configurar, validar, preparar, executar, inspecionar e limpar, podem ser selecionadas para ler o que cada uma faz e a evidência que deixa."
+		},
+		"lifecycle": {
+			"label": "checkout-preview · revisão 3",
+			"stepperLabel": "Etapas do ciclo de vida",
+			"stages": {
+				"configure": {
+					"label": "Configurar",
+					"does": "O console escreve o runtime.md: os componentes, suas imagens, portas e caminhos de prontidão, as receitas de build e um envelope de CPU e memória.",
+					"leaves": "Uma nova revisão de configuração que o agente precisa reconhecer antes de executar qualquer coisa."
+				},
+				"validate": {
+					"label": "Validar",
+					"does": "O agente lê o único bloco langdrift e verifica caminhos, portas, limites e receitas de build antes de qualquer efeito colateral.",
+					"leaves": "Aceito, ou recusado com o campo exato e o motivo."
+				},
+				"prepare": {
+					"label": "Preparar",
+					"does": "O kind fornece o cluster local do projeto; o Terraform prepara o namespace e suas cotas de recursos.",
+					"leaves": "As identidades dos recursos próprios, gravadas no registro de execução antes de os recursos existirem."
+				},
+				"execute": {
+					"label": "Executar",
+					"does": "Receitas permitidas constroem as imagens; o Kubernetes roda um Deployment por componente, com uma parcela explícita do envelope.",
+					"leaves": "O início reivindicado, vinculado à intenção solicitada e à revisão da configuração."
+				},
+				"inspect": {
+					"label": "Inspecionar",
+					"does": "Prontidão, eventos, logs e amostras de CPU e memória são lidos do cluster para cada contêiner em execução.",
+					"leaves": "Observações com seus carimbos de tempo nativos; uma métrica ausente continua indisponível."
+				},
+				"cleanup": {
+					"label": "Limpar",
+					"does": "Primeiro saem as cargas de trabalho, depois o namespace e as cotas; o cluster compartilhado fica para a próxima execução.",
+					"leaves": "Os recursos removidos e os restantes, com uma confirmação ou um resultado desconhecido."
+				}
+			},
+			"summary": {
+				"components": "Componentes",
+				"cpu": "CPU",
+				"memory": "Memória",
+				"desired": "Solicitado",
+				"observed": "Observado"
+			},
+			"componentsValue": "{count, plural, one {# componente} other {# componentes}}",
+			"states": {
+				"running": "Em execução",
+				"unknown": "Desconhecido"
+			},
+			"unknownDetail": "lease expirado · limpeza não confirmada",
+			"whatItDoes": "O que faz",
+			"evidenceItLeaves": "Evidência que deixa"
+		},
+		"scenarios": {
+			"title": "Compor → Executar → Inspecionar → Limpar",
+			"lead": "Um microruntime mantém as mesmas quatro fases, quer a mudança corra bem ou não. Veja como um novo componente, uma preparação que falha e uma conexão perdida continuam visíveis da solicitação à limpeza.",
+			"selectorLabel": "Explore um cenário",
+			"phases": {
+				"compose": "Compor",
+				"run": "Executar",
+				"inspect": "Inspecionar",
+				"cleanup": "Limpar"
+			},
+			"items": {
+				"add-component": {
+					"tabLabel": "Adicionar um componente",
+					"context": "O time adiciona um stub de pagamentos ao checkout preview.",
+					"compose": "O console adiciona services/payments-stub com sua imagem, porta, caminho de prontidão e uma receita de build permitida. A revisão passa para 4.",
+					"run": "A mudança só se aplica a um runtime parado. Após a próxima solicitação de início, o agente reivindica a revisão 4 e constrói a nova imagem.",
+					"inspect": "A prontidão é informada por componente só depois que o cluster a confirma: o stub está pronto, o checkout ainda está iniciando.",
+					"cleanup": "Parar remove as três cargas de trabalho, depois o namespace e as cotas. O cluster fica para a próxima execução."
+				},
+				"preparation-fails": {
+					"tabLabel": "A preparação falha",
+					"context": "O Terraform não consegue criar a cota de recursos do namespace.",
+					"compose": "A configuração é válida e pede 1.500 milicores e 2.048 MiB para três componentes.",
+					"run": "A preparação falha, então nenhuma carga de trabalho é aplicada. O namespace parcial já está no registro, porque a intenção é gravada antes dos efeitos colaterais.",
+					"inspect": "A falha nomeia a etapa, o recurso e o motivo. Os componentes ficam registrados como não tentados, e não como falhos.",
+					"cleanup": "A limpeza remove o que a preparação criou e informa tudo o que não conseguiu confirmar."
+				},
+				"lease-lost": {
+					"tabLabel": "O agente perde o lease",
+					"context": "O notebook entra em suspensão e o agente deixa de ouvir o console.",
+					"compose": "Nada mudou na configuração; a revisão 3 continua sendo a solicitada.",
+					"run": "Após 15 segundos sem contato, o lease expira. O agente cancela a inicialização e tenta uma limpeza que respeita a posse dos recursos.",
+					"inspect": "O console não pode deduzir uma parada a partir de uma conexão perdida, então a execução aparece como desconhecida, não como parada.",
+					"cleanup": "Se a limpeza não puder ser confirmada, o resultado continua desconhecido e a pendência é reconciliada quando o agente se reconectar."
+				}
+			},
+			"outro": "Solicitado não é observado: o console registra o que você pediu, e só o cluster pode confirmar o que aconteceu.",
+			"outroLink": "Veja os três estados"
+		},
+		"descriptor": {
+			"kicker": "Saiba o que roda",
+			"title": "Um arquivo diz o que o runtime é.",
+			"lead": "O console escreve o runtime.md com exatamente um bloco JSON langdrift. O texto ao redor é mantido como contexto e nunca é executado. O agente conectado lê o bloco, e só o bloco.",
+			"illustrative": "Ilustrativo",
+			"annotations": {
+				"identity": {
+					"title": "Identidade e revisão",
+					"description": "runtimeId, projectId e revision nomeiam o runtime. Uma mudança exige a revisão atual e um runtime parado."
+				},
+				"components": {
+					"title": "Componentes por caminho",
+					"description": "Cada componente aponta para um código-fonte existente. Nada é copiado para dentro do runtime."
+				},
+				"build": {
+					"title": "Receitas de build",
+					"description": "Um script versionado ou uma ferramenta permitida, docker, go, npm, pnpm ou make, com argumentos explícitos."
+				},
+				"resources": {
+					"title": "Um envelope de recursos",
+					"description": "cpuMillis e memoryMiB limitam a execução inteira e são divididos entre os componentes. Cotas limitam recursos, não dinheiro."
+				},
+				"reasoning": {
+					"title": "Modelo e esforço",
+					"description": "Configuram o raciocínio de recomendação do console. O agente executa de forma determinística e não faz chamadas pagas a modelos."
+				}
+			}
+		},
+		"ownership": {
+			"kicker": "Saiba quem é dono",
+			"title": "A plataforma é dona do limite. Você é dono da aplicação.",
+			"lead": "O LangDrift não escolhe a sua stack. Ele define o contrato sob o qual seus componentes rodam, são observados e são limpos, e deixa toda decisão de aplicação com o seu time.",
+			"concern": "Assunto",
+			"consumer": "Você é dono",
+			"platform": "O LangDrift é dono",
+			"rows": {
+				"source": {
+					"concern": "Código da aplicação",
+					"consumer": "Fica no seu repositório; um componente é referenciado pelo caminho.",
+					"platform": "Nunca o copia para dentro do runtime."
+				},
+				"composition": {
+					"concern": "Composição",
+					"consumer": "Quais componentes rodam, suas imagens, portas e limites.",
+					"platform": "Valida caminhos, portas e limites antes de qualquer mudança."
+				},
+				"build": {
+					"concern": "Build",
+					"consumer": "A receita: um script versionado ou uma ferramenta permitida.",
+					"platform": "A executa com argumentos explícitos e um ambiente mínimo."
+				},
+				"lifecycle": {
+					"concern": "Iniciar e parar",
+					"consumer": "Você solicita no console.",
+					"platform": "O agente conectado reivindica cada solicitação e a executa na sua máquina."
+				},
+				"cleanup": {
+					"concern": "Limpeza",
+					"consumer": "Quando um runtime para ou é excluído.",
+					"platform": "Remove só o que o registro dele possui e informa qualquer incerteza."
+				},
+				"evidence": {
+					"concern": "Evidência",
+					"consumer": "Sua, guardada dentro do seu projeto.",
+					"platform": "Um registro sem tokens de cada operação e inspeção."
+				}
+			}
+		},
+		"state": {
+			"kicker": "Desejado não é observado",
+			"title": "Solicitado, observado, desconhecido.",
+			"lead": "Uma solicitação de início não é um runtime em execução, e uma conexão perdida não é uma parada. Os três estados ficam separados, para que ninguém confunda o que foi pedido com o que aconteceu.",
+			"cards": {
+				"requested": {
+					"eyebrow": "Solicitado",
+					"title": "Em execução · revisão 3",
+					"description": "O que o console registrou. Autoriza o agente a reivindicar um início; não confirma nada."
+				},
+				"observed": {
+					"eyebrow": "Observado",
+					"title": "1 de 3 prontos · há 12 s",
+					"description": "O que o cluster confirmou, com seu próprio carimbo de tempo. Uma amostra antiga nunca volta a ser recente."
+				},
+				"unknown": {
+					"eyebrow": "Desconhecido",
+					"title": "Lease expirado · limpeza não confirmada",
+					"description": "Evidência ausente ou desatualizada. Aparece como desconhecido, nunca como parado ou como zero, até que o agente a reconcilie."
+				}
+			}
+		},
+		"evidence": {
+			"kicker": "Evidência após a limpeza",
+			"title": "Uma execução termina com um registro, não com um palpite.",
+			"lead": "O registro de execução é gravado antes do primeiro efeito colateral e fechado depois do último. A limpeza só age sobre o que ele possui, e a evidência fica no seu projeto depois que os recursos se vão.",
+			"ledgerTitle": "Registro de execução",
+			"ledgerPeriod": "Ilustrativo",
+			"rows": {
+				"execution": "Execução",
+				"started": "Iniciada",
+				"stopped": "Parada",
+				"owned": "Recursos próprios",
+				"removed": "Removidos",
+				"leftovers": "Sobras",
+				"evidence": "Evidência"
+			},
+			"executionValue": "{execution} · revisão {revision}",
+			"resources": "{count, plural, one {# recurso} other {# recursos}}",
+			"noLeftovers": "Nenhuma",
+			"selectedStage": "Etapa selecionada",
+			"stages": {
+				"configure": {
+					"kind": "Configuração",
+					"title": "runtime.md, revisão 3, reconhecido"
+				},
+				"validate": {
+					"kind": "Validação",
+					"title": "Bloco aceito: 3 componentes, 1.500 milicores, 2.048 MiB"
+				},
+				"prepare": {
+					"kind": "Preparação",
+					"title": "Namespace e cota registrados antes da criação"
+				},
+				"execute": {
+					"kind": "Execução",
+					"title": "Início reivindicado para a intenção 12 na revisão 3"
+				},
+				"inspect": {
+					"kind": "Inspeção",
+					"title": "Prontidão e amostras com carimbos de tempo nativos"
+				},
+				"cleanup": {
+					"kind": "Limpeza",
+					"title": "7 de 7 recursos próprios removidos, cluster mantido"
+				}
+			}
+		},
+		"flow": {
+			"kicker": "O console escreve, o agente executa",
+			"title": "Nada inicia porque uma página foi aberta.",
+			"lead": "O console registra a configuração e as solicitações. O agente conectado, rodando na sua máquina, transforma uma solicitação autorizada em uma execução local delimitada e informa o que observou.",
+			"console": {
+				"title": "Console do LangDrift",
+				"description": "Escreve o runtime.md, registra inícios e paradas solicitados e guarda o histórico."
+			},
+			"agent": {
+				"title": "Agente conectado ex",
+				"description": "Reivindica cada solicitação contra a revisão atual e a executa de forma determinística na sua máquina."
+			},
+			"targetsTitle": "Execução local",
+			"targets": {
+				"kind": {
+					"title": "kind",
+					"description": "O cluster local do projeto."
+				},
+				"terraform": {
+					"title": "Terraform",
+					"description": "Namespace e cotas de recursos."
+				},
+				"kubernetes": {
+					"title": "Kubernetes",
+					"description": "Deployments, Services e Jobs."
+				}
+			},
+			"guarantees": {
+				"claims": {
+					"title": "Reivindicações e leases",
+					"description": "Um início exige uma reivindicação sobre a intenção e a revisão atuais; um lease de 15 segundos cancela o trabalho que o console não consegue mais ver."
+				},
+				"events": {
+					"title": "Eventos idempotentes",
+					"description": "Os eventos têm ids estáveis e sequências crescentes, então uma repetição nunca duplica um registro nem revive um estado antigo."
+				},
+				"ownership": {
+					"title": "Nenhuma exclusão pelo nome",
+					"description": "A limpeza age sobre identidades registradas. Recursos alheios ou sem explicação a bloqueiam em vez de serem removidos."
+				}
+			}
+		},
+		"faq": {
+			"title": "Algumas coisas que vale saber.",
+			"description": "O que é um microruntime, o que ele faz com o seu código e o que esta página mostra.",
+			"items": {
+				"what": {
+					"question": "O que é um microruntime?",
+					"answer": "Um ambiente de execução delimitado, composto em torno de componentes que você já tem: sua configuração, execução e limpeza, definidas no console e executadas pelo agente conectado na sua máquina."
+				},
+				"source": {
+					"question": "Ele copia o meu código?",
+					"answer": "Não. Um componente é referenciado pelo caminho no seu repositório. A aplicação fica onde está, com o seu próprio build."
+				},
+				"stacks": {
+					"question": "Quais stacks são suportadas?",
+					"answer": "Qualquer componente que tenha uma imagem de contêiner e uma receita de build que o agente possa executar. A execução é feita em um cluster kind local com Terraform e Kubernetes; outros destinos não são prometidos."
+				},
+				"sandbox": {
+					"question": "É um sandbox?",
+					"answer": "Não. Limites, cotas e uma receita de build permitida delimitam a execução, mas o seu código de build continua sendo código confiável. Um microruntime não é um sandbox do sistema operacional."
+				},
+				"availability": {
+					"question": "Posso usar o LangDrift Microruntimes hoje?",
+					"answer": "O agente conectado existe como candidato de desenvolvimento local, não como versão publicada. Os valores desta página são ilustrativos, e os pedidos de demonstração estão pausados por enquanto."
+				}
+			}
+		}
+	},
+	"zh-Hant": {
+		"skip": "跳到生命週期",
+		"hero": {
+			"titleStart": "現在有什麼正在執行，",
+			"titleHighlight": "又由誰來清理？",
+			"titleEnd": "",
+			"lead": "microruntime 是圍繞你既有元件組成的受限執行環境。你選擇元件與它們的限制；LangDrift 負責準備、執行、檢查與清理，並保留證據。你的原始碼留在原處。",
+			"primaryCta": "查看生命週期",
+			"secondaryCta": "誰擁有什麼",
+			"caption": "示意 runtime。名稱、限制與觀測皆為模擬，用來呈現一次執行如何從設定走到清理。",
+			"summary": "一個名為 checkout-preview 的示意 runtime，含三個元件、1,500 毫核心與 2,048 MiB。它的請求狀態為執行中，觀測狀態為未知。可選取六個生命週期步驟：設定、驗證、準備、執行、檢查與清理，閱讀每一步做什麼以及留下的證據。"
+		},
+		"lifecycle": {
+			"label": "checkout-preview · 第 3 版",
+			"stepperLabel": "生命週期步驟",
+			"stages": {
+				"configure": {
+					"label": "設定",
+					"does": "主控台寫入 runtime.md：元件、它們的映像、連接埠與就緒路徑、建置配方，以及一個 CPU 與記憶體額度。",
+					"leaves": "一個新的設定版本，代理在執行任何事之前必須先確認。"
+				},
+				"validate": {
+					"label": "驗證",
+					"does": "代理解析唯一的 langdrift 區塊，並在任何副作用之前檢查路徑、連接埠、限制與建置配方。",
+					"leaves": "接受，或附上確切欄位與原因的拒絕。"
+				},
+				"prepare": {
+					"label": "準備",
+					"does": "kind 提供專案的本機叢集；Terraform 準備命名空間及其資源配額。",
+					"leaves": "所擁有資源的身分，在資源存在之前就寫入執行帳本。"
+				},
+				"execute": {
+					"label": "執行",
+					"does": "允許清單內的配方建置映像；Kubernetes 為每個元件執行一個 Deployment，並分配明確的額度份額。",
+					"leaves": "已認領的啟動，綁定到請求的意圖與設定版本。"
+				},
+				"inspect": {
+					"label": "檢查",
+					"does": "從叢集讀取每個執行中容器的就緒狀態、事件、日誌，以及 CPU 與記憶體樣本。",
+					"leaves": "帶有原生時間戳記的觀測；缺少的指標維持為無法取得。"
+				},
+				"cleanup": {
+					"label": "清理",
+					"does": "先移除工作負載，再移除命名空間與配額；共用叢集保留給下一次執行。",
+					"leaves": "已移除與剩餘的資源，附上確認或未知的結果。"
+				}
+			},
+			"summary": {
+				"components": "元件",
+				"cpu": "CPU",
+				"memory": "記憶體",
+				"desired": "請求",
+				"observed": "觀測"
+			},
+			"componentsValue": "{count, plural, other {# 個元件}}",
+			"states": {
+				"running": "執行中",
+				"unknown": "未知"
+			},
+			"unknownDetail": "租約已過期 · 清理未確認",
+			"whatItDoes": "它做什麼",
+			"evidenceItLeaves": "留下的證據"
+		},
+		"scenarios": {
+			"title": "組成 → 執行 → 檢查 → 清理",
+			"lead": "無論變更是否順利，microruntime 都保持相同的四個階段。看看新增元件、準備失敗與連線中斷，如何從請求到清理都保持可見。",
+			"selectorLabel": "探索一個情境",
+			"phases": {
+				"compose": "組成",
+				"run": "執行",
+				"inspect": "檢查",
+				"cleanup": "清理"
+			},
+			"items": {
+				"add-component": {
+					"tabLabel": "新增元件",
+					"context": "團隊在 checkout preview 中加入一個付款 stub。",
+					"compose": "主控台加入 services/payments-stub，附上它的映像、連接埠、就緒路徑與一個允許的建置配方。版本更新為 4。",
+					"run": "變更只會套用到已停止的 runtime。下一次啟動請求後，代理認領第 4 版並建置新映像。",
+					"inspect": "就緒狀態只在叢集確認後才按元件回報：stub 已就緒，checkout 仍在啟動中。",
+					"cleanup": "停止時先移除三個工作負載，再移除命名空間與配額。叢集保留給下一次執行。"
+				},
+				"preparation-fails": {
+					"tabLabel": "準備失敗",
+					"context": "Terraform 無法建立命名空間的資源配額。",
+					"compose": "設定有效，為三個元件請求 1,500 毫核心與 2,048 MiB。",
+					"run": "準備失敗，因此不套用任何工作負載。部分建立的命名空間已在帳本中，因為意圖會在副作用之前記錄。",
+					"inspect": "失敗會指出步驟、資源與原因。元件被記錄為未嘗試，而不是失敗。",
+					"cleanup": "清理會移除準備階段建立的資源，並回報任何無法確認的項目。"
+				},
+				"lease-lost": {
+					"tabLabel": "代理失去租約",
+					"context": "筆電進入睡眠，代理不再收到主控台的訊息。",
+					"compose": "設定沒有任何變更；第 3 版仍是請求的版本。",
+					"run": "失去聯繫 15 秒後租約過期。代理取消啟動，並嘗試依資源擁有權進行清理。",
+					"inspect": "主控台無法從中斷的連線推斷已停止，因此這次執行顯示為未知，而不是已停止。",
+					"cleanup": "若清理無法確認，結果維持未知，待代理重新連線時再對這項義務進行對帳。"
+				}
+			},
+			"outro": "請求不等於觀測：主控台記錄你要求的事，只有叢集能確認實際發生的事。",
+			"outroLink": "查看三種狀態"
+		},
+		"descriptor": {
+			"kicker": "知道執行什麼",
+			"title": "一個檔案說明 runtime 是什麼。",
+			"lead": "主控台寫入的 runtime.md 只包含一個 langdrift JSON 區塊。周圍的文字作為脈絡保留，從不執行。連線的代理只讀取這個區塊。",
+			"illustrative": "示意",
+			"annotations": {
+				"identity": {
+					"title": "身分與版本",
+					"description": "runtimeId、projectId 與 revision 為 runtime 命名。變更需要目前的版本以及已停止的 runtime。"
+				},
+				"components": {
+					"title": "以路徑指定元件",
+					"description": "每個元件都指向既有的原始碼。不會有任何東西被複製到 runtime 中。"
+				},
+				"build": {
+					"title": "建置配方",
+					"description": "已提交的腳本或允許清單內的工具（docker、go、npm、pnpm 或 make），並附明確參數。"
+				},
+				"resources": {
+					"title": "一個資源額度",
+					"description": "cpuMillis 與 memoryMiB 限制整次執行，並由各元件分享。配額限制的是資源，不是金錢。"
+				},
+				"reasoning": {
+					"title": "模型與推理強度",
+					"description": "它們設定主控台的建議推理。代理以確定性方式執行，不會發出付費的模型呼叫。"
+				}
+			}
+		},
+		"ownership": {
+			"kicker": "知道誰擁有它",
+			"title": "平台擁有邊界，你擁有應用程式。",
+			"lead": "LangDrift 不替你選擇技術堆疊。它定義元件執行、被觀測與被清理所依循的契約，並把所有應用程式的決定留給你的團隊。",
+			"concern": "事項",
+			"consumer": "你擁有",
+			"platform": "LangDrift 擁有",
+			"rows": {
+				"source": {
+					"concern": "應用程式原始碼",
+					"consumer": "留在你的儲存庫中；元件以路徑參照。",
+					"platform": "從不將它複製到 runtime 中。"
+				},
+				"composition": {
+					"concern": "組成",
+					"consumer": "執行哪些元件，以及它們的映像、連接埠與限制。",
+					"platform": "在任何變更之前驗證路徑、連接埠與限制。"
+				},
+				"build": {
+					"concern": "建置",
+					"consumer": "配方：已提交的腳本或允許清單內的工具。",
+					"platform": "以明確參數與最小化的環境執行它。"
+				},
+				"lifecycle": {
+					"concern": "啟動與停止",
+					"consumer": "由你在主控台中請求。",
+					"platform": "連線的代理認領每個請求，並在你的機器上執行。"
+				},
+				"cleanup": {
+					"concern": "清理",
+					"consumer": "在 runtime 停止或被刪除時。",
+					"platform": "只移除其帳本所擁有的資源，並回報任何不確定的項目。"
+				},
+				"evidence": {
+					"concern": "證據",
+					"consumer": "屬於你，保存在你的專案中。",
+					"platform": "每次操作與檢查的不含權杖記錄。"
+				}
+			}
+		},
+		"state": {
+			"kicker": "期望不等於觀測",
+			"title": "請求、觀測、未知。",
+			"lead": "啟動請求不等於執行中的 runtime，連線中斷也不等於停止。三種狀態彼此分開，所以沒有人會把要求的事與發生的事混為一談。",
+			"cards": {
+				"requested": {
+					"eyebrow": "請求",
+					"title": "執行中 · 第 3 版",
+					"description": "主控台記錄的內容。它授權代理認領啟動，但什麼也不確認。"
+				},
+				"observed": {
+					"eyebrow": "觀測",
+					"title": "3 個中 1 個就緒 · 12 秒前",
+					"description": "叢集確認的內容，附上它自己的時間戳記。舊的樣本永遠不會再變成新的。"
+				},
+				"unknown": {
+					"eyebrow": "未知",
+					"title": "租約已過期 · 清理未確認",
+					"description": "缺少或過時的證據。在代理完成對帳之前，它顯示為未知，絕不顯示為已停止或零。"
+				}
+			}
+		},
+		"evidence": {
+			"kicker": "清理之後的證據",
+			"title": "一次執行以記錄結束，而不是猜測。",
+			"lead": "執行帳本在第一個副作用之前寫入，在最後一個之後結算。清理只作用於它所擁有的資源，而資源消失後，證據仍留在你的專案中。",
+			"ledgerTitle": "執行帳本",
+			"ledgerPeriod": "示意",
+			"rows": {
+				"execution": "執行",
+				"started": "開始",
+				"stopped": "停止",
+				"owned": "擁有的資源",
+				"removed": "已移除",
+				"leftovers": "殘留",
+				"evidence": "證據"
+			},
+			"executionValue": "{execution} · 第 {revision} 版",
+			"resources": "{count, plural, other {# 個資源}}",
+			"noLeftovers": "無",
+			"selectedStage": "選取的步驟",
+			"stages": {
+				"configure": {
+					"kind": "設定",
+					"title": "runtime.md 第 3 版，已確認"
+				},
+				"validate": {
+					"kind": "驗證",
+					"title": "區塊已接受：3 個元件、1,500 毫核心、2,048 MiB"
+				},
+				"prepare": {
+					"kind": "準備",
+					"title": "命名空間與配額在建立前已記錄"
+				},
+				"execute": {
+					"kind": "執行",
+					"title": "已為第 3 版的意圖 12 認領啟動"
+				},
+				"inspect": {
+					"kind": "檢查",
+					"title": "就緒狀態與樣本，附原生時間戳記"
+				},
+				"cleanup": {
+					"kind": "清理",
+					"title": "7 個擁有的資源中已移除 7 個，叢集保留"
+				}
+			}
+		},
+		"flow": {
+			"kicker": "主控台撰寫，代理執行",
+			"title": "不會因為打開一個頁面就啟動任何東西。",
+			"lead": "主控台記錄設定與請求。在你機器上執行的連線代理，把經授權的請求轉為受限的本機執行，並回報它觀測到的結果。",
+			"console": {
+				"title": "LangDrift 主控台",
+				"description": "撰寫 runtime.md，記錄請求的啟動與停止，並保存歷史。"
+			},
+			"agent": {
+				"title": "ex 連線代理",
+				"description": "依目前的版本認領每個請求，並在你的機器上以確定性方式執行。"
+			},
+			"targetsTitle": "本機執行",
+			"targets": {
+				"kind": {
+					"title": "kind",
+					"description": "專案的本機叢集。"
+				},
+				"terraform": {
+					"title": "Terraform",
+					"description": "命名空間與資源配額。"
+				},
+				"kubernetes": {
+					"title": "Kubernetes",
+					"description": "Deployment、Service 與 Job。"
+				}
+			},
+			"guarantees": {
+				"claims": {
+					"title": "認領與租約",
+					"description": "啟動需要對目前的意圖與版本提出認領；15 秒的租約會取消主控台已看不到的工作。"
+				},
+				"events": {
+					"title": "冪等事件",
+					"description": "事件帶有穩定的 id 與遞增的序號，所以重播永遠不會重複記錄或讓舊狀態復活。"
+				},
+				"ownership": {
+					"title": "不依名稱刪除",
+					"description": "清理只作用於已記錄的身分。外來或無法解釋的資源會阻擋清理，而不會被移除。"
+				}
+			}
+		},
+		"faq": {
+			"title": "幾件值得知道的事。",
+			"description": "什麼是 microruntime、它如何對待你的程式碼，以及這個頁面呈現了什麼。",
+			"items": {
+				"what": {
+					"question": "什麼是 microruntime？",
+					"answer": "圍繞你既有元件組成的受限執行環境：它們的設定、執行與清理，在主控台中定義，由連線代理在你的機器上執行。"
+				},
+				"source": {
+					"question": "它會複製我的程式碼嗎？",
+					"answer": "不會。元件以它在你儲存庫中的路徑參照。應用程式留在原處，使用它自己的建置。"
+				},
+				"stacks": {
+					"question": "支援哪些技術堆疊？",
+					"answer": "任何具有容器映像以及代理可執行之建置配方的元件。執行目標是搭配 Terraform 與 Kubernetes 的本機 kind 叢集；不宣稱支援其他目標。"
+				},
+				"sandbox": {
+					"question": "它是沙箱嗎？",
+					"answer": "不是。限制、配額與允許的建置配方會約束執行，但你的建置程式碼仍是受信任的程式碼。microruntime 不是作業系統沙箱。"
+				},
+				"availability": {
+					"question": "我今天可以使用 LangDrift Microruntimes 嗎？",
+					"answer": "連線代理目前是本機開發候選版本，而不是已發布的版本。本頁的數值皆為示意，示範申請目前暫停。"
+				}
+			}
+		}
+	},
+	"ja": {
+		"skip": "ライフサイクルへスキップ",
+		"hero": {
+			"titleStart": "いま何が動いていて、",
+			"titleHighlight": "誰が後片付けをするのか？",
+			"titleEnd": "",
+			"lead": "microruntime は、すでにあるコンポーネントを囲んで構成する境界付きの実行環境です。コンポーネントとその上限はあなたが選び、LangDrift が準備・実行・検査・クリーンアップを行い、証拠を残します。ソースコードは元の場所にとどまります。",
+			"primaryCta": "ライフサイクルを見る",
+			"secondaryCta": "誰が何を持つか",
+			"caption": "runtime はイメージです。名前、上限、観測値はシミュレーションで、実行が設定からクリーンアップへどう進むかを示すためのものです。",
+			"summary": "checkout-preview という名前のイメージ上の runtime で、3 つのコンポーネント、1,500 ミリコア、2,048 MiB を持ちます。要求された状態は実行中、観測された状態は不明です。設定・検証・準備・実行・検査・クリーンアップの 6 つのステップを選ぶと、各ステップが何をし、どんな証拠を残すかを読めます。"
+		},
+		"lifecycle": {
+			"label": "checkout-preview · リビジョン 3",
+			"stepperLabel": "ライフサイクルのステップ",
+			"stages": {
+				"configure": {
+					"label": "設定",
+					"does": "コンソールが runtime.md を書きます。コンポーネント、そのイメージ・ポート・レディネスパス、ビルドレシピ、そして CPU とメモリの一つの枠。",
+					"leaves": "エージェントが何かを実行する前に確認すべき、新しい設定リビジョン。"
+				},
+				"validate": {
+					"label": "検証",
+					"does": "エージェントは唯一の langdrift ブロックを解析し、副作用の前にパス、ポート、上限、ビルドレシピを確認します。",
+					"leaves": "受理、または正確なフィールドと理由を添えた拒否。"
+				},
+				"prepare": {
+					"label": "準備",
+					"does": "kind がプロジェクトのローカルクラスターを提供し、Terraform が名前空間とそのリソースクォータを準備します。",
+					"leaves": "所有するリソースの識別子。リソースが存在する前に実行台帳へ書き込まれます。"
+				},
+				"execute": {
+					"label": "実行",
+					"does": "許可リストのレシピがイメージをビルドし、Kubernetes がコンポーネントごとに一つの Deployment を、枠の明示的な取り分で実行します。",
+					"leaves": "要求された意図と設定リビジョンに結びついた、確保済みの開始。"
+				},
+				"inspect": {
+					"label": "検査",
+					"does": "実行中のすべてのコンテナについて、レディネス、イベント、ログ、CPU とメモリのサンプルをクラスターから読み取ります。",
+					"leaves": "ネイティブのタイムスタンプ付きの観測値。欠けた指標は取得不可のままです。"
+				},
+				"cleanup": {
+					"label": "クリーンアップ",
+					"does": "まずワークロード、次に名前空間とクォータを削除します。共有クラスターは次の実行のために残ります。",
+					"leaves": "削除したリソースと残ったリソース、そして確認済みまたは不明という結果。"
+				}
+			},
+			"summary": {
+				"components": "コンポーネント",
+				"cpu": "CPU",
+				"memory": "メモリ",
+				"desired": "要求",
+				"observed": "観測"
+			},
+			"componentsValue": "{count, plural, other {# 個のコンポーネント}}",
+			"states": {
+				"running": "実行中",
+				"unknown": "不明"
+			},
+			"unknownDetail": "リース期限切れ · クリーンアップ未確認",
+			"whatItDoes": "何をするか",
+			"evidenceItLeaves": "残す証拠"
+		},
+		"scenarios": {
+			"title": "構成 → 実行 → 検査 → クリーンアップ",
+			"lead": "変更がうまくいってもいかなくても、microruntime は同じ 4 つのフェーズを保ちます。新しいコンポーネント、準備の失敗、接続の喪失が、要求からクリーンアップまでどう見え続けるかを確かめてください。",
+			"selectorLabel": "シナリオを選ぶ",
+			"phases": {
+				"compose": "構成",
+				"run": "実行",
+				"inspect": "検査",
+				"cleanup": "クリーンアップ"
+			},
+			"items": {
+				"add-component": {
+					"tabLabel": "コンポーネントを追加",
+					"context": "チームが checkout preview に決済のスタブを追加します。",
+					"compose": "コンソールが services/payments-stub を、そのイメージ、ポート、レディネスパス、許可されたビルドレシピとともに追加します。リビジョンは 4 になります。",
+					"run": "変更は停止中の runtime にのみ適用されます。次の開始要求の後、エージェントはリビジョン 4 を確保し、新しいイメージをビルドします。",
+					"inspect": "レディネスはクラスターが確認して初めてコンポーネントごとに報告されます。スタブは準備完了、checkout はまだ起動中です。",
+					"cleanup": "停止すると 3 つのワークロード、次に名前空間とクォータが削除されます。クラスターは次の実行のために残ります。"
+				},
+				"preparation-fails": {
+					"tabLabel": "準備が失敗する",
+					"context": "Terraform が名前空間のリソースクォータを作成できません。",
+					"compose": "設定は有効で、3 つのコンポーネントに 1,500 ミリコアと 2,048 MiB を求めています。",
+					"run": "準備が失敗したので、ワークロードは適用されません。意図は副作用の前に記録されるため、途中まで作られた名前空間はすでに台帳にあります。",
+					"inspect": "失敗はステップ、リソース、理由を示します。コンポーネントは失敗ではなく、未試行として記録されます。",
+					"cleanup": "クリーンアップは準備で作られたものを削除し、確認できなかったものを報告します。"
+				},
+				"lease-lost": {
+					"tabLabel": "エージェントがリースを失う",
+					"context": "ノート PC がスリープし、エージェントにコンソールからの連絡が届かなくなります。",
+					"compose": "設定は何も変わっていません。要求されているのは引き続きリビジョン 3 です。",
+					"run": "15 秒間連絡がないとリースが切れます。エージェントは起動を取り消し、所有権に基づくクリーンアップを試みます。",
+					"inspect": "接続が切れたことから停止を推測することはできないので、実行は停止ではなく不明と表示されます。",
+					"cleanup": "クリーンアップを確認できなければ結果は不明のままで、エージェントの再接続時にその義務が照合されます。"
+				}
+			},
+			"outro": "要求は観測ではありません。コンソールはあなたが求めたことを記録し、実際に起きたことを確認できるのはクラスターだけです。",
+			"outroLink": "3 つの状態を見る"
+		},
+		"descriptor": {
+			"kicker": "何が動くかを知る",
+			"title": "一つのファイルが runtime を定義する。",
+			"lead": "コンソールは runtime.md に langdrift の JSON ブロックをちょうど一つだけ書きます。周りの文章は文脈として残され、実行されることはありません。接続エージェントが読むのはこのブロックだけです。",
+			"illustrative": "イメージ",
+			"annotations": {
+				"identity": {
+					"title": "識別子とリビジョン",
+					"description": "runtimeId、projectId、revision が runtime を名付けます。変更には現在のリビジョンと停止中の runtime が必要です。"
+				},
+				"components": {
+					"title": "パスで示すコンポーネント",
+					"description": "各コンポーネントは既存のソースを指します。runtime に何かがコピーされることはありません。"
+				},
+				"build": {
+					"title": "ビルドレシピ",
+					"description": "コミット済みのスクリプト、または許可リストのツール（docker、go、npm、pnpm、make）を明示的な引数で。"
+				},
+				"resources": {
+					"title": "一つのリソース枠",
+					"description": "cpuMillis と memoryMiB が実行全体を制限し、コンポーネント間で分け合います。クォータが制限するのはリソースであり、お金ではありません。"
+				},
+				"reasoning": {
+					"title": "モデルと推論強度",
+					"description": "コンソールの推奨のための推論を設定します。エージェントは決定的に実行し、有料のモデル呼び出しは行いません。"
+				}
+			}
+		},
+		"ownership": {
+			"kicker": "誰が持つかを知る",
+			"title": "境界はプラットフォームのもの。アプリケーションはあなたのもの。",
+			"lead": "LangDrift はあなたの技術スタックを選びません。コンポーネントが実行され、観測され、クリーンアップされるための契約を定め、アプリケーションの判断はすべてチームに委ねます。",
+			"concern": "項目",
+			"consumer": "あなたが持つもの",
+			"platform": "LangDrift が持つもの",
+			"rows": {
+				"source": {
+					"concern": "アプリケーションのソース",
+					"consumer": "リポジトリにとどまり、コンポーネントはパスで参照されます。",
+					"platform": "runtime にコピーすることはありません。"
+				},
+				"composition": {
+					"concern": "構成",
+					"consumer": "どのコンポーネントを動かすか、そのイメージ、ポート、上限。",
+					"platform": "何かを変える前に、パス、ポート、上限を検証します。"
+				},
+				"build": {
+					"concern": "ビルド",
+					"consumer": "レシピ：コミット済みのスクリプトか、許可リストのツール。",
+					"platform": "明示的な引数と最小限の環境で実行します。"
+				},
+				"lifecycle": {
+					"concern": "開始と停止",
+					"consumer": "コンソールで要求します。",
+					"platform": "接続エージェントが各要求を確保し、あなたのマシンで実行します。"
+				},
+				"cleanup": {
+					"concern": "クリーンアップ",
+					"consumer": "runtime が停止または削除されたとき。",
+					"platform": "台帳が所有するものだけを削除し、不確かなものは報告します。"
+				},
+				"evidence": {
+					"concern": "証拠",
+					"consumer": "あなたのもので、プロジェクト内に保管されます。",
+					"platform": "すべての操作と検査の、トークンを含まない記録。"
+				}
+			}
+		},
+		"state": {
+			"kicker": "望んだ状態は観測ではない",
+			"title": "要求、観測、不明。",
+			"lead": "開始要求は実行中の runtime ではなく、接続の喪失は停止ではありません。3 つの状態を分けておくことで、求めたことと起きたことを誰も取り違えません。",
+			"cards": {
+				"requested": {
+					"eyebrow": "要求",
+					"title": "実行中 · リビジョン 3",
+					"description": "コンソールが記録したもの。エージェントに開始の確保を許可しますが、何も確認しません。"
+				},
+				"observed": {
+					"eyebrow": "観測",
+					"title": "3 つ中 1 つ準備完了 · 12 秒前",
+					"description": "クラスターが確認したもの。独自のタイムスタンプ付きです。古いサンプルが新しくなることはありません。"
+				},
+				"unknown": {
+					"eyebrow": "不明",
+					"title": "リース期限切れ · クリーンアップ未確認",
+					"description": "欠けているか古い証拠。エージェントが照合するまで、停止やゼロではなく、不明として表示されます。"
+				}
+			}
+		},
+		"evidence": {
+			"kicker": "クリーンアップ後の証拠",
+			"title": "実行は推測ではなく、記録で終わる。",
+			"lead": "実行台帳は最初の副作用の前に書かれ、最後の副作用の後に確定します。クリーンアップは台帳が所有するものにだけ作用し、リソースがなくなった後も証拠はプロジェクトに残ります。",
+			"ledgerTitle": "実行台帳",
+			"ledgerPeriod": "イメージ",
+			"rows": {
+				"execution": "実行",
+				"started": "開始",
+				"stopped": "停止",
+				"owned": "所有するリソース",
+				"removed": "削除済み",
+				"leftovers": "残存",
+				"evidence": "証拠"
+			},
+			"executionValue": "{execution} · リビジョン {revision}",
+			"resources": "{count, plural, other {# 個のリソース}}",
+			"noLeftovers": "なし",
+			"selectedStage": "選択中のステップ",
+			"stages": {
+				"configure": {
+					"kind": "設定",
+					"title": "runtime.md リビジョン 3、確認済み"
+				},
+				"validate": {
+					"kind": "検証",
+					"title": "ブロックを受理：3 コンポーネント、1,500 ミリコア、2,048 MiB"
+				},
+				"prepare": {
+					"kind": "準備",
+					"title": "名前空間とクォータを作成前に記録"
+				},
+				"execute": {
+					"kind": "実行",
+					"title": "リビジョン 3 の意図 12 に対して開始を確保"
+				},
+				"inspect": {
+					"kind": "検査",
+					"title": "ネイティブのタイムスタンプ付きのレディネスとサンプル"
+				},
+				"cleanup": {
+					"kind": "クリーンアップ",
+					"title": "所有する 7 個のうち 7 個を削除、クラスターは保持"
+				}
+			}
+		},
+		"flow": {
+			"kicker": "コンソールが書き、エージェントが実行する",
+			"title": "ページを開いただけで何かが始まることはない。",
+			"lead": "コンソールは設定と要求を記録します。あなたのマシンで動く接続エージェントが、承認された要求を境界付きのローカル実行に変え、観測したことを報告します。",
+			"console": {
+				"title": "LangDrift コンソール",
+				"description": "runtime.md を書き、要求された開始と停止を記録し、履歴を保ちます。"
+			},
+			"agent": {
+				"title": "ex 接続エージェント",
+				"description": "現在のリビジョンに対して各要求を確保し、あなたのマシンで決定的に実行します。"
+			},
+			"targetsTitle": "ローカル実行",
+			"targets": {
+				"kind": {
+					"title": "kind",
+					"description": "プロジェクトのローカルクラスター。"
+				},
+				"terraform": {
+					"title": "Terraform",
+					"description": "名前空間とリソースクォータ。"
+				},
+				"kubernetes": {
+					"title": "Kubernetes",
+					"description": "Deployment、Service、Job。"
+				}
+			},
+			"guarantees": {
+				"claims": {
+					"title": "確保とリース",
+					"description": "開始には現在の意図とリビジョンへの確保が必要です。15 秒のリースが、コンソールから見えなくなった作業を取り消します。"
+				},
+				"events": {
+					"title": "冪等なイベント",
+					"description": "イベントは安定した id と増加するシーケンスを持つので、再送が記録を重複させたり古い状態を復活させたりすることはありません。"
+				},
+				"ownership": {
+					"title": "名前では削除しない",
+					"description": "クリーンアップは記録された識別子に作用します。外部のリソースや説明のつかないリソースは、削除されずにクリーンアップを止めます。"
+				}
+			}
+		},
+		"faq": {
+			"title": "知っておきたいこと。",
+			"description": "microruntime とは何か、コードをどう扱うか、このページが何を示しているか。",
+			"items": {
+				"what": {
+					"question": "microruntime とは何ですか？",
+					"answer": "すでにあるコンポーネントを囲んで構成する境界付きの実行環境です。その設定・実行・クリーンアップをコンソールで定義し、接続エージェントがあなたのマシンで実行します。"
+				},
+				"source": {
+					"question": "コードはコピーされますか？",
+					"answer": "いいえ。コンポーネントはリポジトリ内のパスで参照されます。アプリケーションは元の場所に、独自のビルドとともにとどまります。"
+				},
+				"stacks": {
+					"question": "どの技術スタックに対応していますか？",
+					"answer": "コンテナイメージと、エージェントが実行できるビルドレシピを持つコンポーネントであれば対応します。実行先は Terraform と Kubernetes を使うローカルの kind クラスターで、ほかの実行先はうたっていません。"
+				},
+				"sandbox": {
+					"question": "サンドボックスですか？",
+					"answer": "いいえ。上限、クォータ、許可されたビルドレシピが実行を制限しますが、ビルドのコードは引き続き信頼されたコードです。microruntime は OS のサンドボックスではありません。"
+				},
+				"availability": {
+					"question": "LangDrift Microruntimes は今日から使えますか？",
+					"answer": "接続エージェントはローカル開発の候補版として存在し、公開リリースではありません。このページの値はイメージで、デモの申し込みは当面停止しています。"
+				}
+			}
+		}
+	},
+	"vi": {
+		"skip": "Chuyển đến vòng đời",
+		"hero": {
+			"titleStart": "Thứ gì đang chạy ngay lúc này, và ",
+			"titleHighlight": "ai sẽ dọn dẹp?",
+			"titleEnd": "",
+			"lead": "Microruntime là một môi trường thực thi có ranh giới, được dựng quanh các thành phần bạn đã có. Bạn chọn các thành phần và giới hạn của chúng; LangDrift chuẩn bị, chạy, kiểm tra và dọn dẹp, đồng thời giữ lại bằng chứng. Mã nguồn của bạn vẫn ở nguyên chỗ cũ.",
+			"primaryCta": "Xem vòng đời",
+			"secondaryCta": "Ai sở hữu gì",
+			"caption": "Runtime minh họa. Tên, giới hạn và các quan sát đều được mô phỏng để cho thấy một lần chạy đi từ cấu hình đến dọn dẹp ra sao.",
+			"summary": "Một runtime minh họa tên checkout-preview với ba thành phần, 1.500 millicore và 2.048 MiB. Trạng thái được yêu cầu là đang chạy và trạng thái quan sát được là chưa rõ. Có thể chọn sáu bước của vòng đời, cấu hình, xác thực, chuẩn bị, thực thi, kiểm tra và dọn dẹp, để đọc mỗi bước làm gì và để lại bằng chứng gì."
+		},
+		"lifecycle": {
+			"label": "checkout-preview · bản sửa đổi 3",
+			"stepperLabel": "Các bước của vòng đời",
+			"stages": {
+				"configure": {
+					"label": "Cấu hình",
+					"does": "Bảng điều khiển ghi runtime.md: các thành phần, image, cổng và đường dẫn sẵn sàng của chúng, các công thức build, và một hạn mức CPU và bộ nhớ.",
+					"leaves": "Một bản sửa đổi cấu hình mới mà tác tử phải xác nhận trước khi chạy bất cứ thứ gì."
+				},
+				"validate": {
+					"label": "Xác thực",
+					"does": "Tác tử đọc khối langdrift duy nhất và kiểm tra đường dẫn, cổng, giới hạn và công thức build trước mọi tác động phụ.",
+					"leaves": "Được chấp nhận, hoặc bị từ chối kèm đúng trường và lý do."
+				},
+				"prepare": {
+					"label": "Chuẩn bị",
+					"does": "kind cung cấp cụm cục bộ của dự án; Terraform chuẩn bị namespace và hạn ngạch tài nguyên của nó.",
+					"leaves": "Định danh của các tài nguyên được sở hữu, ghi vào sổ thực thi trước khi tài nguyên tồn tại."
+				},
+				"execute": {
+					"label": "Thực thi",
+					"does": "Các công thức trong danh sách cho phép build image; Kubernetes chạy một Deployment cho mỗi thành phần với một phần hạn mức rõ ràng.",
+					"leaves": "Lần khởi động đã được nhận, gắn với ý định được yêu cầu và bản sửa đổi cấu hình."
+				},
+				"inspect": {
+					"label": "Kiểm tra",
+					"does": "Trạng thái sẵn sàng, sự kiện, log và mẫu CPU và bộ nhớ được đọc từ cụm cho mọi container đang chạy.",
+					"leaves": "Các quan sát với dấu thời gian gốc; một chỉ số bị thiếu vẫn là không khả dụng."
+				},
+				"cleanup": {
+					"label": "Dọn dẹp",
+					"does": "Các workload được gỡ trước, sau đó là namespace và hạn ngạch; cụm dùng chung được giữ cho lần chạy sau.",
+					"leaves": "Các tài nguyên đã gỡ và còn lại, kèm xác nhận hoặc một kết quả chưa rõ."
+				}
+			},
+			"summary": {
+				"components": "Thành phần",
+				"cpu": "CPU",
+				"memory": "Bộ nhớ",
+				"desired": "Được yêu cầu",
+				"observed": "Quan sát được"
+			},
+			"componentsValue": "{count, plural, other {# thành phần}}",
+			"states": {
+				"running": "Đang chạy",
+				"unknown": "Chưa rõ"
+			},
+			"unknownDetail": "lease đã hết hạn · chưa xác nhận dọn dẹp",
+			"whatItDoes": "Bước này làm gì",
+			"evidenceItLeaves": "Bằng chứng để lại"
+		},
+		"scenarios": {
+			"title": "Dựng → Chạy → Kiểm tra → Dọn dẹp",
+			"lead": "Một microruntime giữ nguyên bốn giai đoạn dù thay đổi suôn sẻ hay không. Hãy xem một thành phần mới, một lần chuẩn bị thất bại và một kết nối bị mất đều vẫn hiện rõ từ yêu cầu đến dọn dẹp.",
+			"selectorLabel": "Khám phá một kịch bản",
+			"phases": {
+				"compose": "Dựng",
+				"run": "Chạy",
+				"inspect": "Kiểm tra",
+				"cleanup": "Dọn dẹp"
+			},
+			"items": {
+				"add-component": {
+					"tabLabel": "Thêm một thành phần",
+					"context": "Đội thêm một stub thanh toán vào checkout preview.",
+					"compose": "Bảng điều khiển thêm services/payments-stub cùng image, cổng, đường dẫn sẵn sàng và một công thức build được cho phép. Bản sửa đổi chuyển sang 4.",
+					"run": "Thay đổi chỉ áp dụng cho một runtime đã dừng. Sau yêu cầu khởi động tiếp theo, tác tử nhận bản sửa đổi 4 và build image mới.",
+					"inspect": "Trạng thái sẵn sàng chỉ được báo cho từng thành phần sau khi cụm xác nhận: stub đã sẵn sàng, checkout vẫn đang khởi động.",
+					"cleanup": "Dừng lại sẽ gỡ ba workload, sau đó là namespace và hạn ngạch. Cụm được giữ cho lần chạy sau."
+				},
+				"preparation-fails": {
+					"tabLabel": "Chuẩn bị thất bại",
+					"context": "Terraform không thể tạo hạn ngạch tài nguyên cho namespace.",
+					"compose": "Cấu hình hợp lệ và yêu cầu 1.500 millicore và 2.048 MiB cho ba thành phần.",
+					"run": "Chuẩn bị thất bại nên không workload nào được áp dụng. Namespace dở dang đã có trong sổ, vì ý định được ghi trước các tác động phụ.",
+					"inspect": "Lỗi nêu rõ bước, tài nguyên và lý do. Các thành phần được ghi là chưa thử, chứ không phải thất bại.",
+					"cleanup": "Việc dọn dẹp gỡ những gì bước chuẩn bị đã tạo và báo lại mọi thứ không xác nhận được."
+				},
+				"lease-lost": {
+					"tabLabel": "Tác tử mất lease",
+					"context": "Máy tính xách tay chuyển sang ngủ và tác tử không còn nhận được tin từ bảng điều khiển.",
+					"compose": "Cấu hình không có gì thay đổi; bản sửa đổi 3 vẫn là bản được yêu cầu.",
+					"run": "Sau 15 giây không liên lạc, lease hết hạn. Tác tử hủy khởi động và thử dọn dẹp theo quyền sở hữu tài nguyên.",
+					"inspect": "Bảng điều khiển không thể suy ra việc dừng từ một kết nối bị mất, nên lần thực thi hiển thị là chưa rõ, không phải đã dừng.",
+					"cleanup": "Nếu không thể xác nhận việc dọn dẹp, kết quả vẫn là chưa rõ và nghĩa vụ đó được đối soát khi tác tử kết nối lại."
+				}
+			},
+			"outro": "Được yêu cầu không phải là quan sát được: bảng điều khiển ghi lại điều bạn yêu cầu, và chỉ cụm mới xác nhận được điều đã xảy ra.",
+			"outroLink": "Xem ba trạng thái"
+		},
+		"descriptor": {
+			"kicker": "Biết thứ gì đang chạy",
+			"title": "Một tệp cho biết runtime là gì.",
+			"lead": "Bảng điều khiển ghi runtime.md với đúng một khối JSON langdrift. Phần văn bản xung quanh được giữ làm ngữ cảnh và không bao giờ được thực thi. Tác tử kết nối chỉ đọc khối đó.",
+			"illustrative": "Minh họa",
+			"annotations": {
+				"identity": {
+					"title": "Định danh và bản sửa đổi",
+					"description": "runtimeId, projectId và revision đặt tên cho runtime. Một thay đổi cần bản sửa đổi hiện tại và một runtime đã dừng."
+				},
+				"components": {
+					"title": "Thành phần theo đường dẫn",
+					"description": "Mỗi thành phần trỏ tới mã nguồn có sẵn. Không có gì được sao chép vào runtime."
+				},
+				"build": {
+					"title": "Công thức build",
+					"description": "Một script đã commit hoặc một công cụ trong danh sách cho phép, docker, go, npm, pnpm hoặc make, với tham số rõ ràng."
+				},
+				"resources": {
+					"title": "Một hạn mức tài nguyên",
+					"description": "cpuMillis và memoryMiB giới hạn toàn bộ lần thực thi và được chia giữa các thành phần. Hạn ngạch giới hạn tài nguyên, không phải tiền."
+				},
+				"reasoning": {
+					"title": "Mô hình và mức nỗ lực",
+					"description": "Chúng cấu hình phần suy luận đề xuất của bảng điều khiển. Tác tử thực thi một cách tất định và không gọi mô hình trả phí."
+				}
+			}
+		},
+		"ownership": {
+			"kicker": "Biết ai sở hữu",
+			"title": "Nền tảng sở hữu ranh giới. Bạn sở hữu ứng dụng.",
+			"lead": "LangDrift không chọn stack cho bạn. Nó định nghĩa hợp đồng mà theo đó các thành phần của bạn được chạy, được quan sát và được dọn dẹp, và để mọi quyết định về ứng dụng cho đội của bạn.",
+			"concern": "Hạng mục",
+			"consumer": "Bạn sở hữu",
+			"platform": "LangDrift sở hữu",
+			"rows": {
+				"source": {
+					"concern": "Mã nguồn ứng dụng",
+					"consumer": "Nằm trong kho mã của bạn; một thành phần được tham chiếu bằng đường dẫn.",
+					"platform": "Không bao giờ sao chép nó vào runtime."
+				},
+				"composition": {
+					"concern": "Cấu thành",
+					"consumer": "Những thành phần nào chạy, image, cổng và giới hạn của chúng.",
+					"platform": "Xác thực đường dẫn, cổng và giới hạn trước khi bất cứ thứ gì thay đổi."
+				},
+				"build": {
+					"concern": "Build",
+					"consumer": "Công thức: một script đã commit hoặc một công cụ được cho phép.",
+					"platform": "Chạy nó với tham số rõ ràng và một môi trường tối thiểu."
+				},
+				"lifecycle": {
+					"concern": "Khởi động và dừng",
+					"consumer": "Bạn yêu cầu trong bảng điều khiển.",
+					"platform": "Tác tử kết nối nhận từng yêu cầu và thực thi trên máy của bạn."
+				},
+				"cleanup": {
+					"concern": "Dọn dẹp",
+					"consumer": "Khi một runtime dừng hoặc bị xóa.",
+					"platform": "Chỉ gỡ những gì sổ của nó sở hữu và báo lại mọi điều không chắc chắn."
+				},
+				"evidence": {
+					"concern": "Bằng chứng",
+					"consumer": "Thuộc về bạn, lưu trong dự án của bạn.",
+					"platform": "Một bản ghi không chứa token cho mọi thao tác và lần kiểm tra."
+				}
+			}
+		},
+		"state": {
+			"kicker": "Mong muốn không phải là quan sát",
+			"title": "Được yêu cầu, quan sát được, chưa rõ.",
+			"lead": "Một yêu cầu khởi động không phải là một runtime đang chạy, và một kết nối bị mất không phải là việc dừng. Ba trạng thái được giữ tách biệt, để không ai nhầm điều đã yêu cầu với điều đã xảy ra.",
+			"cards": {
+				"requested": {
+					"eyebrow": "Được yêu cầu",
+					"title": "Đang chạy · bản sửa đổi 3",
+					"description": "Điều bảng điều khiển đã ghi lại. Nó cho phép tác tử nhận một lần khởi động; nó không xác nhận điều gì."
+				},
+				"observed": {
+					"eyebrow": "Quan sát được",
+					"title": "1 trên 3 sẵn sàng · 12 giây trước",
+					"description": "Điều cụm đã xác nhận, với dấu thời gian riêng. Một mẫu cũ không bao giờ trở thành mới trở lại."
+				},
+				"unknown": {
+					"eyebrow": "Chưa rõ",
+					"title": "Lease đã hết hạn · chưa xác nhận dọn dẹp",
+					"description": "Bằng chứng bị thiếu hoặc đã cũ. Nó được hiển thị là chưa rõ, không bao giờ là đã dừng hay bằng không, cho đến khi tác tử đối soát."
+				}
+			}
+		},
+		"evidence": {
+			"kicker": "Bằng chứng sau khi dọn dẹp",
+			"title": "Một lần chạy kết thúc bằng bản ghi, không phải phỏng đoán.",
+			"lead": "Sổ thực thi được ghi trước tác động phụ đầu tiên và chốt sau tác động cuối cùng. Việc dọn dẹp chỉ tác động lên những gì sổ sở hữu, và bằng chứng vẫn nằm trong dự án của bạn sau khi tài nguyên đã đi.",
+			"ledgerTitle": "Sổ thực thi",
+			"ledgerPeriod": "Minh họa",
+			"rows": {
+				"execution": "Lần thực thi",
+				"started": "Bắt đầu",
+				"stopped": "Dừng",
+				"owned": "Tài nguyên sở hữu",
+				"removed": "Đã gỡ",
+				"leftovers": "Còn sót",
+				"evidence": "Bằng chứng"
+			},
+			"executionValue": "{execution} · bản sửa đổi {revision}",
+			"resources": "{count, plural, other {# tài nguyên}}",
+			"noLeftovers": "Không có",
+			"selectedStage": "Bước đang chọn",
+			"stages": {
+				"configure": {
+					"kind": "Cấu hình",
+					"title": "runtime.md, bản sửa đổi 3, đã xác nhận"
+				},
+				"validate": {
+					"kind": "Xác thực",
+					"title": "Khối được chấp nhận: 3 thành phần, 1.500 millicore, 2.048 MiB"
+				},
+				"prepare": {
+					"kind": "Chuẩn bị",
+					"title": "Namespace và hạn ngạch được ghi trước khi tạo"
+				},
+				"execute": {
+					"kind": "Thực thi",
+					"title": "Đã nhận lần khởi động cho ý định 12 ở bản sửa đổi 3"
+				},
+				"inspect": {
+					"kind": "Kiểm tra",
+					"title": "Trạng thái sẵn sàng và mẫu với dấu thời gian gốc"
+				},
+				"cleanup": {
+					"kind": "Dọn dẹp",
+					"title": "Đã gỡ 7 trên 7 tài nguyên sở hữu, giữ lại cụm"
+				}
+			}
+		},
+		"flow": {
+			"kicker": "Bảng điều khiển soạn, tác tử thực thi",
+			"title": "Không có gì khởi động chỉ vì một trang được mở.",
+			"lead": "Bảng điều khiển ghi lại cấu hình và yêu cầu. Tác tử kết nối, chạy trên máy của bạn, biến một yêu cầu được phép thành một lần thực thi cục bộ có ranh giới, và báo lại những gì nó quan sát được.",
+			"console": {
+				"title": "Bảng điều khiển LangDrift",
+				"description": "Soạn runtime.md, ghi lại các yêu cầu khởi động và dừng, và giữ lịch sử."
+			},
+			"agent": {
+				"title": "Tác tử kết nối ex",
+				"description": "Nhận từng yêu cầu theo bản sửa đổi hiện tại và thực thi nó một cách tất định trên máy của bạn."
+			},
+			"targetsTitle": "Thực thi cục bộ",
+			"targets": {
+				"kind": {
+					"title": "kind",
+					"description": "Cụm cục bộ của dự án."
+				},
+				"terraform": {
+					"title": "Terraform",
+					"description": "Namespace và hạn ngạch tài nguyên."
+				},
+				"kubernetes": {
+					"title": "Kubernetes",
+					"description": "Deployment, Service và Job."
+				}
+			},
+			"guarantees": {
+				"claims": {
+					"title": "Nhận yêu cầu và lease",
+					"description": "Một lần khởi động cần được nhận theo ý định và bản sửa đổi hiện tại; một lease 15 giây hủy công việc mà bảng điều khiển không còn thấy."
+				},
+				"events": {
+					"title": "Sự kiện idempotent",
+					"description": "Sự kiện mang id ổn định và chuỗi số tăng dần, nên một lần phát lại không bao giờ nhân đôi bản ghi hay làm sống lại trạng thái cũ."
+				},
+				"ownership": {
+					"title": "Không xóa theo tên",
+					"description": "Việc dọn dẹp tác động lên các định danh đã ghi. Tài nguyên lạ hoặc không giải thích được sẽ chặn việc dọn dẹp thay vì bị gỡ."
+				}
+			}
+		},
+		"faq": {
+			"title": "Vài điều đáng biết.",
+			"description": "Microruntime là gì, nó làm gì với mã của bạn, và trang này cho thấy điều gì.",
+			"items": {
+				"what": {
+					"question": "Microruntime là gì?",
+					"answer": "Một môi trường thực thi có ranh giới được dựng quanh các thành phần bạn đã có: cấu hình, thực thi và dọn dẹp của chúng, được định nghĩa trong bảng điều khiển và được tác tử kết nối chạy trên máy của bạn."
+				},
+				"source": {
+					"question": "Nó có sao chép mã của tôi không?",
+					"answer": "Không. Một thành phần được tham chiếu bằng đường dẫn trong kho mã của bạn. Ứng dụng vẫn ở nguyên chỗ, với cách build riêng của nó."
+				},
+				"stacks": {
+					"question": "Những stack nào được hỗ trợ?",
+					"answer": "Bất kỳ thành phần nào có container image và một công thức build mà tác tử được phép chạy. Việc thực thi nhắm tới một cụm kind cục bộ với Terraform và Kubernetes; các đích khác không được khẳng định."
+				},
+				"sandbox": {
+					"question": "Nó có phải là sandbox không?",
+					"answer": "Không. Giới hạn, hạn ngạch và một công thức build được cho phép ràng buộc lần chạy, nhưng mã build của bạn vẫn là mã được tin cậy. Microruntime không phải là sandbox của hệ điều hành."
+				},
+				"availability": {
+					"question": "Tôi có thể dùng LangDrift Microruntimes hôm nay không?",
+					"answer": "Tác tử kết nối hiện là một bản ứng viên phát triển cục bộ, không phải bản phát hành chính thức. Các giá trị trên trang này là minh họa, và yêu cầu demo hiện đang tạm dừng."
+				}
+			}
+		}
+	}
+}

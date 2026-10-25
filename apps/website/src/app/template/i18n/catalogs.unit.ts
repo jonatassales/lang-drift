@@ -13,6 +13,7 @@ import {
 	headerMessages,
 	homeMessages,
 	integrationsMessages,
+	microruntimesMessages,
 	platformMessages,
 	privacyMessages,
 	visionLoopMessages,
@@ -67,6 +68,7 @@ describe('Website production translations', () => {
 				visionLoopMessages,
 				executiveReviewMessages,
 				finopsMessages,
+				microruntimesMessages,
 				routeState,
 			]) {
 				const source = leaves(family.en)

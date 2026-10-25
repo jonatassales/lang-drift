@@ -65,6 +65,28 @@
 			"description": "Giao hàng có tác tử hỗ trợ chịu trách nhiệm trước ngân sách của đội: đội có thể chi bao nhiêu, mỗi phần việc đã tiêu bao nhiêu, và kết quả có đáng không."
 		}
 	},
+	"microruntimes": {
+		"en": {
+			"title": "LangDrift Microruntimes — Run what you already have.",
+			"description": "Bounded, consumer-owned execution around existing application components: compose, run, inspect and clean up, with the evidence kept."
+		},
+		"pt-BR": {
+			"title": "LangDrift Microruntimes — Rode o que você já tem.",
+			"description": "Execução delimitada e de propriedade do time em torno de componentes de aplicação existentes: compor, executar, inspecionar e limpar, com a evidência guardada."
+		},
+		"zh-Hant": {
+			"title": "LangDrift Microruntimes — 執行你已經擁有的。",
+			"description": "圍繞既有應用程式元件的受限執行，由使用者擁有：組成、執行、檢查與清理，並保留證據。"
+		},
+		"ja": {
+			"title": "LangDrift Microruntimes — いまあるものを動かす。",
+			"description": "既存のアプリケーションコンポーネントを囲む、境界付きで利用者が所有する実行環境。構成、実行、検査、クリーンアップを行い、証拠を残します。"
+		},
+		"vi": {
+			"title": "LangDrift Microruntimes — Chạy những gì bạn đã có.",
+			"description": "Thực thi có ranh giới, do đội sở hữu, quanh các thành phần ứng dụng có sẵn: dựng, chạy, kiểm tra và dọn dẹp, với bằng chứng được giữ lại."
+		}
+	},
 	"pricing": {
 		"en": {
 			"title": "Plans & early access — LangDrift",

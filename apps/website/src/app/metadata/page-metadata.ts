@@ -24,6 +24,7 @@ const indexRobots: Metadata['robots'] = {
 const nestedPagePath: Partial<Record<PageId, string>> = {
 	vision: 'platform/vision/',
 	finops: 'platform/finops/',
+	microruntimes: 'platform/microruntimes/',
 }
 
 function pagePath(page: PageId, locale: WebsiteLocale) {
