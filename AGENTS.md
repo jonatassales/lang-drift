@@ -56,6 +56,7 @@ When the shell resolves `drift` to another program (a link from an older checkou
 ## Design and tokens
 
 - `@langdrift/tokens` builds the tokens with Style Dictionary. Each app imports one self-contained stylesheet built from the shared tokens and its app theme; today the only one is `@langdrift/tokens/website.css`.
+- Purple (primary) surfaces such as buttons carry `primary-foreground` text, which is white in both color schemes.
 - Components use roles, never a foundation or a brand color directly. Roles take shadcn's names (`background`, `foreground`, `primary`, `muted-foreground`, …) because the web apps use SmoothUI and shadcn components.
 - Prefixes: shared tokens are `--lg-*`; the website's app theme is `--site-*`. Each app theme lives in `packages/tokens/themes/` and defines only primary and primary hover (the Exphere purple for the website), which `--lg-color-primary` points to.
 - Status colors (`--lg-status-*`), classification colors (`--lg-classification-*`), classification text tones (`--lg-classification-text-*`) and drift colors (`--lg-drift-*`) are fixed across apps and never inherit a brand color. See ADR 0003.

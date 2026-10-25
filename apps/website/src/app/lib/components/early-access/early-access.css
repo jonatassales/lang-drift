@@ -77,14 +77,14 @@
 	border: 1px solid var(--primary);
 	border-radius: 7px;
 	background: var(--primary);
-	color: #171717;
+	color: var(--primary-foreground);
 	font-size: 14px;
 	font-weight: 600;
 	line-height: 1.5;
 	cursor: pointer;
 }
 .early-access-controls button:hover {
-	background: #fb923c;
+	background: var(--primary-hover);
 }
 .early-access-controls button span {
 	flex-shrink: 0;

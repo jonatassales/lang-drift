@@ -39,7 +39,7 @@
 
 .voice-question button {
 	background: var(--primary);
-	color: #171717;
+	color: var(--primary-foreground);
 	border: 0;
 	border-radius: 8px;
 	cursor: pointer;
