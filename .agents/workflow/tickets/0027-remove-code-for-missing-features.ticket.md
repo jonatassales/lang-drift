@@ -1,0 +1,65 @@
+# 0027: Remove the code that supports missing features
+
+**Spec:** .agents/workflow/specs/0003-langdrift-website-on-apps.spec.md
+
+**What to build:** nothing in the repository supports a feature, component, integration or service that tao does not have. The website copy brought code for a confirmation email the website no longer sends, a toast, the old header, pricing, account and comment components, a Better Stack integration and unused formatters and dependencies; it all goes, and the documents describe only what exists. The website renders and behaves exactly as before.
+
+**Blocked by:** none.
+
+**Status:** ready-for-agent
+
+### Confirmation email
+
+The registry sends the confirmation; the website never sends mail (`apps/website/README.md`).
+
+- [x] `early-access-email.json` is deleted, with its import, `assertCatalogShape` call and `earlyAccessEmailMessages` export in `template/i18n/messages/index.ts`, the `EarlyAccessEmail` type in `messages.types.ts` and its entry in `catalogs.unit.ts`.
+- [x] `turbo.json` no longer passes `RESEND_*` through.
+- [x] `early-access/env.server.unit.ts` is renamed after what it tests, the provider configuration of the route and of Siteverify, instead of an `env.server` module that does not exist.
+
+### Toast
+
+- [x] `atoms/toast.atom.ts` and its re-export from `lib/state/index.ts` are deleted.
+- [x] The `.smooth-toast` rules in `smoothui.css` are deleted.
+
+### CSS for components that do not exist
+
+Each file is on the ADR 0003 exception list, which lets it shrink. Only rules whose selectors match no markup go.
+
+- [x] `packages/web/src/ui/product-experience.css` (only `header-four*`) is deleted, with its import in `packages/web/src/styles.css` and its line in the exception list of `02-frontend.rule.md`.
+- [x] `smoothui.css` keeps only `smooth-primary-button`, `smooth-text-link`, `smooth-footer`, `chroma-text` and `avatar-group`: the `header-four*`, `pricing-two`, `pricing-card`, `pricing-toggle`, `context-meter*`, `context-breakdown`, `figma-comment*`, `account-avatar*`, `ai-message*`, `smooth-scrubber*`, `glow-card*`, `smooth-icon-button`, `smooth-footer-main`, `smooth-footer-bottom` and `compact-chart` rules are gone.
+- [x] `ui-consistency.css` is deleted, with its import and its line in the exception list. Its last live rules, `.avatar-chip` here and in `smoothui.css`, were touched, so they move to Tailwind classes in `animated-avatar-group.tsx`, their only consumer (`02-frontend.rule.md`, rule 5).
+- [x] `globals.css` loses `header-four*`, `hero-product-card`, `public-auth-actions`, `public-sign-in`, `packaging-section`, `reason-*` and `voice-meter-card`.
+- [x] `hero.css` loses `reason-impact`, `website-early-access` and `smooth-footer-bottom`.
+- [x] `responsive.css` loses its `header-four*`, `hero-product-card`, `packaging-section` and `reason-*` rules.
+- [x] `website-header.css` loses `website-locale-pill` and `website-locale-link`, including the drawer and reduced-motion selectors; the header uses `LanguageSwitcher` from `@langdrift/web`.
+
+### Placeholders for missing integrations
+
+- [x] `src/infra/better-stack/.gitkeep` is deleted, with the `@infra/*` alias in `tsconfig.paths.json` and both `@infra/**` entries in the import groups of `biome.json`.
+- [x] The empty `src/app/state/state.data.ts` is deleted; the state barrel stays `src/app/lib/state/index.ts`.
+
+### Unused formatters and dependencies
+
+- [x] The four files in `src/app/template/formatters/` are deleted; `cn` comes from `@langdrift/web/utilities`.
+- [x] `axios`, `tw-animate-css`, `clsx` and `tailwind-merge` leave the website's `package.json` and the lockfile; `packages/web` keeps its own `clsx` and `tailwind-merge`.
+
+### Documents
+
+- [x] AGENTS.md no longer calls `apps/website/.env.development` the local defaults: Git ignores it, so it is not shared. The README's variable table stays the contract.
+- [x] AGENTS.md describes `packages/shell` as planned, not as where the switcher and the shell live.
+
+### Owner, outside the agent's scope
+
+Agents do not edit `.env` files.
+
+- [ ] The owner removes `RESEND_*`, `NEXT_PUBLIC_DASHBOARD_URL` and `NEXT_PUBLIC_SSO_URL` from the local `apps/website/.env.development` and adds the `EARLY_ACCESS_*` variables the README lists.
+
+### Verification
+
+- [x] `pnpm turbo run build`, `typecheck`, `test` and `check` pass, and `drift check localization` passes after the catalog change.
+- [x] Every page in every locale looks the same before and after, in light and dark: no removed rule was live.
+- [x] No reference to a removed file, alias, export, variable or class remains.
+
+Parity was proved by comparing every computed property, elements and `::before`/`::after`, with main's CSS served and with the pruned CSS: `/en/` at 1280 and 375 px in dark and at 1280 px in light, `/en/privacy/` and `/en/early-access-sent/` at 1280 px. Nothing differed outside dev-injected scripts. The other locales render the same markup, and no removed selector names a theme or locale.
+
+Intended survivors: the renamed test still stubs `RESEND_*` to prove the route needs none, and `earlyAccessEmailSchema` validates the form's email field. The example tree in `06-nextjs.rule.md` still shows `formatters/ e.g. cn.fmt.ts` and `infra/`; rules change only when the owner asks.

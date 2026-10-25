@@ -80,7 +80,7 @@ The repository moves to `apps/*` and the website becomes its first and only app,
 ## Out of Scope
 
 - Converting the website's hand-written CSS to Tailwind.
-- Removing code the copy brings but does not use (formatters, the toast atom, the `axios` and `tw-animate-css` dependencies).
+- Removing code the copy brings but does not use (formatters, the toast atom, the `axios` and `tw-animate-css` dependencies). Ticket 0027 removed it after the port.
 - Other langdrift apps (dashboard, docs, sso) and packages beyond what the website imports.
 - langdrift's test-ownership rule and its third-party agent skills.
 - Vercel project configuration and production secrets.
