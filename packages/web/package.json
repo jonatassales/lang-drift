@@ -25,6 +25,7 @@
 		"./vendors/smoothui/animated-tabs": "./src/vendors/smoothui/animated-tabs.tsx",
 		"./vendors/smoothui/basic-accordion": "./src/vendors/smoothui/basic-accordion.tsx",
 		"./vendors/smoothui/chroma-text": "./src/vendors/smoothui/chroma-text.tsx",
+		"./vendors/smoothui/gravity-stars": "./src/vendors/smoothui/gravity-stars.tsx",
 		"./vendors/smoothui/magnetic-field": "./src/vendors/smoothui/magnetic-field.tsx",
 		"./utilities": "./src/utilities/index.ts"
 	},
