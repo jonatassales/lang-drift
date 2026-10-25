@@ -26,10 +26,5 @@
 			"cache": false
 		}
 	},
-	"globalPassThroughEnv": [
-		"CRYPTO_SECRET",
-		"CI",
-		"NEXT_TELEMETRY_DISABLED",
-		"NODE_OPTIONS"
-	]
+	"globalPassThroughEnv": ["CRYPTO_SECRET", "CI", "NODE_OPTIONS"]
 }

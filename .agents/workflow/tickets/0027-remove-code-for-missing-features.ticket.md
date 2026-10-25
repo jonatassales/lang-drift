@@ -14,6 +14,7 @@ The registry sends the confirmation; the website never sends mail (`apps/website
 
 - [x] `early-access-email.json` is deleted, with its import, `assertCatalogShape` call and `earlyAccessEmailMessages` export in `template/i18n/messages/index.ts`, the `EarlyAccessEmail` type in `messages.types.ts` and its entry in `catalogs.unit.ts`.
 - [x] `turbo.json` no longer passes `RESEND_*` through.
+- [x] `turbo.json` no longer passes `NEXT_TELEMETRY_DISABLED` through: the owner drops it.
 - [x] `early-access/env.server.unit.ts` is renamed after what it tests, the provider configuration of the route and of Siteverify, instead of an `env.server` module that does not exist.
 
 ### Feature flag and build environment
