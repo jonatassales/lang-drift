@@ -4,7 +4,7 @@ AI harness web OS for your agentic journey. LangDrift is a suite of apps under o
 
 ## General rules
 
-`.claude/rules/` holds the rules that always apply, read first in every session. `00-general.rule.md` covers code and tooling, `01-filesystem.rule.md` naming and paths, `02-frontend.rule.md` React and Next.js styling, and `03-tailwind.rule.md` what Tailwind's theme may override.
+`.claude/rules/` holds the rules that always apply, read first in every session. `00-general.rule.md` covers code and tooling, `01-filesystem.rule.md` naming and paths, `02-frontend.rule.md` styling and the CSS exception, `03-tailwind.rule.md` what Tailwind may do, `04-code.rule.md` external input and control flow, `05-react.rule.md` components, `06-nextjs.rule.md` the App Router tree, `07-jotai.rule.md` shared state, `08-localization.rule.md` copy and locales, and `09-seo.rule.md` metadata.
 
 ## Status
 
@@ -49,7 +49,7 @@ Run from the repository root:
 
 ## Platform CLI
 
-`platform/cli/drift` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `env setup|validate` and `git setup|doctor|pre-commit|commit-msg|lint-history`.
+`platform/cli/drift` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `check localization`, `env setup|validate` and `git setup|doctor|pre-commit|commit-msg|lint-history`.
 
 When the shell resolves `drift` to another program (a link from an older checkout, say), `drift setup` says which one and how to fix `PATH`.
 
@@ -120,7 +120,7 @@ Single context. The glossary is the `## Glossary` section of `.agents/context.md
 | Build | `pnpm turbo run build` |
 | Check | `pnpm turbo run check`, then `pnpm turbo run typecheck` |
 | Test | `pnpm turbo run test` |
-| Harness | `drift doctor --ci`, ShellCheck on the POSIX scripts, actionlint on the workflows |
+| Harness | `drift doctor --ci`, `drift check localization`, ShellCheck on the POSIX scripts, actionlint on the workflows |
 | Guardrails | `drift git lint-history` over the pull request's commits |
 
 Actions, container images and downloaded tools are pinned to full commit SHAs, digests or checksums, with the version in a comment. The workflow tokens are read-only.

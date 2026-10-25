@@ -70,6 +70,8 @@ jobs:
       - uses: ./.github/actions/setup-workspace
       - name: Toolchain and layout
         run: platform/cli/drift doctor --ci
+      - name: Localization catalogs
+        run: platform/cli/drift check localization
       - name: Shell scripts (ShellCheck)
         run: >
           git ls-files -z -- '*.sh' platform/cli/drift 'platform/versioning/.husky/*'

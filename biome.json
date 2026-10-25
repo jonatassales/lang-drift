@@ -43,7 +43,27 @@
 							}
 						]
 					}
+				},
+				"useConsistentTypeDefinitions": {
+					"level": "error",
+					"options": {
+						"style": "interface"
+					}
+				},
+				"useFilenamingConvention": {
+					"level": "error",
+					"options": {
+						"filenameCases": ["kebab-case"]
+					}
 				}
+			},
+			"correctness": {
+				"noUnusedImports": "error",
+				"noUnusedVariables": "warn",
+				"useExhaustiveDependencies": "warn"
+			},
+			"suspicious": {
+				"noArrayIndexKey": "warn"
 			}
 		}
 	},
