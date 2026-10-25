@@ -219,7 +219,6 @@ export interface MicroruntimesMessages {
 		lead: string
 		primaryCta: string
 		secondaryCta: string
-		caption: string
 		summary: string
 	}
 	lifecycle: {
@@ -265,7 +264,6 @@ export interface MicroruntimesMessages {
 		kicker: string
 		title: string
 		lead: string
-		illustrative: string
 		annotations: Record<DescriptorAnnotationId, TitledCopy>
 	}
 	ownership: {
@@ -291,7 +289,6 @@ export interface MicroruntimesMessages {
 		title: string
 		lead: string
 		ledgerTitle: string
-		ledgerPeriod: string
 		rows: {
 			execution: string
 			started: string

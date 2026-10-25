@@ -38,6 +38,7 @@
 		"./vendors/smoothui/magnetic-field": "./src/vendors/smoothui/magnetic-field.tsx",
 		"./vendors/smoothui/short-slide-down": "./src/vendors/smoothui/short-slide-down.tsx",
 		"./vendors/smoothui/text-morph": "./src/vendors/smoothui/text-morph.tsx",
+		"./vendors/vidro/code-editor": "./src/vendors/vidro/code-editor.tsx",
 		"./utilities": "./src/utilities/index.ts"
 	},
 	"dependencies": {
@@ -47,7 +48,8 @@
 		"motion": "13.4.0",
 		"orbo-voice": "1.1.2",
 		"recharts": "3.10.1",
-		"tailwind-merge": "^3.7.0"
+		"tailwind-merge": "^3.7.0",
+		"vidropro": "file:vendor/vidropro-0.1.0-preview.3.tgz"
 	},
 	"peerDependencies": {
 		"next": ">=16",

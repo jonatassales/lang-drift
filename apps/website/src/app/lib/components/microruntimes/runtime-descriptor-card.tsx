@@ -1,5 +1,4 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-
+import { RuntimeFileEditor } from '@components/microruntimes/runtime-file-editor'
 import {
 	descriptorAnnotationIds,
 	formatDescriptor,
@@ -7,35 +6,25 @@ import {
 	runtimeDescriptor,
 	runtimeFilePath,
 } from '@data/microruntimes-content'
+import type { WebsiteLocale } from '@i18n/routing'
 
 interface RuntimeDescriptorCardProps {
 	copy: MicroruntimesMessages['descriptor']
+	locale: WebsiteLocale
 }
 
-// The runtime file as a reader would open it: one langdrift JSON fence,
-// beside numbered notes on what each part decides.
+// The runtime file's langdrift JSON fence in the editor, beside numbered notes
+// on what each part decides.
 export function RuntimeDescriptorCard(props: RuntimeDescriptorCardProps) {
-	const { copy } = props
+	const { copy, locale } = props
 
 	return (
-		<div className="mt-11 grid gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)]">
-			<figure className="m-0 min-w-0 overflow-hidden rounded-2xl border border-border bg-card">
-				<figcaption className="flex items-center justify-between gap-4 border-b border-border px-5 py-3">
-					<code className="truncate font-mono text-[12px] text-muted-foreground">
-						{runtimeFilePath}
-					</code>
-					<Eyebrow className="shrink-0 rounded-full border border-border px-2 py-[3px]">
-						{copy.illustrative}
-					</Eyebrow>
-				</figcaption>
-				<pre className="m-0 max-h-[560px] overflow-auto p-5 font-mono text-[12px] leading-[1.65] text-foreground">
-					<code>
-						<span className="text-muted-foreground">```langdrift</span>
-						{`\n${formatDescriptor(runtimeDescriptor)}\n`}
-						<span className="text-muted-foreground">```</span>
-					</code>
-				</pre>
-			</figure>
+		<div className="mt-11 grid items-start gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)]">
+			<RuntimeFileEditor
+				locale={locale}
+				path={runtimeFilePath}
+				value={formatDescriptor(runtimeDescriptor)}
+			/>
 			<ol className="m-0 grid list-none content-start gap-3 p-0">
 				{descriptorAnnotationIds.map((id, index) => (
 					<li
