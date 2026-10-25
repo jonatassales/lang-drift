@@ -10,10 +10,10 @@
 
 ### Icons
 
-- [ ] Five icon components in their own icon family beside the platform icons, each a simplified monochrome rendering of the mark: a `className` prop, a 24-unit viewBox, strokes and fills in `currentColor`, `aria-hidden`.
+- [ ] Five icon components in their own icon family beside the platform icons, each the official mark's geometry (the CC0 path data simple-icons publishes) drawn in `currentColor`: a `className` prop, a 24-unit viewBox, `aria-hidden`. The owner asked for the correct marks, not simplified ones; the site is not public.
 - [ ] The family's props interface has the same shape as the platform icons' props and lives with the family.
 - [ ] A barrel exports the five icons by name, and the package export map gains the family's entry, following the platform icons' entry.
-- [ ] Each mark stays recognizable at 16px in both color schemes; none carries a brand color.
+- [ ] Each mark stays recognizable at 16px in both color schemes; none carries a brand color, and each component's comment names the source of its geometry.
 
 ### Tests
 
