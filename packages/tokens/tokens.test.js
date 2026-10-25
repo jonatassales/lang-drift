@@ -17,11 +17,9 @@ import { after, before, describe, test } from 'node:test'
 // The contract is the published stylesheet, read the way an app reads it:
 // built from an isolated copy and resolved through the package's exports.
 
-// Each product, its product theme prefix and the other product's prefix.
-const products = [
-	['vision', 'viz', 'fp'],
-	['finops', 'fp', 'viz'],
-]
+// The only theme and its prefix.
+const theme = 'website'
+const prefix = 'site'
 
 // The variables shadcn and SmoothUI components read, without the leading `--`.
 const shadcnVariables = [
@@ -58,8 +56,7 @@ const shadcnVariables = [
 	'sidebar-ring',
 ]
 
-// The roles whose values depend on neither the product theme nor the status
-// colors.
+// The roles whose values depend on neither the theme nor the status colors.
 const sharedRoles = [
 	'background',
 	'foreground',
@@ -89,22 +86,23 @@ const sharedRoles = [
 ].map((role) => `--lg-color-${role}`)
 
 const statuses = ['success', 'warning', 'danger', 'info']
+const classifications = ['intentional', 'aligned', 'unexplained', 'review']
+const drifts = ['negative', 'positive', 'zero']
+const classificationTexts = ['intentional', 'review', 'unexplained']
 
-// A product theme's tokens and the shared roles that follow its brand.
-function brandRoles(prefix) {
-	return [
-		`--${prefix}-color-primary`,
-		`--${prefix}-color-primary-hover`,
-		...[
-			'primary',
-			'primary-hover',
-			'ring',
-			'sidebar-primary',
-			'sidebar-ring',
-			'chart-1',
-		].map((role) => `--lg-color-${role}`),
-	]
-}
+// The theme's tokens and the shared roles that follow its brand.
+const brandRoles = [
+	`--${prefix}-color-primary`,
+	`--${prefix}-color-primary-hover`,
+	...[
+		'primary',
+		'primary-hover',
+		'ring',
+		'sidebar-primary',
+		'sidebar-ring',
+		'chart-1',
+	].map((role) => `--lg-color-${role}`),
+]
 
 const sandbox = mkdtempSync(join(tmpdir(), 'langdrift-tokens-'))
 after(() =>
@@ -144,30 +142,27 @@ function buildEdited(name, sourceFile, edit) {
 	return build(copy)
 }
 
-// The stylesheet an app importing `@langdrift/tokens/<product>.css` from
-// this copy would receive.
-function stylesheet(copy, product) {
+// The stylesheet an app importing `@langdrift/tokens/<theme>.css` from this
+// copy would receive.
+function stylesheet(copy) {
 	const consumer = join(sandbox, `${basename(copy)}-consumer`)
 	mkdirSync(join(consumer, 'node_modules/@langdrift'), { recursive: true })
 	rmSync(join(consumer, 'node_modules/@langdrift/tokens'), { force: true })
 	symlinkSync(copy, join(consumer, 'node_modules/@langdrift/tokens'))
 	const require = createRequire(join(consumer, 'index.js'))
-	return readFileSync(
-		require.resolve(`@langdrift/tokens/${product}.css`),
-		'utf8',
-	)
+	return readFileSync(require.resolve(`@langdrift/tokens/${theme}.css`), 'utf8')
 }
 
-// Each product's stylesheet, built once from its own copy.
-const productStylesheets = new Map()
-function productStylesheet(product) {
-	if (!productStylesheets.has(product)) {
-		const copy = copyPackage(product)
+// The theme's stylesheet, built once from its own copy.
+let builtStylesheet
+function themeStylesheet() {
+	if (!builtStylesheet) {
+		const copy = copyPackage(theme)
 		const result = build(copy)
 		assert.equal(result.status, 0, result.stderr)
-		productStylesheets.set(product, stylesheet(copy, product))
+		builtStylesheet = stylesheet(copy)
 	}
-	return productStylesheets.get(product)
+	return builtStylesheet
 }
 
 // The declarations of the top-level rule whose selector is `selector`.
@@ -198,7 +193,7 @@ describe('shared tokens', () => {
 	let dark
 
 	before(() => {
-		css = productStylesheet('vision')
+		css = themeStylesheet()
 		light = declarations(css, ':root')
 		dark = declarations(css, '.dark')
 	})
@@ -220,15 +215,19 @@ describe('shared tokens', () => {
 		)
 	})
 
-	test('declare the font family, shadow and easing kept from Exphere', () => {
+	test('declare the website fonts, and the shadow and easing kept from Exphere', () => {
 		assert.deepEqual(
 			pick(light, [
 				'--lg-typography-font-body',
+				'--lg-typography-font-mono',
 				'--lg-effects-shadow-sm',
 				'--lg-effects-easing-standard',
 			]),
 			{
-				'--lg-typography-font-body': 'system-ui, sans-serif',
+				'--lg-typography-font-body':
+					'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+				'--lg-typography-font-mono':
+					'ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace',
 				'--lg-effects-shadow-sm': '0px 1px 2px #00000014',
 				'--lg-effects-easing-standard': 'cubic-bezier(0.2, 0, 0, 1)',
 			},
@@ -239,11 +238,11 @@ describe('shared tokens', () => {
 		assert.doesNotMatch(css, /--lg-dimensions-|--lg-typography-size-/)
 	})
 
-	test('declare the light roles, keeping the Exphere palette', () => {
+	test('declare the light roles with the website neutrals', () => {
 		assert.deepEqual(pick(light, sharedRoles), {
-			'--lg-color-background': '#FFFFFF',
-			'--lg-color-foreground': '#27262A',
-			'--lg-color-card': '#F9F9F9',
+			'--lg-color-background': '#F7F6F2',
+			'--lg-color-foreground': '#212121',
+			'--lg-color-card': '#FFFFFF',
 			'--lg-color-card-foreground': 'var(--lg-color-foreground)',
 			'--lg-color-popover': '#FFFFFF',
 			'--lg-color-popover-foreground': 'var(--lg-color-foreground)',
@@ -251,10 +250,10 @@ describe('shared tokens', () => {
 			'--lg-color-secondary': 'var(--lg-color-gray-100)',
 			'--lg-color-secondary-foreground': 'var(--lg-color-foreground)',
 			'--lg-color-muted': 'var(--lg-color-gray-100)',
-			'--lg-color-muted-foreground': '#535257',
+			'--lg-color-muted-foreground': '#6B6B75',
 			'--lg-color-accent': 'var(--lg-color-gray-100)',
 			'--lg-color-accent-foreground': 'var(--lg-color-foreground)',
-			'--lg-color-border': '#DDDDDD',
+			'--lg-color-border': '#D9D9DD',
 			'--lg-color-input': 'var(--lg-color-border)',
 			'--lg-color-chart-2': '#0D9488',
 			'--lg-color-chart-3': '#D97706',
@@ -271,22 +270,22 @@ describe('shared tokens', () => {
 		})
 	})
 
-	test('declare the dark roles under .dark', () => {
+	test('declare the dark roles under .dark with the website neutrals', () => {
 		assert.deepEqual(pick(dark, sharedRoles), {
-			'--lg-color-background': 'var(--lg-color-gray-950)',
-			'--lg-color-foreground': 'var(--lg-color-gray-50)',
-			'--lg-color-card': 'var(--lg-color-gray-900)',
+			'--lg-color-background': '#0B0B0C',
+			'--lg-color-foreground': '#F5F5F5',
+			'--lg-color-card': '#151517',
 			'--lg-color-card-foreground': 'var(--lg-color-foreground)',
-			'--lg-color-popover': 'var(--lg-color-gray-900)',
+			'--lg-color-popover': '#151517',
 			'--lg-color-popover-foreground': 'var(--lg-color-foreground)',
-			'--lg-color-primary-foreground': 'var(--lg-color-gray-950)',
+			'--lg-color-primary-foreground': '#FFFFFF',
 			'--lg-color-secondary': 'var(--lg-color-gray-800)',
 			'--lg-color-secondary-foreground': 'var(--lg-color-foreground)',
 			'--lg-color-muted': 'var(--lg-color-gray-800)',
-			'--lg-color-muted-foreground': 'var(--lg-color-gray-400)',
+			'--lg-color-muted-foreground': '#A1A1AA',
 			'--lg-color-accent': 'var(--lg-color-gray-800)',
 			'--lg-color-accent-foreground': 'var(--lg-color-foreground)',
-			'--lg-color-border': 'var(--lg-color-gray-800)',
+			'--lg-color-border': '#2A2A2D',
 			'--lg-color-input': 'var(--lg-color-border)',
 			'--lg-color-chart-2': '#2DD4BF',
 			'--lg-color-chart-3': '#FBBF24',
@@ -319,74 +318,118 @@ describe('shared tokens', () => {
 		})
 	})
 
+	test('fix the classification colors in every color scheme', () => {
+		assert.deepEqual(
+			pick(
+				light,
+				classifications.map((name) => `--lg-classification-${name}`),
+			),
+			{
+				'--lg-classification-intentional': '#3B82F6',
+				'--lg-classification-aligned': '#16A34A',
+				'--lg-classification-unexplained': '#DC2626',
+				'--lg-classification-review': '#A855F7',
+			},
+		)
+		for (const name of classifications) {
+			assert.equal(dark[`--lg-classification-${name}`], undefined)
+		}
+	})
+
+	test('fix the classification text tones, darker in light and lighter in dark', () => {
+		const textVariables = classificationTexts.map(
+			(name) => `--lg-classification-text-${name}`,
+		)
+		assert.deepEqual(pick(light, textVariables), {
+			'--lg-classification-text-intentional': 'oklch(48.8% 0.243 264.376)',
+			'--lg-classification-text-review': 'oklch(49.6% 0.265 301.924)',
+			'--lg-classification-text-unexplained': 'oklch(50.5% 0.213 27.518)',
+		})
+		assert.deepEqual(pick(dark, textVariables), {
+			'--lg-classification-text-intentional': 'oklch(70.7% 0.165 254.624)',
+			'--lg-classification-text-review': 'oklch(71.4% 0.203 305.504)',
+			'--lg-classification-text-unexplained': 'oklch(70.4% 0.191 22.216)',
+		})
+	})
+
+	test('fix the drift colors, darker in light and lighter in dark', () => {
+		const driftVariables = drifts.map((drift) => `--lg-drift-${drift}`)
+		assert.deepEqual(pick(light, driftVariables), {
+			'--lg-drift-negative': '#B91C1C',
+			'--lg-drift-positive': '#15803D',
+			'--lg-drift-zero': '#C2410C',
+		})
+		assert.deepEqual(pick(dark, driftVariables), {
+			'--lg-drift-negative': '#F87171',
+			'--lg-drift-positive': '#4ADE80',
+			'--lg-drift-zero': '#FB923C',
+		})
+	})
+
+	test('never let the domain colors take the brand', () => {
+		for (const declared of [light, dark]) {
+			for (const [name, value] of Object.entries(declared)) {
+				if (/^--lg-(classification|classification-text|drift)-/.test(name)) {
+					assert.doesNotMatch(value, /primary|--site-/)
+				}
+			}
+		}
+	})
+
 	test('back the destructive role with danger', () => {
 		assert.equal(light['--lg-color-destructive'], 'var(--lg-status-danger)')
 		assert.equal(dark['--lg-color-destructive'], 'var(--lg-status-danger)')
 	})
 })
 
-describe('product themes', () => {
-	for (const [product, prefix, otherPrefix] of products) {
-		test(`bind the shared primary roles to ${product}'s brand`, () => {
-			const css = productStylesheet(product)
-			for (const [selector, primary, hover] of [
-				[':root', '#6D0AD6', '#5408A5'],
-				['.dark', '#A66BF0', '#B98AF4'],
-			]) {
-				assert.deepEqual(
-					pick(declarations(css, selector), brandRoles(prefix)),
-					{
-						[`--${prefix}-color-primary`]: primary,
-						[`--${prefix}-color-primary-hover`]: hover,
-						'--lg-color-primary': `var(--${prefix}-color-primary)`,
-						'--lg-color-primary-hover': `var(--${prefix}-color-primary-hover)`,
-						'--lg-color-ring': 'var(--lg-color-primary)',
-						'--lg-color-sidebar-primary': 'var(--lg-color-primary)',
-						'--lg-color-sidebar-ring': 'var(--lg-color-primary)',
-						'--lg-color-chart-1': 'var(--lg-color-primary)',
-					},
-				)
-			}
-		})
-
-		test(`keep ${product}'s stylesheet free of the other product theme`, () => {
-			assert.doesNotMatch(
-				productStylesheet(product),
-				new RegExp(`--${otherPrefix}-`),
-			)
-		})
-	}
+describe('website theme', () => {
+	test('binds the shared primary roles to the Exphere purple', () => {
+		const css = themeStylesheet()
+		for (const [selector, primary, hover] of [
+			[':root', '#6D0AD6', '#5408A5'],
+			['.dark', '#6D0AD6', '#8C3BEF'],
+		]) {
+			assert.deepEqual(pick(declarations(css, selector), brandRoles), {
+				[`--${prefix}-color-primary`]: primary,
+				[`--${prefix}-color-primary-hover`]: hover,
+				'--lg-color-primary': `var(--${prefix}-color-primary)`,
+				'--lg-color-primary-hover': `var(--${prefix}-color-primary-hover)`,
+				'--lg-color-ring': 'var(--lg-color-primary)',
+				'--lg-color-sidebar-primary': 'var(--lg-color-primary)',
+				'--lg-color-sidebar-ring': 'var(--lg-color-primary)',
+				'--lg-color-chart-1': 'var(--lg-color-primary)',
+			})
+		}
+	})
 })
 
 describe('shadcn bridge', () => {
 	test('declares every shadcn variable as a reference to its role', () => {
-		const bridge = declarations(productStylesheet('vision'), ':root, .dark')
+		const bridge = declarations(themeStylesheet(), ':root, .dark')
 		for (const variable of shadcnVariables) {
 			assert.equal(bridge[`--${variable}`], `var(--lg-color-${variable})`)
 		}
 	})
 
 	test('leaves the radius to Tailwind', () => {
-		assert.doesNotMatch(productStylesheet('vision'), /--radius/)
+		assert.doesNotMatch(themeStylesheet(), /--radius/)
 	})
 })
 
 describe('Tailwind theme', () => {
-	let theme
+	let tailwind
 
 	before(() => {
-		theme = Object.entries(
-			declarations(productStylesheet('vision'), '@theme inline'),
-		)
+		tailwind = Object.entries(declarations(themeStylesheet(), '@theme inline'))
 	})
 
 	test('resets the native palette before any token color', () => {
-		assert.deepEqual(theme[0], ['--color-*', 'initial'])
+		assert.deepEqual(tailwind[0], ['--color-*', 'initial'])
 	})
 
-	test('exposes every role and status color, and no foundation', () => {
+	test('exposes every role, status and domain color, and no foundation', () => {
 		const colors = Object.fromEntries(
-			theme.filter(
+			tailwind.filter(
 				([name]) => name.startsWith('--color-') && name !== '--color-*',
 			),
 		)
@@ -400,20 +443,45 @@ describe('Tailwind theme', () => {
 				`var(--lg-status-${status})`,
 			)
 		}
+		for (const name of classifications) {
+			assert.equal(
+				colors[`--color-classification-${name}`],
+				`var(--lg-classification-${name})`,
+			)
+		}
+		for (const name of classificationTexts) {
+			assert.equal(
+				colors[`--color-classification-text-${name}`],
+				`var(--lg-classification-text-${name})`,
+			)
+		}
+		for (const drift of drifts) {
+			assert.equal(colors[`--color-drift-${drift}`], `var(--lg-drift-${drift})`)
+		}
 		assert.equal(
 			Object.keys(colors).some((name) => name.includes('gray')),
 			false,
 		)
 	})
 
-	test('maps the font, shadow and easing, and nothing else', () => {
+	test('maps the fonts, shadow and easing, and nothing else', () => {
 		assert.deepEqual(
-			theme.filter(([name]) => !name.startsWith('--color-')),
+			tailwind.filter(([name]) => !name.startsWith('--color-')),
 			[
 				['--font-sans', 'var(--lg-typography-font-body)'],
+				['--font-mono', 'var(--lg-typography-font-mono)'],
 				['--shadow-sm', 'var(--lg-effects-shadow-sm)'],
 				['--ease-standard', 'var(--lg-effects-easing-standard)'],
 			],
+		)
+	})
+})
+
+describe('dark variant', () => {
+	test('follows the .dark class', () => {
+		assert.match(
+			themeStylesheet(),
+			/^@custom-variant dark \(&:where\(\.dark, \.dark \*\)\);$/m,
 		)
 	})
 })
@@ -422,12 +490,9 @@ describe('build', () => {
 	test('yields identical stylesheets from unchanged sources', () => {
 		const copy = copyPackage('rebuild')
 		assert.equal(build(copy).status, 0)
-		const first = products.map(([product]) => stylesheet(copy, product))
+		const first = stylesheet(copy)
 		assert.equal(build(copy).status, 0)
-		assert.deepEqual(
-			products.map(([product]) => stylesheet(copy, product)),
-			first,
-		)
+		assert.equal(stylesheet(copy), first)
 	})
 
 	test('fails when a token references a missing token', () => {

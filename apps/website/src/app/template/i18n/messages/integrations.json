@@ -1,0 +1,247 @@
+{
+	"en": {
+		"eyebrow": "Integrations",
+		"title": "Connected to the way your team works.",
+		"description": "Bring your product context and evidence into LangDrift through the SDK connection. Connect GitHub for pull request automation, start PRDs and Research in Obsidian, and mirror specs and tickets in Linear. The platform connection is the foundation; additional tools extend the workflow your team chooses.",
+		"project": {
+			"title": "Your project",
+			"label": "LangDrift SDK",
+			"description": "Prepare and send the product context and records that help explain how your product is evolving.",
+			"connectionLabel": "LangDrift MCP"
+		},
+		"core": {
+			"title": "LangDrift",
+			"badge": "Required for dashboard",
+			"description": "Connect your project to bring its context and evidence into the dashboard, graph, and reports.",
+			"supporting": "This is the core connection between your project and the LangDrift platform."
+		},
+		"tools": {
+			"github": {
+				"title": "GitHub",
+				"badge": "Required for pull requests",
+				"description": "Enable the workflow to open pull requests automatically with the defined template and the context needed for review.",
+				"exampleLabel": "Pull request context",
+				"example": "Change summary, related spec, and verification notes, organized in the pull request template."
+			},
+			"obsidian": {
+				"title": "Obsidian",
+				"badge": "Optional",
+				"description": "Start PRDs and Research in Obsidian, keeping early product thinking in the knowledge workspace your team already uses.",
+				"exampleLabel": "Product thinking at the source",
+				"example": "A PRD or Research note can begin in Obsidian and remain connected to the product context LangDrift uses for review."
+			},
+			"linear": {
+				"title": "Linear",
+				"badge": "Optional",
+				"description": "Replicate specs and tickets in Linear so the team can follow the work in the planning tool it already uses.",
+				"exampleLabel": "Shared planning context",
+				"example": "A ticket carries the related spec context into the team's planning workflow."
+			}
+		},
+		"technical": {
+			"title": "How the connections work",
+			"platform": "The SDK prepares and validates project data, then uses the LangDrift MCP connection to send that context to the platform. This connection supports the dashboard experience.",
+			"connectors": "External integrations extend that workflow. GitHub is required for the pull request automation described here. Obsidian and Linear are optional: Obsidian can be used to begin PRDs and Research in a familiar knowledge workspace, while Linear can carry specs and tickets into the team's planning workflow. Each connector follows its own integration path; choosing one does not require enabling the others."
+		},
+		"closing": {
+			"description": "Start with the platform connection. Add the tools that support your team's workflow.",
+			"cta": "Ask for a Demo"
+		}
+	},
+	"pt-BR": {
+		"eyebrow": "Integrações",
+		"title": "Conectado à forma como sua equipe trabalha.",
+		"description": "Leve o contexto e as evidências do seu produto ao LangDrift pela conexão do SDK. Conecte o GitHub para automatizar a abertura de pull requests, comece PRDs e Research no Obsidian e replique specs e tickets no Linear. A conexão com a plataforma é a base; as ferramentas adicionais ampliam o fluxo que sua equipe escolhe.",
+		"project": {
+			"title": "Seu projeto",
+			"label": "LangDrift SDK",
+			"description": "Prepare e envie o contexto e os registros que ajudam a explicar como seu produto está evoluindo.",
+			"connectionLabel": "LangDrift MCP"
+		},
+		"core": {
+			"title": "LangDrift",
+			"badge": "Obrigatória para o dashboard",
+			"description": "Conecte seu projeto para levar seu contexto e suas evidências ao dashboard, ao grafo e aos relatórios.",
+			"supporting": "Esta é a conexão principal entre seu projeto e a plataforma LangDrift."
+		},
+		"tools": {
+			"github": {
+				"title": "GitHub",
+				"badge": "Necessária para pull requests",
+				"description": "Habilite o fluxo de abertura automática de pull requests com o template definido e o contexto necessário para a revisão.",
+				"exampleLabel": "Contexto do pull request",
+				"example": "Resumo da mudança, spec relacionada e notas de verificação, organizados no template do pull request."
+			},
+			"obsidian": {
+				"title": "Obsidian",
+				"badge": "Opcional",
+				"description": "Comece PRDs e Research no Obsidian, mantendo o pensamento inicial de produto no espaço de conhecimento que sua equipe já utiliza.",
+				"exampleLabel": "Pensamento de produto na origem",
+				"example": "Um PRD ou uma nota de Research pode começar no Obsidian e continuar conectado ao contexto de produto que o LangDrift usa nas revisões."
+			},
+			"linear": {
+				"title": "Linear",
+				"badge": "Opcional",
+				"description": "Replique specs e tickets no Linear para que a equipe acompanhe o trabalho na ferramenta de planejamento que já utiliza.",
+				"exampleLabel": "Contexto compartilhado de planejamento",
+				"example": "Um ticket leva o contexto da spec relacionada ao fluxo de planejamento da equipe."
+			}
+		},
+		"technical": {
+			"title": "Como as conexões funcionam",
+			"platform": "O SDK prepara e valida os dados do projeto e usa a conexão MCP do LangDrift para enviar esse contexto à plataforma. Essa conexão sustenta a experiência do dashboard.",
+			"connectors": "As integrações externas ampliam esse fluxo. O GitHub é necessário para a automação de pull requests descrita aqui. Obsidian e Linear são opcionais: o Obsidian pode ser usado para começar PRDs e Research em um espaço de conhecimento familiar, enquanto o Linear pode levar specs e tickets ao fluxo de planejamento da equipe. Cada conector segue seu próprio caminho de integração; escolher um não exige habilitar os demais."
+		},
+		"closing": {
+			"description": "Comece pela conexão com a plataforma. Adicione as ferramentas que apoiam o fluxo de trabalho da sua equipe.",
+			"cta": "Solicite uma demonstração"
+		}
+	},
+	"zh-Hant": {
+		"eyebrow": "整合",
+		"title": "連結團隊熟悉的工作方式。",
+		"description": "透過 SDK 連線，將產品背景與證據帶入 LangDrift。連接 GitHub 以自動建立 pull request，在 Obsidian 開始撰寫 PRD 與 Research，並將規格與工作項目複製至 Linear。平台連線是基礎；其他工具則延伸團隊選擇的工作流程。",
+		"project": {
+			"title": "你的專案",
+			"label": "LangDrift SDK",
+			"description": "準備並傳送產品背景與紀錄，協助解釋產品如何持續演進。",
+			"connectionLabel": "LangDrift MCP"
+		},
+		"core": {
+			"title": "LangDrift",
+			"badge": "使用儀表板的必要連線",
+			"description": "連接專案，將其背景與證據帶入儀表板、圖譜及報告。",
+			"supporting": "這是專案與 LangDrift 平台之間的核心連線。"
+		},
+		"tools": {
+			"github": {
+				"title": "GitHub",
+				"badge": "建立 pull request 所需",
+				"description": "啟用自動建立 pull request 的流程，使用指定範本，並附上審查所需的背景。",
+				"exampleLabel": "Pull request 背景",
+				"example": "變更摘要、相關規格及驗證筆記，整理於 pull request 範本中。"
+			},
+			"obsidian": {
+				"title": "Obsidian",
+				"badge": "可選",
+				"description": "在 Obsidian 開始撰寫 PRD 與 Research，把早期的產品思考留在團隊熟悉的知識工作空間。",
+				"exampleLabel": "源頭的產品思考",
+				"example": "PRD 或 Research 筆記可以在 Obsidian 起草，並持續連結到 LangDrift 審閱時所使用的產品背景。"
+			},
+			"linear": {
+				"title": "Linear",
+				"badge": "可選",
+				"description": "將規格與工作項目複製至 Linear，讓團隊能在既有的規劃工具中追蹤工作。",
+				"exampleLabel": "共享的規劃背景",
+				"example": "工作項目將相關規格的背景帶入團隊的規劃流程。"
+			}
+		},
+		"technical": {
+			"title": "連線如何運作",
+			"platform": "SDK 會準備並驗證專案資料，再透過 LangDrift MCP 連線將這些背景傳送至平台。這條連線支援儀表板體驗。",
+			"connectors": "外部整合會延伸這個流程。此處說明的 pull request 自動化需要 GitHub。Obsidian 與 Linear 皆為可選：Obsidian 可用來在熟悉的知識工作空間開始撰寫 PRD 與 Research，Linear 則可將規格與工作項目帶入團隊的規劃流程。每個連接器都有各自的整合途徑；選擇其中一個並不需要啟用其他連接器。"
+		},
+		"closing": {
+			"description": "先建立平台連線，再加入支援團隊工作流程的工具。",
+			"cta": "申請產品展示"
+		}
+	},
+	"ja": {
+		"eyebrow": "連携",
+		"title": "チームの働き方につながる。",
+		"description": "SDK 接続を通じて、製品の背景と証拠を LangDrift に取り込みます。GitHub を接続してプルリクエストの作成を自動化し、PRD や Research は Obsidian で書き始め、仕様やチケットを Linear に複製できます。プラットフォームとの接続を基盤に、追加のツールがチームの選ぶワークフローを広げます。",
+		"project": {
+			"title": "あなたのプロジェクト",
+			"label": "LangDrift SDK",
+			"description": "製品がどのように進化しているかを説明するための背景と記録を準備し、送信します。",
+			"connectionLabel": "LangDrift MCP"
+		},
+		"core": {
+			"title": "LangDrift",
+			"badge": "ダッシュボードに必要",
+			"description": "プロジェクトを接続し、その背景と証拠をダッシュボード、グラフ、レポートに取り込みます。",
+			"supporting": "プロジェクトと LangDrift プラットフォームをつなぐ基本の接続です。"
+		},
+		"tools": {
+			"github": {
+				"title": "GitHub",
+				"badge": "プルリクエストに必要",
+				"description": "定められたテンプレートとレビューに必要な背景を添えて、プルリクエストを自動作成するワークフローを有効にします。",
+				"exampleLabel": "プルリクエストの背景",
+				"example": "変更の概要、関連する仕様、検証メモをプルリクエストのテンプレートにまとめます。"
+			},
+			"obsidian": {
+				"title": "Obsidian",
+				"badge": "任意",
+				"description": "PRD や Research を Obsidian で書き始め、初期の製品思考をチームが普段使う知識のワークスペースに残します。",
+				"exampleLabel": "起点にある製品思考",
+				"example": "PRD や Research のノートは Obsidian で書き始め、LangDrift がレビューに使う製品の背景とつながったまま進められます。"
+			},
+			"linear": {
+				"title": "Linear",
+				"badge": "任意",
+				"description": "仕様やチケットを Linear に複製し、チームが普段使う計画ツールで作業を追えるようにします。",
+				"exampleLabel": "共有する計画の背景",
+				"example": "チケットが、関連する仕様の背景をチームの計画ワークフローに伝えます。"
+			}
+		},
+		"technical": {
+			"title": "接続の仕組み",
+			"platform": "SDK がプロジェクトのデータを準備・検証し、LangDrift MCP 接続を使ってその背景をプラットフォームに送信します。この接続がダッシュボードの体験を支えます。",
+			"connectors": "外部連携はこのワークフローを広げます。ここで説明するプルリクエストの自動化には GitHub が必要です。Obsidian と Linear はどちらも任意です。Obsidian は使い慣れた知識のワークスペースで PRD や Research を書き始めるために使え、Linear は仕様やチケットをチームの計画ワークフローに届けます。各コネクターはそれぞれの方法で連携するため、一つを選んでも、ほかを有効にする必要はありません。"
+		},
+		"closing": {
+			"description": "まずプラットフォームを接続し、チームのワークフローを支えるツールを追加しましょう。",
+			"cta": "デモをリクエスト"
+		}
+	},
+	"vi": {
+		"eyebrow": "Tích hợp",
+		"title": "Kết nối với cách nhóm bạn làm việc.",
+		"description": "Đưa bối cảnh và bằng chứng sản phẩm vào LangDrift qua kết nối SDK. Kết nối GitHub để tự động hóa pull request, bắt đầu PRD và nghiên cứu trong Obsidian, đồng bộ đặc tả và phiếu công việc trong Linear. Kết nối nền tảng là nền móng; các công cụ bổ sung mở rộng quy trình mà nhóm lựa chọn.",
+		"project": {
+			"title": "Dự án của bạn",
+			"label": "LangDrift SDK",
+			"description": "Chuẩn bị và gửi bối cảnh sản phẩm cùng hồ sơ giúp giải thích cách sản phẩm đang phát triển.",
+			"connectionLabel": "LangDrift MCP"
+		},
+		"core": {
+			"title": "LangDrift",
+			"badge": "Bắt buộc cho bảng điều khiển",
+			"description": "Kết nối dự án để đưa bối cảnh và bằng chứng vào bảng điều khiển, đồ thị và báo cáo.",
+			"supporting": "Đây là kết nối cốt lõi giữa dự án và nền tảng LangDrift."
+		},
+		"tools": {
+			"github": {
+				"title": "GitHub",
+				"badge": "Bắt buộc cho pull request",
+				"description": "Cho phép quy trình tự động mở pull request với mẫu đã định và bối cảnh cần thiết để đánh giá.",
+				"exampleLabel": "Bối cảnh pull request",
+				"example": "Tóm tắt thay đổi, đặc tả liên quan và ghi chú xác minh được tổ chức trong mẫu pull request."
+			},
+			"obsidian": {
+				"title": "Obsidian",
+				"badge": "Tùy chọn",
+				"description": "Bắt đầu PRD và nghiên cứu trong Obsidian, giữ những ý tưởng sản phẩm ban đầu trong không gian tri thức nhóm đã quen dùng.",
+				"exampleLabel": "Tư duy sản phẩm từ nguồn",
+				"example": "PRD hoặc ghi chú nghiên cứu có thể bắt đầu trong Obsidian và tiếp tục liên kết với bối cảnh sản phẩm mà LangDrift dùng để đánh giá."
+			},
+			"linear": {
+				"title": "Linear",
+				"badge": "Tùy chọn",
+				"description": "Đồng bộ đặc tả và phiếu công việc trong Linear để nhóm theo dõi công việc bằng công cụ lập kế hoạch quen thuộc.",
+				"exampleLabel": "Bối cảnh lập kế hoạch chung",
+				"example": "Phiếu công việc đưa bối cảnh đặc tả liên quan vào quy trình lập kế hoạch của nhóm."
+			}
+		},
+		"technical": {
+			"title": "Các kết nối hoạt động như thế nào",
+			"platform": "SDK chuẩn bị và xác thực dữ liệu dự án, sau đó dùng kết nối LangDrift MCP để gửi bối cảnh đó đến nền tảng. Kết nối này hỗ trợ trải nghiệm bảng điều khiển.",
+			"connectors": "Các tích hợp bên ngoài mở rộng quy trình đó. GitHub là bắt buộc cho việc tự động hóa pull request được mô tả ở đây. Obsidian và Linear là tùy chọn: Obsidian có thể được dùng để bắt đầu PRD và nghiên cứu trong không gian tri thức quen thuộc, còn Linear đưa đặc tả và phiếu công việc vào quy trình lập kế hoạch. Mỗi bộ kết nối có cách tích hợp riêng; chọn một công cụ không có nghĩa là phải bật các công cụ khác."
+		},
+		"closing": {
+			"description": "Bắt đầu với kết nối nền tảng. Thêm những công cụ hỗ trợ quy trình của nhóm.",
+			"cta": "Yêu cầu bản demo"
+		}
+	}
+}

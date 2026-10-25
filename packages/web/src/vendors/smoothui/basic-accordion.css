@@ -1,0 +1,67 @@
+.smooth-basic-accordion {
+	min-inline-size: 0;
+}
+.smooth-accordion-item + .smooth-accordion-item {
+	border-block-start: 1px solid var(--border);
+}
+.smooth-accordion-heading {
+	font: inherit;
+	margin: 0;
+}
+
+.smooth-accordion-trigger {
+	align-items: center;
+	background: transparent;
+	border: 0;
+	border-radius: 5px;
+	color: var(--foreground);
+	cursor: pointer;
+	display: flex;
+	font: inherit;
+	font-weight: 550;
+	gap: 12px;
+	inline-size: 100%;
+	justify-content: space-between;
+	min-block-size: 44px;
+	padding: 10px 0;
+	text-align: start;
+}
+
+.smooth-accordion-trigger > span:first-child {
+	min-inline-size: 0;
+	overflow-wrap: anywhere;
+}
+.smooth-accordion-trigger:hover {
+	text-decoration: underline;
+	text-underline-offset: 4px;
+}
+.smooth-accordion-trigger:focus-visible {
+	outline: 2px solid var(--foreground);
+	outline-offset: 3px;
+}
+.smooth-accordion-chevron {
+	align-items: center;
+	display: inline-flex;
+	flex: 0 0 auto;
+	transition: transform 200ms ease;
+}
+.smooth-accordion-chevron[data-expanded='true'] {
+	transform: rotate(180deg);
+}
+.smooth-accordion-region {
+	overflow: hidden;
+}
+.smooth-accordion-content {
+	padding-block: 4px 16px;
+	overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.smooth-accordion-region,
+	.smooth-accordion-chevron {
+		transition: none;
+	}
+	.smooth-accordion-chevron {
+		transition: none;
+	}
+}

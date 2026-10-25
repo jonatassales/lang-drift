@@ -35,6 +35,14 @@ case "$command" in
   setup) exec "$commands/setup.sh" "$@" ;;
   doctor) exec "$commands/doctor.sh" "$@" ;;
   cleanup) exec "$commands/cleanup.sh" "$@" ;;
+  check)
+    subcommand=${1:-}
+    [ "$#" -eq 0 ] || shift
+    case "$subcommand" in
+      localization) exec "$commands/check-localization.sh" "$@" ;;
+      *) drift_usage_error "Usage: drift check <localization>" ;;
+    esac
+    ;;
   env)
     subcommand=${1:-}
     [ "$#" -eq 0 ] || shift

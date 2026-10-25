@@ -1,6 +1,11 @@
 packages:
-  # products/<product>/<kind>/<workspace>, e.g. products/vision/apps/web
-  - products/*/*/*
+  - apps/*
   - packages/*
 
 engineStrict: true
+
+# Prebuilt binaries ship as optional dependencies, so these never run their
+# install scripts.
+allowBuilds:
+  "@parcel/watcher": false
+  "@swc/core": false

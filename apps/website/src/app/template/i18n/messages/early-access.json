@@ -1,0 +1,117 @@
+{
+	"en": {
+		"pausedHeading": "We’ll be back soon.",
+		"pausedDescription": "Demo requests are temporarily paused. Please check back soon.",
+		"homeHeading": "See what clearer product decisions could mean for your team.",
+		"pricingHeading": "Join early access.",
+		"description": "Request early access and a 15-day trial when LangDrift launches.",
+		"helper": "Confirmation may take time. Your trial starts when your access is activated.",
+		"emailLabel": "Email address",
+		"placeholder": "you@company.com",
+		"submit": "Join early access",
+		"submitting": "Submitting…",
+		"success": "Your contact is registered. Opening your receipt…",
+		"unavailable": "We couldn’t confirm your request. Please try again.",
+		"rateLimited": "Please wait {seconds} seconds before trying again.",
+		"challengeFailed": "Security verification failed. Please try again.",
+		"errors": {
+			"emailRequired": "Enter your email address.",
+			"emailInvalid": "Enter a valid email address.",
+			"emailTooLong": "Use an email address with 254 characters or fewer."
+		},
+		"demoHeading": "Ask for a Demo",
+		"demoDescription": "Talk to your company state. Understand what changed, why, and the evidence behind product decisions."
+	},
+	"pt-BR": {
+		"pausedHeading": "Voltaremos em breve.",
+		"pausedDescription": "As solicitações de demonstração estão temporariamente pausadas. Volte em breve.",
+		"homeHeading": "Veja o que decisões de produto mais claras podem significar para sua equipe.",
+		"pricingHeading": "Participe do acesso antecipado.",
+		"description": "Solicite acesso antecipado para testar o LangDrift por 15 dias no lançamento.",
+		"helper": "A confirmação pode demorar. Seu teste começa quando seu acesso é ativado.",
+		"emailLabel": "E-mail",
+		"placeholder": "voce@empresa.com",
+		"submit": "Quero acesso antecipado",
+		"submitting": "Enviando…",
+		"success": "Seu contato foi registrado. Abrindo o comprovante…",
+		"unavailable": "Não foi possível confirmar sua solicitação. Tente novamente.",
+		"rateLimited": "Aguarde {seconds} segundos antes de tentar novamente.",
+		"challengeFailed": "A verificação de segurança falhou. Tente novamente.",
+		"errors": {
+			"emailRequired": "Informe seu e-mail.",
+			"emailInvalid": "Informe um e-mail válido.",
+			"emailTooLong": "Use um e-mail com até 254 caracteres."
+		},
+		"demoHeading": "Solicite uma demonstração",
+		"demoDescription": "Converse com o estado da sua empresa. Entenda o que mudou, por quê e quais evidências sustentam as decisões de produto."
+	},
+	"zh-Hant": {
+		"pausedHeading": "我們很快就會回來。",
+		"pausedDescription": "產品展示申請暫時停止。請稍後再回來查看。",
+		"homeHeading": "看看更清晰的產品決策能為您的團隊帶來什麼。",
+		"pricingHeading": "登記搶先體驗。",
+		"description": "申請搶先體驗，在 LangDrift 推出時享有 15 天試用。",
+		"helper": "確認信可能需要一些時間。您的試用將在存取權限啟用時開始。",
+		"emailLabel": "電子郵件地址",
+		"placeholder": "you@company.com",
+		"submit": "登記搶先體驗",
+		"submitting": "正在提交…",
+		"success": "您的聯絡資料已登記。正在開啟確認頁面…",
+		"unavailable": "無法確認您的登記，請再試一次。",
+		"rateLimited": "請等待 {seconds} 秒後再試。",
+		"challengeFailed": "安全驗證失敗。請再試一次。",
+		"errors": {
+			"emailRequired": "請輸入您的電子郵件地址。",
+			"emailInvalid": "請輸入有效的電子郵件地址。",
+			"emailTooLong": "請使用不超過 254 個字元的電子郵件地址。"
+		},
+		"demoHeading": "申請產品展示",
+		"demoDescription": "與您的企業現況對話。了解產品發生了哪些變化、原因，以及支持產品決策的證據。"
+	},
+	"ja": {
+		"pausedHeading": "まもなく再開します。",
+		"pausedDescription": "デモのリクエストは一時停止中です。しばらくしてからもう一度ご確認ください。",
+		"homeHeading": "より明確なプロダクトの意思決定が、チームにもたらす価値を。",
+		"pricingHeading": "先行アクセスに登録。",
+		"description": "先行アクセスを申し込むと、LangDrift の公開時に15日間のトライアルをご利用いただけます。",
+		"helper": "確認メールには時間がかかる場合があります。トライアルは、アクセスが有効になった時点で始まります。",
+		"emailLabel": "メールアドレス",
+		"placeholder": "you@company.com",
+		"submit": "先行アクセスに登録",
+		"submitting": "送信中…",
+		"success": "ご連絡先を登録しました。受付ページを開いています…",
+		"unavailable": "登録を確認できませんでした。もう一度お試しください。",
+		"rateLimited": "{seconds} 秒待ってから、もう一度お試しください。",
+		"challengeFailed": "セキュリティ確認に失敗しました。もう一度お試しください。",
+		"errors": {
+			"emailRequired": "メールアドレスを入力してください。",
+			"emailInvalid": "有効なメールアドレスを入力してください。",
+			"emailTooLong": "メールアドレスは254文字以内で入力してください。"
+		},
+		"demoHeading": "デモをリクエスト",
+		"demoDescription": "企業の現状と対話する。製品で何が変わったのか、その理由と意思決定を支えるエビデンスを理解しましょう。"
+	},
+	"vi": {
+		"pausedHeading": "Chúng tôi sẽ sớm trở lại.",
+		"pausedDescription": "Yêu cầu bản demo đang tạm dừng. Vui lòng quay lại sau.",
+		"homeHeading": "Khám phá ý nghĩa của những quyết định sản phẩm rõ ràng hơn đối với nhóm bạn.",
+		"pricingHeading": "Đăng ký truy cập sớm.",
+		"description": "Yêu cầu truy cập sớm và dùng thử 15 ngày khi LangDrift ra mắt.",
+		"helper": "Việc xác nhận có thể mất thời gian. Thời gian dùng thử bắt đầu khi quyền truy cập được kích hoạt.",
+		"emailLabel": "Địa chỉ email",
+		"placeholder": "ban@congty.com",
+		"submit": "Đăng ký truy cập sớm",
+		"submitting": "Đang gửi…",
+		"success": "Đã ghi nhận thông tin liên hệ. Đang mở xác nhận tiếp nhận…",
+		"unavailable": "Chúng tôi chưa thể xác nhận yêu cầu. Vui lòng thử lại.",
+		"rateLimited": "Vui lòng đợi {seconds} giây trước khi thử lại.",
+		"challengeFailed": "Xác minh bảo mật không thành công. Vui lòng thử lại.",
+		"errors": {
+			"emailRequired": "Nhập địa chỉ email của bạn.",
+			"emailInvalid": "Nhập địa chỉ email hợp lệ.",
+			"emailTooLong": "Dùng địa chỉ email có tối đa 254 ký tự."
+		},
+		"demoHeading": "Yêu cầu bản demo",
+		"demoDescription": "Đặt câu hỏi về tình hình công ty. Hiểu điều gì thay đổi, vì sao và bằng chứng đằng sau các quyết định sản phẩm."
+	}
+}

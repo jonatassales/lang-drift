@@ -1,0 +1,19 @@
+{
+	"lg": {
+		"classification": {
+			"$type": "color",
+			"intentional": {
+				"$value": "#3B82F6"
+			},
+			"aligned": {
+				"$value": "#16A34A"
+			},
+			"unexplained": {
+				"$value": "#DC2626"
+			},
+			"review": {
+				"$value": "#A855F7"
+			}
+		}
+	}
+}

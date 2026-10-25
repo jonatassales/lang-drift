@@ -9,9 +9,9 @@ if [ "${LANGDRIFT_SKIP_EX_BUILD:-0}" = "1" ]; then
 fi
 
 # Build only this package using an existing toolchain; never install Go or tools.
-_ex_package=$(CDPATH= cd -P -- "$(dirname -- "$0")" && pwd)
+_ex_package=$(CDPATH='' cd -P -- "$(dirname -- "$0")" && pwd)
 if ! command -v go >/dev/null 2>&1; then
-  printf '%s\n' 'LangDrift source installation requires Go 1.23+. Install Go separately, then rerun build.sh in this CLI package.' >&2
+  printf '%s\n' 'LangDrift source installation requires Go 1.26+. Install Go separately, then rerun build.sh in this CLI package.' >&2
   exit 1
 fi
 mkdir -p "$_ex_package/dist"

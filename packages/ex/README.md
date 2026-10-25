@@ -4,7 +4,7 @@ This Go module, adopted from the Exphere repository, bootstraps projects and run
 
 ## Build and checks
 
-Use an existing Go 1.23 or newer toolchain on macOS or Linux:
+Use an existing Go 1.26 or newer toolchain on macOS or Linux:
 
 ```sh
 GOTOOLCHAIN=local go build -o dist/ex ./src

@@ -6,7 +6,8 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"ignoreUnknown": true
+		"ignoreUnknown": true,
+		"includes": ["**", "!**/public", "!**/.claude/settings.local.json"]
 	},
 	"plugins": ["./platform/quality/multi-property-object.grit"],
 	"formatter": {
@@ -42,7 +43,27 @@
 							}
 						]
 					}
+				},
+				"useConsistentTypeDefinitions": {
+					"level": "error",
+					"options": {
+						"style": "interface"
+					}
+				},
+				"useFilenamingConvention": {
+					"level": "error",
+					"options": {
+						"filenameCases": ["kebab-case"]
+					}
 				}
+			},
+			"correctness": {
+				"noUnusedImports": "error",
+				"noUnusedVariables": "warn",
+				"useExhaustiveDependencies": "warn"
+			},
+			"suspicious": {
+				"noArrayIndexKey": "warn"
 			}
 		}
 	},
@@ -53,15 +74,37 @@
 					"level": "on",
 					"options": {
 						"groups": [
-							[
-								":NODE:",
-								":BUN:",
-								":URL:",
-								":PACKAGE_WITH_PROTOCOL:",
-								":PACKAGE:"
-							],
+							{
+								"source": [
+									"**",
+									"!:ALIAS:",
+									"!:PATH:",
+									"!@app/**",
+									"!@components/**",
+									"!@data/**",
+									"!@event-testdata/**",
+									"!@factories/**",
+									"!@i18n/**",
+									"!@infra/**",
+									"!@metadata/**",
+									"!@services/**",
+									"!@state"
+								]
+							},
 							":BLANK_LINE:",
-							":ALIAS:",
+							[
+								":ALIAS:",
+								"@app/**",
+								"@components/**",
+								"@data/**",
+								"@event-testdata/**",
+								"@factories/**",
+								"@i18n/**",
+								"@infra/**",
+								"@metadata/**",
+								"@services/**",
+								"@state"
+							],
 							":BLANK_LINE:",
 							":PATH:"
 						]

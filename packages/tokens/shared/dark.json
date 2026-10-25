@@ -3,21 +3,21 @@
 		"lg": {
 			"color": {
 				"$type": "color",
-				"background": { "$value": "{lg.color.gray.950}" },
-				"foreground": { "$value": "{lg.color.gray.50}" },
-				"card": { "$value": "{lg.color.gray.900}" },
+				"background": { "$value": "#0B0B0C" },
+				"foreground": { "$value": "#F5F5F5" },
+				"card": { "$value": "#151517" },
 				"card-foreground": { "$value": "{dark.lg.color.foreground}" },
-				"popover": { "$value": "{lg.color.gray.900}" },
+				"popover": { "$value": "#151517" },
 				"popover-foreground": { "$value": "{dark.lg.color.foreground}" },
-				"primary-foreground": { "$value": "{lg.color.gray.950}" },
+				"primary-foreground": { "$value": "#FFFFFF" },
 				"secondary": { "$value": "{lg.color.gray.800}" },
 				"secondary-foreground": { "$value": "{dark.lg.color.foreground}" },
 				"muted": { "$value": "{lg.color.gray.800}" },
-				"muted-foreground": { "$value": "{lg.color.gray.400}" },
+				"muted-foreground": { "$value": "#A1A1AA" },
 				"accent": { "$value": "{lg.color.gray.800}" },
 				"accent-foreground": { "$value": "{dark.lg.color.foreground}" },
 				"destructive": { "$value": "{dark.lg.status.danger}" },
-				"border": { "$value": "{lg.color.gray.800}" },
+				"border": { "$value": "#2A2A2D" },
 				"input": { "$value": "{dark.lg.color.border}" },
 				"ring": { "$value": "{dark.lg.color.primary}" },
 				"chart-1": { "$value": "{dark.lg.color.primary}" },
@@ -44,6 +44,18 @@
 				"warning": { "$value": "#FBBF24" },
 				"danger": { "$value": "#F87171" },
 				"info": { "$value": "#60A5FA" }
+			},
+			"classification-text": {
+				"$type": "color",
+				"intentional": { "$value": "oklch(70.7% 0.165 254.624)" },
+				"review": { "$value": "oklch(71.4% 0.203 305.504)" },
+				"unexplained": { "$value": "oklch(70.4% 0.191 22.216)" }
+			},
+			"drift": {
+				"$type": "color",
+				"negative": { "$value": "#F87171" },
+				"positive": { "$value": "#4ADE80" },
+				"zero": { "$value": "#FB923C" }
 			}
 		}
 	}

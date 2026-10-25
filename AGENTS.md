@@ -1,21 +1,19 @@
 # LangDrift
 
-AI harness web OS for your agentic journey. LangDrift is a suite of products under one account: each app is independent, with its own URL, and all apps share account, plan and shell.
+AI harness web OS for your agentic journey. LangDrift is a suite of apps under one account: each app is independent, with its own URL, and all apps share account, plan and shell.
 
 ## General rules
 
-`.claude/rules/` holds the rules that always apply, read first in every session. `00-general.rule.md` covers code and tooling, `01-filesystem.rule.md` naming and paths, `02-frontend.rule.md` React and Next.js styling, and `03-tailwind.rule.md` what Tailwind's theme may override.
+`.claude/rules/` holds the rules that always apply, read first in every session. `00-general.rule.md` covers code and tooling, `01-filesystem.rule.md` naming and paths, `02-frontend.rule.md` styling and the CSS exception, `03-tailwind.rule.md` what Tailwind may do, `04-code.rule.md` external input and control flow, `05-react.rule.md` components, `06-nextjs.rule.md` the App Router tree, `07-jotai.rule.md` shared state, `08-localization.rule.md` copy and locales, and `09-seo.rule.md` metadata.
 
 ## Status
 
-Monorepo with two packages, `@langdrift/tokens` and `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and no product workspaces yet. Planned products, each with an empty folder:
-
-- `products/vision`: LangDrift Vision
-- `products/finops`: LangDrift FinOps
+Monorepo with three packages, `@langdrift/tokens`, `@langdrift/web` and `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and one app, `apps/website`: the LangDrift website (see `apps/website/README.md`), copied from the earlier `langdrift` monorepo under spec 0003.
 
 ## Toolchain and commands
 
 - pnpm is the only package manager. `devEngines.packageManager` in the root `package.json` makes other package managers fail, and `engineStrict` in `pnpm-workspace.yaml` enforces the Node range in `engines`.
+- Dependency install scripts run only when `allowBuilds` in `pnpm-workspace.yaml` allows them. Prebuilt binaries ship as optional dependencies, so the entries there are denials; approve a new one only when its build is required.
 - Work that spans the monorepo runs through Turborepo. Do not add root scripts that wrap `turbo run`.
 - A package's scripts call its tool directly (for example `tsc --noEmit`). Turborepo tasks run those scripts by name.
 - Do not add shell or JavaScript wrappers for what Turborepo or pnpm already do.
@@ -26,41 +24,43 @@ Run from the repository root:
 | --- | --- |
 | `pnpm install` | Installs dependencies and the Git hooks, then links the `drift` launcher. Fails under another package manager or an unsupported Node version. |
 | `pnpm turbo run build` | Builds every package that has a `build` script, upstream packages first. |
-| `pnpm turbo run dev --filter=<package-name>` | Starts one app and the packages it depends on. |
+| `pnpm turbo run dev --filter=<package-name>` | Builds the packages an app depends on, then starts the app. |
 | `pnpm turbo run typecheck` | Runs each package's `typecheck` script. |
 | `pnpm turbo run test` | Runs each package's `test` script. |
 | `pnpm turbo run check` | Runs Biome format, lint and import checks on the whole repository. Read-only. |
 | `pnpm turbo run fix` | Same as `check`, writing safe fixes. Review the diff afterwards. |
 
-`biome.json` owns formatting and import order: tabs, lines up to 80 columns, single quotes (double in JSX attributes), no semicolons, and imports grouped as packages, then aliases (`@/`, `#`, `~`), then relative paths, separated by blank lines. An object literal with more than one property puts each property on its own line; `platform/quality/multi-property-object.grit` reports violations.
+`biome.json` owns formatting and import order: tabs, lines up to 80 columns, single quotes (double in JSX attributes), no semicolons, and imports grouped as packages, then aliases (`@/`, `#`, `~` and the website's `@app/*`, `@components/*`, `@i18n/*`, `@state`, …), then relative paths, separated by blank lines. An object literal with more than one property puts each property on its own line; `platform/quality/multi-property-object.grit` reports violations.
 
 `check` and `fix` are root tasks with caching off on purpose: their inputs span every package, which a root task's cache key does not reliably cover, and Biome is fast enough without it.
 
 ## Layout
 
-- `products/<product>/<kind>/<workspace>/`: a product's workspaces, grouped by kind. Apps go in `apps/`; another kind, such as microservices, gets its own folder when its first workspace appears. `pnpm-workspace.yaml` picks up any kind through `products/*/*/*`.
-- `packages/<capability>/`: shared across products, never inside one.
-- Packages: `tokens` and `ex` exist; `ui`, `shell`, `account`, `runtime` and `contracts` are planned.
+- `apps/<app>/`: one deployable app each, with its own URL. `pnpm-workspace.yaml` picks them up through `apps/*`.
+- `packages/<capability>/`: shared across apps, never inside one.
+- Packages: `tokens`, `web` and `ex` exist; `shell`, `account`, `runtime` and `contracts` are planned.
 - `packages/ex` is Go: Turborepo runs its `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds it (no Go toolchain required for frontend work).
-- A package takes a product name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
+- A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
 - Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
+- `turbo.json` declares the environment each task may see: Turborepo runs in strict mode, so a variable reaches a task only through `globalEnv`, a task's `env` or the pass-through lists. `apps/website/README.md` holds the website's variable contract, and its `.env.development` the local defaults; `CRYPTO_SECRET` is pass-through only and never committed.
 - `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, `quality/` the lint-staged config and the Biome plugin, `versioning/` the commitlint config and the Git hooks (`.husky/`).
 
 ## Platform CLI
 
-`platform/cli/drift` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `env setup|validate` and `git setup|doctor|pre-commit|commit-msg|lint-history`.
+`platform/cli/drift` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `check localization`, `env setup|validate` and `git setup|doctor|pre-commit|commit-msg|lint-history`.
 
 When the shell resolves `drift` to another program (a link from an older checkout, say), `drift setup` says which one and how to fix `PATH`.
 
 ## Design and tokens
 
-- `@langdrift/tokens` builds the tokens with Style Dictionary. Each product's app imports one self-contained stylesheet: `@langdrift/tokens/vision.css` or `@langdrift/tokens/finops.css`.
+- `@langdrift/tokens` builds the tokens with Style Dictionary. Each app imports one self-contained stylesheet built from the shared tokens and its app theme; today the only one is `@langdrift/tokens/website.css`.
+- Purple (primary) surfaces such as buttons carry `primary-foreground` text, which is white in both color schemes.
 - Components use roles, never a foundation or a brand color directly. Roles take shadcn's names (`background`, `foreground`, `primary`, `muted-foreground`, …) because the web apps use SmoothUI and shadcn components.
-- Prefixes: shared tokens are `--lg-*`; product themes are `--viz-*` (Vision) and `--fp-*` (FinOps). Each product theme lives in `packages/tokens/themes/` and today defines only primary and primary hover, which `--lg-color-primary` points to.
-- Status colors (`--lg-status-*`) are fixed across products and never inherit a brand color.
-- Light is declared in `:root` and dark in `.dark`. Apps render with the `.dark` class, so dark is the default.
-- Each stylesheet also bridges the roles to shadcn's unprefixed variables and sets Tailwind's theme. The native color palette is reset, so only roles and status colors exist as Tailwind colors. See ADR 0001 and `03-tailwind.rule.md`.
+- Prefixes: shared tokens are `--lg-*`; the website's app theme is `--site-*`. Each app theme lives in `packages/tokens/themes/` and defines only primary and primary hover (the Exphere purple for the website), which `--lg-color-primary` points to.
+- Status colors (`--lg-status-*`), classification colors (`--lg-classification-*`), classification text tones (`--lg-classification-text-*`) and drift colors (`--lg-drift-*`) are fixed across apps and never inherit a brand color. See ADR 0003.
+- Light is declared in `:root` and dark in `.dark`. Apps render with the `.dark` class, so dark is the default, and the stylesheet points Tailwind's `dark:` variant at that class.
+- Each stylesheet also bridges the roles to shadcn's unprefixed variables and sets Tailwind's theme. The native color palette is reset, so only roles and the fixed color groups exist as Tailwind colors. See ADR 0001 and `03-tailwind.rule.md`.
 
 ## Navigation and session
 
@@ -75,7 +75,7 @@ Workflow: `research` when a question needs primary sources, then `grill-with-doc
 - `.agents/workflow/human-in-the-loop.policy.md` sets where the owner takes part, which stages run on their own and what gates them. It belongs to this project and team; the skills read it instead of assuming.
 - A direct request to build or change application code enters the workflow: start with the `grilling` skill, plus `domain-modeling` when terms or decisions settle, instead of writing code.
 - `.claude/hooks/guard-implement-effort.sh` blocks `implement` for the current session until `.agents/prompts/llm-effort-analyzer.prompt.md` has recorded its result at `.agents/workflow/.effort-log/<session_id>.md`.
-- The commit-msg hook rejects a commit that changes `products/` or `packages/` without a `Ticket: <NNNN>` trailer naming an existing ticket.
+- The commit-msg hook rejects a commit that changes `apps/` or `packages/` without a `Ticket: <NNNN>` trailer naming an existing ticket.
 
 ## Agent skills
 
@@ -113,14 +113,14 @@ Single context. The glossary is the `## Glossary` section of `.agents/context.md
 
 ## Continuous integration
 
-`.github/workflows/pull-request.yml` runs on every pull request into `main`, one job per concern:
+`.github/workflows/pull-request.yml` runs on every pull request into `main`, one job per concern. The workflow builds the website against safe values (early access paused, sign-up disabled), so CI never reaches a live service:
 
 | Job | Runs |
 | --- | --- |
 | Build | `pnpm turbo run build` |
 | Check | `pnpm turbo run check`, then `pnpm turbo run typecheck` |
 | Test | `pnpm turbo run test` |
-| Harness | `drift doctor --ci`, ShellCheck on the POSIX scripts, actionlint on the workflows |
+| Harness | `drift doctor --ci`, `drift check localization`, ShellCheck on the POSIX scripts, actionlint on the workflows |
 | Guardrails | `drift git lint-history` over the pull request's commits |
 
 Actions, container images and downloaded tools are pinned to full commit SHAs, digests or checksums, with the version in a comment. The workflow tokens are read-only.
@@ -139,7 +139,7 @@ Actions, container images and downloaded tools are pinned to full commit SHAs, d
 
 ## Open
 
-- Domain layout: subdomains under one domain, or separate domains per product.
+- Domain layout: subdomains under one domain, or separate domains per app.
 
 <!-- BEGIN:turborepo-agent-rules -->
 
