@@ -15,6 +15,8 @@
 
 - [ ] The raster icons carry the new mark instead of the orange swoosh: `favicon.ico` (16 to 256), `icon.png`, `apple-icon.png`, and `public/metadata/icon-192.png`, `icon-512.png` and `logo-512.png`. The mark is white (#F5F5F5) on the dark background (#0B0B0C), the dark scheme's foreground and background, so it reads on light and dark browser tabs; the Apple icon is full-bleed because iOS rounds it.
 
+- [ ] The social share images (`opengraph-image.png` and `twitter-image.png`, 1200×630) show the drift mark and wordmark, the headline "Agentic Platform", the black hole sun with its purple corona, and the four products, in the dark scheme's tokens.
+
 ### Icons
 
 - [ ] `packages/web/src/ui/icons/platform/`: `VisionIcon`, `FinopsIcon`, `MicroruntimesIcon` and `AiVoiceIcon`, 24-unit stroke icons in `currentColor` with a `className` prop, exported as `@langdrift/web/ui/icons/platform`.
