@@ -22,6 +22,7 @@
 		"./ui/info-cards": "./src/ui/info-cards/index.ts",
 		"./ui/icons/server": "./src/ui/icons/server.ts",
 		"./ui/icons/platform": "./src/ui/icons/platform/index.ts",
+		"./ui/icons/technology": "./src/ui/icons/technology/index.ts",
 		"./ui/language-switcher": "./src/ui/language-switcher/index.ts",
 		"./ui/product-vision-curve": "./src/ui/product-vision-curve/index.ts",
 		"./ui/rotating-text": "./src/ui/rotating-text/index.ts",
