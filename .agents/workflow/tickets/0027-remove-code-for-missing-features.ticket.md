@@ -2,7 +2,7 @@
 
 **Spec:** .agents/workflow/specs/0003-langdrift-website-on-apps.spec.md
 
-**What to build:** nothing in the repository supports a feature, component, integration or service that tao does not have. The website copy brought code for a confirmation email the website no longer sends, a toast, the old header, pricing, account and comment components, a Better Stack integration and unused formatters and dependencies; it all goes, and the documents describe only what exists. The website renders and behaves exactly as before.
+**What to build:** nothing in the repository supports a feature, component, integration or service that tao does not have. The website copy brought code for a confirmation email the website no longer sends, a toast, the old header, pricing, account and comment components and unused dependencies; it all goes, and the documents describe only what exists. The website renders and behaves exactly as before. The owner keeps the `.gitkeep` placeholders and the `.fmt.ts` formatters.
 
 **Blocked by:** none.
 
@@ -35,13 +35,13 @@ Each file is on the ADR 0003 exception list, which lets it shrink. Only rules wh
 
 ### Placeholders for missing integrations
 
-- [x] `src/infra/better-stack/.gitkeep` is deleted, with the `@infra/*` alias in `tsconfig.paths.json` and both `@infra/**` entries in the import groups of `biome.json`.
+- [x] `src/infra/better-stack/.gitkeep` stays, with the `@infra/*` alias and its Biome import groups: the owner keeps the `.gitkeep` placeholders.
 - [x] The empty `src/app/state/state.data.ts` is deleted; the state barrel stays `src/app/lib/state/index.ts`.
 
-### Unused formatters and dependencies
+### Formatters and unused dependencies
 
-- [x] The four files in `src/app/template/formatters/` are deleted; `cn` comes from `@langdrift/web/utilities`.
-- [x] `axios`, `tw-animate-css`, `clsx` and `tailwind-merge` leave the website's `package.json` and the lockfile; `packages/web` keeps its own `clsx` and `tailwind-merge`.
+- [x] The four files in `src/app/template/formatters/` stay: the owner keeps the `.fmt.ts` formatters.
+- [x] `axios` and `tw-animate-css` leave the website's `package.json` and the lockfile; `clsx` and `tailwind-merge` stay, because `cn.fmt.ts` imports them.
 
 ### Documents
 
@@ -62,4 +62,4 @@ Agents do not edit `.env` files.
 
 Parity was proved by comparing every computed property, elements and `::before`/`::after`, with main's CSS served and with the pruned CSS: `/en/` at 1280 and 375 px in dark and at 1280 px in light, `/en/privacy/` and `/en/early-access-sent/` at 1280 px. Nothing differed outside dev-injected scripts. The other locales render the same markup, and no removed selector names a theme or locale.
 
-Intended survivors: the renamed test still stubs `RESEND_*` to prove the route needs none, and `earlyAccessEmailSchema` validates the form's email field. The example tree in `06-nextjs.rule.md` still shows `formatters/ e.g. cn.fmt.ts` and `infra/`; rules change only when the owner asks.
+Intended survivors: the renamed test still stubs `RESEND_*` to prove the route needs none, and `earlyAccessEmailSchema` validates the form's email field.
