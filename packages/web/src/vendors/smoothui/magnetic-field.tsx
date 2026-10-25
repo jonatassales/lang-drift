@@ -54,6 +54,8 @@ const MAX_DELTA_SECONDS = 0.05
 const ORBIT_RADIAL_FACTOR = 0.2
 const ORBIT_TANGENTIAL_FACTOR = 0.4
 const MAGNETIC_SELECTOR = '[data-magnetic]'
+// Below this offset and speed a participant counts as at rest.
+const REST_EPSILON = 0.01
 
 const clamp = (value: number, min: number, max: number) =>
 	Math.min(max, Math.max(min, value))
@@ -138,6 +140,7 @@ export function MagneticField(props: MagneticFieldProps) {
 	const nodeMapRef = useRef<Map<string, HTMLElement>>(new Map())
 	const elementsRef = useRef<Map<HTMLElement, ParticipantState>>(new Map())
 	const rafRef = useRef<number | null>(null)
+	const wakeRef = useRef<(() => void) | null>(null)
 	const lastFrameRef = useRef<number | null>(null)
 
 	useEffect(() => {
@@ -279,6 +282,7 @@ export function MagneticField(props: MagneticFieldProps) {
 				x: event.clientX - rect.left,
 				y: event.clientY - rect.top,
 			}
+			wakeRef.current?.()
 		}
 		const handlePointerLeave = () => {
 			pointerRef.current = null
@@ -357,6 +361,36 @@ export function MagneticField(props: MagneticFieldProps) {
 			state.rotate.set(currentRotate + state.vr * dt)
 		}
 
+		const isAtRest = (state: ParticipantState) =>
+			Math.abs(state.x.get()) < REST_EPSILON &&
+			Math.abs(state.y.get()) < REST_EPSILON &&
+			Math.abs(state.rotate.get()) < REST_EPSILON &&
+			Math.abs(state.vx) < REST_EPSILON &&
+			Math.abs(state.vy) < REST_EPSILON &&
+			Math.abs(state.vr) < REST_EPSILON
+
+		const isSettled = () => {
+			if (pointerRef.current) return false
+			const states = [
+				...participantsRef.current.values(),
+				...elementsRef.current.values(),
+			]
+
+			return states.every(isAtRest)
+		}
+
+		const settle = () => {
+			for (const state of participantsRef.current.values()) {
+				resetParticipant(state)
+			}
+			for (const [element, state] of elementsRef.current) {
+				resetParticipant(state)
+				element.style.transform = 'translate3d(0px, 0px, 0) rotate(0deg)'
+			}
+			rafRef.current = null
+			lastFrameRef.current = null
+		}
+
 		const step = (time: number) => {
 			const last = lastFrameRef.current ?? time
 			const dt = clamp((time - last) / 1000, 0, MAX_DELTA_SECONDS)
@@ -373,14 +407,28 @@ export function MagneticField(props: MagneticFieldProps) {
 				element.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${angle}deg)`
 			}
 
+			if (isSettled()) {
+				settle()
+
+				return
+			}
 			rafRef.current = requestAnimationFrame(step)
 		}
 
-		rafRef.current = requestAnimationFrame(step)
+		// The loop sleeps once every participant is back at rest with no
+		// pointer over the field, and the next pointer move wakes it.
+		const wake = () => {
+			if (rafRef.current !== null) return
+			rafRef.current = requestAnimationFrame(step)
+		}
+		wakeRef.current = wake
+		wake()
 
 		return () => {
-			if (rafRef.current) cancelAnimationFrame(rafRef.current)
+			if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
+			rafRef.current = null
 			lastFrameRef.current = null
+			wakeRef.current = null
 		}
 	}, [damping, isEffectDisabled, mode, radius, rotate, stiffness, strength])
 
