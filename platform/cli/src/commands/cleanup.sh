@@ -6,5 +6,17 @@ drift_loader_start "Cleaning workspace"
 drift_queue_scene "$DRIFT_ICON_CLEANUP" "$DRIFT_CLEANUP_PHRASE"
 
 cd "$DRIFT_PROJECT_ROOT"
-find . -type d \( -name node_modules -o -name .next -o -name .turbo -o -name dist -o -name coverage \) -prune -exec rm -rf {} + 2>/dev/null || true
-drift_print_success "Generated workspace state removed."
+removable=$(mktemp)
+trap 'rm -f "$removable"; drift_flush_results' EXIT
+
+# Generated state first, so each .gitkeep is judged on what remains beside it.
+drift_find_generated_state >"$removable"
+drift_remove_paths "$removable"
+drift_find_redundant_gitkeeps >"$removable"
+drift_remove_paths "$removable"
+
+if [ "$drift_removed_count" -eq 0 ]; then
+  drift_print_info "Nothing to remove."
+else
+  drift_print_success "Generated workspace state removed."
+fi

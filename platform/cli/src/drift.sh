@@ -35,6 +35,7 @@ case "$command" in
   setup) exec "$commands/setup.sh" "$@" ;;
   doctor) exec "$commands/doctor.sh" "$@" ;;
   cleanup) exec "$commands/cleanup.sh" "$@" ;;
+  reset) exec "$commands/reset.sh" "$@" ;;
   check)
     subcommand=${1:-}
     [ "$#" -eq 0 ] || shift

@@ -35,6 +35,39 @@ drift_find_env_templates() {
     done
 }
 
+# What the toolchain regenerates, matched by name at any depth: dependencies,
+# caches, build output and the files tsc, Next.js, macOS and pnpm write.
+drift_find_generated_state() {
+  find . -path ./.git -prune -o \
+    \( -type d \( -name node_modules -o -name .pnpm-store -o -name .turbo -o -name .next -o -name dist -o -name coverage \) \
+    -o -type f \( -name '*.tsbuildinfo' -o -name next-env.d.ts -o -name .DS_Store -o -name '*.log' \) \) \
+    -prune -print
+}
+
+# A .gitkeep only holds an otherwise empty folder; once the folder has anything
+# else, it is redundant.
+drift_find_redundant_gitkeeps() {
+  find . -path ./.git -prune -o -type f -name .gitkeep -print |
+    while IFS= read -r gitkeep; do
+      if ls -A "${gitkeep%/*}" | grep -q -v -x .gitkeep; then
+        printf '%s\n' "$gitkeep"
+      fi
+    done
+}
+
+# drift_remove_paths <file>: removes each path the file lists, one per line,
+# and reports it. Read from a file rather than a pipe, so the loop runs in this
+# shell and drift_removed_count survives it.
+drift_removed_count=0
+drift_remove_paths() {
+  while IFS= read -r removed_path; do
+    [ -n "$removed_path" ] || continue
+    rm -rf "$removed_path"
+    drift_removed_count=$((drift_removed_count + 1))
+    drift_print_success "Removed ${removed_path#./}"
+  done <"$1"
+}
+
 drift_path_has() {
   case ":${PATH:-}:" in
     *:"$1":*) return 0 ;;

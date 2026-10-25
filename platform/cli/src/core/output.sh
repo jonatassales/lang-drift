@@ -38,6 +38,7 @@ DRIFT_ICON_ENV='⚙️'
 DRIFT_DOCTOR_PHRASE='let me check your spells...'
 DRIFT_SETUP_PHRASE='exploring...'
 DRIFT_CLEANUP_PHRASE='cleaning the house...'
+DRIFT_RESET_PHRASE='starting over...'
 DRIFT_ENV_PHRASE='organizing your vars...'
 
 drift_result_file=
