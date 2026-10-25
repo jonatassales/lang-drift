@@ -7,7 +7,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { microruntimesMessages } from '@i18n/messages/index'
 import { selectedLifecycleStageAtom } from '@state'
 
-import { LifecycleDemo } from './lifecycle-demo'
+import { LifecycleSteps } from './lifecycle-steps'
 import { StageEvidence } from './stage-evidence'
 
 afterEach(cleanup)
@@ -17,7 +17,7 @@ function mount() {
 	const copy = microruntimesMessages.en
 	render(
 		<Provider store={store}>
-			<LifecycleDemo copy={copy.lifecycle} locale="en" />
+			<LifecycleSteps copy={copy.lifecycle} />
 			<StageEvidence copy={copy.evidence} stageLabels={copy.lifecycle.stages} />
 		</Provider>,
 	)
@@ -25,7 +25,7 @@ function mount() {
 	return store
 }
 
-describe('Microruntimes lifecycle demo', () => {
+describe('Microruntimes lifecycle steps', () => {
 	it('moves the current step and the evidence record together', () => {
 		const store = mount()
 		const prepare = screen.getByRole('button', { name: /Prepare/ })
@@ -36,14 +36,5 @@ describe('Microruntimes lifecycle demo', () => {
 		expect(
 			screen.getByText('Namespace and quota recorded before creation'),
 		).toBeTruthy()
-	})
-
-	it('shows the requested and the observed state of the last run apart', () => {
-		mount()
-		expect(screen.getByText('Stopped')).toBeTruthy()
-		expect(screen.getByText('7 of 7 owned resources removed')).toBeTruthy()
-		expect(screen.getByText('3 components')).toBeTruthy()
-		expect(screen.getByText('1,500m')).toBeTruthy()
-		expect(screen.getByText('2,048 MiB')).toBeTruthy()
 	})
 })

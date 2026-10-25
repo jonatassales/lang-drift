@@ -2,34 +2,103 @@
 	"en": {
 		"skip": "Skip to the lifecycle",
 		"hero": {
-			"titleStart": "What is running right now, and ",
-			"titleHighlight": "who cleans it up?",
-			"titleEnd": "",
-			"lead": "A microruntime is a bounded execution environment composed around the components you already have. You choose the components and their limits; LangDrift prepares, runs, inspects and cleans up, and keeps the evidence. Your source stays where it is.",
-			"primaryCta": "See the lifecycle",
-			"secondaryCta": "Who owns what",
-			"summary": "A runtime named checkout-preview with three components, 1,500 millicores and 2,048 MiB. Its last execution ran from configure to clean up: the requested state is stopped and the cleanup is confirmed. Six lifecycle steps, configure, validate, prepare, execute, inspect and clean up, can be selected to read what each step does and the evidence it leaves."
+			"title": "Microruntimes",
+			"summary": "A simulated planning session for the ticket 0031-TICKET-early-access-runtime, \"Run the early-access sign-up use case as a microruntime\". The typed command, ex agent plan, is the intended entry point; the console cites three project episodes and suggests the model operator/allowed-model at medium effort, a recommendation the team authorizes. It reads the ticket's PRD, design doc, spec and guardrail, takes the envelope the team set, 2,000 millicores and 3,072 MiB, and resolves five components from the spec: a Go API, a Node.js API, a NATS broker, a Redis cache and a Next.js app, 1,450 millicores and 2,304 MiB in total. GPU and disk are not runtime.md fields and no price source is configured, so the figures stay in units. The plan ends as a runtime.md draft pending the team's authorization. Nothing is built, started or paid for; the retrieval and the suggestion describe the console's proposed planning flow."
 		},
-		"lifecycle": {
-			"label": "checkout-preview · revision 3 · exec-41b2",
+		"session": {
 			"terminal": {
 				"title": "ex — shop",
-				"label": "Terminal: an ex session",
+				"label": "Terminal: a simulated ex planning session",
 				"lines": {
-					"doctor": "ex doctor",
-					"tools": "docker 27.3 · kind 0.24 · kubectl 1.31 · terraform 1.9",
-					"run": "ex agent run",
-					"sync": "# one connected agent supervises the project's runtimes",
-					"runtime": "checkout-preview · revision 3 · exec-41b2",
-					"configure": "✓ configure   runtime.md, revision 3",
-					"validate": "✓ validate    3 components · 1500m · 2048 MiB",
-					"prepare": "✓ prepare     storefront, checkout, payments-stub",
-					"execute": "✓ execute     claim held, 3 of 3 ready",
-					"inspect": "✓ inspect     observed matches requested",
-					"cleanup": "✓ clean up    7 of 7 owned resources removed",
-					"evidence": "evidence      .audits/evidence/runs/exec-41b2/"
+					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
+					"scope": "# plan only · nothing is built, started or paid for in this step",
+					"memory": "console › RAG over project episodes · a model and effort for this ticket",
+					"episodes": "console › 3 episodes cited · none with measured resources",
+					"suggest": "✓ suggests   operator/allowed-model · effort medium",
+					"reads": "reads      0002-PRD · 0005-DD · 0011-SPEC · 0031-TICKET",
+					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
+					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
+					"resolve": "console › resolving 5 components named in the spec · paths, images, ports",
+					"go": "✓ services/signup-api   Go · api        250m · 256 MiB",
+					"node": "✓ services/notify-api   Node.js · api   300m · 512 MiB",
+					"nats": "✓ platform/nats         NATS · broker   200m · 256 MiB",
+					"redis": "✓ platform/redis        Redis · cache   200m · 256 MiB",
+					"next": "✓ apps/signup           Next.js · web   500m · 1024 MiB",
+					"size": "✓ size       1450m of 2000m · 2304 of 3072 MiB · 5 one-replica Deployments · proposed shares",
+					"limits": "limits     gpu and disk are not runtime.md fields · none requested",
+					"price": "estimate   no price source configured · figures stay in millicores and MiB",
+					"draft": "✓ plan       runtime.md draft, revision 1 · proposed to the console",
+					"handoff": "# next: once the team authorizes, ex agent run applies the recorded intent"
 				}
 			},
+			"card": {
+				"ticket": "Ticket",
+				"status": "ready-for-agent",
+				"title": "Run the early-access sign-up use case as a microruntime",
+				"readMark": "Read",
+				"notSet": "Not set yet",
+				"resolving": "Resolving",
+				"artifacts": {
+					"prd": "PRD",
+					"designDoc": "Design doc",
+					"spec": "Spec",
+					"guardrail": "Guardrail"
+				},
+				"guardrailNote": "review rule · no automatic enforcement",
+				"suggestedModel": "Suggested model",
+				"suggestedEffort": "Suggested effort",
+				"efforts": {
+					"low": "low",
+					"medium": "medium",
+					"high": "high"
+				},
+				"kinds": {
+					"api": "api",
+					"broker": "broker",
+					"cache": "cache",
+					"web": "web"
+				},
+				"recommendationNote": "recommendation · the team authorizes",
+				"components": "Components",
+				"columns": {
+					"cpu": "CPU",
+					"memory": "Memory"
+				},
+				"resolvedProgress": "{resolved} of {total} resolved · {cpu}m · {memory} MiB",
+				"componentsTotal": "{count, plural, one {# component} other {# components}} · {cpu}m · {memory} MiB",
+				"figures": "{cpu}m · {memory} MiB",
+				"hardware": {
+					"resource": "Resource",
+					"bounded": "Bounded",
+					"suggested": "Suggested",
+					"cpu": "CPU",
+					"memory": "Memory",
+					"gpu": "GPU",
+					"disk": "Disk"
+				},
+				"notRuntimeField": "not a runtime.md field",
+				"none": "none",
+				"priceBasis": "price basis: none configured · units only",
+				"report": {
+					"bounded": "Bounded",
+					"suggested": "Suggested",
+					"suggestedResource": "Suggested resource",
+					"final": "Final"
+				},
+				"deployments": "{count, plural, one {# one-replica Deployment} other {# one-replica Deployments}}",
+				"pendingAuthorization": "pending team authorization",
+				"finalDetail": "{cpu}m · {memory} MiB · {pending}",
+				"planPath": "runtime.md draft · revision {revision} · proposed to the console",
+				"control": {
+					"pause": "Pause",
+					"resume": "Resume",
+					"replay": "Replay"
+				},
+				"cpuValue": "{value}m",
+				"memoryValue": "{value} MiB"
+			}
+		},
+		"lifecycle": {
 			"stepperLabel": "Lifecycle steps",
 			"stages": {
 				"configure": {
@@ -63,21 +132,6 @@
 					"leaves": "Removed and remaining resources, with a confirmation or an unknown outcome."
 				}
 			},
-			"summary": {
-				"components": "Components",
-				"cpu": "CPU",
-				"memory": "Memory",
-				"desired": "Requested",
-				"observed": "Observed"
-			},
-			"componentsValue": "{count, plural, one {# component} other {# components}}",
-			"cpuValue": "{value}m",
-			"memoryValue": "{value} MiB",
-			"states": {
-				"stopped": "Stopped",
-				"cleanedUp": "Cleaned up"
-			},
-			"observedDetail": "7 of 7 owned resources removed",
 			"whatItDoes": "What it does",
 			"evidenceItLeaves": "Evidence it leaves"
 		},
@@ -326,34 +380,103 @@
 	"pt-BR": {
 		"skip": "Pular para o ciclo de vida",
 		"hero": {
-			"titleStart": "O que está rodando agora, e ",
-			"titleHighlight": "quem limpa depois?",
-			"titleEnd": "",
-			"lead": "Um microruntime é um ambiente de execução delimitado, composto em torno dos componentes que você já tem. Você escolhe os componentes e seus limites; o LangDrift prepara, executa, inspeciona e limpa, e guarda a evidência. Seu código-fonte fica onde está.",
-			"primaryCta": "Ver o ciclo de vida",
-			"secondaryCta": "Quem é dono do quê",
-			"summary": "Um runtime chamado checkout-preview, com três componentes, 1.500 milicores e 2.048 MiB. Sua última execução foi da configuração à limpeza: o estado solicitado é parado e a limpeza está confirmada. Seis etapas do ciclo de vida, configurar, validar, preparar, executar, inspecionar e limpar, podem ser selecionadas para ler o que cada uma faz e a evidência que deixa."
+			"title": "Microruntimes",
+			"summary": "Uma sessão simulada de planejamento para o ticket 0031-TICKET-early-access-runtime, \"Rodar o caso de uso de inscrição no early access como um microruntime\". O comando digitado, ex agent plan, é o ponto de entrada pretendido; o console cita três episódios do projeto e sugere o modelo operator/allowed-model com effort medium, uma recomendação que o time autoriza. Ele lê o PRD, o design doc, a spec e o guardrail do ticket, toma o envelope definido pelo time, 2.000 milicores e 3.072 MiB, e resolve cinco componentes a partir da spec: uma API em Go, uma API em Node.js, um broker NATS, um cache Redis e um app Next.js, 1.450 milicores e 2.304 MiB no total. GPU e disco não são campos de runtime.md e nenhuma base de preço está configurada, então os valores ficam em unidades. O plano termina como um rascunho de runtime.md aguardando a autorização do time. Nada é construído, iniciado ou pago; a recuperação e a sugestão descrevem o fluxo de planejamento proposto do console."
 		},
-		"lifecycle": {
-			"label": "checkout-preview · revisão 3 · exec-41b2",
+		"session": {
 			"terminal": {
 				"title": "ex — shop",
-				"label": "Terminal: uma sessão do ex",
+				"label": "Terminal: uma sessão simulada de planejamento do ex",
 				"lines": {
-					"doctor": "ex doctor",
-					"tools": "docker 27.3 · kind 0.24 · kubectl 1.31 · terraform 1.9",
-					"run": "ex agent run",
-					"sync": "# um agente conectado supervisiona os runtimes do projeto",
-					"runtime": "checkout-preview · revision 3 · exec-41b2",
-					"configure": "✓ configure   runtime.md, revision 3",
-					"validate": "✓ validate    3 components · 1500m · 2048 MiB",
-					"prepare": "✓ prepare     storefront, checkout, payments-stub",
-					"execute": "✓ execute     claim held, 3 of 3 ready",
-					"inspect": "✓ inspect     observed matches requested",
-					"cleanup": "✓ clean up    7 of 7 owned resources removed",
-					"evidence": "evidence      .audits/evidence/runs/exec-41b2/"
+					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
+					"scope": "# só planejamento · nada é construído, iniciado ou pago nesta etapa",
+					"memory": "console › RAG over project episodes · a model and effort for this ticket",
+					"episodes": "console › 3 episodes cited · none with measured resources",
+					"suggest": "✓ suggests   operator/allowed-model · effort medium",
+					"reads": "reads      0002-PRD · 0005-DD · 0011-SPEC · 0031-TICKET",
+					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
+					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
+					"resolve": "console › resolving 5 components named in the spec · paths, images, ports",
+					"go": "✓ services/signup-api   Go · api        250m · 256 MiB",
+					"node": "✓ services/notify-api   Node.js · api   300m · 512 MiB",
+					"nats": "✓ platform/nats         NATS · broker   200m · 256 MiB",
+					"redis": "✓ platform/redis        Redis · cache   200m · 256 MiB",
+					"next": "✓ apps/signup           Next.js · web   500m · 1024 MiB",
+					"size": "✓ size       1450m of 2000m · 2304 of 3072 MiB · 5 one-replica Deployments · proposed shares",
+					"limits": "limits     gpu and disk are not runtime.md fields · none requested",
+					"price": "estimate   no price source configured · figures stay in millicores and MiB",
+					"draft": "✓ plan       runtime.md draft, revision 1 · proposed to the console",
+					"handoff": "# próximo: quando o time autorizar, ex agent run aplica a intenção registrada"
 				}
 			},
+			"card": {
+				"ticket": "Ticket",
+				"status": "ready-for-agent",
+				"title": "Rodar o caso de uso de inscrição no early access como um microruntime",
+				"readMark": "Lido",
+				"notSet": "Ainda não definido",
+				"resolving": "Resolvendo",
+				"artifacts": {
+					"prd": "PRD",
+					"designDoc": "Design doc",
+					"spec": "Spec",
+					"guardrail": "Guardrail"
+				},
+				"guardrailNote": "regra de revisão · sem aplicação automática",
+				"suggestedModel": "Modelo sugerido",
+				"suggestedEffort": "Effort sugerido",
+				"efforts": {
+					"low": "low",
+					"medium": "medium",
+					"high": "high"
+				},
+				"kinds": {
+					"api": "api",
+					"broker": "broker",
+					"cache": "cache",
+					"web": "web"
+				},
+				"recommendationNote": "recomendação · o time autoriza",
+				"components": "Componentes",
+				"columns": {
+					"cpu": "CPU",
+					"memory": "Memória"
+				},
+				"resolvedProgress": "{resolved} de {total} resolvidos · {cpu}m · {memory} MiB",
+				"componentsTotal": "{count, plural, one {# componente} other {# componentes}} · {cpu}m · {memory} MiB",
+				"figures": "{cpu}m · {memory} MiB",
+				"hardware": {
+					"resource": "Recurso",
+					"bounded": "Delimitado",
+					"suggested": "Sugerido",
+					"cpu": "CPU",
+					"memory": "Memória",
+					"gpu": "GPU",
+					"disk": "Disco"
+				},
+				"notRuntimeField": "não é um campo de runtime.md",
+				"none": "nenhum",
+				"priceBasis": "base de preço: nenhuma configurada · só unidades",
+				"report": {
+					"bounded": "Delimitado",
+					"suggested": "Sugerido",
+					"suggestedResource": "Recurso sugerido",
+					"final": "Final"
+				},
+				"deployments": "{count, plural, one {# Deployment de uma réplica} other {# Deployments de uma réplica}}",
+				"pendingAuthorization": "aguardando autorização do time",
+				"finalDetail": "{cpu}m · {memory} MiB · {pending}",
+				"planPath": "rascunho de runtime.md · revisão {revision} · proposto ao console",
+				"control": {
+					"pause": "Pausar",
+					"resume": "Retomar",
+					"replay": "Repetir"
+				},
+				"cpuValue": "{value}m",
+				"memoryValue": "{value} MiB"
+			}
+		},
+		"lifecycle": {
 			"stepperLabel": "Etapas do ciclo de vida",
 			"stages": {
 				"configure": {
@@ -387,21 +510,6 @@
 					"leaves": "Os recursos removidos e os restantes, com uma confirmação ou um resultado desconhecido."
 				}
 			},
-			"summary": {
-				"components": "Componentes",
-				"cpu": "CPU",
-				"memory": "Memória",
-				"desired": "Solicitado",
-				"observed": "Observado"
-			},
-			"componentsValue": "{count, plural, one {# componente} other {# componentes}}",
-			"cpuValue": "{value}m",
-			"memoryValue": "{value} MiB",
-			"states": {
-				"stopped": "Parado",
-				"cleanedUp": "Limpo"
-			},
-			"observedDetail": "7 de 7 recursos próprios removidos",
 			"whatItDoes": "O que faz",
 			"evidenceItLeaves": "Evidência que deixa"
 		},
@@ -650,34 +758,103 @@
 	"zh-Hant": {
 		"skip": "跳到生命週期",
 		"hero": {
-			"titleStart": "現在有什麼正在執行，",
-			"titleHighlight": "又由誰來清理？",
-			"titleEnd": "",
-			"lead": "microruntime 是圍繞你既有元件組成的受限執行環境。你選擇元件與它們的限制；LangDrift 負責準備、執行、檢查與清理，並保留證據。你的原始碼留在原處。",
-			"primaryCta": "查看生命週期",
-			"secondaryCta": "誰擁有什麼",
-			"summary": "一個名為 checkout-preview 的 runtime，含三個元件、1,500 毫核心與 2,048 MiB。它的上一次執行從設定走到清理：請求狀態為已停止，清理已確認。可選取六個生命週期步驟：設定、驗證、準備、執行、檢查與清理，閱讀每一步做什麼以及留下的證據。"
+			"title": "Microruntimes",
+			"summary": "這是針對工單 0031-TICKET-early-access-runtime「以 microruntime 執行 early access 註冊使用案例」的模擬規劃工作階段。輸入的指令 ex agent plan 是預期的進入點；主控台引用專案的三個過往案例，並建議以 medium effort 使用模型 operator/allowed-model。這是建議，須由團隊授權。它會讀取工單的 PRD、design doc、spec 與 guardrail，採用團隊設定的額度 2,000 millicores 與 3,072 MiB，並從 spec 解析出五個元件：一個 Go API、一個 Node.js API、一個 NATS broker、一個 Redis 快取與一個 Next.js 應用程式，合計 1,450 millicores 與 2,304 MiB。GPU 與磁碟不是 runtime.md 的欄位，也未設定價格來源，因此數值僅以單位表示。規劃最終產出一份 runtime.md 草稿，等待團隊授權。過程中不會建置、啟動，也不會付費；其中的檢索與建議，描述的是主控台所提議的規劃流程。"
 		},
-		"lifecycle": {
-			"label": "checkout-preview · 第 3 版 · exec-41b2",
+		"session": {
 			"terminal": {
 				"title": "ex — shop",
-				"label": "終端機：ex 工作階段",
+				"label": "終端機：模擬的 ex 規劃工作階段",
 				"lines": {
-					"doctor": "ex doctor",
-					"tools": "docker 27.3 · kind 0.24 · kubectl 1.31 · terraform 1.9",
-					"run": "ex agent run",
-					"sync": "# 一個已連線的代理程式監管專案的所有執行環境",
-					"runtime": "checkout-preview · revision 3 · exec-41b2",
-					"configure": "✓ configure   runtime.md, revision 3",
-					"validate": "✓ validate    3 components · 1500m · 2048 MiB",
-					"prepare": "✓ prepare     storefront, checkout, payments-stub",
-					"execute": "✓ execute     claim held, 3 of 3 ready",
-					"inspect": "✓ inspect     observed matches requested",
-					"cleanup": "✓ clean up    7 of 7 owned resources removed",
-					"evidence": "evidence      .audits/evidence/runs/exec-41b2/"
+					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
+					"scope": "# 僅規劃 · 此步驟不建置、不啟動、不付費",
+					"memory": "console › RAG over project episodes · a model and effort for this ticket",
+					"episodes": "console › 3 episodes cited · none with measured resources",
+					"suggest": "✓ suggests   operator/allowed-model · effort medium",
+					"reads": "reads      0002-PRD · 0005-DD · 0011-SPEC · 0031-TICKET",
+					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
+					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
+					"resolve": "console › resolving 5 components named in the spec · paths, images, ports",
+					"go": "✓ services/signup-api   Go · api        250m · 256 MiB",
+					"node": "✓ services/notify-api   Node.js · api   300m · 512 MiB",
+					"nats": "✓ platform/nats         NATS · broker   200m · 256 MiB",
+					"redis": "✓ platform/redis        Redis · cache   200m · 256 MiB",
+					"next": "✓ apps/signup           Next.js · web   500m · 1024 MiB",
+					"size": "✓ size       1450m of 2000m · 2304 of 3072 MiB · 5 one-replica Deployments · proposed shares",
+					"limits": "limits     gpu and disk are not runtime.md fields · none requested",
+					"price": "estimate   no price source configured · figures stay in millicores and MiB",
+					"draft": "✓ plan       runtime.md draft, revision 1 · proposed to the console",
+					"handoff": "# 下一步：團隊授權後，ex agent run 會套用已記錄的意圖"
 				}
 			},
+			"card": {
+				"ticket": "工單",
+				"status": "ready-for-agent",
+				"title": "以 microruntime 執行 early access 註冊使用案例",
+				"readMark": "已讀",
+				"notSet": "尚未設定",
+				"resolving": "解析中",
+				"artifacts": {
+					"prd": "PRD",
+					"designDoc": "Design doc",
+					"spec": "Spec",
+					"guardrail": "Guardrail"
+				},
+				"guardrailNote": "審查規則 · 不自動強制執行",
+				"suggestedModel": "建議模型",
+				"suggestedEffort": "建議 effort",
+				"efforts": {
+					"low": "low",
+					"medium": "medium",
+					"high": "high"
+				},
+				"kinds": {
+					"api": "api",
+					"broker": "broker",
+					"cache": "cache",
+					"web": "web"
+				},
+				"recommendationNote": "建議 · 由團隊授權",
+				"components": "元件",
+				"columns": {
+					"cpu": "CPU",
+					"memory": "記憶體"
+				},
+				"resolvedProgress": "已解析 {resolved}/{total} · {cpu}m · {memory} MiB",
+				"componentsTotal": "{count, plural, other {# 個元件}} · {cpu}m · {memory} MiB",
+				"figures": "{cpu}m · {memory} MiB",
+				"hardware": {
+					"resource": "資源",
+					"bounded": "上限",
+					"suggested": "建議",
+					"cpu": "CPU",
+					"memory": "記憶體",
+					"gpu": "GPU",
+					"disk": "磁碟"
+				},
+				"notRuntimeField": "不是 runtime.md 的欄位",
+				"none": "無",
+				"priceBasis": "計價基準：未設定 · 僅以單位表示",
+				"report": {
+					"bounded": "上限",
+					"suggested": "建議",
+					"suggestedResource": "建議資源",
+					"final": "最終"
+				},
+				"deployments": "{count, plural, other {# 個單副本 Deployment}}",
+				"pendingAuthorization": "待團隊授權",
+				"finalDetail": "{cpu}m · {memory} MiB · {pending}",
+				"planPath": "runtime.md 草稿 · 修訂 {revision} · 已向主控台提出",
+				"control": {
+					"pause": "暫停",
+					"resume": "繼續",
+					"replay": "重播"
+				},
+				"cpuValue": "{value}m",
+				"memoryValue": "{value} MiB"
+			}
+		},
+		"lifecycle": {
 			"stepperLabel": "生命週期步驟",
 			"stages": {
 				"configure": {
@@ -711,21 +888,6 @@
 					"leaves": "已移除與剩餘的資源，附上確認或未知的結果。"
 				}
 			},
-			"summary": {
-				"components": "元件",
-				"cpu": "CPU",
-				"memory": "記憶體",
-				"desired": "請求",
-				"observed": "觀測"
-			},
-			"componentsValue": "{count, plural, other {# 個元件}}",
-			"cpuValue": "{value}m",
-			"memoryValue": "{value} MiB",
-			"states": {
-				"stopped": "已停止",
-				"cleanedUp": "已清理"
-			},
-			"observedDetail": "7 個擁有的資源中已移除 7 個",
 			"whatItDoes": "它做什麼",
 			"evidenceItLeaves": "留下的證據"
 		},
@@ -974,34 +1136,103 @@
 	"ja": {
 		"skip": "ライフサイクルへスキップ",
 		"hero": {
-			"titleStart": "いま何が動いていて、",
-			"titleHighlight": "誰が後片付けをするのか？",
-			"titleEnd": "",
-			"lead": "microruntime は、すでにあるコンポーネントを囲んで構成する境界付きの実行環境です。コンポーネントとその上限はあなたが選び、LangDrift が準備・実行・検査・クリーンアップを行い、証拠を残します。ソースコードは元の場所にとどまります。",
-			"primaryCta": "ライフサイクルを見る",
-			"secondaryCta": "誰が何を持つか",
-			"summary": "checkout-preview という名前の runtime で、3 つのコンポーネント、1,500 ミリコア、2,048 MiB を持ちます。直近の実行は設定からクリーンアップまで進みました。要求された状態は停止、クリーンアップは確認済みです。設定・検証・準備・実行・検査・クリーンアップの 6 つのステップを選ぶと、各ステップが何をし、どんな証拠を残すかを読めます。"
+			"title": "Microruntimes",
+			"summary": "これは、チケット 0031-TICKET-early-access-runtime「early access サインアップのユースケースを microruntime として実行する」の計画セッションをシミュレートしたものです。入力したコマンド ex agent plan が、想定されているエントリポイントです。コンソールはプロジェクトの過去の事例を 3 件引用し、モデル operator/allowed-model を effort medium で提案します。これは推奨であり、承認するのはチームです。コンソールはチケットの PRD、design doc、spec、guardrail を読み取り、チームが設定した枠である 2,000 ミリコアと 3,072 MiB を取り込み、spec から 5 つのコンポーネントを特定します。内訳は Go API、Node.js API、NATS ブローカー、Redis キャッシュ、Next.js アプリで、合計は 1,450 ミリコアと 2,304 MiB です。GPU とディスクは runtime.md のフィールドではなく、価格の取得元も設定されていないため、数値は単位のままです。計画は最終的に、チームの承認を待つ runtime.md のドラフトになります。ビルド、起動、支払いは一切行われません。ここでの検索と提案は、コンソールの計画フロー案を説明するものです。"
 		},
-		"lifecycle": {
-			"label": "checkout-preview · リビジョン 3 · exec-41b2",
+		"session": {
 			"terminal": {
 				"title": "ex — shop",
-				"label": "ターミナル：ex のセッション",
+				"label": "ターミナル：ex の計画セッションのシミュレーション",
 				"lines": {
-					"doctor": "ex doctor",
-					"tools": "docker 27.3 · kind 0.24 · kubectl 1.31 · terraform 1.9",
-					"run": "ex agent run",
-					"sync": "# 接続された 1 つのエージェントがプロジェクトのランタイムを監督します",
-					"runtime": "checkout-preview · revision 3 · exec-41b2",
-					"configure": "✓ configure   runtime.md, revision 3",
-					"validate": "✓ validate    3 components · 1500m · 2048 MiB",
-					"prepare": "✓ prepare     storefront, checkout, payments-stub",
-					"execute": "✓ execute     claim held, 3 of 3 ready",
-					"inspect": "✓ inspect     observed matches requested",
-					"cleanup": "✓ clean up    7 of 7 owned resources removed",
-					"evidence": "evidence      .audits/evidence/runs/exec-41b2/"
+					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
+					"scope": "# 計画のみ · このステップではビルド、起動、支払いを行いません",
+					"memory": "console › RAG over project episodes · a model and effort for this ticket",
+					"episodes": "console › 3 episodes cited · none with measured resources",
+					"suggest": "✓ suggests   operator/allowed-model · effort medium",
+					"reads": "reads      0002-PRD · 0005-DD · 0011-SPEC · 0031-TICKET",
+					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
+					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
+					"resolve": "console › resolving 5 components named in the spec · paths, images, ports",
+					"go": "✓ services/signup-api   Go · api        250m · 256 MiB",
+					"node": "✓ services/notify-api   Node.js · api   300m · 512 MiB",
+					"nats": "✓ platform/nats         NATS · broker   200m · 256 MiB",
+					"redis": "✓ platform/redis        Redis · cache   200m · 256 MiB",
+					"next": "✓ apps/signup           Next.js · web   500m · 1024 MiB",
+					"size": "✓ size       1450m of 2000m · 2304 of 3072 MiB · 5 one-replica Deployments · proposed shares",
+					"limits": "limits     gpu and disk are not runtime.md fields · none requested",
+					"price": "estimate   no price source configured · figures stay in millicores and MiB",
+					"draft": "✓ plan       runtime.md draft, revision 1 · proposed to the console",
+					"handoff": "# 次：チームが承認すると、ex agent run が記録済みの意図を適用します"
 				}
 			},
+			"card": {
+				"ticket": "チケット",
+				"status": "ready-for-agent",
+				"title": "early access サインアップのユースケースを microruntime として実行する",
+				"readMark": "既読",
+				"notSet": "未設定",
+				"resolving": "特定中",
+				"artifacts": {
+					"prd": "PRD",
+					"designDoc": "Design doc",
+					"spec": "Spec",
+					"guardrail": "Guardrail"
+				},
+				"guardrailNote": "レビュールール · 自動強制なし",
+				"suggestedModel": "提案モデル",
+				"suggestedEffort": "提案 effort",
+				"efforts": {
+					"low": "low",
+					"medium": "medium",
+					"high": "high"
+				},
+				"kinds": {
+					"api": "api",
+					"broker": "broker",
+					"cache": "cache",
+					"web": "web"
+				},
+				"recommendationNote": "推奨 · チームが承認",
+				"components": "コンポーネント",
+				"columns": {
+					"cpu": "CPU",
+					"memory": "メモリ"
+				},
+				"resolvedProgress": "{total} 件中 {resolved} 件が特定済み · {cpu}m · {memory} MiB",
+				"componentsTotal": "{count, plural, other {# 個のコンポーネント}} · {cpu}m · {memory} MiB",
+				"figures": "{cpu}m · {memory} MiB",
+				"hardware": {
+					"resource": "リソース",
+					"bounded": "上限",
+					"suggested": "提案",
+					"cpu": "CPU",
+					"memory": "メモリ",
+					"gpu": "GPU",
+					"disk": "ディスク"
+				},
+				"notRuntimeField": "runtime.md のフィールドではありません",
+				"none": "なし",
+				"priceBasis": "価格基準：未設定 · 単位のみ",
+				"report": {
+					"bounded": "上限",
+					"suggested": "提案",
+					"suggestedResource": "提案リソース",
+					"final": "最終"
+				},
+				"deployments": "{count, plural, other {# 個の単一レプリカ Deployment}}",
+				"pendingAuthorization": "チームの承認待ち",
+				"finalDetail": "{cpu}m · {memory} MiB · {pending}",
+				"planPath": "runtime.md ドラフト · リビジョン {revision} · コンソールに提案済み",
+				"control": {
+					"pause": "一時停止",
+					"resume": "再開",
+					"replay": "リプレイ"
+				},
+				"cpuValue": "{value}m",
+				"memoryValue": "{value} MiB"
+			}
+		},
+		"lifecycle": {
 			"stepperLabel": "ライフサイクルのステップ",
 			"stages": {
 				"configure": {
@@ -1035,21 +1266,6 @@
 					"leaves": "削除したリソースと残ったリソース、そして確認済みまたは不明という結果。"
 				}
 			},
-			"summary": {
-				"components": "コンポーネント",
-				"cpu": "CPU",
-				"memory": "メモリ",
-				"desired": "要求",
-				"observed": "観測"
-			},
-			"componentsValue": "{count, plural, other {# 個のコンポーネント}}",
-			"cpuValue": "{value}m",
-			"memoryValue": "{value} MiB",
-			"states": {
-				"stopped": "停止",
-				"cleanedUp": "クリーンアップ済み"
-			},
-			"observedDetail": "所有する 7 個のうち 7 個を削除",
 			"whatItDoes": "何をするか",
 			"evidenceItLeaves": "残す証拠"
 		},
@@ -1298,34 +1514,103 @@
 	"vi": {
 		"skip": "Chuyển đến vòng đời",
 		"hero": {
-			"titleStart": "Thứ gì đang chạy ngay lúc này, và ",
-			"titleHighlight": "ai sẽ dọn dẹp?",
-			"titleEnd": "",
-			"lead": "Microruntime là một môi trường thực thi có ranh giới, được dựng quanh các thành phần bạn đã có. Bạn chọn các thành phần và giới hạn của chúng; LangDrift chuẩn bị, chạy, kiểm tra và dọn dẹp, đồng thời giữ lại bằng chứng. Mã nguồn của bạn vẫn ở nguyên chỗ cũ.",
-			"primaryCta": "Xem vòng đời",
-			"secondaryCta": "Ai sở hữu gì",
-			"summary": "Một runtime tên checkout-preview với ba thành phần, 1.500 millicore và 2.048 MiB. Lần thực thi gần nhất của nó đã đi từ cấu hình đến dọn dẹp: trạng thái được yêu cầu là đã dừng và việc dọn dẹp đã được xác nhận. Có thể chọn sáu bước của vòng đời, cấu hình, xác thực, chuẩn bị, thực thi, kiểm tra và dọn dẹp, để đọc mỗi bước làm gì và để lại bằng chứng gì."
+			"title": "Microruntimes",
+			"summary": "Đây là phiên lập kế hoạch mô phỏng cho ticket 0031-TICKET-early-access-runtime, “Chạy trường hợp sử dụng đăng ký early access dưới dạng microruntime”. Lệnh được gõ, ex agent plan, là điểm vào dự kiến; console trích dẫn ba trường hợp trước đây của dự án và đề xuất mô hình operator/allowed-model với effort medium, một khuyến nghị cần nhóm phê duyệt. Console đọc PRD, design doc, spec và guardrail của ticket, lấy hạn mức nhóm đã đặt, gồm 2.000 millicore và 3.072 MiB, rồi xác định năm thành phần từ spec: một API Go, một API Node.js, một broker NATS, một bộ nhớ đệm Redis và một ứng dụng Next.js, tổng cộng 1.450 millicore và 2.304 MiB. GPU và đĩa không phải là trường trong runtime.md, đồng thời chưa có nguồn giá nào được cấu hình, nên các con số được giữ nguyên theo đơn vị. Kế hoạch kết thúc bằng một bản nháp runtime.md đang chờ nhóm phê duyệt. Không có gì được build hay khởi chạy, và cũng không phát sinh chi phí; phần truy xuất và gợi ý chỉ mô tả luồng lập kế hoạch mà console đề xuất."
 		},
-		"lifecycle": {
-			"label": "checkout-preview · bản sửa đổi 3 · exec-41b2",
+		"session": {
 			"terminal": {
 				"title": "ex — shop",
-				"label": "Terminal: một phiên ex",
+				"label": "Terminal: phiên lập kế hoạch ex mô phỏng",
 				"lines": {
-					"doctor": "ex doctor",
-					"tools": "docker 27.3 · kind 0.24 · kubectl 1.31 · terraform 1.9",
-					"run": "ex agent run",
-					"sync": "# một agent đã kết nối giám sát các runtime của dự án",
-					"runtime": "checkout-preview · revision 3 · exec-41b2",
-					"configure": "✓ configure   runtime.md, revision 3",
-					"validate": "✓ validate    3 components · 1500m · 2048 MiB",
-					"prepare": "✓ prepare     storefront, checkout, payments-stub",
-					"execute": "✓ execute     claim held, 3 of 3 ready",
-					"inspect": "✓ inspect     observed matches requested",
-					"cleanup": "✓ clean up    7 of 7 owned resources removed",
-					"evidence": "evidence      .audits/evidence/runs/exec-41b2/"
+					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
+					"scope": "# chỉ lập kế hoạch · bước này không build, không khởi chạy, không phát sinh chi phí",
+					"memory": "console › RAG over project episodes · a model and effort for this ticket",
+					"episodes": "console › 3 episodes cited · none with measured resources",
+					"suggest": "✓ suggests   operator/allowed-model · effort medium",
+					"reads": "reads      0002-PRD · 0005-DD · 0011-SPEC · 0031-TICKET",
+					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
+					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
+					"resolve": "console › resolving 5 components named in the spec · paths, images, ports",
+					"go": "✓ services/signup-api   Go · api        250m · 256 MiB",
+					"node": "✓ services/notify-api   Node.js · api   300m · 512 MiB",
+					"nats": "✓ platform/nats         NATS · broker   200m · 256 MiB",
+					"redis": "✓ platform/redis        Redis · cache   200m · 256 MiB",
+					"next": "✓ apps/signup           Next.js · web   500m · 1024 MiB",
+					"size": "✓ size       1450m of 2000m · 2304 of 3072 MiB · 5 one-replica Deployments · proposed shares",
+					"limits": "limits     gpu and disk are not runtime.md fields · none requested",
+					"price": "estimate   no price source configured · figures stay in millicores and MiB",
+					"draft": "✓ plan       runtime.md draft, revision 1 · proposed to the console",
+					"handoff": "# tiếp theo: khi nhóm phê duyệt, ex agent run sẽ áp dụng ý định đã ghi lại"
 				}
 			},
+			"card": {
+				"ticket": "Ticket",
+				"status": "ready-for-agent",
+				"title": "Chạy trường hợp sử dụng đăng ký early access dưới dạng microruntime",
+				"readMark": "Đã đọc",
+				"notSet": "Chưa thiết lập",
+				"resolving": "Đang xác định",
+				"artifacts": {
+					"prd": "PRD",
+					"designDoc": "Design doc",
+					"spec": "Spec",
+					"guardrail": "Guardrail"
+				},
+				"guardrailNote": "quy tắc rà soát · không tự động thực thi",
+				"suggestedModel": "Mô hình đề xuất",
+				"suggestedEffort": "Effort đề xuất",
+				"efforts": {
+					"low": "low",
+					"medium": "medium",
+					"high": "high"
+				},
+				"kinds": {
+					"api": "api",
+					"broker": "broker",
+					"cache": "cache",
+					"web": "web"
+				},
+				"recommendationNote": "khuyến nghị · nhóm phê duyệt",
+				"components": "Thành phần",
+				"columns": {
+					"cpu": "CPU",
+					"memory": "Bộ nhớ"
+				},
+				"resolvedProgress": "Đã xác định {resolved}/{total} · {cpu}m · {memory} MiB",
+				"componentsTotal": "{count, plural, other {# thành phần}} · {cpu}m · {memory} MiB",
+				"figures": "{cpu}m · {memory} MiB",
+				"hardware": {
+					"resource": "Tài nguyên",
+					"bounded": "Giới hạn",
+					"suggested": "Đề xuất",
+					"cpu": "CPU",
+					"memory": "Bộ nhớ",
+					"gpu": "GPU",
+					"disk": "Đĩa"
+				},
+				"notRuntimeField": "không phải trường trong runtime.md",
+				"none": "không có",
+				"priceBasis": "cơ sở giá: chưa cấu hình · chỉ theo đơn vị",
+				"report": {
+					"bounded": "Giới hạn",
+					"suggested": "Đề xuất",
+					"suggestedResource": "Tài nguyên đề xuất",
+					"final": "Cuối cùng"
+				},
+				"deployments": "{count, plural, other {# Deployment một bản sao}}",
+				"pendingAuthorization": "đang chờ nhóm phê duyệt",
+				"finalDetail": "{cpu}m · {memory} MiB · {pending}",
+				"planPath": "bản nháp runtime.md · bản sửa đổi {revision} · đã đề xuất lên console",
+				"control": {
+					"pause": "Tạm dừng",
+					"resume": "Tiếp tục",
+					"replay": "Phát lại"
+				},
+				"cpuValue": "{value}m",
+				"memoryValue": "{value} MiB"
+			}
+		},
+		"lifecycle": {
 			"stepperLabel": "Các bước của vòng đời",
 			"stages": {
 				"configure": {
@@ -1359,21 +1644,6 @@
 					"leaves": "Các tài nguyên đã gỡ và còn lại, kèm xác nhận hoặc một kết quả chưa rõ."
 				}
 			},
-			"summary": {
-				"components": "Thành phần",
-				"cpu": "CPU",
-				"memory": "Bộ nhớ",
-				"desired": "Được yêu cầu",
-				"observed": "Quan sát được"
-			},
-			"componentsValue": "{count, plural, other {# thành phần}}",
-			"cpuValue": "{value}m",
-			"memoryValue": "{value} MiB",
-			"states": {
-				"stopped": "Đã dừng",
-				"cleanedUp": "Đã dọn dẹp"
-			},
-			"observedDetail": "Đã gỡ 7 trên 7 tài nguyên sở hữu",
 			"whatItDoes": "Bước này làm gì",
 			"evidenceItLeaves": "Bằng chứng để lại"
 		},

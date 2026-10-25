@@ -1,6 +1,5 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { cn } from '@langdrift/web/utilities'
-import { MacTerminal } from '@langdrift/web/vendors/smoothui/mac-terminal'
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import { createTranslator, hasLocale } from 'next-intl'
@@ -9,12 +8,13 @@ import { setRequestLocale } from 'next-intl/server'
 import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
 import { EarlyAccessSection } from '@components/early-access/section'
 import { AuthoringFlow } from '@components/microruntimes/authoring-flow'
-import { LifecycleDemo } from '@components/microruntimes/lifecycle-demo'
+import { LifecycleSteps } from '@components/microruntimes/lifecycle-steps'
 import { RuntimeDescriptorCard } from '@components/microruntimes/runtime-descriptor-card'
+import { SessionTerminal } from '@components/microruntimes/session-terminal'
 import { StageEvidence } from '@components/microruntimes/stage-evidence'
+import { TicketCard } from '@components/microruntimes/ticket-card'
 import { PillarScenarios } from '@components/product-page/pillar-scenarios'
 import { ProductFaqSection } from '@components/product-page/product-faq-section'
-import { ProductHero } from '@components/product-page/product-hero'
 import { ProductSection } from '@components/product-page/product-section'
 import { RecordCard } from '@components/product-page/record-card'
 import { SectionOutro } from '@components/product-page/section-outro'
@@ -29,7 +29,6 @@ import {
 	ownershipRowIds,
 	type StateCardId,
 	stateCardIds,
-	terminalSession,
 } from '@data/microruntimes-content'
 import { microruntimesMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
@@ -86,26 +85,27 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 			<SkipLink href="#lifecycle">{copy.skip}</SkipLink>
 			<WebsiteHeader />
 			<main id="top">
-				<ProductHero
-					copy={copy.hero}
-					headingId="microruntimes-hero-heading"
-					primaryFragment="lifecycle"
-					secondaryFragment="ownership"
+				<section
+					aria-labelledby="microruntimes-hero-heading"
+					className="mx-auto max-w-[1280px] px-[clamp(18px,3vw,36px)] pt-[58px] pb-[70px] max-md:pt-10 max-md:pb-12"
 				>
-					<div className="grid gap-6 lg:grid-cols-[fit-content(50%)_1fr]">
-						<MacTerminal
-							label={copy.lifecycle.terminal.label}
-							lines={terminalSession.map((line) => ({
-								...line,
-								text: copy.lifecycle.terminal.lines[line.id],
-							}))}
-							maxHeight={320}
-							prompt="~/shop %"
-							title={copy.lifecycle.terminal.title}
-						/>
-						<LifecycleDemo copy={copy.lifecycle} locale={locale} />
+					<h1
+						className="m-0 text-[clamp(28px,3.2vw,43px)] leading-[1.16] font-medium tracking-[-0.045em] text-balance"
+						id="microruntimes-hero-heading"
+					>
+						{copy.hero.title}
+					</h1>
+					<div
+						aria-describedby="microruntimes-hero-summary"
+						className="mt-8 grid gap-6 lg:grid-cols-[fit-content(50%)_1fr]"
+					>
+						<SessionTerminal copy={copy.session.terminal} />
+						<TicketCard copy={copy.session.card} locale={locale} />
 					</div>
-				</ProductHero>
+					<p className="sr-only" id="microruntimes-hero-summary">
+						{copy.hero.summary}
+					</p>
+				</section>
 
 				<ProductSection
 					id="lifecycle"
@@ -277,6 +277,7 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 						]}
 						title={copy.evidence.ledgerTitle}
 					/>
+					<LifecycleSteps copy={copy.lifecycle} />
 					<StageEvidence
 						copy={copy.evidence}
 						stageLabels={copy.lifecycle.stages}

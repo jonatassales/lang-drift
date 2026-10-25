@@ -17,6 +17,7 @@ export type TerminalLineType =
 	| 'error'
 	| 'success'
 	| 'comment'
+	| 'warning'
 
 export interface TerminalLine {
 	/** Milliseconds to wait before the line starts. */
@@ -29,10 +30,16 @@ export interface TerminalLine {
 export interface MacTerminalProps {
 	className?: string
 	/** The accessible name of the window. */
+	/** A fixed height for the transcript, so the window never grows as it types. */
+	height?: number | string
 	label: string
 	lines: TerminalLine[]
 	loop?: boolean
 	maxHeight?: number | string
+	/** Called with the number of completed lines whenever it changes. */
+	onProgress?: (completedCount: number) => void
+	/** Freezes the session while true. */
+	paused?: boolean
 	prompt?: string
 	title: string
 	/** Characters per second. */
@@ -65,6 +72,7 @@ const lineTones: Record<TerminalLineType, string> = {
 	error: 'text-status-danger',
 	output: 'text-foreground/80',
 	success: 'text-status-success',
+	warning: 'text-status-warning',
 }
 
 const createMachine = (): Machine => ({
@@ -77,10 +85,13 @@ const createMachine = (): Machine => ({
 export function MacTerminal(props: MacTerminalProps) {
 	const {
 		className,
+		height,
 		label,
 		lines,
 		loop = false,
 		maxHeight = 360,
+		onProgress,
+		paused = false,
 		prompt = '~ %',
 		title,
 		typingSpeed = 24,
@@ -92,10 +103,13 @@ export function MacTerminal(props: MacTerminalProps) {
 	const machineRef = useRef<Machine>(createMachine())
 	const shouldPlayRef = useRef(false)
 	const linesRef = useRef(lines)
+	const onProgressRef = useRef(onProgress)
+	const reportedCountRef = useRef(0)
 	const loopRef = useRef(loop)
 	const msPerCharRef = useRef(1000 / typingSpeed)
 
 	linesRef.current = lines
+	onProgressRef.current = onProgress
 	loopRef.current = loop
 	msPerCharRef.current = 1000 / typingSpeed
 
@@ -129,8 +143,15 @@ export function MacTerminal(props: MacTerminalProps) {
 	}, [])
 
 	useEffect(() => {
-		shouldPlayRef.current = isInView && isPageVisible
-	}, [isInView, isPageVisible])
+		shouldPlayRef.current = isInView && isPageVisible && !paused
+	}, [isInView, isPageVisible, paused])
+
+	useEffect(() => {
+		if (completedLines.length === reportedCountRef.current) return
+
+		reportedCountRef.current = completedLines.length
+		onProgressRef.current?.(completedLines.length)
+	}, [completedLines])
 
 	useEffect(() => {
 		if (!shouldReduceMotion) return
@@ -247,6 +268,7 @@ export function MacTerminal(props: MacTerminalProps) {
 				className="overflow-y-auto px-4 py-3 font-mono text-xs leading-relaxed sm:text-sm"
 				ref={scrollRef}
 				style={{
+					height: typeof height === 'number' ? `${height}px` : height,
 					maxHeight:
 						typeof maxHeight === 'number' ? `${maxHeight}px` : maxHeight,
 				}}
