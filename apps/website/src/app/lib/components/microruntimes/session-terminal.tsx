@@ -16,8 +16,9 @@ interface SessionTerminalProps {
 // The hero's simulated planning session: the terminal plays the script on
 // its own clock and writes how many lines it has completed to the session,
 // which the ticket card beside it reads. A replay remounts it through the
-// run counter. Its height follows the viewport so the ticket head fits in a
-// phone's first screen.
+// run counter. Its height is fixed and follows the viewport, so nothing
+// below it shifts as it types and the ticket head fits in a phone's first
+// screen.
 export function SessionTerminal(props: SessionTerminalProps) {
 	const { copy } = props
 
@@ -32,7 +33,7 @@ export function SessionTerminal(props: SessionTerminalProps) {
 			key={session.run}
 			label={copy.label}
 			lines={lines}
-			maxHeight="clamp(200px, 38vh, 320px)"
+			height="clamp(200px, 38vh, 320px)"
 			onProgress={(playedCount) =>
 				setSession((current) => ({
 					...current,

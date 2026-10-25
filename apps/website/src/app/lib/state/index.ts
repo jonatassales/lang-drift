@@ -6,6 +6,8 @@ export {
 	initialMicroruntimeSession,
 	type MicroruntimeSession,
 	microruntimeSessionAtom,
+	replaySessionAtom,
+	toggleSessionPauseAtom,
 } from '@app/atoms/microruntime-session.atom'
 export { selectHeroGraphPointAtom } from '@app/atoms/select-hero-graph-point.atom'
 export { selectedLifecycleStageAtom } from '@app/atoms/selected-lifecycle-stage.atom'

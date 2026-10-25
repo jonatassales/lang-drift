@@ -187,14 +187,18 @@ export type PlanEffort = 'low' | 'medium' | 'high'
 export type ComponentKind = 'api' | 'broker' | 'cache' | 'web'
 export type Technology = 'Go' | 'Node.js' | 'NATS' | 'Redis' | 'Next.js'
 
+// A CPU and memory pair, in the units runtime.md bounds: millicores and MiB.
+export interface Resources {
+	cpuMillis: number
+	memoryMiB: number
+}
+
 // One component the plan resolves from the spec: where it lives, what it
 // is, and the share of the envelope the plan proposes for it. The id is the
 // session line that resolves it.
-export interface PlanComponent {
-	cpuMillis: number
+export interface PlanComponent extends Resources {
 	id: PlanLineId
 	kind: ComponentKind
-	memoryMiB: number
 	path: string
 	technology: Technology
 }
@@ -207,7 +211,6 @@ export const ticketPlan = {
 	ticket: {
 		number: '0031',
 		slug: 'early-access-runtime',
-		file: '0031-TICKET-early-access-runtime',
 	},
 	artifacts: {
 		prd: '0002-PRD-early-access.prd.md',
@@ -223,7 +226,7 @@ export const ticketPlan = {
 	bounded: {
 		cpuMillis: 2000,
 		memoryMiB: 3072,
-	},
+	} satisfies Resources,
 	components: [
 		{
 			cpuMillis: 250,
@@ -270,8 +273,10 @@ export const ticketPlan = {
 } as const
 
 // The totals the plan proposes: the sum of the components' shares.
-export function suggestedTotals(components: readonly PlanComponent[]) {
-	return components.reduce(
+export function suggestedTotals(
+	components: readonly PlanComponent[],
+): Resources {
+	return components.reduce<Resources>(
 		(totals, component) => ({
 			cpuMillis: totals.cpuMillis + component.cpuMillis,
 			memoryMiB: totals.memoryMiB + component.memoryMiB,
@@ -301,6 +306,12 @@ export const planReveals = {
 } as const satisfies Record<string, PlanLineId>
 
 export type PlanRevealId = keyof typeof planReveals
+
+// True once the terminal has completed the line that reveals this part of
+// the card.
+export function revealed(playedCount: number, id: PlanRevealId) {
+	return hasPlayed(playedCount, planReveals[id])
+}
 
 export const runtimeFilePath = '.langdrift/runtimes/checkout-preview/runtime.md'
 
@@ -408,11 +419,13 @@ export interface MicroruntimesMessages {
 			suggestedModel: string
 			suggestedEffort: string
 			efforts: Record<PlanEffort, string>
+			kinds: Record<ComponentKind, string>
 			recommendationNote: string
 			components: string
 			columns: { cpu: string; memory: string }
 			resolvedProgress: string
 			componentsTotal: string
+			figures: string
 			hardware: Record<
 				| 'resource'
 				| 'bounded'
@@ -432,8 +445,9 @@ export interface MicroruntimesMessages {
 			>
 			deployments: string
 			pendingAuthorization: string
+			finalDetail: string
 			planPath: string
-			control: { pause: string; replay: string }
+			control: { pause: string; resume: string; replay: string }
 			cpuValue: string
 			memoryValue: string
 		}

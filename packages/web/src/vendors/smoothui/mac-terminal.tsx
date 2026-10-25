@@ -30,6 +30,8 @@ export interface TerminalLine {
 export interface MacTerminalProps {
 	className?: string
 	/** The accessible name of the window. */
+	/** A fixed height for the transcript, so the window never grows as it types. */
+	height?: number | string
 	label: string
 	lines: TerminalLine[]
 	loop?: boolean
@@ -83,6 +85,7 @@ const createMachine = (): Machine => ({
 export function MacTerminal(props: MacTerminalProps) {
 	const {
 		className,
+		height,
 		label,
 		lines,
 		loop = false,
@@ -265,6 +268,7 @@ export function MacTerminal(props: MacTerminalProps) {
 				className="overflow-y-auto px-4 py-3 font-mono text-xs leading-relaxed sm:text-sm"
 				ref={scrollRef}
 				style={{
+					height: typeof height === 'number' ? `${height}px` : height,
 					maxHeight:
 						typeof maxHeight === 'number' ? `${maxHeight}px` : maxHeight,
 				}}

@@ -70,7 +70,8 @@ describe('Microruntimes ticket card', () => {
 
 		play('go')
 		expect(screen.getByText('services/signup-api')).toBeTruthy()
-		expect(screen.getByText('Go · api')).toBeTruthy()
+		expect(screen.getByText('Go')).toBeTruthy()
+		expect(screen.getAllByText('api')).toHaveLength(1)
 		expect(screen.getByText('250m')).toBeTruthy()
 		expect(screen.getByText('256 MiB')).toBeTruthy()
 		expect(screen.getByText('1 of 5 resolved · 250m · 256 MiB')).toBeTruthy()
@@ -95,7 +96,7 @@ describe('Microruntimes ticket card', () => {
 		expect(screen.getByText('1,450m · 2,304 MiB')).toBeTruthy()
 
 		play('limits')
-		expect(screen.getAllByText('none')).toHaveLength(2)
+		expect(screen.getAllByText('none')).toHaveLength(4)
 		expect(screen.getAllByText('not a runtime.md field')).toHaveLength(2)
 
 		play('price')
@@ -120,6 +121,7 @@ describe('Microruntimes ticket card', () => {
 		play('go')
 		fireEvent.click(screen.getByRole('button', { name: 'Pause' }))
 		expect(store.get(microruntimeSessionAtom).paused).toBe(true)
+		expect(screen.getByRole('button', { name: 'Resume' })).toBeTruthy()
 
 		play('handoff')
 		fireEvent.click(screen.getByRole('button', { name: 'Replay' }))

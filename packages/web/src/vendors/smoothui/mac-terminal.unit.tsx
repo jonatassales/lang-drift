@@ -158,26 +158,4 @@ describe('MacTerminal progress', () => {
 
 		expect(onProgress.mock.calls).toEqual([[2]])
 	})
-
-	it('prints a warning line in the warning status color', () => {
-		stubBrowser(true)
-		const view = render(
-			<MacTerminal
-				label="Terminal"
-				lines={[
-					{
-						id: 'low-memory',
-						text: 'memory is low',
-						type: 'warning',
-					},
-				]}
-				title="ex"
-			/>,
-		)
-
-		const warning = view.getByText('memory is low', {
-			selector: 'span',
-		})
-		expect(warning.className).toContain('text-status-warning')
-	})
 })

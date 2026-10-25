@@ -1,0 +1,41 @@
+import { createTranslator } from 'next-intl'
+
+import type {
+	MicroruntimesMessages,
+	Resources,
+} from '@data/microruntimes-content'
+import type { WebsiteLocale } from '@i18n/routing'
+
+export type TicketCardCopy = MicroruntimesMessages['session']['card']
+
+// The ticket card's figures in the visitor's locale: millicores, MiB, the
+// pair of them, and the card's ICU messages.
+export function createTicketCardFormat(
+	copy: TicketCardCopy,
+	locale: WebsiteLocale,
+) {
+	const message = createTranslator({
+		locale,
+		messages: copy,
+	})
+	const formatNumber = new Intl.NumberFormat(locale)
+	const cpu = (millis: number) =>
+		message('cpuValue', { value: formatNumber.format(millis) })
+	const memory = (mebibytes: number) =>
+		message('memoryValue', { value: formatNumber.format(mebibytes) })
+	const figures = (resources: Resources) =>
+		message('figures', {
+			cpu: formatNumber.format(resources.cpuMillis),
+			memory: formatNumber.format(resources.memoryMiB),
+		})
+
+	return {
+		cpu,
+		figures,
+		formatNumber,
+		memory,
+		message,
+	}
+}
+
+export type TicketCardFormat = ReturnType<typeof createTicketCardFormat>

@@ -52,6 +52,12 @@
 					"medium": "medium",
 					"high": "high"
 				},
+				"kinds": {
+					"api": "api",
+					"broker": "broker",
+					"cache": "cache",
+					"web": "web"
+				},
 				"recommendationNote": "recommendation · the team authorizes",
 				"components": "Components",
 				"columns": {
@@ -60,6 +66,7 @@
 				},
 				"resolvedProgress": "{resolved} of {total} resolved · {cpu}m · {memory} MiB",
 				"componentsTotal": "{count, plural, one {# component} other {# components}} · {cpu}m · {memory} MiB",
+				"figures": "{cpu}m · {memory} MiB",
 				"hardware": {
 					"resource": "Resource",
 					"bounded": "Bounded",
@@ -80,9 +87,11 @@
 				},
 				"deployments": "{count, plural, one {# one-replica Deployment} other {# one-replica Deployments}}",
 				"pendingAuthorization": "pending team authorization",
+				"finalDetail": "{cpu}m · {memory} MiB · {pending}",
 				"planPath": "runtime.md draft · revision {revision} · proposed to the console",
 				"control": {
 					"pause": "Pause",
+					"resume": "Resume",
 					"replay": "Replay"
 				},
 				"cpuValue": "{value}m",
@@ -421,6 +430,12 @@
 					"medium": "medium",
 					"high": "high"
 				},
+				"kinds": {
+					"api": "api",
+					"broker": "broker",
+					"cache": "cache",
+					"web": "web"
+				},
 				"recommendationNote": "recomendação · o time autoriza",
 				"components": "Componentes",
 				"columns": {
@@ -429,6 +444,7 @@
 				},
 				"resolvedProgress": "{resolved} de {total} resolvidos · {cpu}m · {memory} MiB",
 				"componentsTotal": "{count, plural, one {# componente} other {# componentes}} · {cpu}m · {memory} MiB",
+				"figures": "{cpu}m · {memory} MiB",
 				"hardware": {
 					"resource": "Recurso",
 					"bounded": "Delimitado",
@@ -449,9 +465,11 @@
 				},
 				"deployments": "{count, plural, one {# Deployment de uma réplica} other {# Deployments de uma réplica}}",
 				"pendingAuthorization": "aguardando autorização do time",
+				"finalDetail": "{cpu}m · {memory} MiB · {pending}",
 				"planPath": "rascunho de runtime.md · revisão {revision} · proposto ao console",
 				"control": {
 					"pause": "Pausar",
+					"resume": "Retomar",
 					"replay": "Repetir"
 				},
 				"cpuValue": "{value}m",
@@ -790,6 +808,12 @@
 					"medium": "medium",
 					"high": "high"
 				},
+				"kinds": {
+					"api": "api",
+					"broker": "broker",
+					"cache": "cache",
+					"web": "web"
+				},
 				"recommendationNote": "建議 · 由團隊授權",
 				"components": "元件",
 				"columns": {
@@ -798,6 +822,7 @@
 				},
 				"resolvedProgress": "已解析 {resolved}/{total} · {cpu}m · {memory} MiB",
 				"componentsTotal": "{count, plural, other {# 個元件}} · {cpu}m · {memory} MiB",
+				"figures": "{cpu}m · {memory} MiB",
 				"hardware": {
 					"resource": "資源",
 					"bounded": "上限",
@@ -818,9 +843,11 @@
 				},
 				"deployments": "{count, plural, other {# 個單副本 Deployment}}",
 				"pendingAuthorization": "待團隊授權",
+				"finalDetail": "{cpu}m · {memory} MiB · {pending}",
 				"planPath": "runtime.md 草稿 · 修訂 {revision} · 已向主控台提出",
 				"control": {
 					"pause": "暫停",
+					"resume": "繼續",
 					"replay": "重播"
 				},
 				"cpuValue": "{value}m",
@@ -1159,6 +1186,12 @@
 					"medium": "medium",
 					"high": "high"
 				},
+				"kinds": {
+					"api": "api",
+					"broker": "broker",
+					"cache": "cache",
+					"web": "web"
+				},
 				"recommendationNote": "推奨 · チームが承認",
 				"components": "コンポーネント",
 				"columns": {
@@ -1167,6 +1200,7 @@
 				},
 				"resolvedProgress": "{total} 件中 {resolved} 件が特定済み · {cpu}m · {memory} MiB",
 				"componentsTotal": "{count, plural, other {# 個のコンポーネント}} · {cpu}m · {memory} MiB",
+				"figures": "{cpu}m · {memory} MiB",
 				"hardware": {
 					"resource": "リソース",
 					"bounded": "上限",
@@ -1187,9 +1221,11 @@
 				},
 				"deployments": "{count, plural, other {# 個の単一レプリカ Deployment}}",
 				"pendingAuthorization": "チームの承認待ち",
+				"finalDetail": "{cpu}m · {memory} MiB · {pending}",
 				"planPath": "runtime.md ドラフト · リビジョン {revision} · コンソールに提案済み",
 				"control": {
 					"pause": "一時停止",
+					"resume": "再開",
 					"replay": "リプレイ"
 				},
 				"cpuValue": "{value}m",
@@ -1528,6 +1564,12 @@
 					"medium": "medium",
 					"high": "high"
 				},
+				"kinds": {
+					"api": "api",
+					"broker": "broker",
+					"cache": "cache",
+					"web": "web"
+				},
 				"recommendationNote": "khuyến nghị · nhóm phê duyệt",
 				"components": "Thành phần",
 				"columns": {
@@ -1536,6 +1578,7 @@
 				},
 				"resolvedProgress": "Đã xác định {resolved}/{total} · {cpu}m · {memory} MiB",
 				"componentsTotal": "{count, plural, other {# thành phần}} · {cpu}m · {memory} MiB",
+				"figures": "{cpu}m · {memory} MiB",
 				"hardware": {
 					"resource": "Tài nguyên",
 					"bounded": "Giới hạn",
@@ -1556,9 +1599,11 @@
 				},
 				"deployments": "{count, plural, other {# Deployment một bản sao}}",
 				"pendingAuthorization": "đang chờ nhóm phê duyệt",
+				"finalDetail": "{cpu}m · {memory} MiB · {pending}",
 				"planPath": "bản nháp runtime.md · bản sửa đổi {revision} · đã đề xuất lên console",
 				"control": {
 					"pause": "Tạm dừng",
+					"resume": "Tiếp tục",
 					"replay": "Phát lại"
 				},
 				"cpuValue": "{value}m",

@@ -90,7 +90,7 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 					className="mx-auto max-w-[1280px] px-[clamp(18px,3vw,36px)] pt-[58px] pb-[70px] max-md:pt-10 max-md:pb-12"
 				>
 					<h1
-						className="m-0 text-[clamp(28px,3.2vw,43px)] leading-[1.16] font-medium tracking-[-0.045em]"
+						className="m-0 text-[clamp(28px,3.2vw,43px)] leading-[1.16] font-medium tracking-[-0.045em] text-balance"
 						id="microruntimes-hero-heading"
 					>
 						{copy.hero.title}

@@ -19,3 +19,24 @@ export const initialMicroruntimeSession: MicroruntimeSession = {
 export const microruntimeSessionAtom = atom<MicroruntimeSession>(
 	initialMicroruntimeSession,
 )
+
+// Replays the session from the start: the count and the pause reset, and
+// the run bumps so the terminal remounts with a fresh machine.
+export const replaySessionAtom = atom(null, (get, set) => {
+	const { run } = get(microruntimeSessionAtom)
+
+	set(microruntimeSessionAtom, {
+		...initialMicroruntimeSession,
+		run: run + 1,
+	})
+})
+
+// Pauses the session where it is, or resumes it.
+export const toggleSessionPauseAtom = atom(null, (get, set) => {
+	const session = get(microruntimeSessionAtom)
+
+	set(microruntimeSessionAtom, {
+		...session,
+		paused: !session.paused,
+	})
+})
