@@ -96,7 +96,6 @@ export interface HeaderMessages {
 		japanese: string
 		vietnamese: string
 	}
-	docs: string
 	getStarted: string
 	lightTheme: string
 	darkTheme: string

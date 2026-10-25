@@ -36,21 +36,18 @@ describe('Website locale routing', () => {
 		},
 	)
 
-	it.each([
-		'/api/health',
-		'/_next/static/app.js',
-		'/favicon.ico',
-		'/docs-static/_next/app.js',
-		'/_pagefind/pagefind.js',
-	])('leaves infrastructure request %s outside locale negotiation', (url) => {
-		expect(
-			unstable_doesMiddlewareMatch({
-				config,
-				nextConfig: {},
-				url,
-			}),
-		).toBe(false)
-	})
+	it.each(['/api/health', '/_next/static/app.js', '/favicon.ico'])(
+		'leaves infrastructure request %s outside locale negotiation',
+		(url) => {
+			expect(
+				unstable_doesMiddlewareMatch({
+					config,
+					nextConfig: {},
+					url,
+				}),
+			).toBe(false)
+		},
+	)
 
 	it('canonicalizes casing without discarding the search string', () => {
 		const response = proxy(
@@ -69,15 +66,6 @@ describe('Website locale routing', () => {
 		expect(response.headers.get('location')).toBe(
 			'https://langdrift.test/en/missing.file?from=menu&availability=zh-CN',
 		)
-	})
-
-	it('leaves Docs paths for the independent zone without writing a Website cookie', () => {
-		const response = proxy(
-			new NextRequest('https://langdrift.test/vi/docs/sdk/'),
-		)
-		expect(response.status).toBe(200)
-		expect(response.headers.get('x-middleware-rewrite')).toBeNull()
-		expect(response.headers.get('set-cookie')).toBeNull()
 	})
 
 	it('prefers the saved encrypted cookie to the browser language and the URL to both', () => {

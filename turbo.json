@@ -36,15 +36,7 @@
 			"cache": false
 		}
 	},
-	"globalEnv": [
-		"DOCS_ORIGIN",
-		"EARLY_ACCESS_MODE",
-		"LANGDRIFT_LOCAL_BUILD",
-		"VERCEL",
-		"VERCEL_ENV",
-		"VERCEL_URL",
-		"VERCEL_PROJECT_PRODUCTION_URL"
-	],
+	"globalEnv": ["EARLY_ACCESS_MODE", "VERCEL_ENV"],
 	"globalPassThroughEnv": [
 		"CRYPTO_SECRET",
 		"RESEND_*",

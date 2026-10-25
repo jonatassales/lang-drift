@@ -20,7 +20,7 @@ export default defineConfig({
 	oxc: { jsx: { runtime: 'automatic' } },
 	resolve: { alias: aliases },
 	test: {
-		include: ['src/**/*.unit.{ts,tsx}', 'next.config.unit.ts'],
+		include: ['src/**/*.unit.{ts,tsx}'],
 		server: { deps: { inline: ['next-intl'] } },
 	},
 })

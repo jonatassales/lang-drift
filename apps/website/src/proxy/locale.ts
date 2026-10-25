@@ -53,11 +53,6 @@ export class LocaleService {
 			fallback.searchParams.set('availability', 'zh-CN')
 			return NextResponse.redirect(fallback, 307)
 		}
-		if (
-			/^\/(en|pt-br|zh-hant|ja|vi)\/docs(?:\/|$)/.test(request.nextUrl.pathname)
-		) {
-			return NextResponse.next()
-		}
 		const explicit = explicitLocale(request.nextUrl.pathname)
 		const reader = cookieServiceFactory(request)
 		const saved = reader.get(localeCookie, isWebsiteLocale)

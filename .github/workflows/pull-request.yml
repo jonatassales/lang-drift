@@ -15,10 +15,8 @@ concurrency:
 env:
   # The Git hooks are for local commits; CI runs the same guardrails below.
   HUSKY: '0'
-  # The website builds against safe values: no real Docs zone, early access
-  # paused and sign-up disabled, so CI never reaches a live service.
-  LANGDRIFT_LOCAL_BUILD: '1'
-  DOCS_ORIGIN: http://localhost:3004
+  # The website builds against safe values, early access paused and sign-up
+  # disabled, so CI never reaches a live service.
   EARLY_ACCESS_MODE: paused
   WEBSITE_PREVIEW_SIGNUP_DISABLED: 'true'
 

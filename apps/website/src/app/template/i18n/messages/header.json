@@ -14,7 +14,6 @@
 			"japanese": "Japanese",
 			"vietnamese": "Vietnamese"
 		},
-		"docs": "Docs",
 		"getStarted": "Ask for a Demo",
 		"lightTheme": "Switch to light mode",
 		"darkTheme": "Switch to dark mode",
@@ -37,7 +36,6 @@
 			"japanese": "Japonês",
 			"vietnamese": "Vietnamita"
 		},
-		"docs": "Docs",
 		"getStarted": "Solicite uma demonstração",
 		"lightTheme": "Ativar modo claro",
 		"darkTheme": "Ativar modo escuro",
@@ -60,7 +58,6 @@
 			"japanese": "日語",
 			"vietnamese": "越南文"
 		},
-		"docs": "文件",
 		"getStarted": "申請產品展示",
 		"lightTheme": "切換至淺色模式",
 		"darkTheme": "切換至深色模式",
@@ -83,7 +80,6 @@
 			"japanese": "日本語",
 			"vietnamese": "ベトナム語"
 		},
-		"docs": "ドキュメント",
 		"getStarted": "デモをリクエスト",
 		"lightTheme": "ライトモードに切り替え",
 		"darkTheme": "ダークモードに切り替え",
@@ -106,7 +102,6 @@
 			"japanese": "Tiếng Nhật",
 			"vietnamese": "Tiếng Việt"
 		},
-		"docs": "Tài liệu",
 		"getStarted": "Yêu cầu bản demo",
 		"lightTheme": "Chuyển sang giao diện sáng",
 		"darkTheme": "Chuyển sang giao diện tối",

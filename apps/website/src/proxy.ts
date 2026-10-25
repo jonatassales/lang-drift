@@ -10,7 +10,7 @@ export default function proxy(request: NextRequest) {
 
 export const config = {
 	matcher: [
-		'/((?!api|_next|_vercel|docs-static|_pagefind|opengraph-image|metadata|.*\\..*).*)',
+		'/((?!api|_next|_vercel|opengraph-image|metadata|.*\\..*).*)',
 		'/([eE][nN]|[pP][tT]-[bB][rR]|[zZ][hH]-[hH][aA][nN][tT]|[jJ][aA]|[vV][iI]|[zZ][hH]-[cC][nN]|[zZ][hH]-[hH][aA][nN][sS]|[zZ][hH]-[sS][gG])/:path*',
 	],
 }
