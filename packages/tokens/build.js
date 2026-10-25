@@ -1,9 +1,8 @@
 import StyleDictionary from 'style-dictionary'
 import { getReferences, usesReferences } from 'style-dictionary/utils'
 
-// Each product gets one stylesheet built from the shared tokens and its own
-// product theme.
-const products = ['vision', 'finops']
+// Each theme gets one stylesheet built from the shared tokens and the theme.
+const themes = ['website']
 
 // A token under a color scheme group changes with the scheme. The group names
 // the selector it is emitted under and is left out of the variable name.
@@ -18,11 +17,13 @@ const tailwindExtension = 'dev.langdrift.tailwind'
 
 const schemeOf = (token) => (schemes.has(token.path[0]) ? token.path[0] : null)
 
+// A token's path without its scheme group.
+const pathOf = (token) => (schemeOf(token) ? token.path.slice(1) : token.path)
+
 StyleDictionary.registerTransform({
 	name: 'name/langdrift',
 	type: 'name',
-	transform: (token) =>
-		(schemeOf(token) ? token.path.slice(1) : token.path).join('-'),
+	transform: (token) => pathOf(token).join('-'),
 })
 
 StyleDictionary.registerFormat({
@@ -44,22 +45,26 @@ StyleDictionary.registerFormat({
 				.join('\n')}\n}\n`
 
 		const tokens = dictionary.allTokens
+		const schemeless = tokens.filter((token) => !schemeOf(token))
 		const light = tokens.filter((token) => schemeOf(token) === 'light')
 		const dark = tokens.filter((token) => schemeOf(token) === 'dark')
-		// Roles and status colors, named without their prefix and group.
-		const namesInGroup = (group) =>
-			light
-				.filter((token) => token.path.slice(1, 3).join('.') === group)
-				.map((token) => token.path.slice(3).join('-'))
-		const roles = namesInGroup('lg.color')
-		const statuses = namesInGroup('lg.status')
+		// The tokens of a group, named without their prefix and group. Dark
+		// shares its names with light, so light stands for both schemes.
+		const namesInGroup = (group, candidates) =>
+			candidates
+				.map(pathOf)
+				.filter((path) => path.slice(0, 2).join('.') === group)
+				.map((path) => path.slice(2).join('-'))
+		const roles = namesInGroup('lg.color', light)
+		// Colors that never take the brand, exposed to Tailwind by group.
+		const fixedGroups = ['status', 'classification', 'drift']
 		const tailwindTokens = tokens.filter(
 			(token) => token.$extensions?.[tailwindExtension],
 		)
 
 		return [
 			rule(schemes.get('light'), [
-				...tokens.filter((token) => !schemeOf(token)).map(variable),
+				...schemeless.map(variable),
 				...light.map(variable),
 			]),
 			rule(schemes.get('dark'), dark.map(variable)),
@@ -69,15 +74,20 @@ StyleDictionary.registerFormat({
 				[...schemes.values()].join(', '),
 				roles.map((role) => [`--${role}`, `var(--lg-color-${role})`]),
 			)}`,
+			"/* Tailwind's `dark:` variant follows the `.dark` class. */\n@custom-variant dark (&:where(.dark, .dark *));\n",
 			`/* Tailwind keeps its layout scales; only the tokens set its colors. */\n${rule(
 				'@theme inline',
 				[
 					['--color-*', 'initial'],
 					...roles.map((role) => [`--color-${role}`, `var(--${role})`]),
-					...statuses.map((status) => [
-						`--color-status-${status}`,
-						`var(--lg-status-${status})`,
-					]),
+					...fixedGroups.flatMap((group) =>
+						namesInGroup(`lg.${group}`, [...schemeless, ...light]).map(
+							(name) => [
+								`--color-${group}-${name}`,
+								`var(--lg-${group}-${name})`,
+							],
+						),
+					),
 					...tailwindTokens.map((token) => [
 						token.$extensions[tailwindExtension],
 						`var(--${token.name})`,
@@ -88,9 +98,9 @@ StyleDictionary.registerFormat({
 	},
 })
 
-for (const product of products) {
+for (const theme of themes) {
 	const styleDictionary = new StyleDictionary({
-		source: ['shared/*.json', `themes/${product}.json`],
+		source: ['shared/*.json', `themes/${theme}.json`],
 		usesDtcg: true,
 		// Every scheme-dependent token shares its name with its counterpart in the
 		// other scheme, which Style Dictionary would report as a collision.
@@ -105,7 +115,7 @@ for (const product of products) {
 				buildPath: 'dist/',
 				files: [
 					{
-						destination: `${product}.css`,
+						destination: `${theme}.css`,
 						format: 'css/langdrift',
 					},
 				],

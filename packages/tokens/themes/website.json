@@ -1,0 +1,34 @@
+{
+	"light": {
+		"site": {
+			"color": {
+				"$type": "color",
+				"primary": { "$value": "#6D0AD6" },
+				"primary-hover": { "$value": "#5408A5" }
+			}
+		},
+		"lg": {
+			"color": {
+				"$type": "color",
+				"primary": { "$value": "{light.site.color.primary}" },
+				"primary-hover": { "$value": "{light.site.color.primary-hover}" }
+			}
+		}
+	},
+	"dark": {
+		"site": {
+			"color": {
+				"$type": "color",
+				"primary": { "$value": "#6D0AD6" },
+				"primary-hover": { "$value": "#8C3BEF" }
+			}
+		},
+		"lg": {
+			"color": {
+				"$type": "color",
+				"primary": { "$value": "{dark.site.color.primary}" },
+				"primary-hover": { "$value": "{dark.site.color.primary-hover}" }
+			}
+		}
+	}
+}

@@ -13,12 +13,12 @@ _Avoid_: Product, module
 ### Design tokens
 
 **Shared token**:
-A design token with the same value in every product.
+A design token with the same value in every app.
 _Avoid_: Global token, base token
 
-**Product theme**:
-The tokens through which one product expresses its brand. Today it holds only the primary color and its hover state.
-_Avoid_: Theme (alone), brand theme, skin
+**App theme**:
+The tokens through which one app expresses its brand. It holds only the primary color and its hover state; today only the website has one.
+_Avoid_: Theme (alone), product theme, brand theme, skin
 
 **Foundation**:
 A raw value on a scale, such as gray 50 to 950, that roles draw from. Components never use a foundation directly.
@@ -29,11 +29,19 @@ A token named for its purpose, such as background, foreground or primary, rather
 _Avoid_: Semantic color, alias
 
 **Status color**:
-A role that signals success, warning, danger or info. It is the same in every product and never takes the brand color.
+A role that signals success, warning, danger or info. It is the same in every app and never takes the brand color.
 _Avoid_: Feedback color, alert color
 
+**Classification color**:
+The color of one Product Vision classification: intentional, aligned, unexplained or review. It is the same in every app and color scheme, and never takes the brand color.
+_Avoid_: Category color, label color
+
+**Drift color**:
+The color of a drift's sign: negative, positive or zero. It is the same in every app and never takes the brand color.
+_Avoid_: Delta color, trend color
+
 **Color scheme**:
-Light or dark. Dark is the default in every product.
+Light or dark. Dark is the default in every app.
 _Avoid_: Theme, mode
 
 ### Ex CLI

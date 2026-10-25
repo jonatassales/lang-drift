@@ -3,9 +3,9 @@
 		"lg": {
 			"color": {
 				"$type": "color",
-				"background": { "$value": "#FFFFFF" },
-				"foreground": { "$value": "#27262A" },
-				"card": { "$value": "#F9F9F9" },
+				"background": { "$value": "#F7F6F2" },
+				"foreground": { "$value": "#212121" },
+				"card": { "$value": "#FFFFFF" },
 				"card-foreground": { "$value": "{light.lg.color.foreground}" },
 				"popover": { "$value": "#FFFFFF" },
 				"popover-foreground": { "$value": "{light.lg.color.foreground}" },
@@ -13,11 +13,11 @@
 				"secondary": { "$value": "{lg.color.gray.100}" },
 				"secondary-foreground": { "$value": "{light.lg.color.foreground}" },
 				"muted": { "$value": "{lg.color.gray.100}" },
-				"muted-foreground": { "$value": "#535257" },
+				"muted-foreground": { "$value": "#6B6B75" },
 				"accent": { "$value": "{lg.color.gray.100}" },
 				"accent-foreground": { "$value": "{light.lg.color.foreground}" },
 				"destructive": { "$value": "{light.lg.status.danger}" },
-				"border": { "$value": "#DDDDDD" },
+				"border": { "$value": "#D9D9DD" },
 				"input": { "$value": "{light.lg.color.border}" },
 				"ring": { "$value": "{light.lg.color.primary}" },
 				"chart-1": { "$value": "{light.lg.color.primary}" },
@@ -44,6 +44,12 @@
 				"warning": { "$value": "#B45309" },
 				"danger": { "$value": "#B91C1C" },
 				"info": { "$value": "#1D4ED8" }
+			},
+			"drift": {
+				"$type": "color",
+				"negative": { "$value": "#B91C1C" },
+				"positive": { "$value": "#15803D" },
+				"zero": { "$value": "#C2410C" }
 			}
 		}
 	}

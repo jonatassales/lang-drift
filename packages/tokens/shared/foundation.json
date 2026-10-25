@@ -1,5 +1,12 @@
 {
 	"lg": {
+		"classification": {
+			"$type": "color",
+			"intentional": { "$value": "#3B82F6" },
+			"aligned": { "$value": "#16A34A" },
+			"unexplained": { "$value": "#DC2626" },
+			"review": { "$value": "#A855F7" }
+		},
 		"color": {
 			"$type": "color",
 			"gray": {
@@ -16,8 +23,12 @@
 			"font": {
 				"$type": "fontFamily",
 				"body": {
-					"$value": "system-ui, sans-serif",
+					"$value": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
 					"$extensions": { "dev.langdrift.tailwind": "--font-sans" }
+				},
+				"mono": {
+					"$value": "ui-monospace, \"SFMono-Regular\", Consolas, \"Liberation Mono\", monospace",
+					"$extensions": { "dev.langdrift.tailwind": "--font-mono" }
 				}
 			}
 		},
