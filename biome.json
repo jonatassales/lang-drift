@@ -85,8 +85,6 @@
 									"!@event-testdata/**",
 									"!@factories/**",
 									"!@i18n/**",
-									"!@infra/**",
-									"!@metadata/**",
 									"!@services/**",
 									"!@state"
 								]
@@ -100,8 +98,6 @@
 								"@event-testdata/**",
 								"@factories/**",
 								"@i18n/**",
-								"@infra/**",
-								"@metadata/**",
 								"@services/**",
 								"@state"
 							],

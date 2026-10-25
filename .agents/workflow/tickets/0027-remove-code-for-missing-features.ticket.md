@@ -48,7 +48,8 @@ Each file is on the ADR 0003 exception list, which lets it shrink. Only rules wh
 
 ### Placeholders for missing integrations
 
-- [x] `src/infra/better-stack/.gitkeep` stays, with the `@infra/*` alias and its Biome import groups: the owner keeps the `.gitkeep` placeholders.
+- [x] `src/infra/better-stack/.gitkeep` stays: where there is a `.gitkeep`, the owner keeps the folder. The `@infra/*` alias goes with its Biome import groups, since nothing imports through it.
+- [x] The `@metadata/*` alias goes with its Biome import groups: every metadata import uses `@app/metadata/`.
 - [x] The empty `src/app/state/state.data.ts` is deleted; the state barrel stays `src/app/lib/state/index.ts`.
 
 ### Formatters and unused dependencies
