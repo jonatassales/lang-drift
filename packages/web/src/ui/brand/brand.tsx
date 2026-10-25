@@ -25,19 +25,19 @@ export function LogoMark({ size = 31 }: LogoMarkProps) {
 		>
 			<path
 				d="M2 39 C20 39 27 35 35 24 C44 11 51 9 62 9"
+				className="stroke-primary"
 				fill="none"
-				stroke="#f97316"
 				strokeLinecap="butt"
 				strokeWidth="8"
 			/>
 			<path
 				d="M2 51 C24 51 34 46 43 33 C51 21 56 18 65 18"
+				className="stroke-primary"
 				fill="none"
-				stroke="#f97316"
 				strokeLinecap="butt"
 				strokeWidth="7"
 			/>
-			<circle cx="68" cy="8" fill="#f97316" r="8" />
+			<circle className="fill-primary" cx="68" cy="8" r="8" />
 		</svg>
 	)
 }

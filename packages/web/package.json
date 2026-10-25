@@ -11,7 +11,6 @@
 	],
 	"exports": {
 		"./styles.css": "./src/styles.css",
-		"./tokens.css": "./src/tokens.css",
 		"./ui/agent-orb": "./src/ui/agent-orb/index.ts",
 		"./ui/ai-avatars": "./src/ui/ai-avatars/index.ts",
 		"./ui/brand": "./src/ui/brand/index.ts",

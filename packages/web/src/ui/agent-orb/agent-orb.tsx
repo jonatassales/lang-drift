@@ -62,7 +62,7 @@ export function AgentOrb(props: AgentOrbProps) {
 			className={
 				ready
 					? 'inline-flex shrink-0'
-					: 'inline-flex shrink-0 rounded-full bg-[radial-gradient(circle_at_35%_30%,#fed7aa,#fb923c_50%,#c2410c)]'
+					: 'inline-flex shrink-0 rounded-full bg-[radial-gradient(circle_at_35%_30%,color-mix(in_srgb,var(--primary)_35%,white),var(--primary)_50%,color-mix(in_srgb,var(--primary)_60%,black))]'
 			}
 			style={{
 				height: dimension,

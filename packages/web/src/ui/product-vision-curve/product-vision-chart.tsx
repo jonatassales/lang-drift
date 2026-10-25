@@ -29,9 +29,9 @@ interface VisionChartProps
 
 const classificationColors: Record<DriftClassification, string> = {
 	baseline: 'var(--muted-foreground)',
-	intentional: '#3b82f6',
-	review: '#a855f7',
-	unexplained: '#dc2626',
+	intentional: 'var(--lg-classification-intentional)',
+	review: 'var(--lg-classification-review)',
+	unexplained: 'var(--lg-classification-unexplained)',
 }
 
 const dataDomain: [string, string] = ['dataMin - 4', 'dataMax + 4']
@@ -160,7 +160,7 @@ export function ProductVisionChart(props: VisionChartProps) {
 								<circle
 									cx={cx}
 									cy={cy}
-									fill={selected ? '#f97316' : color}
+									fill={selected ? 'var(--primary)' : color}
 									r={selected ? 7 : 5}
 									stroke="var(--card)"
 									strokeWidth={3}

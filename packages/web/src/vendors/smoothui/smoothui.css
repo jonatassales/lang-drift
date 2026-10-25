@@ -103,23 +103,35 @@
 }
 
 .header-four-grid span:nth-child(4n + 1):hover {
-	background: color-mix(in srgb, #f97316 30%, transparent);
-	border-color: #f97316;
+	background: color-mix(in srgb, var(--primary) 30%, transparent);
+	border-color: var(--primary);
 }
 
 .header-four-grid span:nth-child(4n + 2):hover {
-	background: color-mix(in srgb, #3b82f6 24%, transparent);
-	border-color: #3b82f6;
+	background: color-mix(
+		in srgb,
+		var(--lg-classification-intentional) 24%,
+		transparent
+	);
+	border-color: var(--lg-classification-intentional);
 }
 
 .header-four-grid span:nth-child(4n + 3):hover {
-	background: color-mix(in srgb, #16a34a 20%, transparent);
-	border-color: #16a34a;
+	background: color-mix(
+		in srgb,
+		var(--lg-classification-aligned) 20%,
+		transparent
+	);
+	border-color: var(--lg-classification-aligned);
 }
 
 .header-four-grid span:nth-child(4n):hover {
-	background: color-mix(in srgb, #a855f7 20%, transparent);
-	border-color: #a855f7;
+	background: color-mix(
+		in srgb,
+		var(--lg-classification-review) 20%,
+		transparent
+	);
+	border-color: var(--lg-classification-review);
 }
 
 .header-four-copy {
@@ -167,11 +179,11 @@
 	animation: langdrift-chroma 7s linear infinite;
 	background: linear-gradient(
 		100deg,
-		#f97316,
+		var(--primary),
 		#ffb36f,
-		#3b82f6,
-		#a855f7,
-		#f97316
+		var(--lg-classification-intentional),
+		var(--lg-classification-review),
+		var(--primary)
 	);
 	background-clip: text;
 	background-size: 220% 100%;
