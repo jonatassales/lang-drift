@@ -14,6 +14,8 @@
 	"scripts": {
 		"postinstall": "sh platform/cli/drift setup",
 		"prepare": "husky platform/versioning/.husky",
+		"website": "turbo run dev --filter=website",
+		"website-old": "turbo run dev --filter=website-old",
 		"check": "biome check .",
 		"fix": "biome check --write ."
 	},

@@ -1,0 +1,125 @@
+[
+	{
+		"email": "  First.Last+Alias@Example.COM  ",
+		"valid": true,
+		"normalized": "First.Last+Alias@example.com"
+	},
+	{
+		"email": "o'connor@example.com",
+		"valid": true,
+		"normalized": "o'connor@example.com"
+	},
+	{
+		"email": "a_b@example.co.uk",
+		"valid": true,
+		"normalized": "a_b@example.co.uk"
+	},
+	{
+		"email": "a@example.com",
+		"valid": true,
+		"normalized": "a@example.com"
+	},
+	{
+		"email": "",
+		"valid": false
+	},
+	{
+		"email": "not-an-email",
+		"valid": false
+	},
+	{
+		"email": "a@localhost",
+		"valid": false
+	},
+	{
+		"email": "Name <a@example.com>",
+		"valid": false
+	},
+	{
+		"email": "\"a\"@example.com",
+		"valid": false
+	},
+	{
+		"email": ".a@example.com",
+		"valid": false
+	},
+	{
+		"email": "a..b@example.com",
+		"valid": false
+	},
+	{
+		"email": "a.@example.com",
+		"valid": false
+	},
+	{
+		"email": "a@example..com",
+		"valid": false
+	},
+	{
+		"email": "a@example.c",
+		"valid": false
+	},
+	{
+		"email": "a\r\nb@example.com",
+		"valid": false
+	},
+	{
+		"email": "日本@example.com",
+		"valid": false
+	},
+	{
+		"email": "end'@example.com",
+		"valid": true,
+		"normalized": "end'@example.com"
+	},
+	{
+		"email": "!#$%&'*+-/=?^_`{|}~@example.com",
+		"valid": true,
+		"normalized": "!#$%&'*+-/=?^_`{|}~@example.com"
+	},
+	{
+		"email": " a@EXAMPLE.COM ",
+		"valid": true,
+		"normalized": "a@example.com"
+	},
+	{
+		"email": "\ta@example.com",
+		"valid": false
+	},
+	{
+		"email": "a@example.com\n",
+		"valid": false
+	},
+	{
+		"email": "a@example.com",
+		"valid": false
+	},
+	{
+		"email": "a@-example.com",
+		"valid": false
+	},
+	{
+		"email": "a@example-.com",
+		"valid": false
+	},
+	{
+		"email": "a@bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.com",
+		"valid": false
+	},
+	{
+		"email": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@example.com",
+		"valid": false
+	},
+	{
+		"email": "a@example.com,b@example.com",
+		"valid": false
+	},
+	{
+		"email": "a@example.com; b@example.com",
+		"valid": false
+	},
+	{
+		"email": "a @example.com",
+		"valid": false
+	}
+]

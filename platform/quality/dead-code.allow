@@ -8,3 +8,6 @@ module apps/website/src/app/template/formatters/*.fmt.ts # The owner keeps the f
 export apps/website/src/app/template/formatters/*.fmt.ts#* # The owner keeps the formatters.
 dependency apps/website:react-dom # Next.js requires it as a peer.
 class recharts-* # Recharts renders these classes.
+module apps/website-old/src/app/template/formatters/*.fmt.ts # The old website keeps the formatters too.
+export apps/website-old/src/app/template/formatters/*.fmt.ts#* # The old website keeps the formatters too.
+dependency apps/website-old:react-dom # Next.js requires it as a peer.

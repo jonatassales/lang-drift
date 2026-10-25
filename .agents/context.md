@@ -4,7 +4,7 @@ Project knowledge for agents working in this repository. [`AGENTS.md`](/AGENTS.m
 
 ## Repository
 
-Monorepo with three packages, `@langdrift/tokens`, `@langdrift/web` and `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and one app, `apps/website`: the LangDrift website, copied from the earlier `langdrift` monorepo under spec 0003 (see `apps/website/README.md`).
+Monorepo with three packages, `@langdrift/tokens`, `@langdrift/web` and `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and two apps: `apps/website`, where the platform site is built, and `apps/website-old`, today's langdrift.md copied from the earlier `langdrift` monorepo under spec 0003 (see `apps/website-old/README.md`). The new website started as a clone of the old one; work happens in the new one.
 
 - `apps/<app>/`: one deployable Next.js app each. `pnpm-workspace.yaml` picks them up through `apps/*`.
 - `packages/<capability>/`: shared across apps, never inside one. `tokens`, `web` and `ex` exist; `shell`, `account`, `runtime` and `contracts` are planned.
@@ -12,13 +12,13 @@ Monorepo with three packages, `@langdrift/tokens`, `@langdrift/web` and `@langdr
 - A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package. Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
 - `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, `quality/` the lint-staged config, the Biome plugin and `dead-code.allow`, `versioning/` the commitlint config and the Git hooks (`.husky/`).
-- `turbo.json` declares the environment each task may see: Turborepo runs in strict mode, so a variable reaches a task only through `globalEnv`, a task's `env` or the pass-through lists. `apps/website/README.md` holds the website's variable contract and its tracked `.env.development` the shared development defaults, which hold no secret; `CRYPTO_SECRET` is pass-through only and never committed.
+- `turbo.json` declares the environment each task may see: Turborepo runs in strict mode, so a variable reaches a task only through `globalEnv`, a task's `env` or the pass-through lists. `apps/website/README.md` holds the website's variable contract (the old website has the same one) and its tracked `.env.development` the shared development defaults, which hold no secret; `CRYPTO_SECRET` is pass-through only and never committed.
 
 ## Toolchain and commands
 
 - pnpm is the only package manager. `devEngines.packageManager` in the root `package.json` makes other package managers fail, and `engineStrict` in `pnpm-workspace.yaml` enforces the Node range in `engines`.
 - Dependency install scripts run only when `allowBuilds` in `pnpm-workspace.yaml` allows them. Prebuilt binaries ship as optional dependencies, so the entries there are denials; approve a new one only when its build is required.
-- Work that spans the monorepo runs through Turborepo. Do not add root scripts that wrap `turbo run`.
+- Work that spans the monorepo runs through Turborepo. The only root scripts that wrap `turbo run` are the two app launchers below; do not add others.
 - A package's scripts call its tool directly (for example `tsc --noEmit`). Turborepo tasks run those scripts by name. Do not add shell or JavaScript wrappers for what Turborepo or pnpm already do.
 
 Run from the repository root:
@@ -26,6 +26,8 @@ Run from the repository root:
 | Command | Effect |
 | --- | --- |
 | `pnpm install` | Installs dependencies and the Git hooks, then links the `drift` launcher. Fails under another package manager or an unsupported Node version. |
+| `pnpm website` | Builds the packages the website depends on, then starts it in dev mode on port 3000. |
+| `pnpm website-old` | The same for the old website, on port 2000. |
 | `pnpm turbo run build` | Builds every package that has a `build` script, upstream packages first. |
 | `pnpm turbo run dev --filter=<package-name>` | Builds the packages an app depends on, then starts the app. |
 | `pnpm turbo run typecheck` | Runs each package's `typecheck` script. |
@@ -33,7 +35,7 @@ Run from the repository root:
 | `pnpm turbo run check` | Runs Biome format, lint and import checks on the whole repository. Read-only. |
 | `pnpm turbo run fix` | Same as `check`, writing safe fixes. Review the diff afterwards. |
 
-The website needs `CRYPTO_SECRET` in its `.env.local` even locally; without it every page answers 500. See `apps/website/README.md` for how to generate it.
+The website apps need `CRYPTO_SECRET` in their `.env.local` even locally; without it every page answers 500. See `apps/website/README.md` for how to generate it.
 
 `biome.json` owns formatting and import order: tabs, lines up to 80 columns, single quotes (double in JSX attributes), no semicolons, and imports grouped as packages, then aliases (`@/`, `#`, `~` and the website's `@app/*`, `@components/*`, `@i18n/*`, `@state`, …), then relative paths, separated by blank lines. An object literal with more than one property puts each property on its own line; `platform/quality/multi-property-object.grit` reports violations.
 
@@ -110,6 +112,8 @@ Single context. The glossary is the `## Glossary` section of this file, and ADRs
 | Check | `pnpm turbo run check`, `pnpm turbo run typecheck`, then `drift check dead-code` |
 | Test | `pnpm turbo run test` |
 | Guardrails | `drift git lint-history` over the pull request's commits |
+
+`apps/website-old` has no effect on CI: the Build, Check and Test jobs filter it out of every Turborepo task (`--filter=!website-old`), Biome ignores it through `biome.json`, and `platform/quality/dead-code.allow` covers what it keeps. Only the new website is checked.
 
 Actions, container images and downloaded tools are pinned to full commit SHAs, digests or checksums, with the version in a comment. The workflow tokens are read-only.
 

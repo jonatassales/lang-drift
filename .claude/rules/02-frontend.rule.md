@@ -33,3 +33,5 @@ Rules for React and Next.js code in this repository. Loaded in every session.
    - `packages/web/src/vendors/smoothui/basic-accordion.css`
    - `packages/web/src/vendors/smoothui/smoothui.css`
 
+   The same files under `apps/website-old/` are covered for as long as that app exists; it is a copy of the website kept for reference.
+

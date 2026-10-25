@@ -1,0 +1,577 @@
+{
+	"en": {
+		"chart": {
+			"title": "Product Vision",
+			"movement": "Vision movement",
+			"movementDetail": "down from {baseline} · 14 intentional · 4 unexplained",
+			"summary": "Product Vision moves from {from} to {to}. Important events are available as keyboard-focusable points on the curve.",
+			"event": "{title}, {delta} Product Vision, {classification}, {date}",
+			"why": "Why?",
+			"product": "Product"
+		},
+		"graph": {
+			"title": "Connected context",
+			"description": "Select a node to see who was involved and follow the movement on the chart.",
+			"instructions": "Hover to highlight direct connections. Click a node to open its card and select the related chart movement. With a keyboard, use Up and Down to navigate, Enter or Space to open, and Escape to close.",
+			"summary": "Forty-eight context nodes connect four illustrative movements: the vision baseline, pricing, authentication, and exports. Each node opens attribution and selects its related event on the Product Vision curve. The network rotates slowly.",
+			"closeLabel": "Close movement details",
+			"cardDescription": "{context} · {movement}",
+			"cardBadge": "{delta} pts",
+			"loading": "Loading connected context…",
+			"fallback": "The interactive graph is temporarily unavailable. Vision, decisions, and evidence remain connected in this illustrative example."
+		},
+		"classifications": {
+			"baseline": "Baseline",
+			"intentional": "Intentional Evolution",
+			"review": "Under Review",
+			"unexplained": "Unexplained Drift"
+		},
+		"teams": {
+			"product": "Product",
+			"platform": "Platform",
+			"leadership": "Leadership"
+		},
+		"areas": {
+			"vision": "Vision",
+			"pricing": "Pricing",
+			"authentication": "Authentication",
+			"exports": "Exports"
+		},
+		"events": {
+			"baseline": {
+				"action": "See baseline context",
+				"decision": "Vision baseline recorded",
+				"reason": "Leadership recorded the product direction used as the reference for this period.",
+				"title": "Vision baseline approved"
+			},
+			"pricing": {
+				"action": "View decision context",
+				"decision": "Decision recorded",
+				"reason": "Enterprise customers required a different packaging model.",
+				"title": "Pricing strategy changed"
+			},
+			"authentication": {
+				"action": "Review context",
+				"decision": "No matching product decision found",
+				"reason": "LangDrift found implementation evidence, but no matching recorded product decision.",
+				"title": "Authentication redesigned"
+			},
+			"exports": {
+				"action": "Inspect review state",
+				"decision": "Classification under review",
+				"reason": "Evidence shows the behavior changed, but the product rationale is not complete yet.",
+				"title": "Export behavior changed"
+			}
+		},
+		"nodes": {
+			"vision": "Vision",
+			"target": "Target",
+			"loop": "Loop",
+			"strategy": "Strategy",
+			"baseline": "Baseline",
+			"scope": "Scope",
+			"experience": "Experience",
+			"quality": "Quality",
+			"decision": "Decision",
+			"delivery": "Delivery",
+			"feedback": "Feedback",
+			"pricing": "Pricing",
+			"onboarding": "Onboarding",
+			"evidence": "Evidence",
+			"review": "Review",
+			"exports": "Exports",
+			"accessibility": "Access",
+			"tests": "Tests",
+			"reliability": "Reliability",
+			"context": "Context",
+			"intent": "Intent",
+			"release": "Release",
+			"research": "Research",
+			"authentication": "Authentication",
+			"outcomes": "Outcomes",
+			"principles": "Principles",
+			"alignment": "Alignment",
+			"roadmap": "Roadmap",
+			"segmentation": "Segments",
+			"packaging": "Packaging",
+			"enterprise": "Enterprise",
+			"commercial": "Commercial",
+			"discovery": "Discovery",
+			"approval": "Approval",
+			"tradeoff": "Trade-off",
+			"identity": "Identity",
+			"session": "Session",
+			"permissions": "Permissions",
+			"security": "Security",
+			"account": "Account",
+			"roles": "Roles",
+			"migration": "Migration",
+			"verification": "Verification",
+			"formats": "Formats",
+			"reports": "Reports",
+			"retention": "Retention",
+			"workflow": "Workflow",
+			"compatibility": "Compatibility"
+		}
+	},
+	"pt-BR": {
+		"chart": {
+			"title": "Product Vision",
+			"movement": "Movimento da visão",
+			"movementDetail": "antes {baseline} · 14 intencionais · 4 sem explicação",
+			"summary": "Product Vision passa de {from} para {to}. Os eventos importantes podem ser selecionados pelo teclado nos pontos da curva.",
+			"event": "{title}, {delta} em Product Vision, {classification}, {date}",
+			"why": "Por quê?",
+			"product": "Produto"
+		},
+		"graph": {
+			"title": "Contexto conectado",
+			"description": "Selecione um nó para ver quem participou e acompanhar o movimento no gráfico.",
+			"instructions": "Passe o ponteiro para destacar as conexões diretas. Clique em um nó para abrir seu card e selecionar o movimento relacionado no gráfico. No teclado, use as setas para cima e para baixo para navegar, Enter ou Espaço para abrir e Escape para fechar.",
+			"summary": "Quarenta e oito nós de contexto conectam quatro movimentos ilustrativos: a referência da visão, preços, autenticação e exportações. Cada nó mostra os participantes e seleciona o evento relacionado na curva de Product Vision. A rede gira lentamente.",
+			"closeLabel": "Fechar detalhes do movimento",
+			"cardDescription": "{context} · {movement}",
+			"cardBadge": "{delta} pts",
+			"loading": "Carregando o contexto conectado…",
+			"fallback": "O grafo interativo está temporariamente indisponível. Visão, decisões e evidências permanecem conectadas neste exemplo ilustrativo."
+		},
+		"classifications": {
+			"baseline": "Referência inicial",
+			"intentional": "Evolução intencional",
+			"review": "Em revisão",
+			"unexplained": "Drift sem explicação"
+		},
+		"teams": {
+			"product": "Produto",
+			"platform": "Plataforma",
+			"leadership": "Liderança"
+		},
+		"areas": {
+			"vision": "Visão",
+			"pricing": "Preços",
+			"authentication": "Autenticação",
+			"exports": "Exportações"
+		},
+		"events": {
+			"baseline": {
+				"action": "Ver contexto da referência",
+				"decision": "Referência da visão registrada",
+				"reason": "A liderança registrou a direção do produto usada como referência para este período.",
+				"title": "Referência da visão aprovada"
+			},
+			"pricing": {
+				"action": "Ver contexto da decisão",
+				"decision": "Decisão registrada",
+				"reason": "Clientes corporativos precisavam de outro modelo de oferta.",
+				"title": "Estratégia de preços alterada"
+			},
+			"authentication": {
+				"action": "Revisar contexto",
+				"decision": "Nenhuma decisão de produto correspondente encontrada",
+				"reason": "O LangDrift encontrou evidências de implementação, mas nenhuma decisão de produto correspondente registrada.",
+				"title": "Autenticação redesenhada"
+			},
+			"exports": {
+				"action": "Ver estado da revisão",
+				"decision": "Classificação em revisão",
+				"reason": "As evidências mostram uma mudança de comportamento, mas a justificativa de produto ainda está incompleta.",
+				"title": "Comportamento de exportação alterado"
+			}
+		},
+		"nodes": {
+			"vision": "Visão",
+			"target": "Objetivo",
+			"loop": "Ciclo",
+			"strategy": "Estratégia",
+			"baseline": "Referência",
+			"scope": "Escopo",
+			"experience": "Experiência",
+			"quality": "Qualidade",
+			"decision": "Decisão",
+			"delivery": "Entrega",
+			"feedback": "Retorno",
+			"pricing": "Preços",
+			"onboarding": "Introdução",
+			"evidence": "Evidências",
+			"review": "Revisão",
+			"exports": "Exportações",
+			"accessibility": "Acesso",
+			"tests": "Testes",
+			"reliability": "Confiança",
+			"context": "Contexto",
+			"intent": "Intenção",
+			"release": "Versão",
+			"research": "Pesquisa",
+			"authentication": "Autenticação",
+			"outcomes": "Resultados",
+			"principles": "Princípios",
+			"alignment": "Alinhamento",
+			"roadmap": "Direção",
+			"segmentation": "Segmentos",
+			"packaging": "Oferta",
+			"enterprise": "Corporativo",
+			"commercial": "Comercial",
+			"discovery": "Descoberta",
+			"approval": "Aprovação",
+			"tradeoff": "Escolha",
+			"identity": "Identidade",
+			"session": "Sessão",
+			"permissions": "Permissões",
+			"security": "Segurança",
+			"account": "Conta",
+			"roles": "Papéis",
+			"migration": "Migração",
+			"verification": "Verificação",
+			"formats": "Formatos",
+			"reports": "Relatórios",
+			"retention": "Retenção",
+			"workflow": "Fluxo",
+			"compatibility": "Compatibilidade"
+		}
+	},
+	"zh-Hant": {
+		"chart": {
+			"title": "Product Vision",
+			"movement": "願景變化",
+			"movementDetail": "原為 {baseline} · 14 點有意演進 · 4 點未有解釋",
+			"summary": "Product Vision 從 {from} 變為 {to}。您可以使用鍵盤聚焦並選取曲線上的重要事件。",
+			"event": "{title}，Product Vision {delta}，{classification}，{date}",
+			"why": "原因？",
+			"product": "產品"
+		},
+		"graph": {
+			"title": "相連的脈絡",
+			"description": "選取節點，了解參與者並在圖表中追蹤相關變動。",
+			"instructions": "將游標移至節點可突顯直接連結。點選節點可開啟卡片，並選取圖表中的相關變動。使用上下方向鍵導覽、Enter 或空白鍵開啟，以及 Escape 關閉。",
+			"summary": "四十八個脈絡節點連結四項示範變動：願景基準、定價、身分驗證與匯出。每個節點都會顯示參與者，並選取 Product Vision 曲線上的相關事件。網絡緩慢旋轉。",
+			"closeLabel": "關閉變動詳情",
+			"cardDescription": "{context} · {movement}",
+			"cardBadge": "{delta} 點",
+			"loading": "正在載入相連的脈絡…",
+			"fallback": "互動關聯圖暫時無法使用。在此示意範例中，願景、決策與證據仍彼此相連。"
+		},
+		"classifications": {
+			"baseline": "基準",
+			"intentional": "有意演進",
+			"review": "審查中",
+			"unexplained": "未解釋的偏移"
+		},
+		"teams": {
+			"product": "產品",
+			"platform": "平台",
+			"leadership": "領導團隊"
+		},
+		"areas": {
+			"vision": "願景",
+			"pricing": "定價",
+			"authentication": "身分驗證",
+			"exports": "匯出"
+		},
+		"events": {
+			"baseline": {
+				"action": "查看基準脈絡",
+				"decision": "已記錄願景基準",
+				"reason": "領導團隊記錄了產品方向，作為這段期間的參考基準。",
+				"title": "願景基準已核准"
+			},
+			"pricing": {
+				"action": "查看決策脈絡",
+				"decision": "已記錄決策",
+				"reason": "企業客戶需要不同的方案組合模式。",
+				"title": "定價策略已變更"
+			},
+			"authentication": {
+				"action": "審查脈絡",
+				"decision": "找不到對應的產品決策",
+				"reason": "LangDrift 找到了實作證據，但沒有對應的產品決策紀錄。",
+				"title": "身分驗證已重新設計"
+			},
+			"exports": {
+				"action": "查看審查狀態",
+				"decision": "分類審查中",
+				"reason": "證據顯示行為已改變，但產品層面的理由尚不完整。",
+				"title": "匯出行為已變更"
+			}
+		},
+		"nodes": {
+			"vision": "願景",
+			"target": "目標",
+			"loop": "循環",
+			"strategy": "策略",
+			"baseline": "基準",
+			"scope": "範圍",
+			"experience": "體驗",
+			"quality": "品質",
+			"decision": "決策",
+			"delivery": "交付",
+			"feedback": "回饋",
+			"pricing": "定價",
+			"onboarding": "引導",
+			"evidence": "證據",
+			"review": "審查",
+			"exports": "匯出",
+			"accessibility": "無障礙",
+			"tests": "測試",
+			"reliability": "可靠性",
+			"context": "脈絡",
+			"intent": "意圖",
+			"release": "發布",
+			"research": "研究",
+			"authentication": "身分驗證",
+			"outcomes": "成果",
+			"principles": "原則",
+			"alignment": "對齊",
+			"roadmap": "路線圖",
+			"segmentation": "分群",
+			"packaging": "方案組合",
+			"enterprise": "企業",
+			"commercial": "商務",
+			"discovery": "探索",
+			"approval": "核准",
+			"tradeoff": "取捨",
+			"identity": "身分",
+			"session": "工作階段",
+			"permissions": "權限",
+			"security": "安全",
+			"account": "帳戶",
+			"roles": "角色",
+			"migration": "遷移",
+			"verification": "驗證",
+			"formats": "格式",
+			"reports": "報告",
+			"retention": "保留",
+			"workflow": "流程",
+			"compatibility": "相容性"
+		}
+	},
+	"ja": {
+		"chart": {
+			"title": "Product Vision",
+			"movement": "ビジョンの変化",
+			"movementDetail": "{baseline} から低下 · 意図的 14 · 未説明 4",
+			"summary": "Product Vision は {from} から {to} に変化しています。曲線上の重要なイベントはキーボードでフォーカスして選択できます。",
+			"event": "{title}、Product Vision {delta}、{classification}、{date}",
+			"why": "理由は？",
+			"product": "プロダクト"
+		},
+		"graph": {
+			"title": "つながる背景",
+			"description": "ノードを選ぶと、関係者を確認し、グラフで変化を追えます。",
+			"instructions": "ポインターを合わせると直接のつながりが強調されます。ノードをクリックするとカードが開き、グラフの関連する変化が選択されます。上下の矢印キーで移動し、Enter またはスペースキーで開き、Escape で閉じます。",
+			"summary": "48の背景ノードが、ビジョンの基準、価格設定、認証、エクスポートという4つのデモの変化をつないでいます。各ノードで関係者を確認し、Product Vision 曲線の関連イベントを選択できます。ネットワークはゆっくり回転します。",
+			"closeLabel": "変化の詳細を閉じる",
+			"cardDescription": "{context} · {movement}",
+			"cardBadge": "{delta} ポイント",
+			"loading": "つながる背景を読み込み中…",
+			"fallback": "インタラクティブなネットワークは一時的に利用できません。このデモでは、ビジョン、意思決定、根拠が互いにつながっています。"
+		},
+		"classifications": {
+			"baseline": "基準",
+			"intentional": "意図的な進化",
+			"review": "確認中",
+			"unexplained": "未説明のドリフト"
+		},
+		"teams": {
+			"product": "プロダクト",
+			"platform": "プラットフォーム",
+			"leadership": "経営陣"
+		},
+		"areas": {
+			"vision": "ビジョン",
+			"pricing": "価格設定",
+			"authentication": "認証",
+			"exports": "エクスポート"
+		},
+		"events": {
+			"baseline": {
+				"action": "基準の背景を見る",
+				"decision": "ビジョンの基準を記録済み",
+				"reason": "経営陣は、この期間の基準となるプロダクトの方向性を記録しました。",
+				"title": "ビジョンの基準を承認"
+			},
+			"pricing": {
+				"action": "意思決定の背景を見る",
+				"decision": "意思決定を記録済み",
+				"reason": "大企業の顧客には異なるプラン構成が必要でした。",
+				"title": "価格戦略を変更"
+			},
+			"authentication": {
+				"action": "背景を確認",
+				"decision": "対応するプロダクトの意思決定が見つかりません",
+				"reason": "LangDrift は実装の根拠を検出しましたが、対応するプロダクトの意思決定の記録は見つかりませんでした。",
+				"title": "認証を再設計"
+			},
+			"exports": {
+				"action": "確認状況を見る",
+				"decision": "分類を確認中",
+				"reason": "根拠は動作の変化を示していますが、プロダクトとしての理由はまだ十分に記録されていません。",
+				"title": "エクスポートの動作を変更"
+			}
+		},
+		"nodes": {
+			"vision": "ビジョン",
+			"target": "目標",
+			"loop": "ループ",
+			"strategy": "戦略",
+			"baseline": "基準",
+			"scope": "範囲",
+			"experience": "体験",
+			"quality": "品質",
+			"decision": "意思決定",
+			"delivery": "提供",
+			"feedback": "反応",
+			"pricing": "価格",
+			"onboarding": "導入",
+			"evidence": "根拠",
+			"review": "確認",
+			"exports": "出力",
+			"accessibility": "使いやすさ",
+			"tests": "テスト",
+			"reliability": "信頼性",
+			"context": "背景",
+			"intent": "意図",
+			"release": "リリース",
+			"research": "調査",
+			"authentication": "認証",
+			"outcomes": "成果",
+			"principles": "原則",
+			"alignment": "整合",
+			"roadmap": "ロードマップ",
+			"segmentation": "顧客層",
+			"packaging": "プラン構成",
+			"enterprise": "企業",
+			"commercial": "商務",
+			"discovery": "探索",
+			"approval": "承認",
+			"tradeoff": "取捨選択",
+			"identity": "識別",
+			"session": "セッション",
+			"permissions": "権限",
+			"security": "安全性",
+			"account": "アカウント",
+			"roles": "役割",
+			"migration": "移行",
+			"verification": "検証",
+			"formats": "形式",
+			"reports": "レポート",
+			"retention": "保持",
+			"workflow": "フロー",
+			"compatibility": "互換性"
+		}
+	},
+	"vi": {
+		"chart": {
+			"title": "Product Vision",
+			"movement": "Thay đổi so với định hướng",
+			"movementDetail": "giảm từ {baseline} · 14 có chủ đích · 4 chưa có lý giải",
+			"summary": "Product Vision thay đổi từ {from} đến {to}. Các sự kiện quan trọng được thể hiện bằng những điểm trên đường cong có thể chọn bằng bàn phím.",
+			"event": "{title}, {delta} Product Vision, {classification}, {date}",
+			"why": "Vì sao?",
+			"product": "Sản phẩm"
+		},
+		"graph": {
+			"title": "Bối cảnh liên kết",
+			"description": "Chọn một nút để xem những người liên quan và theo dõi thay đổi trên biểu đồ.",
+			"instructions": "Di chuột để làm nổi bật các liên kết trực tiếp. Chọn một nút để mở thẻ thông tin và chọn thay đổi liên quan trên biểu đồ. Với bàn phím, dùng phím Lên và Xuống để di chuyển, Enter hoặc Dấu cách để mở, và Escape để đóng.",
+			"summary": "Bốn mươi tám nút bối cảnh kết nối bốn thay đổi minh họa: định hướng ban đầu, giá, xác thực và xuất dữ liệu. Mỗi nút mở thông tin đóng góp và chọn sự kiện liên quan trên đường cong Product Vision. Mạng lưới xoay chậm.",
+			"closeLabel": "Đóng chi tiết thay đổi",
+			"cardDescription": "{context} · {movement}",
+			"cardBadge": "{delta} điểm",
+			"loading": "Đang tải bối cảnh liên kết…",
+			"fallback": "Đồ thị tương tác tạm thời không khả dụng. Định hướng, quyết định và bằng chứng vẫn liên kết với nhau trong ví dụ minh họa này."
+		},
+		"classifications": {
+			"baseline": "Mốc ban đầu",
+			"intentional": "Phát triển có chủ đích",
+			"review": "Đang xem xét",
+			"unexplained": "Drift chưa có lý giải"
+		},
+		"teams": {
+			"product": "Sản phẩm",
+			"platform": "Nền tảng",
+			"leadership": "Lãnh đạo"
+		},
+		"areas": {
+			"vision": "Định hướng",
+			"pricing": "Giá",
+			"authentication": "Xác thực",
+			"exports": "Xuất dữ liệu"
+		},
+		"events": {
+			"baseline": {
+				"action": "Xem bối cảnh ban đầu",
+				"decision": "Đã ghi nhận định hướng ban đầu",
+				"reason": "Ban lãnh đạo đã ghi nhận định hướng sản phẩm làm mốc tham chiếu cho giai đoạn này.",
+				"title": "Định hướng ban đầu được chấp thuận"
+			},
+			"pricing": {
+				"action": "Xem bối cảnh quyết định",
+				"decision": "Đã ghi nhận quyết định",
+				"reason": "Khách hàng doanh nghiệp cần cách phân chia các gói khác.",
+				"title": "Chiến lược giá đã thay đổi"
+			},
+			"authentication": {
+				"action": "Xem xét bối cảnh",
+				"decision": "Không tìm thấy quyết định sản phẩm phù hợp",
+				"reason": "LangDrift tìm thấy bằng chứng triển khai nhưng chưa có quyết định sản phẩm tương ứng được ghi nhận.",
+				"title": "Xác thực được thiết kế lại"
+			},
+			"exports": {
+				"action": "Xem trạng thái đánh giá",
+				"decision": "Phân loại đang được xem xét",
+				"reason": "Bằng chứng cho thấy hành vi đã thay đổi, nhưng lý do về sản phẩm chưa đầy đủ.",
+				"title": "Hành vi xuất dữ liệu đã thay đổi"
+			}
+		},
+		"nodes": {
+			"vision": "Định hướng",
+			"target": "Mục tiêu",
+			"loop": "Vòng lặp",
+			"strategy": "Chiến lược",
+			"baseline": "Mốc ban đầu",
+			"scope": "Phạm vi",
+			"experience": "Trải nghiệm",
+			"quality": "Chất lượng",
+			"decision": "Quyết định",
+			"delivery": "Bàn giao",
+			"feedback": "Phản hồi",
+			"pricing": "Giá",
+			"onboarding": "Làm quen",
+			"evidence": "Bằng chứng",
+			"review": "Đánh giá",
+			"exports": "Xuất dữ liệu",
+			"accessibility": "Khả năng tiếp cận",
+			"tests": "Kiểm thử",
+			"reliability": "Độ tin cậy",
+			"context": "Bối cảnh",
+			"intent": "Chủ đích",
+			"release": "Phát hành",
+			"research": "Nghiên cứu",
+			"authentication": "Xác thực",
+			"outcomes": "Kết quả",
+			"principles": "Nguyên tắc",
+			"alignment": "Sự phù hợp",
+			"roadmap": "Lộ trình",
+			"segmentation": "Phân khúc",
+			"packaging": "Các gói",
+			"enterprise": "Doanh nghiệp",
+			"commercial": "Thương mại",
+			"discovery": "Khám phá",
+			"approval": "Chấp thuận",
+			"tradeoff": "Đánh đổi",
+			"identity": "Danh tính",
+			"session": "Phiên",
+			"permissions": "Quyền",
+			"security": "Bảo mật",
+			"account": "Tài khoản",
+			"roles": "Vai trò",
+			"migration": "Chuyển đổi",
+			"verification": "Xác minh",
+			"formats": "Định dạng",
+			"reports": "Báo cáo",
+			"retention": "Lưu giữ",
+			"workflow": "Quy trình",
+			"compatibility": "Tương thích"
+		}
+	}
+}

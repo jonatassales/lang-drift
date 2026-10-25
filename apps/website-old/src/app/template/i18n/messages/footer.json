@@ -1,0 +1,32 @@
+{
+	"en": {
+		"navigation": "Footer navigation",
+		"faq": "Questions & answers",
+		"social": "Follow LangDrift",
+		"copyright": "© 2026 LangDrift · Made in Brazil"
+	},
+	"pt-BR": {
+		"navigation": "Navegação do rodapé",
+		"faq": "Perguntas frequentes",
+		"social": "Acompanhe o LangDrift",
+		"copyright": "© 2026 LangDrift · Feito no Brasil"
+	},
+	"zh-Hant": {
+		"navigation": "頁尾導覽",
+		"faq": "常見問題",
+		"social": "追蹤 LangDrift",
+		"copyright": "© 2026 LangDrift · 源自巴西"
+	},
+	"ja": {
+		"navigation": "フッターナビゲーション",
+		"faq": "よくある質問",
+		"social": "LangDriftをフォロー",
+		"copyright": "© 2026 LangDrift · ブラジル発"
+	},
+	"vi": {
+		"navigation": "Điều hướng cuối trang",
+		"faq": "Câu hỏi và trả lời",
+		"social": "Theo dõi LangDrift",
+		"copyright": "© 2026 LangDrift · Được tạo tại Brazil"
+	}
+}
