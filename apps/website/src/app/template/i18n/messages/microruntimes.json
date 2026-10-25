@@ -11,7 +11,6 @@
 			"summary": "A runtime named checkout-preview with three components, 1,500 millicores and 2,048 MiB. Its last execution ran from configure to clean up: the requested state is stopped and the cleanup is confirmed. Six lifecycle steps, configure, validate, prepare, execute, inspect and clean up, can be selected to read what each step does and the evidence it leaves."
 		},
 		"lifecycle": {
-			"label": "checkout-preview · revision 3 · exec-41b2",
 			"terminal": {
 				"title": "ex — shop",
 				"label": "Terminal: an ex session",
@@ -63,21 +62,8 @@
 					"leaves": "Removed and remaining resources, with a confirmation or an unknown outcome."
 				}
 			},
-			"summary": {
-				"components": "Components",
-				"cpu": "CPU",
-				"memory": "Memory",
-				"desired": "Requested",
-				"observed": "Observed"
-			},
-			"componentsValue": "{count, plural, one {# component} other {# components}}",
 			"cpuValue": "{value}m",
 			"memoryValue": "{value} MiB",
-			"states": {
-				"stopped": "Stopped",
-				"cleanedUp": "Cleaned up"
-			},
-			"observedDetail": "7 of 7 owned resources removed",
 			"whatItDoes": "What it does",
 			"evidenceItLeaves": "Evidence it leaves"
 		},
@@ -335,7 +321,6 @@
 			"summary": "Um runtime chamado checkout-preview, com três componentes, 1.500 milicores e 2.048 MiB. Sua última execução foi da configuração à limpeza: o estado solicitado é parado e a limpeza está confirmada. Seis etapas do ciclo de vida, configurar, validar, preparar, executar, inspecionar e limpar, podem ser selecionadas para ler o que cada uma faz e a evidência que deixa."
 		},
 		"lifecycle": {
-			"label": "checkout-preview · revisão 3 · exec-41b2",
 			"terminal": {
 				"title": "ex — shop",
 				"label": "Terminal: uma sessão do ex",
@@ -387,21 +372,8 @@
 					"leaves": "Os recursos removidos e os restantes, com uma confirmação ou um resultado desconhecido."
 				}
 			},
-			"summary": {
-				"components": "Componentes",
-				"cpu": "CPU",
-				"memory": "Memória",
-				"desired": "Solicitado",
-				"observed": "Observado"
-			},
-			"componentsValue": "{count, plural, one {# componente} other {# componentes}}",
 			"cpuValue": "{value}m",
 			"memoryValue": "{value} MiB",
-			"states": {
-				"stopped": "Parado",
-				"cleanedUp": "Limpo"
-			},
-			"observedDetail": "7 de 7 recursos próprios removidos",
 			"whatItDoes": "O que faz",
 			"evidenceItLeaves": "Evidência que deixa"
 		},
@@ -659,7 +631,6 @@
 			"summary": "一個名為 checkout-preview 的 runtime，含三個元件、1,500 毫核心與 2,048 MiB。它的上一次執行從設定走到清理：請求狀態為已停止，清理已確認。可選取六個生命週期步驟：設定、驗證、準備、執行、檢查與清理，閱讀每一步做什麼以及留下的證據。"
 		},
 		"lifecycle": {
-			"label": "checkout-preview · 第 3 版 · exec-41b2",
 			"terminal": {
 				"title": "ex — shop",
 				"label": "終端機：ex 工作階段",
@@ -711,21 +682,8 @@
 					"leaves": "已移除與剩餘的資源，附上確認或未知的結果。"
 				}
 			},
-			"summary": {
-				"components": "元件",
-				"cpu": "CPU",
-				"memory": "記憶體",
-				"desired": "請求",
-				"observed": "觀測"
-			},
-			"componentsValue": "{count, plural, other {# 個元件}}",
 			"cpuValue": "{value}m",
 			"memoryValue": "{value} MiB",
-			"states": {
-				"stopped": "已停止",
-				"cleanedUp": "已清理"
-			},
-			"observedDetail": "7 個擁有的資源中已移除 7 個",
 			"whatItDoes": "它做什麼",
 			"evidenceItLeaves": "留下的證據"
 		},
@@ -983,7 +941,6 @@
 			"summary": "checkout-preview という名前の runtime で、3 つのコンポーネント、1,500 ミリコア、2,048 MiB を持ちます。直近の実行は設定からクリーンアップまで進みました。要求された状態は停止、クリーンアップは確認済みです。設定・検証・準備・実行・検査・クリーンアップの 6 つのステップを選ぶと、各ステップが何をし、どんな証拠を残すかを読めます。"
 		},
 		"lifecycle": {
-			"label": "checkout-preview · リビジョン 3 · exec-41b2",
 			"terminal": {
 				"title": "ex — shop",
 				"label": "ターミナル：ex のセッション",
@@ -1035,21 +992,8 @@
 					"leaves": "削除したリソースと残ったリソース、そして確認済みまたは不明という結果。"
 				}
 			},
-			"summary": {
-				"components": "コンポーネント",
-				"cpu": "CPU",
-				"memory": "メモリ",
-				"desired": "要求",
-				"observed": "観測"
-			},
-			"componentsValue": "{count, plural, other {# 個のコンポーネント}}",
 			"cpuValue": "{value}m",
 			"memoryValue": "{value} MiB",
-			"states": {
-				"stopped": "停止",
-				"cleanedUp": "クリーンアップ済み"
-			},
-			"observedDetail": "所有する 7 個のうち 7 個を削除",
 			"whatItDoes": "何をするか",
 			"evidenceItLeaves": "残す証拠"
 		},
@@ -1307,7 +1251,6 @@
 			"summary": "Một runtime tên checkout-preview với ba thành phần, 1.500 millicore và 2.048 MiB. Lần thực thi gần nhất của nó đã đi từ cấu hình đến dọn dẹp: trạng thái được yêu cầu là đã dừng và việc dọn dẹp đã được xác nhận. Có thể chọn sáu bước của vòng đời, cấu hình, xác thực, chuẩn bị, thực thi, kiểm tra và dọn dẹp, để đọc mỗi bước làm gì và để lại bằng chứng gì."
 		},
 		"lifecycle": {
-			"label": "checkout-preview · bản sửa đổi 3 · exec-41b2",
 			"terminal": {
 				"title": "ex — shop",
 				"label": "Terminal: một phiên ex",
@@ -1359,21 +1302,8 @@
 					"leaves": "Các tài nguyên đã gỡ và còn lại, kèm xác nhận hoặc một kết quả chưa rõ."
 				}
 			},
-			"summary": {
-				"components": "Thành phần",
-				"cpu": "CPU",
-				"memory": "Bộ nhớ",
-				"desired": "Được yêu cầu",
-				"observed": "Quan sát được"
-			},
-			"componentsValue": "{count, plural, other {# thành phần}}",
 			"cpuValue": "{value}m",
 			"memoryValue": "{value} MiB",
-			"states": {
-				"stopped": "Đã dừng",
-				"cleanedUp": "Đã dọn dẹp"
-			},
-			"observedDetail": "Đã gỡ 7 trên 7 tài nguyên sở hữu",
 			"whatItDoes": "Bước này làm gì",
 			"evidenceItLeaves": "Bằng chứng để lại"
 		},

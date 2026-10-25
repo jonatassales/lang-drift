@@ -9,7 +9,7 @@ import { setRequestLocale } from 'next-intl/server'
 import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
 import { EarlyAccessSection } from '@components/early-access/section'
 import { AuthoringFlow } from '@components/microruntimes/authoring-flow'
-import { LifecycleDemo } from '@components/microruntimes/lifecycle-demo'
+import { LifecycleSteps } from '@components/microruntimes/lifecycle-steps'
 import { RuntimeDescriptorCard } from '@components/microruntimes/runtime-descriptor-card'
 import { StageEvidence } from '@components/microruntimes/stage-evidence'
 import { PillarScenarios } from '@components/product-page/pillar-scenarios'
@@ -103,7 +103,6 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 							prompt="~/shop %"
 							title={copy.lifecycle.terminal.title}
 						/>
-						<LifecycleDemo copy={copy.lifecycle} locale={locale} />
 					</div>
 				</ProductHero>
 
@@ -277,6 +276,7 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 						]}
 						title={copy.evidence.ledgerTitle}
 					/>
+					<LifecycleSteps copy={copy.lifecycle} />
 					<StageEvidence
 						copy={copy.evidence}
 						stageLabels={copy.lifecycle.stages}

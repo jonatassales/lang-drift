@@ -222,7 +222,6 @@ export interface MicroruntimesMessages {
 		summary: string
 	}
 	lifecycle: {
-		label: string
 		terminal: {
 			title: string
 			label: string
@@ -233,18 +232,8 @@ export interface MicroruntimesMessages {
 			LifecycleStageId,
 			{ label: string; does: string; leaves: string }
 		>
-		summary: {
-			components: string
-			cpu: string
-			memory: string
-			desired: string
-			observed: string
-		}
-		componentsValue: string
 		cpuValue: string
 		memoryValue: string
-		states: { stopped: string; cleanedUp: string }
-		observedDetail: string
 		whatItDoes: string
 		evidenceItLeaves: string
 	}
