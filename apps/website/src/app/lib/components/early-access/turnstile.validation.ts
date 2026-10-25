@@ -18,10 +18,6 @@ const testSecrets = new Set([
 type EarlyAccessMode = 'production' | 'development' | 'test'
 
 function earlyAccessMode(): EarlyAccessMode {
-	const hosted =
-		process.env.VERCEL === '1' ||
-		['production', 'preview'].includes(process.env.VERCEL_ENV ?? '')
-	if (hosted) return 'production'
 	if (process.env.NODE_ENV === 'development') return 'development'
 	if (process.env.EARLY_ACCESS_MODE === 'test') return 'test'
 	return 'production'
@@ -85,9 +81,6 @@ export async function verifyEarlyAccessChallenge(
 		: AbortSignal.timeout(2500)
 
 	try {
-		if (process.env.WEBSITE_PREVIEW_SIGNUP_DISABLED !== 'false') {
-			return 'verified'
-		}
 		const earlyAccessServerEnv = readTurnstile()
 		const response = await fetch(earlyAccessServerEnv.turnstileVerifyUrl, {
 			method: 'POST',

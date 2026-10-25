@@ -63,11 +63,9 @@ export default async function PrivacyPage(props: PrivacyPageProps) {
 					<section aria-labelledby="privacy-information" className="mb-10">
 						<h2 id="privacy-information">{copy.overviewTitle}</h2>
 						<p>{copy.overview}</p>
-						<p>
-							{process.env.WEBSITE_PREVIEW_SIGNUP_DISABLED !== 'false'
-								? copy.paused
-								: copy.active}
-						</p>
+						{/* Sign-up is paused until feature flags have a proper home. When it opens, show copy.active instead. */}
+						<p>{copy.paused}</p>
+						{/* <p>{copy.active}</p> */}
 					</section>
 					<section aria-labelledby="privacy-turnstile" className="mb-10">
 						<h2 id="privacy-turnstile">{copy.turnstileTitle}</h2>

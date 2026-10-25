@@ -5,16 +5,6 @@
 			"dependsOn": ["^build"],
 			"outputs": ["dist/**", ".next/**", "!.next/cache/**"]
 		},
-		"website#build": {
-			"dependsOn": ["^build"],
-			"inputs": ["$TURBO_DEFAULT$", ".env*"],
-			"env": [
-				"TURNSTILE_*",
-				"EARLY_ACCESS_*",
-				"WEBSITE_PREVIEW_SIGNUP_DISABLED"
-			],
-			"outputs": [".next/**", "!.next/cache/**"]
-		},
 		"dev": {
 			"dependsOn": ["^build"],
 			"cache": false,
@@ -36,12 +26,5 @@
 			"cache": false
 		}
 	},
-	"globalEnv": ["EARLY_ACCESS_MODE", "VERCEL", "VERCEL_ENV"],
-	"globalPassThroughEnv": [
-		"CRYPTO_SECRET",
-		"RESEND_*",
-		"CI",
-		"NEXT_TELEMETRY_DISABLED",
-		"NODE_OPTIONS"
-	]
+	"globalPassThroughEnv": ["CRYPTO_SECRET", "CI"]
 }

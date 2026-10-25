@@ -12,10 +12,11 @@ next-env.d.ts
 .turbo/
 coverage/
 
-# Environment: only the example file is tracked
+# Environment: only the examples and the shared development defaults are tracked
 .env
 .env.*
 !.env.example
+!.env.development
 
 # Operating system
 .DS_Store

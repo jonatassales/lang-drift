@@ -37,7 +37,7 @@ export function AnimatedAvatarGroup({
 		>
 			{people.map((person, index) => (
 				<span
-					className="avatar-chip"
+					className="inline-flex items-center justify-center overflow-hidden rounded-[999px] border-2 border-card bg-foreground font-bold text-[9px] text-card transition-[margin-inline-start] duration-180 ease-[ease] motion-reduce:transition-none"
 					key={person.name}
 					style={{
 						height: size,
@@ -48,7 +48,12 @@ export function AnimatedAvatarGroup({
 					title={`${person.name}${person.role ? ` · ${person.role}` : ''}`}
 				>
 					{person.src ? (
-						<img alt="" aria-hidden="true" src={person.src} />
+						<img
+							alt=""
+							aria-hidden="true"
+							className="block h-full w-full object-cover"
+							src={person.src}
+						/>
 					) : (
 						person.initials
 					)}

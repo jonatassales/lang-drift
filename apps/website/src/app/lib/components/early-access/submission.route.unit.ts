@@ -18,7 +18,6 @@ let admissionStatus: number
 let registrationStatus: number
 let verification: unknown
 beforeEach(() => {
-	vi.stubEnv('WEBSITE_PREVIEW_SIGNUP_DISABLED', 'false')
 	vi.stubEnv('EARLY_ACCESS_MODE', 'test')
 	vi.stubEnv('EARLY_ACCESS_REGISTRY_URL', registryUrl)
 	vi.stubEnv(
@@ -30,8 +29,6 @@ beforeEach(() => {
 	vi.stubEnv('TURNSTILE_EXPECTED_HOSTNAME', 'localhost')
 	vi.stubEnv('TURNSTILE_VERIFY_URL', verifyUrl)
 	vi.stubEnv('NEXT_PUBLIC_TURNSTILE_SITE_KEY', 'site-key-fixture')
-	vi.stubEnv('VERCEL', '')
-	vi.stubEnv('VERCEL_ENV', '')
 	calls = []
 	admissionStatus = 200
 	registrationStatus = 202
@@ -40,7 +37,6 @@ beforeEach(() => {
 		hostname: 'localhost',
 		action: 'early-access',
 	}
-	vi.stubEnv('VERCEL', undefined)
 	vi.stubGlobal(
 		'fetch',
 		vi.fn(async (url: string, options: RequestInit) => {
@@ -207,7 +203,6 @@ it('ignores browser-forwarded identity locally and fails closed on untrusted pro
 	await postEarlyAccess(
 		request(undefined, {
 			'x-forwarded-for': '203.0.113.77',
-			'x-vercel-forwarded-for': '203.0.113.78',
 		}),
 	)
 	expect(calls[0]?.body.origin).toBe('127.0.0.1')
@@ -230,6 +225,7 @@ it('ignores browser-forwarded identity locally and fails closed on untrusted pro
 					{
 						host: 'langdrift.md',
 						origin: 'https://langdrift.md',
+						'x-forwarded-for': '203.0.113.7',
 					},
 					'https://langdrift.md/api/early-access/',
 				),
@@ -238,48 +234,6 @@ it('ignores browser-forwarded identity locally and fails closed on untrusted pro
 	).toBe(503)
 	expect(calls).toHaveLength(0)
 })
-it('requires a single provider-owned IP when running on Vercel', async () => {
-	vi.stubEnv('VERCEL', '1')
-	vi.stubEnv('EARLY_ACCESS_REGISTRY_URL', 'https://registry.example.test')
-	vi.stubEnv('EARLY_ACCESS_PUBLIC_ORIGIN', 'https://langdrift.md')
-	vi.stubEnv(
-		'TURNSTILE_VERIFY_URL',
-		'https://challenges.cloudflare.com/turnstile/v0/siteverify',
-	)
-	vi.stubEnv('TURNSTILE_SECRET_KEY', 'production-secret-fixture')
-	vi.stubEnv('NEXT_PUBLIC_TURNSTILE_SITE_KEY', 'production-site-fixture')
-	vi.stubEnv('TURNSTILE_EXPECTED_HOSTNAME', 'langdrift.md')
-	const hosted = (headers: Record<string, string> = {}) =>
-		request(
-			undefined,
-			{
-				host: 'langdrift.md',
-				origin: 'https://langdrift.md',
-				...headers,
-			},
-			'https://langdrift.md/api/early-access/',
-		)
-	expect(
-		(await postEarlyAccess(hosted({ 'x-forwarded-for': '203.0.113.7' })))
-			.status,
-	).toBe(503)
-	expect(
-		(
-			await postEarlyAccess(
-				hosted({
-					'x-vercel-forwarded-for': '203.0.113.8, 203.0.113.9',
-				}),
-			)
-		).status,
-	).toBe(503)
-	expect(calls).toHaveLength(0)
-})
-it('disabled previews produce no false success and no external calls', async () => {
-	vi.stubEnv('WEBSITE_PREVIEW_SIGNUP_DISABLED', 'true')
-	expect((await postEarlyAccess(request())).status).toBe(503)
-	expect(calls).toHaveLength(0)
-})
-
 it.each([null, false, { success: true }])(
 	'returns503 on malformed Siteverify without registering %#',
 	async (body) => {

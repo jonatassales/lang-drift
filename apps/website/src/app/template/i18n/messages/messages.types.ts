@@ -379,11 +379,6 @@ export interface EarlyAccessSentMessages {
 	image: string
 }
 
-export interface EarlyAccessEmail {
-	subject: string
-	text: string
-}
-
 export type IntegrationId = 'github' | 'obsidian' | 'linear'
 
 export interface IntegrationsMessages {

@@ -28,9 +28,7 @@ Rules for React and Next.js code in this repository. Loaded in every session.
    - `apps/website/src/app/template/tailwind/base.css` (the body base layer)
    - `apps/website/src/app/template/tailwind/utilities.css` (empty; the home of an approved `@utility`)
    - `packages/web/src/styles.css`
-   - `packages/web/src/ui/product-experience.css`
    - `packages/web/src/ui/product-vision-curve/product-vision-curve.css`
-   - `packages/web/src/ui/ui-consistency.css`
    - `packages/web/src/vendors/smoothui/animated-tabs.css`
    - `packages/web/src/vendors/smoothui/basic-accordion.css`
    - `packages/web/src/vendors/smoothui/smoothui.css`

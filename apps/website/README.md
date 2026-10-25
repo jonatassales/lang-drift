@@ -1,8 +1,10 @@
 # Website
 
-The public, localized LangDrift website: the product story, the Product Vision demos, pricing, privacy and the early-access flow. Demo calls to action lead to the return-soon section above the footer; requests are paused by default.
+The public, localized LangDrift website: the product story, the Product Vision demos, pricing, privacy and the early-access flow. Demo calls to action lead to the return-soon section above the footer; requests are paused.
 
-Early access posts to a private registry service outside this repository. Admission → Turnstile Siteverify → registration in the registry, which persists the contact and sends the confirmation. The website holds no email credentials and never sends mail itself. HTTP 202 confirms persistence, not delivery. Preview deployments never accept sign-ups.
+Early access posts to a private registry service outside this repository. Admission → Turnstile Siteverify → registration in the registry, which persists the contact and sends the confirmation. The website holds no email credentials and never sends mail itself. HTTP 202 confirms persistence, not delivery.
+
+Sign-up is paused in code until feature flags have a proper home: the section shows the return-soon notice, the privacy page states the pause and `/api/early-access/` answers 503. The code that opens it stays commented where it lives: the form in `early-access/section.tsx`, the active notice in the privacy page and the real handler in `api/early-access/route.ts`.
 
 ## Development
 
@@ -16,12 +18,11 @@ Run from the repository root:
 | `pnpm turbo run build --filter=website` | Builds the app and the packages it depends on. |
 | `drift check localization` | Checks the translation catalogs after a catalog or loader change. |
 
-Git ignores every `.env*` file. Put local values in `apps/website/.env.local`, which Next.js loads. Never put a secret in a `NEXT_PUBLIC_` variable.
+`.env.development` holds the shared development defaults and is tracked, so it never holds a secret: it lists `CRYPTO_SECRET` without a value. Git ignores every other `.env*` file. Put local and secret values in `apps/website/.env.local`, which Next.js loads and which takes precedence over `.env.development`. Never put a secret in a `NEXT_PUBLIC_` variable.
 
 | Variable | Requirement |
 | --- | --- |
 | `CRYPTO_SECRET` | Server-only 32-byte AES key in canonical base64; the locale proxy needs it, even locally. Generate with `openssl rand -base64 32`. Every instance of a deploy uses the same key. |
-| `WEBSITE_PREVIEW_SIGNUP_DISABLED` | Requests stay paused unless set to `false`; unset, `true` and invalid values hide the form and block admission. Preview deployments are always paused. |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | The Invisible production widget; Cloudflare's official Invisible test key locally. |
 | `TURNSTILE_SECRET_KEY` | Server-only widget secret; production rejects test keys. |
 | `TURNSTILE_EXPECTED_HOSTNAME` | Exact approved hostname; `localhost` for local fixtures. |
@@ -31,7 +32,7 @@ Git ignores every `.env*` file. Put local values in `apps/website/.env.local`, w
 | `EARLY_ACCESS_REGISTRY_KEY` | Server-only website credential for the registry, at least 32 characters. |
 | `EARLY_ACCESS_MODE` | `test` selects the test fixtures outside development; anything else behaves as production. |
 
-`VERCEL` and `VERCEL_ENV` come from the platform. On Vercel, the request's source address is taken only from the provider-owned `x-vercel-forwarded-for` header. Self-hosted production fails closed until a trusted ingress contract exists. Registry admission is never exposed to browsers, and client-supplied IP headers never count as proof.
+Production fails closed until a trusted ingress contract for the host exists. Registry admission is never exposed to browsers, and client-supplied IP headers never count as proof.
 
 ## Locales
 

@@ -43,7 +43,7 @@ Run from the repository root:
 - A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
 - Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
-- `turbo.json` declares the environment each task may see: Turborepo runs in strict mode, so a variable reaches a task only through `globalEnv`, a task's `env` or the pass-through lists. `apps/website/README.md` holds the website's variable contract, and its `.env.development` the local defaults; `CRYPTO_SECRET` is pass-through only and never committed.
+- `turbo.json` declares the environment each task may see: Turborepo runs in strict mode, so a variable reaches a task only through `globalEnv`, a task's `env` or the pass-through lists. `apps/website/README.md` holds the website's variable contract and its tracked `.env.development` the shared development defaults, which hold no secret; `CRYPTO_SECRET` is pass-through only and never committed.
 - `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, `quality/` the lint-staged config and the Biome plugin, `versioning/` the commitlint config and the Git hooks (`.husky/`).
 
 ## Platform CLI
@@ -66,7 +66,7 @@ When the shell resolves `drift` to another program (a link from an older checkou
 
 - The app switcher links to another domain or subdomain. It is not internal routing.
 - Account and session come from a central account app, not from each app.
-- The switcher and the shell live in `packages/shell`. Each app owns its sidebar and its content.
+- The switcher and the shell will live in `packages/shell`, which is planned. Each app owns its sidebar and its content.
 
 ## Spec-driven development
 
@@ -113,14 +113,13 @@ Single context. The glossary is the `## Glossary` section of `.agents/context.md
 
 ## Continuous integration
 
-`.github/workflows/pull-request.yml` runs on every pull request into `main`, one job per concern. The workflow builds the website against safe values (early access paused, sign-up disabled), so CI never reaches a live service:
+`.github/workflows/pull-request.yml` runs on every pull request into `main`, one job per concern. Sign-up is paused in the website's code, so CI builds it without any service values and never reaches a live service:
 
 | Job | Runs |
 | --- | --- |
 | Build | `pnpm turbo run build` |
 | Check | `pnpm turbo run check`, then `pnpm turbo run typecheck` |
 | Test | `pnpm turbo run test` |
-| Harness | `drift doctor --ci`, `drift check localization`, ShellCheck on the POSIX scripts, actionlint on the workflows |
 | Guardrails | `drift git lint-history` over the pull request's commits |
 
 Actions, container images and downloaded tools are pinned to full commit SHAs, digests or checksums, with the version in a comment. The workflow tokens are read-only.

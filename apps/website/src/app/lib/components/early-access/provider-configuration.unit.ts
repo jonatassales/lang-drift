@@ -16,7 +16,6 @@ beforeEach(() => {
 	vi.resetModules()
 	vi.stubEnv('NODE_ENV', 'test')
 	vi.stubEnv('EARLY_ACCESS_MODE', 'test')
-	vi.stubEnv('WEBSITE_PREVIEW_SIGNUP_DISABLED', 'false')
 	vi.stubEnv('TURNSTILE_SECRET_KEY', '1x0000000000000000000000000000000AA')
 	vi.stubEnv('NEXT_PUBLIC_TURNSTILE_SITE_KEY', '1x00000000000000000000BB')
 	vi.stubEnv('TURNSTILE_EXPECTED_HOSTNAME', 'localhost')
@@ -24,8 +23,6 @@ beforeEach(() => {
 	vi.stubEnv('EARLY_ACCESS_REGISTRY_URL', 'http://127.0.0.1:8080')
 	vi.stubEnv('EARLY_ACCESS_REGISTRY_KEY', 'synthetic-registry-key-000000000000')
 	vi.stubEnv('EARLY_ACCESS_PUBLIC_ORIGIN', 'http://localhost:3000')
-	vi.stubEnv('VERCEL', '')
-	vi.stubEnv('VERCEL_ENV', '')
 })
 afterEach(() => {
 	vi.unstubAllEnvs()
@@ -46,7 +43,7 @@ function request() {
 
 function production() {
 	vi.stubEnv('NODE_ENV', 'production')
-	vi.stubEnv('VERCEL', '1')
+	vi.stubEnv('EARLY_ACCESS_MODE', '')
 	vi.stubEnv('TURNSTILE_SECRET_KEY', 'production-secret-fixture')
 	vi.stubEnv('NEXT_PUBLIC_TURNSTILE_SITE_KEY', 'production-site-fixture')
 	vi.stubEnv(
@@ -57,24 +54,6 @@ function production() {
 	vi.stubEnv('EARLY_ACCESS_REGISTRY_URL', 'https://registry.example.test')
 	vi.stubEnv('EARLY_ACCESS_PUBLIC_ORIGIN', 'https://langdrift.md')
 }
-
-it.each(['true', undefined, 'invalid'])(
-	'does not call providers while flag is %s',
-	async (flag) => {
-		vi.stubEnv('WEBSITE_PREVIEW_SIGNUP_DISABLED', flag)
-		for (const name of [
-			'TURNSTILE_SECRET_KEY',
-			'EARLY_ACCESS_REGISTRY_URL',
-			'EARLY_ACCESS_REGISTRY_KEY',
-		])
-			vi.stubEnv(name, '')
-		const transport = vi.fn()
-		vi.stubGlobal('fetch', transport)
-		expect((await postEarlyAccess(request())).status).toBe(503)
-		expect(await verifyEarlyAccessChallenge('token')).toBe('verified')
-		expect(transport).not.toHaveBeenCalled()
-	},
-)
 
 it('uses registry configuration and needs no Resend or legacy ingress credentials', async () => {
 	for (const name of [
@@ -120,17 +99,6 @@ it('returns unavailable when TURNSTILE_VERIFY_URL is unset', async () => {
 	const transport = vi.fn()
 	vi.stubGlobal('fetch', transport)
 	expect(await verifyEarlyAccessChallenge('token')).toBe('unavailable')
-	expect(transport).not.toHaveBeenCalled()
-})
-
-it('uses production protections on hosted deployments despite a test mode override', async () => {
-	production()
-	vi.stubEnv('EARLY_ACCESS_MODE', 'test')
-	vi.stubEnv('EARLY_ACCESS_REGISTRY_URL', 'http://127.0.0.1:8080')
-	vi.stubEnv('EARLY_ACCESS_PUBLIC_ORIGIN', 'http://localhost:3000')
-	const transport = vi.fn()
-	vi.stubGlobal('fetch', transport)
-	expect((await postEarlyAccess(request())).status).toBe(503)
 	expect(transport).not.toHaveBeenCalled()
 })
 
