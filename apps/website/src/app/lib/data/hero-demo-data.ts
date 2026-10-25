@@ -1,5 +1,5 @@
-import { aiAvatars } from '@pack/react/ui/ai-avatars'
-import type { VisionPoint } from '@pack/react/ui/product-vision-curve'
+import { aiAvatars } from '@langdrift/web/ui/ai-avatars'
+import type { VisionPoint } from '@langdrift/web/ui/product-vision-curve'
 import type { SinapsiGraphDocument, SinapsiNode } from 'sinapsi'
 
 type DemoTranslator = (

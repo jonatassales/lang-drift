@@ -1,7 +1,7 @@
 'use client'
 
-import { driftSign } from '@pack/react/utilities'
-import { AnimatedAvatarGroup } from '@pack/react/vendors/smoothui/animated-avatar-group'
+import { driftSign } from '@langdrift/web/utilities'
+import { AnimatedAvatarGroup } from '@langdrift/web/vendors/smoothui/animated-avatar-group'
 import { useAtomValue } from 'jotai'
 import { useFormatter, useTranslations } from 'next-intl'
 

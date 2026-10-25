@@ -15,3 +15,5 @@
 - [x] Biome groups the website's aliases as aliases; `turbo run check` passes.
 - [x] Its 15 unit tests, `typecheck` and `build` pass.
 - [x] Side by side with langdrift's website, pages match in both color schemes apart from the brand color and the four accepted light-mode deltas.
+
+_Superseded: ticket 0026 replaced the `@pack/react` workspace alias with direct `@langdrift/web` imports._

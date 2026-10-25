@@ -6,7 +6,7 @@ Rules for React and Next.js code in this repository. Loaded in every session.
 
 2. **CSS files only configure Tailwind.** An app's CSS holds its Tailwind entry point, the import of its app's stylesheet from `@langdrift/tokens` and Tailwind directives, nothing else.
 
-3. **`cn()` composes conditional classes.** It is `clsx` plus `tailwind-merge`, exported by `@langdrift/web` (`@pack/react/utilities` in the website). A static class string needs no wrapper.
+3. **`cn()` composes conditional classes.** It is `clsx` plus `tailwind-merge`, exported by `@langdrift/web/utilities`. A static class string needs no wrapper.
 
 4. **shadcn and SmoothUI components are owned source.** Their classes change in place; nothing wraps them in a CSS abstraction.
 

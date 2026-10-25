@@ -30,7 +30,7 @@ const questions: QuestionId[] = [
 ]
 
 const DeferredTargetDistributionChart = lazy(() =>
-	import('@pack/react/ui/target-distribution-chart').then((module) => ({
+	import('@langdrift/web/ui/target-distribution-chart').then((module) => ({
 		default: module.TargetDistributionChart,
 	})),
 )

@@ -1,4 +1,4 @@
-import { BasicAccordion } from '@pack/react/vendors/smoothui/basic-accordion'
+import { BasicAccordion } from '@langdrift/web/vendors/smoothui/basic-accordion'
 
 import { conversionMessages } from '@i18n/messages/index'
 import type { WebsiteLocale } from '@i18n/routing'

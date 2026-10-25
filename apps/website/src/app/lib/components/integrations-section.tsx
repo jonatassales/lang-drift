@@ -1,5 +1,5 @@
-import { LogoMark } from '@pack/react/ui/brand'
-import { BasicAccordion } from '@pack/react/vendors/smoothui/basic-accordion'
+import { LogoMark } from '@langdrift/web/ui/brand'
+import { BasicAccordion } from '@langdrift/web/vendors/smoothui/basic-accordion'
 
 import { integrationsMessages } from '@i18n/messages/index'
 import type { WebsiteLocale } from '@i18n/routing'

@@ -1,6 +1,6 @@
 'use client'
 
-import { LanguageSwitcher } from '@pack/react/ui/language-switcher'
+import { LanguageSwitcher } from '@langdrift/web/ui/language-switcher'
 import { useLocale, useTranslations } from 'next-intl'
 import type { MouseEvent } from 'react'
 import { useEffect, useState } from 'react'

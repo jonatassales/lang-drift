@@ -1,6 +1,6 @@
 'use client'
 
-import { AgentOrb, type AgentOrbState } from '@pack/react/ui/agent-orb'
+import { AgentOrb, type AgentOrbState } from '@langdrift/web/ui/agent-orb'
 import { useFormatter, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 

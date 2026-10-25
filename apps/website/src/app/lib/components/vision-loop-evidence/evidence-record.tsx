@@ -1,6 +1,6 @@
 'use client'
 
-import { BasicAccordion } from '@pack/react/vendors/smoothui/basic-accordion'
+import { BasicAccordion } from '@langdrift/web/vendors/smoothui/basic-accordion'
 
 import type { EvidenceCopy } from '@data/vision-loop-content'
 

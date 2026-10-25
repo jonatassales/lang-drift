@@ -190,8 +190,8 @@ importers:
       '@langdrift/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
-      '@pack/react':
-        specifier: workspace:@langdrift/web@*
+      '@langdrift/web':
+        specifier: workspace:*
         version: link:../../packages/web
       axios:
         specifier: ^1.20.0

@@ -9,7 +9,7 @@ import { LocaleAvailabilityNotice } from '@components/locale-availability-notice
 import { getWebsiteMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
 
-import '@pack/react/styles.css'
+import '@langdrift/web/styles.css'
 import '@app/template/tailwind/app.css'
 import '@app/globals.css'
 import '@app/responsive.css'

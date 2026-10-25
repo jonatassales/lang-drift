@@ -1,6 +1,6 @@
 'use client'
 
-import { ProductVisionCurve } from '@pack/react/ui/product-vision-curve'
+import { ProductVisionCurve } from '@langdrift/web/ui/product-vision-curve'
 import { useAtom, useAtomValue } from 'jotai'
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useMemo, useRef } from 'react'

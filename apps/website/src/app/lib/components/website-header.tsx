@@ -1,6 +1,6 @@
 'use client'
 
-import { Brand } from '@pack/react/ui/brand'
+import { Brand } from '@langdrift/web/ui/brand'
 import { useAtom } from 'jotai'
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'

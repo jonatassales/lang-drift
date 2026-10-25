@@ -1,6 +1,6 @@
 'use client'
 
-import { AnimatedTabs } from '@pack/react/vendors/smoothui/animated-tabs'
+import { AnimatedTabs } from '@langdrift/web/vendors/smoothui/animated-tabs'
 import { useId, useState } from 'react'
 
 import {

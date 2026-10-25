@@ -1,6 +1,6 @@
-import { AgentOrb } from '@pack/react/ui/agent-orb'
-import { LogoMark } from '@pack/react/ui/brand'
-import { GithubLogo, LinkedinLogo } from '@pack/react/ui/icons/server'
+import { AgentOrb } from '@langdrift/web/ui/agent-orb'
+import { LogoMark } from '@langdrift/web/ui/brand'
+import { GithubLogo, LinkedinLogo } from '@langdrift/web/ui/icons/server'
 
 import {
 	footerMessages,
