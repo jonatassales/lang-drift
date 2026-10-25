@@ -7,12 +7,17 @@ import { setRequestLocale } from 'next-intl/server'
 
 import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
 import { EarlyAccessSection } from '@components/early-access/section'
+import { BudgetLedgerDemo } from '@components/finops/budget-ledger-demo'
+import { DeliveryReceipt } from '@components/finops/delivery-receipt'
+import { PillarScenarios } from '@components/product-page/pillar-scenarios'
 import { ProductFaqSection } from '@components/product-page/product-faq-section'
 import { ProductHero } from '@components/product-page/product-hero'
 import { ProductSection } from '@components/product-page/product-section'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
 import {
+	chainPillarIds,
+	chainScenarioIds,
 	envelope,
 	envelopeSegments,
 	type FinopsFaqId,
@@ -136,7 +141,60 @@ export default async function FinopsPage(props: FinopsPageProps) {
 					titleEnd={copy.hero.titleEnd}
 					titleHighlight={copy.hero.titleHighlight}
 					titleStart={copy.hero.titleStart}
-				/>
+				>
+					<BudgetLedgerDemo copy={copy.ledger} locale={locale} />
+				</ProductHero>
+
+				<ProductSection
+					id="chain"
+					lead={copy.chain.lead}
+					title={copy.chain.title}
+				>
+					<PillarScenarios
+						pillars={chainPillarIds.map((id) => ({
+							id,
+							label: copy.chain.pillars[id],
+						}))}
+						scenarios={chainScenarioIds.map((id) => {
+							const scenario = copy.chain.scenarios[id]
+
+							return {
+								cells: {
+									intent: scenario.intent,
+									delivery: scenario.delivery,
+									evidence: scenario.evidence,
+									outcome: scenario.outcome,
+								},
+								context: scenario.context,
+								id,
+								tabLabel: scenario.tabLabel,
+							}
+						})}
+						selectorLabel={copy.chain.selectorLabel}
+					/>
+					<div className="mt-8 flex flex-wrap items-center justify-between gap-x-8 gap-y-3">
+						<p className="m-0 max-w-[640px] text-[13px] leading-[1.6] text-muted-foreground">
+							{copy.chain.outro}
+						</p>
+						<a className="smooth-text-link" href="#authorization">
+							{copy.chain.outroLink}
+							<span aria-hidden="true"> ↗</span>
+						</a>
+					</div>
+				</ProductSection>
+
+				<ProductSection
+					id="receipt"
+					kicker={copy.receipt.kicker}
+					lead={copy.receipt.lead}
+					title={copy.receipt.title}
+				>
+					<DeliveryReceipt
+						copy={copy.receipt}
+						items={copy.ledger.items}
+						locale={locale}
+					/>
+				</ProductSection>
 
 				<ProductSection
 					id="budget"

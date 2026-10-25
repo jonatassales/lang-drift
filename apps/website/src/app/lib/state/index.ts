@@ -4,4 +4,5 @@ export {
 } from '@app/atoms/hero-selection.atom'
 export { selectHeroGraphPointAtom } from '@app/atoms/select-hero-graph-point.atom'
 export { selectedPointAtom } from '@app/atoms/selected-point.atom'
+export { selectedWorkItemAtom } from '@app/atoms/selected-work-item.atom'
 export { themeAtom, type WebsiteTheme } from '@app/atoms/theme.atom'

@@ -35,12 +35,18 @@
 					"title": "Checkout retries",
 					"owner": "Payments"
 				},
-				"invoice-export": { "title": "Invoice export job", "owner": "Billing" },
+				"invoice-export": {
+					"title": "Invoice export job",
+					"owner": "Billing"
+				},
 				"tenant-migration": {
 					"title": "Tenant migration",
 					"owner": "Platform"
 				},
-				"onboarding-copy": { "title": "Onboarding copy", "owner": "Growth" }
+				"onboarding-copy": {
+					"title": "Onboarding copy",
+					"owner": "Growth"
+				}
 			}
 		},
 		"chain": {
@@ -98,17 +104,26 @@
 				"cleanup": "Cleanup",
 				"evidence": "Evidence"
 			},
-			"tiers": { "standard": "Standard", "deep": "Deep reasoning" },
-			"efforts": { "low": "Low", "medium": "Medium", "high": "High" },
-			"verification": { "verified": "Passed", "pending": "Pending" },
+			"tiers": {
+				"standard": "Standard",
+				"deep": "Deep reasoning"
+			},
+			"efforts": {
+				"low": "Low",
+				"medium": "Medium",
+				"high": "High"
+			},
+			"verification": {
+				"verified": "Passed",
+				"pending": "Pending"
+			},
 			"cleanup": {
 				"done": "Microruntime cleaned up",
 				"pending": "Cleanup pending",
 				"unknown": "Cleanup unconfirmed"
 			},
 			"retries": "{count, plural, =0 {No retries} one {# retry} other {# retries}}",
-			"unknownObserved": "Unknown · awaiting reconciliation",
-			"evidenceLink": "Open the evidence record"
+			"unknownObserved": "Unknown · awaiting reconciliation"
 		},
 		"budget": {
 			"kicker": "Know who funds it",
@@ -336,17 +351,26 @@
 				"cleanup": "Limpeza",
 				"evidence": "Evidência"
 			},
-			"tiers": { "standard": "Padrão", "deep": "Raciocínio profundo" },
-			"efforts": { "low": "Baixo", "medium": "Médio", "high": "Alto" },
-			"verification": { "verified": "Aprovada", "pending": "Pendente" },
+			"tiers": {
+				"standard": "Padrão",
+				"deep": "Raciocínio profundo"
+			},
+			"efforts": {
+				"low": "Baixo",
+				"medium": "Médio",
+				"high": "Alto"
+			},
+			"verification": {
+				"verified": "Aprovada",
+				"pending": "Pendente"
+			},
 			"cleanup": {
 				"done": "Microruntime limpo",
 				"pending": "Limpeza pendente",
 				"unknown": "Limpeza não confirmada"
 			},
 			"retries": "{count, plural, =0 {Nenhuma retentativa} one {# retentativa} other {# retentativas}}",
-			"unknownObserved": "Desconhecido · aguardando reconciliação",
-			"evidenceLink": "Abrir o registro de evidência"
+			"unknownObserved": "Desconhecido · aguardando reconciliação"
 		},
 		"budget": {
 			"kicker": "Saiba quem financia",
@@ -501,10 +525,22 @@
 			"awaitingReconciliation": "等待對帳",
 			"selectHint": "選取一個工作項目以閱讀它的收據。",
 			"items": {
-				"checkout-retries": { "title": "結帳重試", "owner": "支付" },
-				"invoice-export": { "title": "發票匯出作業", "owner": "帳務" },
-				"tenant-migration": { "title": "租戶遷移", "owner": "平台" },
-				"onboarding-copy": { "title": "新手引導文案", "owner": "成長" }
+				"checkout-retries": {
+					"title": "結帳重試",
+					"owner": "支付"
+				},
+				"invoice-export": {
+					"title": "發票匯出作業",
+					"owner": "帳務"
+				},
+				"tenant-migration": {
+					"title": "租戶遷移",
+					"owner": "平台"
+				},
+				"onboarding-copy": {
+					"title": "新手引導文案",
+					"owner": "成長"
+				}
 			}
 		},
 		"chain": {
@@ -562,17 +598,26 @@
 				"cleanup": "清理",
 				"evidence": "證據"
 			},
-			"tiers": { "standard": "標準", "deep": "深度推理" },
-			"efforts": { "low": "低", "medium": "中", "high": "高" },
-			"verification": { "verified": "通過", "pending": "待處理" },
+			"tiers": {
+				"standard": "標準",
+				"deep": "深度推理"
+			},
+			"efforts": {
+				"low": "低",
+				"medium": "中",
+				"high": "高"
+			},
+			"verification": {
+				"verified": "通過",
+				"pending": "待處理"
+			},
 			"cleanup": {
 				"done": "microruntime 已清理",
 				"pending": "清理待處理",
 				"unknown": "清理未確認"
 			},
 			"retries": "{count, plural, =0 {無} other {# 次重試}}",
-			"unknownObserved": "未知 · 等待對帳",
-			"evidenceLink": "開啟證據記錄"
+			"unknownObserved": "未知 · 等待對帳"
 		},
 		"budget": {
 			"kicker": "知道誰出資",
@@ -800,17 +845,26 @@
 				"cleanup": "クリーンアップ",
 				"evidence": "証拠"
 			},
-			"tiers": { "standard": "標準", "deep": "深い推論" },
-			"efforts": { "low": "低", "medium": "中", "high": "高" },
-			"verification": { "verified": "合格", "pending": "保留中" },
+			"tiers": {
+				"standard": "標準",
+				"deep": "深い推論"
+			},
+			"efforts": {
+				"low": "低",
+				"medium": "中",
+				"high": "高"
+			},
+			"verification": {
+				"verified": "合格",
+				"pending": "保留中"
+			},
 			"cleanup": {
 				"done": "microruntime はクリーンアップ済み",
 				"pending": "クリーンアップ保留中",
 				"unknown": "クリーンアップ未確認"
 			},
 			"retries": "{count, plural, =0 {なし} other {# 回の再試行}}",
-			"unknownObserved": "不明 · 照合待ち",
-			"evidenceLink": "証拠の記録を開く"
+			"unknownObserved": "不明 · 照合待ち"
 		},
 		"budget": {
 			"kicker": "誰が資金を出すかを知る",
@@ -1038,17 +1092,26 @@
 				"cleanup": "Dọn dẹp",
 				"evidence": "Bằng chứng"
 			},
-			"tiers": { "standard": "Tiêu chuẩn", "deep": "Suy luận sâu" },
-			"efforts": { "low": "Thấp", "medium": "Vừa", "high": "Cao" },
-			"verification": { "verified": "Đạt", "pending": "Đang chờ" },
+			"tiers": {
+				"standard": "Tiêu chuẩn",
+				"deep": "Suy luận sâu"
+			},
+			"efforts": {
+				"low": "Thấp",
+				"medium": "Vừa",
+				"high": "Cao"
+			},
+			"verification": {
+				"verified": "Đạt",
+				"pending": "Đang chờ"
+			},
 			"cleanup": {
 				"done": "Đã dọn dẹp microruntime",
 				"pending": "Đang chờ dọn dẹp",
 				"unknown": "Chưa xác nhận dọn dẹp"
 			},
 			"retries": "{count, plural, =0 {Không có} other {# lần thử lại}}",
-			"unknownObserved": "Chưa rõ · đang chờ đối soát",
-			"evidenceLink": "Mở bản ghi bằng chứng"
+			"unknownObserved": "Chưa rõ · đang chờ đối soát"
 		},
 		"budget": {
 			"kicker": "Biết ai cấp vốn",

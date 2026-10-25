@@ -6,7 +6,7 @@ interface ProductSectionProps {
 	children: ReactNode
 	className?: string
 	id: string
-	kicker: string
+	kicker?: string
 	lead?: string
 	title: string
 }

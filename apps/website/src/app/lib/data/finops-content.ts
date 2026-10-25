@@ -109,8 +109,15 @@ export const workItems = [
 
 export type WorkItemId = (typeof workItems)[number]['id']
 
-const chainPillarIds = ['intent', 'delivery', 'evidence', 'outcome'] as const
-const chainScenarioIds = [
+export const initialWorkItemId: WorkItemId = 'checkout-retries'
+
+export const chainPillarIds = [
+	'intent',
+	'delivery',
+	'evidence',
+	'outcome',
+] as const
+export const chainScenarioIds = [
 	'within-envelope',
 	'pause-and-replan',
 	'unknown-spend',
@@ -195,7 +202,6 @@ export interface FinopsMessages {
 		cleanup: Record<CleanupState, string>
 		retries: string
 		unknownObserved: string
-		evidenceLink: string
 	}
 	budget: {
 		kicker: string
