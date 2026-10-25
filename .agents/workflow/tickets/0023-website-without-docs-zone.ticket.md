@@ -12,4 +12,4 @@
 - [ ] `next.config.unit.ts` and its vitest `include` entry are gone.
 - [ ] The proxy matcher, the locale proxy and their tests know nothing of Docs paths.
 - [ ] The unused `docs` header copy and `.website-docs-link` rules are gone, and the sitemap lists only the website's 15 URLs.
-- [ ] `DOCS_ORIGIN`, `NEXT_PUBLIC_DOCS_URL` and `LANGDRIFT_LOCAL_BUILD` appear nowhere: not in `.env.development`, `turbo.json`, CI or AGENTS.md. `turbo.json` also drops the unused `VERCEL`, `VERCEL_URL` and `VERCEL_PROJECT_PRODUCTION_URL`.
+- [ ] `DOCS_ORIGIN`, `NEXT_PUBLIC_DOCS_URL` and `LANGDRIFT_LOCAL_BUILD` appear nowhere: not in `.env.development`, `turbo.json`, CI or AGENTS.md. `turbo.json` also drops `VERCEL_URL` and `VERCEL_PROJECT_PRODUCTION_URL`, which only the Docs check read; `VERCEL` stays, because early access reads it to detect a hosted deploy.

@@ -36,7 +36,7 @@
 			"cache": false
 		}
 	},
-	"globalEnv": ["EARLY_ACCESS_MODE", "VERCEL_ENV"],
+	"globalEnv": ["EARLY_ACCESS_MODE", "VERCEL", "VERCEL_ENV"],
 	"globalPassThroughEnv": [
 		"CRYPTO_SECRET",
 		"RESEND_*",
