@@ -1,4 +1,5 @@
 import { HeroShader } from '@langdrift/web/ui/hero-shader'
+import { RotatingText } from '@langdrift/web/ui/rotating-text'
 import { GravityStars } from '@langdrift/web/vendors/smoothui/gravity-stars'
 import { MagneticField } from '@langdrift/web/vendors/smoothui/magnetic-field'
 
@@ -58,7 +59,9 @@ export function PlatformHero(props: PlatformHeroProps) {
 						className="max-w-sm text-5xl leading-none font-normal tracking-[-0.055em] text-balance text-foreground sm:text-6xl xl:text-[64px]"
 						id="platform-hero-heading"
 					>
-						{copy.title}
+						<span className="block">{copy.titleStart}</span>
+						<RotatingText className="block" words={copy.words} />
+						<span className="block">{copy.titleEnd}</span>
 					</h1>
 					<div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
 						<Link

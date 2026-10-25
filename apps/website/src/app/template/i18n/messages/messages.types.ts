@@ -449,7 +449,9 @@ export interface FooterMessages {
 export interface PlatformMessages {
 	skip: string
 	hero: {
-		title: string
+		titleStart: string
+		words: string[]
+		titleEnd: string
 		primaryCta: string
 		secondaryCta: string
 	}

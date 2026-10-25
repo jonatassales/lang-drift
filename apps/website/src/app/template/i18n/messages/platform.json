@@ -2,7 +2,9 @@
 	"en": {
 		"skip": "Skip to platform overview",
 		"hero": {
-			"title": "Agentic Platform",
+			"titleStart": "Agentic",
+			"words": ["DevEx", "FinOps", "Runtime", "Voice AI"],
+			"titleEnd": "Platform",
 			"primaryCta": "Explore the products",
 			"secondaryCta": "Book a Demo"
 		},
@@ -14,7 +16,9 @@
 	"pt-BR": {
 		"skip": "Ir para a visão geral da plataforma",
 		"hero": {
-			"title": "Agentic Platform",
+			"titleStart": "Agentic",
+			"words": ["DevEx", "FinOps", "Runtime", "Voice AI"],
+			"titleEnd": "Platform",
 			"primaryCta": "Conheça os produtos",
 			"secondaryCta": "Agende uma demo"
 		},
@@ -26,7 +30,9 @@
 	"zh-Hant": {
 		"skip": "跳至平台總覽",
 		"hero": {
-			"title": "Agentic Platform",
+			"titleStart": "Agentic",
+			"words": ["DevEx", "FinOps", "Runtime", "Voice AI"],
+			"titleEnd": "Platform",
 			"primaryCta": "探索產品",
 			"secondaryCta": "預約展示"
 		},
@@ -38,7 +44,9 @@
 	"ja": {
 		"skip": "プラットフォーム概要へスキップ",
 		"hero": {
-			"title": "Agentic Platform",
+			"titleStart": "Agentic",
+			"words": ["DevEx", "FinOps", "Runtime", "Voice AI"],
+			"titleEnd": "Platform",
 			"primaryCta": "製品を見る",
 			"secondaryCta": "デモを予約"
 		},
@@ -50,7 +58,9 @@
 	"vi": {
 		"skip": "Chuyển đến tổng quan nền tảng",
 		"hero": {
-			"title": "Agentic Platform",
+			"titleStart": "Agentic",
+			"words": ["DevEx", "FinOps", "Runtime", "Voice AI"],
+			"titleEnd": "Platform",
 			"primaryCta": "Khám phá các sản phẩm",
 			"secondaryCta": "Đặt lịch demo"
 		},
