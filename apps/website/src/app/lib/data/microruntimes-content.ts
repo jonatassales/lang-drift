@@ -184,9 +184,25 @@ export function hasPlayed(playedCount: number, id: PlanLineId) {
 }
 
 export type PlanEffort = 'low' | 'medium' | 'high'
+export type ComponentKind = 'api' | 'broker' | 'cache' | 'web'
+export type Technology = 'Go' | 'Node.js' | 'NATS' | 'Redis' | 'Next.js'
+
+// One component the plan resolves from the spec: where it lives, what it
+// is, and the share of the envelope the plan proposes for it. The id is the
+// session line that resolves it.
+export interface PlanComponent {
+	cpuMillis: number
+	id: PlanLineId
+	kind: ComponentKind
+	memoryMiB: number
+	path: string
+	technology: Technology
+}
 
 // The ticket the session plans, as the agent reads it from the project's
-// artifacts: the numbers follow the scaffold ex init produces.
+// artifacts: the numbers follow the scaffold ex init produces. The envelope
+// is the team's, from the design doc; the components' shares are the plan's
+// proposal and must stay inside it.
 export const ticketPlan = {
 	ticket: {
 		number: '0031',
@@ -204,16 +220,78 @@ export const ticketPlan = {
 	},
 	model: 'operator/allowed-model',
 	effort: 'medium' satisfies PlanEffort,
+	bounded: {
+		cpuMillis: 2000,
+		memoryMiB: 3072,
+	},
+	components: [
+		{
+			cpuMillis: 250,
+			id: 'go',
+			kind: 'api',
+			memoryMiB: 256,
+			path: 'services/signup-api',
+			technology: 'Go',
+		},
+		{
+			cpuMillis: 300,
+			id: 'node',
+			kind: 'api',
+			memoryMiB: 512,
+			path: 'services/notify-api',
+			technology: 'Node.js',
+		},
+		{
+			cpuMillis: 200,
+			id: 'nats',
+			kind: 'broker',
+			memoryMiB: 256,
+			path: 'platform/nats',
+			technology: 'NATS',
+		},
+		{
+			cpuMillis: 200,
+			id: 'redis',
+			kind: 'cache',
+			memoryMiB: 256,
+			path: 'platform/redis',
+			technology: 'Redis',
+		},
+		{
+			cpuMillis: 500,
+			id: 'next',
+			kind: 'web',
+			memoryMiB: 1024,
+			path: 'apps/signup',
+			technology: 'Next.js',
+		},
+	] satisfies readonly PlanComponent[],
 	draftRevision: 1,
 } as const
 
-// Which line of the session reveals which part of the card.
+// The totals the plan proposes: the sum of the components' shares.
+export function suggestedTotals(components: readonly PlanComponent[]) {
+	return components.reduce(
+		(totals, component) => ({
+			cpuMillis: totals.cpuMillis + component.cpuMillis,
+			memoryMiB: totals.memoryMiB + component.memoryMiB,
+		}),
+		{
+			cpuMillis: 0,
+			memoryMiB: 0,
+		},
+	)
+}
+
+// Which line of the session reveals which part of the card. Each component
+// row is revealed by its own line.
 export const planReveals = {
 	card: 'plan',
 	suggestionSkeleton: 'memory',
 	suggestion: 'suggest',
 	artifactsRead: 'reads',
 	guardrail: 'guardrail',
+	componentsSkeleton: 'resolve',
 } as const satisfies Record<string, PlanLineId>
 
 export type PlanRevealId = keyof typeof planReveals

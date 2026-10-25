@@ -16,7 +16,7 @@ function mount() {
 	const store = createStore()
 	render(
 		<Provider store={store}>
-			<TicketCard copy={microruntimesMessages.en.session.card} />
+			<TicketCard copy={microruntimesMessages.en.session.card} locale="en" />
 		</Provider>,
 	)
 
@@ -58,6 +58,28 @@ describe('Microruntimes ticket card', () => {
 		expect(
 			screen.getByText('recommendation · the team authorizes'),
 		).toBeTruthy()
+	})
+
+	it('resolves the components one by one with their figures and a running total', () => {
+		const { play } = mount()
+		play('bounds')
+		expect(screen.queryByText('services/signup-api')).toBeNull()
+
+		play('resolve')
+		expect(screen.getAllByText('Resolving')).toHaveLength(6)
+
+		play('go')
+		expect(screen.getByText('services/signup-api')).toBeTruthy()
+		expect(screen.getByText('Go · api')).toBeTruthy()
+		expect(screen.getByText('250m')).toBeTruthy()
+		expect(screen.getByText('256 MiB')).toBeTruthy()
+		expect(screen.getByText('1 of 5 resolved · 250m · 256 MiB')).toBeTruthy()
+		expect(screen.getAllByText('Resolving')).toHaveLength(4)
+
+		play('next')
+		expect(screen.getByText('apps/signup')).toBeTruthy()
+		expect(screen.getByText('5 components · 1,450m · 2,304 MiB')).toBeTruthy()
+		expect(screen.queryAllByText('Resolving')).toHaveLength(0)
 	})
 
 	it('marks the artifacts read and fills the guardrail as the agent reads them', () => {

@@ -9,6 +9,8 @@ import {
 	planReveals,
 	planSession,
 	runtimeDescriptor,
+	suggestedTotals,
+	ticketPlan,
 } from './microruntimes-content'
 
 describe('the simulated planning session', () => {
@@ -38,6 +40,22 @@ describe('the simulated planning session', () => {
 		for (const lineId of Object.values(planReveals)) {
 			expect(ids).toContain(lineId)
 		}
+	})
+
+	it('resolves five components whose shares fill the suggested totals inside the envelope', () => {
+		const ids = planSession.map((line) => line.id)
+		expect(ticketPlan.components).toHaveLength(5)
+		for (const component of ticketPlan.components) {
+			expect(ids).toContain(component.id)
+		}
+
+		const totals = suggestedTotals(ticketPlan.components)
+		expect(totals).toEqual({
+			cpuMillis: 1450,
+			memoryMiB: 2304,
+		})
+		expect(totals.cpuMillis).toBeLessThanOrEqual(ticketPlan.bounded.cpuMillis)
+		expect(totals.memoryMiB).toBeLessThanOrEqual(ticketPlan.bounded.memoryMiB)
 	})
 
 	it('counts a line as played once the terminal has completed it', () => {

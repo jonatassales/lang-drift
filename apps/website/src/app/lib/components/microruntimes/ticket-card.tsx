@@ -3,21 +3,26 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { cn } from '@langdrift/web/utilities'
 import { useAtomValue } from 'jotai'
+import { createTranslator } from 'next-intl'
 
 import {
 	hasPlayed,
 	type MicroruntimesMessages,
 	type PlanRevealId,
 	planReveals,
+	suggestedTotals,
 	ticketPlan,
 } from '@data/microruntimes-content'
+import type { WebsiteLocale } from '@i18n/routing'
 import { microruntimeSessionAtom } from '@state'
 
 import { CardValue, type CardValueState } from './card-value'
+import { ComponentRow } from './component-row'
 import { ReadMark } from './read-mark'
 
 interface TicketCardProps {
 	copy: MicroruntimesMessages['session']['card']
+	locale: WebsiteLocale
 }
 
 const artifactIds = ['prd', 'designDoc', 'spec'] as const
@@ -27,7 +32,7 @@ const artifactIds = ['prd', 'designDoc', 'spec'] as const
 // terminal's progress. It owns no clock; every field derives from how many
 // lines the terminal has completed.
 export function TicketCard(props: TicketCardProps) {
-	const { copy } = props
+	const { copy, locale } = props
 
 	const { playedCount } = useAtomValue(microruntimeSessionAtom)
 	const played = (id: PlanRevealId) => hasPlayed(playedCount, planReveals[id])
@@ -39,6 +44,24 @@ export function TicketCard(props: TicketCardProps) {
 			? 'resolving'
 			: 'unset'
 	const guardrail = ticketPlan.guardrail
+	const card = createTranslator({
+		locale,
+		messages: copy,
+	})
+	const number = new Intl.NumberFormat(locale)
+	const cpu = (value: number) =>
+		card('cpuValue', { value: number.format(value) })
+	const memory = (value: number) =>
+		card('memoryValue', { value: number.format(value) })
+	const resolved = ticketPlan.components.filter((component) =>
+		hasPlayed(playedCount, component.id),
+	)
+	const resolvedTotals = suggestedTotals(resolved)
+	const components: CardValueState = played('componentsSkeleton')
+		? resolved.length > 0
+			? 'set'
+			: 'resolving'
+		: 'unset'
 
 	return (
 		<article
@@ -126,6 +149,58 @@ export function TicketCard(props: TicketCardProps) {
 					<p className="col-span-2 m-0 text-[11px] text-muted-foreground">
 						{copy.recommendationNote}
 					</p>
+				)}
+			</div>
+
+			<div className="mt-5 border-t border-border pt-4">
+				<div className="grid grid-cols-[minmax(0,1fr)_auto_auto] gap-x-3">
+					<Eyebrow>{copy.components}</Eyebrow>
+					<Eyebrow>{copy.columns.cpu}</Eyebrow>
+					<Eyebrow>{copy.columns.memory}</Eyebrow>
+				</div>
+				{components === 'unset' ? (
+					<CardValue
+						className="mt-2 block font-mono text-[12px]"
+						labels={copy}
+						state="unset"
+					/>
+				) : (
+					<ul className="m-0 mt-1 list-none p-0">
+						{ticketPlan.components.map((component) => (
+							<ComponentRow
+								component={component}
+								cpu={cpu(component.cpuMillis)}
+								key={component.id}
+								labels={copy}
+								memory={memory(component.memoryMiB)}
+								share={component.cpuMillis / ticketPlan.bounded.cpuMillis}
+								state={
+									hasPlayed(playedCount, component.id) ? 'set' : 'resolving'
+								}
+							/>
+						))}
+					</ul>
+				)}
+				{components !== 'unset' && (
+					<CardValue
+						className="mt-2 block border-t border-border pt-2 text-[12px] text-muted-foreground"
+						labels={copy}
+						state={components}
+						width="w-44"
+					>
+						{resolved.length === ticketPlan.components.length
+							? card('componentsTotal', {
+									count: resolved.length,
+									cpu: number.format(resolvedTotals.cpuMillis),
+									memory: number.format(resolvedTotals.memoryMiB),
+								})
+							: card('resolvedProgress', {
+									resolved: resolved.length,
+									total: ticketPlan.components.length,
+									cpu: number.format(resolvedTotals.cpuMillis),
+									memory: number.format(resolvedTotals.memoryMiB),
+								})}
+					</CardValue>
 				)}
 			</div>
 		</article>

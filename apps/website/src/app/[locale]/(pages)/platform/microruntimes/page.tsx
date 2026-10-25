@@ -100,7 +100,7 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 						className="mt-8 grid gap-6 lg:grid-cols-[fit-content(50%)_1fr]"
 					>
 						<SessionTerminal copy={copy.session.terminal} />
-						<TicketCard copy={copy.session.card} />
+						<TicketCard copy={copy.session.card} locale={locale} />
 					</div>
 					<p className="sr-only" id="microruntimes-hero-summary">
 						{copy.hero.summary}
