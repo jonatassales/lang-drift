@@ -41,7 +41,7 @@ export function WebsiteFooter(props: WebsiteFooterProps) {
 					{/* <Link href="/pricing" locale={locale}>
             {headerMessages[locale].plans}
           </Link> */}
-					<Link href="/#faq" locale={locale}>
+					<Link href="/platform/vision#faq" locale={locale}>
 						{copy.faq}
 					</Link>
 					<Link href="/privacy">{privacyMessages[locale].title}</Link>
