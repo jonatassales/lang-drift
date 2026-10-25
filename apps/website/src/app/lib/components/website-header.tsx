@@ -13,6 +13,7 @@ import { drawerFocus } from './website-header/drawer-focus'
 import { LanguagePill } from './website-header/language-pill'
 import { PlatformMenu } from './website-header/platform-menu'
 import { platformProducts } from './website-header/platform-products'
+import { panelSurface } from './website-header/surface'
 
 import './website-header.css'
 
@@ -94,7 +95,7 @@ export function WebsiteHeader() {
 	}, [drawerOpen])
 
 	useEffect(() => {
-		const desktop = window.matchMedia('(min-width: 1440px)')
+		const desktop = window.matchMedia('(min-width: 64rem)')
 		const closeOnDesktop = () => {
 			if (desktop.matches) setDrawerOpen(false)
 		}
@@ -117,7 +118,7 @@ export function WebsiteHeader() {
 				ref={sentinelRef}
 			/>
 			<header className={`website-header ${glass}`} data-scrolled={scrolled}>
-				<div className="website-header-inner">
+				<div className="website-header-inner grid-cols-[minmax(0,1fr)_auto] lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
 					<div className="website-header-identity">
 						<Link aria-label={t('home')} href="/">
 							<Brand className="website-header-brand" compact tone={theme} />
@@ -126,7 +127,10 @@ export function WebsiteHeader() {
 							<LanguagePill />
 						</div>
 					</div>
-					<nav aria-label={t('navigation')} className="website-desktop-nav">
+					<nav
+						aria-label={t('navigation')}
+						className="website-desktop-nav hidden items-center justify-center gap-4.5 lg:flex"
+					>
 						<PlatformMenu />
 						<span className={utilityItem}>{t('docs')}</span>
 						<span className={utilityItem}>{t('github')}</span>
@@ -140,7 +144,7 @@ export function WebsiteHeader() {
 							aria-controls="website-navigation-drawer"
 							aria-expanded={drawerOpen}
 							aria-label={t('openNavigation')}
-							className="website-header-icon website-navigation-trigger"
+							className="website-header-icon website-navigation-trigger inline-flex lg:hidden"
 							onClick={() => setDrawerOpen(true)}
 							ref={triggerRef}
 							type="button"
@@ -151,7 +155,7 @@ export function WebsiteHeader() {
 						</button>
 						<button
 							aria-label={themeLabel}
-							className="website-header-icon website-theme-toggle"
+							className="website-header-icon website-theme-toggle inline-flex"
 							onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
 							title={themeLabel}
 							type="button"
@@ -172,7 +176,7 @@ export function WebsiteHeader() {
 			</header>
 			<dialog
 				aria-label={t('navigation')}
-				className="website-navigation-drawer"
+				className={`website-navigation-drawer ${panelSurface}`}
 				id="website-navigation-drawer"
 				onCancel={closeDrawer}
 				onClose={closeDrawer}
@@ -184,7 +188,7 @@ export function WebsiteHeader() {
 					</Link>
 					<button
 						aria-label={t('closeNavigation')}
-						className="website-header-icon"
+						className="website-header-icon inline-flex"
 						onClick={closeDrawer}
 						ref={closeRef}
 						type="button"

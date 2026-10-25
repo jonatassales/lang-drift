@@ -8,6 +8,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { Link } from '@i18n/navigation'
 
 import { platformProducts } from './platform-products'
+import { panelSurface } from './surface'
 
 const item = 'block w-full rounded-xl px-3 py-2.5 text-left'
 
@@ -101,7 +102,7 @@ export function PlatformMenu() {
 				)}
 				id={panelId}
 			>
-				<div className="rounded-2xl border border-border bg-background/60 p-2 shadow-sm backdrop-blur-2xl backdrop-saturate-150">
+				<div className={cn(panelSurface, 'p-2')}>
 					<ul aria-label={t('platformMenu')} className="grid gap-1">
 						{platformProducts.map((product) => {
 							const Icon = product.icon

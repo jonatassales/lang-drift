@@ -27,7 +27,6 @@
 	align-items: center;
 	display: grid;
 	gap: 20px;
-	grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
 	margin-inline: auto;
 	max-inline-size: var(--website-max-width, 1280px);
 	min-block-size: 80px;
@@ -46,13 +45,6 @@
 	color: inherit;
 	display: inline-flex;
 	text-decoration: none;
-}
-
-.website-desktop-nav {
-	align-items: center;
-	display: flex;
-	gap: 18px;
-	justify-content: center;
 }
 
 .website-desktop-nav a {
@@ -88,7 +80,6 @@
 	border-radius: 999px;
 	color: var(--foreground);
 	cursor: pointer;
-	display: inline-flex;
 	flex: 0 0 44px;
 	justify-content: center;
 	block-size: 44px;
@@ -110,21 +101,12 @@
 	stroke-width: 1.6;
 }
 
-.website-navigation-trigger {
-	display: none;
-}
-
 .website-navigation-drawer {
-	background: var(--background);
-	border: 1px solid var(--border);
-	border-radius: 18px;
-	color: var(--foreground);
 	margin: 12px 12px 12px auto;
 	max-block-size: calc(100dvh - 24px);
 	max-inline-size: calc(100vw - 24px);
 	inline-size: 390px;
 	padding: 18px 22px 30px;
-	box-shadow: 0 24px 80px rgb(0 0 0 / 20%);
 }
 
 .website-navigation-drawer::backdrop {
@@ -173,18 +155,6 @@
 
 .website-drawer-buttons a {
 	min-block-size: 44px;
-}
-
-@media (max-width: 1439px) {
-	.website-header-inner {
-		grid-template-columns: minmax(0, 1fr) auto;
-	}
-	.website-desktop-nav {
-		display: none;
-	}
-	.website-navigation-trigger {
-		display: inline-flex;
-	}
 }
 
 @media (max-width: 760px) {

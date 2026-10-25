@@ -15,6 +15,8 @@
 ### Desktop
 
 - [ ] One nav model: the `Platform` menu (Vision linked to `/platform/vision`; FinOps, Microruntimes and AI Voice as text with a description and an icon), then Docs and GitHub as text, then `Pricing` to `/pricing`, all in the center nav.
+- [ ] The desktop nav shows from Tailwind's `lg` breakpoint (64rem) and the hamburger below it; the breakpoint lives in Tailwind classes, not in `website-header.css`, and the drawer's auto-close uses the same `64rem`.
+- [ ] The Platform dropdown and the drawer share one glass surface (`website-header/surface.ts`): radius, transparency, blur, border and shadow.
 - [ ] `website-header/platform-menu.tsx`: a disclosure button with a caret and a glassy Tailwind panel that opens on hover, focus and click and closes on Escape, outside click and navigation.
 - [ ] Right side: the demo button, the hamburger, the theme toggle. The glass moves from `website-header.css` to Tailwind on the bar, with more blur and less opacity, and the rule hiding the locale pill below 760px leaves the CSS.
 
