@@ -36,6 +36,10 @@ _Avoid_: Feedback color, alert color
 The color of one Product Vision classification: intentional, aligned, unexplained or review. It is the same in every app and color scheme, and never takes the brand color.
 _Avoid_: Category color, label color
 
+**Classification text tone**:
+The classification color at a contrast fit for small text: darker in light, lighter in dark. It exists for intentional, review and unexplained.
+_Avoid_: Classification ink, label tone
+
 **Drift color**:
 The color of a drift's sign: negative, positive or zero. It is the same in every app and never takes the brand color.
 _Avoid_: Delta color, trend color

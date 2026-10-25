@@ -8,7 +8,7 @@ AI harness web OS for your agentic journey. LangDrift is a suite of apps under o
 
 ## Status
 
-Monorepo with two packages, `@langdrift/tokens` and `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and one app, `apps/website`: the LangDrift website (see `apps/website/README.md`), copied from the earlier `langdrift` monorepo under spec 0003.
+Monorepo with three packages, `@langdrift/tokens`, `@langdrift/web` and `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and one app, `apps/website`: the LangDrift website (see `apps/website/README.md`), copied from the earlier `langdrift` monorepo under spec 0003.
 
 ## Toolchain and commands
 
@@ -58,7 +58,7 @@ When the shell resolves `drift` to another program (a link from an older checkou
 - `@langdrift/tokens` builds the tokens with Style Dictionary. Each app imports one self-contained stylesheet built from the shared tokens and its app theme; today the only one is `@langdrift/tokens/website.css`.
 - Components use roles, never a foundation or a brand color directly. Roles take shadcn's names (`background`, `foreground`, `primary`, `muted-foreground`, …) because the web apps use SmoothUI and shadcn components.
 - Prefixes: shared tokens are `--lg-*`; the website's app theme is `--site-*`. Each app theme lives in `packages/tokens/themes/` and defines only primary and primary hover (the Exphere purple for the website), which `--lg-color-primary` points to.
-- Status colors (`--lg-status-*`), classification colors (`--lg-classification-*`) and drift colors (`--lg-drift-*`) are fixed across apps and never inherit a brand color. See ADR 0003.
+- Status colors (`--lg-status-*`), classification colors (`--lg-classification-*`), classification text tones (`--lg-classification-text-*`) and drift colors (`--lg-drift-*`) are fixed across apps and never inherit a brand color. See ADR 0003.
 - Light is declared in `:root` and dark in `.dark`. Apps render with the `.dark` class, so dark is the default, and the stylesheet points Tailwind's `dark:` variant at that class.
 - Each stylesheet also bridges the roles to shadcn's unprefixed variables and sets Tailwind's theme. The native color palette is reset, so only roles and the fixed color groups exist as Tailwind colors. See ADR 0001 and `03-tailwind.rule.md`.
 
