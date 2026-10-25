@@ -5,12 +5,6 @@
 			"dependsOn": ["^build"],
 			"outputs": ["dist/**", ".next/**", "!.next/cache/**"]
 		},
-		"website#build": {
-			"dependsOn": ["^build"],
-			"inputs": ["$TURBO_DEFAULT$", ".env*"],
-			"env": ["VERCEL_ENV", "WEBSITE_PREVIEW_SIGNUP_DISABLED"],
-			"outputs": [".next/**", "!.next/cache/**"]
-		},
 		"dev": {
 			"dependsOn": ["^build"],
 			"cache": false,

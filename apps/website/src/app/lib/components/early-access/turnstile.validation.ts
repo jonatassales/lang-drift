@@ -85,9 +85,6 @@ export async function verifyEarlyAccessChallenge(
 		: AbortSignal.timeout(2500)
 
 	try {
-		if (process.env.WEBSITE_PREVIEW_SIGNUP_DISABLED !== 'false') {
-			return 'verified'
-		}
 		const earlyAccessServerEnv = readTurnstile()
 		const response = await fetch(earlyAccessServerEnv.turnstileVerifyUrl, {
 			method: 'POST',

@@ -112,9 +112,6 @@ function trustedOrigin(request: Request, mode: string): string | null {
 
 export async function postEarlyAccess(request: Request): Promise<Response> {
 	try {
-		if (process.env.WEBSITE_PREVIEW_SIGNUP_DISABLED !== 'false') {
-			return reply(503, 'UNAVAILABLE', 30)
-		}
 		const env = readRegistry()
 		const target = new URL(request.url)
 		const canonical = new URL(env.publicOrigin)

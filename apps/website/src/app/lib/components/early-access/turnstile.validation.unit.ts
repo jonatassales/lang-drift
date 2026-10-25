@@ -5,7 +5,6 @@ vi.mock('server-only', () => ({}))
 import { verifyEarlyAccessChallenge } from './turnstile.validation'
 
 beforeEach(() => {
-	vi.stubEnv('WEBSITE_PREVIEW_SIGNUP_DISABLED', 'false')
 	vi.stubEnv('EARLY_ACCESS_MODE', 'test')
 	vi.stubEnv('TURNSTILE_SECRET_KEY', '1x0000000000000000000000000000000AA')
 	vi.stubEnv('TURNSTILE_EXPECTED_HOSTNAME', 'localhost')
@@ -18,11 +17,9 @@ afterEach(() => {
 	vi.unstubAllGlobals()
 	vi.unstubAllEnvs()
 })
-it('never contacts providers while paused or for invalid token boundaries', async () => {
-	vi.stubEnv('WEBSITE_PREVIEW_SIGNUP_DISABLED', 'true')
+it('never contacts providers for invalid token boundaries', async () => {
 	const transport = vi.fn()
 	vi.stubGlobal('fetch', transport)
-	expect(await verifyEarlyAccessChallenge('token')).toBe('verified')
 	expect(await verifyEarlyAccessChallenge('')).toBe('rejected')
 	expect(await verifyEarlyAccessChallenge('x'.repeat(2049))).toBe('rejected')
 	expect(transport).not.toHaveBeenCalled()

@@ -18,7 +18,6 @@ let admissionStatus: number
 let registrationStatus: number
 let verification: unknown
 beforeEach(() => {
-	vi.stubEnv('WEBSITE_PREVIEW_SIGNUP_DISABLED', 'false')
 	vi.stubEnv('EARLY_ACCESS_MODE', 'test')
 	vi.stubEnv('EARLY_ACCESS_REGISTRY_URL', registryUrl)
 	vi.stubEnv(
@@ -274,12 +273,6 @@ it('requires a single provider-owned IP when running on Vercel', async () => {
 	).toBe(503)
 	expect(calls).toHaveLength(0)
 })
-it('disabled previews produce no false success and no external calls', async () => {
-	vi.stubEnv('WEBSITE_PREVIEW_SIGNUP_DISABLED', 'true')
-	expect((await postEarlyAccess(request())).status).toBe(503)
-	expect(calls).toHaveLength(0)
-})
-
 it.each([null, false, { success: true }])(
 	'returns503 on malformed Siteverify without registering %#',
 	async (body) => {

@@ -16,7 +16,6 @@ beforeEach(() => {
 	vi.resetModules()
 	vi.stubEnv('NODE_ENV', 'test')
 	vi.stubEnv('EARLY_ACCESS_MODE', 'test')
-	vi.stubEnv('WEBSITE_PREVIEW_SIGNUP_DISABLED', 'false')
 	vi.stubEnv('TURNSTILE_SECRET_KEY', '1x0000000000000000000000000000000AA')
 	vi.stubEnv('NEXT_PUBLIC_TURNSTILE_SITE_KEY', '1x00000000000000000000BB')
 	vi.stubEnv('TURNSTILE_EXPECTED_HOSTNAME', 'localhost')
@@ -57,24 +56,6 @@ function production() {
 	vi.stubEnv('EARLY_ACCESS_REGISTRY_URL', 'https://registry.example.test')
 	vi.stubEnv('EARLY_ACCESS_PUBLIC_ORIGIN', 'https://langdrift.md')
 }
-
-it.each(['true', undefined, 'invalid'])(
-	'does not call providers while flag is %s',
-	async (flag) => {
-		vi.stubEnv('WEBSITE_PREVIEW_SIGNUP_DISABLED', flag)
-		for (const name of [
-			'TURNSTILE_SECRET_KEY',
-			'EARLY_ACCESS_REGISTRY_URL',
-			'EARLY_ACCESS_REGISTRY_KEY',
-		])
-			vi.stubEnv(name, '')
-		const transport = vi.fn()
-		vi.stubGlobal('fetch', transport)
-		expect((await postEarlyAccess(request())).status).toBe(503)
-		expect(await verifyEarlyAccessChallenge('token')).toBe('verified')
-		expect(transport).not.toHaveBeenCalled()
-	},
-)
 
 it('uses registry configuration and needs no Resend or legacy ingress credentials', async () => {
 	for (const name of [

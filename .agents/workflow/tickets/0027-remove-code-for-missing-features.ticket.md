@@ -16,9 +16,14 @@ The registry sends the confirmation; the website never sends mail (`apps/website
 - [x] `turbo.json` no longer passes `RESEND_*` through.
 - [x] `early-access/env.server.unit.ts` is renamed after what it tests, the provider configuration of the route and of Siteverify, instead of an `env.server` module that does not exist.
 
-### Build environment
+### Feature flag and build environment
 
-- [x] `website#build` declares only what `next build` reads: `VERCEL_ENV` and `WEBSITE_PREVIEW_SIGNUP_DISABLED`, which `next.config.ts` inlines into the prerendered pages; framework inference covers `NEXT_PUBLIC_*`. The Turnstile, `EARLY_ACCESS_*` and `VERCEL` variables are read only by the early-access route at request time, so they and `globalEnv` go. The task itself stays: without it, strict mode drops `WEBSITE_PREVIEW_SIGNUP_DISABLED` and sign-up can never open, and its `.env*` input keeps the git-ignored env files in the cache key.
+`WEBSITE_PREVIEW_SIGNUP_DISABLED` was a feature flag without a proper home for flags. The owner removes it and keeps sign-up paused, the state production and CI already ran in.
+
+- [x] The variable is read nowhere: not in `next.config.ts`, the early-access section, the privacy page, the submission route, Siteverify, the tests, `turbo.json`, CI or the docs.
+- [x] The paused behavior is live code: the section shows the return-soon notice, the privacy page states the pause and `/api/early-access/` answers 503 without calling a provider, which `api/early-access/route.unit.ts` proves.
+- [x] The code that opens sign-up stays commented where it lives: the form branch of `section.tsx` and its test, the active privacy notice and the real `POST` export. The submission route and Siteverify stay live and tested, so opening sign-up is restoring those comments.
+- [x] `next build` now reads no environment variable, so `website#build` and `globalEnv` go. CI sets no website values.
 
 ### Toast
 

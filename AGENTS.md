@@ -113,7 +113,7 @@ Single context. The glossary is the `## Glossary` section of `.agents/context.md
 
 ## Continuous integration
 
-`.github/workflows/pull-request.yml` runs on every pull request into `main`, one job per concern. The workflow builds the website against safe values (early access paused, sign-up disabled), so CI never reaches a live service:
+`.github/workflows/pull-request.yml` runs on every pull request into `main`, one job per concern. Sign-up is paused in the website's code, so CI builds it without any service values and never reaches a live service:
 
 | Job | Runs |
 | --- | --- |
