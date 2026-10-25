@@ -6,7 +6,13 @@
 			"words": ["DevEx", "FinOps", "Runtime", "Voice AI"],
 			"titleEnd": "Platform",
 			"primaryCta": "Explore the products",
-			"secondaryCta": "Book a Demo"
+			"secondaryCta": "Book a Demo",
+			"products": {
+				"vision": "Keep the why behind every change.",
+				"finops": "Delivery accountable to a team budget.",
+				"microruntimes": "Bounded runs around what you already have.",
+				"aiVoice": "Ask about a change, keep its context."
+			}
 		},
 		"features": {
 			"title": "Four products. One platform.",
@@ -20,7 +26,13 @@
 			"words": ["DevEx", "FinOps", "Runtime", "Voice AI"],
 			"titleEnd": "Platform",
 			"primaryCta": "Conheça os produtos",
-			"secondaryCta": "Agende uma demo"
+			"secondaryCta": "Agende uma demo",
+			"products": {
+				"vision": "Preserve o porquê de cada mudança.",
+				"finops": "Entrega fiel ao orçamento do time.",
+				"microruntimes": "Execução delimitada sobre o que já existe.",
+				"aiVoice": "Pergunte e mantenha o contexto da mudança."
+			}
 		},
 		"features": {
 			"title": "Quatro produtos. Uma plataforma.",
@@ -34,7 +46,13 @@
 			"words": ["DevEx", "FinOps", "Runtime", "Voice AI"],
 			"titleEnd": "Platform",
 			"primaryCta": "探索產品",
-			"secondaryCta": "預約展示"
+			"secondaryCta": "預約展示",
+			"products": {
+				"vision": "留住每次變動背後的為什麼。",
+				"finops": "讓交付對團隊預算負責。",
+				"microruntimes": "圍繞現有軟體的有界執行。",
+				"aiVoice": "詢問變動，保留它的脈絡。"
+			}
 		},
 		"features": {
 			"title": "四個產品，一個平台。",
@@ -48,7 +66,13 @@
 			"words": ["DevEx", "FinOps", "Runtime", "Voice AI"],
 			"titleEnd": "Platform",
 			"primaryCta": "製品を見る",
-			"secondaryCta": "デモを予約"
+			"secondaryCta": "デモを予約",
+			"products": {
+				"vision": "すべての変化の理由を残す。",
+				"finops": "開発をチーム予算に説明できるものに。",
+				"microruntimes": "既存のソフトウェアを囲む、境界のある実行。",
+				"aiVoice": "変化について尋ね、文脈を保つ。"
+			}
 		},
 		"features": {
 			"title": "4つの製品、ひとつのプラットフォーム。",
@@ -62,7 +86,13 @@
 			"words": ["DevEx", "FinOps", "Runtime", "Voice AI"],
 			"titleEnd": "Platform",
 			"primaryCta": "Khám phá các sản phẩm",
-			"secondaryCta": "Đặt lịch demo"
+			"secondaryCta": "Đặt lịch demo",
+			"products": {
+				"vision": "Giữ lại lý do sau mỗi thay đổi.",
+				"finops": "Giao hàng bám sát ngân sách của đội.",
+				"microruntimes": "Thực thi có giới hạn quanh phần mềm sẵn có.",
+				"aiVoice": "Hỏi về thay đổi, giữ nguyên bối cảnh."
+			}
 		},
 		"features": {
 			"title": "Bốn sản phẩm. Một nền tảng.",

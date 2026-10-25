@@ -3,6 +3,7 @@ import { ArrowRightIcon } from '@langdrift/web/ui/icons/arrow'
 import { RotatingText } from '@langdrift/web/ui/rotating-text'
 import { GravityStars } from '@langdrift/web/vendors/smoothui/gravity-stars'
 import { MagneticField } from '@langdrift/web/vendors/smoothui/magnetic-field'
+import { ShortSlideDown } from '@langdrift/web/vendors/smoothui/short-slide-down'
 
 import { platformProducts } from '@components/website-header/platform-products'
 import { headerMessages, platformMessages } from '@i18n/messages/index'
@@ -26,10 +27,11 @@ const rim =
 // whichever scheme is active.
 const disc =
 	'absolute inset-0 rounded-full bg-foreground text-background dark:bg-background dark:text-foreground'
-// The products wait on the right, dimmed but readable; each lights up as the
-// pointer reaches it, with a dot in the brand purple and a soft glow.
+// The products drop in on the right one after another, each name with one
+// line about it beneath. They stay solid foreground, white in the dark scheme
+// and black in the light one, and do not react to the pointer.
 const productItem =
-	"flex items-center gap-3 text-lg font-normal tracking-tight text-foreground/65 transition-all duration-500 ease-out before:size-1.5 before:rounded-full before:bg-primary before:opacity-0 before:transition-opacity before:duration-500 before:content-[''] hover:text-foreground hover:[text-shadow:0_0_28px_color-mix(in_srgb,var(--primary)_80%,transparent)] hover:before:opacity-100 focus-visible:text-foreground focus-visible:before:opacity-100 lg:text-xl"
+	'grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-1 text-foreground'
 const discShade =
 	'pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_0_80px_color-mix(in_srgb,var(--primary)_30%,transparent)]'
 
@@ -111,22 +113,25 @@ export function PlatformHero(props: PlatformHeroProps) {
 						</GravityStars>
 					</div>
 				</div>
-				<ul
-					aria-label={names.platformMenu}
-					className="order-3 flex flex-col items-start gap-4 lg:order-3 lg:mr-[10vw] lg:justify-self-end"
-				>
-					{platformProducts.map((product) => {
+				<ShortSlideDown
+					className="order-3 flex flex-col items-start gap-4 lg:order-3 lg:justify-self-end xl:mr-[4vw]"
+					items={platformProducts.map((product) => {
 						const Icon = product.icon
 						const content = (
 							<>
 								<Icon className="size-4 shrink-0" />
-								{names[product.label]}
+								<span className="text-lg font-normal tracking-tight lg:text-xl">
+									{names[product.label]}
+								</span>
+								<span className="col-start-2 text-sm whitespace-nowrap">
+									{copy.products[product.label]}
+								</span>
 							</>
 						)
 
-						return (
-							<li key={product.label}>
-								{'href' in product ? (
+						return {
+							content:
+								'href' in product ? (
 									<Link
 										className={productItem}
 										href={product.href}
@@ -136,11 +141,12 @@ export function PlatformHero(props: PlatformHeroProps) {
 									</Link>
 								) : (
 									<span className={productItem}>{content}</span>
-								)}
-							</li>
-						)
+								),
+							id: product.label,
+						}
 					})}
-				</ul>
+					label={names.platformMenu}
+				/>
 			</MagneticField>
 		</section>
 	)

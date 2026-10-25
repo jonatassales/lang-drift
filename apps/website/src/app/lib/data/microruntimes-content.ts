@@ -1,3 +1,5 @@
+import type { TerminalLineType } from '@langdrift/web/vendors/smoothui/mac-terminal'
+
 // Illustrative Microruntimes content: the ids, limits, identities and times
 // the Microruntimes page and its demos render. Sentences live in the
 // microruntimes catalog. The runtime file mirrors the contract of the ex
@@ -62,6 +64,69 @@ export type StateCardId = (typeof stateCardIds)[number]
 export type FlowTargetId = (typeof flowTargetIds)[number]
 export type FlowGuaranteeId = (typeof flowGuaranteeIds)[number]
 export type MicroruntimesFaqId = (typeof microruntimesFaqIds)[number]
+
+// The hero terminal's illustrative session with the connected agent: each
+// line's kind, in the order it prints. The text lives in the catalog.
+export const terminalSession = [
+	{
+		id: 'doctor',
+		type: 'command',
+	},
+	{
+		id: 'tools',
+		type: 'success',
+	},
+	{
+		id: 'run',
+		type: 'command',
+		delay: 600,
+	},
+	{
+		id: 'sync',
+		type: 'comment',
+	},
+	{
+		id: 'runtime',
+		type: 'output',
+	},
+	{
+		id: 'configure',
+		type: 'success',
+	},
+	{
+		id: 'validate',
+		type: 'success',
+	},
+	{
+		id: 'prepare',
+		type: 'success',
+		delay: 700,
+	},
+	{
+		id: 'execute',
+		type: 'success',
+		delay: 700,
+	},
+	{
+		id: 'inspect',
+		type: 'success',
+	},
+	{
+		id: 'cleanup',
+		type: 'success',
+		delay: 700,
+	},
+	{
+		id: 'evidence',
+		type: 'output',
+	},
+] as const satisfies readonly {
+	delay?: number
+	id: string
+	type: TerminalLineType
+}[]
+
+export type TerminalLineId = (typeof terminalSession)[number]['id']
 
 export const runtimeFilePath = '.langdrift/runtimes/checkout-preview/runtime.md'
 
@@ -159,6 +224,11 @@ export interface MicroruntimesMessages {
 	}
 	lifecycle: {
 		label: string
+		terminal: {
+			title: string
+			label: string
+			lines: Record<TerminalLineId, string>
+		}
 		stepperLabel: string
 		stages: Record<
 			LifecycleStageId,

@@ -13,6 +13,24 @@
 		},
 		"lifecycle": {
 			"label": "checkout-preview · revision 3 · exec-41b2",
+			"terminal": {
+				"title": "ex — shop",
+				"label": "Terminal: an illustrative ex session",
+				"lines": {
+					"doctor": "ex doctor",
+					"tools": "docker 27.3 · kind 0.24 · kubectl 1.31 · terraform 1.9",
+					"run": "ex agent run",
+					"sync": "# one connected agent supervises the project's runtimes",
+					"runtime": "checkout-preview · revision 3 · exec-41b2",
+					"configure": "✓ configure   runtime.md, revision 3",
+					"validate": "✓ validate    3 components · 1500m · 2048 MiB",
+					"prepare": "✓ prepare     storefront, checkout, payments-stub",
+					"execute": "✓ execute     claim held, 3 of 3 ready",
+					"inspect": "✓ inspect     observed matches requested",
+					"cleanup": "✓ clean up    7 of 7 owned resources removed",
+					"evidence": "evidence      .audits/evidence/runs/exec-41b2/"
+				}
+			},
 			"stepperLabel": "Lifecycle steps",
 			"stages": {
 				"configure": {
@@ -322,6 +340,24 @@
 		},
 		"lifecycle": {
 			"label": "checkout-preview · revisão 3 · exec-41b2",
+			"terminal": {
+				"title": "ex — shop",
+				"label": "Terminal: uma sessão ilustrativa do ex",
+				"lines": {
+					"doctor": "ex doctor",
+					"tools": "docker 27.3 · kind 0.24 · kubectl 1.31 · terraform 1.9",
+					"run": "ex agent run",
+					"sync": "# um agente conectado supervisiona os runtimes do projeto",
+					"runtime": "checkout-preview · revision 3 · exec-41b2",
+					"configure": "✓ configure   runtime.md, revision 3",
+					"validate": "✓ validate    3 components · 1500m · 2048 MiB",
+					"prepare": "✓ prepare     storefront, checkout, payments-stub",
+					"execute": "✓ execute     claim held, 3 of 3 ready",
+					"inspect": "✓ inspect     observed matches requested",
+					"cleanup": "✓ clean up    7 of 7 owned resources removed",
+					"evidence": "evidence      .audits/evidence/runs/exec-41b2/"
+				}
+			},
 			"stepperLabel": "Etapas do ciclo de vida",
 			"stages": {
 				"configure": {
@@ -631,6 +667,24 @@
 		},
 		"lifecycle": {
 			"label": "checkout-preview · 第 3 版 · exec-41b2",
+			"terminal": {
+				"title": "ex — shop",
+				"label": "終端機：示意性的 ex 工作階段",
+				"lines": {
+					"doctor": "ex doctor",
+					"tools": "docker 27.3 · kind 0.24 · kubectl 1.31 · terraform 1.9",
+					"run": "ex agent run",
+					"sync": "# 一個已連線的代理程式監管專案的所有執行環境",
+					"runtime": "checkout-preview · revision 3 · exec-41b2",
+					"configure": "✓ configure   runtime.md, revision 3",
+					"validate": "✓ validate    3 components · 1500m · 2048 MiB",
+					"prepare": "✓ prepare     storefront, checkout, payments-stub",
+					"execute": "✓ execute     claim held, 3 of 3 ready",
+					"inspect": "✓ inspect     observed matches requested",
+					"cleanup": "✓ clean up    7 of 7 owned resources removed",
+					"evidence": "evidence      .audits/evidence/runs/exec-41b2/"
+				}
+			},
 			"stepperLabel": "生命週期步驟",
 			"stages": {
 				"configure": {
@@ -940,6 +994,24 @@
 		},
 		"lifecycle": {
 			"label": "checkout-preview · リビジョン 3 · exec-41b2",
+			"terminal": {
+				"title": "ex — shop",
+				"label": "ターミナル：ex の説明用セッション",
+				"lines": {
+					"doctor": "ex doctor",
+					"tools": "docker 27.3 · kind 0.24 · kubectl 1.31 · terraform 1.9",
+					"run": "ex agent run",
+					"sync": "# 接続された 1 つのエージェントがプロジェクトのランタイムを監督します",
+					"runtime": "checkout-preview · revision 3 · exec-41b2",
+					"configure": "✓ configure   runtime.md, revision 3",
+					"validate": "✓ validate    3 components · 1500m · 2048 MiB",
+					"prepare": "✓ prepare     storefront, checkout, payments-stub",
+					"execute": "✓ execute     claim held, 3 of 3 ready",
+					"inspect": "✓ inspect     observed matches requested",
+					"cleanup": "✓ clean up    7 of 7 owned resources removed",
+					"evidence": "evidence      .audits/evidence/runs/exec-41b2/"
+				}
+			},
 			"stepperLabel": "ライフサイクルのステップ",
 			"stages": {
 				"configure": {
@@ -1249,6 +1321,24 @@
 		},
 		"lifecycle": {
 			"label": "checkout-preview · bản sửa đổi 3 · exec-41b2",
+			"terminal": {
+				"title": "ex — shop",
+				"label": "Terminal: một phiên ex minh họa",
+				"lines": {
+					"doctor": "ex doctor",
+					"tools": "docker 27.3 · kind 0.24 · kubectl 1.31 · terraform 1.9",
+					"run": "ex agent run",
+					"sync": "# một agent đã kết nối giám sát các runtime của dự án",
+					"runtime": "checkout-preview · revision 3 · exec-41b2",
+					"configure": "✓ configure   runtime.md, revision 3",
+					"validate": "✓ validate    3 components · 1500m · 2048 MiB",
+					"prepare": "✓ prepare     storefront, checkout, payments-stub",
+					"execute": "✓ execute     claim held, 3 of 3 ready",
+					"inspect": "✓ inspect     observed matches requested",
+					"cleanup": "✓ clean up    7 of 7 owned resources removed",
+					"evidence": "evidence      .audits/evidence/runs/exec-41b2/"
+				}
+			},
 			"stepperLabel": "Các bước của vòng đời",
 			"stages": {
 				"configure": {

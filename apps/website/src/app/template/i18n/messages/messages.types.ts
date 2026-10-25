@@ -454,6 +454,8 @@ export interface PlatformMessages {
 		titleEnd: string
 		primaryCta: string
 		secondaryCta: string
+		// One line under each product in the hero, keyed by its header label.
+		products: Record<'vision' | 'finops' | 'microruntimes' | 'aiVoice', string>
 	}
 	features: {
 		title: string
