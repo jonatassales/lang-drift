@@ -44,12 +44,13 @@ drift_find_generated_state() {
     -prune -print
 }
 
-# A .gitkeep only holds an otherwise empty folder; once the folder has anything
-# else, it is redundant.
+# A .gitkeep makes Git keep a folder that would otherwise be empty in a clone.
+# Once Git tracks another file in that folder, it is redundant; files Git
+# ignores or does not track yet do not count, since a clone would not have them.
 drift_find_redundant_gitkeeps() {
   find . -path ./.git -prune -o -type f -name .gitkeep -print |
     while IFS= read -r gitkeep; do
-      if ls -A "${gitkeep%/*}" | grep -q -v -x .gitkeep; then
+      if git ls-files -- "${gitkeep%/*}" | grep -q -v -x -F "${gitkeep#./}"; then
         printf '%s\n' "$gitkeep"
       fi
     done

@@ -2,6 +2,7 @@
 set -eu
 . "$DRIFT_CLI_DIR/core/common.sh"
 [ "$#" -eq 0 ] || drift_die "Cleanup does not accept arguments." 2
+drift_need git
 drift_loader_start "Cleaning workspace"
 drift_queue_scene "$DRIFT_ICON_CLEANUP" "$DRIFT_CLEANUP_PHRASE"
 
@@ -9,7 +10,7 @@ cd "$DRIFT_PROJECT_ROOT"
 removable=$(mktemp)
 trap 'rm -f "$removable"; drift_flush_results' EXIT
 
-# Generated state first, so each .gitkeep is judged on what remains beside it.
+# Generated state, then each .gitkeep that a tracked sibling makes redundant.
 drift_find_generated_state >"$removable"
 drift_remove_paths "$removable"
 drift_find_redundant_gitkeeps >"$removable"
