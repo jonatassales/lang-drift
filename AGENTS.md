@@ -1,6 +1,6 @@
 # LangDrift
 
-AI harness web OS for your agentic journey. LangDrift is a suite of products under one account: each app is independent, with its own URL, and all apps share account, plan and shell.
+AI harness web OS for your agentic journey. LangDrift is a suite of apps under one account: each app is independent, with its own URL, and all apps share account, plan and shell.
 
 ## General rules
 
@@ -8,10 +8,7 @@ AI harness web OS for your agentic journey. LangDrift is a suite of products und
 
 ## Status
 
-Monorepo with two packages, `@langdrift/tokens` and `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and no product workspaces yet. Planned products, each with an empty folder:
-
-- `products/vision`: LangDrift Vision
-- `products/finops`: LangDrift FinOps
+Monorepo with two packages, `@langdrift/tokens` and `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and no app yet. The first app, `apps/website`, is planned in spec 0003.
 
 ## Toolchain and commands
 
@@ -38,11 +35,11 @@ Run from the repository root:
 
 ## Layout
 
-- `products/<product>/<kind>/<workspace>/`: a product's workspaces, grouped by kind. Apps go in `apps/`; another kind, such as microservices, gets its own folder when its first workspace appears. `pnpm-workspace.yaml` picks up any kind through `products/*/*/*`.
-- `packages/<capability>/`: shared across products, never inside one.
-- Packages: `tokens` and `ex` exist; `ui`, `shell`, `account`, `runtime` and `contracts` are planned.
+- `apps/<app>/`: one deployable app each, with its own URL. `pnpm-workspace.yaml` picks them up through `apps/*`.
+- `packages/<capability>/`: shared across apps, never inside one.
+- Packages: `tokens` and `ex` exist; `web`, `shell`, `account`, `runtime` and `contracts` are planned.
 - `packages/ex` is Go: Turborepo runs its `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds it (no Go toolchain required for frontend work).
-- A package takes a product name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
+- A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
 - Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
 - `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, `quality/` the lint-staged config and the Biome plugin, `versioning/` the commitlint config and the Git hooks (`.husky/`).
@@ -75,7 +72,7 @@ Workflow: `research` when a question needs primary sources, then `grill-with-doc
 - `.agents/workflow/human-in-the-loop.policy.md` sets where the owner takes part, which stages run on their own and what gates them. It belongs to this project and team; the skills read it instead of assuming.
 - A direct request to build or change application code enters the workflow: start with the `grilling` skill, plus `domain-modeling` when terms or decisions settle, instead of writing code.
 - `.claude/hooks/guard-implement-effort.sh` blocks `implement` for the current session until `.agents/prompts/llm-effort-analyzer.prompt.md` has recorded its result at `.agents/workflow/.effort-log/<session_id>.md`.
-- The commit-msg hook rejects a commit that changes `products/` or `packages/` without a `Ticket: <NNNN>` trailer naming an existing ticket.
+- The commit-msg hook rejects a commit that changes `apps/` or `packages/` without a `Ticket: <NNNN>` trailer naming an existing ticket.
 
 ## Agent skills
 
@@ -139,7 +136,7 @@ Actions, container images and downloaded tools are pinned to full commit SHAs, d
 
 ## Open
 
-- Domain layout: subdomains under one domain, or separate domains per product.
+- Domain layout: subdomains under one domain, or separate domains per app.
 
 <!-- BEGIN:turborepo-agent-rules -->
 

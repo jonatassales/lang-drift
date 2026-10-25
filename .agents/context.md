@@ -4,11 +4,11 @@ Project knowledge for agents working in this repository. This file grows as deci
 
 ## Glossary
 
-### Products
+### Apps
 
-**Product**:
-One LangDrift offering with its own URL, such as Vision or FinOps. Products share account, plan and shell.
-_Avoid_: App, module
+**App**:
+One LangDrift offering with its own URL, such as the website. Apps share account, plan and shell.
+_Avoid_: Product, module
 
 ### Design tokens
 
