@@ -16,7 +16,7 @@ describe('AgentOrb public props', () => {
 			/>,
 		)
 		const document = new DOMParser().parseFromString(html, 'text/html')
-		const orb = document.querySelector('orb-z')
+		const orb = document.querySelector('orb-o')
 
 		expect(orb?.getAttribute('preset')).toBe('peach')
 		expect(orb?.hasAttribute('paused')).toBe(true)
@@ -31,7 +31,7 @@ describe('AgentOrb public props', () => {
 	it('keeps default motion enabled and normalizes invalid numeric dimensions', () => {
 		const html = renderToString(<AgentOrb size={-1} />)
 		const document = new DOMParser().parseFromString(html, 'text/html')
-		const orb = document.querySelector('orb-z')
+		const orb = document.querySelector('orb-o')
 
 		expect(orb?.hasAttribute('paused')).toBe(false)
 		expect(orb?.getAttribute('reduced-motion')).toBe('system')

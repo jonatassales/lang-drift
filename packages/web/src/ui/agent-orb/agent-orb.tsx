@@ -1,21 +1,21 @@
 'use client'
 
 import type {
-	OrbzPresetName,
-	OrbzReducedMotion,
-	OrbzSize,
-	OrbzState,
-} from '@neongate-ai/orbz'
-import type {} from '@neongate-ai/orbz/react-types'
+	OrboPresetName,
+	OrboReducedMotion,
+	OrboSize,
+	OrboState,
+} from 'orbo-voice'
+import type {} from 'orbo-voice/react-types'
 import { useEffect, useState } from 'react'
 
 export interface AgentOrbProps {
 	paused?: boolean
-	preset?: OrbzPresetName
-	reducedMotion?: OrbzReducedMotion
-	size?: OrbzSize
+	preset?: OrboPresetName
+	reducedMotion?: OrboReducedMotion
+	size?: OrboSize
 	speed?: number
-	state?: OrbzState
+	state?: OrboState
 }
 
 export function AgentOrb(props: AgentOrbProps) {
@@ -33,7 +33,7 @@ export function AgentOrb(props: AgentOrbProps) {
 	useEffect(() => {
 		let cancelled = false
 		// Decorative runtime failure retains the size-preserving fallback.
-		void import('@neongate-ai/orbz/browser')
+		void import('orbo-voice/browser')
 			.then(() => {
 				if (!cancelled) setReady(true)
 			})
@@ -44,7 +44,7 @@ export function AgentOrb(props: AgentOrbProps) {
 		}
 	}, [])
 
-	// Match Orbz's size contract without eagerly importing its browser/runtime graph.
+	// Match Orbo's size contract without eagerly importing its browser/runtime graph.
 	const rawSize = String(size).trim()
 	const numericSize = Number(rawSize)
 	const dimension =
@@ -69,7 +69,7 @@ export function AgentOrb(props: AgentOrbProps) {
 				width: dimension,
 			}}
 		>
-			<orb-z
+			<orb-o
 				paused={paused}
 				preset={preset}
 				reduced-motion={reducedMotion}
