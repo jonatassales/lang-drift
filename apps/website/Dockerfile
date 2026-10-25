@@ -5,7 +5,6 @@ FROM node:24-alpine@sha256:06d7adf3e0ef61a13f1d28682726366f97a15aa1888c934d3ecec
 
 WORKDIR /repo
 
-ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PNPM_HOME=/pnpm
 ENV PATH="$PNPM_HOME:$PATH"
@@ -34,6 +33,7 @@ ENV DOCS_ORIGIN=$DOCS_ORIGIN
 ARG WEBSITE_PREVIEW_SIGNUP_DISABLED=true
 RUN pnpm exec turbo run build --filter=website...
 
+ENV NODE_ENV=production
 WORKDIR /repo/apps/website
 
 EXPOSE 3000
