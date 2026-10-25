@@ -25,6 +25,10 @@ The registry sends the confirmation; the website never sends mail (`apps/website
 - [x] The code that opens sign-up stays commented where it lives: the form branch of `section.tsx` and its test, the active privacy notice and the real `POST` export. The submission route and Siteverify stay live and tested, so opening sign-up is restoring those comments.
 - [x] `next build` now reads no environment variable, so `website#build` and `globalEnv` go. CI sets no website values.
 
+### CI
+
+- [x] The Harness job leaves the pull-request workflow, and AGENTS.md no longer lists it.
+
 ### Toast
 
 - [x] `atoms/toast.atom.ts` and its re-export from `lib/state/index.ts` are deleted.

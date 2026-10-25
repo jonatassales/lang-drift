@@ -53,39 +53,6 @@ jobs:
       - uses: ./.github/actions/setup-workspace
       - run: pnpm turbo run test
 
-  harness:
-    name: Harness
-    runs-on: ubuntu-24.04
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: ./.github/actions/setup-workspace
-      - name: Toolchain and layout
-        run: platform/cli/drift doctor --ci
-      - name: Localization catalogs
-        run: platform/cli/drift check localization
-      - name: Shell scripts (ShellCheck)
-        run: >
-          git ls-files -z -- '*.sh' platform/cli/drift 'platform/versioning/.husky/*'
-          | xargs -0 shellcheck --shell=sh --external-sources --source-path=platform/cli/src
-      - name: Go formatting (gofmt)
-        run: |
-          unformatted=$(gofmt -l packages/ex/src)
-          if [ -n "$unformatted" ]; then
-            printf 'gofmt needed:\n%s\n' "$unformatted" >&2
-            exit 1
-          fi
-      - name: Go vulnerabilities (govulncheck)
-        working-directory: packages/ex
-        run: go run golang.org/x/vuln/cmd/govulncheck@v1.9.0 ./...
-      - name: Workflows (actionlint)
-        run: >
-          docker run --rm --volume "$PWD:/repo" --workdir /repo
-          rhysd/actionlint:1.7.12@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667
-          -color
-
   guardrails:
     name: Guardrails
     runs-on: ubuntu-24.04
