@@ -1,0 +1,28 @@
+---
+title: "FinOps"
+description: "LangDrift FinOps makes agent-assisted delivery accountable to a team budget."
+---
+
+# FinOps
+
+**LangDrift FinOps** makes agent-assisted delivery accountable to a team budget. It connects product intent, delivery context, execution evidence and economic outcome in one inspectable chain. FinOps grew out of the Exphere project.
+
+## Three pillars
+
+| Pillar | Role |
+| --- | --- |
+| **FinOps** | The economic purpose: covered spending connects to accepted outcomes and the team's authorized budget. |
+| **Agentic harness** | The delivery workflow and its evidence: intent, ownership, constraints and evidence carried through planning, implementation, verification and review. |
+| **Microruntimes** | Bounded, consumer-owned execution around software that already exists. |
+
+Read [Concepts](/finops/concepts) for each idea in depth, and [Architecture](/finops/architecture) for the proposed context-to-execution flow.
+
+## What is available today
+
+| Surface | What you can do |
+| --- | --- |
+| `ex` CLI | Bootstrap a project, inspect native tools, administer the project's local cluster, and run the agent connected to the LangDrift console. See [CLI](/finops/cli). |
+| FinOps console | Register projects from a local folder and supervise their microruntimes. It lives upstream in Exphere and becomes FinOps's workspaces in the planned LangDrift console. |
+| Documentation | Explore the concepts, the proposed architecture and the CLI. |
+
+The private `@langdrift/ex` package owns the CLI. Live cluster, Terraform, Kubernetes and LangGraph Job execution remain operationally unverified. RAG, shared budget enforcement, a financial ledger and production integrations are not implemented. FinOps readings and recommendations stay advisory.

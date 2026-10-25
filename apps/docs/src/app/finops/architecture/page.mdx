@@ -1,0 +1,41 @@
+---
+title: "Architecture"
+description: "The proposed context-to-execution architecture behind LangDrift FinOps."
+---
+
+# Architecture
+
+import Image from "next/image";
+import contextDiagram from "./context-team-budget.png";
+import factoryDiagram from "./runtimes-factory.png";
+
+LangDrift FinOps today provides documentation, the Go CLI and its connected agent, and a bounded local runtime lifecycle implementation. Live infrastructure execution remains operationally unverified. The diagrams below describe the broader proposed platform; they were drawn while FinOps was still the Exphere project.
+
+## Context to execution
+
+<Image src={contextDiagram} alt="Proposed flow from Backstage and intent artifacts through context retrieval, allocation, agent orchestration, and microruntime execution, governed by a shared team budget." sizes="(max-width: 768px) 100vw, 800px" />
+
+1. **Gather ownership and intent.** A configured, authorized Backstage connection would provide component context. Artifact bodies come from their source.
+2. **Assemble useful context.** Retrieval would combine requirements, prior outcomes, and relevant evidence.
+3. **Recommend investment.** An allocator would propose work within the team's budget and priorities.
+4. **Coordinate execution.** LangGraph would coordinate model and effort choices; deterministic controls would reserve funds before covered paid calls.
+5. **Learn from results.** Observed outcomes would return to memory for future decisions.
+
+The Backstage connector, retrieval store, allocator, orchestrator, and financial ledger are not implemented. The integration is intended to complement an existing developer portal, not require its replacement.
+
+The diagram is an AI-generated composition that uses the official Backstage artwork to identify a proposed third-party connection. It is not an official Backstage architecture and does not imply sponsorship, endorsement, an installed connection, or transfer of trademark rights. The folder tree it shows is a historical proposal.
+
+## Where FinOps lives in the workspace
+
+| Location | Responsibility |
+| --- | --- |
+| `packages/ex/` | Private `@langdrift/ex`: the Go CLI, the connected agent and the bounded runtime lifecycle. |
+| Upstream `jonatassales/exphere` `apps/console` | The FinOps console, until it joins the LangDrift console. |
+
+See [Platform → Architecture](/platform/architecture) for the whole workspace.
+
+### Earlier factory sketch
+
+<Image src={factoryDiagram} alt="Historical Exphere factory sketch connecting thirteen proposed capabilities and optional tools. Its cycle, feature, and sprint budget caps are superseded by the shared team budget proposal." sizes="(max-width: 768px) 100vw, 800px" />
+
+This earlier sketch illustrates the breadth of the proposed flow. **Its cycle/feature/sprint-cap budget wording is superseded by the shared team budget model above.** Neither image is a screenshot of running integrations.

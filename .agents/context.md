@@ -4,7 +4,7 @@ Project knowledge for agents working in this repository. [`AGENTS.md`](/AGENTS.m
 
 ## Repository
 
-Monorepo with three packages, `@langdrift/tokens`, `@langdrift/web` and `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and one app, `apps/website`, where the platform site is built. It started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site.
+Monorepo with three packages, `@langdrift/tokens`, `@langdrift/web` and `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and two apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/docs` is the Nextra documentation for LangDrift and every platform product, ported from Exphere's docs under spec 0006 and served under `basePath: '/docs'`.
 
 - `apps/<app>/`: one deployable Next.js app each. `pnpm-workspace.yaml` picks them up through `apps/*`.
 - `packages/<capability>/`: shared across apps, never inside one. `tokens`, `web` and `ex` exist; `shell`, `account`, `runtime` and `contracts` are planned.
@@ -27,6 +27,7 @@ Run from the repository root:
 | --- | --- |
 | `pnpm install` | Installs dependencies and the Git hooks, then links the `drift` launcher. Fails under another package manager or an unsupported Node version. |
 | `pnpm website` | Builds the packages the website depends on, then starts it in dev mode on port 3000. |
+| `pnpm docs` | Builds the packages the docs depend on, then starts them in dev mode at `http://localhost:3001/docs`. |
 | `pnpm turbo run build` | Builds every package that has a `build` script, upstream packages first. |
 | `pnpm turbo run dev --filter=<package-name>` | Builds the packages an app depends on, then starts the app. |
 | `pnpm turbo run typecheck` | Runs each package's `typecheck` script. |
@@ -50,10 +51,10 @@ When the shell resolves `drift` to another program (a link from an older checkou
 
 ## Design and tokens
 
-- `@langdrift/tokens` builds the tokens with Style Dictionary. Each app imports one self-contained stylesheet built from the shared tokens and its app theme; today the only one is `@langdrift/tokens/website.css`.
+- `@langdrift/tokens` builds the tokens with Style Dictionary. Each app imports one self-contained stylesheet built from the shared tokens and its app theme: `@langdrift/tokens/website.css` and `@langdrift/tokens/docs.css`.
 - Purple (primary) surfaces such as buttons carry `primary-foreground` text, which is white in both color schemes.
 - Components use roles, never a foundation or a brand color directly. Roles take shadcn's names (`background`, `foreground`, `primary`, `muted-foreground`, …) because the web apps use SmoothUI and shadcn components.
-- Prefixes: shared tokens are `--lg-*`; the website's app theme is `--site-*`. Each app theme lives in `packages/tokens/themes/` and defines only primary and primary hover (the Exphere purple for the website), which `--lg-color-primary` points to.
+- Prefixes: shared tokens are `--lg-*`; the website's app theme is `--site-*` and the docs' is `--docs-*`. Each app theme lives in `packages/tokens/themes/` and defines only primary and primary hover (the Exphere purple for both), which `--lg-color-primary` points to.
 - Status colors (`--lg-status-*`), classification colors (`--lg-classification-*`), classification text tones (`--lg-classification-text-*`), drift colors (`--lg-drift-*`) and rainbow colors (`--lg-rainbow-1` to `--lg-rainbow-6`) are fixed across apps and never inherit a brand color; the rainbow colors serve the header's demo button highlight. See ADR 0003.
 - Light is declared in `:root` and dark in `.dark`. Apps render with the `.dark` class, so dark is the default, and the stylesheet points Tailwind's `dark:` variant at that class.
 - Each stylesheet also bridges the roles to shadcn's unprefixed variables and sets Tailwind's theme. The native color palette is reset, so only roles and the fixed color groups exist as Tailwind colors. See ADR 0001 and `.claude/rules/03-tailwind.rule.md`.
@@ -155,7 +156,7 @@ A design token with the same value in every app.
 _Avoid_: Global token, base token
 
 **App theme**:
-The tokens through which one app expresses its brand. It holds only the primary color and its hover state; today only the website has one.
+The tokens through which one app expresses its brand. It holds only the primary color and its hover state; the website and the docs each have one.
 _Avoid_: Theme (alone), product theme, brand theme, skin
 
 **Foundation**:
