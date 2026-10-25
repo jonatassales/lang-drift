@@ -43,7 +43,7 @@ Run from the repository root:
 - A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
 - Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
-- `turbo.json` declares the environment each task may see: Turborepo runs in strict mode, so a variable reaches a task only through `globalEnv`, a task's `env` or the pass-through lists. `apps/website/README.md` holds the website's variable contract; `CRYPTO_SECRET` is pass-through only and never committed.
+- `turbo.json` declares the environment each task may see: Turborepo runs in strict mode, so a variable reaches a task only through `globalEnv`, a task's `env` or the pass-through lists. `apps/website/README.md` holds the website's variable contract and its tracked `.env.development` the shared development defaults, which hold no secret; `CRYPTO_SECRET` is pass-through only and never committed.
 - `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, `quality/` the lint-staged config and the Biome plugin, `versioning/` the commitlint config and the Git hooks (`.husky/`).
 
 ## Platform CLI

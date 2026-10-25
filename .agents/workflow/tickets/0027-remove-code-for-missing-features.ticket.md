@@ -64,7 +64,7 @@ Each file is on the ADR 0003 exception list, which lets it shrink. Only rules wh
 
 ### Documents
 
-- [x] AGENTS.md no longer calls `apps/website/.env.development` the local defaults: Git ignores it, so it is not shared. The README's variable table stays the contract.
+- [x] `apps/website/.env.development` is tracked as the shared development defaults, empty for now and never holding a secret; `.gitignore` keeps ignoring every other `.env*` file, and AGENTS.md and the README say so.
 - [x] AGENTS.md describes `packages/shell` as planned, not as where the switcher and the shell live.
 
 ### Owner
