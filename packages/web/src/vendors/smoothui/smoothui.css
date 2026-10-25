@@ -10,7 +10,7 @@
 	background: var(--primary);
 	border: 0;
 	border-radius: 999px;
-	color: #111;
+	color: var(--primary-foreground);
 	display: inline-flex;
 	font-size: 13px;
 	font-weight: 650;
