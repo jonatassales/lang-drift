@@ -18,11 +18,11 @@ Run from the repository root:
 | `pnpm turbo run build --filter=website` | Builds the app and the packages it depends on. |
 | `drift check localization` | Checks the translation catalogs after a catalog or loader change. |
 
-`.env.development` holds the shared development defaults and is tracked, so it never holds a secret: it lists `CRYPTO_SECRET` without a value. Git ignores every other `.env*` file. Put local and secret values in `apps/website/.env.local`, which Next.js loads and which takes precedence over `.env.development`. Never put a secret in a `NEXT_PUBLIC_` variable.
+`.env.development` holds the shared development defaults and is tracked, so a fresh checkout runs without setup. Its `CRYPTO_SECRET` is a development-only key: it protects nothing, and no deployed environment may reuse it. Git ignores every other `.env*` file. Put real and local values in `apps/website/.env.local`, which Next.js loads and which takes precedence over `.env.development`. Never put a production secret in a tracked file or in a `NEXT_PUBLIC_` variable.
 
 | Variable | Requirement |
 | --- | --- |
-| `CRYPTO_SECRET` | Server-only 32-byte AES key in canonical base64; the locale proxy needs it, even locally. Generate with `openssl rand -base64 32`. Every instance of a deploy uses the same key. |
+| `CRYPTO_SECRET` | Server-only 32-byte AES key in canonical base64; the locale proxy needs it, even locally. Generate with `openssl rand -base64 32`; development uses the tracked key. Every instance of a deploy uses the same key. |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | The Invisible production widget; Cloudflare's official Invisible test key locally. |
 | `TURNSTILE_SECRET_KEY` | Server-only widget secret; production rejects test keys. |
 | `TURNSTILE_EXPECTED_HOSTNAME` | Exact approved hostname; `localhost` for local fixtures. |
