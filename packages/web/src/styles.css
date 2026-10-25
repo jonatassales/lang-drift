@@ -1,0 +1,18 @@
+@import 'tailwindcss';
+@import './tokens.css';
+@import './ui/product-vision-curve/product-vision-curve.css';
+@import './vendors/smoothui/smoothui.css';
+@import './ui/product-experience.css';
+@import './ui/ui-consistency.css';
+
+@source './';
+
+[data-drift-sign='negative'] {
+	color: var(--lg-drift-negative);
+}
+[data-drift-sign='positive'] {
+	color: var(--lg-drift-positive);
+}
+[data-drift-sign='zero'] {
+	color: var(--lg-drift-zero);
+}

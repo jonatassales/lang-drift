@@ -88,6 +88,7 @@ const sharedRoles = [
 const statuses = ['success', 'warning', 'danger', 'info']
 const classifications = ['intentional', 'aligned', 'unexplained', 'review']
 const drifts = ['negative', 'positive', 'zero']
+const classificationTexts = ['intentional', 'review', 'unexplained']
 
 // The theme's tokens and the shared roles that follow its brand.
 const brandRoles = () => [
@@ -330,7 +331,25 @@ describe('shared tokens', () => {
 				'--lg-classification-review': '#A855F7',
 			},
 		)
-		assert.doesNotMatch(JSON.stringify(dark), /--lg-classification-/)
+		for (const name of classifications) {
+			assert.equal(dark[`--lg-classification-${name}`], undefined)
+		}
+	})
+
+	test('fix the classification text tones, darker in light and lighter in dark', () => {
+		const textVariables = classificationTexts.map(
+			(name) => `--lg-classification-text-${name}`,
+		)
+		assert.deepEqual(pick(light, textVariables), {
+			'--lg-classification-text-intentional': 'oklch(48.8% 0.243 264.376)',
+			'--lg-classification-text-review': 'oklch(49.6% 0.265 301.924)',
+			'--lg-classification-text-unexplained': 'oklch(50.5% 0.213 27.518)',
+		})
+		assert.deepEqual(pick(dark, textVariables), {
+			'--lg-classification-text-intentional': 'oklch(70.7% 0.165 254.624)',
+			'--lg-classification-text-review': 'oklch(71.4% 0.203 305.504)',
+			'--lg-classification-text-unexplained': 'oklch(70.4% 0.191 22.216)',
+		})
 	})
 
 	test('fix the drift colors, darker in light and lighter in dark', () => {
@@ -350,7 +369,7 @@ describe('shared tokens', () => {
 	test('never let the domain colors take the brand', () => {
 		for (const declared of [light, dark]) {
 			for (const [name, value] of Object.entries(declared)) {
-				if (/^--lg-(classification|drift)-/.test(name)) {
+				if (/^--lg-(classification|classification-text|drift)-/.test(name)) {
 					assert.doesNotMatch(value, /primary|--site-/)
 				}
 			}
@@ -428,6 +447,12 @@ describe('Tailwind theme', () => {
 			assert.equal(
 				colors[`--color-classification-${name}`],
 				`var(--lg-classification-${name})`,
+			)
+		}
+		for (const name of classificationTexts) {
+			assert.equal(
+				colors[`--color-classification-text-${name}`],
+				`var(--lg-classification-text-${name})`,
 			)
 		}
 		for (const drift of drifts) {

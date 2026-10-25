@@ -57,7 +57,12 @@ StyleDictionary.registerFormat({
 				.map((path) => path.slice(2).join('-'))
 		const roles = namesInGroup('lg.color', light)
 		// Colors that never take the brand, exposed to Tailwind by group.
-		const fixedGroups = ['status', 'classification', 'drift']
+		const fixedGroups = [
+			'status',
+			'classification',
+			'classification-text',
+			'drift',
+		]
 		const tailwindTokens = tokens.filter(
 			(token) => token.$extensions?.[tailwindExtension],
 		)

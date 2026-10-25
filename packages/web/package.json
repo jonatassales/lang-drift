@@ -1,0 +1,59 @@
+{
+	"name": "@langdrift/web",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"typecheck": "tsc --noEmit",
+		"test": "vitest run"
+	},
+	"sideEffects": [
+		"**/*.css"
+	],
+	"exports": {
+		"./styles.css": "./src/styles.css",
+		"./tokens.css": "./src/tokens.css",
+		"./ui/agent-orb": "./src/ui/agent-orb/index.ts",
+		"./ui/ai-avatars": "./src/ui/ai-avatars/index.ts",
+		"./ui/brand": "./src/ui/brand/index.ts",
+		"./ui/classification-text": "./src/ui/classification-text.ts",
+		"./ui/icons/server": "./src/ui/icons/server.ts",
+		"./ui/language-switcher": "./src/ui/language-switcher/index.ts",
+		"./ui/product-vision-curve": "./src/ui/product-vision-curve/index.ts",
+		"./ui/target-distribution-chart": "./src/ui/target-distribution-chart/index.tsx",
+		"./vendors/smoothui/animated-avatar-group": "./src/vendors/smoothui/animated-avatar-group.tsx",
+		"./vendors/smoothui/animated-tabs": "./src/vendors/smoothui/animated-tabs.tsx",
+		"./vendors/smoothui/basic-accordion": "./src/vendors/smoothui/basic-accordion.tsx",
+		"./vendors/smoothui/chroma-text": "./src/vendors/smoothui/chroma-text.tsx",
+		"./utilities": "./src/utilities/index.ts"
+	},
+	"dependencies": {
+		"@langdrift/tokens": "workspace:*",
+		"@neongate-ai/orbz": "0.3.1",
+		"@phosphor-icons/react": "^2.1.10",
+		"clsx": "^2.1.1",
+		"recharts": "3.10.1",
+		"tailwind-merge": "^3.7.0"
+	},
+	"peerDependencies": {
+		"next": ">=16",
+		"react": ">=19",
+		"react-dom": ">=19"
+	},
+	"peerDependenciesMeta": {
+		"next": {
+			"optional": true
+		}
+	},
+	"devDependencies": {
+		"@testing-library/react": "16.3.0",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"jsdom": "26.1.0",
+		"next": "16.3.5",
+		"react": "19.2.4",
+		"react-dom": "19.2.4",
+		"tailwindcss": "^4.3.3",
+		"typescript": "^5",
+		"vitest": "5.0.1"
+	}
+}

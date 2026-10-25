@@ -45,6 +45,12 @@
 				"danger": { "$value": "#B91C1C" },
 				"info": { "$value": "#1D4ED8" }
 			},
+			"classification-text": {
+				"$type": "color",
+				"intentional": { "$value": "oklch(48.8% 0.243 264.376)" },
+				"review": { "$value": "oklch(49.6% 0.265 301.924)" },
+				"unexplained": { "$value": "oklch(50.5% 0.213 27.518)" }
+			},
 			"drift": {
 				"$type": "color",
 				"negative": { "$value": "#B91C1C" },
