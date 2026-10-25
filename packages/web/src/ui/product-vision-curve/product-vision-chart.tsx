@@ -140,7 +140,7 @@ export function ProductVisionChart(props: VisionChartProps) {
 									labels?.describeEvent?.(event) ??
 									`${event.title}, ${event.delta} Product Vision, ${eventClassifications[event.classification]}, ${event.date}`
 								}
-								className="product-vision-event-dot focus-visible:[&>circle:first-of-type]:stroke-[var(--foreground)] focus-visible:[&>circle:first-of-type]:stroke-4"
+								className="product-vision-event-dot focus-visible:[&>circle:first-of-type]:stroke-foreground focus-visible:[&>circle:first-of-type]:stroke-4"
 								aria-pressed={selected}
 								key={event.id}
 								onClick={activate}
