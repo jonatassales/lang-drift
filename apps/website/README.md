@@ -1,6 +1,6 @@
 # Website
 
-The LangDrift platform site, started as a clone of `apps/website-old` (today's langdrift.md) and being reshaped into the platform site. For now it is the public, localized LangDrift website: the product story, the Product Vision demos, pricing, privacy and the early-access flow. Demo calls to action lead to the return-soon section above the footer; requests are paused.
+The LangDrift platform site, started as today's langdrift.md and being reshaped into the platform site. For now it is the public, localized LangDrift website: the product story, the Product Vision demos, pricing, privacy and the early-access flow. Demo calls to action lead to the return-soon section above the footer; requests are paused.
 
 Early access posts to a private registry service outside this repository. Admission → Turnstile Siteverify → registration in the registry, which persists the contact and sends the confirmation. The website holds no email credentials and never sends mail itself. HTTP 202 confirms persistence, not delivery.
 

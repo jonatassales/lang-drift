@@ -38,7 +38,7 @@ They become **one LangDrift console** on langdrift.md: one account, one shell, a
 
 ## Where things stand
 
-A pnpm and Turborepo monorepo. `apps/website` is where the platform site is built; it started as a clone of `apps/website-old`, today's langdrift.md, ported from the earlier `langdrift` monorepo under spec 0003. Work happens in `apps/website`; `apps/website-old` stays as the reference until the platform site takes over the domain. `packages/tokens`, `packages/web` and `packages/ex` exist; `shell`, `account`, `runtime` and `contracts` are planned. Each app and package has a README with its own contract.
+A pnpm and Turborepo monorepo. `apps/website` is where the platform site is built; it started as today's langdrift.md, ported from the earlier `langdrift` monorepo under spec 0003. Work happens in `apps/website`. `packages/tokens`, `packages/web` and `packages/ex` exist; `shell`, `account`, `runtime` and `contracts` are planned. Each app and package has a README with its own contract.
 
 ## How we work
 
