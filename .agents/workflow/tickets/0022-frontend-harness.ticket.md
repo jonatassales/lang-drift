@@ -8,7 +8,7 @@
 
 **Status:** ready-for-agent
 
-- [ ] The new rules exist with this repository's paths and are listed in AGENTS.md.
-- [ ] The frontend and Tailwind rules carry `cn()`, role utilities only, no component classes and the scoped exception that names the existing CSS files.
-- [ ] Biome reports type aliases where an interface fits, non-kebab file names and unused imports as errors; `turbo run check` passes.
-- [ ] `drift check localization` passes on the website's catalogs, fails on a broken catalog, runs in CI's Harness job and appears in `drift --help`.
+- [x] The new rules exist with this repository's paths and are listed in AGENTS.md.
+- [x] The frontend and Tailwind rules carry `cn()`, role utilities only, no component classes and the scoped exception that names the existing CSS files.
+- [x] Biome reports type aliases where an interface fits, non-kebab file names and unused imports as errors; `turbo run check` passes.
+- [x] `drift check localization` passes on the website's catalogs, fails on a broken catalog, runs in CI's Harness job and appears in `drift --help`.

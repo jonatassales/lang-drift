@@ -8,6 +8,6 @@
 
 **Status:** ready-for-agent
 
-- [ ] The website's build declares its environment variables; `dev` depends on upstream builds.
-- [ ] The pull-request workflow sets the safe values (local build, early access paused, sign-up disabled, a local Docs origin).
-- [ ] The Dockerfile uses this repository's paths, a digest-pinned Node image and a checksum-pinned pnpm, and no Corepack.
+- [x] The website's build declares its environment variables; `dev` depends on upstream builds.
+- [x] The pull-request workflow sets the safe values (local build, early access paused, sign-up disabled, a local Docs origin).
+- [x] The Dockerfile uses this repository's paths, a digest-pinned Node image and a checksum-pinned pnpm, and no Corepack.

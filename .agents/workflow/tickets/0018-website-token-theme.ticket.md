@@ -8,10 +8,10 @@
 
 **Status:** ready-for-agent
 
-- [ ] The package exports only `website.css`, with the `--site-*` theme behind `primary` and `primary-hover` (`#6D0AD6`; hover `#5408A5` light, `#8C3BEF` dark) and a white primary foreground.
-- [ ] Background, card, popover, foreground, muted foreground and border take the website's light and dark values.
-- [ ] Classification colors (intentional, aligned, unexplained, review) and drift colors (negative, positive, zero) are exposed as Tailwind colors and never reference the brand.
-- [ ] `--font-sans` is the editorial stack and `--font-mono` comes from a new mono token.
-- [ ] The stylesheet declares the `dark` variant on the `.dark` class.
-- [ ] The contract test covers all of the above; the cross-product test is gone.
-- [ ] AGENTS.md's design section and the glossary describe the single theme and the two new groups.
+- [x] The package exports only `website.css`, with the `--site-*` theme behind `primary` and `primary-hover` (`#6D0AD6`; hover `#5408A5` light, `#8C3BEF` dark) and a white primary foreground.
+- [x] Background, card, popover, foreground, muted foreground and border take the website's light and dark values.
+- [x] Classification colors (intentional, aligned, unexplained, review) and drift colors (negative, positive, zero) are exposed as Tailwind colors and never reference the brand.
+- [x] `--font-sans` is the editorial stack and `--font-mono` comes from a new mono token.
+- [x] The stylesheet declares the `dark` variant on the `.dark` class.
+- [x] The contract test covers all of the above; the cross-product test is gone.
+- [x] AGENTS.md's design section and the glossary describe the single theme and the two new groups.

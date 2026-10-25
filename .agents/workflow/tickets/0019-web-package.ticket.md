@@ -8,7 +8,7 @@
 
 **Status:** ready-for-agent
 
-- [ ] The exports map lists only: styles, utilities, product vision curve, brand, agent orb, server icons, language switcher, AI avatars, target distribution chart and the four SmoothUI components.
-- [ ] Its stylesheet imports the tokens stylesheet; the drift-sign rules read the drift colors.
-- [ ] No `--ld-*` variable or `ld-*` utility remains in the package.
-- [ ] Its ported tests pass under `turbo run test`, and `typecheck` passes.
+- [x] The exports map lists only: styles, utilities, product vision curve, brand, agent orb, server icons, language switcher, AI avatars, target distribution chart and the four SmoothUI components.
+- [x] Its stylesheet imports the tokens stylesheet; the drift-sign rules read the drift colors.
+- [x] No `--ld-*` variable or `ld-*` utility remains in the package.
+- [x] Its ported tests pass under `turbo run test`, and `typecheck` passes.

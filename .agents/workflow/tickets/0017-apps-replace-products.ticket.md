@@ -8,7 +8,7 @@
 
 **Status:** ready-for-agent
 
-- [ ] The pnpm workspace picks up `apps/*` and `packages/*`; `products/` no longer exists.
-- [ ] A commit that changes `apps/` or `packages/` without a `Ticket:` trailer is rejected, by the commit-msg hook and by `drift git lint-history`.
-- [ ] `drift doctor --ci` passes and requires `apps`.
-- [ ] AGENTS.md (status, layout, design, commit hook) and the glossary use apps; the planned `ui` package is named `web`.
+- [x] The pnpm workspace picks up `apps/*` and `packages/*`; `products/` no longer exists.
+- [x] A commit that changes `apps/` or `packages/` without a `Ticket:` trailer is rejected, by the commit-msg hook and by `drift git lint-history`.
+- [x] `drift doctor --ci` passes and requires `apps`.
+- [x] AGENTS.md (status, layout, design, commit hook) and the glossary use apps; the planned `ui` package is named `web`.
