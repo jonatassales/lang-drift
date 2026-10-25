@@ -65,60 +65,105 @@ export type FlowTargetId = (typeof flowTargetIds)[number]
 export type FlowGuaranteeId = (typeof flowGuaranteeIds)[number]
 export type MicroruntimesFaqId = (typeof microruntimesFaqIds)[number]
 
-// The hero terminal's illustrative session with the connected agent: each
-// line's kind, in the order it prints. The text lives in the catalog.
-export const terminalSession = [
+// The hero terminal's simulated planning session: each line's kind and the
+// wait before it prints, in order. The text lives in the catalog. The typed
+// command is the intended entry point of the connected agent; the planning
+// lines describe the console's proposed flow, not a shipped planner.
+export const planSession = [
 	{
-		id: 'doctor',
+		id: 'plan',
 		type: 'command',
+		delay: 0,
 	},
 	{
-		id: 'tools',
+		id: 'scope',
+		type: 'comment',
+		delay: 400,
+	},
+	{
+		id: 'memory',
+		type: 'output',
+		delay: 900,
+	},
+	{
+		id: 'episodes',
+		type: 'output',
+		delay: 1400,
+	},
+	{
+		id: 'suggest',
 		type: 'success',
+		delay: 900,
 	},
 	{
-		id: 'run',
-		type: 'command',
+		id: 'reads',
+		type: 'output',
+		delay: 700,
+	},
+	{
+		id: 'guardrail',
+		type: 'output',
 		delay: 600,
 	},
 	{
-		id: 'sync',
+		id: 'bounds',
+		type: 'output',
+		delay: 900,
+	},
+	{
+		id: 'resolve',
+		type: 'output',
+		delay: 800,
+	},
+	{
+		id: 'go',
+		type: 'success',
+		delay: 650,
+	},
+	{
+		id: 'node',
+		type: 'success',
+		delay: 650,
+	},
+	{
+		id: 'nats',
+		type: 'success',
+		delay: 650,
+	},
+	{
+		id: 'redis',
+		type: 'success',
+		delay: 650,
+	},
+	{
+		id: 'next',
+		type: 'success',
+		delay: 650,
+	},
+	{
+		id: 'size',
+		type: 'success',
+		delay: 1200,
+	},
+	{
+		id: 'limits',
+		type: 'warning',
+		delay: 700,
+	},
+	{
+		id: 'price',
+		type: 'output',
+		delay: 800,
+	},
+	{
+		id: 'draft',
+		type: 'success',
+		delay: 1200,
+	},
+	{
+		id: 'handoff',
 		type: 'comment',
-	},
-	{
-		id: 'runtime',
-		type: 'output',
-	},
-	{
-		id: 'configure',
-		type: 'success',
-	},
-	{
-		id: 'validate',
-		type: 'success',
-	},
-	{
-		id: 'prepare',
-		type: 'success',
-		delay: 700,
-	},
-	{
-		id: 'execute',
-		type: 'success',
-		delay: 700,
-	},
-	{
-		id: 'inspect',
-		type: 'success',
-	},
-	{
-		id: 'cleanup',
-		type: 'success',
-		delay: 700,
-	},
-	{
-		id: 'evidence',
-		type: 'output',
+		delay: 800,
 	},
 ] as const satisfies readonly {
 	delay?: number
@@ -126,7 +171,52 @@ export const terminalSession = [
 	type: TerminalLineType
 }[]
 
-export type TerminalLineId = (typeof terminalSession)[number]['id']
+export type PlanLineId = (typeof planSession)[number]['id']
+
+export function planLineIndex(id: PlanLineId) {
+	return planSession.findIndex((line) => line.id === id)
+}
+
+// True once the terminal has completed the line, so the card can show what
+// that line reveals.
+export function hasPlayed(playedCount: number, id: PlanLineId) {
+	return playedCount > planLineIndex(id)
+}
+
+export type PlanEffort = 'low' | 'medium' | 'high'
+
+// The ticket the session plans, as the agent reads it from the project's
+// artifacts: the numbers follow the scaffold ex init produces.
+export const ticketPlan = {
+	ticket: {
+		number: '0031',
+		slug: 'early-access-runtime',
+		file: '0031-TICKET-early-access-runtime',
+	},
+	artifacts: {
+		prd: '0002-PRD-early-access.prd.md',
+		designDoc: '0005-DD-early-access-runtime.dd.md',
+		spec: '0011-SPEC-early-access-runtime.spec.md',
+	},
+	guardrail: {
+		file: '0001-finops.gr.md',
+		criteria: ['FIN-02', 'FIN-04'],
+	},
+	model: 'operator/allowed-model',
+	effort: 'medium' satisfies PlanEffort,
+	draftRevision: 1,
+} as const
+
+// Which line of the session reveals which part of the card.
+export const planReveals = {
+	card: 'plan',
+	suggestionSkeleton: 'memory',
+	suggestion: 'suggest',
+	artifactsRead: 'reads',
+	guardrail: 'guardrail',
+} as const satisfies Record<string, PlanLineId>
+
+export type PlanRevealId = keyof typeof planReveals
 
 export const runtimeFilePath = '.langdrift/runtimes/checkout-preview/runtime.md'
 
@@ -213,27 +303,63 @@ export interface TitledCopy {
 export interface MicroruntimesMessages {
 	skip: string
 	hero: {
-		titleStart: string
-		titleHighlight: string
-		titleEnd: string
-		lead: string
-		primaryCta: string
-		secondaryCta: string
+		title: string
 		summary: string
 	}
-	lifecycle: {
+	session: {
 		terminal: {
 			title: string
 			label: string
-			lines: Record<TerminalLineId, string>
+			lines: Record<PlanLineId, string>
 		}
+		card: {
+			ticket: string
+			status: string
+			title: string
+			readMark: string
+			notSet: string
+			resolving: string
+			artifacts: Record<'prd' | 'designDoc' | 'spec' | 'guardrail', string>
+			guardrailNote: string
+			suggestedModel: string
+			suggestedEffort: string
+			efforts: Record<PlanEffort, string>
+			recommendationNote: string
+			components: string
+			columns: { cpu: string; memory: string }
+			resolvedProgress: string
+			componentsTotal: string
+			hardware: Record<
+				| 'resource'
+				| 'bounded'
+				| 'suggested'
+				| 'cpu'
+				| 'memory'
+				| 'gpu'
+				| 'disk',
+				string
+			>
+			notRuntimeField: string
+			none: string
+			priceBasis: string
+			report: Record<
+				'bounded' | 'suggested' | 'suggestedResource' | 'final',
+				string
+			>
+			deployments: string
+			pendingAuthorization: string
+			planPath: string
+			control: { pause: string; replay: string }
+			cpuValue: string
+			memoryValue: string
+		}
+	}
+	lifecycle: {
 		stepperLabel: string
 		stages: Record<
 			LifecycleStageId,
 			{ label: string; does: string; leaves: string }
 		>
-		cpuValue: string
-		memoryValue: string
 		whatItDoes: string
 		evidenceItLeaves: string
 	}

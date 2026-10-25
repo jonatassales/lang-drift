@@ -1,10 +1,52 @@
 import { describe, expect, it } from 'vitest'
 
+import { microruntimesMessages } from '@i18n/messages/index'
+
 import {
 	formatDescriptor,
+	hasPlayed,
 	lifecycleStageIds,
+	planReveals,
+	planSession,
 	runtimeDescriptor,
 } from './microruntimes-content'
+
+describe('the simulated planning session', () => {
+	it('types exactly one command, first, and waits before every other line', () => {
+		const commands = planSession.filter((line) => line.type === 'command')
+		expect(commands).toHaveLength(1)
+		expect(planSession[0].type).toBe('command')
+		for (const line of planSession.slice(1)) {
+			expect(line.delay).toBeGreaterThan(0)
+		}
+	})
+
+	it('lasts between fifteen and twenty seconds at the default typing speed', () => {
+		const charactersPerSecond = 24
+		const typed = microruntimesMessages.en.session.terminal.lines.plan
+		const typingMs = (typed.length / charactersPerSecond) * 1000
+		const waitingMs = planSession.reduce(
+			(total, line) => total + (line.delay ?? 0),
+			0,
+		)
+		expect(typingMs + waitingMs).toBeGreaterThanOrEqual(15_000)
+		expect(typingMs + waitingMs).toBeLessThanOrEqual(20_000)
+	})
+
+	it('reveals every card field on a line of the session', () => {
+		const ids = planSession.map((line) => line.id)
+		for (const lineId of Object.values(planReveals)) {
+			expect(ids).toContain(lineId)
+		}
+	})
+
+	it('counts a line as played once the terminal has completed it', () => {
+		expect(hasPlayed(0, 'plan')).toBe(false)
+		expect(hasPlayed(1, 'plan')).toBe(true)
+		expect(hasPlayed(1, 'scope')).toBe(false)
+		expect(hasPlayed(planSession.length, 'handoff')).toBe(true)
+	})
+})
 
 describe('illustrative Microruntimes content', () => {
 	it('keeps the six lifecycle stages in order', () => {
