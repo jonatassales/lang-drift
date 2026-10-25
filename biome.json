@@ -7,12 +7,7 @@
 	},
 	"files": {
 		"ignoreUnknown": true,
-		"includes": [
-			"**",
-			"!**/public",
-			"!**/.claude/settings.local.json",
-			"!apps/website-old"
-		]
+		"includes": ["**", "!**/public", "!**/.claude/settings.local.json"]
 	},
 	"plugins": ["./platform/quality/multi-property-object.grit"],
 	"formatter": {

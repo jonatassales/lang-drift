@@ -26,7 +26,7 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup-workspace
-      - run: pnpm turbo run build --filter=!website-old
+      - run: pnpm turbo run build
 
   check:
     name: Check
@@ -40,7 +40,7 @@ jobs:
       - name: Format, lint and imports (Biome)
         run: pnpm turbo run check
       - name: Types
-        run: pnpm turbo run typecheck --filter=!website-old
+        run: pnpm turbo run typecheck
       - name: Dead code
         run: platform/cli/drift check dead-code
 
@@ -53,7 +53,7 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup-workspace
-      - run: pnpm turbo run test --filter=!website-old
+      - run: pnpm turbo run test
 
   guardrails:
     name: Guardrails
