@@ -4,7 +4,6 @@ import { describe, expect, it } from 'vitest'
 import {
 	conversionMessages,
 	demoMessages,
-	earlyAccessEmailMessages,
 	earlyAccessMessages,
 	earlyAccessSentMessages,
 	executiveReviewMessages,
@@ -59,7 +58,6 @@ describe('Website production translations', () => {
 				conversionMessages,
 				earlyAccessMessages,
 				earlyAccessSentMessages,
-				earlyAccessEmailMessages,
 				footerMessages,
 				integrationsMessages,
 				privacyMessages,

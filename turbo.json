@@ -39,7 +39,6 @@
 	"globalEnv": ["EARLY_ACCESS_MODE", "VERCEL", "VERCEL_ENV"],
 	"globalPassThroughEnv": [
 		"CRYPTO_SECRET",
-		"RESEND_*",
 		"CI",
 		"NEXT_TELEMETRY_DISABLED",
 		"NODE_OPTIONS"

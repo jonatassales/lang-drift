@@ -5,7 +5,6 @@ import type { WebsiteLocale } from '@i18n/routing'
 import conversionJson from './conversion.json'
 import demoJson from './demo.json'
 import earlyAccessJson from './early-access.json'
-import earlyAccessEmailJson from './early-access-email.json'
 import earlyAccessSentJson from './early-access-sent.json'
 import reviewEn from './executive-review/en.json'
 import reviewJa from './executive-review/ja.json'
@@ -19,7 +18,6 @@ import integrationsJson from './integrations.json'
 import type {
 	ConversionCopy,
 	DemoMessages,
-	EarlyAccessEmail,
 	EarlyAccessMessages,
 	EarlyAccessSentMessages,
 	FooterMessages,
@@ -128,7 +126,6 @@ assertCatalogShape('privacy', privacyJson)
 assertCatalogShape('conversion', conversionJson)
 assertCatalogShape('early-access', earlyAccessJson)
 assertCatalogShape('early-access-sent', earlyAccessSentJson)
-assertCatalogShape('early-access-email', earlyAccessEmailJson)
 assertCatalogShape('integrations', integrationsJson)
 assertCatalogShape('footer', footerJson)
 assertCatalogShape('route-state', routeStateJson)
@@ -144,8 +141,6 @@ export const earlyAccessSentMessages: Record<
 	WebsiteLocale,
 	EarlyAccessSentMessages
 > = earlyAccessSentJson
-export const earlyAccessEmailMessages: Record<WebsiteLocale, EarlyAccessEmail> =
-	earlyAccessEmailJson
 export const integrationsMessages: Record<WebsiteLocale, IntegrationsMessages> =
 	integrationsJson
 export const footerMessages: Record<WebsiteLocale, FooterMessages> = footerJson
