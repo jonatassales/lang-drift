@@ -23,6 +23,8 @@ const indexRobots: Metadata['robots'] = {
 // Pages whose URL is not their id, so the metadata JSON stores no route path.
 const nestedPagePath: Partial<Record<PageId, string>> = {
 	vision: 'platform/vision/',
+	finops: 'platform/finops/',
+	microruntimes: 'platform/microruntimes/',
 }
 
 function pagePath(page: PageId, locale: WebsiteLocale) {

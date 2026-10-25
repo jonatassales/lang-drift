@@ -18,11 +18,13 @@ export const platformProducts = [
 		label: 'finops',
 		description: 'finopsDescription',
 		icon: FinopsIcon,
+		href: '/platform/finops',
 	},
 	{
 		label: 'microruntimes',
 		description: 'microruntimesDescription',
 		icon: MicroruntimesIcon,
+		href: '/platform/microruntimes',
 	},
 	{
 		label: 'aiVoice',

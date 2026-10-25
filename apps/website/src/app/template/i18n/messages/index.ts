@@ -1,4 +1,6 @@
 import type { ExecutiveReviewMessages } from '@data/executive-review-data'
+import type { FinopsMessages } from '@data/finops-content'
+import type { MicroruntimesMessages } from '@data/microruntimes-content'
 import type { VisionLoopMessages } from '@data/vision-loop-content'
 import type { WebsiteLocale } from '@i18n/routing'
 
@@ -11,6 +13,7 @@ import reviewJa from './executive-review/ja.json'
 import reviewPt from './executive-review/pt-br.json'
 import reviewVi from './executive-review/vi.json'
 import reviewZh from './executive-review/zh-hant.json'
+import finopsJson from './finops.json'
 import footerJson from './footer.json'
 import headerJson from './header.json'
 import homeJson from './home.json'
@@ -27,6 +30,7 @@ import type {
 	PlatformMessages,
 	PrivacyMessages,
 } from './messages.types'
+import microruntimesJson from './microruntimes.json'
 import platformJson from './platform.json'
 import privacyJson from './privacy.json'
 import routeStateJson from './route-state.json'
@@ -132,6 +136,8 @@ assertCatalogShape('integrations', integrationsJson)
 assertCatalogShape('footer', footerJson)
 assertCatalogShape('platform', platformJson)
 assertCatalogShape('route-state', routeStateJson)
+assertCatalogShape('finops', finopsJson)
+assertCatalogShape('microruntimes', microruntimesJson)
 
 export const homeMessages: Record<WebsiteLocale, HomeMessages> = homeJson
 export const headerMessages: Record<WebsiteLocale, HeaderMessages> = headerJson
@@ -149,6 +155,11 @@ export const integrationsMessages: Record<WebsiteLocale, IntegrationsMessages> =
 export const footerMessages: Record<WebsiteLocale, FooterMessages> = footerJson
 export const platformMessages: Record<WebsiteLocale, PlatformMessages> =
 	platformJson
+export const finopsMessages: Record<WebsiteLocale, FinopsMessages> = finopsJson
+export const microruntimesMessages: Record<
+	WebsiteLocale,
+	MicroruntimesMessages
+> = microruntimesJson
 
 export const conversionMessages: Record<WebsiteLocale, ConversionCopy> = {
 	en: loadConversion(conversionJson.en),

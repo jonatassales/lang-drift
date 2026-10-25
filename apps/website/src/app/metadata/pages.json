@@ -43,6 +43,50 @@
 			"description": "Thông tin sản phẩm trực quan giúp bạn hiểu cách sản phẩm phát triển so với định hướng."
 		}
 	},
+	"finops": {
+		"en": {
+			"title": "LangDrift FinOps — Fund the how.",
+			"description": "Agent-assisted delivery accountable to a team budget: what the team can fund, what each piece of work consumed, and whether the outcome was worth it."
+		},
+		"pt-BR": {
+			"title": "LangDrift FinOps — Financie o como.",
+			"description": "Entrega assistida por agentes responsável perante um orçamento de time: o que o time pode financiar, o que cada trabalho consumiu e se o resultado valeu a pena."
+		},
+		"zh-Hant": {
+			"title": "LangDrift FinOps — 為「怎麼做」出資。",
+			"description": "讓代理協助的交付對團隊預算負責：團隊能投入多少、每項工作消耗了多少，以及成果是否值得。"
+		},
+		"ja": {
+			"title": "LangDrift FinOps — 「どう作るか」に資金を。",
+			"description": "エージェント支援の開発をチーム予算に対して説明可能に。チームが投じられる額、各作業が消費した額、そして成果にその価値があったか。"
+		},
+		"vi": {
+			"title": "LangDrift FinOps — Cấp vốn cho cách làm.",
+			"description": "Giao hàng có tác tử hỗ trợ chịu trách nhiệm trước ngân sách của đội: đội có thể chi bao nhiêu, mỗi phần việc đã tiêu bao nhiêu, và kết quả có đáng không."
+		}
+	},
+	"microruntimes": {
+		"en": {
+			"title": "LangDrift Microruntimes — Run what you already have.",
+			"description": "Bounded, consumer-owned execution around existing application components: compose, run, inspect and clean up, with the evidence kept."
+		},
+		"pt-BR": {
+			"title": "LangDrift Microruntimes — Rode o que você já tem.",
+			"description": "Execução delimitada e de propriedade do time em torno de componentes de aplicação existentes: compor, executar, inspecionar e limpar, com a evidência guardada."
+		},
+		"zh-Hant": {
+			"title": "LangDrift Microruntimes — 執行你已經擁有的。",
+			"description": "圍繞既有應用程式元件的受限執行，由使用者擁有：組成、執行、檢查與清理，並保留證據。"
+		},
+		"ja": {
+			"title": "LangDrift Microruntimes — いまあるものを動かす。",
+			"description": "既存のアプリケーションコンポーネントを囲む、境界付きで利用者が所有する実行環境。構成、実行、検査、クリーンアップを行い、証拠を残します。"
+		},
+		"vi": {
+			"title": "LangDrift Microruntimes — Chạy những gì bạn đã có.",
+			"description": "Thực thi có ranh giới, do đội sở hữu, quanh các thành phần ứng dụng có sẵn: dựng, chạy, kiểm tra và dọn dẹp, với bằng chứng được giữ lại."
+		}
+	},
 	"pricing": {
 		"en": {
 			"title": "Plans & early access — LangDrift",

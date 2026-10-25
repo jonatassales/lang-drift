@@ -91,6 +91,96 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/vision/"/>
   </url>
   <url>
+    <loc>https://langdrift.md/en/platform/finops/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/finops/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/pt-br/platform/finops/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/finops/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/zh-hant/platform/finops/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/finops/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/ja/platform/finops/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/finops/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/vi/platform/finops/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/finops/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/finops/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/en/platform/microruntimes/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/microruntimes/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/pt-br/platform/microruntimes/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/microruntimes/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/zh-hant/platform/microruntimes/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/microruntimes/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/ja/platform/microruntimes/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/microruntimes/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/vi/platform/microruntimes/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/microruntimes/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/microruntimes/"/>
+  </url>
+  <url>
     <loc>https://langdrift.md/en/pricing/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/pricing/"/>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/pricing/"/>

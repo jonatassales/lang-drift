@@ -13,7 +13,9 @@ export interface FeaturesGridItem {
 	description: string
 	icon: ReactNode
 	id: string
-	title: string
+	// A string, or a rendered link: give the link `after:absolute
+	// after:inset-0` and the whole card becomes its target.
+	title: ReactNode
 }
 
 export interface FeaturesGridProps {
@@ -68,7 +70,7 @@ export function FeaturesGrid(props: FeaturesGridProps) {
 					{items.map((item, index) => (
 						<motion.li
 							className={cn(
-								'rounded-xl border border-border bg-background p-6 transition-shadow',
+								'relative rounded-xl border border-border bg-background p-6 transition-shadow focus-within:ring-2 focus-within:ring-ring',
 								lifts && 'hover:shadow-md',
 							)}
 							initial={

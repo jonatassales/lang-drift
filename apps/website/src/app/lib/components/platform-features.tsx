@@ -2,6 +2,7 @@ import { FeaturesGrid } from '@langdrift/web/vendors/smoothui/features-grid'
 
 import { platformProducts } from '@components/website-header/platform-products'
 import { headerMessages, platformMessages } from '@i18n/messages/index'
+import { Link } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
 
 interface PlatformFeaturesProps {
@@ -9,7 +10,8 @@ interface PlatformFeaturesProps {
 }
 
 // The second section of the home page: the four platform products as cards,
-// named and described with the header's copy.
+// named and described with the header's copy. A product with a page makes
+// its whole card a link to it.
 export function PlatformFeatures(props: PlatformFeaturesProps) {
 	const { locale } = props
 
@@ -18,11 +20,24 @@ export function PlatformFeatures(props: PlatformFeaturesProps) {
 	const items = platformProducts.map((product) => {
 		const Icon = product.icon
 
+		const name = names[product.label]
+
 		return {
 			description: names[product.description],
 			icon: <Icon className="size-6" />,
 			id: product.label,
-			title: names[product.label],
+			title:
+				'href' in product ? (
+					<Link
+						className="outline-none after:absolute after:inset-0 after:rounded-xl"
+						href={product.href}
+						locale={locale}
+					>
+						{name}
+					</Link>
+				) : (
+					name
+				),
 		}
 	})
 
