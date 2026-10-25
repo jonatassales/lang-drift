@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest'
 import {
 	envelope,
 	envelopeSegments,
+	failureScenarioIds,
+	failureStatusTones,
 	gateExample,
 	gateFigures,
 	initialWorkItemId,
@@ -40,5 +42,12 @@ describe('illustrative FinOps content', () => {
 			observed: 2460,
 			released: 140,
 		})
+	})
+
+	it('leaves the within-envelope case to the hero and ends each failure in a warning or a danger', () => {
+		expect(failureScenarioIds).not.toContain('within-envelope')
+		for (const id of failureScenarioIds) {
+			expect(['warning', 'danger']).toContain(failureStatusTones[id])
+		}
 	})
 })
