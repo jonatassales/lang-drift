@@ -1,0 +1,10 @@
+# What `drift check dead-code` accepts although nothing in the repository uses
+# it. One entry per line: <kind> <glob> # why. The glob matches the finding's
+# key: a path for a module, path#name for an export, workspace:name for a
+# dependency, the variable for env, the class for class, paths-file:alias for
+# an alias.
+
+module apps/website/src/app/template/formatters/*.fmt.ts # The owner keeps the formatters.
+export apps/website/src/app/template/formatters/*.fmt.ts#* # The owner keeps the formatters.
+dependency apps/website:react-dom # Next.js requires it as a peer.
+class recharts-* # Recharts renders these classes.

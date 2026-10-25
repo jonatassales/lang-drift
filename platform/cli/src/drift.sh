@@ -39,8 +39,9 @@ case "$command" in
     subcommand=${1:-}
     [ "$#" -eq 0 ] || shift
     case "$subcommand" in
+      dead-code) exec "$commands/check-dead-code.sh" "$@" ;;
       localization) exec "$commands/check-localization.sh" "$@" ;;
-      *) drift_usage_error "Usage: drift check <localization>" ;;
+      *) drift_usage_error "Usage: drift check <dead-code|localization>" ;;
     esac
     ;;
   env)
