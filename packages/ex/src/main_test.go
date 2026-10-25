@@ -12,7 +12,7 @@ import (
 	"testing"
 )
 
-// mainUseCases is the production composition, without the e2e lifecycles.
+// mainUseCases is the production composition, without the native lifecycles.
 func mainUseCases() cli.UseCases {
 	cases, _ := useCases()
 	return cases
