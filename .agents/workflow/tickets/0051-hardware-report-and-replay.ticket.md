@@ -19,7 +19,7 @@
 
 ### Control
 
-- [ ] `SessionControl` (client): a text button in the card footer that reads pause while the session plays and replay once the last line prints; pause freezes the terminal and the card together; replay resets the count, clears the pause and increments the run so the terminal remounts and retypes while the card returns to dashes in the same frame. It is reachable with Tab, operable with Enter and Space, has a visible focus ring, and is not rendered under reduced motion.
+- [ ] `SessionControl`: a text button in the card footer that reads pause while the session plays, resume while it is paused, and replay once the last line prints; pause freezes the terminal and the card together; replay resets the count, clears the pause and increments the run so the terminal remounts and retypes while the card returns to dashes in the same frame. Pause, resume and replay are write atoms beside the session atom. The button is reachable with Tab, operable with Enter and Space, has a visible focus ring, and is hidden under reduced motion, out of the tab order.
 
 ### Tests
 

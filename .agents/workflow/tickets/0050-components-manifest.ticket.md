@@ -15,13 +15,13 @@
 ### Card
 
 - [ ] `ComponentRow`: a skeleton row (a square, a name bar, a kind bar, two figure bars and an empty track) or a filled row with the technology icon at 16px in `currentColor`, the path, a kind chip (`api`, `broker`, `cache`, `web`), the CPU and memory figures formatted for the locale, and a two-pixel share bar whose fill grows to the row's share of the CPU envelope with a motion-safe width transition; skeletons and bars are plain Tailwind spans local to the card.
-- [ ] The components section: a header with the components, CPU and memory labels; a dash row before the resolve line; five skeleton rows after it; each row filled after its line; a total that reads `n of 5 resolved` with the running sums while filling and `5 components` with the suggested totals when done, as ICU messages in five locales.
+- [ ] The components section: a header with the components, CPU and memory labels; a dash row before the resolve line; five skeleton rows after it; each row filled after its line; a total that is a skeleton until the first row resolves (so no zero is ever shown as a sum), then reads `n of 5 resolved` with the running sums while filling and `5 components` with the suggested totals when done, as ICU messages in five locales.
 - [ ] The technology name sits in HTML beside the mark, so the icon is decorative.
 
 ### Tests
 
 - [ ] The content module test: the component figures sum to the suggested totals; the suggested totals stay within the envelope; every component has a session line.
-- [ ] The `TicketCard` test grows: after the resolve line five skeleton rows show and the total reads none resolved; after the first component line the row shows its path and figures and the total reads one of five; at the last component line the total reads five components with the suggested totals.
+- [ ] The `TicketCard` test grows: after the resolve line five skeleton rows and a skeleton total show; after the first component line the row shows its path, its kind chip and its figures and the total reads one of five; at the last component line the total reads five components with the suggested totals.
 
 ### Verification
 
