@@ -7,7 +7,10 @@ import { setRequestLocale } from 'next-intl/server'
 import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
 import { EarlyAccessSection } from '@components/early-access/section'
 import { AuthoringFlow } from '@components/microruntimes/authoring-flow'
+import { LifecycleDemo } from '@components/microruntimes/lifecycle-demo'
 import { RuntimeDescriptorCard } from '@components/microruntimes/runtime-descriptor-card'
+import { StageEvidence } from '@components/microruntimes/stage-evidence'
+import { PillarScenarios } from '@components/product-page/pillar-scenarios'
 import { ProductFaqSection } from '@components/product-page/product-faq-section'
 import { ProductHero } from '@components/product-page/product-hero'
 import { ProductSection } from '@components/product-page/product-section'
@@ -15,6 +18,8 @@ import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
 import {
 	executionLedger,
+	lifecyclePhaseIds,
+	lifecycleScenarioIds,
 	microruntimesFaqIds,
 	ownershipRowIds,
 	stateCardIds,
@@ -67,7 +72,7 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 		<>
 			<a
 				className="fixed top-0 left-3 z-200 max-w-[calc(100vw-1.5rem)] -translate-y-full bg-foreground px-2.5 py-2 whitespace-normal text-card focus-visible:top-3 focus-visible:translate-y-0"
-				href="#runs"
+				href="#lifecycle"
 			>
 				{copy.skip}
 			</a>
@@ -78,7 +83,7 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 					headingId="microruntimes-hero-heading"
 					lead={copy.hero.lead}
 					primaryCta={{
-						href: '#runs',
+						href: '#lifecycle',
 						label: copy.hero.primaryCta,
 					}}
 					secondaryCta={{
@@ -89,7 +94,47 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 					titleEnd={copy.hero.titleEnd}
 					titleHighlight={copy.hero.titleHighlight}
 					titleStart={copy.hero.titleStart}
-				/>
+				>
+					<LifecycleDemo copy={copy.lifecycle} locale={locale} />
+				</ProductHero>
+
+				<ProductSection
+					id="lifecycle"
+					lead={copy.scenarios.lead}
+					title={copy.scenarios.title}
+				>
+					<PillarScenarios
+						pillars={lifecyclePhaseIds.map((id) => ({
+							id,
+							label: copy.scenarios.phases[id],
+						}))}
+						scenarios={lifecycleScenarioIds.map((id) => {
+							const scenario = copy.scenarios.items[id]
+
+							return {
+								cells: {
+									compose: scenario.compose,
+									run: scenario.run,
+									inspect: scenario.inspect,
+									cleanup: scenario.cleanup,
+								},
+								context: scenario.context,
+								id,
+								tabLabel: scenario.tabLabel,
+							}
+						})}
+						selectorLabel={copy.scenarios.selectorLabel}
+					/>
+					<div className="mt-8 flex flex-wrap items-center justify-between gap-x-8 gap-y-3">
+						<p className="m-0 max-w-[640px] text-[13px] leading-[1.6] text-muted-foreground">
+							{copy.scenarios.outro}
+						</p>
+						<a className="smooth-text-link" href="#state">
+							{copy.scenarios.outroLink}
+							<span aria-hidden="true"> ↗</span>
+						</a>
+					</div>
+				</ProductSection>
 
 				<ProductSection
 					id="runs"
@@ -252,6 +297,10 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 							]}
 						/>
 					</article>
+					<StageEvidence
+						copy={copy.evidence}
+						stageLabels={copy.lifecycle.stages}
+					/>
 				</ProductSection>
 
 				<ProductSection

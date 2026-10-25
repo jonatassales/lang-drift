@@ -15,6 +15,8 @@ export const lifecycleStageIds = [
 
 export type LifecycleStageId = (typeof lifecycleStageIds)[number]
 
+export const initialStageId: LifecycleStageId = 'execute'
+
 export const lifecyclePhaseIds = [
 	'compose',
 	'run',
@@ -127,6 +129,15 @@ export const executionLedger = {
 	ownedResources: 7,
 	removedResources: 7,
 	evidencePath: '.audits/evidence/runs/exec-41b2/',
+}
+
+export const stageEvidencePaths: Record<LifecycleStageId, string> = {
+	configure: '.langdrift/runtimes/checkout-preview/runtime.md#revision-3',
+	validate: '.audits/evidence/runs/exec-41b2/validate.json',
+	prepare: '.audits/evidence/runs/exec-41b2/prepare.json',
+	execute: '.audits/evidence/runs/exec-41b2/claim.json',
+	inspect: '.audits/evidence/runs/exec-41b2/inspect.json',
+	cleanup: '.audits/evidence/runs/exec-41b2/cleanup.json',
 }
 
 export interface TitledCopy {
