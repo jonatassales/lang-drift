@@ -16,4 +16,4 @@ Run typechecking regularly, single test files regularly, and the full test suite
 
 Once done, call the Skill tool with "code-review" to review the work.
 
-Then deliver the work as `.agents/workflow/human-in-the-loop.policy.md` says: it sets whether you commit, push and open the pull request yourself, and which guardrails gate you. Without that file, do not commit; report the work as ready for review.
+Then deliver the work as `.agents/policies/human-in-the-loop.policy.md` says: it sets whether you commit, push and open the pull request yourself, and which guardrails gate you. Without that file, do not commit; report the work as ready for review.
