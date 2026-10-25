@@ -437,3 +437,18 @@ export interface FooterMessages {
 	social: string
 	copyright: string
 }
+
+export interface PlatformMessages {
+	skip: string
+	hero: {
+		title: string
+		lead: string
+		primaryCta: string
+		secondaryCta: string
+		claims: {
+			agents: string
+			evidence: string
+			budget: string
+		}
+	}
+}

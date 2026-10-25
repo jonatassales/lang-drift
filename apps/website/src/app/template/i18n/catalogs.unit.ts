@@ -12,6 +12,7 @@ import {
 	headerMessages,
 	homeMessages,
 	integrationsMessages,
+	platformMessages,
 	privacyMessages,
 	visionLoopMessages,
 } from './messages'
@@ -60,6 +61,7 @@ describe('Website production translations', () => {
 				earlyAccessSentMessages,
 				footerMessages,
 				integrationsMessages,
+				platformMessages,
 				privacyMessages,
 				visionLoopMessages,
 				executiveReviewMessages,
