@@ -1,5 +1,5 @@
 {
-	"name": "website-lab",
+	"name": "website-old",
 	"private": true,
 	"scripts": {
 		"dev": "next dev --port 2000",

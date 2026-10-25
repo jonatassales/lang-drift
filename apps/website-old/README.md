@@ -1,6 +1,6 @@
-# Website
+# Website (old)
 
-The public, localized LangDrift website: the product story, the Product Vision demos, pricing, privacy and the early-access flow. Demo calls to action lead to the return-soon section above the footer; requests are paused.
+The previous LangDrift website, kept while the platform site in `apps/website` is built. The public, localized LangDrift website: the product story, the Product Vision demos, pricing, privacy and the early-access flow. Demo calls to action lead to the return-soon section above the footer; requests are paused.
 
 Early access posts to a private registry service outside this repository. Admission → Turnstile Siteverify → registration in the registry, which persists the contact and sends the confirmation. The website holds no email credentials and never sends mail itself. HTTP 202 confirms persistence, not delivery.
 
@@ -12,13 +12,13 @@ Run from the repository root:
 
 | Command | Effect |
 | --- | --- |
-| `pnpm turbo run dev --filter=website` | Builds the tokens stylesheet the website depends on, then starts Next.js on port 3000. |
-| `pnpm turbo run test --filter=website` | Runs the unit tests (Vitest; jsdom where a file asks for it). |
-| `pnpm turbo run typecheck --filter=website` | Type-checks the app. |
-| `pnpm turbo run build --filter=website` | Builds the app and the packages it depends on. |
+| `pnpm turbo run dev --filter=website-old` | Builds the tokens stylesheet the website depends on, then starts Next.js on port 2000. |
+| `pnpm turbo run test --filter=website-old` | Runs the unit tests (Vitest; jsdom where a file asks for it). |
+| `pnpm turbo run typecheck --filter=website-old` | Type-checks the app. |
+| `pnpm turbo run build --filter=website-old` | Builds the app and the packages it depends on. |
 | `drift check localization` | Checks the translation catalogs after a catalog or loader change. |
 
-`.env.development` holds the shared development defaults and is tracked, so it never holds a secret: it lists `CRYPTO_SECRET` without a value. Git ignores every other `.env*` file. Put local and secret values in `apps/website/.env.local`, which Next.js loads and which takes precedence over `.env.development`. Never put a secret in a `NEXT_PUBLIC_` variable.
+`.env.development` holds the shared development defaults and is tracked, so it never holds a secret: it lists `CRYPTO_SECRET` without a value. Git ignores every other `.env*` file. Put local and secret values in `apps/website-old/.env.local`, which Next.js loads and which takes precedence over `.env.development`. Never put a secret in a `NEXT_PUBLIC_` variable.
 
 | Variable | Requirement |
 | --- | --- |
