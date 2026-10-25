@@ -152,8 +152,7 @@ func useCases() (cli.UseCases, lifecycles) {
 }
 
 // lifecycles are the native runtime use cases. The connected agent is their
-// only production consumer; the e2e suite drives them directly through its
-// retained catalog harness.
+// only production consumer; tests drive them through executeNativeCatalogs.
 type lifecycles struct {
 	Init     application.InitializeRuntime
 	Validate application.ValidateRuntime

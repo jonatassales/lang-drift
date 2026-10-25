@@ -9,5 +9,5 @@
 **Status:** ready-for-agent
 
 - [ ] Refusal stub with guidance preserved and tested.
-- [x] Adjusted during implementation: the UseCases runtime fields, the duplicated execute_catalogs_test harness and every unit test of the retired commands are removed. The catalog command constructors stay as package code because the e2e suite drives the native lifecycle through them; the composition root exposes those use cases to that harness only.
+- [x] Adjusted during implementation: the UseCases runtime fields, the duplicated execute_catalogs_test harness and every unit test of the retired commands are removed. The catalog command constructors stay as package code because the connected agent and the tests drive the native lifecycle through them.
 - [ ] Coverage of live CLI paths does not drop.

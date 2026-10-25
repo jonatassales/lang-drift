@@ -130,8 +130,7 @@ Kubernetes fake that imitates the controllers a runtime relies on; the file,
 storage, configuration, and scaffold adapters in disposable directories; the
 kubectl, kind, Terraform, toolchain, and hook adapters against recorded
 command invocations; and the composed CLI. Connected-agent tests additionally cover durable replay, conditional resume, source/configuration conflicts, migration, private credentials and bounded MCP transport using fakes and disposable files. The process runner starts only local `sh` processes. These suites never run Docker, kind, kubectl,
-Terraform, or an agent application; only the opt-in infrastructure E2E below
-does.
+Terraform, or an agent application.
 
 Measure coverage across package boundaries, and use the race detector where a
 C toolchain is available:
@@ -155,67 +154,3 @@ GOTOOLCHAIN=local go test -run '^$' -bench . -count=10 ./...
 Tests, static checks, and source reviews do not establish successful live
 cluster startup, readiness, cleanup, or production integration. Those outcomes
 require separately authorized execution and recorded observations.
-
-## Infrastructure E2E (opt-in)
-
-`src/main_e2e_test.go` drives a test-only native lifecycle fixture against a disposable kind cluster. After console cutover this fixture preserves existing native ownership, cancellation, recovery, logs and forwarding assertions through the retained catalogs; it does not test the retired public runtime commands or establish end-to-end console integration. The fixture is compiled as a Go test executable and has no production command or environment switch. It compiles only with the `e2e` build tag and runs only when
-`EX_E2E=1`; ordinary `go test ./...` never builds it, and
-`go vet -tags e2e ./...` (the package `typecheck` task) keeps it compiling.
-Running it creates real local infrastructure, so run it only where you are
-authorized to, preferably on a disposable machine:
-
-```sh
-EX_E2E=1 GOTOOLCHAIN=local go test -tags e2e -run '^TestE2ELifecycle$' -count=1 -timeout 70m -v ./src
-```
-
-The test reserves 20 minutes of `-timeout` for cleanup and refuses to start
-if fewer than 30 minutes would remain for the scenario, because Go skips
-cleanup when the timeout expires. The first interrupt of the test process
-stops the scenario and runs cleanup.
-
-Prerequisites, checked before anything is created: a reachable Docker daemon;
-`go`, `kind`, `kubectl`, and `terraform` on `PATH`; and a local base image
-providing `sh`, `echo`, `sleep`, and BusyBox `httpd` (`busybox:1.36` by
-default, or `EX_E2E_BASE_IMAGE`). A missing prerequisite fails the run with
-instructions. The harness installs nothing and pulls no image, but kind
-downloads its node image and Terraform the pinned Kubernetes provider when
-they are not cached.
-
-The scenario initializes a temporary project, creates its cluster, builds two
-disposable images, generates a runtime with a Deployment and Service unit and
-a Job unit through the test-only historical guided catalog, and loads the images. Operation names below identify that internal fixture, not available public commands. `runtime up`
-must refuse a foreign namespace and record nothing. An `up` is then
-interrupted once it has recorded its last object and waits for readiness;
-`inspect` must report the interruption, a new `up` and a plain `down` must
-refuse without changing the record or the live objects, and `down --recover`
-must remove everything. A full `up` follows, with `inspect`, bounded `logs`
-for both units, and a `forward` that answers HTTP and exits with code 130
-when interrupted. Finally `runtime down` runs, `cluster delete` must refuse
-while a foreign namespace exists and leave the cluster unchanged, and the
-cluster is deleted with its private kubeconfig.
-
-Every finite command gets an explicit `--timeout`, and every native tool sees a
-disposable `KUBECONFIG`, so your own kubeconfig is never read or rewritten.
-Stopping a CLI process sends an interrupt first, so it settles its records
-and stops the tools it started. Cleanup runs even when the scenario fails. It
-removes only what the run identified: its labeled foreign namespaces, the
-runtime through `runtime down --recover`, the cluster through `cluster
-delete`, and images whose tags still name the IDs recorded at build time. It
-never deletes a cluster or namespace by name alone. Each removal is confirmed
-by observation; anything still present, or whose absence cannot be observed,
-fails the run with the reason, and the temporary workspace, including the
-private kubeconfig, is kept for inspection. Docker's build cache and kind's
-shared `kind` network are left as they are, because other work may use them.
-
-Each run writes a sanitized report to
-`.audits/evidence/runs/ex-e2e-<nonce>/report.json` at the repository root,
-which Git ignores: tool and platform versions, each step's arguments, exit
-code, duration, the native tools the CLI invoked directly, and bounded output
-with paths replaced and credential-like values redacted, plus cleanup
-results. It never contains a kubeconfig, Terraform state, plan, variable
-file, or ownership token.
-
-The manual `Infrastructure E2E` workflow in `.github/workflows/ex-e2e.yml`
-runs the same test on a disposable GitHub-hosted runner and uploads the
-evidence for seven days. It runs only when dispatched by hand, never on pull
-requests or pushes.

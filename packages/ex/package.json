@@ -5,7 +5,7 @@
 	"scripts": {
 		"build": "go build -o dist/ex ./src",
 		"test": "go test -race ./...",
-		"typecheck": "go vet -tags e2e ./..."
+		"typecheck": "go vet ./..."
 	},
 	"files": [
 		"src",

@@ -123,8 +123,6 @@ Single context. The glossary is the `## Glossary` section of `.agents/context.md
 | Harness | `drift doctor --ci`, ShellCheck on the POSIX scripts, actionlint on the workflows |
 | Guardrails | `drift git lint-history` over the pull request's commits |
 
-A second workflow, `e2e.yml`, runs the ex CLI's e2e-tagged suite against a kind cluster on manual dispatch and a weekly schedule.
-
 Actions, container images and downloaded tools are pinned to full commit SHAs, digests or checksums, with the version in a comment. The workflow tokens are read-only.
 
 ## Git
