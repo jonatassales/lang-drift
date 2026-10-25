@@ -87,6 +87,7 @@ const sharedRoles = [
 
 const statuses = ['success', 'warning', 'danger', 'info']
 const classifications = ['intentional', 'aligned', 'unexplained', 'review']
+const rainbows = ['1', '2', '3', '4', '5', '6']
 const drifts = ['negative', 'positive', 'zero']
 const classificationTexts = ['intentional', 'review', 'unexplained']
 
@@ -333,6 +334,26 @@ describe('shared tokens', () => {
 		)
 		for (const name of classifications) {
 			assert.equal(dark[`--lg-classification-${name}`], undefined)
+		}
+	})
+
+	test('fix the rainbow colors in every color scheme', () => {
+		assert.deepEqual(
+			pick(
+				light,
+				rainbows.map((stop) => `--lg-rainbow-${stop}`),
+			),
+			{
+				'--lg-rainbow-1': '#F43F5E',
+				'--lg-rainbow-2': '#F97316',
+				'--lg-rainbow-3': '#FACC15',
+				'--lg-rainbow-4': '#22C55E',
+				'--lg-rainbow-5': '#3B82F6',
+				'--lg-rainbow-6': '#6D0AD6',
+			},
+		)
+		for (const stop of rainbows) {
+			assert.equal(dark[`--lg-rainbow-${stop}`], undefined)
 		}
 	})
 

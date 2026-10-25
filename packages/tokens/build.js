@@ -62,6 +62,7 @@ StyleDictionary.registerFormat({
 			'classification',
 			'classification-text',
 			'drift',
+			'rainbow',
 		]
 		const tailwindTokens = tokens.filter(
 			(token) => token.$extensions?.[tailwindExtension],

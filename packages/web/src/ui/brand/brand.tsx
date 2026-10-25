@@ -15,38 +15,38 @@ const wordmarkStyle: CSSProperties = {
 	lineHeight: 1,
 }
 
-export function LogoMark({ size = 31 }: LogoMarkProps) {
+// The drift mark, in black and white: a ring with one segment carried outward.
+// The ring is the vision; the piece that moved is the drift whose why
+// LangDrift keeps. Both strokes take the foreground, so the mark reads in
+// either color scheme.
+export function LogoMark(props: LogoMarkProps) {
+	const { size = 31 } = props
+
 	return (
 		<svg
 			aria-hidden="true"
+			fill="none"
 			height={size}
-			viewBox="0 0 78 56"
-			width={Math.round(size * 1.39)}
+			strokeLinecap="round"
+			strokeWidth="9"
+			viewBox="0 0 64 64"
+			width={size}
 		>
 			<path
-				d="M2 39 C20 39 27 35 35 24 C44 11 51 9 62 9"
-				className="stroke-primary"
-				fill="none"
-				strokeLinecap="butt"
-				strokeWidth="8"
+				className="stroke-foreground"
+				d="M45.54 49.34A22 22 0 1 1 45.54 14.66"
 			/>
 			<path
-				d="M2 51 C24 51 34 46 43 33 C51 21 56 18 65 18"
-				className="stroke-primary"
-				fill="none"
-				strokeLinecap="butt"
-				strokeWidth="7"
+				className="stroke-foreground"
+				d="M56.72 18.86A28 28 0 0 1 56.72 45.14"
 			/>
-			<circle className="fill-primary" cx="68" cy="8" r="8" />
 		</svg>
 	)
 }
 
-export function Brand({
-	className,
-	compact = false,
-	tone = 'light',
-}: BrandProps) {
+export function Brand(props: BrandProps) {
+	const { className, compact = false, tone = 'light' } = props
+
 	const textColor = tone === 'dark' ? '#f5f5f5' : '#111111'
 
 	return (

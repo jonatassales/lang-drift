@@ -83,11 +83,20 @@ export interface HomeMessages {
 export interface HeaderMessages {
 	home: string
 	navigation: string
-	product: string
-	attribution: string
-	integrations: string
-	voice: string
-	plans: string
+	platform: string
+	platformMenu: string
+	vision: string
+	finops: string
+	microruntimes: string
+	aiVoice: string
+	visionDescription: string
+	finopsDescription: string
+	microruntimesDescription: string
+	aiVoiceDescription: string
+	pricing: string
+	docs: string
+	github: string
+	bookDemo: string
 	language: string
 	languages: {
 		english: string
@@ -96,7 +105,6 @@ export interface HeaderMessages {
 		japanese: string
 		vietnamese: string
 	}
-	getStarted: string
 	lightTheme: string
 	darkTheme: string
 	openNavigation: string
@@ -436,4 +444,19 @@ export interface FooterMessages {
 	faq: string
 	social: string
 	copyright: string
+}
+
+export interface PlatformMessages {
+	skip: string
+	hero: {
+		titleStart: string
+		words: string[]
+		titleEnd: string
+		primaryCta: string
+		secondaryCta: string
+	}
+	features: {
+		title: string
+		lead: string
+	}
 }

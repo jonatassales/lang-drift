@@ -24,8 +24,10 @@ import type {
 	HeaderMessages,
 	HomeMessages,
 	IntegrationsMessages,
+	PlatformMessages,
 	PrivacyMessages,
 } from './messages.types'
+import platformJson from './platform.json'
 import privacyJson from './privacy.json'
 import routeStateJson from './route-state.json'
 import visionEn from './vision-loop/en.json'
@@ -128,6 +130,7 @@ assertCatalogShape('early-access', earlyAccessJson)
 assertCatalogShape('early-access-sent', earlyAccessSentJson)
 assertCatalogShape('integrations', integrationsJson)
 assertCatalogShape('footer', footerJson)
+assertCatalogShape('platform', platformJson)
 assertCatalogShape('route-state', routeStateJson)
 
 export const homeMessages: Record<WebsiteLocale, HomeMessages> = homeJson
@@ -144,6 +147,8 @@ export const earlyAccessSentMessages: Record<
 export const integrationsMessages: Record<WebsiteLocale, IntegrationsMessages> =
 	integrationsJson
 export const footerMessages: Record<WebsiteLocale, FooterMessages> = footerJson
+export const platformMessages: Record<WebsiteLocale, PlatformMessages> =
+	platformJson
 
 export const conversionMessages: Record<WebsiteLocale, ConversionCopy> = {
 	en: loadConversion(conversionJson.en),

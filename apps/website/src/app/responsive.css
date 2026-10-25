@@ -2,8 +2,7 @@
 	.why-section,
 	.attribution-section,
 	.intent-section,
-	.report-section,
-	.voice-band {
+	.report-section {
 		min-width: 0;
 		width: 100%;
 	}
@@ -16,10 +15,6 @@
 
 	.report-preview dd {
 		overflow-wrap: anywhere;
-	}
-
-	.voice-band {
-		gap: 32px;
 	}
 
 	.report-preview dl div {
