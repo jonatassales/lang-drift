@@ -25,6 +25,11 @@ export interface TextMorphProps {
 	mode?: TextMorphMode
 	/** Per-token stagger, in milliseconds. Capped so long strings stay snappy. */
 	stagger?: number
+	/**
+	 * Fixed text after the morphing string. It is not diffed: it glides as one
+	 * piece when the string before it changes width.
+	 */
+	suffix?: string
 	/** The current string. Changing it triggers the morph. */
 	text: string
 }
@@ -89,20 +94,22 @@ export function TextMorph(props: TextMorphProps) {
 		duration = DEFAULT_DURATION,
 		mode = 'characters',
 		stagger = DEFAULT_STAGGER,
+		suffix,
 		text,
 	} = props
 
 	const shouldReduceMotion = useReducedMotion()
 	const tokens = useMemo(() => buildTokens(text, mode), [text, mode])
 	const Tag = as as ElementType
+	const fullText = suffix ? `${text} ${suffix}` : text
 
-	if (shouldReduceMotion) return <Tag className={className}>{text}</Tag>
+	if (shouldReduceMotion) return <Tag className={className}>{fullText}</Tag>
 
 	return (
 		<Tag className={className}>
 			{/* The intact string is visually hidden text, so screen readers read
 			the word while every animated token stays aria-hidden. */}
-			<span className="sr-only">{text}</span>
+			<span className="sr-only">{fullText}</span>
 			<motion.span
 				className={cn('relative inline-flex flex-wrap', ALIGN_CLASS[align])}
 				layout
@@ -151,6 +158,24 @@ export function TextMorph(props: TextMorphProps) {
 							{token.value}
 						</motion.span>
 					))}
+					{suffix ? (
+						<motion.span
+							aria-hidden="true"
+							key="suffix"
+							layout="position"
+							style={{
+								display: 'inline-block',
+								whiteSpace: 'pre',
+							}}
+							transition={{
+								bounce: 0.1,
+								duration: duration / MS,
+								type: 'spring',
+							}}
+						>
+							{` ${suffix}`}
+						</motion.span>
+					) : null}
 				</AnimatePresence>
 			</motion.span>
 		</Tag>

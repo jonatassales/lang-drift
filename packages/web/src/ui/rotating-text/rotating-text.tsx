@@ -8,6 +8,8 @@ export interface RotatingTextProps {
 	className?: string
 	/** Time each word stays before the next one morphs in, in milliseconds. */
 	interval?: number
+	/** Fixed text after the word, gliding as the word changes width. */
+	suffix?: string
 	words: string[]
 }
 
@@ -17,7 +19,7 @@ const DEFAULT_INTERVAL = 2600
 // holds the first word, and it waits while the tab is hidden. Server and client both start on the first word, so
 // hydration matches.
 export function RotatingText(props: RotatingTextProps) {
-	const { className, interval = DEFAULT_INTERVAL, words } = props
+	const { className, interval = DEFAULT_INTERVAL, suffix, words } = props
 
 	const shouldReduceMotion = useReducedMotion()
 	const [index, setIndex] = useState(0)
@@ -34,5 +36,11 @@ export function RotatingText(props: RotatingTextProps) {
 		return () => window.clearInterval(timer)
 	}, [interval, shouldReduceMotion, words.length])
 
-	return <TextMorph className={className} text={words[index] ?? ''} />
+	return (
+		<TextMorph
+			className={className}
+			suffix={suffix}
+			text={words[index] ?? ''}
+		/>
+	)
 }

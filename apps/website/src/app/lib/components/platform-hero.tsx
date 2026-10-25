@@ -56,12 +56,15 @@ export function PlatformHero(props: PlatformHeroProps) {
 			>
 				<div className="order-2 flex flex-col items-start text-left lg:order-1">
 					<h1
-						className="max-w-sm text-5xl leading-none font-normal tracking-[-0.055em] text-balance text-foreground sm:text-6xl xl:text-[64px]"
+						className="text-[min(3rem,12vw)] leading-none font-normal tracking-[-0.055em] text-foreground sm:text-6xl lg:text-[clamp(3rem,calc((100vw-25rem)/13.2),4rem)]"
 						id="platform-hero-heading"
 					>
 						<span className="block">{copy.titleStart}</span>
-						<RotatingText className="block" words={copy.words} />
-						<span className="block">{copy.titleEnd}</span>
+						<RotatingText
+							className="block whitespace-nowrap"
+							suffix={copy.titleEnd}
+							words={copy.words}
+						/>
 					</h1>
 					<div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
 						<Link
