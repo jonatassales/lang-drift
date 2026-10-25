@@ -15,6 +15,7 @@
 		"./ui/ai-avatars": "./src/ui/ai-avatars/index.ts",
 		"./ui/brand": "./src/ui/brand/index.ts",
 		"./ui/classification-text": "./src/ui/classification-text.ts",
+		"./ui/hero-shader": "./src/ui/hero-shader/index.ts",
 		"./ui/icons/server": "./src/ui/icons/server.ts",
 		"./ui/language-switcher": "./src/ui/language-switcher/index.ts",
 		"./ui/product-vision-curve": "./src/ui/product-vision-curve/index.ts",
