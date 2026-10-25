@@ -1,0 +1,1174 @@
+{
+	"en": {
+		"skip": "Skip to the budget",
+		"hero": {
+			"titleStart": "What did this release cost the team, and ",
+			"titleHighlight": "was it worth it?",
+			"titleEnd": "",
+			"lead": "LangDrift FinOps makes agent-assisted delivery accountable to a team budget: what the team can fund, what each piece of work consumed, and whether the outcome was worth it. Spending more can be the right call; not knowing never is.",
+			"primaryCta": "See the budget",
+			"secondaryCta": "How it works",
+			"caption": "Illustrative ledger. Amounts, model names and outcomes are simulated to show how the envelope, the reservations and the receipts relate.",
+			"summary": "An illustrative team budget of 12,000 dollars split into spent, reserved, protected and available, followed by four work items with their estimate, reservation and observed spend. One item's spend is unknown and awaits reconciliation. Selecting an item shows its delivery receipt further down the page."
+		},
+		"ledger": {
+			"label": "Team envelope",
+			"period": "This month · illustrative",
+			"authorized": "Authorized",
+			"segments": {
+				"spent": "Spent",
+				"reserved": "Reserved",
+				"protected": "Protected",
+				"available": "Available"
+			},
+			"columns": {
+				"item": "Work item",
+				"estimate": "Estimate",
+				"reserved": "Reserved",
+				"observed": "Observed"
+			},
+			"unknown": "Unknown",
+			"awaitingReconciliation": "awaiting reconciliation",
+			"selectHint": "Select a work item to read its receipt.",
+			"items": {
+				"checkout-retries": {
+					"title": "Checkout retries",
+					"owner": "Payments"
+				},
+				"invoice-export": { "title": "Invoice export job", "owner": "Billing" },
+				"tenant-migration": {
+					"title": "Tenant migration",
+					"owner": "Platform"
+				},
+				"onboarding-copy": { "title": "Onboarding copy", "owner": "Growth" }
+			}
+		},
+		"chain": {
+			"title": "Intent → Delivery → Evidence → Outcome",
+			"lead": "Every piece of work starts as intent the team priced, moves through delivery an agent helped with, leaves evidence of what ran and what it cost, and ends in an outcome the team accepts or sends back. Explore how the chain holds when things go to plan, and when they do not.",
+			"selectorLabel": "Explore a scenario",
+			"pillars": {
+				"intent": "Intent",
+				"delivery": "Delivery",
+				"evidence": "Evidence",
+				"outcome": "Outcome"
+			},
+			"scenarios": {
+				"within-envelope": {
+					"tabLabel": "Within the envelope",
+					"context": "A ticket to reduce checkout retries is estimated, allocated and delivered inside the team's monthly envelope.",
+					"intent": "The spec names the acceptance criterion: fewer retries without a slower checkout. The allocation agent proposes 1,800 dollars from comparable work and a deep reasoning model for the two risky steps.",
+					"delivery": "The gate reserves 2,100 dollars before the first paid call. Three attempts run; the third passes verification. Nothing in the plan widened the reservation.",
+					"evidence": "The receipt records each attempt, the model and effort used, the verification run and the cleanup of the microruntime that ran the checks.",
+					"outcome": "Observed spend: 2,460 dollars, above the estimate and inside the reservation. The team accepts the delivery, and the difference feeds the next estimate."
+				},
+				"pause-and-replan": {
+					"tabLabel": "Pause and replan",
+					"context": "An export job keeps failing, and each retry costs more than planned.",
+					"intent": "The ticket asked for a nightly invoice export with a 900-dollar allocation. The intent never changed; the plan did.",
+					"delivery": "The second retry would exceed the 1,100-dollar reservation. The gate pauses the job instead of extending it; the agent proposes a smaller scope and a deterministic step in place of a model call.",
+					"evidence": "The pause is on the receipt, with the failed attempts, the reservation that held and the alternative plan awaiting a decision.",
+					"outcome": "No further spend until the owner decides. The team can accept the smaller scope, raise the allocation or stop; the agent cannot choose for them."
+				},
+				"unknown-spend": {
+					"tabLabel": "Unknown after a timeout",
+					"context": "A provider call timed out. The work may have been charged; nobody knows yet.",
+					"intent": "The migration ticket is on track and the allocation is untouched; the only question is what the timed-out call cost.",
+					"delivery": "The agent does not retry a paid call whose result is unknown. The reservation stays held until the provider's usage record arrives.",
+					"evidence": "The receipt shows the attempt as unknown, with the request id to reconcile against, and keeps showing it until a usage record settles it.",
+					"outcome": "Unknown is reported as unknown. It never becomes zero spend, and the envelope's available amount excludes the held reservation until reconciliation."
+				}
+			},
+			"outro": "Recommendation is not authorization: an agent may propose the plan, and only a deterministic control admits a paid action.",
+			"outroLink": "See how the gate decides"
+		},
+		"receipt": {
+			"kicker": "Know what it cost",
+			"title": "Every delivery gets a receipt.",
+			"lead": "Select a work item in the ledger above to read what it consumed: the estimate, the reservation that held, the observed spend, the model and effort, the attempts, the verification and the cleanup. Failed, paused and cancelled attempts get a receipt too.",
+			"selected": "Selected work item",
+			"labels": {
+				"estimate": "Estimate",
+				"reserved": "Reserved",
+				"observed": "Observed spend",
+				"model": "Model tier",
+				"effort": "Effort",
+				"retries": "Retries",
+				"verification": "Verification",
+				"cleanup": "Cleanup",
+				"evidence": "Evidence"
+			},
+			"tiers": { "standard": "Standard", "deep": "Deep reasoning" },
+			"efforts": { "low": "Low", "medium": "Medium", "high": "High" },
+			"verification": { "verified": "Passed", "pending": "Pending" },
+			"cleanup": {
+				"done": "Microruntime cleaned up",
+				"pending": "Cleanup pending",
+				"unknown": "Cleanup unconfirmed"
+			},
+			"retries": "{count, plural, =0 {No retries} one {# retry} other {# retries}}",
+			"unknownObserved": "Unknown · awaiting reconciliation",
+			"evidenceLink": "Open the evidence record"
+		},
+		"budget": {
+			"kicker": "Know who funds it",
+			"title": "The budget belongs to the team.",
+			"lead": "Work varies in complexity, so the authorized envelope is shared by the team, not split into equal quotas per developer or per ticket. Features receive allocations that can change; nobody receives an independent right to spend.",
+			"cards": {
+				"envelope": {
+					"eyebrow": "Team envelope",
+					"title": "One authorized amount, one period, one owner",
+					"description": "The funding authority names the team, the amount, the period and who answers for deviations. Everything else is subordinate to it."
+				},
+				"allocation": {
+					"eyebrow": "Allocation",
+					"title": "A suggested share of the envelope for a piece of work",
+					"description": "Proposed from the intent, comparable history and the required quality. It guides the plan; it is not a grant, and it can be revised."
+				},
+				"reservation": {
+					"eyebrow": "Reservation",
+					"title": "An atomic hold before a paid call",
+					"description": "Taken against the envelope with an idempotency key and released when observed usage is reconciled. Parallel agents cannot spend the same amount twice."
+				}
+			}
+		},
+		"authorization": {
+			"kicker": "Recommendation is not authorization",
+			"title": "An agent recommends. A control decides.",
+			"lead": "A model may read the intent, compare similar work and propose a model, an effort and an allocation with its reasoning. Whether a paid action is permitted is decided by deterministic code against the policy, never by the model's confidence.",
+			"cards": {
+				"recommend": {
+					"eyebrow": "01 · The agent recommends",
+					"title": "Model, effort, allocation, rationale",
+					"description": "Which capabilities the step needs, whether a cheaper model is plausible, how much context is necessary, and what makes the estimate uncertain."
+				},
+				"gate": {
+					"eyebrow": "02 · The gate reserves",
+					"title": "Policy revision, price source, idempotency key",
+					"description": "The gate identifies the billable operation, resolves a price and a maximum, reserves the funds atomically, and refuses or pauses anything outside policy."
+				},
+				"reconcile": {
+					"eyebrow": "03 · The evidence closes",
+					"title": "Observed usage reconciled, the rest released",
+					"description": "Usage from the provider replaces the estimate, the unused reservation returns to the envelope, and unknown outcomes stay unknown until a record settles them."
+				}
+			}
+		},
+		"report": {
+			"kicker": "Weekly delivery and cost report",
+			"title": "What the team funded, and what came back.",
+			"lead": "The same chain, summarized for the week: how much of the envelope is committed, which work consumed the most, which charges are still unknown and what needs a decision.",
+			"weekly": "Weekly delivery and cost report",
+			"period": "Week 43 · illustrative",
+			"rows": {
+				"envelopeUsed": {
+					"term": "Envelope",
+					"detail": "{used} committed · {available} available"
+				},
+				"largestConsumer": {
+					"term": "Largest consumer",
+					"detail": "{item} · {count, plural, one {# attempt} other {# attempts}}"
+				},
+				"unknownCharges": {
+					"term": "Unknown charges",
+					"detail": "{count, plural, =0 {None pending} one {# awaiting reconciliation} other {# awaiting reconciliation}}"
+				},
+				"attention": {
+					"term": "Needs attention",
+					"detail": "The invoice export job exceeded its reservation and is paused for a decision."
+				}
+			}
+		},
+		"sources": {
+			"kicker": "What feeds the ledger",
+			"title": "Evidence over assertion.",
+			"lead": "A receipt is only as good as its sources. Each one is named, dated and kept apart from the others, so a missing source stays visible as missing instead of blending into a total.",
+			"intendedModel": "These are the sources the model intends. Where one is not connected, the ledger shows the gap rather than an estimate dressed as a measurement.",
+			"items": {
+				"providers": {
+					"title": "Model providers",
+					"description": "Usage records and price snapshots per call, with the request id to reconcile a timeout against."
+				},
+				"microruntimes": {
+					"title": "Microruntimes",
+					"description": "CPU and memory observations from the bounded environments that ran the checks, with their cleanup state.",
+					"link": "See LangDrift Microruntimes"
+				},
+				"evidence": {
+					"title": "Delivery evidence",
+					"description": "The spec, the ticket, the pull request and the verification run each attempt refers to."
+				},
+				"billing": {
+					"title": "Billing",
+					"description": "Invoice reconciliation closes the month. Until then, every amount is provisional and says so."
+				}
+			}
+		},
+		"faq": {
+			"title": "A few things worth knowing.",
+			"description": "What a team budget is, what FinOps does and does not promise, and what the illustrative ledger shows.",
+			"items": {
+				"budget": {
+					"question": "What is a team budget?",
+					"answer": "An authorized amount, for a period, that the whole team's agent-assisted work draws from. Allocations to features are suggestions inside it; no developer or ticket gets an independent right to spend."
+				},
+				"spending": {
+					"question": "Does FinOps mean spending less?",
+					"answer": "No. It means knowing what was spent, on what, and whether the outcome was worth it. A more capable model can cost less overall when it avoids retries; FinOps measures the result, not the token price."
+				},
+				"unknown": {
+					"question": "What does “unknown” mean on a receipt?",
+					"answer": "A paid call whose cost has no usage record yet, for example after a timeout. It stays unknown, with its reservation held, until a record settles it. It is never shown as zero."
+				},
+				"authorization": {
+					"question": "Can an agent raise the budget?",
+					"answer": "No. An agent can estimate, recommend and run permitted work. Widening funding, scope or access takes a separately authorized policy decision by the team's owner."
+				},
+				"availability": {
+					"question": "Can I use LangDrift FinOps today?",
+					"answer": "The pages describe the intended model with illustrative values. The ledger, the gate and the integrations shown here are not available yet, and demo requests are paused for now."
+				}
+			}
+		}
+	},
+	"pt-BR": {
+		"skip": "Pular para o orçamento",
+		"hero": {
+			"titleStart": "Quanto esta release custou ao time, e ",
+			"titleHighlight": "valeu a pena?",
+			"titleEnd": "",
+			"lead": "O LangDrift FinOps torna a entrega assistida por agentes responsável perante um orçamento de time: o que o time pode financiar, o que cada trabalho consumiu e se o resultado valeu a pena. Gastar mais pode ser a decisão certa; não saber nunca é.",
+			"primaryCta": "Ver o orçamento",
+			"secondaryCta": "Como funciona",
+			"caption": "Livro-razão ilustrativo. Valores, nomes de modelos e resultados são simulados para mostrar como o envelope, as reservas e os recibos se relacionam.",
+			"summary": "Um orçamento de time ilustrativo de 12.000 dólares dividido em gasto, reservado, protegido e disponível, seguido de quatro itens de trabalho com estimativa, reserva e gasto observado. O gasto de um item é desconhecido e aguarda reconciliação. Selecionar um item mostra seu recibo de entrega mais abaixo na página."
+		},
+		"ledger": {
+			"label": "Envelope do time",
+			"period": "Este mês · ilustrativo",
+			"authorized": "Autorizado",
+			"segments": {
+				"spent": "Gasto",
+				"reserved": "Reservado",
+				"protected": "Protegido",
+				"available": "Disponível"
+			},
+			"columns": {
+				"item": "Item de trabalho",
+				"estimate": "Estimativa",
+				"reserved": "Reservado",
+				"observed": "Observado"
+			},
+			"unknown": "Desconhecido",
+			"awaitingReconciliation": "aguardando reconciliação",
+			"selectHint": "Selecione um item de trabalho para ler seu recibo.",
+			"items": {
+				"checkout-retries": {
+					"title": "Retentativas no checkout",
+					"owner": "Pagamentos"
+				},
+				"invoice-export": {
+					"title": "Job de exportação de faturas",
+					"owner": "Faturamento"
+				},
+				"tenant-migration": {
+					"title": "Migração de tenants",
+					"owner": "Plataforma"
+				},
+				"onboarding-copy": {
+					"title": "Textos de onboarding",
+					"owner": "Growth"
+				}
+			}
+		},
+		"chain": {
+			"title": "Intenção → Entrega → Evidência → Resultado",
+			"lead": "Todo trabalho começa como uma intenção que o time precificou, passa por uma entrega com a ajuda de um agente, deixa evidência do que rodou e do que custou, e termina em um resultado que o time aceita ou devolve. Veja como a cadeia se sustenta quando tudo sai como planejado, e quando não sai.",
+			"selectorLabel": "Explore um cenário",
+			"pillars": {
+				"intent": "Intenção",
+				"delivery": "Entrega",
+				"evidence": "Evidência",
+				"outcome": "Resultado"
+			},
+			"scenarios": {
+				"within-envelope": {
+					"tabLabel": "Dentro do envelope",
+					"context": "Um ticket para reduzir retentativas no checkout é estimado, alocado e entregue dentro do envelope mensal do time.",
+					"intent": "A spec nomeia o critério de aceite: menos retentativas sem um checkout mais lento. O agente de alocação propõe 1.800 dólares com base em trabalhos comparáveis e um modelo de raciocínio profundo para as duas etapas de risco.",
+					"delivery": "O gate reserva 2.100 dólares antes da primeira chamada paga. Três tentativas rodam; a terceira passa na verificação. Nada no plano ampliou a reserva.",
+					"evidence": "O recibo registra cada tentativa, o modelo e o esforço usados, a execução da verificação e a limpeza do microruntime que rodou as checagens.",
+					"outcome": "Gasto observado: 2.460 dólares, acima da estimativa e dentro da reserva. O time aceita a entrega, e a diferença alimenta a próxima estimativa."
+				},
+				"pause-and-replan": {
+					"tabLabel": "Pausar e replanejar",
+					"context": "Um job de exportação continua falhando, e cada retentativa custa mais do que o planejado.",
+					"intent": "O ticket pedia uma exportação noturna de faturas com alocação de 900 dólares. A intenção nunca mudou; o plano, sim.",
+					"delivery": "A segunda retentativa excederia a reserva de 1.100 dólares. O gate pausa o job em vez de ampliá-la; o agente propõe um escopo menor e uma etapa determinística no lugar de uma chamada ao modelo.",
+					"evidence": "A pausa está no recibo, com as tentativas que falharam, a reserva que se manteve e o plano alternativo aguardando decisão.",
+					"outcome": "Nenhum gasto adicional até que o responsável decida. O time pode aceitar o escopo menor, aumentar a alocação ou parar; o agente não pode escolher por ele."
+				},
+				"unknown-spend": {
+					"tabLabel": "Desconhecido após um timeout",
+					"context": "Uma chamada ao provedor expirou. O trabalho pode ter sido cobrado; ninguém sabe ainda.",
+					"intent": "O ticket de migração segue no prazo e a alocação está intacta; a única dúvida é quanto custou a chamada que expirou.",
+					"delivery": "O agente não repete uma chamada paga cujo resultado é desconhecido. A reserva permanece retida até que o registro de uso do provedor chegue.",
+					"evidence": "O recibo mostra a tentativa como desconhecida, com o id da requisição para reconciliar, e continua mostrando até que um registro de uso a resolva.",
+					"outcome": "Desconhecido é reportado como desconhecido. Nunca vira gasto zero, e o valor disponível do envelope exclui a reserva retida até a reconciliação."
+				}
+			},
+			"outro": "Recomendação não é autorização: um agente pode propor o plano, e só um controle determinístico admite uma ação paga.",
+			"outroLink": "Veja como o gate decide"
+		},
+		"receipt": {
+			"kicker": "Saiba quanto custou",
+			"title": "Toda entrega recebe um recibo.",
+			"lead": "Selecione um item de trabalho no livro-razão acima para ler o que ele consumiu: a estimativa, a reserva que se manteve, o gasto observado, o modelo e o esforço, as tentativas, a verificação e a limpeza. Tentativas que falharam, foram pausadas ou canceladas também recebem recibo.",
+			"selected": "Item de trabalho selecionado",
+			"labels": {
+				"estimate": "Estimativa",
+				"reserved": "Reservado",
+				"observed": "Gasto observado",
+				"model": "Nível do modelo",
+				"effort": "Esforço",
+				"retries": "Retentativas",
+				"verification": "Verificação",
+				"cleanup": "Limpeza",
+				"evidence": "Evidência"
+			},
+			"tiers": { "standard": "Padrão", "deep": "Raciocínio profundo" },
+			"efforts": { "low": "Baixo", "medium": "Médio", "high": "Alto" },
+			"verification": { "verified": "Aprovada", "pending": "Pendente" },
+			"cleanup": {
+				"done": "Microruntime limpo",
+				"pending": "Limpeza pendente",
+				"unknown": "Limpeza não confirmada"
+			},
+			"retries": "{count, plural, =0 {Nenhuma retentativa} one {# retentativa} other {# retentativas}}",
+			"unknownObserved": "Desconhecido · aguardando reconciliação",
+			"evidenceLink": "Abrir o registro de evidência"
+		},
+		"budget": {
+			"kicker": "Saiba quem financia",
+			"title": "O orçamento pertence ao time.",
+			"lead": "Os trabalhos variam em complexidade, então o envelope autorizado é compartilhado pelo time, não dividido em cotas iguais por desenvolvedor ou por ticket. Features recebem alocações que podem mudar; ninguém recebe um direito independente de gastar.",
+			"cards": {
+				"envelope": {
+					"eyebrow": "Envelope do time",
+					"title": "Um valor autorizado, um período, um responsável",
+					"description": "A autoridade de financiamento nomeia o time, o valor, o período e quem responde por desvios. Todo o resto é subordinado a ela."
+				},
+				"allocation": {
+					"eyebrow": "Alocação",
+					"title": "Uma parcela sugerida do envelope para um trabalho",
+					"description": "Proposta a partir da intenção, do histórico comparável e da qualidade exigida. Ela orienta o plano; não é uma concessão e pode ser revisada."
+				},
+				"reservation": {
+					"eyebrow": "Reserva",
+					"title": "Uma retenção atômica antes de uma chamada paga",
+					"description": "Feita contra o envelope com uma chave de idempotência e liberada quando o uso observado é reconciliado. Agentes em paralelo não conseguem gastar o mesmo valor duas vezes."
+				}
+			}
+		},
+		"authorization": {
+			"kicker": "Recomendação não é autorização",
+			"title": "Um agente recomenda. Um controle decide.",
+			"lead": "Um modelo pode ler a intenção, comparar trabalhos semelhantes e propor um modelo, um esforço e uma alocação com seu raciocínio. Se uma ação paga é permitida, quem decide é código determinístico contra a política, nunca a confiança do modelo.",
+			"cards": {
+				"recommend": {
+					"eyebrow": "01 · O agente recomenda",
+					"title": "Modelo, esforço, alocação, justificativa",
+					"description": "Quais capacidades a etapa exige, se um modelo mais barato é plausível, quanto contexto é necessário e o que torna a estimativa incerta."
+				},
+				"gate": {
+					"eyebrow": "02 · O gate reserva",
+					"title": "Revisão da política, fonte de preço, chave de idempotência",
+					"description": "O gate identifica a operação cobrável, resolve um preço e um máximo, reserva os fundos atomicamente e recusa ou pausa qualquer coisa fora da política."
+				},
+				"reconcile": {
+					"eyebrow": "03 · A evidência encerra",
+					"title": "Uso observado reconciliado, o restante liberado",
+					"description": "O uso informado pelo provedor substitui a estimativa, a reserva não usada volta ao envelope, e resultados desconhecidos seguem desconhecidos até que um registro os resolva."
+				}
+			}
+		},
+		"report": {
+			"kicker": "Relatório semanal de entrega e custo",
+			"title": "O que o time financiou, e o que voltou.",
+			"lead": "A mesma cadeia, resumida para a semana: quanto do envelope está comprometido, qual trabalho consumiu mais, quais cobranças ainda são desconhecidas e o que precisa de uma decisão.",
+			"weekly": "Relatório semanal de entrega e custo",
+			"period": "Semana 43 · ilustrativo",
+			"rows": {
+				"envelopeUsed": {
+					"term": "Envelope",
+					"detail": "{used} comprometido · {available} disponível"
+				},
+				"largestConsumer": {
+					"term": "Maior consumidor",
+					"detail": "{item} · {count, plural, one {# tentativa} other {# tentativas}}"
+				},
+				"unknownCharges": {
+					"term": "Cobranças desconhecidas",
+					"detail": "{count, plural, =0 {Nenhuma pendente} one {# aguardando reconciliação} other {# aguardando reconciliação}}"
+				},
+				"attention": {
+					"term": "Precisa de atenção",
+					"detail": "O job de exportação de faturas excedeu sua reserva e está pausado aguardando uma decisão."
+				}
+			}
+		},
+		"sources": {
+			"kicker": "O que alimenta o livro-razão",
+			"title": "Evidência acima de afirmação.",
+			"lead": "Um recibo é tão bom quanto suas fontes. Cada uma é nomeada, datada e mantida separada das outras, para que uma fonte ausente continue visível como ausente em vez de se misturar a um total.",
+			"intendedModel": "Estas são as fontes que o modelo pretende usar. Onde uma não está conectada, o livro-razão mostra a lacuna, não uma estimativa disfarçada de medição.",
+			"items": {
+				"providers": {
+					"title": "Provedores de modelos",
+					"description": "Registros de uso e instantâneos de preço por chamada, com o id da requisição para reconciliar um timeout."
+				},
+				"microruntimes": {
+					"title": "Microruntimes",
+					"description": "Observações de CPU e memória dos ambientes delimitados que rodaram as checagens, com seu estado de limpeza.",
+					"link": "Conheça o LangDrift Microruntimes"
+				},
+				"evidence": {
+					"title": "Evidência de entrega",
+					"description": "A spec, o ticket, o pull request e a execução de verificação aos quais cada tentativa se refere."
+				},
+				"billing": {
+					"title": "Faturamento",
+					"description": "A reconciliação da fatura fecha o mês. Até lá, todo valor é provisório e diz isso."
+				}
+			}
+		},
+		"faq": {
+			"title": "Algumas coisas que vale saber.",
+			"description": "O que é um orçamento de time, o que o FinOps promete e o que não promete, e o que o livro-razão ilustrativo mostra.",
+			"items": {
+				"budget": {
+					"question": "O que é um orçamento de time?",
+					"answer": "Um valor autorizado, por um período, do qual todo o trabalho assistido por agentes do time é financiado. Alocações para features são sugestões dentro dele; nenhum desenvolvedor ou ticket recebe um direito independente de gastar."
+				},
+				"spending": {
+					"question": "FinOps significa gastar menos?",
+					"answer": "Não. Significa saber o que foi gasto, em quê, e se o resultado valeu a pena. Um modelo mais capaz pode custar menos no total quando evita retentativas; o FinOps mede o resultado, não o preço do token."
+				},
+				"unknown": {
+					"question": "O que significa “desconhecido” em um recibo?",
+					"answer": "Uma chamada paga cujo custo ainda não tem registro de uso, por exemplo após um timeout. Ela segue desconhecida, com a reserva retida, até que um registro a resolva. Nunca é mostrada como zero."
+				},
+				"authorization": {
+					"question": "Um agente pode aumentar o orçamento?",
+					"answer": "Não. Um agente pode estimar, recomendar e executar o trabalho permitido. Ampliar financiamento, escopo ou acesso exige uma decisão de política autorizada separadamente pelo responsável do time."
+				},
+				"availability": {
+					"question": "Posso usar o LangDrift FinOps hoje?",
+					"answer": "As páginas descrevem o modelo pretendido com valores ilustrativos. O livro-razão, o gate e as integrações mostrados aqui ainda não estão disponíveis, e os pedidos de demonstração estão pausados por enquanto."
+				}
+			}
+		}
+	},
+	"zh-Hant": {
+		"skip": "跳到預算",
+		"hero": {
+			"titleStart": "這次發布讓團隊花了多少，",
+			"titleHighlight": "值得嗎？",
+			"titleEnd": "",
+			"lead": "LangDrift FinOps 讓代理協助的交付對團隊預算負責：團隊能投入多少、每項工作消耗了多少，以及成果是否值得。多花錢可能是對的決定；不知道花了多少則永遠不是。",
+			"primaryCta": "查看預算",
+			"secondaryCta": "運作方式",
+			"caption": "示意帳本。金額、模型名稱與結果皆為模擬，用來呈現預算額度、保留與收據之間的關係。",
+			"summary": "一份示意的團隊預算，總額 12,000 美元，分為已花費、已保留、受保護與可用四部分；接著是四個工作項目，各自列出估算、保留與觀測到的花費。其中一項花費未知，等待對帳。選取項目後，頁面下方會顯示它的交付收據。"
+		},
+		"ledger": {
+			"label": "團隊預算額度",
+			"period": "本月 · 示意",
+			"authorized": "已授權",
+			"segments": {
+				"spent": "已花費",
+				"reserved": "已保留",
+				"protected": "受保護",
+				"available": "可用"
+			},
+			"columns": {
+				"item": "工作項目",
+				"estimate": "估算",
+				"reserved": "已保留",
+				"observed": "觀測值"
+			},
+			"unknown": "未知",
+			"awaitingReconciliation": "等待對帳",
+			"selectHint": "選取一個工作項目以閱讀它的收據。",
+			"items": {
+				"checkout-retries": { "title": "結帳重試", "owner": "支付" },
+				"invoice-export": { "title": "發票匯出作業", "owner": "帳務" },
+				"tenant-migration": { "title": "租戶遷移", "owner": "平台" },
+				"onboarding-copy": { "title": "新手引導文案", "owner": "成長" }
+			}
+		},
+		"chain": {
+			"title": "意圖 → 交付 → 證據 → 成果",
+			"lead": "每項工作都從團隊定價過的意圖開始，經過代理協助的交付，留下執行內容與花費的證據，最後成為團隊接受或退回的成果。看看這條鏈在一切順利時如何成立，在出狀況時又如何。",
+			"selectorLabel": "探索一個情境",
+			"pillars": {
+				"intent": "意圖",
+				"delivery": "交付",
+				"evidence": "證據",
+				"outcome": "成果"
+			},
+			"scenarios": {
+				"within-envelope": {
+					"tabLabel": "在額度之內",
+					"context": "一張減少結帳重試的工單，在團隊的每月額度內完成估算、分配與交付。",
+					"intent": "規格寫明驗收標準：重試更少，結帳不變慢。分配代理依據可比較的工作提議 1,800 美元，並在兩個高風險步驟使用深度推理模型。",
+					"delivery": "閘門在第一次付費呼叫前保留 2,100 美元。共執行三次嘗試，第三次通過驗證。計畫中沒有任何環節擴大保留。",
+					"evidence": "收據記錄每次嘗試、使用的模型與推理強度、驗證執行，以及執行檢查的 microruntime 的清理。",
+					"outcome": "觀測到的花費：2,460 美元，高於估算但在保留之內。團隊接受交付，差額回饋到下一次估算。"
+				},
+				"pause-and-replan": {
+					"tabLabel": "暫停並重新規劃",
+					"context": "一個匯出作業持續失敗，每次重試都比計畫更貴。",
+					"intent": "工單要求每晚匯出發票，分配 900 美元。意圖從未改變；改變的是計畫。",
+					"delivery": "第二次重試將超出 1,100 美元的保留。閘門暫停作業而不是擴大保留；代理提議縮小範圍，並以確定性步驟取代一次模型呼叫。",
+					"evidence": "暫停記錄在收據上，連同失敗的嘗試、維持住的保留，以及等待決定的替代計畫。",
+					"outcome": "在負責人決定前不再有任何花費。團隊可以接受較小的範圍、提高分配，或停止；代理不能替他們選擇。"
+				},
+				"unknown-spend": {
+					"tabLabel": "逾時後的未知",
+					"context": "一次供應商呼叫逾時。這項工作可能已被計費；目前沒有人知道。",
+					"intent": "遷移工單進度正常，分配未動；唯一的問題是那次逾時的呼叫花了多少。",
+					"delivery": "代理不會重試結果未知的付費呼叫。保留持續維持，直到供應商的用量記錄送達。",
+					"evidence": "收據將這次嘗試顯示為未知，附上用來對帳的請求 id，並持續顯示直到用量記錄解決它。",
+					"outcome": "未知就回報為未知。它永遠不會變成零花費，而在對帳前，額度的可用金額會排除被保留的部分。"
+				}
+			},
+			"outro": "建議不等於授權：代理可以提出計畫，只有確定性的控制才能准許付費動作。",
+			"outroLink": "看看閘門如何決定"
+		},
+		"receipt": {
+			"kicker": "知道花了多少",
+			"title": "每次交付都有一張收據。",
+			"lead": "在上方帳本選取一個工作項目，閱讀它消耗了什麼：估算、維持住的保留、觀測到的花費、模型與推理強度、嘗試次數、驗證與清理。失敗、暫停與取消的嘗試同樣有收據。",
+			"selected": "選取的工作項目",
+			"labels": {
+				"estimate": "估算",
+				"reserved": "已保留",
+				"observed": "觀測到的花費",
+				"model": "模型層級",
+				"effort": "推理強度",
+				"retries": "重試",
+				"verification": "驗證",
+				"cleanup": "清理",
+				"evidence": "證據"
+			},
+			"tiers": { "standard": "標準", "deep": "深度推理" },
+			"efforts": { "low": "低", "medium": "中", "high": "高" },
+			"verification": { "verified": "通過", "pending": "待處理" },
+			"cleanup": {
+				"done": "microruntime 已清理",
+				"pending": "清理待處理",
+				"unknown": "清理未確認"
+			},
+			"retries": "{count, plural, =0 {無} other {# 次重試}}",
+			"unknownObserved": "未知 · 等待對帳",
+			"evidenceLink": "開啟證據記錄"
+		},
+		"budget": {
+			"kicker": "知道誰出資",
+			"title": "預算屬於團隊。",
+			"lead": "工作的複雜度各不相同，所以授權額度由整個團隊共享，而不是按開發者或工單平均分配。功能得到可以調整的分配；沒有人得到獨立的花費權。",
+			"cards": {
+				"envelope": {
+					"eyebrow": "團隊預算額度",
+					"title": "一個授權金額、一個期間、一位負責人",
+					"description": "出資權限指明團隊、金額、期間，以及由誰對偏差負責。其他一切都從屬於它。"
+				},
+				"allocation": {
+					"eyebrow": "分配",
+					"title": "為一項工作建議的額度份額",
+					"description": "依據意圖、可比較的歷史與所需品質提出。它引導計畫；它不是撥款，而且可以修訂。"
+				},
+				"reservation": {
+					"eyebrow": "保留",
+					"title": "付費呼叫前的原子性預留",
+					"description": "以冪等鍵對額度預留，在觀測用量對帳後釋放。平行運作的代理無法把同一筆金額花兩次。"
+				}
+			}
+		},
+		"authorization": {
+			"kicker": "建議不等於授權",
+			"title": "代理提出建議，控制做出決定。",
+			"lead": "模型可以讀取意圖、比較相似的工作，並附上推理提出模型、推理強度與分配。付費動作是否被允許，由確定性的程式碼依政策決定，絕不是由模型的信心決定。",
+			"cards": {
+				"recommend": {
+					"eyebrow": "01 · 代理建議",
+					"title": "模型、推理強度、分配、理由",
+					"description": "這個步驟需要哪些能力、更便宜的模型是否可行、需要多少上下文，以及估算為何不確定。"
+				},
+				"gate": {
+					"eyebrow": "02 · 閘門保留",
+					"title": "政策版本、價格來源、冪等鍵",
+					"description": "閘門識別可計費的操作，解析價格與上限，以原子性方式保留資金，並拒絕或暫停任何超出政策的事。"
+				},
+				"reconcile": {
+					"eyebrow": "03 · 證據結案",
+					"title": "觀測用量完成對帳，其餘釋放",
+					"description": "供應商的用量取代估算，未用的保留回到額度，未知的結果保持未知，直到有記錄解決它。"
+				}
+			}
+		},
+		"report": {
+			"kicker": "每週交付與成本報告",
+			"title": "團隊投入了什麼，又收回了什麼。",
+			"lead": "同一條鏈，以週為單位摘要：額度已承諾多少、哪項工作消耗最多、哪些費用仍然未知，以及什麼需要決定。",
+			"weekly": "每週交付與成本報告",
+			"period": "第 43 週 · 示意",
+			"rows": {
+				"envelopeUsed": {
+					"term": "額度",
+					"detail": "已承諾 {used} · 可用 {available}"
+				},
+				"largestConsumer": {
+					"term": "最大消耗",
+					"detail": "{item} · {count, plural, other {# 次嘗試}}"
+				},
+				"unknownCharges": {
+					"term": "未知費用",
+					"detail": "{count, plural, =0 {無} other {# 筆等待對帳}}"
+				},
+				"attention": {
+					"term": "需要注意",
+					"detail": "發票匯出作業超出保留，已暫停等待決定。"
+				}
+			}
+		},
+		"sources": {
+			"kicker": "帳本的資料來源",
+			"title": "證據重於宣稱。",
+			"lead": "收據的品質取決於它的來源。每個來源都有名稱與日期，並彼此分開，所以缺少的來源會一直顯示為缺少，而不是混進總額裡。",
+			"intendedModel": "這些是模型預期的來源。尚未連接的來源，帳本會顯示為缺口，而不是把估算偽裝成測量。",
+			"items": {
+				"providers": {
+					"title": "模型供應商",
+					"description": "每次呼叫的用量記錄與價格快照，附上用來對帳逾時的請求 id。"
+				},
+				"microruntimes": {
+					"title": "Microruntimes",
+					"description": "執行檢查的受限環境所回報的 CPU 與記憶體觀測，連同清理狀態。",
+					"link": "了解 LangDrift Microruntimes"
+				},
+				"evidence": {
+					"title": "交付證據",
+					"description": "每次嘗試所引用的規格、工單、pull request 與驗證執行。"
+				},
+				"billing": {
+					"title": "帳務",
+					"description": "發票對帳為一個月結案。在那之前，每個金額都是暫定的，而且會如此標示。"
+				}
+			}
+		},
+		"faq": {
+			"title": "幾件值得知道的事。",
+			"description": "什麼是團隊預算、FinOps 承諾與不承諾什麼，以及示意帳本呈現了什麼。",
+			"items": {
+				"budget": {
+					"question": "什麼是團隊預算？",
+					"answer": "在一個期間內授權的金額，整個團隊由代理協助的工作都從這裡支出。功能的分配只是其中的建議；沒有任何開發者或工單得到獨立的花費權。"
+				},
+				"spending": {
+					"question": "FinOps 代表少花錢嗎？",
+					"answer": "不是。它代表知道花了多少、花在哪裡，以及成果是否值得。更有能力的模型若能避免重試，總成本可能更低；FinOps 衡量的是結果，不是 token 單價。"
+				},
+				"unknown": {
+					"question": "收據上的「未知」是什麼意思？",
+					"answer": "一次還沒有用量記錄的付費呼叫，例如逾時之後。它會保持未知、保留持續維持，直到記錄解決它。它永遠不會被顯示為零。"
+				},
+				"authorization": {
+					"question": "代理可以提高預算嗎？",
+					"answer": "不行。代理可以估算、建議並執行被允許的工作。擴大資金、範圍或存取權，需要團隊負責人另行授權的政策決定。"
+				},
+				"availability": {
+					"question": "我今天可以使用 LangDrift FinOps 嗎？",
+					"answer": "這些頁面以示意數值描述預期中的模型。這裡展示的帳本、閘門與整合尚未可用，示範申請目前暫停。"
+				}
+			}
+		}
+	},
+	"ja": {
+		"skip": "予算へスキップ",
+		"hero": {
+			"titleStart": "このリリースはチームにいくらかかり、",
+			"titleHighlight": "その価値はあったのか？",
+			"titleEnd": "",
+			"lead": "LangDrift FinOps は、エージェント支援の開発をチーム予算に対して説明可能にします。チームが投じられる額、各作業が消費した額、そして成果にその価値があったか。多く使うことが正しい判断のこともあります。知らないままでいることは、決して正しくありません。",
+			"primaryCta": "予算を見る",
+			"secondaryCta": "仕組みを見る",
+			"caption": "台帳はイメージです。金額、モデル名、結果はシミュレーションで、予算枠・予約・レシートの関係を示すためのものです。",
+			"summary": "12,000 ドルのイメージ上のチーム予算を、消費済み・予約済み・保護分・利用可能に分けて示し、続いて 4 つの作業項目を見積もり・予約・観測された支出とともに示します。1 件は支出が不明で、照合待ちです。項目を選ぶと、ページ下部にその納品レシートが表示されます。"
+		},
+		"ledger": {
+			"label": "チームの予算枠",
+			"period": "今月 · イメージ",
+			"authorized": "承認額",
+			"segments": {
+				"spent": "消費済み",
+				"reserved": "予約済み",
+				"protected": "保護分",
+				"available": "利用可能"
+			},
+			"columns": {
+				"item": "作業項目",
+				"estimate": "見積もり",
+				"reserved": "予約済み",
+				"observed": "観測値"
+			},
+			"unknown": "不明",
+			"awaitingReconciliation": "照合待ち",
+			"selectHint": "作業項目を選ぶと、そのレシートを読めます。",
+			"items": {
+				"checkout-retries": {
+					"title": "チェックアウトの再試行",
+					"owner": "決済"
+				},
+				"invoice-export": {
+					"title": "請求書エクスポートジョブ",
+					"owner": "請求"
+				},
+				"tenant-migration": {
+					"title": "テナント移行",
+					"owner": "プラットフォーム"
+				},
+				"onboarding-copy": {
+					"title": "オンボーディング文言",
+					"owner": "グロース"
+				}
+			}
+		},
+		"chain": {
+			"title": "意図 → 納品 → 証拠 → 成果",
+			"lead": "すべての作業は、チームが値付けした意図として始まり、エージェントが支援する納品を経て、何が実行され何にいくらかかったかの証拠を残し、チームが受け入れるか差し戻すかの成果で終わります。計画どおりに進むとき、そうでないとき、この連鎖がどう保たれるかを見てみましょう。",
+			"selectorLabel": "シナリオを選ぶ",
+			"pillars": {
+				"intent": "意図",
+				"delivery": "納品",
+				"evidence": "証拠",
+				"outcome": "成果"
+			},
+			"scenarios": {
+				"within-envelope": {
+					"tabLabel": "予算枠の範囲内",
+					"context": "チェックアウトの再試行を減らすチケットが、チームの月次予算枠の中で見積もられ、配分され、納品されます。",
+					"intent": "仕様には受け入れ基準が書かれています。チェックアウトを遅くせずに再試行を減らすこと。配分エージェントは、類似の作業をもとに 1,800 ドルと、リスクの高い 2 つのステップへの深い推論モデルを提案します。",
+					"delivery": "ゲートは最初の有料呼び出しの前に 2,100 ドルを予約します。3 回の試行が実行され、3 回目が検証を通過します。計画のどこも予約を広げていません。",
+					"evidence": "レシートには各試行、使用したモデルと推論強度、検証の実行、チェックを実行した microruntime のクリーンアップが記録されます。",
+					"outcome": "観測された支出は 2,460 ドル。見積もりを上回り、予約の範囲内です。チームは納品を受け入れ、差分は次の見積もりに反映されます。"
+				},
+				"pause-and-replan": {
+					"tabLabel": "一時停止して再計画",
+					"context": "エクスポートジョブが失敗を繰り返し、再試行のたびに計画より費用がかさみます。",
+					"intent": "チケットは 900 ドルの配分で夜間の請求書エクスポートを求めていました。意図は変わっていません。変わったのは計画です。",
+					"delivery": "2 回目の再試行は 1,100 ドルの予約を超えてしまいます。ゲートは予約を広げる代わりにジョブを一時停止し、エージェントはより小さなスコープと、モデル呼び出しに代わる決定的なステップを提案します。",
+					"evidence": "一時停止はレシートに記録され、失敗した試行、維持された予約、判断を待つ代替案が添えられます。",
+					"outcome": "責任者が決めるまで、これ以上の支出はありません。チームは小さなスコープを受け入れるか、配分を増やすか、止めるかを選べます。エージェントが代わりに選ぶことはできません。"
+				},
+				"unknown-spend": {
+					"tabLabel": "タイムアウト後の不明",
+					"context": "プロバイダーへの呼び出しがタイムアウトしました。課金されたかもしれませんが、まだ誰にも分かりません。",
+					"intent": "移行チケットは順調で、配分も手つかずです。問題はただ一つ、タイムアウトした呼び出しにいくらかかったかです。",
+					"delivery": "エージェントは結果が不明な有料呼び出しを再試行しません。プロバイダーの使用量記録が届くまで、予約は保持されたままです。",
+					"evidence": "レシートはこの試行を不明として示し、照合に使うリクエスト id を添え、使用量記録が解決するまで表示し続けます。",
+					"outcome": "不明は不明として報告されます。支出ゼロになることは決してなく、照合までは保持中の予約が予算枠の利用可能額から除かれます。"
+				}
+			},
+			"outro": "推奨は承認ではありません。エージェントは計画を提案できますが、有料の行動を許可できるのは決定的な制御だけです。",
+			"outroLink": "ゲートの判断を見る"
+		},
+		"receipt": {
+			"kicker": "いくらかかったかを知る",
+			"title": "すべての納品にレシートが付きます。",
+			"lead": "上の台帳で作業項目を選ぶと、消費したものを読めます。見積もり、維持された予約、観測された支出、モデルと推論強度、試行回数、検証、クリーンアップ。失敗、一時停止、中止された試行にもレシートが付きます。",
+			"selected": "選択中の作業項目",
+			"labels": {
+				"estimate": "見積もり",
+				"reserved": "予約済み",
+				"observed": "観測された支出",
+				"model": "モデル階層",
+				"effort": "推論強度",
+				"retries": "再試行",
+				"verification": "検証",
+				"cleanup": "クリーンアップ",
+				"evidence": "証拠"
+			},
+			"tiers": { "standard": "標準", "deep": "深い推論" },
+			"efforts": { "low": "低", "medium": "中", "high": "高" },
+			"verification": { "verified": "合格", "pending": "保留中" },
+			"cleanup": {
+				"done": "microruntime はクリーンアップ済み",
+				"pending": "クリーンアップ保留中",
+				"unknown": "クリーンアップ未確認"
+			},
+			"retries": "{count, plural, =0 {なし} other {# 回の再試行}}",
+			"unknownObserved": "不明 · 照合待ち",
+			"evidenceLink": "証拠の記録を開く"
+		},
+		"budget": {
+			"kicker": "誰が資金を出すかを知る",
+			"title": "予算はチームのものです。",
+			"lead": "作業の複雑さはさまざまなので、承認された予算枠はチームで共有され、開発者やチケットごとの均等な割り当てには分けられません。機能には変更可能な配分が与えられます。独立した支出の権利は誰にも与えられません。",
+			"cards": {
+				"envelope": {
+					"eyebrow": "チームの予算枠",
+					"title": "一つの承認額、一つの期間、一人の責任者",
+					"description": "資金の権限は、チーム、金額、期間、そして逸脱に責任を負う人を定めます。それ以外のすべてはこれに従います。"
+				},
+				"allocation": {
+					"eyebrow": "配分",
+					"title": "ある作業への予算枠の提案上の取り分",
+					"description": "意図、比較可能な履歴、求められる品質から提案されます。計画の指針であり、交付ではなく、見直すことができます。"
+				},
+				"reservation": {
+					"eyebrow": "予約",
+					"title": "有料呼び出しの前のアトミックな確保",
+					"description": "冪等キーとともに予算枠に対して確保され、観測された使用量が照合されると解放されます。並行するエージェントが同じ金額を二度使うことはできません。"
+				}
+			}
+		},
+		"authorization": {
+			"kicker": "推奨は承認ではない",
+			"title": "エージェントが推奨し、制御が決定する。",
+			"lead": "モデルは意図を読み、類似の作業を比較し、根拠とともにモデル、推論強度、配分を提案できます。有料の行動が許されるかどうかは、ポリシーに照らして決定的なコードが判断します。モデルの自信が判断することは決してありません。",
+			"cards": {
+				"recommend": {
+					"eyebrow": "01 · エージェントが推奨",
+					"title": "モデル、推論強度、配分、根拠",
+					"description": "そのステップに必要な能力、より安価なモデルが現実的か、必要なコンテキストの量、そして見積もりを不確かにしているもの。"
+				},
+				"gate": {
+					"eyebrow": "02 · ゲートが予約",
+					"title": "ポリシーの版、価格の出典、冪等キー",
+					"description": "ゲートは課金対象の操作を特定し、価格と上限を解決し、資金をアトミックに予約し、ポリシー外のものは拒否または一時停止します。"
+				},
+				"reconcile": {
+					"eyebrow": "03 · 証拠が締める",
+					"title": "観測された使用量を照合し、残りを解放",
+					"description": "プロバイダーからの使用量が見積もりに置き換わり、未使用の予約は予算枠に戻り、不明な結果は記録が解決するまで不明のままです。"
+				}
+			}
+		},
+		"report": {
+			"kicker": "週次の納品・コストレポート",
+			"title": "チームが投じたもの、そして返ってきたもの。",
+			"lead": "同じ連鎖を週単位で要約します。予算枠のどれだけがコミット済みか、どの作業が最も消費したか、どの課金がまだ不明か、何が判断を必要としているか。",
+			"weekly": "週次の納品・コストレポート",
+			"period": "第 43 週 · イメージ",
+			"rows": {
+				"envelopeUsed": {
+					"term": "予算枠",
+					"detail": "コミット済み {used} · 利用可能 {available}"
+				},
+				"largestConsumer": {
+					"term": "最大の消費",
+					"detail": "{item} · {count, plural, other {# 回の試行}}"
+				},
+				"unknownCharges": {
+					"term": "不明な課金",
+					"detail": "{count, plural, =0 {なし} other {# 件が照合待ち}}"
+				},
+				"attention": {
+					"term": "要対応",
+					"detail": "請求書エクスポートジョブが予約を超過し、判断待ちで一時停止中です。"
+				}
+			}
+		},
+		"sources": {
+			"kicker": "台帳の情報源",
+			"title": "主張より証拠。",
+			"lead": "レシートの質はその情報源で決まります。各情報源には名前と日付があり、互いに分けて保たれるので、欠けている情報源は合計に紛れることなく、欠けたまま見え続けます。",
+			"intendedModel": "これらはモデルが想定する情報源です。接続されていないものがあれば、台帳は測定を装った見積もりではなく、その空白を示します。",
+			"items": {
+				"providers": {
+					"title": "モデルプロバイダー",
+					"description": "呼び出しごとの使用量記録と価格スナップショット。タイムアウトを照合するためのリクエスト id 付き。"
+				},
+				"microruntimes": {
+					"title": "Microruntimes",
+					"description": "チェックを実行した境界付き環境からの CPU とメモリの観測値と、そのクリーンアップ状態。",
+					"link": "LangDrift Microruntimes を見る"
+				},
+				"evidence": {
+					"title": "納品の証拠",
+					"description": "各試行が参照する仕様、チケット、pull request、検証の実行。"
+				},
+				"billing": {
+					"title": "請求",
+					"description": "請求書の照合で月を締めます。それまでは、すべての金額は暫定であり、そう表示されます。"
+				}
+			}
+		},
+		"faq": {
+			"title": "知っておきたいこと。",
+			"description": "チーム予算とは何か、FinOps が約束すること・しないこと、イメージ上の台帳が示すもの。",
+			"items": {
+				"budget": {
+					"question": "チーム予算とは何ですか？",
+					"answer": "ある期間に承認された金額で、チームのエージェント支援の作業すべてがそこから支出されます。機能への配分はその中での提案にすぎません。開発者やチケットが独立した支出の権利を得ることはありません。"
+				},
+				"spending": {
+					"question": "FinOps は支出を減らすことですか？",
+					"answer": "いいえ。何に、いくら使い、成果にその価値があったかを知ることです。能力の高いモデルは再試行を避けて総コストを下げることがあります。FinOps が測るのはトークン単価ではなく結果です。"
+				},
+				"unknown": {
+					"question": "レシートの「不明」とは何ですか？",
+					"answer": "タイムアウト後など、まだ使用量記録のない有料呼び出しです。記録が解決するまで、予約を保持したまま不明のままになります。ゼロとして表示されることは決してありません。"
+				},
+				"authorization": {
+					"question": "エージェントは予算を増やせますか？",
+					"answer": "いいえ。エージェントは見積もり、推奨し、許可された作業を実行できます。資金、スコープ、アクセスを広げるには、チームの責任者による別途承認されたポリシーの決定が必要です。"
+				},
+				"availability": {
+					"question": "LangDrift FinOps は今日から使えますか？",
+					"answer": "これらのページはイメージ上の値で想定するモデルを説明しています。ここに示した台帳、ゲート、連携はまだ利用できず、デモの申し込みは当面停止しています。"
+				}
+			}
+		}
+	},
+	"vi": {
+		"skip": "Chuyển đến ngân sách",
+		"hero": {
+			"titleStart": "Bản phát hành này tốn của đội bao nhiêu, và ",
+			"titleHighlight": "có đáng không?",
+			"titleEnd": "",
+			"lead": "LangDrift FinOps khiến việc giao hàng có tác tử hỗ trợ phải chịu trách nhiệm trước ngân sách của đội: đội có thể chi bao nhiêu, mỗi phần việc đã tiêu bao nhiêu, và kết quả có đáng không. Chi nhiều hơn có thể là quyết định đúng; không biết thì không bao giờ đúng.",
+			"primaryCta": "Xem ngân sách",
+			"secondaryCta": "Cách hoạt động",
+			"caption": "Sổ cái minh họa. Số tiền, tên mô hình và kết quả đều được mô phỏng để cho thấy hạn mức, khoản giữ chỗ và biên lai liên hệ với nhau ra sao.",
+			"summary": "Một ngân sách đội minh họa 12.000 đô la chia thành đã chi, đã giữ chỗ, được bảo vệ và khả dụng, tiếp theo là bốn hạng mục công việc với ước tính, khoản giữ chỗ và chi tiêu quan sát được. Chi tiêu của một hạng mục chưa rõ và đang chờ đối soát. Chọn một hạng mục sẽ hiện biên lai giao hàng của nó ở phía dưới trang."
+		},
+		"ledger": {
+			"label": "Hạn mức của đội",
+			"period": "Tháng này · minh họa",
+			"authorized": "Được phê duyệt",
+			"segments": {
+				"spent": "Đã chi",
+				"reserved": "Đã giữ chỗ",
+				"protected": "Được bảo vệ",
+				"available": "Khả dụng"
+			},
+			"columns": {
+				"item": "Hạng mục",
+				"estimate": "Ước tính",
+				"reserved": "Đã giữ chỗ",
+				"observed": "Quan sát"
+			},
+			"unknown": "Chưa rõ",
+			"awaitingReconciliation": "đang chờ đối soát",
+			"selectHint": "Chọn một hạng mục công việc để đọc biên lai của nó.",
+			"items": {
+				"checkout-retries": {
+					"title": "Thử lại khi thanh toán",
+					"owner": "Thanh toán"
+				},
+				"invoice-export": {
+					"title": "Tác vụ xuất hóa đơn",
+					"owner": "Hóa đơn"
+				},
+				"tenant-migration": {
+					"title": "Di chuyển tenant",
+					"owner": "Nền tảng"
+				},
+				"onboarding-copy": {
+					"title": "Nội dung onboarding",
+					"owner": "Tăng trưởng"
+				}
+			}
+		},
+		"chain": {
+			"title": "Ý định → Giao hàng → Bằng chứng → Kết quả",
+			"lead": "Mọi phần việc bắt đầu là một ý định mà đội đã định giá, đi qua quá trình giao hàng có tác tử hỗ trợ, để lại bằng chứng về những gì đã chạy và tốn bao nhiêu, rồi kết thúc bằng một kết quả mà đội chấp nhận hoặc trả lại. Hãy xem chuỗi này đứng vững ra sao khi mọi thứ đúng kế hoạch, và khi không.",
+			"selectorLabel": "Khám phá một kịch bản",
+			"pillars": {
+				"intent": "Ý định",
+				"delivery": "Giao hàng",
+				"evidence": "Bằng chứng",
+				"outcome": "Kết quả"
+			},
+			"scenarios": {
+				"within-envelope": {
+					"tabLabel": "Trong hạn mức",
+					"context": "Một ticket giảm số lần thử lại khi thanh toán được ước tính, phân bổ và giao trong hạn mức hằng tháng của đội.",
+					"intent": "Bản đặc tả nêu tiêu chí nghiệm thu: ít lần thử lại hơn mà thanh toán không chậm đi. Tác tử phân bổ đề xuất 1.800 đô la dựa trên các công việc tương đương, và một mô hình suy luận sâu cho hai bước rủi ro.",
+					"delivery": "Cổng kiểm soát giữ chỗ 2.100 đô la trước lần gọi trả phí đầu tiên. Ba lần thử được chạy; lần thứ ba vượt qua kiểm chứng. Không có gì trong kế hoạch nới rộng khoản giữ chỗ.",
+					"evidence": "Biên lai ghi lại từng lần thử, mô hình và mức nỗ lực đã dùng, lượt kiểm chứng, và việc dọn dẹp microruntime đã chạy các kiểm tra.",
+					"outcome": "Chi tiêu quan sát được: 2.460 đô la, cao hơn ước tính và nằm trong khoản giữ chỗ. Đội chấp nhận bản giao, và phần chênh lệch nuôi ước tính tiếp theo."
+				},
+				"pause-and-replan": {
+					"tabLabel": "Tạm dừng và lập lại kế hoạch",
+					"context": "Một tác vụ xuất dữ liệu liên tục thất bại, và mỗi lần thử lại tốn hơn dự kiến.",
+					"intent": "Ticket yêu cầu xuất hóa đơn hằng đêm với phân bổ 900 đô la. Ý định chưa từng đổi; kế hoạch thì có.",
+					"delivery": "Lần thử lại thứ hai sẽ vượt khoản giữ chỗ 1.100 đô la. Cổng kiểm soát tạm dừng tác vụ thay vì nới rộng nó; tác tử đề xuất một phạm vi nhỏ hơn và một bước tất định thay cho một lần gọi mô hình.",
+					"evidence": "Việc tạm dừng nằm trên biên lai, cùng các lần thử thất bại, khoản giữ chỗ vẫn được giữ, và kế hoạch thay thế đang chờ quyết định.",
+					"outcome": "Không chi thêm cho đến khi người phụ trách quyết định. Đội có thể chấp nhận phạm vi nhỏ hơn, tăng phân bổ, hoặc dừng; tác tử không thể chọn thay họ."
+				},
+				"unknown-spend": {
+					"tabLabel": "Chưa rõ sau khi hết thời gian chờ",
+					"context": "Một lần gọi nhà cung cấp đã hết thời gian chờ. Công việc có thể đã bị tính phí; chưa ai biết.",
+					"intent": "Ticket di chuyển vẫn đúng tiến độ và phân bổ chưa động đến; câu hỏi duy nhất là lần gọi hết thời gian chờ đó tốn bao nhiêu.",
+					"delivery": "Tác tử không thử lại một lần gọi trả phí có kết quả chưa rõ. Khoản giữ chỗ vẫn được giữ cho đến khi bản ghi sử dụng của nhà cung cấp đến.",
+					"evidence": "Biên lai hiển thị lần thử là chưa rõ, kèm id yêu cầu để đối soát, và tiếp tục hiển thị như vậy cho đến khi một bản ghi sử dụng giải quyết nó.",
+					"outcome": "Chưa rõ được báo cáo là chưa rõ. Nó không bao giờ trở thành chi tiêu bằng không, và số khả dụng của hạn mức loại trừ khoản giữ chỗ đang giữ cho đến khi đối soát xong."
+				}
+			},
+			"outro": "Đề xuất không phải là phê duyệt: tác tử có thể đề xuất kế hoạch, và chỉ một cơ chế kiểm soát tất định mới cho phép một hành động trả phí.",
+			"outroLink": "Xem cổng kiểm soát quyết định ra sao"
+		},
+		"receipt": {
+			"kicker": "Biết đã tốn bao nhiêu",
+			"title": "Mỗi lần giao hàng đều có biên lai.",
+			"lead": "Chọn một hạng mục trong sổ cái phía trên để đọc nó đã tiêu những gì: ước tính, khoản giữ chỗ đã giữ, chi tiêu quan sát được, mô hình và mức nỗ lực, số lần thử, kiểm chứng và dọn dẹp. Các lần thử thất bại, tạm dừng và bị hủy cũng có biên lai.",
+			"selected": "Hạng mục đang chọn",
+			"labels": {
+				"estimate": "Ước tính",
+				"reserved": "Đã giữ chỗ",
+				"observed": "Chi tiêu quan sát được",
+				"model": "Hạng mô hình",
+				"effort": "Mức nỗ lực",
+				"retries": "Thử lại",
+				"verification": "Kiểm chứng",
+				"cleanup": "Dọn dẹp",
+				"evidence": "Bằng chứng"
+			},
+			"tiers": { "standard": "Tiêu chuẩn", "deep": "Suy luận sâu" },
+			"efforts": { "low": "Thấp", "medium": "Vừa", "high": "Cao" },
+			"verification": { "verified": "Đạt", "pending": "Đang chờ" },
+			"cleanup": {
+				"done": "Đã dọn dẹp microruntime",
+				"pending": "Đang chờ dọn dẹp",
+				"unknown": "Chưa xác nhận dọn dẹp"
+			},
+			"retries": "{count, plural, =0 {Không có} other {# lần thử lại}}",
+			"unknownObserved": "Chưa rõ · đang chờ đối soát",
+			"evidenceLink": "Mở bản ghi bằng chứng"
+		},
+		"budget": {
+			"kicker": "Biết ai cấp vốn",
+			"title": "Ngân sách thuộc về đội.",
+			"lead": "Công việc khác nhau về độ phức tạp, nên hạn mức được phê duyệt là của chung cả đội, không chia thành các phần bằng nhau cho từng lập trình viên hay từng ticket. Các tính năng nhận phân bổ có thể thay đổi; không ai nhận quyền chi tiêu độc lập.",
+			"cards": {
+				"envelope": {
+					"eyebrow": "Hạn mức của đội",
+					"title": "Một số tiền được phê duyệt, một kỳ, một người phụ trách",
+					"description": "Thẩm quyền cấp vốn nêu rõ đội, số tiền, kỳ hạn và ai chịu trách nhiệm cho các sai lệch. Mọi thứ khác đều phụ thuộc vào nó."
+				},
+				"allocation": {
+					"eyebrow": "Phân bổ",
+					"title": "Một phần hạn mức được đề xuất cho một phần việc",
+					"description": "Được đề xuất từ ý định, lịch sử tương đương và chất lượng yêu cầu. Nó dẫn hướng kế hoạch; nó không phải khoản cấp và có thể được sửa."
+				},
+				"reservation": {
+					"eyebrow": "Giữ chỗ",
+					"title": "Một khoản giữ nguyên tử trước lần gọi trả phí",
+					"description": "Được trích từ hạn mức với một khóa idempotency, và được giải phóng khi mức sử dụng quan sát được đã đối soát. Các tác tử chạy song song không thể tiêu cùng một khoản hai lần."
+				}
+			}
+		},
+		"authorization": {
+			"kicker": "Đề xuất không phải là phê duyệt",
+			"title": "Tác tử đề xuất. Cơ chế kiểm soát quyết định.",
+			"lead": "Một mô hình có thể đọc ý định, so sánh các công việc tương tự và đề xuất mô hình, mức nỗ lực và phân bổ kèm lập luận. Một hành động trả phí có được phép hay không là do mã tất định quyết định theo chính sách, không bao giờ do mức độ tự tin của mô hình.",
+			"cards": {
+				"recommend": {
+					"eyebrow": "01 · Tác tử đề xuất",
+					"title": "Mô hình, mức nỗ lực, phân bổ, lý do",
+					"description": "Bước này cần những năng lực nào, một mô hình rẻ hơn có khả thi không, cần bao nhiêu ngữ cảnh, và điều gì khiến ước tính không chắc chắn."
+				},
+				"gate": {
+					"eyebrow": "02 · Cổng kiểm soát giữ chỗ",
+					"title": "Phiên bản chính sách, nguồn giá, khóa idempotency",
+					"description": "Cổng kiểm soát xác định thao tác bị tính phí, xác định giá và mức tối đa, giữ chỗ tiền một cách nguyên tử, và từ chối hoặc tạm dừng bất cứ gì ngoài chính sách."
+				},
+				"reconcile": {
+					"eyebrow": "03 · Bằng chứng khép lại",
+					"title": "Mức sử dụng quan sát được đã đối soát, phần còn lại được giải phóng",
+					"description": "Mức sử dụng từ nhà cung cấp thay thế ước tính, khoản giữ chỗ chưa dùng quay về hạn mức, và các kết quả chưa rõ vẫn chưa rõ cho đến khi một bản ghi giải quyết chúng."
+				}
+			}
+		},
+		"report": {
+			"kicker": "Báo cáo giao hàng và chi phí hằng tuần",
+			"title": "Đội đã cấp vốn cho gì, và nhận lại được gì.",
+			"lead": "Cùng một chuỗi, tóm tắt cho tuần: bao nhiêu phần hạn mức đã cam kết, phần việc nào tiêu nhiều nhất, khoản phí nào vẫn chưa rõ, và điều gì cần một quyết định.",
+			"weekly": "Báo cáo giao hàng và chi phí hằng tuần",
+			"period": "Tuần 43 · minh họa",
+			"rows": {
+				"envelopeUsed": {
+					"term": "Hạn mức",
+					"detail": "Đã cam kết {used} · khả dụng {available}"
+				},
+				"largestConsumer": {
+					"term": "Tiêu nhiều nhất",
+					"detail": "{item} · {count, plural, other {# lần thử}}"
+				},
+				"unknownCharges": {
+					"term": "Khoản phí chưa rõ",
+					"detail": "{count, plural, =0 {Không có} other {# khoản đang chờ đối soát}}"
+				},
+				"attention": {
+					"term": "Cần chú ý",
+					"detail": "Tác vụ xuất hóa đơn đã vượt khoản giữ chỗ và đang tạm dừng chờ quyết định."
+				}
+			}
+		},
+		"sources": {
+			"kicker": "Nguồn nuôi sổ cái",
+			"title": "Bằng chứng hơn lời khẳng định.",
+			"lead": "Một biên lai chỉ tốt bằng các nguồn của nó. Mỗi nguồn được đặt tên, ghi ngày và giữ tách biệt với các nguồn khác, để một nguồn thiếu vẫn hiện rõ là thiếu thay vì hòa vào một tổng số.",
+			"intendedModel": "Đây là các nguồn mà mô hình hướng tới. Nơi nào một nguồn chưa được kết nối, sổ cái cho thấy khoảng trống thay vì một ước tính khoác áo phép đo.",
+			"items": {
+				"providers": {
+					"title": "Nhà cung cấp mô hình",
+					"description": "Bản ghi sử dụng và ảnh chụp giá cho từng lần gọi, kèm id yêu cầu để đối soát khi hết thời gian chờ."
+				},
+				"microruntimes": {
+					"title": "Microruntimes",
+					"description": "Quan sát CPU và bộ nhớ từ các môi trường có ranh giới đã chạy các kiểm tra, cùng trạng thái dọn dẹp của chúng.",
+					"link": "Xem LangDrift Microruntimes"
+				},
+				"evidence": {
+					"title": "Bằng chứng giao hàng",
+					"description": "Bản đặc tả, ticket, pull request và lượt kiểm chứng mà mỗi lần thử tham chiếu."
+				},
+				"billing": {
+					"title": "Hóa đơn",
+					"description": "Đối soát hóa đơn khép lại tháng. Trước đó, mọi số tiền đều là tạm thời và được ghi rõ như vậy."
+				}
+			}
+		},
+		"faq": {
+			"title": "Vài điều đáng biết.",
+			"description": "Ngân sách đội là gì, FinOps hứa và không hứa điều gì, và sổ cái minh họa cho thấy gì.",
+			"items": {
+				"budget": {
+					"question": "Ngân sách đội là gì?",
+					"answer": "Một số tiền được phê duyệt cho một kỳ, mà toàn bộ công việc có tác tử hỗ trợ của đội rút từ đó. Phân bổ cho tính năng là các đề xuất bên trong nó; không lập trình viên hay ticket nào nhận quyền chi tiêu độc lập."
+				},
+				"spending": {
+					"question": "FinOps có nghĩa là chi ít hơn?",
+					"answer": "Không. Nó có nghĩa là biết đã chi bao nhiêu, cho việc gì, và kết quả có đáng không. Một mô hình mạnh hơn có thể tốn ít hơn về tổng thể khi nó tránh được các lần thử lại; FinOps đo kết quả, không đo giá token."
+				},
+				"unknown": {
+					"question": "“Chưa rõ” trên biên lai nghĩa là gì?",
+					"answer": "Một lần gọi trả phí mà chi phí chưa có bản ghi sử dụng, ví dụ sau khi hết thời gian chờ. Nó vẫn chưa rõ, với khoản giữ chỗ được giữ, cho đến khi một bản ghi giải quyết nó. Nó không bao giờ được hiển thị là không."
+				},
+				"authorization": {
+					"question": "Tác tử có thể tăng ngân sách không?",
+					"answer": "Không. Tác tử có thể ước tính, đề xuất và chạy công việc được phép. Mở rộng vốn, phạm vi hay quyền truy cập cần một quyết định chính sách được người phụ trách đội phê duyệt riêng."
+				},
+				"availability": {
+					"question": "Tôi có thể dùng LangDrift FinOps hôm nay không?",
+					"answer": "Các trang này mô tả mô hình dự kiến với các giá trị minh họa. Sổ cái, cổng kiểm soát và các tích hợp ở đây chưa khả dụng, và yêu cầu demo hiện đang tạm dừng."
+				}
+			}
+		}
+	}
+}

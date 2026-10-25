@@ -7,6 +7,7 @@ import {
 	earlyAccessMessages,
 	earlyAccessSentMessages,
 	executiveReviewMessages,
+	finopsMessages,
 	footerMessages,
 	getWebsiteMessages,
 	headerMessages,
@@ -65,6 +66,7 @@ describe('Website production translations', () => {
 				privacyMessages,
 				visionLoopMessages,
 				executiveReviewMessages,
+				finopsMessages,
 				routeState,
 			]) {
 				const source = leaves(family.en)
