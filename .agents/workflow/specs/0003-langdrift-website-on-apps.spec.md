@@ -29,29 +29,27 @@ The repository moves to `apps/*` and the website becomes its first and only app,
 10. As a visitor whose browser asks for Simplified Chinese, I want to be sent to English with an availability notice, so that I am never shown Traditional Chinese as a substitute.
 11. As a visitor, I want a mixed-case locale prefix to redirect to lowercase, so that every page has one URL.
 12. As a visitor, I want my locale preference remembered, so that I return to the language I chose.
-13. As a visitor, I want the Docs zone to keep working under the website's domain, so that docs links stay valid.
-14. As a visitor, I want the early-access form to behave as before, including its paused state, so that sign-up keeps its rules.
-15. As a search engine, I want the same metadata, hreflang, sitemap, robots and social images, so that the site's indexing does not regress.
-16. As a frontend developer, I want the website's components to read colors only from `@langdrift/tokens` roles, so that one package owns every color.
-17. As a frontend developer, I want classification and drift colors as tokens, so that Product Vision charts never hard-code them.
-18. As a frontend developer, I want `dark:` utilities to follow the `.dark` class, so that shadcn and SmoothUI components switch with the site.
-19. As a frontend developer, I want the components the website uses in `@langdrift/web`, so that shared UI lives in a package, not in the app.
-20. As a frontend developer, I want `@langdrift/web` to export only what the website imports, so that no unused component is maintained.
-21. As a frontend developer, I want the website's imports of `@pack/react` to keep working without edits, so that the copy stays verifiable against the original.
-22. As a frontend developer, I want the website formatted in this repository's Biome style, so that one style applies everywhere.
-23. As a frontend developer, I want the website's path aliases grouped as aliases by Biome, so that import order stays stable.
-24. As a frontend developer, I want the website's unit tests and `@langdrift/web`'s tests to run under `turbo run test`, so that they gate pull requests.
-25. As a frontend developer, I want `turbo run dev --filter=website` to build the tokens first, so that dev starts without a manual step.
-26. As a frontend developer, I want rules for React, Next.js and Jotai, so that new code follows the same conventions as the copied code.
-27. As a frontend developer, I want the Tailwind rules extended with `cn()`, role utilities only and no component classes, so that styling stays consistent.
-28. As a frontend developer, I want the website's existing hand-written CSS allowed by a scoped exception that forbids new CSS, so that the copy is legal without opening the door to more.
-29. As a frontend developer, I want rules for localization and SEO, so that every new string and page meets the bar the website set.
-30. As a frontend developer, I want code rules for environment access and control flow, so that the copied code's style is the house style.
-31. As a frontend developer, I want Biome to require interfaces, kebab-case file names and no unused imports, so that these rules are enforced, not just written.
-32. As a frontend developer, I want `drift check localization` to fail on catalog drift, so that a missing translation breaks CI instead of production.
-33. As the owner, I want CI to build the website with safe values (early access paused, sign-up disabled, a local Docs origin), so that CI never touches real services.
-34. As the owner, I want the website's Docker image to build from this repository's paths with pinned inputs, so that it can be deployed the same way as before.
-35. As the owner, I want the decisions behind this move recorded in an ADR, so that the CSS exception and the token additions can be revisited knowingly.
+13. As a visitor, I want the early-access form to behave as before, including its paused state, so that sign-up keeps its rules.
+14. As a search engine, I want the same metadata, hreflang, sitemap, robots and social images, so that the site's indexing does not regress.
+15. As a frontend developer, I want the website's components to read colors only from `@langdrift/tokens` roles, so that one package owns every color.
+16. As a frontend developer, I want classification and drift colors as tokens, so that Product Vision charts never hard-code them.
+17. As a frontend developer, I want `dark:` utilities to follow the `.dark` class, so that shadcn and SmoothUI components switch with the site.
+18. As a frontend developer, I want the components the website uses in `@langdrift/web`, so that shared UI lives in a package, not in the app.
+19. As a frontend developer, I want `@langdrift/web` to export only what the website imports, so that no unused component is maintained.
+20. As a frontend developer, I want the website's imports of `@pack/react` to keep working without edits, so that the copy stays verifiable against the original.
+21. As a frontend developer, I want the website formatted in this repository's Biome style, so that one style applies everywhere.
+22. As a frontend developer, I want the website's path aliases grouped as aliases by Biome, so that import order stays stable.
+23. As a frontend developer, I want the website's unit tests and `@langdrift/web`'s tests to run under `turbo run test`, so that they gate pull requests.
+24. As a frontend developer, I want `turbo run dev --filter=website` to build the tokens first, so that dev starts without a manual step.
+25. As a frontend developer, I want rules for React, Next.js and Jotai, so that new code follows the same conventions as the copied code.
+26. As a frontend developer, I want the Tailwind rules extended with `cn()`, role utilities only and no component classes, so that styling stays consistent.
+27. As a frontend developer, I want the website's existing hand-written CSS allowed by a scoped exception that forbids new CSS, so that the copy is legal without opening the door to more.
+28. As a frontend developer, I want rules for localization and SEO, so that every new string and page meets the bar the website set.
+29. As a frontend developer, I want code rules for environment access and control flow, so that the copied code's style is the house style.
+30. As a frontend developer, I want Biome to require interfaces, kebab-case file names and no unused imports, so that these rules are enforced, not just written.
+31. As a frontend developer, I want `drift check localization` to fail on catalog drift, so that a missing translation breaks CI instead of production.
+32. As the owner, I want CI to build the website with safe values (early access paused, sign-up disabled), so that CI never touches real services.
+33. As the owner, I want the decisions behind this move recorded in an ADR, so that the CSS exception and the token additions can be revisited knowingly.
 
 ## Implementation Decisions
 
@@ -65,7 +63,8 @@ The repository moves to `apps/*` and the website becomes its first and only app,
 - **`@langdrift/web`.** Ships TypeScript source with an exports map limited to what the website imports from `@pack/react`, at the same subpaths. Its components read colors through the token roles. Its stylesheet keeps its own Tailwind entry and its existing CSS files, and imports the tokens stylesheet.
 - **Website adaptation boundary.** In the website's source only the token layer changes: `--ld-*` variables and utilities are remapped onto roles and the new groups, `data-theme` becomes the `.dark` class, and the website's own theme files are deleted. Configuration adapts to the repository: the manifest aliases `@pack/react` to `@langdrift/web` through a pnpm workspace alias, the test-fixture alias points inside the app, and the Next.js transpile list names the aliased package.
 - **Accepted look deltas.** Four light-mode values collapse onto the nearest role: chart grid onto border, chart line and point onto foreground, langdrift's text color onto foreground, and the product font onto the sans font.
-- **Integrations unchanged.** The Docs rewrites, the early-access flow (Turnstile, Resend, registry), the locale proxy and the environment contract are copied as they are.
+- **Integrations unchanged.** The early-access flow (Turnstile, Resend, registry), the locale proxy and the environment contract are copied as they are.
+- **A new project.** tao keeps nothing for langdrift's sake: the website has no Docs zone (no `DOCS_ORIGIN`, no Docs rewrites or redirect, no Docs entries in the sitemap), no container image, and its README describes this repository only.
 - **Formatting.** The copy is reformatted once to this repository's Biome style; object literals the multi-property plugin reports are expanded by hand.
 - **Harness.** New rules cover code (environment access, control flow), React, Next.js, Jotai, localization and SEO. The frontend and Tailwind rules gain langdrift's Tailwind conventions and a scoped exception for the CSS files the copy brings. Biome gains langdrift's lint rules. `drift` gains a `check localization` command that CI's Harness job runs.
 - **Build wiring.** Turborepo declares the website's build environment, and `dev` depends on upstream builds. CI sets the safe values langdrift used.
@@ -74,7 +73,7 @@ The repository moves to `apps/*` and the website becomes its first and only app,
 
 - A good test drives a module through its public surface: the built stylesheet a consumer imports, the component a page renders, the response the proxy returns. It never asserts on internals.
 - **Seam 1: the tokens contract test.** The existing `tokens.test.js` builds the package in isolation and resolves its stylesheet through the package exports. It gains the website theme, the classification and drift groups (exposed and never brand), the mono font and the dark variant, and loses the cross-product isolation test.
-- **Seam 2: the copied unit tests.** The website's 15 unit tests (proxy, i18n catalogs, early-access flow, next.config rewrites, voice preview) and `@pack/react`'s tests move unchanged apart from formatting, and run under `turbo run test`. They prove the copy behaves like the original.
+- **Seam 2: the copied unit tests.** The website's 14 unit tests (proxy, i18n catalogs, early-access flow, voice preview) and `@pack/react`'s tests move unchanged apart from formatting, and run under `turbo run test`. They prove the copy behaves like the original.
 - **Seam 3: `drift check localization`** runs against the copied catalogs in CI.
 - Visual parity is checked by hand in the browser pane against langdrift's running website; it is not automated.
 
@@ -85,6 +84,7 @@ The repository moves to `apps/*` and the website becomes its first and only app,
 - Other langdrift apps (dashboard, docs, sso) and packages beyond what the website imports.
 - langdrift's test-ownership rule and its third-party agent skills.
 - Vercel project configuration and production secrets.
+- A Docs zone and a container image.
 
 ## Further Notes
 

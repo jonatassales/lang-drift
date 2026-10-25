@@ -11,3 +11,5 @@
 - [x] The website's build declares its environment variables; `dev` depends on upstream builds.
 - [x] The pull-request workflow sets the safe values (local build, early access paused, sign-up disabled, a local Docs origin).
 - [x] The Dockerfile uses this repository's paths, a digest-pinned Node image and a checksum-pinned pnpm, and no Corepack.
+
+_Superseded: ticket 0024 removed the Dockerfile, and ticket 0023 removed the local-build flag and the Docs origin from the safe values._
