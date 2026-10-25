@@ -29,7 +29,7 @@ button {
 button:focus-visible,
 a:focus-visible,
 input:focus-visible {
-	outline: 2px solid #f97316;
+	outline: 2px solid var(--primary);
 	outline-offset: 3px;
 }
 
@@ -332,13 +332,13 @@ input:focus-visible {
 	text-transform: uppercase;
 }
 .intent-grid article:nth-child(1) > span {
-	color: #3b82f6;
+	color: var(--lg-classification-intentional);
 }
 .intent-grid article:nth-child(2) > span {
-	color: #dc2626;
+	color: var(--lg-classification-unexplained);
 }
 .intent-grid article:nth-child(3) > span {
-	color: #a855f7;
+	color: var(--lg-classification-review);
 }
 .intent-grid strong {
 	font-size: 28px;
@@ -385,7 +385,7 @@ input:focus-visible {
 	text-transform: uppercase;
 }
 .voice-meter-card button {
-	background: #f97316;
+	background: var(--primary);
 	border: 0;
 	border-radius: 7px;
 	cursor: pointer;

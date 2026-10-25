@@ -100,7 +100,7 @@ export function HeroSinapsiGraph() {
 					className="hero-sinapsi"
 					close-label={t('graph.closeLabel')}
 					color-muted={theme === 'dark' ? '#A1A1AA' : '#6B6B75'}
-					color-primary="#F97316"
+					color-primary="#6D0AD6"
 					color-text={theme === 'dark' ? '#F5F5F5' : '#171717'}
 					move={reducedMotion ? 'idle' : 'rotate'}
 					ref={elementRef}

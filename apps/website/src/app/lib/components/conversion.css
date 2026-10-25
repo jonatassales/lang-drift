@@ -79,7 +79,7 @@
 	line-height: 1.7;
 }
 .roi-brief blockquote {
-	border-left: 2px solid #f97316;
+	border-left: 2px solid var(--primary);
 	margin: 26px 0;
 	padding-left: 18px;
 	font-size: 19px;
@@ -156,7 +156,7 @@
 	margin-top: 0;
 }
 .faq-offer {
-	border-left: 2px solid #f97316;
+	border-left: 2px solid var(--primary);
 	padding-left: 16px;
 	margin: 26px 0 0;
 	font-size: 14px;
@@ -219,10 +219,10 @@
 	min-width: 0;
 }
 .website-plan[data-plan='trial'] {
-	border-color: color-mix(in srgb, #f97316 65%, var(--border));
+	border-color: color-mix(in srgb, var(--primary) 65%, var(--border));
 	box-shadow:
-		0 0 0 1px #f9731610,
-		0 8px 30px #f973160a;
+		0 0 0 1px color-mix(in srgb, var(--primary) 6%, transparent),
+		0 8px 30px color-mix(in srgb, var(--primary) 4%, transparent);
 }
 .website-plan-header h2 {
 	font-size: 21px;
@@ -241,9 +241,9 @@
 	line-height: 1.45;
 }
 .website-plan[data-plan='trial'] .website-plan-badge {
-	border-color: #f9731640;
+	border-color: color-mix(in srgb, var(--primary) 25%, transparent);
 	color: var(--foreground);
-	background: #f973160c;
+	background: color-mix(in srgb, var(--primary) 5%, transparent);
 }
 .website-plan-value {
 	margin-top: 28px;

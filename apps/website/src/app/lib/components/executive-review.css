@@ -66,8 +66,8 @@
 		background 150ms;
 }
 .review-questions button[aria-pressed='true'] {
-	border-color: #f97316;
-	background: color-mix(in srgb, #f97316 4%, var(--card));
+	border-color: var(--primary);
+	background: color-mix(in srgb, var(--primary) 4%, var(--card));
 }
 .review-question-number {
 	color: var(--muted-foreground);
@@ -300,7 +300,7 @@
 	margin: 18px 0 0;
 }
 .review-target-description {
-	border-left: 2px solid #f97316;
+	border-left: 2px solid var(--primary);
 	padding-left: 12px;
 	color: var(--foreground);
 	font-size: 14px;
@@ -375,11 +375,11 @@
 	cursor: pointer;
 }
 .review-linked-cell[aria-expanded='true'] {
-	border-color: #f97316;
-	background: color-mix(in srgb, #f97316 8%, transparent);
+	border-color: var(--primary);
+	background: color-mix(in srgb, var(--primary) 8%, transparent);
 }
 .review-matrix tr[data-inspected] {
-	background: color-mix(in srgb, #f97316 3%, transparent);
+	background: color-mix(in srgb, var(--primary) 3%, transparent);
 }
 .review-not-linked {
 	color: var(--muted-foreground);
@@ -398,7 +398,7 @@
 .review-source-context {
 	border-top: 1px solid var(--border);
 	padding: 28px 26px;
-	background: color-mix(in srgb, #f97316 4%, transparent);
+	background: color-mix(in srgb, var(--primary) 4%, transparent);
 }
 .review-source-context[hidden] {
 	display: none;
@@ -431,7 +431,7 @@
 	cursor: pointer;
 }
 .review-source-context blockquote {
-	border-left: 2px solid #f97316;
+	border-left: 2px solid var(--primary);
 	padding-left: 20px;
 	margin: 22px 0 0;
 	font-size: 17px;
@@ -499,7 +499,7 @@
 	background: var(--card);
 }
 .review-checkpoints li[data-pending]::before {
-	border-color: #f97316;
+	border-color: var(--primary);
 }
 .review-checkpoint-time {
 	font-size: 11px;
@@ -537,10 +537,10 @@
 	padding: 6px;
 }
 .review-source-link[aria-expanded='true'] {
-	border-color: #f97316;
+	border-color: var(--primary);
 }
 .review-next-decision {
-	border-left: 2px solid #f97316;
+	border-left: 2px solid var(--primary);
 	padding-left: 15px;
 }
 .review-next-decision > span {
