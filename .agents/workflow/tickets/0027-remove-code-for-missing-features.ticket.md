@@ -16,6 +16,10 @@ The registry sends the confirmation; the website never sends mail (`apps/website
 - [x] `turbo.json` no longer passes `RESEND_*` through.
 - [x] `early-access/env.server.unit.ts` is renamed after what it tests, the provider configuration of the route and of Siteverify, instead of an `env.server` module that does not exist.
 
+### Build environment
+
+- [x] `website#build` declares only what `next build` reads: `VERCEL_ENV` and `WEBSITE_PREVIEW_SIGNUP_DISABLED`, which `next.config.ts` inlines into the prerendered pages; framework inference covers `NEXT_PUBLIC_*`. The Turnstile, `EARLY_ACCESS_*` and `VERCEL` variables are read only by the early-access route at request time, so they and `globalEnv` go. The task itself stays: without it, strict mode drops `WEBSITE_PREVIEW_SIGNUP_DISABLED` and sign-up can never open, and its `.env*` input keeps the git-ignored env files in the cache key.
+
 ### Toast
 
 - [x] `atoms/toast.atom.ts` and its re-export from `lib/state/index.ts` are deleted.
