@@ -49,7 +49,7 @@ Draft the breakdown as a numbered list. For each ticket, note:
 - **Blocked by**: which other tickets (if any) must complete first
 - **What it delivers**: the end-to-end behaviour this ticket makes work
 
-Check it yourself, or with the owner if `.agents/workflow/human-in-the-loop.policy.md` puts a checkpoint here:
+Check it yourself, or with the owner if `.agents/policies/human-in-the-loop.policy.md` puts a checkpoint here:
 
 - Does the granularity feel right? (too coarse / too fine)
 - Are the blocking edges correct: does each ticket only depend on tickets that genuinely gate it?
