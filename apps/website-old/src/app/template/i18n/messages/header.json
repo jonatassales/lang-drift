@@ -1,0 +1,112 @@
+{
+	"en": {
+		"navigation": "Primary navigation",
+		"product": "Product",
+		"attribution": "Attribution",
+		"integrations": "Integrations",
+		"voice": "Voice",
+		"plans": "Plans",
+		"language": "Website language",
+		"languages": {
+			"english": "English",
+			"portuguese": "Brazilian Portuguese",
+			"chinese": "Traditional Chinese",
+			"japanese": "Japanese",
+			"vietnamese": "Vietnamese"
+		},
+		"getStarted": "Ask for a Demo",
+		"lightTheme": "Switch to light mode",
+		"darkTheme": "Switch to dark mode",
+		"openNavigation": "Open navigation",
+		"closeNavigation": "Close navigation",
+		"home": "LangDrift home"
+	},
+	"pt-BR": {
+		"navigation": "Navegação principal",
+		"product": "Produto",
+		"attribution": "Atribuição",
+		"integrations": "Integrações",
+		"voice": "Voz",
+		"plans": "Planos",
+		"language": "Idioma do site",
+		"languages": {
+			"english": "Inglês",
+			"portuguese": "Português brasileiro",
+			"chinese": "Chinês tradicional",
+			"japanese": "Japonês",
+			"vietnamese": "Vietnamita"
+		},
+		"getStarted": "Solicite uma demonstração",
+		"lightTheme": "Ativar modo claro",
+		"darkTheme": "Ativar modo escuro",
+		"openNavigation": "Abrir navegação",
+		"closeNavigation": "Fechar navegação",
+		"home": "Página inicial do LangDrift"
+	},
+	"zh-Hant": {
+		"navigation": "主要導覽",
+		"product": "產品",
+		"attribution": "歸因",
+		"integrations": "整合",
+		"voice": "語音",
+		"plans": "方案",
+		"language": "網站語言",
+		"languages": {
+			"english": "英語",
+			"portuguese": "巴西葡萄牙語",
+			"chinese": "繁體中文",
+			"japanese": "日語",
+			"vietnamese": "越南文"
+		},
+		"getStarted": "申請產品展示",
+		"lightTheme": "切換至淺色模式",
+		"darkTheme": "切換至深色模式",
+		"openNavigation": "開啟導覽",
+		"closeNavigation": "關閉導覽",
+		"home": "LangDrift 首頁"
+	},
+	"ja": {
+		"navigation": "メインナビゲーション",
+		"product": "製品",
+		"attribution": "関与者",
+		"integrations": "連携",
+		"voice": "音声",
+		"plans": "プラン",
+		"language": "サイトの言語",
+		"languages": {
+			"english": "英語",
+			"portuguese": "ブラジルポルトガル語",
+			"chinese": "繁体字中国語",
+			"japanese": "日本語",
+			"vietnamese": "ベトナム語"
+		},
+		"getStarted": "デモをリクエスト",
+		"lightTheme": "ライトモードに切り替え",
+		"darkTheme": "ダークモードに切り替え",
+		"openNavigation": "ナビゲーションを開く",
+		"closeNavigation": "ナビゲーションを閉じる",
+		"home": "LangDrift ホーム"
+	},
+	"vi": {
+		"navigation": "Điều hướng chính",
+		"product": "Sản phẩm",
+		"attribution": "Đóng góp",
+		"integrations": "Tích hợp",
+		"voice": "Giọng nói",
+		"plans": "Các gói",
+		"language": "Ngôn ngữ trang web",
+		"languages": {
+			"english": "Tiếng Anh",
+			"portuguese": "Tiếng Bồ Đào Nha (Brazil)",
+			"chinese": "Tiếng Trung phồn thể",
+			"japanese": "Tiếng Nhật",
+			"vietnamese": "Tiếng Việt"
+		},
+		"getStarted": "Yêu cầu bản demo",
+		"lightTheme": "Chuyển sang giao diện sáng",
+		"darkTheme": "Chuyển sang giao diện tối",
+		"openNavigation": "Mở điều hướng",
+		"closeNavigation": "Đóng điều hướng",
+		"home": "Trang chủ LangDrift"
+	}
+}

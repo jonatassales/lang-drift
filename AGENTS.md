@@ -1,148 +1,87 @@
 # LangDrift
 
-AI harness web OS for your agentic journey. LangDrift is a suite of apps under one account: each app is independent, with its own URL, and all apps share account, plan and shell.
+LangDrift is an AI harness web OS for the agentic journey: one brand, one domain and a set of platform products that share account, plan and shell. This repository, code name **Tao**, builds the next LangDrift. This file holds the ideas an agent must carry into any task here; the mechanics live in [`.agents/context.md`](.agents/context.md).
 
-## General rules
+## The idea
 
-`.claude/rules/` holds the rules that always apply, read first in every session. `00-general.rule.md` covers code and tooling, `01-filesystem.rule.md` naming and paths, `02-frontend.rule.md` styling and the CSS exception, `03-tailwind.rule.md` what Tailwind may do, `04-code.rule.md` external input and control flow, `05-react.rule.md` components, `06-nextjs.rule.md` the App Router tree, `07-jotai.rule.md` shared state, `08-localization.rule.md` copy and locales, and `09-seo.rule.md` metadata.
+### One platform, one domain
 
-## Status
+LangDrift is a platform of products, not one product. The public site presents the platform and routes to each product's own page, the way a `Platform` menu does on a platform vendor's site. Everything is served under `https://langdrift.md` with a locale prefix (`/en/`, `/pt-br/`, `/zh-hant/`, `/ja/`, `/vi/`). Moving between products, on the site and in the console's product switcher, is routing on that one domain, never a redirect to another domain or subdomain.
 
-Monorepo with three packages, `@langdrift/tokens`, `@langdrift/web` and `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and one app, `apps/website`: the LangDrift website (see `apps/website/README.md`), copied from the earlier `langdrift` monorepo under spec 0003.
+Today's langdrift.md is a single-product site. Once the platform site is ready it takes over the domain, and today's content becomes Vision's product page.
 
-## Toolchain and commands
+### The products
 
-- pnpm is the only package manager. `devEngines.packageManager` in the root `package.json` makes other package managers fail, and `engineStrict` in `pnpm-workspace.yaml` enforces the Node range in `engines`.
-- Dependency install scripts run only when `allowBuilds` in `pnpm-workspace.yaml` allows them. Prebuilt binaries ship as optional dependencies, so the entries there are denials; approve a new one only when its build is required.
-- Work that spans the monorepo runs through Turborepo. Do not add root scripts that wrap `turbo run`.
-- A package's scripts call its tool directly (for example `tsc --noEmit`). Turborepo tasks run those scripts by name.
-- Do not add shell or JavaScript wrappers for what Turborepo or pnpm already do.
+Products carry the brand in their name: **LangDrift Vision** and **LangDrift FinOps**.
 
-Run from the repository root:
-
-| Command | Effect |
+| Product | The idea it serves |
 | --- | --- |
-| `pnpm install` | Installs dependencies and the Git hooks, then links the `drift` launcher. Fails under another package manager or an unsupported Node version. |
-| `pnpm turbo run build` | Builds every package that has a `build` script, upstream packages first. |
-| `pnpm turbo run dev --filter=<package-name>` | Builds the packages an app depends on, then starts the app. |
-| `pnpm turbo run typecheck` | Runs each package's `typecheck` script. |
-| `pnpm turbo run test` | Runs each package's `test` script. |
-| `pnpm turbo run check` | Runs Biome format, lint and import checks on the whole repository. Read-only. |
-| `pnpm turbo run fix` | Same as `check`, writing safe fixes. Review the diff afterwards. |
+| **Vision** | Keep the why. A product moves away from the vision it set out with; Vision measures that movement as a **Product Vision** score and keeps the context of every move: what changed, who moved it, why, whether a decision was recorded. Movement is classified as intentional evolution, unexplained drift or under review. Drift is not a verdict: it can reveal a gap, a trade-off or a better direction. The goal is shared understanding, not blame. |
+| **FinOps** | Make agent-assisted delivery accountable to a team budget. It connects product intent, delivery context, execution evidence and economic outcome in one inspectable chain, on three pillars: FinOps as the economic purpose, the agentic harness as the delivery workflow and its evidence, and microruntimes as bounded, consumer-owned execution around software that already exists. |
 
-`biome.json` owns formatting and import order: tabs, lines up to 80 columns, single quotes (double in JSX attributes), no semicolons, and imports grouped as packages, then aliases (`@/`, `#`, `~` and the website's `@app/*`, `@components/*`, `@i18n/*`, `@state`, …), then relative paths, separated by blank lines. An object literal with more than one property puts each property on its own line; `platform/quality/multi-property-object.grit` reports violations.
+Vision's metric keeps its English name, "Product Vision", in every locale. FinOps grew out of the Exphere project; its Go CLI, `ex`, is already here as `packages/ex`.
 
-`check` and `fix` are root tasks with caching off on purpose: their inputs span every package, which a root task's cache key does not reliably cover, and Biome is fast enough without it.
+### One console
 
-## Layout
+Each product has a management surface today, in its upstream repository. LangDrift's dashboard (`jonatassales/langdrift`, `apps/dashboard`) is Vision's: Overview, Vision, Evolution and Evidence workspaces, with attention, briefs, targets, revisions, drifts, decisions, relations and sources beneath them. Exphere's console (`jonatassales/exphere`, `apps/console`) is FinOps's: projects registered from a local folder, their microruntimes, executions, history and secrets, supervised by one connected `ex` agent per project, with FinOps readings and recommendations that stay advisory.
 
-- `apps/<app>/`: one deployable app each, with its own URL. `pnpm-workspace.yaml` picks them up through `apps/*`.
-- `packages/<capability>/`: shared across apps, never inside one.
-- Packages: `tokens`, `web` and `ex` exist; `shell`, `account`, `runtime` and `contracts` are planned.
-- `packages/ex` is Go: Turborepo runs its `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds it (no Go toolchain required for frontend work).
-- A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
-- Package scope: `@langdrift/*`.
-- `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
-- `turbo.json` declares the environment each task may see: Turborepo runs in strict mode, so a variable reaches a task only through `globalEnv`, a task's `env` or the pass-through lists. `apps/website/README.md` holds the website's variable contract and its tracked `.env.development` the shared development defaults, which hold no secret; `CRYPTO_SECRET` is pass-through only and never committed.
-- `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, `quality/` the lint-staged config and the Biome plugin, `versioning/` the commitlint config and the Git hooks (`.husky/`).
+They become **one LangDrift console** on langdrift.md: one account, one shell, a product switcher between Vision and FinOps, and under it each product's own workspaces, sidebar and content. The dashboard's workspace switcher is the seed of that product switcher. Both surfaces already keep requested state apart from observed state and label illustrative or stub data as such; the unified console keeps both habits. Neither console is in this repository yet.
 
-## Platform CLI
+### Principles the products share
 
-`platform/cli/drift` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `reset`, `check dead-code|localization`, `env setup|validate` and `git setup|doctor|pre-commit|commit-msg|lint-history`.
+- **The platform owns boundaries and mechanisms; the consumer owns the application and its domain choices.** A platform team may require observability, evidence, security and bounded execution without choosing every library.
+- **Recommendation is not authorization.** An agent may estimate, recommend and execute permitted work. A deterministic control decides whether a paid or risky action is allowed. A model's suggestion never widens scope, funding or access.
+- **The authorized budget belongs to the team**, not to a developer or a ticket. Allocations to work are subordinate to that envelope.
+- **Unknown is never zero.** Missing or stale evidence is shown as missing, not as zero spend or a confirmed stop. Desired state and observed state stay distinct.
+- **Evidence over assertion.** Every movement, recommendation and lifecycle operation keeps a token-free record with provenance. A claim of savings, delivery or readiness needs the evidence behind it.
+- **Meaning is fixed across products.** Status, classification and drift colors never take a brand color, so a classification reads the same in every product.
 
-`drift check dead-code` finds code that only served something a refactor removed: a tsconfig alias nothing imports through, a module or export nothing uses, a dependency nothing imports, a `turbo.json` variable nothing reads, a CSS class no markup carries. A reference in a comment counts, so code parked in comments keeps what it needs, and folders held by a `.gitkeep` are never examined. Run it after a refactor; CI runs it in the Check job. `platform/quality/dead-code.allow` lists what the owner keeps on purpose.
+## Where things stand
 
-When the shell resolves `drift` to another program (a link from an older checkout, say), `drift setup` says which one and how to fix `PATH`.
-
-## Design and tokens
-
-- `@langdrift/tokens` builds the tokens with Style Dictionary. Each app imports one self-contained stylesheet built from the shared tokens and its app theme; today the only one is `@langdrift/tokens/website.css`.
-- Purple (primary) surfaces such as buttons carry `primary-foreground` text, which is white in both color schemes.
-- Components use roles, never a foundation or a brand color directly. Roles take shadcn's names (`background`, `foreground`, `primary`, `muted-foreground`, …) because the web apps use SmoothUI and shadcn components.
-- Prefixes: shared tokens are `--lg-*`; the website's app theme is `--site-*`. Each app theme lives in `packages/tokens/themes/` and defines only primary and primary hover (the Exphere purple for the website), which `--lg-color-primary` points to.
-- Status colors (`--lg-status-*`), classification colors (`--lg-classification-*`), classification text tones (`--lg-classification-text-*`) and drift colors (`--lg-drift-*`) are fixed across apps and never inherit a brand color. See ADR 0003.
-- Light is declared in `:root` and dark in `.dark`. Apps render with the `.dark` class, so dark is the default, and the stylesheet points Tailwind's `dark:` variant at that class.
-- Each stylesheet also bridges the roles to shadcn's unprefixed variables and sets Tailwind's theme. The native color palette is reset, so only roles and the fixed color groups exist as Tailwind colors. See ADR 0001 and `03-tailwind.rule.md`.
-
-## Navigation and session
-
-- The app switcher links to another domain or subdomain. It is not internal routing.
-- Account and session come from a central account app, not from each app.
-- The switcher and the shell will live in `packages/shell`, which is planned. Each app owns its sidebar and its content.
-
-## Spec-driven development
-
-Workflow: `research` when a question needs primary sources, then `grill-with-docs` (or `grill-me` for plans outside the code), `to-spec`, `to-tickets`, `implement` and `code-review`.
-
-- `.agents/policies/human-in-the-loop.policy.md` sets where the owner takes part, which stages run on their own and what gates them. It belongs to this project and team; the skills read it instead of assuming.
-- A direct request to build or change application code enters the workflow: start with the `grilling` skill, plus `domain-modeling` when terms or decisions settle, instead of writing code.
-- `.claude/hooks/guard-implement-effort.sh` blocks `implement` for the current session until `.agents/prompts/llm-effort-analyzer.prompt.md` has recorded its result at `.agents/workflow/.effort-log/<session_id>.md`.
-- The commit-msg hook rejects a commit that changes `apps/` or `packages/` without a `Ticket: <NNNN>` trailer naming an existing ticket.
-
-## Agent skills
-
-The skills in `.claude/skills/` are adapted from mattpocock/skills (MIT, see `.claude/skills/LICENSE`). Each `SKILL.md` records its source in its frontmatter.
-
-### Issue tracker
-
-Local Markdown under `.agents/workflow/`:
-
-| Artifact | Path |
-| --- | --- |
-| Spec | `specs/<NNNN>-<slug>.spec.md` |
-| Ticket | `tickets/<NNNN>-<slug>.ticket.md` |
-| ADR | `adrs/<NNNN>-<slug>.adr.md` |
-| Research note | `research/<slug>.research.md` |
-
-- Each kind numbers its own sequence from `0001`; take the next free number. Create `adrs/` and `research/` when the first file is written.
-- "Publish to the issue tracker" means writing the file. "Fetch a ticket" means reading it.
-- A ticket names its spec in a `**Spec:**` line.
-
-### Triage labels
-
-A `**Status:**` line near the top of each spec or ticket holds one of `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human` or `wontfix`.
-
-### Domain docs
-
-Single context. The glossary is the `## Glossary` section of `.agents/context.md`, and ADRs live in `.agents/workflow/adrs/`.
+A pnpm and Turborepo monorepo. `apps/website` is where the platform site is built; it started as a clone of `apps/website-old`, today's langdrift.md, ported from the earlier `langdrift` monorepo under spec 0003. Work happens in `apps/website`; `apps/website-old` stays as the reference until the platform site takes over the domain. `packages/tokens`, `packages/web` and `packages/ex` exist; `shell`, `account`, `runtime` and `contracts` are planned. Each app and package has a README with its own contract.
 
 ## How we work
 
-- The owner writes application code. Agents do not edit app code unless the task asks for it.
-- Repetitive work may be delegated when the task names its scope.
-- The harness (checks, guardrails, scripts) stays a draft until the owner promotes a piece of it to a rule.
-- Rules are added only when the owner asks.
+- **Rules first.** [`.claude/rules/`](.claude/rules/) holds the rules that apply to every task and are loaded in every session. Read them before touching code.
+- **The owner writes application code.** Agents edit app code only when the task asks for it. Repetitive work may be delegated when the task names its scope.
+- **A request to build or change application code enters the spec-driven workflow** instead of producing code: `grilling` (plus `domain-modeling` when terms or decisions settle), then `to-spec`, `to-tickets`, `implement`, `code-review`. [`.agents/policies/human-in-the-loop.policy.md`](.agents/policies/human-in-the-loop.policy.md) says where the owner takes part and what runs on its own.
+- **Open decisions stay open.** Pricing, limits, auth provider and formulas are the owner's to close. Rules are added only when the owner asks, and the harness stays a draft until the owner promotes a piece of it to a rule.
+- **Nothing carries an AI signature**: no `Co-Authored-By`, no "Generated with", in commits, pull requests or contributions. Inside the workflow, commit, push and pull request follow the policy above; outside it, each needs explicit authorization every time. Merge and release always do.
+- **Secrets stay out of reach.** Do not read or edit values in `.env` files, and keep credentials out of code, logs and evidence.
 
-## Continuous integration
+## Where to look
 
-`.github/workflows/pull-request.yml` runs on every pull request into `main`, one job per concern. Sign-up is paused in the website's code, so CI builds it without any service values and never reaches a live service:
-
-| Job | Runs |
+| When you need | Read |
 | --- | --- |
-| Build | `pnpm turbo run build` |
-| Check | `pnpm turbo run check`, `pnpm turbo run typecheck`, then `drift check dead-code` |
-| Test | `pnpm turbo run test` |
-| Guardrails | `drift git lint-history` over the pull request's commits |
+| Layout, toolchain, commands, the `drift` CLI, design tokens, CI and Git mechanics | [`.agents/context.md`](.agents/context.md) |
+| The project vocabulary | [`.agents/context.md`](.agents/context.md), `## Glossary` |
+| Specs, tickets, ADRs and research notes | `.agents/workflow/` |
+| The website's environment contract and sign-up pause | [`apps/website/README.md`](apps/website/README.md) |
+| The `ex` CLI and its lifecycle contracts | [`packages/ex/README.md`](packages/ex/README.md) |
 
-Actions, container images and downloaded tools are pinned to full commit SHAs, digests or checksums, with the version in a comment. The workflow tokens are read-only.
+## Commands
 
-## Git
+Run from the repository root. [`.agents/context.md`](.agents/context.md) has the full table and what each command touches.
 
-- No commit, pull request or contribution carries an AI-generated signature, trailer or footer. This includes `Co-Authored-By` and "Generated with".
-- Inside the spec-driven workflow, commit, push and pull request follow `.agents/policies/human-in-the-loop.policy.md`. Outside it, each needs explicit authorization every time. Merge and release always need it.
-- The hooks in `platform/versioning/.husky/` call `drift`. `drift git pre-commit` runs Biome on the staged files through lint-staged. `drift git commit-msg` rejects AI signatures, enforces the ticket trailer above and requires Conventional Commits through commitlint; its checks live in `platform/cli/src/core/commit-rules.sh`, which `drift git lint-history` also applies to every commit in a range. Husky installs the hooks on `pnpm install` once the folder is a Git repository. Neither lint-staged nor commitlint finds its config by itself: `drift` passes `--config`, so run them through `drift` rather than `pnpm exec`.
+```bash
+pnpm install
+```
 
-## Boundaries
+```bash
+pnpm website
+```
 
-- Do not read or edit values in `.env` files.
-- Keep credentials out of code, logs and evidence.
-- An agent does not close an open decision. Pricing, limits, auth provider and formulas stay open until the owner decides.
+```bash
+pnpm turbo run check
+```
 
-## Open
+```bash
+pnpm turbo run typecheck
+```
 
-- Domain layout: subdomains under one domain, or separate domains per app.
-
-<!-- BEGIN:turborepo-agent-rules -->
+```bash
+pnpm turbo run test
+```
 
 # This is NOT the Turborepo you know
 

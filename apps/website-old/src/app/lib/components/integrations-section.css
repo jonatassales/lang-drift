@@ -1,0 +1,317 @@
+.integrations-section {
+	border-block-start: 1px solid var(--border);
+	margin-inline: auto;
+	max-inline-size: 1240px;
+	min-inline-size: 0;
+	padding: 80px 28px;
+	scroll-margin-block-start: 100px;
+}
+
+.integrations-intro {
+	max-inline-size: 860px;
+}
+.integrations-intro > .section-kicker {
+	color: var(--muted-foreground);
+}
+.integrations-intro h2 {
+	font-size: clamp(25px, 2.6vw, 34px);
+	font-weight: 500;
+	letter-spacing: -0.035em;
+	line-height: 1.18;
+	margin: 18px 0 22px;
+	text-wrap: balance;
+}
+.integrations-intro > p {
+	color: var(--muted-foreground);
+	font-size: 17px;
+	line-height: 1.7;
+	margin: 0;
+	text-wrap: pretty;
+}
+.integrations-map {
+	align-items: center;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 82px minmax(0, 1.12fr) 62px minmax(
+			0,
+			1.5fr
+		);
+	margin-block: 44px 32px;
+	min-inline-size: 0;
+}
+.integration-surface {
+	background: var(--card);
+	border: 1px solid var(--border);
+	border-radius: 16px;
+	min-inline-size: 0;
+	padding: 26px 24px;
+}
+.integration-surface h3 {
+	font-size: 20px;
+	font-weight: 500;
+	letter-spacing: -0.025em;
+	line-height: 1.35;
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+.integration-surface p {
+	color: var(--muted-foreground);
+	font-size: 16px;
+	line-height: 1.65;
+	margin: 17px 0 0;
+	overflow-wrap: anywhere;
+}
+.integration-project-icon {
+	color: var(--muted-foreground);
+	margin-block-end: 18px;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-width: 1.4;
+}
+.integration-sdk-label {
+	color: var(--muted-foreground);
+	display: block;
+	font-family: var(--lg-typography-font-mono);
+	font-size: 12px;
+	line-height: 1.5;
+	margin-block-start: 9px;
+}
+.integration-core {
+	border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
+	box-shadow: 0 14px 38px color-mix(in srgb, var(--foreground) 5%, transparent);
+}
+.integration-core-heading {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-block-end: 18px;
+}
+.integration-core-heading svg {
+	flex-shrink: 0;
+}
+.integration-core-heading h3 {
+	font-size: 23px;
+	font-weight: 600;
+}
+.integration-core .integration-core-supporting {
+	border-block-start: 1px solid var(--border);
+	font-size: 14px;
+	margin-block-start: 22px;
+	padding-block-start: 18px;
+}
+.integration-requirement {
+	background: color-mix(in srgb, var(--foreground) 4%, transparent);
+	border: 1px solid var(--border);
+	border-radius: 5px;
+	color: var(--foreground);
+	display: inline-block;
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 1.5;
+	max-inline-size: 100%;
+	overflow-wrap: anywhere;
+	padding: 4px 8px;
+}
+.integration-main-connection {
+	align-items: center;
+	display: flex;
+	min-inline-size: 0;
+	position: relative;
+}
+.integration-main-connection > span {
+	color: var(--muted-foreground);
+	font-size: 11px;
+	inline-size: 100%;
+	line-height: 1.5;
+	padding-inline: 4px;
+	position: absolute;
+	text-align: center;
+	transform: translateY(-29px);
+}
+.integration-main-connection svg {
+	block-size: 12px;
+	color: var(--primary);
+	inline-size: 100%;
+	overflow: visible;
+	pointer-events: none;
+}
+.integration-main-connection path {
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.5;
+	vector-effect: non-scaling-stroke;
+}
+.integration-branches {
+	align-self: stretch;
+	display: grid;
+	gap: 20px;
+	grid-template-rows: repeat(3, minmax(0, 1fr));
+	pointer-events: none;
+	position: relative;
+}
+.integration-branches > svg {
+	align-self: center;
+	block-size: 12px;
+	color: var(--muted-foreground);
+	inline-size: 100%;
+	overflow: visible;
+}
+.integration-branches path {
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1;
+	vector-effect: non-scaling-stroke;
+}
+.integration-branches > .integration-branch-spine {
+	block-size: calc(100% - (100% - 40px) / 3);
+	inline-size: 2px;
+	inset-block-start: calc((100% - 40px) / 6);
+	inset-inline-start: calc(50% - 1px);
+	position: absolute;
+}
+.integration-tools {
+	display: grid;
+	gap: 20px;
+	grid-template-rows: repeat(3, minmax(0, 1fr));
+	list-style: none;
+	margin: 0;
+	min-inline-size: 0;
+	padding: 0;
+}
+.integration-tools li {
+	min-inline-size: 0;
+}
+.integration-tool {
+	block-size: 100%;
+}
+.integration-tool-heading {
+	align-items: center;
+	display: flex;
+	gap: 15px;
+	margin-block-end: 16px;
+}
+.integration-logo {
+	align-items: center;
+	display: inline-flex;
+	flex: 0 0 40px;
+	justify-content: center;
+}
+.integration-logo img {
+	block-size: 38px;
+	display: block;
+	object-fit: contain;
+}
+.integration-logo .integration-logo-dark {
+	display: none;
+}
+:root.dark .integration-logo .integration-logo-light {
+	display: none;
+}
+:root.dark .integration-logo .integration-logo-dark {
+	display: block;
+}
+.integration-example {
+	border-block-start: 1px solid var(--border);
+	margin-block-start: 20px;
+	padding-block-start: 16px;
+}
+.integration-example > span {
+	color: var(--muted-foreground);
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 1.5;
+}
+.integration-example > p {
+	color: var(--foreground);
+	font-size: 14px;
+	line-height: 1.65;
+	margin-block-start: 7px;
+}
+.integrations-technical {
+	border-block: 1px solid var(--border);
+}
+.integrations-technical .smooth-accordion-trigger {
+	font-size: 16px;
+	min-block-size: 64px;
+}
+.integrations-technical p {
+	color: var(--muted-foreground);
+	font-size: 16px;
+	line-height: 1.7;
+	margin: 0 0 14px;
+	max-inline-size: 900px;
+	overflow-wrap: anywhere;
+}
+.integrations-outro {
+	align-items: start;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 18px 36px;
+	justify-content: space-between;
+	margin-block-start: 26px;
+}
+.integrations-outro p {
+	color: var(--muted-foreground);
+	flex: 1 1 480px;
+	font-size: 16px;
+	line-height: 1.65;
+	margin: 0;
+	max-inline-size: 760px;
+}
+.integrations-outro a {
+	align-items: center;
+	display: inline-flex;
+	flex-shrink: 0;
+	font-size: 15px;
+	gap: 10px;
+	min-block-size: 44px;
+}
+
+@media (max-width: 1080px) {
+	.integrations-map {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.integration-main-connection {
+		block-size: 76px;
+		justify-content: center;
+	}
+	.integration-main-connection > span {
+		inline-size: auto;
+		max-inline-size: calc(50% - 10px);
+		padding-inline: 12px 0;
+		text-align: start;
+		transform: translateX(50%);
+	}
+	.integration-main-connection svg {
+		block-size: 12px;
+		inline-size: 76px;
+		transform: rotate(90deg);
+	}
+	.integration-branches {
+		display: none;
+	}
+	.integration-core {
+		margin-block-end: 28px;
+	}
+	.integration-tools {
+		grid-template-rows: none;
+	}
+}
+
+@media (max-width: 600px) {
+	.integrations-section {
+		padding: 56px 18px;
+		scroll-margin-block-start: 88px;
+	}
+	.integrations-intro > p {
+		font-size: 16px;
+	}
+	.integrations-map {
+		margin-block-start: 32px;
+	}
+	.integration-surface {
+		border-radius: 12px;
+		padding: 24px 20px;
+	}
+}
