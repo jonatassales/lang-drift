@@ -168,9 +168,16 @@ export const finopsFaqIds = [
 	'availability',
 ] as const
 
-export const budgetCardIds = ['envelope', 'allocation', 'reservation'] as const
+export const budgetTermIds = ['envelope', 'allocation', 'reservation'] as const
 export const gateStepIds = ['recommend', 'gate', 'reconcile'] as const
+export const sourceIds = [
+	'providers',
+	'microruntimes',
+	'evidence',
+	'billing',
+] as const
 
+export type BudgetTermId = (typeof budgetTermIds)[number]
 export type ChainPillarId = (typeof chainPillarIds)[number]
 export type FailureScenarioId = (typeof failureScenarioIds)[number]
 export type FinopsFaqId = (typeof finopsFaqIds)[number]
@@ -183,13 +190,16 @@ export const failureStatusTones: Record<FailureScenarioId, DetailTone> = {
 	'unknown-spend': 'warning',
 }
 
-export interface FinopsCard {
-	description: string
-	eyebrow: string
+export interface BudgetTermCopy {
+	term: string
 	title: string
+	description: string
 }
 
-export interface GateStepCopy extends FinopsCard {
+export interface GateStepCopy {
+	eyebrow: string
+	title: string
+	description: string
 	figure: string
 }
 
@@ -255,7 +265,7 @@ export interface FinopsMessages {
 		kicker: string
 		title: string
 		lead: string
-		cards: Record<(typeof budgetCardIds)[number], FinopsCard>
+		terms: Record<BudgetTermId, BudgetTermCopy>
 	}
 	authorization: {
 		kicker: string
@@ -269,6 +279,7 @@ export interface FinopsMessages {
 		kicker: string
 		title: string
 		lead: string
+		intended: string
 		intendedModel: string
 		items: {
 			providers: { title: string; description: string }
@@ -281,5 +292,8 @@ export interface FinopsMessages {
 		title: string
 		description: string
 		items: Record<FinopsFaqId, { question: string; answer: string }>
+	}
+	earlyAccess: {
+		description: string
 	}
 }

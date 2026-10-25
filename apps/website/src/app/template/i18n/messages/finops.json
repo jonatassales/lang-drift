@@ -121,19 +121,19 @@
 			"kicker": "Know who funds it",
 			"title": "The budget belongs to the team.",
 			"lead": "Work varies in complexity, so the authorized envelope is shared by the team, not split into equal quotas per developer or per ticket. Features receive allocations that can change; nobody receives an independent right to spend. This is the funding model LangDrift FinOps is designed around; it is not available yet.",
-			"cards": {
+			"terms": {
 				"envelope": {
-					"eyebrow": "Team envelope",
+					"term": "Team envelope",
 					"title": "One authorized amount, one period, one owner",
 					"description": "The funding authority names the team, the amount, the period and who answers for deviations. Everything else is subordinate to it."
 				},
 				"allocation": {
-					"eyebrow": "Allocation",
+					"term": "Allocation",
 					"title": "A suggested share of the envelope for a piece of work",
 					"description": "Proposed from the intent, comparable history and the required quality. It guides the plan; it is not a grant, and it can be revised."
 				},
 				"reservation": {
-					"eyebrow": "Reservation",
+					"term": "Reservation",
 					"title": "An atomic hold before a paid call",
 					"description": "Taken against the envelope with an idempotency key and released when observed usage is reconciled. Parallel agents cannot spend the same amount twice."
 				}
@@ -170,6 +170,7 @@
 			"kicker": "What feeds the ledger",
 			"title": "Evidence over assertion.",
 			"lead": "A receipt is only as good as its sources. Each one is named, dated and kept apart from the others, so a missing source stays visible as missing instead of blending into a total.",
+			"intended": "Intended sources",
 			"intendedModel": "These are the sources the model intends. Where one is not connected, the ledger shows the gap rather than an estimate dressed as a measurement.",
 			"items": {
 				"providers": {
@@ -216,6 +217,9 @@
 					"answer": "The pages describe the intended model with illustrative values. The ledger, the gate and the integrations shown here are not available yet, and demo requests are paused for now."
 				}
 			}
+		},
+		"earlyAccess": {
+			"description": "See what a team envelope, a reservation and a receipt would look like for your own work, and what FinOps does not promise."
 		}
 	},
 	"pt-BR": {
@@ -340,19 +344,19 @@
 			"kicker": "Saiba quem financia",
 			"title": "O orçamento pertence ao time.",
 			"lead": "Os trabalhos variam em complexidade, então o envelope autorizado é compartilhado pelo time, não dividido em cotas iguais por desenvolvedor ou por ticket. Features recebem alocações que podem mudar; ninguém recebe um direito independente de gastar. Este é o modelo de financiamento para o qual o LangDrift FinOps está sendo projetado; ele ainda não está disponível.",
-			"cards": {
+			"terms": {
 				"envelope": {
-					"eyebrow": "Envelope do time",
+					"term": "Envelope do time",
 					"title": "Um valor autorizado, um período, um responsável",
 					"description": "A autoridade de financiamento nomeia o time, o valor, o período e quem responde por desvios. Todo o resto é subordinado a ela."
 				},
 				"allocation": {
-					"eyebrow": "Alocação",
+					"term": "Alocação",
 					"title": "Uma parcela sugerida do envelope para um trabalho",
 					"description": "Proposta a partir da intenção, do histórico comparável e da qualidade exigida. Ela orienta o plano; não é uma concessão e pode ser revisada."
 				},
 				"reservation": {
-					"eyebrow": "Reserva",
+					"term": "Reserva",
 					"title": "Uma retenção atômica antes de uma chamada paga",
 					"description": "Feita contra o envelope com uma chave de idempotência e liberada quando o uso observado é reconciliado. Agentes em paralelo não conseguem gastar o mesmo valor duas vezes."
 				}
@@ -389,6 +393,7 @@
 			"kicker": "O que alimenta o livro-razão",
 			"title": "Evidência acima de afirmação.",
 			"lead": "Um recibo é tão bom quanto suas fontes. Cada uma é nomeada, datada e mantida separada das outras, para que uma fonte ausente continue visível como ausente em vez de se misturar a um total.",
+			"intended": "Fontes pretendidas",
 			"intendedModel": "Estas são as fontes que o modelo pretende usar. Onde uma não está conectada, o livro-razão mostra a lacuna, não uma estimativa disfarçada de medição.",
 			"items": {
 				"providers": {
@@ -435,6 +440,9 @@
 					"answer": "As páginas descrevem o modelo pretendido com valores ilustrativos. O livro-razão, o gate e as integrações mostrados aqui ainda não estão disponíveis, e os pedidos de demonstração estão pausados por enquanto."
 				}
 			}
+		},
+		"earlyAccess": {
+			"description": "Veja como ficariam um envelope do time, uma reserva e um recibo para o seu próprio trabalho, e o que o FinOps não promete."
 		}
 	},
 	"zh-Hant": {
@@ -559,19 +567,19 @@
 			"kicker": "知道誰出資",
 			"title": "預算屬於團隊。",
 			"lead": "工作的複雜度各不相同，所以授權額度由整個團隊共享，而不是按開發者或工單平均分配。功能得到可以調整的分配；沒有人得到獨立的花費權。這是 LangDrift FinOps 所依循設計的資金模型，目前尚未提供。",
-			"cards": {
+			"terms": {
 				"envelope": {
-					"eyebrow": "團隊預算額度",
+					"term": "團隊預算額度",
 					"title": "一個授權金額、一個期間、一位負責人",
 					"description": "出資權限指明團隊、金額、期間，以及由誰對偏差負責。其他一切都從屬於它。"
 				},
 				"allocation": {
-					"eyebrow": "分配",
+					"term": "分配",
 					"title": "為一項工作建議的額度份額",
 					"description": "依據意圖、可比較的歷史與所需品質提出。它引導計畫；它不是撥款，而且可以修訂。"
 				},
 				"reservation": {
-					"eyebrow": "保留",
+					"term": "保留",
 					"title": "付費呼叫前的原子性預留",
 					"description": "以冪等鍵對額度預留，在觀測用量對帳後釋放。平行運作的代理無法把同一筆金額花兩次。"
 				}
@@ -608,6 +616,7 @@
 			"kicker": "帳本的資料來源",
 			"title": "證據重於宣稱。",
 			"lead": "收據的品質取決於它的來源。每個來源都有名稱與日期，並彼此分開，所以缺少的來源會一直顯示為缺少，而不是混進總額裡。",
+			"intended": "預期的來源",
 			"intendedModel": "這些是模型預期的來源。尚未連接的來源，帳本會顯示為缺口，而不是把估算偽裝成測量。",
 			"items": {
 				"providers": {
@@ -654,6 +663,9 @@
 					"answer": "這些頁面以示意數值描述預期中的模型。這裡展示的帳本、閘門與整合尚未可用，示範申請目前暫停。"
 				}
 			}
+		},
+		"earlyAccess": {
+			"description": "看看團隊預算額度、保留與收據套用在你們自己的工作上會是什麼樣子，以及 FinOps 不承諾的事。"
 		}
 	},
 	"ja": {
@@ -778,19 +790,19 @@
 			"kicker": "誰が資金を出すかを知る",
 			"title": "予算はチームのものです。",
 			"lead": "作業の複雑さはさまざまなので、承認された予算枠はチームで共有され、開発者やチケットごとの均等な割り当てには分けられません。機能には変更可能な配分が与えられます。独立した支出の権利は誰にも与えられません。これは LangDrift FinOps が前提として設計している資金モデルで、まだ提供されていません。",
-			"cards": {
+			"terms": {
 				"envelope": {
-					"eyebrow": "チームの予算枠",
+					"term": "チームの予算枠",
 					"title": "一つの承認額、一つの期間、一人の責任者",
 					"description": "資金の権限は、チーム、金額、期間、そして逸脱に責任を負う人を定めます。それ以外のすべてはこれに従います。"
 				},
 				"allocation": {
-					"eyebrow": "配分",
+					"term": "配分",
 					"title": "ある作業への予算枠の提案上の取り分",
 					"description": "意図、比較可能な履歴、求められる品質から提案されます。計画の指針であり、交付ではなく、見直すことができます。"
 				},
 				"reservation": {
-					"eyebrow": "予約",
+					"term": "予約",
 					"title": "有料呼び出しの前のアトミックな確保",
 					"description": "冪等キーとともに予算枠に対して確保され、観測された使用量が照合されると解放されます。並行するエージェントが同じ金額を二度使うことはできません。"
 				}
@@ -827,6 +839,7 @@
 			"kicker": "台帳の情報源",
 			"title": "主張より証拠。",
 			"lead": "レシートの質はその情報源で決まります。各情報源には名前と日付があり、互いに分けて保たれるので、欠けている情報源は合計に紛れることなく、欠けたまま見え続けます。",
+			"intended": "想定している情報源",
 			"intendedModel": "これらはモデルが想定する情報源です。接続されていないものがあれば、台帳は測定を装った見積もりではなく、その空白を示します。",
 			"items": {
 				"providers": {
@@ -873,6 +886,9 @@
 					"answer": "これらのページはイメージ上の値で想定するモデルを説明しています。ここに示した台帳、ゲート、連携はまだ利用できず、デモの申し込みは当面停止しています。"
 				}
 			}
+		},
+		"earlyAccess": {
+			"description": "チームの予算枠、予約、レシートが自分たちの作業ではどう見えるのか。そして FinOps が約束しないことも、確かめてください。"
 		}
 	},
 	"vi": {
@@ -997,19 +1013,19 @@
 			"kicker": "Biết ai cấp vốn",
 			"title": "Ngân sách thuộc về đội.",
 			"lead": "Công việc khác nhau về độ phức tạp, nên hạn mức được phê duyệt là của chung cả đội, không chia thành các phần bằng nhau cho từng lập trình viên hay từng ticket. Các tính năng nhận phân bổ có thể thay đổi; không ai nhận quyền chi tiêu độc lập. Đây là mô hình cấp vốn mà LangDrift FinOps được thiết kế theo; nó chưa khả dụng.",
-			"cards": {
+			"terms": {
 				"envelope": {
-					"eyebrow": "Hạn mức của đội",
+					"term": "Hạn mức của đội",
 					"title": "Một số tiền được phê duyệt, một kỳ, một người phụ trách",
 					"description": "Thẩm quyền cấp vốn nêu rõ đội, số tiền, kỳ hạn và ai chịu trách nhiệm cho các sai lệch. Mọi thứ khác đều phụ thuộc vào nó."
 				},
 				"allocation": {
-					"eyebrow": "Phân bổ",
+					"term": "Phân bổ",
 					"title": "Một phần hạn mức được đề xuất cho một phần việc",
 					"description": "Được đề xuất từ ý định, lịch sử tương đương và chất lượng yêu cầu. Nó dẫn hướng kế hoạch; nó không phải khoản cấp và có thể được sửa."
 				},
 				"reservation": {
-					"eyebrow": "Giữ chỗ",
+					"term": "Giữ chỗ",
 					"title": "Một khoản giữ nguyên tử trước lần gọi trả phí",
 					"description": "Được trích từ hạn mức với một khóa idempotency, và được giải phóng khi mức sử dụng quan sát được đã đối soát. Các tác tử chạy song song không thể tiêu cùng một khoản hai lần."
 				}
@@ -1046,6 +1062,7 @@
 			"kicker": "Nguồn nuôi sổ cái",
 			"title": "Bằng chứng hơn lời khẳng định.",
 			"lead": "Một biên lai chỉ tốt bằng các nguồn của nó. Mỗi nguồn được đặt tên, ghi ngày và giữ tách biệt với các nguồn khác, để một nguồn thiếu vẫn hiện rõ là thiếu thay vì hòa vào một tổng số.",
+			"intended": "Các nguồn dự kiến",
 			"intendedModel": "Đây là các nguồn mà mô hình hướng tới. Nơi nào một nguồn chưa được kết nối, sổ cái cho thấy khoảng trống thay vì một ước tính khoác áo phép đo.",
 			"items": {
 				"providers": {
@@ -1092,6 +1109,9 @@
 					"answer": "Các trang này mô tả mô hình dự kiến với các giá trị minh họa. Sổ cái, cổng kiểm soát và các tích hợp ở đây chưa khả dụng, và yêu cầu demo hiện đang tạm dừng."
 				}
 			}
+		},
+		"earlyAccess": {
+			"description": "Xem hạn mức của đội, khoản giữ chỗ và biên lai sẽ trông thế nào với công việc của chính bạn, và những gì FinOps không hứa hẹn."
 		}
 	}
 }

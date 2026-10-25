@@ -1,5 +1,4 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import { InfoCards } from '@langdrift/web/ui/info-cards'
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
@@ -8,22 +7,18 @@ import { setRequestLocale } from 'next-intl/server'
 import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
 import { EarlyAccessSection } from '@components/early-access/section'
 import { BudgetLedgerDemo } from '@components/finops/budget-ledger-demo'
+import { BudgetTerms } from '@components/finops/budget-terms'
 import { DeliveryReceipt } from '@components/finops/delivery-receipt'
 import { FailureScenarios } from '@components/finops/failure-scenarios'
 import { GateFlow } from '@components/finops/gate-flow'
+import { SourceList } from '@components/finops/source-list'
 import { ProductFaqSection } from '@components/product-page/product-faq-section'
 import { ProductSection } from '@components/product-page/product-section'
 import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
-import {
-	budgetCardIds,
-	finopsFaqIds,
-	gateExample,
-	gateFigures,
-} from '@data/finops-content'
+import { finopsFaqIds, gateExample, gateFigures } from '@data/finops-content'
 import { finopsMessages } from '@i18n/messages/index'
-import { Link } from '@i18n/navigation'
 import { routing } from '@i18n/routing'
 
 interface FinopsPageProps {
@@ -122,13 +117,7 @@ export default async function FinopsPage(props: FinopsPageProps) {
 					lead={copy.budget.lead}
 					title={copy.budget.title}
 				>
-					<InfoCards
-						className="mt-11"
-						items={budgetCardIds.map((id) => ({
-							...copy.budget.cards[id],
-							id,
-						}))}
-					/>
+					<BudgetTerms copy={copy.budget.terms} />
 				</ProductSection>
 
 				<ProductSection
@@ -137,41 +126,7 @@ export default async function FinopsPage(props: FinopsPageProps) {
 					lead={copy.sources.lead}
 					title={copy.sources.title}
 				>
-					<InfoCards
-						className="mt-11"
-						columns={4}
-						items={[
-							{
-								...copy.sources.items.providers,
-								id: 'providers',
-							},
-							{
-								description: copy.sources.items.microruntimes.description,
-								footer: (
-									<Link
-										className="smooth-text-link"
-										href="/platform/microruntimes"
-										locale={locale}
-									>
-										{copy.sources.items.microruntimes.link}
-									</Link>
-								),
-								id: 'microruntimes',
-								title: copy.sources.items.microruntimes.title,
-							},
-							{
-								...copy.sources.items.evidence,
-								id: 'evidence',
-							},
-							{
-								...copy.sources.items.billing,
-								id: 'billing',
-							},
-						]}
-					/>
-					<p className="mt-6 mb-0 max-w-[760px] text-[13px] leading-[1.6] text-muted-foreground">
-						{copy.sources.intendedModel}
-					</p>
+					<SourceList copy={copy.sources} locale={locale} />
 				</ProductSection>
 
 				<ProductFaqSection
@@ -182,7 +137,11 @@ export default async function FinopsPage(props: FinopsPageProps) {
 					}))}
 					title={copy.faq.title}
 				/>
-				<EarlyAccessSection locale={locale} source="landing" />
+				<EarlyAccessSection
+					description={copy.earlyAccess.description}
+					locale={locale}
+					source="landing"
+				/>
 			</main>
 			<WebsiteFooter locale={locale} />
 		</>

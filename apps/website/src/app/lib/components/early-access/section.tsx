@@ -7,13 +7,15 @@ interface EarlyAccessSectionProps {
 	locale: WebsiteLocale
 	source: 'landing' | 'pricing'
 	compact?: boolean
+	/** A product page's own sentence for the landing band. */
+	description?: string
 }
 
 // Sign-up is paused until feature flags have a proper home, so the section
 // shows the return-soon notice. To open it, restore the form import, the
 // helper id and the commented section below, which used `compact`.
 export function EarlyAccessSection(props: EarlyAccessSectionProps) {
-	const { locale, source } = props
+	const { description, locale, source } = props
 
 	const copy = earlyAccessMessages[locale]
 	const headingId = `early-access-${source}-heading`
@@ -35,7 +37,7 @@ export function EarlyAccessSection(props: EarlyAccessSectionProps) {
 							{copy.demoHeading}
 						</h2>
 						<p className="mt-5 mb-0 max-w-3xl text-base leading-relaxed text-muted-foreground">
-							{copy.demoDescription}
+							{description ?? copy.demoDescription}
 						</p>
 						<p className="mt-8 mb-0 text-xl font-medium">
 							{copy.pausedHeading}
