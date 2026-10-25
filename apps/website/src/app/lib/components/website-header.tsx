@@ -8,31 +8,25 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from '@i18n/navigation'
 import { themeAtom } from '@state'
 
-import { AccessLinks } from './website-header/access-links'
+import { DemoButton } from './website-header/demo-button'
 import { drawerFocus } from './website-header/drawer-focus'
 import { LanguagePill } from './website-header/language-pill'
+import { PlatformMenu } from './website-header/platform-menu'
+import { platformProducts } from './website-header/platform-products'
 
 import './website-header.css'
 
-const sections = [
-	{
-		label: 'product',
-		href: '/#why',
-	},
-	{
-		label: 'attribution',
-		href: '/#attribution',
-	},
-	{
-		label: 'integrations',
-		href: '/#integrations',
-	},
-	{
-		label: 'voice',
-		href: '/#voice',
-	},
-	// { label: 'plans', href: '/pricing' }
-] as const
+// Entries without a destination yet read like their neighbors but do not
+// navigate: Docs and GitHub, and the products without a page.
+const utilityItem =
+	'inline-flex min-h-11 items-center text-[13px] font-medium whitespace-nowrap text-muted-foreground'
+const drawerItem =
+	'flex items-center gap-3 rounded-lg px-2 py-3.5 text-[19px] text-muted-foreground'
+
+// The bar is glass over whatever scrolls under it; without backdrop filters
+// it falls back to a nearly solid background.
+const glass =
+	'bg-background/90 supports-[backdrop-filter]:bg-background/55 supports-[backdrop-filter]:backdrop-blur-[28px] supports-[backdrop-filter]:backdrop-saturate-150 supports-[backdrop-filter]:data-[scrolled=true]:bg-background/70'
 
 export function WebsiteHeader() {
 	const t = useTranslations('header')
@@ -122,7 +116,7 @@ export function WebsiteHeader() {
 				className="website-header-sentinel"
 				ref={sentinelRef}
 			/>
-			<header className="website-header" data-scrolled={scrolled}>
+			<header className={`website-header ${glass}`} data-scrolled={scrolled}>
 				<div className="website-header-inner">
 					<div className="website-header-identity">
 						<Link aria-label={t('home')} href="/">
@@ -133,15 +127,14 @@ export function WebsiteHeader() {
 						</div>
 					</div>
 					<nav aria-label={t('navigation')} className="website-desktop-nav">
-						{sections.map((section) => (
-							<Link href={section.href} key={section.label}>
-								{t(section.label)}
-							</Link>
-						))}
+						<PlatformMenu />
+						<span className={utilityItem}>{t('docs')}</span>
+						<span className={utilityItem}>{t('github')}</span>
+						<Link href="/pricing">{t('pricing')}</Link>
 					</nav>
 					<div className="website-header-controls">
 						<div className="website-header-access">
-							<AccessLinks />
+							<DemoButton />
 						</div>
 						<button
 							aria-controls="website-navigation-drawer"
@@ -202,16 +195,39 @@ export function WebsiteHeader() {
 					</button>
 				</div>
 				<nav aria-label={t('navigation')} className="website-drawer-nav">
-					{sections.map((section) => (
-						<Link href={section.href} key={section.label} onClick={closeDrawer}>
-							{t(section.label)}
-						</Link>
-					))}
+					<p className="px-2 pt-2 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+						{t('platform')}
+					</p>
+					{platformProducts.map((product) => {
+						const Icon = product.icon
+
+						return 'href' in product ? (
+							<Link
+								className="flex items-center gap-3"
+								href={product.href}
+								key={product.label}
+								onClick={closeDrawer}
+							>
+								<Icon className="size-5" />
+								{t(product.label)}
+							</Link>
+						) : (
+							<span className={drawerItem} key={product.label}>
+								<Icon className="size-5" />
+								{t(product.label)}
+							</span>
+						)
+					})}
+					<span className={drawerItem}>{t('docs')}</span>
+					<span className={drawerItem}>{t('github')}</span>
+					<Link href="/pricing" onClick={closeDrawer}>
+						{t('pricing')}
+					</Link>
 				</nav>
 				<div className="website-drawer-access">
 					<LanguagePill fromDrawer />
 					<div className="website-drawer-buttons">
-						<AccessLinks onNavigate={closeDrawer} />
+						<DemoButton />
 					</div>
 				</div>
 			</dialog>

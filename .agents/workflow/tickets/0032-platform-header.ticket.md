@@ -2,7 +2,7 @@
 
 **Spec:** .agents/workflow/specs/0004-platform-landing-hero.spec.md
 
-**What to build:** the header keeps its look and changes its content: logo, locale pill, `Platform` (a glassy dropdown: Vision, FinOps, Microruntimes, AI Voice) and `Pricing`, then Docs, GitHub, a rainbow-highlighted `Book a Demo` button and the theme toggle. The drawer mirrors the nav.
+**What to build:** the header keeps its look and changes its content: logo and locale pill on the left, `Platform` (a glassy dropdown: Vision, FinOps, Microruntimes, AI Voice), Docs, GitHub and `Pricing` together in the middle, then a rainbow-highlighted `Book a Demo` button and the theme toggle on the right. The bar is glassier, the locale pill shows at every width, and the drawer mirrors the nav.
 
 **Blocked by:** 0028, 0030.
 
@@ -14,9 +14,9 @@
 
 ### Desktop
 
-- [ ] One nav model: the `Platform` menu (Vision linked to `/platform/vision`; FinOps, Microruntimes and AI Voice as text with a description) and `Pricing` to `/pricing`.
+- [ ] One nav model: the `Platform` menu (Vision linked to `/platform/vision`; FinOps, Microruntimes and AI Voice as text with a description and an icon), then Docs and GitHub as text, then `Pricing` to `/pricing`, all in the center nav.
 - [ ] `website-header/platform-menu.tsx`: a disclosure button with a caret and a glassy Tailwind panel that opens on hover, focus and click and closes on Escape, outside click and navigation.
-- [ ] Right side: Docs and GitHub as text, the demo button, the hamburger, the theme toggle.
+- [ ] Right side: the demo button, the hamburger, the theme toggle. The glass moves from `website-header.css` to Tailwind on the bar, with more blur and less opacity, and the rule hiding the locale pill below 760px leaves the CSS.
 
 ### Demo button
 
@@ -25,7 +25,7 @@
 
 ### Drawer
 
-- [ ] The drawer lists a Platform heading, the four items, Pricing, Docs, GitHub, the language pill and the demo button.
+- [ ] The drawer lists a Platform heading, the four items with their icons, Docs, GitHub, Pricing, the language pill and the demo button.
 
 ### Verification
 

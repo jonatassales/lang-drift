@@ -39,7 +39,7 @@ export function WebsiteFooter(props: WebsiteFooterProps) {
 				) : null}
 				<nav aria-label={copy.navigation} className="website-footer-links">
 					{/* <Link href="/pricing" locale={locale}>
-            {headerMessages[locale].plans}
+            {headerMessages[locale].pricing}
           </Link> */}
 					<Link href="/platform/vision#faq" locale={locale}>
 						{copy.faq}
