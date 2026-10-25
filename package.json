@@ -15,6 +15,7 @@
 		"postinstall": "sh platform/cli/drift setup",
 		"prepare": "husky platform/versioning/.husky",
 		"website": "turbo run dev --filter=website",
+		"docs": "turbo run dev --filter=docs",
 		"check": "biome check .",
 		"fix": "biome check --write ."
 	},

@@ -54,7 +54,8 @@ without_reexports() {
 is_framework_file() {
   case "${1##*/}" in
     page.tsx | layout.tsx | template.tsx | loading.tsx | error.tsx | global-error.tsx | \
-      not-found.tsx | default.tsx | route.ts | proxy.ts | middleware.ts | instrumentation.ts)
+      not-found.tsx | default.tsx | route.ts | proxy.ts | middleware.ts | instrumentation.ts | \
+      _meta.ts)
       return 0
       ;;
   esac

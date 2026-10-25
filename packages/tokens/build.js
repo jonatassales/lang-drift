@@ -2,7 +2,7 @@ import StyleDictionary from 'style-dictionary'
 import { getReferences, usesReferences } from 'style-dictionary/utils'
 
 // Each theme gets one stylesheet built from the shared tokens and the theme.
-const themes = ['website']
+const themes = ['website', 'docs']
 
 // A token under a color scheme group changes with the scheme. The group names
 // the selector it is emitted under and is left out of the variable name.

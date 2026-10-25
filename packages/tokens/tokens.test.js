@@ -17,9 +17,13 @@ import { after, before, describe, test } from 'node:test'
 // The contract is the published stylesheet, read the way an app reads it:
 // built from an isolated copy and resolved through the package's exports.
 
-// The only theme and its prefix.
+// The theme the shared contract is read from, and its prefix.
 const theme = 'website'
 const prefix = 'site'
+
+// The docs theme and its prefix.
+const docsTheme = 'docs'
+const docsPrefix = 'docs'
 
 // The variables shadcn and SmoothUI components read, without the leading `--`.
 const shadcnVariables = [
@@ -92,9 +96,9 @@ const drifts = ['negative', 'positive', 'zero']
 const classificationTexts = ['intentional', 'review', 'unexplained']
 
 // The theme's tokens and the shared roles that follow its brand.
-const brandRoles = [
-	`--${prefix}-color-primary`,
-	`--${prefix}-color-primary-hover`,
+const brandRolesOf = (themePrefix) => [
+	`--${themePrefix}-color-primary`,
+	`--${themePrefix}-color-primary-hover`,
 	...[
 		'primary',
 		'primary-hover',
@@ -104,6 +108,7 @@ const brandRoles = [
 		'chart-1',
 	].map((role) => `--lg-color-${role}`),
 ]
+const brandRoles = brandRolesOf(prefix)
 
 const sandbox = mkdtempSync(join(tmpdir(), 'langdrift-tokens-'))
 after(() =>
@@ -145,13 +150,13 @@ function buildEdited(name, sourceFile, edit) {
 
 // The stylesheet an app importing `@langdrift/tokens/<theme>.css` from this
 // copy would receive.
-function stylesheet(copy) {
+function stylesheet(copy, name = theme) {
 	const consumer = join(sandbox, `${basename(copy)}-consumer`)
 	mkdirSync(join(consumer, 'node_modules/@langdrift'), { recursive: true })
 	rmSync(join(consumer, 'node_modules/@langdrift/tokens'), { force: true })
 	symlinkSync(copy, join(consumer, 'node_modules/@langdrift/tokens'))
 	const require = createRequire(join(consumer, 'index.js'))
-	return readFileSync(require.resolve(`@langdrift/tokens/${theme}.css`), 'utf8')
+	return readFileSync(require.resolve(`@langdrift/tokens/${name}.css`), 'utf8')
 }
 
 // The theme's stylesheet, built once from its own copy.
@@ -420,6 +425,33 @@ describe('website theme', () => {
 				'--lg-color-sidebar-ring': 'var(--lg-color-primary)',
 				'--lg-color-chart-1': 'var(--lg-color-primary)',
 			})
+		}
+	})
+})
+
+describe('docs theme', () => {
+	test('binds the shared primary roles to the same Exphere purple', () => {
+		const copy = copyPackage(docsTheme)
+		const result = build(copy)
+		assert.equal(result.status, 0, result.stderr)
+		const css = stylesheet(copy, docsTheme)
+		for (const [selector, primary, hover] of [
+			[':root', '#6D0AD6', '#5408A5'],
+			['.dark', '#6D0AD6', '#8C3BEF'],
+		]) {
+			assert.deepEqual(
+				pick(declarations(css, selector), brandRolesOf(docsPrefix)),
+				{
+					[`--${docsPrefix}-color-primary`]: primary,
+					[`--${docsPrefix}-color-primary-hover`]: hover,
+					'--lg-color-primary': `var(--${docsPrefix}-color-primary)`,
+					'--lg-color-primary-hover': `var(--${docsPrefix}-color-primary-hover)`,
+					'--lg-color-ring': 'var(--lg-color-primary)',
+					'--lg-color-sidebar-primary': 'var(--lg-color-primary)',
+					'--lg-color-sidebar-ring': 'var(--lg-color-primary)',
+					'--lg-color-chart-1': 'var(--lg-color-primary)',
+				},
+			)
 		}
 	})
 })

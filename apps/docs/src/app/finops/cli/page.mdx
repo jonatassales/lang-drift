@@ -1,0 +1,45 @@
+---
+title: "CLI"
+description: "Use the ex CLI to bootstrap a project and run the agent connected to the LangDrift console."
+---
+
+# CLI
+
+The `ex` CLI is implemented in Go with Cobra and distributed by the private `@langdrift/ex` package. It bootstraps projects and runs the agent connected to the LangDrift console. The console owns microruntime creation, composition, configuration and requested lifecycle; the agent builds explicit project recipes and runs the bounded local kind, Terraform and Kubernetes lifecycle.
+
+## Build
+
+Use an existing Go 1.26 or newer toolchain on macOS or Linux. Installing the workspace builds `packages/ex/dist/ex`; set `LANGDRIFT_SKIP_EX_BUILD=1` to skip it, or rebuild it explicitly:
+
+```sh
+pnpm --filter @langdrift/ex build
+packages/ex/dist/ex --help
+packages/ex/dist/ex version
+```
+
+The package declares no npm bin. Run `packages/ex/dist/ex` directly, which also avoids the unrelated system editor named `ex`. Building never installs Go or tools and never changes shell profiles or `PATH`.
+
+## Commands
+
+| Command | Behavior |
+| --- | --- |
+| `ex version` | Print the version. |
+| `ex init` | Create or reuse the project identity and add the agent instructions, workflow, policies and templates. Existing files remain unchanged. |
+| `ex agent project <console-url>` | Supervise every microruntime of one project. The console normally launches this process. |
+| `ex agent connect <console-url>` | Bind one runtime from a secret read from the environment. |
+| `ex agent run` | Synchronize the bound microruntimes and build, start, observe and stop them from authenticated console intent. |
+| `ex agent migrate <runtime-id>` | Write an import guide for a stopped earlier runtime. |
+| `ex doctor` | Inspect existing native tools without installing anything. |
+| `ex cluster create/inspect/delete` | Administer the project's local cluster, preserving ownership checks. |
+| `ex cluster load-image <image>` | Load an existing image into the project's cluster. |
+| `ex agent init <name>` | Scaffold an editable finite LangGraph Job; it is not the connected agent. |
+
+Global flags are `--project <directory>`, `--json` and `--timeout <duration>`. Finite commands default to two minutes. Results use stdout; diagnostics use stderr. Credentials are read from the environment, never passed as arguments.
+
+## Build recipes and execution
+
+The console supplies each microruntime's **build recipe**; only a committed project script or an allowlisted tool may run. Commands run with argv, never through an implicit shell. The agent detects missing tools instead of installing them, and recipes must produce the configured local images. Missing tools, incompatible recipes and failed builds are explicit failures, with no fallback.
+
+**Live cluster, Terraform, Kubernetes, and LangGraph Job execution remain operationally unverified.** The test suites run against fakes and recorded invocations, never Docker, kind, kubectl or Terraform. There is no implemented financial ledger or RAG.
+
+Read the package's [README](https://github.com/jonatassales/tao/blob/main/packages/ex/README.md) for exit codes, configuration, recovery and exact behavior. Use [Concepts](/finops/concepts#microruntimes-compose-around-existing-applications) to understand the microruntime boundary.

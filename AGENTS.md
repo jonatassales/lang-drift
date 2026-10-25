@@ -38,7 +38,7 @@ They become **one LangDrift console** on langdrift.md: one account, one shell, a
 
 ## Where things stand
 
-A pnpm and Turborepo monorepo. `apps/website` is where the platform site is built; it started as today's langdrift.md, ported from the earlier `langdrift` monorepo under spec 0003. Work happens in `apps/website`. `packages/tokens`, `packages/web` and `packages/ex` exist; `shell`, `account`, `runtime` and `contracts` are planned. Each app and package has a README with its own contract.
+A pnpm and Turborepo monorepo. `apps/website` is where the platform site is built; it started as today's langdrift.md, ported from the earlier `langdrift` monorepo under spec 0003. `apps/docs` holds the documentation for LangDrift and every platform product, ported from Exphere's Nextra site under spec 0006 and served under `/docs`. `packages/tokens`, `packages/web` and `packages/ex` exist; `shell`, `account`, `runtime` and `contracts` are planned. Each app and package has a README with its own contract.
 
 ## How we work
 
@@ -57,6 +57,7 @@ A pnpm and Turborepo monorepo. `apps/website` is where the platform site is buil
 | The project vocabulary | [`.agents/context.md`](.agents/context.md), `## Glossary` |
 | Specs, tickets, ADRs and research notes | `.agents/workflow/` |
 | The website's environment contract and sign-up pause | [`apps/website/README.md`](apps/website/README.md) |
+| The docs app, its search and its content structure | [`apps/docs/README.md`](apps/docs/README.md) |
 | The `ex` CLI and its lifecycle contracts | [`packages/ex/README.md`](packages/ex/README.md) |
 
 ## Commands
@@ -69,6 +70,10 @@ pnpm install
 
 ```bash
 pnpm website
+```
+
+```bash
+pnpm docs
 ```
 
 ```bash
