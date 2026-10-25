@@ -32,7 +32,7 @@ Run from the repository root:
 | `EARLY_ACCESS_REGISTRY_KEY` | Server-only website credential for the registry, at least 32 characters. |
 | `EARLY_ACCESS_MODE` | `test` selects the test fixtures outside development; anything else behaves as production. |
 
-`VERCEL` and `VERCEL_ENV` come from the platform. On Vercel, the request's source address is taken only from the provider-owned `x-vercel-forwarded-for` header. Self-hosted production fails closed until a trusted ingress contract exists. Registry admission is never exposed to browsers, and client-supplied IP headers never count as proof.
+Production fails closed until a trusted ingress contract for the host exists. Registry admission is never exposed to browsers, and client-supplied IP headers never count as proof.
 
 ## Locales
 

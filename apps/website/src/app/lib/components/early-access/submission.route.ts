@@ -1,7 +1,6 @@
 import 'server-only'
 
 import { randomUUID } from 'node:crypto'
-import { isIP } from 'node:net'
 import { z } from 'zod'
 
 import { earlyAccessSubmissionSchema, getEmailError } from './form.validation'
@@ -37,10 +36,6 @@ function reply(
 type EarlyAccessMode = 'production' | 'development' | 'test'
 
 function earlyAccessMode(): EarlyAccessMode {
-	const hosted =
-		process.env.VERCEL === '1' ||
-		['production', 'preview'].includes(process.env.VERCEL_ENV ?? '')
-	if (hosted) return 'production'
 	if (process.env.NODE_ENV === 'development') return 'development'
 	if (process.env.EARLY_ACCESS_MODE === 'test') return 'test'
 	return 'production'
@@ -97,14 +92,9 @@ function retrySeconds(response: Response): number {
 		: 30
 }
 
-// Only the provider-owned header is used on Vercel. Self-hosted production
-// fails closed until a trusted proxy contract is implemented and verified.
-function trustedOrigin(request: Request, mode: string): string | null {
-	if (process.env.VERCEL === '1') {
-		const origin = request.headers.get('x-vercel-forwarded-for') ?? ''
-
-		return isIP(origin) ? origin : null
-	}
+// Production fails closed until a trusted proxy contract for the host is
+// implemented and verified; client-supplied forwarding headers never count.
+function trustedOrigin(mode: string): string | null {
 	if (mode !== 'production') return '127.0.0.1'
 
 	return null
@@ -135,7 +125,7 @@ export async function postEarlyAccess(request: Request): Promise<Response> {
 		const declared = request.headers.get('content-length')
 		if (declared && (!/^\d+$/.test(declared) || Number(declared) > 4096))
 			return reply(413, 'INVALID_REQUEST')
-		const origin = trustedOrigin(request, env.mode)
+		const origin = trustedOrigin(env.mode)
 		if (!origin) return reply(503, 'UNAVAILABLE', 30)
 		const signal = AbortSignal.any([request.signal, AbortSignal.timeout(8000)])
 		let input: unknown

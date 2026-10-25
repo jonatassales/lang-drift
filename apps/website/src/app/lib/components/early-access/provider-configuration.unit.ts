@@ -23,8 +23,6 @@ beforeEach(() => {
 	vi.stubEnv('EARLY_ACCESS_REGISTRY_URL', 'http://127.0.0.1:8080')
 	vi.stubEnv('EARLY_ACCESS_REGISTRY_KEY', 'synthetic-registry-key-000000000000')
 	vi.stubEnv('EARLY_ACCESS_PUBLIC_ORIGIN', 'http://localhost:3000')
-	vi.stubEnv('VERCEL', '')
-	vi.stubEnv('VERCEL_ENV', '')
 })
 afterEach(() => {
 	vi.unstubAllEnvs()
@@ -45,7 +43,7 @@ function request() {
 
 function production() {
 	vi.stubEnv('NODE_ENV', 'production')
-	vi.stubEnv('VERCEL', '1')
+	vi.stubEnv('EARLY_ACCESS_MODE', '')
 	vi.stubEnv('TURNSTILE_SECRET_KEY', 'production-secret-fixture')
 	vi.stubEnv('NEXT_PUBLIC_TURNSTILE_SITE_KEY', 'production-site-fixture')
 	vi.stubEnv(
@@ -101,17 +99,6 @@ it('returns unavailable when TURNSTILE_VERIFY_URL is unset', async () => {
 	const transport = vi.fn()
 	vi.stubGlobal('fetch', transport)
 	expect(await verifyEarlyAccessChallenge('token')).toBe('unavailable')
-	expect(transport).not.toHaveBeenCalled()
-})
-
-it('uses production protections on hosted deployments despite a test mode override', async () => {
-	production()
-	vi.stubEnv('EARLY_ACCESS_MODE', 'test')
-	vi.stubEnv('EARLY_ACCESS_REGISTRY_URL', 'http://127.0.0.1:8080')
-	vi.stubEnv('EARLY_ACCESS_PUBLIC_ORIGIN', 'http://localhost:3000')
-	const transport = vi.fn()
-	vi.stubGlobal('fetch', transport)
-	expect((await postEarlyAccess(request())).status).toBe(503)
 	expect(transport).not.toHaveBeenCalled()
 })
 

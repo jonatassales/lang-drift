@@ -10,8 +10,6 @@ beforeEach(() => {
 	vi.stubEnv('TURNSTILE_EXPECTED_HOSTNAME', 'localhost')
 	vi.stubEnv('TURNSTILE_VERIFY_URL', 'http://verify.local')
 	vi.stubEnv('NEXT_PUBLIC_TURNSTILE_SITE_KEY', '1x00000000000000000000BB')
-	vi.stubEnv('VERCEL', '')
-	vi.stubEnv('VERCEL_ENV', '')
 })
 afterEach(() => {
 	vi.unstubAllGlobals()

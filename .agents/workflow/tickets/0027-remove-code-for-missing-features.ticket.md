@@ -30,6 +30,15 @@ The registry sends the confirmation; the website never sends mail (`apps/website
 
 - [x] The Harness job leaves the pull-request workflow, and AGENTS.md no longer lists it.
 
+### Vercel
+
+tao is not on Vercel, so nothing in it serves Vercel.
+
+- [x] The early-access route and Siteverify no longer treat `VERCEL` or `VERCEL_ENV` as a hosted deploy, and the route no longer trusts `x-vercel-forwarded-for`: production keeps failing closed until a trusted ingress contract for the host exists, which the route test proves with a forwarded header.
+- [x] The tests stub no Vercel variable, and the test of the Vercel-only header and of the hosted test-mode override go.
+- [x] The README describes the fail-closed ingress without Vercel, and the proxy matcher no longer skips `_vercel` paths.
+- [x] `turbo.json` no longer passes `NODE_OPTIONS` through: nothing in tao sets it.
+
 ### Toast
 
 - [x] `atoms/toast.atom.ts` and its re-export from `lib/state/index.ts` are deleted.
