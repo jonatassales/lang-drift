@@ -18,7 +18,7 @@ Run from the repository root:
 | `pnpm turbo run build --filter=website` | Builds the app and the packages it depends on. |
 | `drift check localization` | Checks the translation catalogs after a catalog or loader change. |
 
-`.env.development` holds the shared development defaults and is tracked, so it never holds a secret; Git ignores every other `.env*` file. Put local and secret values in `apps/website/.env.local`, which Next.js loads. Never put a secret in a `NEXT_PUBLIC_` variable.
+`.env.development` holds the shared development defaults and is tracked, so it never holds a secret: it lists `CRYPTO_SECRET` without a value. Git ignores every other `.env*` file. Put local and secret values in `apps/website/.env.local`, which Next.js loads and which takes precedence over `.env.development`. Never put a secret in a `NEXT_PUBLIC_` variable.
 
 | Variable | Requirement |
 | --- | --- |

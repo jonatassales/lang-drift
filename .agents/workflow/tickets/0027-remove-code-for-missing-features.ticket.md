@@ -64,7 +64,7 @@ Each file is on the ADR 0003 exception list, which lets it shrink. Only rules wh
 
 ### Documents
 
-- [x] `apps/website/.env.development` is tracked as the shared development defaults, empty for now and never holding a secret; `.gitignore` keeps ignoring every other `.env*` file, and AGENTS.md and the README say so.
+- [x] `apps/website/.env.development` is tracked as the shared development defaults, listing `CRYPTO_SECRET` without a value and never holding a secret; `.gitignore` keeps ignoring every other `.env*` file, and AGENTS.md and the README say so.
 - [x] AGENTS.md describes `packages/shell` as planned, not as where the switcher and the shell live.
 
 ### Owner
