@@ -1,13 +1,12 @@
 'use client'
 
-import { cn } from '@langdrift/web/utilities'
+import { GlowHoverCards } from '@langdrift/web/vendors/smoothui/glow-hover-card'
 import { motion, useReducedMotion } from 'motion/react'
 import type { ReactNode } from 'react'
-import { useEffect, useState } from 'react'
 
 // Adapted from SmoothUI's Features Grid block (smoothui.dev): a heading and a
-// grid of cards that rise into view one after another and lift on hover. The
-// content comes from the caller.
+// grid of cards that rise into view and glow under the pointer through
+// SmoothUI's Glow Hover Card. The content comes from the caller.
 
 export interface FeaturesGridItem {
 	description: string
@@ -32,25 +31,25 @@ const SPRING = {
 	type: 'spring' as const,
 }
 
-const STAGGER = 0.05
+const HIDDEN = {
+	opacity: 0,
+	y: 20,
+}
+
+const SHOWN = {
+	opacity: 1,
+	y: 0,
+}
+
+const VIEWPORT = {
+	margin: '-100px',
+	once: true,
+}
 
 export function FeaturesGrid(props: FeaturesGridProps) {
 	const { className, headingId, items, lead, title } = props
 
 	const shouldReduceMotion = useReducedMotion()
-	const [isHoverDevice, setIsHoverDevice] = useState(false)
-
-	useEffect(() => {
-		const query = window.matchMedia('(hover: hover) and (pointer: fine)')
-		setIsHoverDevice(query.matches)
-		const update = (event: MediaQueryListEvent) =>
-			setIsHoverDevice(event.matches)
-		query.addEventListener('change', update)
-
-		return () => query.removeEventListener('change', update)
-	}, [])
-
-	const lifts = isHoverDevice && !shouldReduceMotion
 
 	return (
 		<section aria-labelledby={headingId} className={className}>
@@ -66,68 +65,33 @@ export function FeaturesGrid(props: FeaturesGridProps) {
 						{lead}
 					</p>
 				</div>
-				<ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-					{items.map((item, index) => (
-						<motion.li
-							className={cn(
-								'relative rounded-xl border border-border bg-background p-6 transition-shadow focus-within:ring-2 focus-within:ring-ring',
-								lifts && 'hover:shadow-md',
-							)}
-							initial={
-								shouldReduceMotion
-									? {
-											opacity: 1,
-										}
-									: {
-											opacity: 0,
-											y: 20,
-										}
-							}
-							key={item.id}
-							transition={
-								shouldReduceMotion
-									? {
-											duration: 0,
-										}
-									: {
-											...SPRING,
-											delay: index * STAGGER,
-										}
-							}
-							viewport={{
-								margin: '-100px',
-								once: true,
-							}}
-							whileHover={
-								lifts
-									? {
-											y: -4,
-										}
-									: undefined
-							}
-							whileInView={
-								shouldReduceMotion
-									? {
-											opacity: 1,
-										}
-									: {
-											opacity: 1,
-											y: 0,
-										}
-							}
-						>
-							<div className="mb-4 inline-flex rounded-lg bg-foreground/5 p-2.5 text-foreground">
-								{item.icon}
-							</div>
-							<h3 className="mb-2 font-semibold text-foreground">
-								{item.title}
-							</h3>
-							<p className="text-sm leading-relaxed text-muted-foreground">
-								{item.description}
-							</p>
-						</motion.li>
-					))}
-				</ul>
+				<motion.div
+					initial={shouldReduceMotion ? false : HIDDEN}
+					transition={SPRING}
+					viewport={VIEWPORT}
+					whileInView={SHOWN}
+				>
+					<GlowHoverCards
+						cardClassName="relative rounded-xl border border-border bg-background p-6 focus-within:ring-2 focus-within:ring-ring"
+						className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+						items={items.map((item) => ({
+							content: (
+								<>
+									<div className="mb-4 inline-flex rounded-lg bg-foreground/5 p-2.5 text-foreground">
+										{item.icon}
+									</div>
+									<h3 className="mb-2 font-semibold text-foreground">
+										{item.title}
+									</h3>
+									<p className="text-sm leading-relaxed text-muted-foreground">
+										{item.description}
+									</p>
+								</>
+							),
+							id: item.id,
+						}))}
+					/>
+				</motion.div>
 			</div>
 		</section>
 	)

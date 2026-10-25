@@ -1,5 +1,6 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { cn } from '@langdrift/web/utilities'
+import { MacTerminal } from '@langdrift/web/vendors/smoothui/mac-terminal'
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import { createTranslator, hasLocale } from 'next-intl'
@@ -28,6 +29,7 @@ import {
 	ownershipRowIds,
 	type StateCardId,
 	stateCardIds,
+	terminalSession,
 } from '@data/microruntimes-content'
 import { microruntimesMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
@@ -90,6 +92,17 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 					primaryFragment="lifecycle"
 					secondaryFragment="ownership"
 				>
+					<MacTerminal
+						className="mx-auto mb-6 max-w-[1040px]"
+						label={copy.lifecycle.terminal.label}
+						lines={terminalSession.map((line) => ({
+							...line,
+							text: copy.lifecycle.terminal.lines[line.id],
+						}))}
+						maxHeight={320}
+						prompt="~/shop %"
+						title={copy.lifecycle.terminal.title}
+					/>
 					<LifecycleDemo copy={copy.lifecycle} locale={locale} />
 				</ProductHero>
 
