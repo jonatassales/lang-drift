@@ -61,11 +61,11 @@ Each file is on the ADR 0003 exception list, which lets it shrink. Only rules wh
 - [x] AGENTS.md no longer calls `apps/website/.env.development` the local defaults: Git ignores it, so it is not shared. The README's variable table stays the contract.
 - [x] AGENTS.md describes `packages/shell` as planned, not as where the switcher and the shell live.
 
-### Owner, outside the agent's scope
+### Owner
 
-Agents do not edit `.env` files.
+Agents do not edit `.env` files unless the owner asks.
 
-- [ ] The owner removes `RESEND_*`, `NEXT_PUBLIC_DASHBOARD_URL` and `NEXT_PUBLIC_SSO_URL` from the local `apps/website/.env.development` and adds the `EARLY_ACCESS_*` variables the README lists.
+- [x] At the owner's request, the local `apps/website/.env.development` is empty: none of the dashboard, SSO, Turnstile or Resend values it held exist in tao yet, and sign-up is paused in code.
 
 ### Verification
 
