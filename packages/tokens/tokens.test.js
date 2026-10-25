@@ -91,7 +91,7 @@ const drifts = ['negative', 'positive', 'zero']
 const classificationTexts = ['intentional', 'review', 'unexplained']
 
 // The theme's tokens and the shared roles that follow its brand.
-const brandRoles = () => [
+const brandRoles = [
 	`--${prefix}-color-primary`,
 	`--${prefix}-color-primary-hover`,
 	...[
@@ -389,7 +389,7 @@ describe('website theme', () => {
 			[':root', '#6D0AD6', '#5408A5'],
 			['.dark', '#6D0AD6', '#8C3BEF'],
 		]) {
-			assert.deepEqual(pick(declarations(css, selector), brandRoles()), {
+			assert.deepEqual(pick(declarations(css, selector), brandRoles), {
 				[`--${prefix}-color-primary`]: primary,
 				[`--${prefix}-color-primary-hover`]: hover,
 				'--lg-color-primary': `var(--${prefix}-color-primary)`,
