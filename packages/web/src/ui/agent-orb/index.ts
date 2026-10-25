@@ -1,3 +1,3 @@
-export type { OrbzState as AgentOrbState } from '@neongate-ai/orbz'
+export type { OrboState as AgentOrbState } from 'orbo-voice'
 
 export { AgentOrb, type AgentOrbProps } from './agent-orb'

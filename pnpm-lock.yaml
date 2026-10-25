@@ -338,9 +338,6 @@ importers:
       '@langdrift/tokens':
         specifier: workspace:*
         version: link:../tokens
-      '@neongate-ai/orbz':
-        specifier: 0.3.1
-        version: 0.3.1
       '@phosphor-icons/react':
         specifier: ^2.1.10
         version: 2.1.10(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -350,6 +347,9 @@ importers:
       motion:
         specifier: 13.4.0
         version: 13.4.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      orbo-voice:
+        specifier: 1.1.2
+        version: 1.1.2
       recharts:
         specifier: 3.10.1
         version: 3.10.1(@types/react@19.3.0)(react-dom@19.2.4(react@19.2.4))(react-is@19.3.1)(react@19.2.4)(redux@5.0.1)
@@ -915,10 +915,6 @@ packages:
     engines: {node: '>=10.0'}
     peerDependencies:
       tslib: '2'
-
-  '@neongate-ai/orbz@0.3.1':
-    resolution: {integrity: sha512-HDMrNwFUsXAAM3PcBPqXiegKaPVQD2/4Bzi91VDccw6wM4W2PAjzHM1UfRdT4pTIjAoGHbX/H3BpBp6CGbwdcg==}
-    engines: {node: 24.x}
 
   '@next/env@16.3.5':
     resolution: {integrity: sha512-NWEXVDMqoEo0ktmU6u0sE2Vg0LOcsD7NnOTJNo3/fEaTfsg+F1bMIxuDmQbda4e3yTIQwVdUREF2yIuMOusKtg==}
@@ -2307,6 +2303,11 @@ packages:
     resolution: {integrity: sha512-XrsrhT5sybtKI6wakr2SPOlGZWWYbUXZ7a0jT8/QOeAPau+1X/bSegNe5YR75oJmEZQbKningirmGOEJCIk61Q==}
     engines: {node: '>=12.20.0'}
 
+  orbo-voice@1.1.2:
+    resolution: {integrity: sha512-6dtfzPxsEtzwiJio/hGRQxGCoW2eBjeEA43Mw45ltPuNDnK6ZSfU8bJpBjJIBA1EthK/654nOOfhQa56HEkWFA==}
+    engines: {node: '>=24'}
+    hasBin: true
+
   parent-module@1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
     engines: {node: '>=6'}
@@ -3325,8 +3326,6 @@ snapshots:
       '@jsonjoy.com/buffers': 17.67.0(tslib@2.8.1)
       '@jsonjoy.com/codegen': 17.67.0(tslib@2.8.1)
       tslib: 2.8.1
-
-  '@neongate-ai/orbz@0.3.1': {}
 
   '@next/env@16.3.5': {}
 
@@ -4427,6 +4426,8 @@ snapshots:
       object-keys: 1.1.1
 
   obug@2.2.1: {}
+
+  orbo-voice@1.1.2: {}
 
   parent-module@1.0.1:
     dependencies:

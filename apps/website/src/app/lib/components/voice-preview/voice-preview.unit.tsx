@@ -10,7 +10,7 @@ import type { WebsiteLocale } from '@i18n/routing'
 import { VoicePreview } from './voice-preview'
 
 // Browser checks cover the decorative dependency's actual custom-element runtime.
-vi.mock('@neongate-ai/orbz/browser', () => ({}))
+vi.mock('orbo-voice/browser', () => ({}))
 
 afterEach(() => {
 	cleanup()
