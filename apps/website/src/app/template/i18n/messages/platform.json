@@ -3,70 +3,40 @@
 		"skip": "Skip to platform overview",
 		"hero": {
 			"title": "Agentic Platform",
-			"lead": "One platform for the agentic journey. LangDrift Vision keeps a product honest to its vision; LangDrift FinOps keeps agent-assisted delivery honest to a team budget.",
-			"primaryCta": "Explore LangDrift Vision",
-			"secondaryCta": "Book a Demo",
-			"claims": {
-				"agents": "Agents recommend. Controls authorize.",
-				"evidence": "Every movement keeps its evidence.",
-				"budget": "The budget belongs to the team."
-			}
+			"primaryCta": "Explore the products",
+			"secondaryCta": "Book a Demo"
 		}
 	},
 	"pt-BR": {
 		"skip": "Ir para a visão geral da plataforma",
 		"hero": {
 			"title": "Agentic Platform",
-			"lead": "Uma plataforma para a jornada agêntica. O LangDrift Vision mantém o produto fiel à sua visão; o LangDrift FinOps mantém a entrega assistida por agentes fiel ao orçamento do time.",
-			"primaryCta": "Conheça o LangDrift Vision",
-			"secondaryCta": "Agende uma demo",
-			"claims": {
-				"agents": "Agentes recomendam. Controles autorizam.",
-				"evidence": "Cada movimento guarda sua evidência.",
-				"budget": "O orçamento pertence ao time."
-			}
+			"primaryCta": "Conheça os produtos",
+			"secondaryCta": "Agende uma demo"
 		}
 	},
 	"zh-Hant": {
 		"skip": "跳至平台總覽",
 		"hero": {
 			"title": "Agentic Platform",
-			"lead": "一個平台，貫穿整段代理旅程。LangDrift Vision 讓產品忠於願景；LangDrift FinOps 讓代理協助的交付忠於團隊預算。",
-			"primaryCta": "探索 LangDrift Vision",
-			"secondaryCta": "預約展示",
-			"claims": {
-				"agents": "代理提出建議，控制機制負責授權。",
-				"evidence": "每一次變動都保留證據。",
-				"budget": "預算屬於團隊。"
-			}
+			"primaryCta": "探索產品",
+			"secondaryCta": "預約展示"
 		}
 	},
 	"ja": {
 		"skip": "プラットフォーム概要へスキップ",
 		"hero": {
 			"title": "Agentic Platform",
-			"lead": "エージェントの旅路をひとつのプラットフォームで。LangDrift Vision はプロダクトをビジョンに忠実に保ち、LangDrift FinOps はエージェント支援の開発をチーム予算に忠実に保ちます。",
-			"primaryCta": "LangDrift Vision を見る",
-			"secondaryCta": "デモを予約",
-			"claims": {
-				"agents": "エージェントは提案し、制御が承認する。",
-				"evidence": "すべての変化が証拠を保つ。",
-				"budget": "予算はチームのもの。"
-			}
+			"primaryCta": "製品を見る",
+			"secondaryCta": "デモを予約"
 		}
 	},
 	"vi": {
 		"skip": "Chuyển đến tổng quan nền tảng",
 		"hero": {
 			"title": "Agentic Platform",
-			"lead": "Một nền tảng cho hành trình tác tử. LangDrift Vision giữ sản phẩm trung thành với định hướng; LangDrift FinOps giữ việc giao hàng có tác tử hỗ trợ trung thành với ngân sách của đội.",
-			"primaryCta": "Khám phá LangDrift Vision",
-			"secondaryCta": "Đặt lịch demo",
-			"claims": {
-				"agents": "Tác tử đề xuất. Cơ chế kiểm soát phê duyệt.",
-				"evidence": "Mỗi thay đổi đều giữ lại bằng chứng.",
-				"budget": "Ngân sách thuộc về đội."
-			}
+			"primaryCta": "Khám phá các sản phẩm",
+			"secondaryCta": "Đặt lịch demo"
 		}
 	}
 }

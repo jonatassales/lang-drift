@@ -8,6 +8,15 @@ interface PlatformHeroProps {
 	locale: WebsiteLocale
 }
 
+// The hero's centerpiece is a black hole sun: a disc in the page background
+// with a thin bright rim, and a corona in the brand purple breathing behind it.
+const corona =
+	'absolute -inset-20 rounded-full bg-[radial-gradient(circle_at_50%_42%,color-mix(in_srgb,var(--primary)_62%,transparent)_0%,color-mix(in_srgb,var(--primary)_26%,transparent)_38%,transparent_70%)] blur-3xl motion-safe:animate-pulse dark:bg-[radial-gradient(circle_at_50%_42%,color-mix(in_srgb,var(--foreground)_58%,transparent)_0%,color-mix(in_srgb,var(--primary)_46%,transparent)_30%,transparent_70%)]'
+const rim =
+	'absolute -inset-2 rounded-full bg-[radial-gradient(circle_closest-side,transparent_92%,color-mix(in_srgb,var(--foreground)_85%,transparent)_96%,transparent_100%)] blur-[1.5px]'
+const disc =
+	'absolute inset-0 rounded-full bg-background shadow-[inset_0_0_80px_color-mix(in_srgb,var(--primary)_30%,transparent)]'
+
 export function PlatformHero(props: PlatformHeroProps) {
 	const { locale } = props
 
@@ -23,52 +32,57 @@ export function PlatformHero(props: PlatformHeroProps) {
 				aria-hidden="true"
 				className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-linear-to-b from-transparent to-background"
 			/>
-			<div className="relative mx-auto flex w-full max-w-3xl flex-col items-center px-4.5 py-24 text-center sm:px-7">
-				<h1
-					className="text-5xl leading-[1.05] font-medium tracking-tight text-balance text-foreground sm:text-7xl"
-					id="platform-hero-heading"
-				>
-					{copy.title}
-				</h1>
-				<p className="mt-6 max-w-xl text-base leading-relaxed text-pretty text-muted-foreground sm:text-lg">
-					{copy.lead}
-				</p>
-				<div className="mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-					<Link
-						className="smooth-primary-button"
-						href="/platform/vision"
-						locale={locale}
+			<div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-4.5 py-20 sm:px-9 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-10">
+				<div className="order-2 flex flex-col items-start text-left lg:order-1">
+					<h1
+						className="max-w-sm text-5xl leading-none font-normal tracking-[-0.055em] text-balance text-foreground sm:text-6xl xl:text-[64px]"
+						id="platform-hero-heading"
 					>
-						{copy.primaryCta}
-						<svg
-							aria-hidden="true"
-							fill="none"
-							height="16"
-							viewBox="0 0 24 24"
-							width="16"
+						{copy.title}
+					</h1>
+					<div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
+						<Link
+							className="smooth-primary-button"
+							href="/platform/vision"
+							locale={locale}
 						>
-							<path
-								d="M4 12h16m-6-6 6 6-6 6"
-								stroke="currentColor"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth="1.5"
-							/>
-						</svg>
-					</Link>
-					<Link
-						className="smooth-text-link"
-						href="/platform/vision#early-access"
-						locale={locale}
-					>
-						{copy.secondaryCta}
-					</Link>
+							{copy.primaryCta}
+							<svg
+								aria-hidden="true"
+								fill="none"
+								height="16"
+								viewBox="0 0 24 24"
+								width="16"
+							>
+								<path
+									d="M4 12h16m-6-6 6 6-6 6"
+									stroke="currentColor"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									strokeWidth="1.5"
+								/>
+							</svg>
+						</Link>
+						<Link
+							className="inline-flex min-h-11 items-center rounded-full border border-border bg-background/60 px-5 text-sm font-medium text-foreground backdrop-blur-sm hover:bg-card"
+							href="/platform/vision#early-access"
+							locale={locale}
+						>
+							{copy.secondaryCta}
+						</Link>
+					</div>
 				</div>
-				<ul className="mt-14 grid w-full gap-3 text-sm text-muted-foreground sm:grid-cols-3">
-					<li>{copy.claims.agents}</li>
-					<li>{copy.claims.evidence}</li>
-					<li>{copy.claims.budget}</li>
-				</ul>
+				<div className="order-1 flex justify-center lg:order-2">
+					<div
+						aria-hidden="true"
+						className="relative size-52 sm:size-64 lg:size-72"
+					>
+						<div className={corona} style={{ animationDuration: '7s' }} />
+						<div className={rim} />
+						<div className={disc} />
+					</div>
+				</div>
+				<div aria-hidden="true" className="hidden lg:order-3 lg:block" />
 			</div>
 		</section>
 	)

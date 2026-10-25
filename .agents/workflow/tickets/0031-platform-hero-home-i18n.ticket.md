@@ -10,11 +10,11 @@
 
 ### Copy
 
-- [ ] `template/i18n/messages/platform.json` in five locales: `skip`, `hero.title` ("Agentic Platform"), `hero.lead`, `hero.primaryCta`, `hero.secondaryCta`, `hero.claims.{agents,evidence,budget}`; `PlatformMessages` in `messages.types.ts`; `platformMessages` exported from `messages/index.ts` behind the shape assertion; the family joins `catalogs.unit.ts`.
+- [ ] `template/i18n/messages/platform.json` in five locales: `skip`, `hero.title` ("Agentic Platform"), `hero.primaryCta` ("Explore the products"), `hero.secondaryCta` ("Book a Demo"); `PlatformMessages` in `messages.types.ts`; `platformMessages` exported from `messages/index.ts` behind the shape assertion; the family joins `catalogs.unit.ts`.
 
 ### Hero
 
-- [ ] `lib/components/platform-hero.tsx` (server): `HeroShader` filling the section, a bottom fade to `bg-background`, the h1 "Agentic Platform", lead, a primary CTA to `/platform/vision`, a secondary CTA to `/platform/vision#early-access`, and three claims. Tailwind role utilities plus the existing `section-kicker`, `smooth-primary-button` and `smooth-text-link` classes only.
+- [ ] `lib/components/platform-hero.tsx` (server): `HeroShader` filling the section, a bottom fade to `bg-background`, the h1 "Agentic Platform" on the left, the logo mark glowing in the middle, a primary CTA to `/platform/vision` and a secondary CTA to `/platform/vision#early-access`; no lead and no claims. Tailwind role utilities plus the existing `section-kicker`, `smooth-primary-button` and `smooth-text-link` classes only.
 
 ### Home
 
