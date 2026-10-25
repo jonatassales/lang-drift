@@ -13,6 +13,7 @@ Monorepo with two packages, `@langdrift/tokens` and `@langdrift/ex` (the Go agen
 ## Toolchain and commands
 
 - pnpm is the only package manager. `devEngines.packageManager` in the root `package.json` makes other package managers fail, and `engineStrict` in `pnpm-workspace.yaml` enforces the Node range in `engines`.
+- Dependency install scripts run only when `allowBuilds` in `pnpm-workspace.yaml` allows them. Prebuilt binaries ship as optional dependencies, so the entries there are denials; approve a new one only when its build is required.
 - Work that spans the monorepo runs through Turborepo. Do not add root scripts that wrap `turbo run`.
 - A package's scripts call its tool directly (for example `tsc --noEmit`). Turborepo tasks run those scripts by name.
 - Do not add shell or JavaScript wrappers for what Turborepo or pnpm already do.
@@ -23,7 +24,7 @@ Run from the repository root:
 | --- | --- |
 | `pnpm install` | Installs dependencies and the Git hooks, then links the `drift` launcher. Fails under another package manager or an unsupported Node version. |
 | `pnpm turbo run build` | Builds every package that has a `build` script, upstream packages first. |
-| `pnpm turbo run dev --filter=<package-name>` | Starts one app and the packages it depends on. |
+| `pnpm turbo run dev --filter=<package-name>` | Builds the packages an app depends on, then starts the app. |
 | `pnpm turbo run typecheck` | Runs each package's `typecheck` script. |
 | `pnpm turbo run test` | Runs each package's `test` script. |
 | `pnpm turbo run check` | Runs Biome format, lint and import checks on the whole repository. Read-only. |
@@ -42,6 +43,8 @@ Run from the repository root:
 - A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
 - Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
+- `turbo.json` declares the environment each task may see: Turborepo runs in strict mode, so a variable reaches a task only through `globalEnv`, a task's `env` or the pass-through lists. `apps/website/README.md` holds the website's variable contract, and its `.env.development` the local defaults; `CRYPTO_SECRET` is pass-through only and never committed.
+- `apps/website/Dockerfile` builds the website image from the repository root with a digest-pinned Node image and a checksum-pinned pnpm.
 - `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, `quality/` the lint-staged config and the Biome plugin, `versioning/` the commitlint config and the Git hooks (`.husky/`).
 
 ## Platform CLI
@@ -110,7 +113,7 @@ Single context. The glossary is the `## Glossary` section of `.agents/context.md
 
 ## Continuous integration
 
-`.github/workflows/pull-request.yml` runs on every pull request into `main`, one job per concern.:
+`.github/workflows/pull-request.yml` runs on every pull request into `main`, one job per concern. The workflow builds the website against safe values (`LANGDRIFT_LOCAL_BUILD=1`, a local `DOCS_ORIGIN`, early access paused, sign-up disabled), so CI never reaches a live service:
 
 | Job | Runs |
 | --- | --- |

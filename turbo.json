@@ -5,7 +5,18 @@
 			"dependsOn": ["^build"],
 			"outputs": ["dist/**", ".next/**", "!.next/cache/**"]
 		},
+		"website#build": {
+			"dependsOn": ["^build"],
+			"inputs": ["$TURBO_DEFAULT$", ".env*"],
+			"env": [
+				"TURNSTILE_*",
+				"EARLY_ACCESS_*",
+				"WEBSITE_PREVIEW_SIGNUP_DISABLED"
+			],
+			"outputs": [".next/**", "!.next/cache/**"]
+		},
 		"dev": {
+			"dependsOn": ["^build"],
 			"cache": false,
 			"persistent": true
 		},
@@ -24,5 +35,21 @@
 		"//#fix": {
 			"cache": false
 		}
-	}
+	},
+	"globalEnv": [
+		"DOCS_ORIGIN",
+		"EARLY_ACCESS_MODE",
+		"LANGDRIFT_LOCAL_BUILD",
+		"VERCEL",
+		"VERCEL_ENV",
+		"VERCEL_URL",
+		"VERCEL_PROJECT_PRODUCTION_URL"
+	],
+	"globalPassThroughEnv": [
+		"CRYPTO_SECRET",
+		"RESEND_*",
+		"CI",
+		"NEXT_TELEMETRY_DISABLED",
+		"NODE_OPTIONS"
+	]
 }
