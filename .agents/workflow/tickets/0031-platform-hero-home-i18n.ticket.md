@@ -16,6 +16,8 @@
 
 - [ ] `lib/components/platform-hero.tsx` (server): `HeroShader` filling the section, a bottom fade to `bg-background`, the h1 "Agentic Platform" on the left, a black hole sun in the middle, a black-and-white pill to `/platform/vision` (foreground on background, like Vercel's primary button) and a text link to `/platform/vision#early-access`; no lead and no claims. Tailwind role utilities plus the existing `smooth-text-link` class only.
 - [ ] The sun's disc holds still; the smoke behind it is a `data-magnetic` participant of SmoothUI's Magnetic Field, vendored as `@langdrift/web/vendors/smoothui/magnetic-field` with the `motion` dependency, so it leans and turns toward the pointer and brightens while the pointer is over the sun. Reduced motion and touch leave it at rest.
+- [ ] Inside the disc, and only there, SmoothUI's Gravity Stars (vendored as `@langdrift/web/vendors/smoothui/gravity-stars`) drifts a starfield that falls toward the pointer. The disc is dark in both color schemes and the stars take its text color, so they stay light; the palette is re-read when `<html class>` changes. The Magnetic Field's loop sleeps once everything is at rest.
+- [ ] On the right, the four products in a vertical list named "Platform products": dimmed at rest but readable, each lighting up on hover or focus with a purple dot and a soft glow; Vision links to its page.
 
 ### Home
 
