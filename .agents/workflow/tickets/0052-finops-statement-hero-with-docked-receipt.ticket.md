@@ -10,19 +10,19 @@
 
 ### Opening
 
-- [ ] The page composes its own hero section labelled by the `h1`: the eyebrow, the statement in the product pages' heading classes with no `ChromaText`, then a grid wired by `aria-describedby` to the visible caption and the screen-reader summary, with the ledger first and the receipt second; the caption sits under the grid, left-aligned. No lead and no calls to action.
+- [ ] The page composes its own hero section labelled by the `h1`: the eyebrow, the statement in the product pages' heading classes with each sentence on its own line and no `ChromaText`, then a grid wired by `aria-describedby` to the visible caption and the screen-reader summary, with the ledger first and the receipt second; the caption sits under the grid, left-aligned. No lead and no calls to action.
 - [ ] The skip link keeps its text and points at the gate section, the first section after the hero.
 - [ ] `ProductHero` and its copy interface are deleted; the Microruntimes and Vision pages are untouched.
 
 ### Ledger and receipt
 
-- [ ] `BudgetLedgerDemo` loses its own centering and maximum width and fills its column; nothing else changes.
+- [ ] `BudgetLedgerDemo` loses its own centering and maximum width and fills its column; below the `sm` breakpoint each amount's label sits on its own line above the amount, so pt-BR's longer currency format does not overlap the next column at 375px; nothing else changes.
 - [ ] `DeliveryReceipt` loses its section top margin, its heading becomes an `h2`, and its head stacks the eyebrow, title and owner over the observed spend at every width. The live region, the rows and the unknown-spend rendering stay.
 - [ ] The receipt section with its kicker, title and lead leaves the page.
 
 ### Copy
 
-- [ ] `hero` in the FinOps catalog becomes `eyebrow`, `title`, `caption` and `summary` in five locales, in the same key order as `en`: the eyebrow is the product name untranslated, the title is the statement, the caption keeps its text and the summary describes the ledger, the receipt beside it and the simulated amounts. `receipt` loses `kicker`, `title` and `lead`. The catalog's TypeScript shape follows.
+- [ ] `hero` in the FinOps catalog becomes `eyebrow`, `titleStart`, `titleEnd`, `caption` and `summary` in five locales, in the same key order as `en`: the eyebrow is the product name untranslated, the two title keys are the statement's two sentences, the caption keeps its text and the summary describes the ledger, the receipt beside it and the simulated amounts. `receipt` loses `kicker`, `title` and `lead`. The catalog's TypeScript shape follows.
 
 ### Tests
 

@@ -17,6 +17,8 @@ interface DeliveryReceiptProps {
 
 // The receipt of the work item selected in the ledger: what it was estimated,
 // what was reserved, what it consumed, and how it was verified and cleaned up.
+// Its head stacks at every width, so it reads the same docked beside the
+// ledger and under it.
 export function DeliveryReceipt(props: DeliveryReceiptProps) {
 	const { copy, items, locale } = props
 
@@ -35,19 +37,19 @@ export function DeliveryReceipt(props: DeliveryReceiptProps) {
 		<article
 			aria-atomic="true"
 			aria-live="polite"
-			className="mt-11 rounded-2xl border border-border bg-card p-6 max-md:p-[18px]"
+			className="rounded-2xl border border-border bg-card p-6 max-md:p-[18px]"
 		>
-			<div className="flex items-start justify-between gap-6 max-md:flex-col">
+			<div className="grid gap-5">
 				<div className="grid gap-[7px]">
 					<Eyebrow>{copy.selected}</Eyebrow>
-					<h3 className="m-0 text-[28px] font-medium tracking-[-0.025em]">
+					<h2 className="m-0 text-[28px] font-medium tracking-[-0.025em]">
 						{itemCopy.title}
-					</h3>
+					</h2>
 					<p className="m-0 text-[12px] text-muted-foreground">
 						{itemCopy.owner}
 					</p>
 				</div>
-				<div className="grid justify-items-end gap-[7px] max-md:justify-items-start">
+				<div className="grid gap-[7px]">
 					<Eyebrow>{copy.labels.observed}</Eyebrow>
 					{item.observed === null ? (
 						<strong className="text-[18px] font-medium text-status-warning">

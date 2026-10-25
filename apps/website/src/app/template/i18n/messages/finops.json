@@ -2,14 +2,11 @@
 	"en": {
 		"skip": "Skip to how it works",
 		"hero": {
-			"titleStart": "What did this release cost the team, and ",
-			"titleHighlight": "was it worth it?",
-			"titleEnd": "",
-			"lead": "LangDrift FinOps makes agent-assisted delivery accountable to a team budget: what the team can fund, what each piece of work consumed, and whether the outcome was worth it. Spending more can be the right call; not knowing never is.",
-			"primaryCta": "See the budget",
-			"secondaryCta": "How it works",
+			"eyebrow": "LangDrift FinOps",
+			"titleStart": "One team envelope.",
+			"titleEnd": "Every paid call reserved before it runs.",
 			"caption": "Illustrative ledger. Amounts, model names and outcomes are simulated to show how the envelope, the reservations and the receipts relate.",
-			"summary": "An illustrative team budget of 12,000 dollars split into spent, reserved, protected and available, followed by four work items with their estimate, reservation and observed spend. One item's spend is unknown and awaits reconciliation. Selecting an item shows its delivery receipt further down the page."
+			"summary": "An illustrative team budget of 12,000 dollars split into spent, reserved, protected and available, followed by four work items with their estimate, reservation and observed spend. One item's spend is unknown and awaits reconciliation. Selecting an item updates the delivery receipt that follows the ledger: its estimate, reservation, observed spend, model tier and effort, retries, verification, cleanup and evidence. Every amount is simulated."
 		},
 		"ledger": {
 			"label": "Team envelope",
@@ -89,9 +86,6 @@
 			"outroLink": "See how the gate decides"
 		},
 		"receipt": {
-			"kicker": "Know what it cost",
-			"title": "Every delivery gets a receipt.",
-			"lead": "Select a work item in the ledger above to read what it consumed: the estimate, the reservation that held, the observed spend, the model and effort, the attempts, the verification and the cleanup. Failed, paused and cancelled attempts get a receipt too.",
 			"selected": "Selected work item · illustrative",
 			"labels": {
 				"estimate": "Estimate",
@@ -249,14 +243,11 @@
 	"pt-BR": {
 		"skip": "Pular para como funciona",
 		"hero": {
-			"titleStart": "Quanto esta release custou ao time, e ",
-			"titleHighlight": "valeu a pena?",
-			"titleEnd": "",
-			"lead": "O LangDrift FinOps torna a entrega assistida por agentes responsável perante um orçamento de time: o que o time pode financiar, o que cada trabalho consumiu e se o resultado valeu a pena. Gastar mais pode ser a decisão certa; não saber nunca é.",
-			"primaryCta": "Ver o orçamento",
-			"secondaryCta": "Como funciona",
+			"eyebrow": "LangDrift FinOps",
+			"titleStart": "Um único envelope para o time.",
+			"titleEnd": "Toda chamada paga é reservada antes de rodar.",
 			"caption": "Livro-razão ilustrativo. Valores, nomes de modelos e resultados são simulados para mostrar como o envelope, as reservas e os recibos se relacionam.",
-			"summary": "Um orçamento de time ilustrativo de 12.000 dólares dividido em gasto, reservado, protegido e disponível, seguido de quatro itens de trabalho com estimativa, reserva e gasto observado. O gasto de um item é desconhecido e aguarda reconciliação. Selecionar um item mostra seu recibo de entrega mais abaixo na página."
+			"summary": "Um orçamento de time ilustrativo de 12.000 dólares dividido em gasto, reservado, protegido e disponível, seguido de quatro itens de trabalho com estimativa, reserva e gasto observado. O gasto de um item é desconhecido e aguarda reconciliação. Selecionar um item atualiza o recibo de entrega que vem logo após o livro-razão: estimativa, reserva, gasto observado, nível do modelo e esforço, retentativas, verificação, limpeza e evidência. Todos os valores são simulados."
 		},
 		"ledger": {
 			"label": "Envelope do time",
@@ -336,9 +327,6 @@
 			"outroLink": "Veja como o gate decide"
 		},
 		"receipt": {
-			"kicker": "Saiba quanto custou",
-			"title": "Toda entrega recebe um recibo.",
-			"lead": "Selecione um item de trabalho no livro-razão acima para ler o que ele consumiu: a estimativa, a reserva que se manteve, o gasto observado, o modelo e o esforço, as tentativas, a verificação e a limpeza. Tentativas que falharam, foram pausadas ou canceladas também recebem recibo.",
 			"selected": "Item de trabalho selecionado · ilustrativo",
 			"labels": {
 				"estimate": "Estimativa",
@@ -496,14 +484,11 @@
 	"zh-Hant": {
 		"skip": "跳到運作方式",
 		"hero": {
-			"titleStart": "這次發布讓團隊花了多少，",
-			"titleHighlight": "值得嗎？",
-			"titleEnd": "",
-			"lead": "LangDrift FinOps 讓代理協助的交付對團隊預算負責：團隊能投入多少、每項工作消耗了多少，以及成果是否值得。多花錢可能是對的決定；不知道花了多少則永遠不是。",
-			"primaryCta": "查看預算",
-			"secondaryCta": "運作方式",
+			"eyebrow": "LangDrift FinOps",
+			"titleStart": "全隊共用一份預算額度。",
+			"titleEnd": "每次付費呼叫，都先保留額度再執行。",
 			"caption": "示意帳本。金額、模型名稱與結果皆為模擬，用來呈現預算額度、保留與收據之間的關係。",
-			"summary": "一份示意的團隊預算，總額 12,000 美元，分為已花費、已保留、受保護與可用四部分；接著是四個工作項目，各自列出估算、保留與觀測到的花費。其中一項花費未知，等待對帳。選取項目後，頁面下方會顯示它的交付收據。"
+			"summary": "一份示意的團隊預算，總額 12,000 美元，分為已花費、已保留、受保護與可用四部分；接著是四個工作項目，各自列出估算、保留與觀測到的花費。其中一項花費未知，等待對帳。選取項目後，帳本之後的交付收據會隨之更新：估算、保留、觀測到的花費、模型層級與推理強度、重試、驗證、清理與證據。所有金額皆為模擬。"
 		},
 		"ledger": {
 			"label": "團隊預算額度",
@@ -583,9 +568,6 @@
 			"outroLink": "看看閘門如何決定"
 		},
 		"receipt": {
-			"kicker": "知道花了多少",
-			"title": "每次交付都有一張收據。",
-			"lead": "在上方帳本選取一個工作項目，閱讀它消耗了什麼：估算、維持住的保留、觀測到的花費、模型與推理強度、嘗試次數、驗證與清理。失敗、暫停與取消的嘗試同樣有收據。",
 			"selected": "選取的工作項目 · 示意",
 			"labels": {
 				"estimate": "估算",
@@ -743,14 +725,11 @@
 	"ja": {
 		"skip": "仕組みへスキップ",
 		"hero": {
-			"titleStart": "このリリースはチームにいくらかかり、",
-			"titleHighlight": "その価値はあったのか？",
-			"titleEnd": "",
-			"lead": "LangDrift FinOps は、エージェント支援の開発をチーム予算に対して説明可能にします。チームが投じられる額、各作業が消費した額、そして成果にその価値があったか。多く使うことが正しい判断のこともあります。知らないままでいることは、決して正しくありません。",
-			"primaryCta": "予算を見る",
-			"secondaryCta": "仕組みを見る",
+			"eyebrow": "LangDrift FinOps",
+			"titleStart": "チームの予算枠は、ひとつ。",
+			"titleEnd": "有料呼び出しは、実行前に必ず予約。",
 			"caption": "台帳はイメージです。金額、モデル名、結果はシミュレーションで、予算枠・予約・レシートの関係を示すためのものです。",
-			"summary": "12,000 ドルのイメージ上のチーム予算を、消費済み・予約済み・保護分・利用可能に分けて示し、続いて 4 つの作業項目を見積もり・予約・観測された支出とともに示します。1 件は支出が不明で、照合待ちです。項目を選ぶと、ページ下部にその納品レシートが表示されます。"
+			"summary": "12,000 ドルのイメージ上のチーム予算を、消費済み・予約済み・保護分・利用可能に分けて示し、続いて 4 つの作業項目を見積もり・予約・観測された支出とともに示します。1 件は支出が不明で、照合待ちです。項目を選ぶと、台帳に続く納品レシートが更新されます。見積もり、予約、観測された支出、モデル階層と推論強度、再試行、検証、クリーンアップ、証拠です。金額はすべてシミュレーションです。"
 		},
 		"ledger": {
 			"label": "チームの予算枠",
@@ -830,9 +809,6 @@
 			"outroLink": "ゲートの判断を見る"
 		},
 		"receipt": {
-			"kicker": "いくらかかったかを知る",
-			"title": "すべての納品にレシートが付きます。",
-			"lead": "上の台帳で作業項目を選ぶと、消費したものを読めます。見積もり、維持された予約、観測された支出、モデルと推論強度、試行回数、検証、クリーンアップ。失敗、一時停止、中止された試行にもレシートが付きます。",
 			"selected": "選択中の作業項目 · イメージ",
 			"labels": {
 				"estimate": "見積もり",
@@ -990,14 +966,11 @@
 	"vi": {
 		"skip": "Chuyển đến cách hoạt động",
 		"hero": {
-			"titleStart": "Bản phát hành này tốn của đội bao nhiêu, và ",
-			"titleHighlight": "có đáng không?",
-			"titleEnd": "",
-			"lead": "LangDrift FinOps khiến việc giao hàng có tác tử hỗ trợ phải chịu trách nhiệm trước ngân sách của đội: đội có thể chi bao nhiêu, mỗi phần việc đã tiêu bao nhiêu, và kết quả có đáng không. Chi nhiều hơn có thể là quyết định đúng; không biết thì không bao giờ đúng.",
-			"primaryCta": "Xem ngân sách",
-			"secondaryCta": "Cách hoạt động",
+			"eyebrow": "LangDrift FinOps",
+			"titleStart": "Một hạn mức cho cả đội.",
+			"titleEnd": "Mọi lần gọi trả phí đều được giữ chỗ trước khi chạy.",
 			"caption": "Sổ cái minh họa. Số tiền, tên mô hình và kết quả đều được mô phỏng để cho thấy hạn mức, khoản giữ chỗ và biên lai liên hệ với nhau ra sao.",
-			"summary": "Một ngân sách đội minh họa 12.000 đô la chia thành đã chi, đã giữ chỗ, được bảo vệ và khả dụng, tiếp theo là bốn hạng mục công việc với ước tính, khoản giữ chỗ và chi tiêu quan sát được. Chi tiêu của một hạng mục chưa rõ và đang chờ đối soát. Chọn một hạng mục sẽ hiện biên lai giao hàng của nó ở phía dưới trang."
+			"summary": "Một ngân sách đội minh họa 12.000 đô la chia thành đã chi, đã giữ chỗ, được bảo vệ và khả dụng, tiếp theo là bốn hạng mục công việc với ước tính, khoản giữ chỗ và chi tiêu quan sát được. Chi tiêu của một hạng mục chưa rõ và đang chờ đối soát. Chọn một hạng mục sẽ cập nhật biên lai giao hàng ngay sau sổ cái: ước tính, khoản giữ chỗ, chi tiêu quan sát được, hạng mô hình và mức nỗ lực, số lần thử lại, kiểm chứng, dọn dẹp và bằng chứng. Mọi số tiền đều được mô phỏng."
 		},
 		"ledger": {
 			"label": "Hạn mức của đội",
@@ -1077,9 +1050,6 @@
 			"outroLink": "Xem cổng kiểm soát quyết định ra sao"
 		},
 		"receipt": {
-			"kicker": "Biết đã tốn bao nhiêu",
-			"title": "Mỗi lần giao hàng đều có biên lai.",
-			"lead": "Chọn một hạng mục trong sổ cái phía trên để đọc nó đã tiêu những gì: ước tính, khoản giữ chỗ đã giữ, chi tiêu quan sát được, mô hình và mức nỗ lực, số lần thử, kiểm chứng và dọn dẹp. Các lần thử thất bại, tạm dừng và bị hủy cũng có biên lai.",
 			"selected": "Hạng mục đang chọn · minh họa",
 			"labels": {
 				"estimate": "Ước tính",

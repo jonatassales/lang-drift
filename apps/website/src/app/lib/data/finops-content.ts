@@ -155,12 +155,9 @@ export interface FinopsCard {
 export interface FinopsMessages {
 	skip: string
 	hero: {
+		eyebrow: string
 		titleStart: string
-		titleHighlight: string
 		titleEnd: string
-		lead: string
-		primaryCta: string
-		secondaryCta: string
 		caption: string
 		summary: string
 	}
@@ -193,9 +190,6 @@ export interface FinopsMessages {
 		outroLink: string
 	}
 	receipt: {
-		kicker: string
-		title: string
-		lead: string
 		selected: string
 		labels: {
 			estimate: string

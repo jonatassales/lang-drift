@@ -1,4 +1,5 @@
 import type { DetailListItem } from '@langdrift/web/ui/detail-list'
+import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { InfoCards } from '@langdrift/web/ui/info-cards'
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -11,7 +12,6 @@ import { BudgetLedgerDemo } from '@components/finops/budget-ledger-demo'
 import { DeliveryReceipt } from '@components/finops/delivery-receipt'
 import { PillarScenarios } from '@components/product-page/pillar-scenarios'
 import { ProductFaqSection } from '@components/product-page/product-faq-section'
-import { ProductHero } from '@components/product-page/product-hero'
 import { ProductSection } from '@components/product-page/product-section'
 import { RecordCard } from '@components/product-page/record-card'
 import { SectionOutro } from '@components/product-page/section-outro'
@@ -118,17 +118,44 @@ export default async function FinopsPage(props: FinopsPageProps) {
 
 	return (
 		<>
-			<SkipLink href="#chain">{copy.skip}</SkipLink>
+			<SkipLink href="#authorization">{copy.skip}</SkipLink>
 			<WebsiteHeader />
 			<main id="top">
-				<ProductHero
-					copy={copy.hero}
-					headingId="finops-hero-heading"
-					primaryFragment="budget"
-					secondaryFragment="chain"
+				<section
+					aria-labelledby="finops-hero-heading"
+					className="mx-auto max-w-[1280px] px-[clamp(18px,3vw,36px)] pt-[58px] pb-[70px] max-md:pt-10 max-md:pb-12"
 				>
-					<BudgetLedgerDemo copy={copy.ledger} locale={locale} />
-				</ProductHero>
+					<Eyebrow className="block text-[10px] tracking-[0.11em]">
+						{copy.hero.eyebrow}
+					</Eyebrow>
+					<h1
+						className="m-0 mt-4 text-[clamp(28px,3.2vw,43px)] leading-[1.16] font-medium tracking-[-0.045em] text-balance"
+						id="finops-hero-heading"
+					>
+						<span className="block">{copy.hero.titleStart}</span>{' '}
+						<span className="block">{copy.hero.titleEnd}</span>
+					</h1>
+					<div
+						aria-describedby="finops-hero-caption finops-hero-summary"
+						className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]"
+					>
+						<BudgetLedgerDemo copy={copy.ledger} locale={locale} />
+						<DeliveryReceipt
+							copy={copy.receipt}
+							items={copy.ledger.items}
+							locale={locale}
+						/>
+					</div>
+					<p
+						className="mt-5 mb-0 max-w-[880px] text-xs leading-[1.65] text-muted-foreground"
+						id="finops-hero-caption"
+					>
+						{copy.hero.caption}
+					</p>
+					<p className="sr-only" id="finops-hero-summary">
+						{copy.hero.summary}
+					</p>
+				</section>
 
 				<ProductSection
 					id="chain"
@@ -156,19 +183,6 @@ export default async function FinopsPage(props: FinopsPageProps) {
 						fragment="authorization"
 						link={copy.chain.outroLink}
 						text={copy.chain.outro}
-					/>
-				</ProductSection>
-
-				<ProductSection
-					id="receipt"
-					kicker={copy.receipt.kicker}
-					lead={copy.receipt.lead}
-					title={copy.receipt.title}
-				>
-					<DeliveryReceipt
-						copy={copy.receipt}
-						items={copy.ledger.items}
-						locale={locale}
 					/>
 				</ProductSection>
 
