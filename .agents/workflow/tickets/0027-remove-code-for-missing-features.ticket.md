@@ -57,6 +57,11 @@ Each file is on the ADR 0003 exception list, which lets it shrink. Only rules wh
 - [x] The four files in `src/app/template/formatters/` stay: the owner keeps the `.fmt.ts` formatters.
 - [x] `axios` and `tw-animate-css` leave the website's `package.json` and the lockfile; `clsx` and `tailwind-merge` stay, because `cn.fmt.ts` imports them.
 
+### Found by the dead-code check
+
+- [x] The empty `src/factories/index.ts` and the `src/services/index.ts` barrel go: every import names its module directly.
+- [x] `afterPaint` leaves `@langdrift/web/utilities`: the web port brought it, and nothing calls it.
+
 ### Documents
 
 - [x] AGENTS.md no longer calls `apps/website/.env.development` the local defaults: Git ignores it, so it is not shared. The README's variable table stays the contract.
