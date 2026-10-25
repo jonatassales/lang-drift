@@ -44,7 +44,6 @@ Run from the repository root:
 - Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
 - `turbo.json` declares the environment each task may see: Turborepo runs in strict mode, so a variable reaches a task only through `globalEnv`, a task's `env` or the pass-through lists. `apps/website/README.md` holds the website's variable contract, and its `.env.development` the local defaults; `CRYPTO_SECRET` is pass-through only and never committed.
-- `apps/website/Dockerfile` builds the website image from the repository root with a digest-pinned Node image and a checksum-pinned pnpm.
 - `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, `quality/` the lint-staged config and the Biome plugin, `versioning/` the commitlint config and the Git hooks (`.husky/`).
 
 ## Platform CLI
