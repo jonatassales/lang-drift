@@ -92,18 +92,19 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 					primaryFragment="lifecycle"
 					secondaryFragment="ownership"
 				>
-					<MacTerminal
-						className="mx-auto mb-6 max-w-[1040px]"
-						label={copy.lifecycle.terminal.label}
-						lines={terminalSession.map((line) => ({
-							...line,
-							text: copy.lifecycle.terminal.lines[line.id],
-						}))}
-						maxHeight={320}
-						prompt="~/shop %"
-						title={copy.lifecycle.terminal.title}
-					/>
-					<LifecycleDemo copy={copy.lifecycle} locale={locale} />
+					<div className="grid gap-6 lg:grid-cols-[fit-content(50%)_1fr]">
+						<MacTerminal
+							label={copy.lifecycle.terminal.label}
+							lines={terminalSession.map((line) => ({
+								...line,
+								text: copy.lifecycle.terminal.lines[line.id],
+							}))}
+							maxHeight={320}
+							prompt="~/shop %"
+							title={copy.lifecycle.terminal.title}
+						/>
+						<LifecycleDemo copy={copy.lifecycle} locale={locale} />
+					</div>
 				</ProductHero>
 
 				<ProductSection
@@ -137,7 +138,7 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 					lead={copy.descriptor.lead}
 					title={copy.descriptor.title}
 				>
-					<RuntimeDescriptorCard copy={copy.descriptor} />
+					<RuntimeDescriptorCard copy={copy.descriptor} locale={locale} />
 				</ProductSection>
 
 				<ProductSection
@@ -274,7 +275,6 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 								term: copy.evidence.rows.evidence,
 							},
 						]}
-						period={copy.evidence.ledgerPeriod}
 						title={copy.evidence.ledgerTitle}
 					/>
 					<StageEvidence

@@ -62,12 +62,12 @@ export function LifecycleDemo(props: LifecycleDemoProps) {
 	]
 
 	return (
-		<article className="mx-auto max-w-[1040px] rounded-2xl border border-border bg-card p-5 text-left sm:p-7">
+		<article className="@container rounded-2xl border border-border bg-card p-5 text-left sm:p-7">
 			<span className="font-mono text-[12px] text-foreground">
 				{copy.label}
 			</span>
 
-			<dl className="m-0 mt-5 grid grid-cols-2 gap-x-6 gap-y-4 border-y border-border py-4 sm:grid-cols-5">
+			<dl className="m-0 mt-5 grid grid-cols-2 gap-x-6 gap-y-4 border-y border-border py-4 @lg:grid-cols-3 @4xl:grid-cols-5">
 				{summary.map((entry) => (
 					<div className="grid gap-1" key={entry.id}>
 						<Eyebrow as="dt">{entry.term}</Eyebrow>
@@ -76,7 +76,7 @@ export function LifecycleDemo(props: LifecycleDemoProps) {
 						</dd>
 					</div>
 				))}
-				<div className="col-span-2 grid gap-1 sm:col-span-1">
+				<div className="col-span-2 grid gap-1 @lg:col-span-1">
 					<Eyebrow as="dt">{copy.summary.observed}</Eyebrow>
 					<dd className="m-0 grid text-[14px] text-status-success">
 						{copy.states.cleanedUp}
@@ -87,7 +87,7 @@ export function LifecycleDemo(props: LifecycleDemoProps) {
 
 			<ol
 				aria-label={copy.stepperLabel}
-				className="m-0 mt-5 grid list-none grid-cols-2 gap-2 p-0 sm:grid-cols-3 lg:grid-cols-6"
+				className="m-0 mt-5 grid list-none grid-cols-2 gap-2 p-0 @md:grid-cols-3 @4xl:grid-cols-6"
 			>
 				{lifecycleStageIds.map((id, index) => {
 					const selected = id === selectedId
@@ -119,7 +119,7 @@ export function LifecycleDemo(props: LifecycleDemoProps) {
 			<div
 				aria-atomic="true"
 				aria-live="polite"
-				className="mt-5 grid gap-4 rounded-xl bg-foreground/[0.03] p-4 sm:grid-cols-2 sm:p-5"
+				className="mt-5 grid gap-4 rounded-xl bg-foreground/[0.03] p-4 @lg:grid-cols-2 sm:p-5"
 			>
 				<div className="grid content-start gap-1.5">
 					<Eyebrow>{copy.whatItDoes}</Eyebrow>

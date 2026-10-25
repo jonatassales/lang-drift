@@ -3,12 +3,12 @@ import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 
 interface RecordCardProps {
 	items: readonly DetailListItem[]
-	period: string
+	period?: string
 	title: string
 }
 
 // A titled record on a product page, such as a weekly report or an execution
-// ledger: its title, the period it covers, and its rows.
+// ledger: its title, the period it covers when it has one, and its rows.
 export function RecordCard(props: RecordCardProps) {
 	const { items, period, title } = props
 
@@ -18,7 +18,7 @@ export function RecordCard(props: RecordCardProps) {
 				<strong className="text-lg font-medium tracking-[-0.02em]">
 					{title}
 				</strong>
-				<Eyebrow className="text-[10px]">{period}</Eyebrow>
+				{period && <Eyebrow className="text-[10px]">{period}</Eyebrow>}
 			</div>
 			<DetailList className="mt-1" items={items} />
 		</article>

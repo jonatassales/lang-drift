@@ -9,7 +9,7 @@ export interface ProductHeroCopy {
 	lead: string
 	primaryCta: string
 	secondaryCta: string
-	caption: string
+	caption?: string
 	summary: string
 }
 
@@ -23,8 +23,8 @@ interface ProductHeroProps {
 
 // The hero of a product page, in the Vision hero's layout: a centered
 // question headline with one highlighted phrase, a lead, two calls to action
-// to sections of the same page, then the illustrative demo described by its
-// caption and a summary for screen readers.
+// to sections of the same page, then the demo with an optional visible caption
+// and a summary for screen readers.
 export function ProductHero(props: ProductHeroProps) {
 	const { children, copy, headingId, primaryFragment, secondaryFragment } =
 		props
@@ -65,14 +65,21 @@ export function ProductHero(props: ProductHeroProps) {
 					</a>
 				</div>
 			</div>
-			<div aria-describedby={`${captionId} ${summaryId}`} className="mt-12">
+			<div
+				aria-describedby={
+					copy.caption ? `${captionId} ${summaryId}` : summaryId
+				}
+				className="mt-12"
+			>
 				{children}
-				<p
-					className="mx-auto mt-5 mb-0 max-w-[880px] text-center text-xs leading-[1.65] text-muted-foreground"
-					id={captionId}
-				>
-					{copy.caption}
-				</p>
+				{copy.caption && (
+					<p
+						className="mx-auto mt-5 mb-0 max-w-[880px] text-center text-xs leading-[1.65] text-muted-foreground"
+						id={captionId}
+					>
+						{copy.caption}
+					</p>
+				)}
 				<p className="sr-only" id={summaryId}>
 					{copy.summary}
 				</p>

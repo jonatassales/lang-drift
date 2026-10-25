@@ -339,6 +339,9 @@ importers:
       tailwind-merge:
         specifier: ^3.7.0
         version: 3.7.0
+      vidropro:
+        specifier: file:vendor/vidropro-0.1.0-preview.3.tgz
+        version: file:packages/web/vendor/vidropro-0.1.0-preview.3.tgz
     devDependencies:
       '@testing-library/react':
         specifier: 16.3.0
@@ -4096,6 +4099,11 @@ packages:
 
   victory-vendor@37.3.6:
     resolution: {integrity: sha512-SbPDPdDBYp+5MJHhBCAyI7wKM3d5ivekigc2Dk2s7pgbZ9wIgIBYGVw4zGHBml/qTFbexrofXW6Gu4noGxrOwQ==}
+
+  vidropro@file:packages/web/vendor/vidropro-0.1.0-preview.3.tgz:
+    resolution: {integrity: sha512-IFqi2UKvPIM72OKSVLOeTYpXuozqDV5Tzve7CDFDyAk7IBqic1ObKnvW4y17KkE7hwPLCenOLBPV3Ze8x+A6JQ==, tarball: file:packages/web/vendor/vidropro-0.1.0-preview.3.tgz}
+    version: 0.1.0-preview.3
+    engines: {node: '>=24'}
 
   vite@8.3.5:
     resolution: {integrity: sha512-z1YpjieJ9g0ebTmQpLBv/oq9E3F9EIlOe+7LahW8SrE3LTiG3udBRUXQOlYXP9b+IC2q2phHeVxj9xGlw34OEQ==}
@@ -8416,6 +8424,8 @@ snapshots:
       d3-shape: 3.2.0
       d3-time: 3.1.0
       d3-timer: 3.0.1
+
+  vidropro@file:packages/web/vendor/vidropro-0.1.0-preview.3.tgz: {}
 
   vite@8.3.5(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1):
     dependencies:

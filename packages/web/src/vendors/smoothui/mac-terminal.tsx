@@ -276,6 +276,16 @@ export function MacTerminal(props: MacTerminalProps) {
 						</div>
 					)}
 				</pre>
+				<pre
+					aria-hidden="true"
+					className="invisible m-0 h-0 overflow-hidden font-mono whitespace-pre"
+				>
+					{lines.map((line) =>
+						line.type === 'command'
+							? `${prompt} ${line.text}\n`
+							: `${line.text}\n`,
+					)}
+				</pre>
 				{!shouldReduceMotion && (
 					<pre className="sr-only">
 						{lines.map((line) => line.text).join('\n')}

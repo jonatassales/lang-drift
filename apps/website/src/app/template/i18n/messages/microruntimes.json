@@ -8,14 +8,13 @@
 			"lead": "A microruntime is a bounded execution environment composed around the components you already have. You choose the components and their limits; LangDrift prepares, runs, inspects and cleans up, and keeps the evidence. Your source stays where it is.",
 			"primaryCta": "See the lifecycle",
 			"secondaryCta": "Who owns what",
-			"caption": "Illustrative runtime. Names, limits and observations are simulated to show how a run moves from configuration to cleanup.",
-			"summary": "An illustrative runtime named checkout-preview with three components, 1,500 millicores and 2,048 MiB. Its last execution ran from configure to clean up: the requested state is stopped and the cleanup is confirmed. Six lifecycle steps, configure, validate, prepare, execute, inspect and clean up, can be selected to read what each step does and the evidence it leaves."
+			"summary": "A runtime named checkout-preview with three components, 1,500 millicores and 2,048 MiB. Its last execution ran from configure to clean up: the requested state is stopped and the cleanup is confirmed. Six lifecycle steps, configure, validate, prepare, execute, inspect and clean up, can be selected to read what each step does and the evidence it leaves."
 		},
 		"lifecycle": {
 			"label": "checkout-preview · revision 3 · exec-41b2",
 			"terminal": {
 				"title": "ex — shop",
-				"label": "Terminal: an illustrative ex session",
+				"label": "Terminal: an ex session",
 				"lines": {
 					"doctor": "ex doctor",
 					"tools": "docker 27.3 · kind 0.24 · kubectl 1.31 · terraform 1.9",
@@ -85,7 +84,7 @@
 		"scenarios": {
 			"title": "Compose → Run → Inspect → Clean up",
 			"lead": "A microruntime keeps the same four phases whether a change goes smoothly or not. Explore how a new component, a failed preparation and a lost connection each stay visible from the request to the cleanup.",
-			"selectorLabel": "Explore an illustrative scenario",
+			"selectorLabel": "Explore a scenario",
 			"phases": {
 				"compose": "Compose",
 				"run": "Run",
@@ -125,7 +124,6 @@
 			"kicker": "Know what runs",
 			"title": "One file says what the runtime is.",
 			"lead": "The console authors runtime.md with exactly one langdrift JSON fence. Prose around it is kept as context and never executed. The connected agent reads the fence, and only the fence.",
-			"illustrative": "Illustrative",
 			"annotations": {
 				"identity": {
 					"title": "Identity and revision",
@@ -192,7 +190,7 @@
 		"state": {
 			"kicker": "Desired is not observed",
 			"title": "Requested, observed, unknown.",
-			"lead": "A start request is not a running runtime, and a lost connection is not a stop. The three states stay apart, so nobody mistakes what was asked for with what happened. The examples below are illustrative.",
+			"lead": "A start request is not a running runtime, and a lost connection is not a stop. The three states stay apart, so nobody mistakes what was asked for with what happened.",
 			"cards": {
 				"requested": {
 					"eyebrow": "Requested",
@@ -216,7 +214,6 @@
 			"title": "A run ends with a record, not a guess.",
 			"lead": "The execution ledger is written before the first side effect and settled after the last. Cleanup acts only on what it owns, and the evidence stays in your project after the resources are gone.",
 			"ledgerTitle": "Execution ledger",
-			"ledgerPeriod": "Illustrative",
 			"rows": {
 				"execution": "Execution",
 				"started": "Started",
@@ -321,7 +318,7 @@
 				},
 				"availability": {
 					"question": "Can I use LangDrift Microruntimes today?",
-					"answer": "The connected agent exists as a local development candidate, not a published release. The values on this page are illustrative, and demo requests are paused for now."
+					"answer": "The connected agent exists as a local development candidate, not a published release. Demo requests are paused for now."
 				}
 			}
 		}
@@ -335,14 +332,13 @@
 			"lead": "Um microruntime é um ambiente de execução delimitado, composto em torno dos componentes que você já tem. Você escolhe os componentes e seus limites; o LangDrift prepara, executa, inspeciona e limpa, e guarda a evidência. Seu código-fonte fica onde está.",
 			"primaryCta": "Ver o ciclo de vida",
 			"secondaryCta": "Quem é dono do quê",
-			"caption": "Runtime ilustrativo. Nomes, limites e observações são simulados para mostrar como uma execução vai da configuração à limpeza.",
-			"summary": "Um runtime ilustrativo chamado checkout-preview, com três componentes, 1.500 milicores e 2.048 MiB. Sua última execução foi da configuração à limpeza: o estado solicitado é parado e a limpeza está confirmada. Seis etapas do ciclo de vida, configurar, validar, preparar, executar, inspecionar e limpar, podem ser selecionadas para ler o que cada uma faz e a evidência que deixa."
+			"summary": "Um runtime chamado checkout-preview, com três componentes, 1.500 milicores e 2.048 MiB. Sua última execução foi da configuração à limpeza: o estado solicitado é parado e a limpeza está confirmada. Seis etapas do ciclo de vida, configurar, validar, preparar, executar, inspecionar e limpar, podem ser selecionadas para ler o que cada uma faz e a evidência que deixa."
 		},
 		"lifecycle": {
 			"label": "checkout-preview · revisão 3 · exec-41b2",
 			"terminal": {
 				"title": "ex — shop",
-				"label": "Terminal: uma sessão ilustrativa do ex",
+				"label": "Terminal: uma sessão do ex",
 				"lines": {
 					"doctor": "ex doctor",
 					"tools": "docker 27.3 · kind 0.24 · kubectl 1.31 · terraform 1.9",
@@ -412,7 +408,7 @@
 		"scenarios": {
 			"title": "Compor → Executar → Inspecionar → Limpar",
 			"lead": "Um microruntime mantém as mesmas quatro fases, quer a mudança corra bem ou não. Veja como um novo componente, uma preparação que falha e uma conexão perdida continuam visíveis da solicitação à limpeza.",
-			"selectorLabel": "Explore um cenário ilustrativo",
+			"selectorLabel": "Explore um cenário",
 			"phases": {
 				"compose": "Compor",
 				"run": "Executar",
@@ -452,7 +448,6 @@
 			"kicker": "Saiba o que roda",
 			"title": "Um arquivo diz o que o runtime é.",
 			"lead": "O console escreve o runtime.md com exatamente um bloco JSON langdrift. O texto ao redor é mantido como contexto e nunca é executado. O agente conectado lê o bloco, e só o bloco.",
-			"illustrative": "Ilustrativo",
 			"annotations": {
 				"identity": {
 					"title": "Identidade e revisão",
@@ -519,7 +514,7 @@
 		"state": {
 			"kicker": "Desejado não é observado",
 			"title": "Solicitado, observado, desconhecido.",
-			"lead": "Uma solicitação de início não é um runtime em execução, e uma conexão perdida não é uma parada. Os três estados ficam separados, para que ninguém confunda o que foi pedido com o que aconteceu. Os exemplos abaixo são ilustrativos.",
+			"lead": "Uma solicitação de início não é um runtime em execução, e uma conexão perdida não é uma parada. Os três estados ficam separados, para que ninguém confunda o que foi pedido com o que aconteceu.",
 			"cards": {
 				"requested": {
 					"eyebrow": "Solicitado",
@@ -543,7 +538,6 @@
 			"title": "Uma execução termina com um registro, não com um palpite.",
 			"lead": "O registro de execução é gravado antes do primeiro efeito colateral e fechado depois do último. A limpeza só age sobre o que ele possui, e a evidência fica no seu projeto depois que os recursos se vão.",
 			"ledgerTitle": "Registro de execução",
-			"ledgerPeriod": "Ilustrativo",
 			"rows": {
 				"execution": "Execução",
 				"started": "Iniciada",
@@ -648,7 +642,7 @@
 				},
 				"availability": {
 					"question": "Posso usar o LangDrift Microruntimes hoje?",
-					"answer": "O agente conectado existe como candidato de desenvolvimento local, não como versão publicada. Os valores desta página são ilustrativos, e os pedidos de demonstração estão pausados por enquanto."
+					"answer": "O agente conectado existe como candidato de desenvolvimento local, não como versão publicada. Os pedidos de demonstração estão pausados por enquanto."
 				}
 			}
 		}
@@ -662,14 +656,13 @@
 			"lead": "microruntime 是圍繞你既有元件組成的受限執行環境。你選擇元件與它們的限制；LangDrift 負責準備、執行、檢查與清理，並保留證據。你的原始碼留在原處。",
 			"primaryCta": "查看生命週期",
 			"secondaryCta": "誰擁有什麼",
-			"caption": "示意 runtime。名稱、限制與觀測皆為模擬，用來呈現一次執行如何從設定走到清理。",
-			"summary": "一個名為 checkout-preview 的示意 runtime，含三個元件、1,500 毫核心與 2,048 MiB。它的上一次執行從設定走到清理：請求狀態為已停止，清理已確認。可選取六個生命週期步驟：設定、驗證、準備、執行、檢查與清理，閱讀每一步做什麼以及留下的證據。"
+			"summary": "一個名為 checkout-preview 的 runtime，含三個元件、1,500 毫核心與 2,048 MiB。它的上一次執行從設定走到清理：請求狀態為已停止，清理已確認。可選取六個生命週期步驟：設定、驗證、準備、執行、檢查與清理，閱讀每一步做什麼以及留下的證據。"
 		},
 		"lifecycle": {
 			"label": "checkout-preview · 第 3 版 · exec-41b2",
 			"terminal": {
 				"title": "ex — shop",
-				"label": "終端機：示意性的 ex 工作階段",
+				"label": "終端機：ex 工作階段",
 				"lines": {
 					"doctor": "ex doctor",
 					"tools": "docker 27.3 · kind 0.24 · kubectl 1.31 · terraform 1.9",
@@ -739,7 +732,7 @@
 		"scenarios": {
 			"title": "組成 → 執行 → 檢查 → 清理",
 			"lead": "無論變更是否順利，microruntime 都保持相同的四個階段。看看新增元件、準備失敗與連線中斷，如何從請求到清理都保持可見。",
-			"selectorLabel": "探索一個示意情境",
+			"selectorLabel": "探索一個情境",
 			"phases": {
 				"compose": "組成",
 				"run": "執行",
@@ -779,7 +772,6 @@
 			"kicker": "知道執行什麼",
 			"title": "一個檔案說明 runtime 是什麼。",
 			"lead": "主控台寫入的 runtime.md 只包含一個 langdrift JSON 區塊。周圍的文字作為脈絡保留，從不執行。連線的代理只讀取這個區塊。",
-			"illustrative": "示意",
 			"annotations": {
 				"identity": {
 					"title": "身分與版本",
@@ -846,7 +838,7 @@
 		"state": {
 			"kicker": "期望不等於觀測",
 			"title": "請求、觀測、未知。",
-			"lead": "啟動請求不等於執行中的 runtime，連線中斷也不等於停止。三種狀態彼此分開，所以沒有人會把要求的事與發生的事混為一談。以下範例皆為示意。",
+			"lead": "啟動請求不等於執行中的 runtime，連線中斷也不等於停止。三種狀態彼此分開，所以沒有人會把要求的事與發生的事混為一談。",
 			"cards": {
 				"requested": {
 					"eyebrow": "請求",
@@ -870,7 +862,6 @@
 			"title": "一次執行以記錄結束，而不是猜測。",
 			"lead": "執行帳本在第一個副作用之前寫入，在最後一個之後結算。清理只作用於它所擁有的資源，而資源消失後，證據仍留在你的專案中。",
 			"ledgerTitle": "執行帳本",
-			"ledgerPeriod": "示意",
 			"rows": {
 				"execution": "執行",
 				"started": "開始",
@@ -975,7 +966,7 @@
 				},
 				"availability": {
 					"question": "我今天可以使用 LangDrift Microruntimes 嗎？",
-					"answer": "連線代理目前是本機開發候選版本，而不是已發布的版本。本頁的數值皆為示意，示範申請目前暫停。"
+					"answer": "連線代理目前是本機開發候選版本，而不是已發布的版本。示範申請目前暫停。"
 				}
 			}
 		}
@@ -989,14 +980,13 @@
 			"lead": "microruntime は、すでにあるコンポーネントを囲んで構成する境界付きの実行環境です。コンポーネントとその上限はあなたが選び、LangDrift が準備・実行・検査・クリーンアップを行い、証拠を残します。ソースコードは元の場所にとどまります。",
 			"primaryCta": "ライフサイクルを見る",
 			"secondaryCta": "誰が何を持つか",
-			"caption": "runtime はイメージです。名前、上限、観測値はシミュレーションで、実行が設定からクリーンアップへどう進むかを示すためのものです。",
-			"summary": "checkout-preview という名前のイメージ上の runtime で、3 つのコンポーネント、1,500 ミリコア、2,048 MiB を持ちます。直近の実行は設定からクリーンアップまで進みました。要求された状態は停止、クリーンアップは確認済みです。設定・検証・準備・実行・検査・クリーンアップの 6 つのステップを選ぶと、各ステップが何をし、どんな証拠を残すかを読めます。"
+			"summary": "checkout-preview という名前の runtime で、3 つのコンポーネント、1,500 ミリコア、2,048 MiB を持ちます。直近の実行は設定からクリーンアップまで進みました。要求された状態は停止、クリーンアップは確認済みです。設定・検証・準備・実行・検査・クリーンアップの 6 つのステップを選ぶと、各ステップが何をし、どんな証拠を残すかを読めます。"
 		},
 		"lifecycle": {
 			"label": "checkout-preview · リビジョン 3 · exec-41b2",
 			"terminal": {
 				"title": "ex — shop",
-				"label": "ターミナル：ex の説明用セッション",
+				"label": "ターミナル：ex のセッション",
 				"lines": {
 					"doctor": "ex doctor",
 					"tools": "docker 27.3 · kind 0.24 · kubectl 1.31 · terraform 1.9",
@@ -1066,7 +1056,7 @@
 		"scenarios": {
 			"title": "構成 → 実行 → 検査 → クリーンアップ",
 			"lead": "変更がうまくいってもいかなくても、microruntime は同じ 4 つのフェーズを保ちます。新しいコンポーネント、準備の失敗、接続の喪失が、要求からクリーンアップまでどう見え続けるかを確かめてください。",
-			"selectorLabel": "イメージのシナリオを選ぶ",
+			"selectorLabel": "シナリオを選ぶ",
 			"phases": {
 				"compose": "構成",
 				"run": "実行",
@@ -1106,7 +1096,6 @@
 			"kicker": "何が動くかを知る",
 			"title": "一つのファイルが runtime を定義する。",
 			"lead": "コンソールは runtime.md に langdrift の JSON ブロックをちょうど一つだけ書きます。周りの文章は文脈として残され、実行されることはありません。接続エージェントが読むのはこのブロックだけです。",
-			"illustrative": "イメージ",
 			"annotations": {
 				"identity": {
 					"title": "識別子とリビジョン",
@@ -1173,7 +1162,7 @@
 		"state": {
 			"kicker": "望んだ状態は観測ではない",
 			"title": "要求、観測、不明。",
-			"lead": "開始要求は実行中の runtime ではなく、接続の喪失は停止ではありません。3 つの状態を分けておくことで、求めたことと起きたことを誰も取り違えません。以下の例はイメージです。",
+			"lead": "開始要求は実行中の runtime ではなく、接続の喪失は停止ではありません。3 つの状態を分けておくことで、求めたことと起きたことを誰も取り違えません。",
 			"cards": {
 				"requested": {
 					"eyebrow": "要求",
@@ -1197,7 +1186,6 @@
 			"title": "実行は推測ではなく、記録で終わる。",
 			"lead": "実行台帳は最初の副作用の前に書かれ、最後の副作用の後に確定します。クリーンアップは台帳が所有するものにだけ作用し、リソースがなくなった後も証拠はプロジェクトに残ります。",
 			"ledgerTitle": "実行台帳",
-			"ledgerPeriod": "イメージ",
 			"rows": {
 				"execution": "実行",
 				"started": "開始",
@@ -1302,7 +1290,7 @@
 				},
 				"availability": {
 					"question": "LangDrift Microruntimes は今日から使えますか？",
-					"answer": "接続エージェントはローカル開発の候補版として存在し、公開リリースではありません。このページの値はイメージで、デモの申し込みは当面停止しています。"
+					"answer": "接続エージェントはローカル開発の候補版として存在し、公開リリースではありません。デモの申し込みは当面停止しています。"
 				}
 			}
 		}
@@ -1316,14 +1304,13 @@
 			"lead": "Microruntime là một môi trường thực thi có ranh giới, được dựng quanh các thành phần bạn đã có. Bạn chọn các thành phần và giới hạn của chúng; LangDrift chuẩn bị, chạy, kiểm tra và dọn dẹp, đồng thời giữ lại bằng chứng. Mã nguồn của bạn vẫn ở nguyên chỗ cũ.",
 			"primaryCta": "Xem vòng đời",
 			"secondaryCta": "Ai sở hữu gì",
-			"caption": "Runtime minh họa. Tên, giới hạn và các quan sát đều được mô phỏng để cho thấy một lần chạy đi từ cấu hình đến dọn dẹp ra sao.",
-			"summary": "Một runtime minh họa tên checkout-preview với ba thành phần, 1.500 millicore và 2.048 MiB. Lần thực thi gần nhất của nó đã đi từ cấu hình đến dọn dẹp: trạng thái được yêu cầu là đã dừng và việc dọn dẹp đã được xác nhận. Có thể chọn sáu bước của vòng đời, cấu hình, xác thực, chuẩn bị, thực thi, kiểm tra và dọn dẹp, để đọc mỗi bước làm gì và để lại bằng chứng gì."
+			"summary": "Một runtime tên checkout-preview với ba thành phần, 1.500 millicore và 2.048 MiB. Lần thực thi gần nhất của nó đã đi từ cấu hình đến dọn dẹp: trạng thái được yêu cầu là đã dừng và việc dọn dẹp đã được xác nhận. Có thể chọn sáu bước của vòng đời, cấu hình, xác thực, chuẩn bị, thực thi, kiểm tra và dọn dẹp, để đọc mỗi bước làm gì và để lại bằng chứng gì."
 		},
 		"lifecycle": {
 			"label": "checkout-preview · bản sửa đổi 3 · exec-41b2",
 			"terminal": {
 				"title": "ex — shop",
-				"label": "Terminal: một phiên ex minh họa",
+				"label": "Terminal: một phiên ex",
 				"lines": {
 					"doctor": "ex doctor",
 					"tools": "docker 27.3 · kind 0.24 · kubectl 1.31 · terraform 1.9",
@@ -1393,7 +1380,7 @@
 		"scenarios": {
 			"title": "Dựng → Chạy → Kiểm tra → Dọn dẹp",
 			"lead": "Một microruntime giữ nguyên bốn giai đoạn dù thay đổi suôn sẻ hay không. Hãy xem một thành phần mới, một lần chuẩn bị thất bại và một kết nối bị mất đều vẫn hiện rõ từ yêu cầu đến dọn dẹp.",
-			"selectorLabel": "Khám phá một kịch bản minh họa",
+			"selectorLabel": "Khám phá một kịch bản",
 			"phases": {
 				"compose": "Dựng",
 				"run": "Chạy",
@@ -1433,7 +1420,6 @@
 			"kicker": "Biết thứ gì đang chạy",
 			"title": "Một tệp cho biết runtime là gì.",
 			"lead": "Bảng điều khiển ghi runtime.md với đúng một khối JSON langdrift. Phần văn bản xung quanh được giữ làm ngữ cảnh và không bao giờ được thực thi. Tác tử kết nối chỉ đọc khối đó.",
-			"illustrative": "Minh họa",
 			"annotations": {
 				"identity": {
 					"title": "Định danh và bản sửa đổi",
@@ -1500,7 +1486,7 @@
 		"state": {
 			"kicker": "Mong muốn không phải là quan sát",
 			"title": "Được yêu cầu, quan sát được, chưa rõ.",
-			"lead": "Một yêu cầu khởi động không phải là một runtime đang chạy, và một kết nối bị mất không phải là việc dừng. Ba trạng thái được giữ tách biệt, để không ai nhầm điều đã yêu cầu với điều đã xảy ra. Các ví dụ dưới đây là minh họa.",
+			"lead": "Một yêu cầu khởi động không phải là một runtime đang chạy, và một kết nối bị mất không phải là việc dừng. Ba trạng thái được giữ tách biệt, để không ai nhầm điều đã yêu cầu với điều đã xảy ra.",
 			"cards": {
 				"requested": {
 					"eyebrow": "Được yêu cầu",
@@ -1524,7 +1510,6 @@
 			"title": "Một lần chạy kết thúc bằng bản ghi, không phải phỏng đoán.",
 			"lead": "Sổ thực thi được ghi trước tác động phụ đầu tiên và chốt sau tác động cuối cùng. Việc dọn dẹp chỉ tác động lên những gì sổ sở hữu, và bằng chứng vẫn nằm trong dự án của bạn sau khi tài nguyên đã đi.",
 			"ledgerTitle": "Sổ thực thi",
-			"ledgerPeriod": "Minh họa",
 			"rows": {
 				"execution": "Lần thực thi",
 				"started": "Bắt đầu",
@@ -1629,7 +1614,7 @@
 				},
 				"availability": {
 					"question": "Tôi có thể dùng LangDrift Microruntimes hôm nay không?",
-					"answer": "Tác tử kết nối hiện là một bản ứng viên phát triển cục bộ, không phải bản phát hành chính thức. Các giá trị trên trang này là minh họa, và yêu cầu demo hiện đang tạm dừng."
+					"answer": "Tác tử kết nối hiện là một bản ứng viên phát triển cục bộ, không phải bản phát hành chính thức. Yêu cầu demo hiện đang tạm dừng."
 				}
 			}
 		}
