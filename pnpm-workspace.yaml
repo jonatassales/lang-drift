@@ -3,3 +3,9 @@ packages:
   - packages/*
 
 engineStrict: true
+
+# Prebuilt binaries ship as optional dependencies, so these never run their
+# install scripts.
+allowBuilds:
+  "@parcel/watcher": false
+  "@swc/core": false

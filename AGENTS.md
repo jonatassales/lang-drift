@@ -8,7 +8,7 @@ AI harness web OS for your agentic journey. LangDrift is a suite of apps under o
 
 ## Status
 
-Monorepo with two packages, `@langdrift/tokens` and `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and no app yet. The first app, `apps/website`, is planned in spec 0003.
+Monorepo with two packages, `@langdrift/tokens` and `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and one app, `apps/website`: the LangDrift website (see `apps/website/README.md`), copied from the earlier `langdrift` monorepo under spec 0003.
 
 ## Toolchain and commands
 
@@ -29,7 +29,7 @@ Run from the repository root:
 | `pnpm turbo run check` | Runs Biome format, lint and import checks on the whole repository. Read-only. |
 | `pnpm turbo run fix` | Same as `check`, writing safe fixes. Review the diff afterwards. |
 
-`biome.json` owns formatting and import order: tabs, lines up to 80 columns, single quotes (double in JSX attributes), no semicolons, and imports grouped as packages, then aliases (`@/`, `#`, `~`), then relative paths, separated by blank lines. An object literal with more than one property puts each property on its own line; `platform/quality/multi-property-object.grit` reports violations.
+`biome.json` owns formatting and import order: tabs, lines up to 80 columns, single quotes (double in JSX attributes), no semicolons, and imports grouped as packages, then aliases (`@/`, `#`, `~` and the website's `@app/*`, `@components/*`, `@i18n/*`, `@state`, …), then relative paths, separated by blank lines. An object literal with more than one property puts each property on its own line; `platform/quality/multi-property-object.grit` reports violations.
 
 `check` and `fix` are root tasks with caching off on purpose: their inputs span every package, which a root task's cache key does not reliably cover, and Biome is fast enough without it.
 
@@ -110,7 +110,7 @@ Single context. The glossary is the `## Glossary` section of `.agents/context.md
 
 ## Continuous integration
 
-`.github/workflows/pull-request.yml` runs on every pull request into `main`, one job per concern:
+`.github/workflows/pull-request.yml` runs on every pull request into `main`, one job per concern.:
 
 | Job | Runs |
 | --- | --- |

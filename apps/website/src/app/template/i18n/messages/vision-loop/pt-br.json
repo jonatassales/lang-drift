@@ -1,0 +1,165 @@
+{
+	"heading": "Vision → Loop → Evidence",
+	"introduction": "Seu produto evolui por meio de prioridades, decisões e descobertas. O LangDrift conecta a direção que você pretendia seguir às mudanças feitas ao longo do caminho e às evidências que as explicam. Explore como essas mudanças podem revelar uma lacuna, uma concessão consciente ou uma direção melhor.",
+	"selectorLabel": "Explore um cenário",
+	"labels": {
+		"vision": "Vision",
+		"loop": "Loop",
+		"evidence": "Evidence",
+		"target": "Objetivo de visão",
+		"audience": "A quem atende",
+		"successCriterion": "Critério de sucesso",
+		"supportingRecords": "Registros de apoio",
+		"sourceContext": "Leia o contexto da fonte",
+		"interpretation": "O que esta mudança significa",
+		"openQuestion": "Pergunta em aberto"
+	},
+	"driftExplanation": "Um drift pode revelar uma lacuna, uma correção de rumo ou uma descoberta valiosa. Seu significado vem do contexto e das evidências.",
+	"continueToAttribution": "Continue para a atribuição",
+	"scenarios": {
+		"priority-shift": {
+			"tabLabel": "Mudança de prioridade",
+			"context": "Uma solicitação de cliente antecipa a configuração avançada no onboarding. A equipe precisa entender como essa prioridade afeta a experiência de primeiro uso originalmente pretendida.",
+			"vision": {
+				"target": "Ajudar quem está criando um workspace a alcançar um primeiro resultado útil antes de pedir que faça configurações avançadas.",
+				"audience": "Pequenas equipes configurando seu primeiro workspace sem suporte técnico dedicado.",
+				"successCriterion": "Quem está criando o workspace consegue concluir o fluxo principal com configurações padrão adequadas e ajustar as configurações avançadas depois."
+			},
+			"loop": {
+				"request": {
+					"label": "Solicitação",
+					"description": "Um cliente em potencial solicita configuração avançada antes de poder iniciar sua avaliação."
+				},
+				"change": {
+					"label": "Mudança",
+					"description": "A equipe antecipa a etapa de configuração no fluxo de onboarding."
+				},
+				"review": {
+					"label": "Revisão",
+					"description": "A solicitação explica a nova prioridade, mas os registros não estabelecem se a concessão para quem usa o produto pela primeira vez foi aceita."
+				}
+			},
+			"evidence": {
+				"priority-target": {
+					"kindLabel": "Briefing de produto",
+					"title": "Objetivo do onboarding",
+					"summary": "O briefing original coloca o primeiro resultado útil antes da configuração avançada.",
+					"sourceContext": "O briefing descreve responsáveis por workspaces que precisam experimentar o fluxo principal sem ajuda técnica. Ele trata as configurações avançadas como uma etapa posterior, depois que a pessoa já tiver visto um resultado inicial."
+				},
+				"priority-request": {
+					"kindLabel": "Solicitação de cliente",
+					"title": "Requisito de avaliação",
+					"summary": "A solicitação do cliente explica por que a configuração se tornou uma prioridade de curto prazo.",
+					"sourceContext": "A solicitação diz que a configuração é necessária para a avaliação desse cliente. Ela não estabelece que o mesmo requisito deva se aplicar a toda pessoa que cria um workspace."
+				},
+				"priority-flow": {
+					"kindLabel": "Revisão da mudança",
+					"title": "Fluxo de onboarding revisado",
+					"summary": "O fluxo revisado coloca a configuração antes do primeiro resultado, criando uma tensão com o critério original.",
+					"sourceContext": "A revisão descreve a nova ordem das etapas. Esses registros não incluem uma decisão que aceite explicitamente o efeito sobre o público mais amplo do onboarding, por isso essa intenção ainda precisa ser verificada."
+				}
+			},
+			"interpretation": {
+				"title": "Uma mudança de prioridade a revisar",
+				"description": "O produto agora pede configuração antes do que o objetivo original previa. A solicitação do cliente explica a pressão por trás dessa mudança, mas não esclarece se a concessão para o público mais amplo do onboarding foi aceita. Essa distinção dá à equipe uma decisão concreta a revisitar.",
+				"openQuestion": "Esse requisito deve se aplicar apenas à avaliação do cliente ou a equipe deve revisar intencionalmente o objetivo do onboarding?"
+			}
+		},
+		"product-trade-off": {
+			"tabLabel": "Trade-off de produto",
+			"context": "A equipe aceita uma etapa temporária de configuração manual para entregar mais cedo uma integração solicitada e registra quando essa concessão deve ser revista.",
+			"vision": {
+				"target": "Ajudar quem está criando um workspace a alcançar um primeiro resultado útil com configuração guiada e o mínimo de trabalho manual.",
+				"audience": "Pequenas equipes conectando sua primeira fonte de dados sem um especialista dedicado em integrações.",
+				"successCriterion": "A pessoa responsável consegue conectar os dados necessários ao fluxo principal por meio da configuração guiada, sem copiar valores de configuração manualmente."
+			},
+			"loop": {
+				"decision": {
+					"label": "Decisão",
+					"description": "A equipe aceita a configuração manual para a primeira versão de uma integração solicitada."
+				},
+				"delivery": {
+					"label": "Entrega",
+					"description": "A integração fica disponível mais cedo, embora sua configuração ainda exija esforço adicional."
+				},
+				"review-condition": {
+					"label": "Condição de revisão",
+					"description": "Revisitar a concessão antes de disponibilizar a integração a um público mais amplo, usando feedback do suporte e observações da configuração."
+				}
+			},
+			"evidence": {
+				"tradeoff-target": {
+					"kindLabel": "Briefing de produto",
+					"title": "Objetivo da configuração guiada",
+					"summary": "O objetivo pede um fluxo de conexão guiado, sem cópia manual de valores de configuração.",
+					"sourceContext": "O briefing prioriza responsáveis por workspaces que não têm um especialista dedicado em integrações. Seu critério de configuração trata de reduzir o trabalho manual, e não apenas de disponibilizar uma integração."
+				},
+				"tradeoff-decision": {
+					"kindLabel": "Registro de decisão",
+					"title": "Concessão temporária na configuração",
+					"summary": "A decisão aceita explicitamente a configuração manual na versão inicial para antecipar a integração.",
+					"sourceContext": "A equipe registra o esforço adicional previsto para a configuração e o motivo de aceitá-lo. A decisão também pede uma revisão antes da disponibilização a um público mais amplo; ela não afirma que o esforço extra seja inofensivo."
+				},
+				"tradeoff-release": {
+					"kindLabel": "Revisão da versão",
+					"title": "Escopo da versão da integração",
+					"summary": "A revisão da versão confirma que a integração está disponível com a etapa manual documentada.",
+					"sourceContext": "A revisão compara o fluxo entregue ao escopo aceito. Ainda são necessários feedback do suporte e observações da configuração para decidir se a concessão continua adequada a um público mais amplo."
+				}
+			},
+			"interpretation": {
+				"title": "Uma concessão consciente",
+				"description": "A equipe aceitou esforço adicional de configuração para entregar a integração mais cedo. A decisão registra por que a concessão foi feita e quando deve ser revista. Entender esse contexto ajuda a liderança a decidir se essa troca ainda atende à visão do produto.",
+				"openQuestion": "Quais condições precisariam ser atendidas para que essa configuração manual fosse aceitável em uma disponibilização mais ampla?"
+			}
+		},
+		"new-opportunity": {
+			"tabLabel": "Nova oportunidade",
+			"context": "Entrevistas e um pequeno exercício com um protótipo sugerem que explicar as escolhas de configuração pode ser mais importante do que remover mais uma etapa.",
+			"vision": {
+				"target": "Ajudar quem está criando um workspace a alcançar um primeiro resultado útil por meio de um fluxo de onboarding curto e direto.",
+				"audience": "Novos responsáveis que conhecem seu trabalho, mas ainda não estão familiarizados com as escolhas de configuração do produto.",
+				"successCriterion": "A pessoa responsável consegue concluir um fluxo curto e entender as escolhas necessárias para produzir um resultado útil."
+			},
+			"loop": {
+				"discovery": {
+					"label": "Descoberta",
+					"description": "As entrevistas revelam incerteza sobre o significado das escolhas de configuração."
+				},
+				"experiment": {
+					"label": "Experimento",
+					"description": "A equipe explora orientações contextuais em vez de apenas remover etapas."
+				},
+				"proposed-direction": {
+					"label": "Direção proposta",
+					"description": "Considerar tornar a confiança e a compreensão mais explícitas no objetivo e, depois, validar a proposta com uma amostra mais ampla."
+				}
+			},
+			"evidence": {
+				"opportunity-interviews": {
+					"kindLabel": "Notas de pesquisa",
+					"title": "Entrevistas sobre a configuração",
+					"summary": "As pessoas entrevistadas descrevem incerteza sobre as escolhas, não apenas sobre a extensão do fluxo.",
+					"sourceContext": "As notas registram dúvidas sobre qual opção de configuração se encaixa no fluxo de trabalho pretendido por cada participante. Elas sugerem uma possível explicação para a hesitação, sem estabelecer quão comum essa explicação é entre todos os usuários."
+				},
+				"opportunity-prototype": {
+					"kindLabel": "Observação do protótipo",
+					"title": "Exercício com orientação contextual",
+					"summary": "No pequeno exercício com o protótipo, os participantes usam as explicações para descrever sua próxima escolha com mais clareza.",
+					"sourceContext": "O exercício acrescenta explicações curtas ao lado das escolhas de configuração. As observações sustentam uma investigação adicional, mas não estabelecem uma melhora de conversão em produção nem um resultado amplamente validado."
+				},
+				"opportunity-proposal": {
+					"kindLabel": "Proposta de objetivo",
+					"title": "Proposta de refinamento do objetivo",
+					"summary": "Um rascunho propõe enfatizar decisões tomadas com confiança junto a um fluxo de onboarding curto.",
+					"sourceContext": "A proposta tornaria a compreensão das escolhas de configuração um critério de sucesso mais explícito. Ela continua sendo uma proposta até passar por revisão; o Objetivo de visão vigente não foi substituído automaticamente."
+				}
+			},
+			"interpretation": {
+				"title": "Uma descoberta que vale validar",
+				"description": "As evidências sugerem que uma experiência de primeiro uso melhor pode vir de orientações mais claras, e não apenas de menos etapas. Isso poderia melhorar a direção do produto. A próxima decisão é avaliar se a descoberta é sólida o suficiente para refinar o objetivo e quais validações adicionais são necessárias.",
+				"openQuestion": "Que evidências adicionais justificariam mudar o Objetivo de visão para o público mais amplo do onboarding?"
+			}
+		}
+	}
+}

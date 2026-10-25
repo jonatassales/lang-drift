@@ -1,0 +1,37 @@
+.early-access-sent {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	min-height: calc(100svh - 170px);
+	padding: 48px 20px 64px;
+	text-align: center;
+}
+.early-access-sent-content {
+	max-width: 700px;
+}
+.early-access-sent h1 {
+	font-size: clamp(2rem, 5vw, 3.5rem);
+	letter-spacing: -0.04em;
+	line-height: 1.15;
+	margin: 0;
+	text-wrap: balance;
+}
+.early-access-sent p {
+	color: #f97316;
+	font-size: clamp(1rem, 2vw, 1.2rem);
+	line-height: 1.6;
+	margin: 24px auto 0;
+	max-width: 58ch;
+}
+.early-access-sent img {
+	display: block;
+	height: auto;
+	margin: 28px auto;
+	max-width: 100%;
+}
+.early-access-sent a {
+	color: var(--foreground);
+	display: inline-block;
+	padding: 10px;
+	text-underline-offset: 4px;
+}
