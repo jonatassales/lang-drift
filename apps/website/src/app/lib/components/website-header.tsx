@@ -25,9 +25,13 @@ const drawerItem =
 	'flex items-center gap-3 rounded-lg px-2 py-3.5 text-[19px] text-muted-foreground'
 
 // The bar is glass over whatever scrolls under it; without backdrop filters
-// it falls back to a nearly solid background.
+// it falls back to a nearly solid background. The glass sits on a layer behind
+// the bar's content, not on the header itself: an element with a backdrop
+// filter becomes the backdrop root of everything inside it, so the Platform
+// dropdown, which hangs below the bar, could only blur the bar and would show
+// the page through it sharp.
 const glass =
-	'bg-background/90 supports-[backdrop-filter]:bg-background/55 supports-[backdrop-filter]:backdrop-blur-[28px] supports-[backdrop-filter]:backdrop-saturate-150 supports-[backdrop-filter]:data-[scrolled=true]:bg-background/70'
+	"before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-background/90 before:content-[''] supports-[backdrop-filter]:before:bg-background/55 supports-[backdrop-filter]:before:backdrop-blur-[28px] supports-[backdrop-filter]:before:backdrop-saturate-150 supports-[backdrop-filter]:data-[scrolled=true]:before:bg-background/70"
 
 export function WebsiteHeader() {
 	const t = useTranslations('header')
