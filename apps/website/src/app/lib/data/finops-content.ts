@@ -120,6 +120,35 @@ export type WorkItemId = (typeof workItems)[number]['id']
 
 export const initialWorkItemId: WorkItemId = 'checkout-retries'
 
+// A work item whose spend is known: the provider's usage record arrived.
+export interface ObservedWorkItem extends WorkItem {
+	observed: number
+}
+
+// The work item the gate section walks through: the first in the ledger, the
+// one it selects first, delivered inside the envelope.
+export const gateExample = workItems[0]
+
+export interface GateFigures {
+	proposed: number
+	reserved: number
+	observed: number
+	released: number
+}
+
+// The amounts a work item carries through the gate: the estimate the agent
+// proposed, the hold the gate took before the first paid call, the spend the
+// provider reported and what returned to the envelope once it was reconciled.
+// Only a work item with observed spend has them; unknown is never zero.
+export function gateFigures(item: ObservedWorkItem): GateFigures {
+	return {
+		proposed: item.estimate,
+		reserved: item.reserved,
+		observed: item.observed,
+		released: item.reserved - item.observed,
+	}
+}
+
 export const chainPillarIds = [
 	'intent',
 	'delivery',
@@ -140,16 +169,21 @@ export const finopsFaqIds = [
 ] as const
 
 export const budgetCardIds = ['envelope', 'allocation', 'reservation'] as const
-export const authorizationCardIds = ['recommend', 'gate', 'reconcile'] as const
+export const gateStepIds = ['recommend', 'gate', 'reconcile'] as const
 
 export type ChainPillarId = (typeof chainPillarIds)[number]
 export type ChainScenarioId = (typeof chainScenarioIds)[number]
 export type FinopsFaqId = (typeof finopsFaqIds)[number]
+export type GateStepId = (typeof gateStepIds)[number]
 
 export interface FinopsCard {
 	description: string
 	eyebrow: string
 	title: string
+}
+
+export interface GateStepCopy extends FinopsCard {
+	figure: string
 }
 
 export interface FinopsMessages {
@@ -219,7 +253,9 @@ export interface FinopsMessages {
 		kicker: string
 		title: string
 		lead: string
-		cards: Record<(typeof authorizationCardIds)[number], FinopsCard>
+		steps: Record<GateStepId, GateStepCopy>
+		released: string
+		source: string
 	}
 	report: {
 		kicker: string

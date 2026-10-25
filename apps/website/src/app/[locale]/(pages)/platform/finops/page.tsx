@@ -10,6 +10,7 @@ import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
 import { EarlyAccessSection } from '@components/early-access/section'
 import { BudgetLedgerDemo } from '@components/finops/budget-ledger-demo'
 import { DeliveryReceipt } from '@components/finops/delivery-receipt'
+import { GateFlow } from '@components/finops/gate-flow'
 import { PillarScenarios } from '@components/product-page/pillar-scenarios'
 import { ProductFaqSection } from '@components/product-page/product-faq-section'
 import { ProductSection } from '@components/product-page/product-section'
@@ -19,13 +20,14 @@ import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
 import {
-	authorizationCardIds,
 	budgetCardIds,
 	chainPillarIds,
 	chainScenarioIds,
 	envelope,
 	envelopeSegments,
 	finopsFaqIds,
+	gateExample,
+	gateFigures,
 	workItems,
 } from '@data/finops-content'
 import { finopsMessages } from '@i18n/messages/index'
@@ -158,6 +160,20 @@ export default async function FinopsPage(props: FinopsPageProps) {
 				</section>
 
 				<ProductSection
+					id="authorization"
+					kicker={copy.authorization.kicker}
+					lead={copy.authorization.lead}
+					title={copy.authorization.title}
+				>
+					<GateFlow
+						copy={copy.authorization}
+						exampleTitle={copy.ledger.items[gateExample.id].title}
+						figures={gateFigures(gateExample)}
+						locale={locale}
+					/>
+				</ProductSection>
+
+				<ProductSection
 					id="chain"
 					lead={copy.chain.lead}
 					title={copy.chain.title}
@@ -198,22 +214,6 @@ export default async function FinopsPage(props: FinopsPageProps) {
 							...copy.budget.cards[id],
 							id,
 						}))}
-					/>
-				</ProductSection>
-
-				<ProductSection
-					id="authorization"
-					kicker={copy.authorization.kicker}
-					lead={copy.authorization.lead}
-					title={copy.authorization.title}
-				>
-					<InfoCards
-						className="mt-11"
-						items={authorizationCardIds.map((id) => ({
-							...copy.authorization.cards[id],
-							id,
-						}))}
-						ordered
 					/>
 				</ProductSection>
 

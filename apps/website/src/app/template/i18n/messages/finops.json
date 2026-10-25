@@ -145,23 +145,28 @@
 			"kicker": "Recommendation is not authorization",
 			"title": "An agent recommends. A control decides.",
 			"lead": "A model may read the intent, compare similar work and propose a model, an effort and an allocation with its reasoning. Whether a paid action is permitted is decided by deterministic code against the policy, never by the model’s confidence. The gate below is the intended design, not a shipped control.",
-			"cards": {
+			"steps": {
 				"recommend": {
 					"eyebrow": "01 · The agent recommends",
 					"title": "Model, effort, allocation, rationale",
-					"description": "Which capabilities the step needs, whether a cheaper model is plausible, how much context is necessary, and what makes the estimate uncertain."
+					"description": "Which capabilities the step needs, whether a cheaper model is plausible, how much context is necessary, and what makes the estimate uncertain.",
+					"figure": "Proposed"
 				},
 				"gate": {
 					"eyebrow": "02 · The gate reserves",
 					"title": "Policy revision, price source, idempotency key",
-					"description": "The gate identifies the billable operation, resolves a price and a maximum, reserves the funds atomically, and refuses or pauses anything outside policy."
+					"description": "The gate identifies the billable operation, resolves a price and a maximum, reserves the funds atomically, and refuses or pauses anything outside policy.",
+					"figure": "Reserved"
 				},
 				"reconcile": {
 					"eyebrow": "03 · The evidence closes",
 					"title": "Observed usage reconciled, the rest released",
-					"description": "Usage from the provider replaces the estimate, the unused reservation returns to the envelope, and unknown outcomes stay unknown until a record settles them."
+					"description": "Usage from the provider replaces the estimate, the unused reservation returns to the envelope, and unknown outcomes stay unknown until a record settles them.",
+					"figure": "Observed"
 				}
-			}
+			},
+			"released": "Released to the envelope",
+			"source": "Figures from the {item} work item in the ledger above. Illustrative, like every amount on this page."
 		},
 		"report": {
 			"kicker": "Weekly delivery and cost report",
@@ -386,23 +391,28 @@
 			"kicker": "Recomendação não é autorização",
 			"title": "Um agente recomenda. Um controle decide.",
 			"lead": "Um modelo pode ler a intenção, comparar trabalhos semelhantes e propor um modelo, um esforço e uma alocação com seu raciocínio. Se uma ação paga é permitida, quem decide é código determinístico contra a política, nunca a confiança do modelo. O gate abaixo é o desenho pretendido, não um controle já entregue.",
-			"cards": {
+			"steps": {
 				"recommend": {
 					"eyebrow": "01 · O agente recomenda",
 					"title": "Modelo, esforço, alocação, justificativa",
-					"description": "Quais capacidades a etapa exige, se um modelo mais barato é plausível, quanto contexto é necessário e o que torna a estimativa incerta."
+					"description": "Quais capacidades a etapa exige, se um modelo mais barato é plausível, quanto contexto é necessário e o que torna a estimativa incerta.",
+					"figure": "Proposto"
 				},
 				"gate": {
 					"eyebrow": "02 · O gate reserva",
 					"title": "Revisão da política, fonte de preço, chave de idempotência",
-					"description": "O gate identifica a operação cobrável, resolve um preço e um máximo, reserva os fundos atomicamente e recusa ou pausa qualquer coisa fora da política."
+					"description": "O gate identifica a operação cobrável, resolve um preço e um máximo, reserva os fundos atomicamente e recusa ou pausa qualquer coisa fora da política.",
+					"figure": "Reservado"
 				},
 				"reconcile": {
 					"eyebrow": "03 · A evidência encerra",
 					"title": "Uso observado reconciliado, o restante liberado",
-					"description": "O uso informado pelo provedor substitui a estimativa, a reserva não usada volta ao envelope, e resultados desconhecidos seguem desconhecidos até que um registro os resolva."
+					"description": "O uso informado pelo provedor substitui a estimativa, a reserva não usada volta ao envelope, e resultados desconhecidos seguem desconhecidos até que um registro os resolva.",
+					"figure": "Observado"
 				}
-			}
+			},
+			"released": "Devolvido ao envelope",
+			"source": "Valores do item “{item}”, no livro-razão acima. Ilustrativos, como todos os valores desta página."
 		},
 		"report": {
 			"kicker": "Relatório semanal de entrega e custo",
@@ -627,23 +637,28 @@
 			"kicker": "建議不等於授權",
 			"title": "代理提出建議，控制做出決定。",
 			"lead": "模型可以讀取意圖、比較相似的工作，並附上推理提出模型、推理強度與分配。付費動作是否被允許，由確定性的程式碼依政策決定，絕不是由模型的信心決定。下方的閘門是預期的設計，而非已推出的控制。",
-			"cards": {
+			"steps": {
 				"recommend": {
 					"eyebrow": "01 · 代理建議",
 					"title": "模型、推理強度、分配、理由",
-					"description": "這個步驟需要哪些能力、更便宜的模型是否可行、需要多少上下文，以及估算為何不確定。"
+					"description": "這個步驟需要哪些能力、更便宜的模型是否可行、需要多少上下文，以及估算為何不確定。",
+					"figure": "提議金額"
 				},
 				"gate": {
 					"eyebrow": "02 · 閘門保留",
 					"title": "政策版本、價格來源、冪等鍵",
-					"description": "閘門識別可計費的操作，解析價格與上限，以原子性方式保留資金，並拒絕或暫停任何超出政策的事。"
+					"description": "閘門識別可計費的操作，解析價格與上限，以原子性方式保留資金，並拒絕或暫停任何超出政策的事。",
+					"figure": "已保留"
 				},
 				"reconcile": {
 					"eyebrow": "03 · 證據結案",
 					"title": "觀測用量完成對帳，其餘釋放",
-					"description": "供應商的用量取代估算，未用的保留回到額度，未知的結果保持未知，直到有記錄解決它。"
+					"description": "供應商的用量取代估算，未用的保留回到額度，未知的結果保持未知，直到有記錄解決它。",
+					"figure": "觀測到的花費"
 				}
-			}
+			},
+			"released": "退回預算額度",
+			"source": "數字取自上方帳本中的「{item}」工作項目。與本頁所有金額一樣，僅為示意。"
 		},
 		"report": {
 			"kicker": "每週交付與成本報告",
@@ -868,23 +883,28 @@
 			"kicker": "推奨は承認ではない",
 			"title": "エージェントが推奨し、制御が決定する。",
 			"lead": "モデルは意図を読み、類似の作業を比較し、根拠とともにモデル、推論強度、配分を提案できます。有料の行動が許されるかどうかは、ポリシーに照らして決定的なコードが判断します。モデルの自信が判断することは決してありません。以下のゲートは想定している設計であり、提供済みの制御ではありません。",
-			"cards": {
+			"steps": {
 				"recommend": {
 					"eyebrow": "01 · エージェントが推奨",
 					"title": "モデル、推論強度、配分、根拠",
-					"description": "そのステップに必要な能力、より安価なモデルが現実的か、必要なコンテキストの量、そして見積もりを不確かにしているもの。"
+					"description": "そのステップに必要な能力、より安価なモデルが現実的か、必要なコンテキストの量、そして見積もりを不確かにしているもの。",
+					"figure": "提案額"
 				},
 				"gate": {
 					"eyebrow": "02 · ゲートが予約",
 					"title": "ポリシーの版、価格の出典、冪等キー",
-					"description": "ゲートは課金対象の操作を特定し、価格と上限を解決し、資金をアトミックに予約し、ポリシー外のものは拒否または一時停止します。"
+					"description": "ゲートは課金対象の操作を特定し、価格と上限を解決し、資金をアトミックに予約し、ポリシー外のものは拒否または一時停止します。",
+					"figure": "予約額"
 				},
 				"reconcile": {
 					"eyebrow": "03 · 証拠が締める",
 					"title": "観測された使用量を照合し、残りを解放",
-					"description": "プロバイダーからの使用量が見積もりに置き換わり、未使用の予約は予算枠に戻り、不明な結果は記録が解決するまで不明のままです。"
+					"description": "プロバイダーからの使用量が見積もりに置き換わり、未使用の予約は予算枠に戻り、不明な結果は記録が解決するまで不明のままです。",
+					"figure": "観測された支出"
 				}
-			}
+			},
+			"released": "予算枠に戻った額",
+			"source": "数字は上の台帳にある作業項目「{item}」のものです。このページのすべての金額と同じく、イメージです。"
 		},
 		"report": {
 			"kicker": "週次の納品・コストレポート",
@@ -1109,23 +1129,28 @@
 			"kicker": "Đề xuất không phải là phê duyệt",
 			"title": "Tác tử đề xuất. Cơ chế kiểm soát quyết định.",
 			"lead": "Một mô hình có thể đọc ý định, so sánh các công việc tương tự và đề xuất mô hình, mức nỗ lực và phân bổ kèm lập luận. Một hành động trả phí có được phép hay không là do mã tất định quyết định theo chính sách, không bao giờ do mức độ tự tin của mô hình. Cổng kiểm soát dưới đây là thiết kế dự kiến, không phải một cơ chế đã phát hành.",
-			"cards": {
+			"steps": {
 				"recommend": {
 					"eyebrow": "01 · Tác tử đề xuất",
 					"title": "Mô hình, mức nỗ lực, phân bổ, lý do",
-					"description": "Bước này cần những năng lực nào, một mô hình rẻ hơn có khả thi không, cần bao nhiêu ngữ cảnh, và điều gì khiến ước tính không chắc chắn."
+					"description": "Bước này cần những năng lực nào, một mô hình rẻ hơn có khả thi không, cần bao nhiêu ngữ cảnh, và điều gì khiến ước tính không chắc chắn.",
+					"figure": "Đề xuất"
 				},
 				"gate": {
 					"eyebrow": "02 · Cổng kiểm soát giữ chỗ",
 					"title": "Phiên bản chính sách, nguồn giá, khóa idempotency",
-					"description": "Cổng kiểm soát xác định thao tác bị tính phí, xác định giá và mức tối đa, giữ chỗ tiền một cách nguyên tử, và từ chối hoặc tạm dừng bất cứ gì ngoài chính sách."
+					"description": "Cổng kiểm soát xác định thao tác bị tính phí, xác định giá và mức tối đa, giữ chỗ tiền một cách nguyên tử, và từ chối hoặc tạm dừng bất cứ gì ngoài chính sách.",
+					"figure": "Đã giữ chỗ"
 				},
 				"reconcile": {
 					"eyebrow": "03 · Bằng chứng khép lại",
 					"title": "Mức sử dụng quan sát được đã đối soát, phần còn lại được giải phóng",
-					"description": "Mức sử dụng từ nhà cung cấp thay thế ước tính, khoản giữ chỗ chưa dùng quay về hạn mức, và các kết quả chưa rõ vẫn chưa rõ cho đến khi một bản ghi giải quyết chúng."
+					"description": "Mức sử dụng từ nhà cung cấp thay thế ước tính, khoản giữ chỗ chưa dùng quay về hạn mức, và các kết quả chưa rõ vẫn chưa rõ cho đến khi một bản ghi giải quyết chúng.",
+					"figure": "Quan sát được"
 				}
-			}
+			},
+			"released": "Trả lại hạn mức",
+			"source": "Số liệu lấy từ hạng mục “{item}” trong sổ cái ở trên. Chỉ mang tính minh họa, như mọi số tiền trên trang này."
 		},
 		"report": {
 			"kicker": "Báo cáo giao hàng và chi phí hằng tuần",
