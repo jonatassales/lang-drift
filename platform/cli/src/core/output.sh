@@ -44,6 +44,7 @@ DRIFT_ENV_PHRASE='organizing your vars...'
 drift_result_file=
 drift_results_flushed=false
 drift_loader_pid=
+drift_loader_delay_pid=
 drift_loader_dir=
 
 # The loader spins on stderr while a command works. It waits one second
@@ -78,6 +79,16 @@ drift_loader_loop() {
   done
 }
 
+# The one-second delay runs in its own background job. Stop it before its
+# directory goes away, or a command that ends within the second leaves it
+# writing into a deleted directory after the prompt returns.
+drift_loader_cancel_delay() {
+  [ -n "$drift_loader_delay_pid" ] || return 0
+  kill "$drift_loader_delay_pid" 2>/dev/null || true
+  wait "$drift_loader_delay_pid" 2>/dev/null || true
+  drift_loader_delay_pid=
+}
+
 drift_loader_start() {
   drift_loader_active || return 0
   if [ -z "$drift_loader_dir" ]; then
@@ -87,10 +98,12 @@ drift_loader_start() {
     printf '\r\033[K%s\n' "$(cat "$drift_loader_dir/phrase")" >&2
     rm -f "$drift_loader_dir/shown"
   fi
+  drift_loader_cancel_delay
   rm -f "$drift_loader_dir/ready"
   printf '%s ' "$1" > "$drift_loader_dir/phrase"
   : > "$drift_loader_dir/alive"
   (sleep 1 && : > "$drift_loader_dir/ready") &
+  drift_loader_delay_pid=$!
   if [ -z "$drift_loader_pid" ] || ! kill -0 "$drift_loader_pid" 2>/dev/null; then
     drift_loader_loop "$drift_loader_dir" &
     drift_loader_pid=$!
@@ -99,6 +112,7 @@ drift_loader_start() {
 
 drift_loader_stop() {
   [ -n "$drift_loader_dir" ] || return 0
+  drift_loader_cancel_delay
   rm -f "$drift_loader_dir/alive"
   if [ -n "$drift_loader_pid" ]; then
     kill "$drift_loader_pid" 2>/dev/null || true
