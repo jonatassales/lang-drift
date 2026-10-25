@@ -4,6 +4,7 @@ import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
 import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
+import { PlatformFeatures } from '@components/platform-features'
 import { PlatformHero } from '@components/platform-hero'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
@@ -45,6 +46,7 @@ export default async function WebsitePage(props: WebsitePageProps) {
 			<WebsiteHeader />
 			<main id="top">
 				<PlatformHero locale={locale} />
+				<PlatformFeatures locale={locale} />
 			</main>
 			<WebsiteFooter locale={locale} />
 		</>

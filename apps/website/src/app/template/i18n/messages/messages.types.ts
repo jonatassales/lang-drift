@@ -453,4 +453,8 @@ export interface PlatformMessages {
 		primaryCta: string
 		secondaryCta: string
 	}
+	features: {
+		title: string
+		lead: string
+	}
 }
