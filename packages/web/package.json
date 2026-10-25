@@ -20,6 +20,7 @@
 		"./ui/icons/platform": "./src/ui/icons/platform/index.ts",
 		"./ui/language-switcher": "./src/ui/language-switcher/index.ts",
 		"./ui/product-vision-curve": "./src/ui/product-vision-curve/index.ts",
+		"./ui/rotating-text": "./src/ui/rotating-text/index.ts",
 		"./ui/target-distribution-chart": "./src/ui/target-distribution-chart/index.tsx",
 		"./vendors/smoothui/animated-avatar-group": "./src/vendors/smoothui/animated-avatar-group.tsx",
 		"./vendors/smoothui/animated-tabs": "./src/vendors/smoothui/animated-tabs.tsx",
@@ -28,6 +29,7 @@
 		"./vendors/smoothui/features-grid": "./src/vendors/smoothui/features-grid.tsx",
 		"./vendors/smoothui/gravity-stars": "./src/vendors/smoothui/gravity-stars.tsx",
 		"./vendors/smoothui/magnetic-field": "./src/vendors/smoothui/magnetic-field.tsx",
+		"./vendors/smoothui/text-morph": "./src/vendors/smoothui/text-morph.tsx",
 		"./utilities": "./src/utilities/index.ts"
 	},
 	"dependencies": {
