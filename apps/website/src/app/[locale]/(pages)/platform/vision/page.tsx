@@ -20,7 +20,6 @@ import { IntegrationsSection } from '@components/integrations-section'
 import { RoiSection } from '@components/roi-section'
 import { SelectedMovement } from '@components/selected-movement'
 import { VisionLoopEvidenceSection } from '@components/vision-loop-evidence-section'
-import { VoicePreview } from '@components/voice-preview/voice-preview'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
 import { getHeroPoints } from '@data/hero-demo-data'
@@ -178,10 +177,6 @@ export default async function VisionPage(props: VisionPageProps) {
 							<p>{t('intent.review')}</p>
 						</article>
 					</div>
-				</section>
-
-				<section className="voice-band" id="voice">
-					<VoicePreview />
 				</section>
 
 				<section className="report-section" id="report">

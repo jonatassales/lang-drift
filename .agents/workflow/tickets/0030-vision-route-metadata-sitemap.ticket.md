@@ -12,6 +12,8 @@
 
 - [ ] `apps/website/src/app/[locale]/(pages)/platform/vision/page.tsx` is today's home page, with `pageMetadata('vision', …)`, named `VisionPage`, without `WebsiteStructuredData`.
 
+- [ ] The voice preview section (the scripted orb, `#voice`) leaves the Vision page: AI Voice becomes its own product. The `VoicePreview` component stays for that product's page, allow-listed in `platform/quality/dead-code.allow`, and the `.voice-band` rules leave `globals.css` and `responsive.css`.
+
 ### Metadata
 
 - [ ] `metadata/pages.json`: a `vision` entry per locale carrying today's home copy under the Vision name; `home` gets platform copy.

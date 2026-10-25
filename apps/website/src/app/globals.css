@@ -54,8 +54,7 @@ input:focus-visible {
 .why-title h2,
 .features-heading h2,
 .intent-section h2,
-.report-copy h2,
-.voice-band h2 {
+.report-copy h2 {
 	font-size: clamp(38px, 5vw, 62px);
 	font-weight: 400;
 	letter-spacing: -0.035em;
@@ -65,8 +64,7 @@ input:focus-visible {
 .why-title p,
 .features-heading p,
 .intent-section > div:first-child p,
-.report-copy p,
-.voice-band p {
+.report-copy p {
 	color: var(--muted-foreground);
 	font-size: 16px;
 	line-height: 1.55;
@@ -176,25 +174,6 @@ input:focus-visible {
 	margin: 0;
 }
 
-.voice-band {
-	align-items: center;
-	background: #0b0b0c;
-	color: #f5f5f5;
-	display: grid;
-	gap: 80px;
-	grid-template-columns: 1fr 360px;
-	margin: 40px auto;
-	max-width: 1240px;
-	padding: 84px 58px;
-}
-.voice-band > div:first-child {
-	max-width: 680px;
-}
-.voice-band p {
-	color: #a1a1aa;
-	max-width: 620px;
-}
-
 .report-section {
 	align-items: start;
 	display: grid;
@@ -264,11 +243,6 @@ input:focus-visible {
 	.intent-grid,
 	.report-section {
 		grid-template-columns: 1fr;
-	}
-	.voice-band {
-		grid-template-columns: 1fr;
-		margin-inline: 0;
-		padding: 64px 22px;
 	}
 }
 
