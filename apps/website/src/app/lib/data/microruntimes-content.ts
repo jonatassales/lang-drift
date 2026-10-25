@@ -292,6 +292,12 @@ export const planReveals = {
 	artifactsRead: 'reads',
 	guardrail: 'guardrail',
 	componentsSkeleton: 'resolve',
+	bounded: 'bounds',
+	suggested: 'size',
+	limits: 'limits',
+	priceBasis: 'price',
+	report: 'draft',
+	finished: 'handoff',
 } as const satisfies Record<string, PlanLineId>
 
 export type PlanRevealId = keyof typeof planReveals

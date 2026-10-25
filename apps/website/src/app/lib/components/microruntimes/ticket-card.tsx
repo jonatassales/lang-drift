@@ -19,6 +19,7 @@ import { microruntimeSessionAtom } from '@state'
 import { CardValue, type CardValueState } from './card-value'
 import { ComponentRow } from './component-row'
 import { ReadMark } from './read-mark'
+import { SessionControl } from './session-control'
 
 interface TicketCardProps {
 	copy: MicroruntimesMessages['session']['card']
@@ -62,6 +63,48 @@ export function TicketCard(props: TicketCardProps) {
 			? 'set'
 			: 'resolving'
 		: 'unset'
+	const bounded = ticketPlan.bounded
+	const suggested = suggestedTotals(ticketPlan.components)
+	const boundedState: CardValueState = played('bounded') ? 'set' : 'unset'
+	const sizedState: CardValueState = played('suggested') ? 'set' : 'unset'
+	const limitsKnown = played('limits')
+	const reportDrafted = played('report')
+	const hardwareRows = [
+		{
+			id: 'cpu',
+			label: copy.hardware.cpu,
+			bounded: cpu(bounded.cpuMillis),
+			suggested: cpu(suggested.cpuMillis),
+			share: suggested.cpuMillis / bounded.cpuMillis,
+		},
+		{
+			id: 'memory',
+			label: copy.hardware.memory,
+			bounded: memory(bounded.memoryMiB),
+			suggested: memory(suggested.memoryMiB),
+			share: suggested.memoryMiB / bounded.memoryMiB,
+		},
+	]
+	const reportRows = [
+		{
+			id: 'bounded',
+			term: copy.report.bounded,
+			state: boundedState,
+			detail: `${cpu(bounded.cpuMillis)} · ${memory(bounded.memoryMiB)}`,
+		},
+		{
+			id: 'suggested',
+			term: copy.report.suggested,
+			state: (resolved.length > 0 ? 'set' : 'unset') as CardValueState,
+			detail: `${cpu(resolvedTotals.cpuMillis)} · ${memory(resolvedTotals.memoryMiB)}`,
+		},
+		{
+			id: 'resource',
+			term: copy.report.suggestedResource,
+			state: (reportDrafted ? 'set' : 'unset') as CardValueState,
+			detail: card('deployments', { count: ticketPlan.components.length }),
+		},
+	]
 
 	return (
 		<article
@@ -202,6 +245,139 @@ export function TicketCard(props: TicketCardProps) {
 								})}
 					</CardValue>
 				)}
+			</div>
+
+			<div className="mt-5 border-t border-border pt-4">
+				<table className="w-full border-collapse text-[12px]">
+					<thead>
+						<tr>
+							<th className="pb-2 text-left font-normal" scope="col">
+								<Eyebrow>{copy.hardware.resource}</Eyebrow>
+							</th>
+							<th className="pb-2 text-left font-normal" scope="col">
+								<Eyebrow>{copy.hardware.bounded}</Eyebrow>
+							</th>
+							<th className="pb-2 text-left font-normal" scope="col">
+								<Eyebrow>{copy.hardware.suggested}</Eyebrow>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{hardwareRows.map((row) => (
+							<tr className="border-t border-border" key={row.id}>
+								<th className="py-2 pr-3 text-left font-normal" scope="row">
+									{row.label}
+								</th>
+								<td className="py-2 pr-3 font-mono tabular-nums">
+									<CardValue labels={copy} state={boundedState}>
+										{row.bounded}
+									</CardValue>
+								</td>
+								<td className="py-2 font-mono tabular-nums">
+									<CardValue labels={copy} state={sizedState}>
+										{row.suggested}
+									</CardValue>
+									{sizedState === 'set' && (
+										<span
+											aria-hidden="true"
+											className="mt-1 block h-0.5 overflow-hidden rounded bg-foreground/5"
+										>
+											<span
+												className="block h-full rounded bg-primary motion-safe:transition-[width] motion-safe:duration-700 motion-safe:ease-out"
+												style={{ width: `${row.share * 100}%` }}
+											/>
+										</span>
+									)}
+								</td>
+							</tr>
+						))}
+						<tr className="border-t border-border">
+							<th className="py-2 pr-3 text-left font-normal" scope="row">
+								{copy.hardware.gpu}
+							</th>
+							<td className="py-2 pr-3 font-mono">
+								<CardValue labels={copy} state={limitsKnown ? 'set' : 'unset'}>
+									{copy.none}
+								</CardValue>
+							</td>
+							<td className="py-2 font-mono">
+								<CardValue labels={copy} state={limitsKnown ? 'set' : 'unset'}>
+									{copy.none}
+								</CardValue>
+								{limitsKnown && (
+									<span className="block font-sans text-[11px] text-muted-foreground">
+										{copy.notRuntimeField}
+									</span>
+								)}
+							</td>
+						</tr>
+						<tr className="border-t border-border">
+							<th className="py-2 pr-3 text-left font-normal" scope="row">
+								{copy.hardware.disk}
+							</th>
+							<td className="py-2 pr-3 font-mono">
+								{limitsKnown ? (
+									<span aria-hidden="true">—</span>
+								) : (
+									<CardValue labels={copy} state="unset" />
+								)}
+							</td>
+							<td className="py-2 font-mono">
+								{limitsKnown ? (
+									<span aria-hidden="true">—</span>
+								) : (
+									<CardValue labels={copy} state="unset" />
+								)}
+								{limitsKnown && (
+									<span className="block font-sans text-[11px] text-muted-foreground">
+										{copy.notRuntimeField}
+									</span>
+								)}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				{played('priceBasis') && (
+					<p className="mt-2 mb-0 text-[11px] text-muted-foreground">
+						{copy.priceBasis}
+					</p>
+				)}
+			</div>
+
+			<div className="mt-5 border-t border-border pt-4">
+				<dl className="m-0 grid gap-2.5 text-[13px]">
+					{reportRows.map((row) => (
+						<div
+							className="grid gap-1 sm:grid-cols-[minmax(0,0.4fr)_minmax(0,1fr)] sm:gap-4"
+							key={row.id}
+						>
+							<Eyebrow as="dt">{row.term}</Eyebrow>
+							<dd className="m-0 font-mono text-[13px] tabular-nums">
+								<CardValue labels={copy} state={row.state} width="w-40">
+									{row.detail}
+								</CardValue>
+							</dd>
+						</div>
+					))}
+				</dl>
+				<div aria-atomic="true" aria-live="polite" className="grid gap-2.5">
+					{reportDrafted && (
+						<>
+							<dl className="m-0 mt-2.5 grid gap-1 sm:grid-cols-[minmax(0,0.4fr)_minmax(0,1fr)] sm:gap-4">
+								<Eyebrow as="dt">{copy.report.final}</Eyebrow>
+								<dd className="m-0 font-mono text-[14px] font-medium tabular-nums">
+									{`${cpu(suggested.cpuMillis)} · ${memory(suggested.memoryMiB)} · ${copy.pendingAuthorization}`}
+								</dd>
+							</dl>
+							<p className="m-0 font-mono text-[11px] text-muted-foreground">
+								{card('planPath', { revision: ticketPlan.draftRevision })}
+							</p>
+						</>
+					)}
+				</div>
+				<div className="mt-3 flex justify-end">
+					<SessionControl copy={copy.control} />
+				</div>
 			</div>
 		</article>
 	)

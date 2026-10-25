@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 
-import { act, cleanup, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { createStore, Provider } from 'jotai'
 import { afterEach, describe, expect, it } from 'vitest'
 
@@ -80,6 +80,57 @@ describe('Microruntimes ticket card', () => {
 		expect(screen.getByText('apps/signup')).toBeTruthy()
 		expect(screen.getByText('5 components · 1,450m · 2,304 MiB')).toBeTruthy()
 		expect(screen.queryAllByText('Resolving')).toHaveLength(0)
+	})
+
+	it('fills the hardware table and the report as the plan is bounded, sized and drafted', () => {
+		const { play } = mount()
+		expect(screen.queryByText('2,000m')).toBeNull()
+
+		play('bounds')
+		expect(screen.getAllByText('2,000m')).toHaveLength(1)
+		expect(screen.getByText('2,000m · 3,072 MiB')).toBeTruthy()
+
+		play('size')
+		expect(screen.getAllByText('1,450m')).toHaveLength(1)
+		expect(screen.getByText('1,450m · 2,304 MiB')).toBeTruthy()
+
+		play('limits')
+		expect(screen.getAllByText('none')).toHaveLength(2)
+		expect(screen.getAllByText('not a runtime.md field')).toHaveLength(2)
+
+		play('price')
+		expect(
+			screen.getByText('price basis: none configured · units only'),
+		).toBeTruthy()
+
+		play('draft')
+		expect(screen.getByText('5 one-replica Deployments')).toBeTruthy()
+		expect(
+			screen.getByText('1,450m · 2,304 MiB · pending team authorization'),
+		).toBeTruthy()
+		expect(
+			screen.getByText(
+				'runtime.md draft · revision 1 · proposed to the console',
+			),
+		).toBeTruthy()
+	})
+
+	it('pauses the session and replays it from the start', () => {
+		const { play, store } = mount()
+		play('go')
+		fireEvent.click(screen.getByRole('button', { name: 'Pause' }))
+		expect(store.get(microruntimeSessionAtom).paused).toBe(true)
+
+		play('handoff')
+		fireEvent.click(screen.getByRole('button', { name: 'Replay' }))
+		expect(store.get(microruntimeSessionAtom)).toEqual({
+			paused: false,
+			playedCount: 0,
+			run: 1,
+		})
+		expect(
+			screen.getByRole('article', { hidden: true }).getAttribute('aria-hidden'),
+		).toBe('true')
 	})
 
 	it('marks the artifacts read and fills the guardrail as the agent reads them', () => {
