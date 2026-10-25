@@ -41,6 +41,8 @@ jobs:
         run: pnpm turbo run check
       - name: Types
         run: pnpm turbo run typecheck
+      - name: Dead code
+        run: platform/cli/drift check dead-code
 
   test:
     name: Test

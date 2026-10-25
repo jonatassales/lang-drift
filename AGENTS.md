@@ -48,7 +48,9 @@ Run from the repository root:
 
 ## Platform CLI
 
-`platform/cli/drift` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `check localization`, `env setup|validate` and `git setup|doctor|pre-commit|commit-msg|lint-history`.
+`platform/cli/drift` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `check dead-code|localization`, `env setup|validate` and `git setup|doctor|pre-commit|commit-msg|lint-history`.
+
+`drift check dead-code` finds code that only served something a refactor removed: a tsconfig alias nothing imports through, a module or export nothing uses, a dependency nothing imports, a `turbo.json` variable nothing reads, a CSS class no markup carries. A reference in a comment counts, so code parked in comments keeps what it needs, and folders held by a `.gitkeep` are never examined. Run it after a refactor; CI runs it in the Check job. `platform/quality/dead-code.allow` lists what the owner keeps on purpose.
 
 When the shell resolves `drift` to another program (a link from an older checkout, say), `drift setup` says which one and how to fix `PATH`.
 
@@ -118,7 +120,7 @@ Single context. The glossary is the `## Glossary` section of `.agents/context.md
 | Job | Runs |
 | --- | --- |
 | Build | `pnpm turbo run build` |
-| Check | `pnpm turbo run check`, then `pnpm turbo run typecheck` |
+| Check | `pnpm turbo run check`, `pnpm turbo run typecheck`, then `drift check dead-code` |
 | Test | `pnpm turbo run test` |
 | Guardrails | `drift git lint-history` over the pull request's commits |
 
