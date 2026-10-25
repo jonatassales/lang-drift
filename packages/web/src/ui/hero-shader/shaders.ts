@@ -99,7 +99,8 @@ void main() {
 
   float leftBend = point.x + 0.08 * sin(point.y * 3.8 - phase);
   float leftShade = 1.0 - smoothstep(-0.15, 0.57, leftBend);
-  vec3 color = mix(pale, fieldInk, 0.10 + leftShade * 0.33);
+  float mood = 0.7 + 0.3 * scheme;
+  vec3 color = mix(pale, fieldInk, (0.10 + leftShade * 0.33) * mood);
 
   // Far petals remain soft behind the foreground, with independent bending
   // phases; the second one carries the violet neighbor of the brand.
@@ -142,7 +143,10 @@ void main() {
   vec2 lowerLight = (point - vec2(0.68, 0.86)) / vec2(0.22, 0.34);
   color = mix(color, pale, exp(-dot(lowerLight, lowerLight)) * (0.10 + opening * 0.08));
 
-  // The canvas meets the page background along its bottom edge.
+  // The field falls to the page background toward the edges, deeply in dark
+  // and gently in light, and meets it fully along the bottom edge.
+  float vignette = smoothstep(0.38, 0.98, distance(point, vec2(0.5, 0.42)));
+  color = mix(color, background, vignette * (0.62 - 0.32 * scheme));
   color = mix(color, background, smoothstep(0.70, 1.0, point.y) * 0.85);
   outputColor = vec4(color, 1.0);
 }`
