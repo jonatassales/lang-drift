@@ -16,9 +16,10 @@ interface PlatformHeroProps {
 // Microruntimes terminal and the ticket, plan and workflow cards it plays
 // into, side by side; only its top shows at the bottom of the first screen.
 // The hero starts under the transparent header, so the two read as one
-// background. From `lg` the frame is at least 44rem tall and grows with the
-// cards, so they never scroll, and the terminal stretches to the same height;
-// below `lg`, the cards stack under the terminal.
+// background. From `lg` the frame is at least 40rem tall and grows with the
+// cards, so they never scroll; the terminal stretches to the same height and
+// scrolls its transcript inside; below `lg`, the cards stack under the
+// terminal.
 const monochrome = '[--primary-hover:var(--border)] [--primary:var(--muted)]'
 
 export function PlatformHero(props: PlatformHeroProps) {
@@ -53,7 +54,7 @@ export function PlatformHero(props: PlatformHeroProps) {
 						/>
 					</h1>
 				</div>
-				<div className="grid w-full min-w-0 gap-2 rounded-2xl border border-border bg-background/70 p-2 shadow-2xl backdrop-blur-xl lg:min-h-176 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+				<div className="grid w-full min-w-0 gap-2 rounded-2xl border border-border bg-background/70 p-2 shadow-2xl backdrop-blur-xl lg:min-h-160 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
 					<div className="min-h-0 min-w-0">
 						<SessionTerminal
 							className="h-[clamp(220px,34vh,300px)] shadow-none"
