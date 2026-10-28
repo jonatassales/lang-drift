@@ -32,7 +32,7 @@ const (
 // manifestExtensions are the native manifest formats EX reads.
 var manifestExtensions = map[string]bool{".json": true, ".yaml": true, ".yml": true}
 
-// Files reads the configuration consumers author under .langdrift/runtimes.
+// Files reads the configuration consumers author under .langdrift/microruntimes/runtimes.
 // It checks that references exist and parses native files; the policy those
 // files must satisfy belongs to the domain.
 type Files struct{}

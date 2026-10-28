@@ -85,8 +85,8 @@ func preparationRequest(t *testing.T) application.PreparationRequest {
 	return application.PreparationRequest{
 		Project:   project.Project{ID: id, Root: root},
 		Runtime:   runtime,
-		Directory: filepath.Join(root, ".langdrift", "runtimes", "demo", "terraform"),
-		Access:    application.ClusterAccess{Kubeconfig: filepath.Join(root, ".langdrift", "state", "cluster.kubeconfig"), Context: "kind-ex-0123456789ab"},
+		Directory: filepath.Join(root, ".langdrift", "microruntimes", "runtimes", "demo", "terraform"),
+		Access:    application.ClusterAccess{Kubeconfig: filepath.Join(root, ".langdrift", "agent", "state", "cluster.kubeconfig"), Context: "kind-ex-0123456789ab"},
 		Namespace: "demo-local",
 		Owner:     "team-payments",
 		Token:     testToken,
@@ -117,7 +117,7 @@ func TestPreparation_Apply(t *testing.T) {
 		t.Fatalf("operations = %v, want init, plan, inspection, then apply", runner.operations())
 	}
 
-	state := filepath.Join(request.Project.Root, ".langdrift", "state", "runtimes", "demo")
+	state := filepath.Join(request.Project.Root, ".langdrift", "agent", "state", "runtimes", "demo")
 	planFile := filepath.Join(state, "operation.tfplan")
 
 	wantArguments := [][]string{
@@ -244,7 +244,7 @@ func TestPreparation_HasState(t *testing.T) {
 		t.Fatalf("HasState() before preparation = %t, %v", prepared, err)
 	}
 
-	state := filepath.Join(request.Project.Root, ".langdrift", "state", "runtimes", "demo", "terraform.tfstate")
+	state := filepath.Join(request.Project.Root, ".langdrift", "agent", "state", "runtimes", "demo", "terraform.tfstate")
 	if err := os.MkdirAll(filepath.Dir(state), 0o700); err != nil {
 		t.Fatal(err)
 	}

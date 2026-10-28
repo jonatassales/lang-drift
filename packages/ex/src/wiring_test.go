@@ -116,7 +116,7 @@ func TestGuidedRuntimeGenerationValidates(t *testing.T) {
 		t.Fatalf("a second ex runtime init = %d, %s; want the existing runtime kept", status, stderr)
 	}
 
-	workload := filepath.Join(p.root, ".langdrift", "runtimes", "demo", "units", "web", "kubernetes", "workload.json")
+	workload := filepath.Join(p.root, ".langdrift", "microruntimes", "runtimes", "demo", "units", "web", "kubernetes", "workload.json")
 	data, err := os.ReadFile(workload)
 	if err != nil {
 		t.Fatal(err)
@@ -177,7 +177,7 @@ func TestCommandsStopBeforeInfrastructureWithoutACluster(t *testing.T) {
 		}
 	}
 
-	if _, err := os.Stat(filepath.Join(p.root, ".langdrift", "state", "runtimes")); !os.IsNotExist(err) {
+	if _, err := os.Stat(filepath.Join(p.root, ".langdrift", "agent", "state", "runtimes")); !os.IsNotExist(err) {
 		t.Errorf("a refused command recorded runtime state: %v", err)
 	}
 }

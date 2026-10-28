@@ -55,7 +55,7 @@ func (Projects) Create(directory string, id project.ID) (project.Project, error)
 
 	layout := layoutAt(root)
 
-	if _, err := files.Within(root, filepath.Join(".langdrift", "state")); err != nil {
+	if _, err := files.Within(root, filepath.Join(".langdrift", "agent", "state")); err != nil {
 		return project.Project{}, err
 	}
 
@@ -136,7 +136,7 @@ func openAt(root string) (project.Project, error) {
 		return project.Project{}, err
 	}
 
-	if _, err := files.Within(root, filepath.Join(".langdrift", "state")); err != nil {
+	if _, err := files.Within(root, filepath.Join(".langdrift", "agent", "state")); err != nil {
 		return project.Project{}, err
 	}
 

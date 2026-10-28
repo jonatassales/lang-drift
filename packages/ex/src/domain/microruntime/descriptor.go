@@ -20,7 +20,7 @@ const (
 )
 
 var (
-	configurationRoot         = mustRelativePath(".langdrift/runtimes")
+	configurationRoot         = mustRelativePath(".langdrift/microruntimes/runtimes")
 	defaultTerraformDirectory = mustRelativePath("terraform")
 )
 

@@ -59,6 +59,8 @@ The folder is machine-local and gitignored: `ex` regenerates it, and nothing a t
 
 Every value that can block or allow a run is CLI input held in the private store. The JSON files mirror it for reading; no gate reads them. A microruntime is the car, a lap is one pass of its run.
 
+Existing private state is not migrated: a checkout that still has `.langdrift/state` from an earlier version should delete its cluster with `ex cluster delete` before upgrading, or remove that directory once nothing runs.
+
 ## Commands
 
 In the commands below, `ex` means this tree's compiled `./dist/ex` executable.
@@ -110,7 +112,7 @@ unset RUNTIME_SECRET
 ./dist/ex agent run
 ```
 
-Use the console's newly generated runtime credential. The agent writes it and the restricted environment recovery credential to `.langdrift/runtimes/<runtime-id>/.env` with private permissions and a local ignore rule. A preexisting `.env` is preserved and reported as a conflict. Never pass credentials as command arguments.
+Use the console's newly generated runtime credential. The agent writes it and the restricted environment recovery credential to `.langdrift/agent/state/credentials/<runtime-id>.env` with private permissions, inside the ignored private state. A preexisting credential file is preserved and reported as a conflict. Never pass credentials as command arguments.
 
 Exit codes are 0 for success, 1 for operational errors, 2 for invalid usage,
 and 130 for interruption. Results use stdout; diagnostics use stderr.
@@ -139,7 +141,7 @@ module is private and unpublished, so only this repository builds it.
 
 Each runtime has a stable console UID, native runtime ID, environment identity and distinct execution identities. Binding preserves the existing local project identity. MCP uses HTTPS (HTTP only for explicit loopback development), bounded JSON-RPC Streamable HTTP responses, initialization and tool calls `langdrift.bind`, `langdrift.sync`, and `langdrift.claim`. Redirects are refused. The recovery credential can report cleanup after revocation; it cannot claim another start.
 
-Authored configuration is `.langdrift/runtimes/<id>/runtime.md`, containing exactly one `langdrift` JSON fence. Free prose is retained but never executed or sent to an LLM by this agent. The fence declares identity, revision, component paths, existing build recipes and images, ports/readiness, aggregate CPU/memory per execution, and the LangDrift agent model/effort. The console recommendation service uses that model setting; this deterministic interpreter makes no paid model call. Between one and sixteen components, at most 64 CPU cores, and at most 1,048,576 MiB are accepted. Generated Deployments use one replica per component and explicit resource shares whose sum equals the envelope; resource quotas do not establish monetary limits or observed capacity.
+Authored configuration is `.langdrift/microruntimes/runtimes/<id>/runtime.md`, containing exactly one `langdrift` JSON fence. Free prose is retained but never executed or sent to an LLM by this agent. The fence declares identity, revision, component paths, existing build recipes and images, ports/readiness, aggregate CPU/memory per execution, and the LangDrift agent model/effort. The console recommendation service uses that model setting; this deterministic interpreter makes no paid model call. Between one and sixteen components, at most 64 CPU cores, and at most 1,048,576 MiB are accepted. Generated Deployments use one replica per component and explicit resource shares whose sum equals the envelope; resource quotas do not establish monetary limits or observed capacity.
 
 The agent records the authored Markdown hash, interpreted revision, source commit and concrete native fingerprint. Repository origin and HEAD must match the console's imported commit. Dirty source is an explicit conflict; generated `.langdrift` files are excluded from that check. Root components and distinct paths with equal basenames are supported. New unit identities derive from source paths.
 
@@ -151,7 +153,7 @@ Only confirmed stopped executions may materialize another revision. Existing aut
 
 For v2 migration, run `ex agent migrate <id>` (or explicitly `ex agent migrate <id> --recover` for an active/unsettled legacy execution), select **Existing JSON v2 runtime ID** in the console, and configure the same project components and their explicit build recipes. The active descriptor is archived privately; original native files remain unchanged and discoverable. The new descriptor points to generated `console-units` and `console-terraform` paths, retaining existing matching unit names and namespace/context. Console resource changes apply to these new outputs. Consumer workload settings outside image, replica and resource fields are retained; ambiguous multi-workload or multi-container units refuse automatic migration. Historical execution records and evidence remain intact, and migration creates no usage measurements.
 
-Private kubeconfig, operation ledgers, connection records and pending events live under `.langdrift/state`. Evidence lives in `.audits/evidence/runs`. Preserve operational ownership until cleanup succeeds. Permanent console history deletion advances a purge fence: buffered old events may reconcile cleanup but cannot restore erased history. Already acknowledged local event copies are removed; operational state remains separate from history.
+Private kubeconfig, operation ledgers, connection records, credentials and pending events live under `.langdrift/agent/state`. Evidence lives in each runtime's `evidence/` folder, keyed by execution, and a runtime that was started without a plan gets a `run.json` of kind `execution`. Preserve operational ownership until cleanup succeeds. Permanent console history deletion advances a purge fence: buffered old events may reconcile cleanup but cannot restore erased history. Already acknowledged local event copies are removed; operational state remains separate from history.
 
 ## Tests and verification limits
 

@@ -27,7 +27,7 @@ func TestExecutor_Run(t *testing.T) {
 	t.Parallel()
 
 	invocation := application.HookInvocation{
-		Script:      application.HookScript{Path: "/workspace/.langdrift/runtimes/demo/hooks/seed.sh", Directory: "/workspace/.langdrift/runtimes/demo"},
+		Script:      application.HookScript{Path: "/workspace/.langdrift/microruntimes/runtimes/demo/hooks/seed.sh", Directory: "/workspace/.langdrift/microruntimes/runtimes/demo"},
 		ProjectRoot: "/workspace",
 		Runtime:     "demo",
 		RunID:       "run-1",

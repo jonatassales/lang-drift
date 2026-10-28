@@ -35,8 +35,8 @@ func validDescriptor(t testing.TB) microruntime.Descriptor {
 func TestConfigurationDirectory(t *testing.T) {
 	t.Parallel()
 
-	if got := microruntime.ConfigurationDirectory(identifier(t, "demo")).String(); got != ".langdrift/runtimes/demo" {
-		t.Fatalf("ConfigurationDirectory() = %q, want .langdrift/runtimes/demo", got)
+	if got := microruntime.ConfigurationDirectory(identifier(t, "demo")).String(); got != ".langdrift/microruntimes/runtimes/demo" {
+		t.Fatalf("ConfigurationDirectory() = %q, want .langdrift/microruntimes/runtimes/demo", got)
 	}
 }
 
@@ -75,7 +75,7 @@ func TestDescriptor_Validate(t *testing.T) {
 		web             = identifier(t, "web")
 		batch           = identifier(t, "batch")
 		apiComponent    = relativePath(t, "services/api")
-		configComponent = relativePath(t, ".langdrift/runtimes/demo/web")
+		configComponent = relativePath(t, ".langdrift/microruntimes/runtimes/demo/web")
 		webManifests    = relativePath(t, "units/web/kubernetes")
 		seed            = identifier(t, "seed")
 		textHook        = relativePath(t, "hooks/seed.txt")

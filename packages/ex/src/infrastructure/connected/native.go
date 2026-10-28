@@ -617,7 +617,7 @@ func (native Native) Migrate(ctx context.Context, owner project.Project, id stri
 // references. Existing native files, source paths and evidence remain intact.
 func (native Native) migrationSource(owner project.Project, runtime microruntime.Identifier) (microruntime.Descriptor, bool, error) {
 	source := configuration.Files{}
-	target, err := files.Within(owner.Root, ".langdrift/state/migrations/"+runtime.String()+"/schema.json")
+	target, err := files.Within(owner.Root, ".langdrift/agent/state/migrations/"+runtime.String()+"/schema.json")
 	if err != nil {
 		return microruntime.Descriptor{}, false, err
 	}
@@ -666,7 +666,7 @@ func (native Native) migrationSource(owner project.Project, runtime microruntime
 
 // readIntent loads the digests an earlier materialization intended to write.
 func (native Native) readIntent(owner project.Project, runtime string) (map[string]string, error) {
-	path, err := files.Within(owner.Root, ".langdrift/state/runtimes/"+runtime+"/materialize-intent.json")
+	path, err := files.Within(owner.Root, ".langdrift/agent/state/runtimes/"+runtime+"/materialize-intent.json")
 	if err != nil {
 		return nil, err
 	}
@@ -686,7 +686,7 @@ func (native Native) readIntent(owner project.Project, runtime string) (map[stri
 
 // writeIntent records what the current materialization is about to write.
 func (native Native) writeIntent(owner project.Project, runtime string, managed map[string]string) error {
-	path, err := files.Within(owner.Root, ".langdrift/state/runtimes/"+runtime+"/materialize-intent.json")
+	path, err := files.Within(owner.Root, ".langdrift/agent/state/runtimes/"+runtime+"/materialize-intent.json")
 	if err != nil {
 		return err
 	}
@@ -702,7 +702,7 @@ func (native Native) writeIntent(owner project.Project, runtime string, managed 
 
 // buildLog opens the runtime's private build log for one start.
 func (native Native) buildLog(owner project.Project, runtime string) (*os.File, string, error) {
-	directory, err := files.Within(owner.Root, ".langdrift/state/runtimes/"+runtime)
+	directory, err := files.Within(owner.Root, ".langdrift/agent/state/runtimes/"+runtime)
 	if err != nil {
 		return nil, "", err
 	}
@@ -833,7 +833,7 @@ func (native Native) buildTree(ctx context.Context, owner project.Project) (stri
 }
 
 func copyBuildTree(ctx context.Context, owner project.Project, names []string) (string, func(), error) {
-	parent, err := files.Within(owner.Root, ".langdrift/state/builds")
+	parent, err := files.Within(owner.Root, ".langdrift/agent/state/builds")
 	if err != nil {
 		return "", nil, err
 	}
@@ -892,7 +892,11 @@ func copyBuildTree(ctx context.Context, owner project.Project, names []string) (
 }
 
 func verifyManaged(owner project.Project, record app.Connection) error {
-	root, err := files.Existing(owner.Root, ".langdrift/runtimes/"+record.RuntimeID)
+	runtime, err := microruntime.ParseIdentifier(record.RuntimeID)
+	if err != nil {
+		return err
+	}
+	root, err := files.Existing(owner.Root, microruntime.ConfigurationDirectory(runtime).String())
 	if err != nil {
 		return err
 	}

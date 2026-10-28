@@ -23,7 +23,7 @@ func TestLocker_Lock(t *testing.T) {
 		t.Fatal("a second operation acquired the project lock")
 	}
 
-	if _, err := os.Stat(filepath.Join(owner.Root, ".langdrift", "state", "cluster.lock")); err != nil {
+	if _, err := os.Stat(filepath.Join(owner.Root, ".langdrift", "agent", "state", "cluster.lock")); err != nil {
 		t.Fatalf("project lock file: %v", err)
 	}
 }
