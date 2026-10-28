@@ -123,15 +123,15 @@ func (handler Handler) route(request *http.Request) (any, error) {
 		if folder == "" {
 			folder = "/seeds"
 		}
-		return map[string]any{"source": "stub", "path": folder, "parent": nil, "folders": []map[string]string{{"name": "exphere-studio", "path": "/seeds/exphere-studio"}, {"name": "runtime-lab", "path": "/seeds/runtime-lab"}}}, nil
+		return map[string]any{"source": "stub", "path": folder, "parent": nil, "folders": []map[string]string{{"name": "microruntimes", "path": "/seeds/microruntimes"}, {"name": "vision", "path": "/seeds/vision"}}}, nil
 	}
 	if path == "home" && method == http.MethodGet {
 		return handler.home(), nil
 	}
 	parts := strings.Split(path, "/")
 	switch parts[0] {
-	case "projects":
-		return handler.projects(request, parts[1:])
+	case "products":
+		return handler.products(request, parts[1:])
 	case "runtimes":
 		return handler.runtimes(request, parts[1:])
 	}
@@ -152,9 +152,9 @@ func (handler Handler) home() any {
 			}
 		}
 		if active {
-			project, _ := catalog.Project(widget.Runtime.ProjectID)
-			running = append(running, map[string]any{"runtime": widget.Runtime, "projectName": project.Name, "executions": widget.Executions})
+			product, _ := catalog.Product(widget.Runtime.ProductID)
+			running = append(running, map[string]any{"runtime": widget.Runtime, "productName": product.Name, "executions": widget.Executions})
 		}
 	}
-	return map[string]any{"source": "stub", "projects": catalog.Projects, "running": running, "unknownCount": unknown}
+	return map[string]any{"source": "stub", "products": catalog.Products, "running": running, "unknownCount": unknown}
 }

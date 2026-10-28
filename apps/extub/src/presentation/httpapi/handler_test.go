@@ -67,24 +67,24 @@ func TestPerRuntimeLifecycleFences(t *testing.T) {
 		}
 	}
 	_, home := call(t, handler, "GET", "/console/home", nil)
-	if len(home["projects"].([]any)) != 2 || len(home["running"].([]any)) != 3 {
+	if len(home["products"].([]any)) != 2 || len(home["running"].([]any)) != 3 {
 		t.Fatal("an individual action changed unrelated fixtures")
 	}
-	_, created := call(t, handler, "POST", "/console/projects", map[string]string{"path": "/seeds/new", "name": "Empty"})
-	_, duplicate := call(t, handler, "POST", "/console/projects", map[string]string{"path": "/seeds/./new"})
-	if created["project"].(map[string]any)["id"] != duplicate["project"].(map[string]any)["id"] {
+	_, created := call(t, handler, "POST", "/console/products", map[string]string{"path": "/seeds/new", "name": "Empty"})
+	_, duplicate := call(t, handler, "POST", "/console/products", map[string]string{"path": "/seeds/./new"})
+	if created["product"].(map[string]any)["id"] != duplicate["product"].(map[string]any)["id"] {
 		t.Fatal("duplicate folder identity")
 	}
 	if len(store.Snapshot().Runtimes) != 4 {
 		t.Fatal("registration created a runtime")
 	}
-	first.ProjectID = created["project"].(map[string]any)["id"].(string)
+	first.ProductID = created["product"].(map[string]any)["id"].(string)
 	status, saved := call(t, handler, "POST", "/console/runtimes", first)
 	if status != 200 || saved["runtime"].(map[string]any)["desiredState"] != "stopped" {
 		t.Fatal("creation started a fixture")
 	}
 }
-func TestHTTPBoundaryAndProjectIsolation(t *testing.T) {
+func TestHTTPBoundaryAndProductIsolation(t *testing.T) {
 	handler, store := fixture(t)
 	for _, check := range []struct{ host, origin string }{{"attacker.test", ""}, {"127.0.0.1:3401", "https://foreign.example"}} {
 		request := httptest.NewRequest("GET", "http://127.0.0.1:3401/health", nil)
@@ -96,14 +96,14 @@ func TestHTTPBoundaryAndProjectIsolation(t *testing.T) {
 			t.Fatal("accepted foreign request")
 		}
 	}
-	_, list := call(t, handler, "GET", "/console/runtimes?projectId=seed-lab", nil)
+	_, list := call(t, handler, "GET", "/console/runtimes?productId=seed-vision", nil)
 	if len(list["widgets"].([]any)) != 0 {
-		t.Fatal("cross-project widgets")
+		t.Fatal("cross-product widgets")
 	}
-	_, secret := call(t, handler, "POST", "/console/projects/seed-project/secrets", map[string]string{"name": "Fixture"})
+	_, secret := call(t, handler, "POST", "/console/products/seed-microruntimes/secrets", map[string]string{"name": "Fixture"})
 	id := secret["credential"].(map[string]any)["id"].(string)
-	if status, _ := call(t, handler, "DELETE", "/console/projects/seed-lab/secrets/"+id, nil); status != 404 {
-		t.Fatal("cross-project revocation")
+	if status, _ := call(t, handler, "DELETE", "/console/products/seed-vision/secrets/"+id, nil); status != 404 {
+		t.Fatal("cross-product revocation")
 	}
 	if status, _ := call(t, handler, "POST", "/console/runtimes", map[string]any{}); status != 400 {
 		t.Fatal("invalid runtime accepted")
@@ -114,9 +114,9 @@ func TestHTTPBoundaryAndProjectIsolation(t *testing.T) {
 		t.Fatal("read aliases store state")
 	}
 	for i := 0; i < 20; i++ {
-		_, _ = handler.Service.CreateProject("/seeds/"+time.Now().String(), "Bounded")
+		_, _ = handler.Service.CreateProduct("/seeds/"+time.Now().String(), "Bounded")
 	}
-	if len(store.Snapshot().Projects) > 16 {
-		t.Fatal("unbounded projects")
+	if len(store.Snapshot().Products) > 16 {
+		t.Fatal("unbounded products")
 	}
 }

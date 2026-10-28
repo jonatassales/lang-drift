@@ -17,7 +17,7 @@ func TestActivityPagesAndGeneratedSecrets(t *testing.T) {
 		}
 	}
 	for _, kind := range []string{"executions", "history"} {
-		route := "/console/projects/" + runtime.ProjectID + "/" + kind
+		route := "/console/products/" + runtime.ProductID + "/" + kind
 		code, first := call(t, handler, "GET", route, nil)
 		if code != 200 || len(first["items"].([]any)) != 50 || first["nextCursor"] == nil {
 			t.Fatalf("invalid first page: %v", first)
@@ -43,12 +43,12 @@ func TestActivityPagesAndGeneratedSecrets(t *testing.T) {
 			t.Fatal("invalid cursor accepted")
 		}
 	}
-	code, secret := call(t, handler, "POST", "/console/projects/"+runtime.ProjectID+"/secrets", map[string]any{})
+	code, secret := call(t, handler, "POST", "/console/products/"+runtime.ProductID+"/secrets", map[string]any{})
 	if code != 200 || secret["secret"] == "" {
 		t.Fatal("secret not generated")
 	}
-	_, listed := call(t, handler, "GET", "/console/projects/"+store.Snapshot().Projects[1].ID+"/history", nil)
+	_, listed := call(t, handler, "GET", "/console/products/"+store.Snapshot().Products[1].ID+"/history", nil)
 	if len(listed["items"].([]any)) != 0 {
-		t.Fatal("project data leaked")
+		t.Fatal("product data leaked")
 	}
 }

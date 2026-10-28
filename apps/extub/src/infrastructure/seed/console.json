@@ -1,12 +1,12 @@
 {
 	"source": "stub",
-	"projects": [
+	"products": [
 		{
-			"id": "seed-project",
-			"name": "Exphere Studio",
+			"id": "seed-microruntimes",
+			"name": "Microruntimes",
 			"source": {
 				"kind": "local",
-				"path": "/seeds/exphere-studio"
+				"path": "/seeds/microruntimes"
 			},
 			"ref": "",
 			"components": [
@@ -254,55 +254,22 @@
 			]
 		},
 		{
-			"id": "seed-lab",
-			"name": "Runtime Lab",
+			"id": "seed-vision",
+			"name": "Vision",
 			"source": {
 				"kind": "local",
-				"path": "/seeds/runtime-lab"
+				"path": "/seeds/vision"
 			},
 			"ref": "",
-			"components": [
-				{
-					"name": "gateway",
-					"path": "gateway",
-					"kind": "dockerfile",
-					"image": "gateway:seed",
-					"port": 3000,
-					"readinessPath": "/health",
-					"build": {
-						"executable": "docker",
-						"args": ["build", "-t", "gateway:seed", "gateway"]
-					},
-					"stacks": ["nodejs"]
-				},
-				{
-					"name": "worker",
-					"path": "worker",
-					"kind": "dockerfile",
-					"image": "worker:seed",
-					"port": 3001,
-					"readinessPath": "/health",
-					"build": {
-						"executable": "docker",
-						"args": ["build", "-t", "worker:seed", "worker"]
-					},
-					"stacks": ["python"]
-				}
-			],
-			"createdAt": "2026-10-20T12:00:00Z",
-			"componentLinks": [
-				{
-					"from": "gateway",
-					"to": "worker"
-				}
-			]
+			"components": [],
+			"createdAt": "2026-10-20T12:00:00Z"
 		}
 	],
 	"runtimes": [
 		{
 			"id": "seed-runtime-1",
 			"nativeRuntimeId": "seed-runtime-1",
-			"projectId": "seed-project",
+			"productId": "seed-microruntimes",
 			"name": "Ticket 02 \u00b7 Commerce platform",
 			"components": [
 				{
@@ -506,7 +473,7 @@
 		{
 			"id": "seed-runtime-2",
 			"nativeRuntimeId": "seed-runtime-2",
-			"projectId": "seed-project",
+			"productId": "seed-microruntimes",
 			"name": "Ticket 06 \u00b7 Memory indexing",
 			"components": [
 				{
@@ -580,7 +547,7 @@
 		{
 			"id": "seed-runtime-3",
 			"nativeRuntimeId": "seed-runtime-3",
-			"projectId": "seed-project",
+			"productId": "seed-microruntimes",
 			"name": "Ticket 11 \u00b7 Batch processing",
 			"components": [
 				{
@@ -654,7 +621,7 @@
 		{
 			"id": "seed-runtime-4",
 			"nativeRuntimeId": "seed-runtime-4",
-			"projectId": "seed-project",
+			"productId": "seed-microruntimes",
 			"name": "Ticket 15 \u00b7 Integration checks",
 			"components": [
 				{

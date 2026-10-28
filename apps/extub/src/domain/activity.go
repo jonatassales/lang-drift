@@ -70,8 +70,8 @@ func (catalog *Catalog) RecordActivity(id, action string, now time.Time) {
 }
 
 // Activity uses monotonically increasing positions, so inserts do not shift cursors.
-func (catalog Catalog) Activity(project, kind, cursor string, now time.Time) (map[string]any, error) {
-	if _, err := catalog.Project(project); err != nil {
+func (catalog Catalog) Activity(product, kind, cursor string, now time.Time) (map[string]any, error) {
+	if _, err := catalog.Product(product); err != nil {
 		return nil, err
 	}
 	before := int64(1<<53 - 1)
@@ -87,7 +87,7 @@ func (catalog Catalog) Activity(project, kind, cursor string, now time.Time) (ma
 	positions := []int64{}
 	belongs := func(runtime string) bool {
 		index := catalog.RuntimeIndex(runtime)
-		return index >= 0 && catalog.Runtimes[index].ProjectID == project
+		return index >= 0 && catalog.Runtimes[index].ProductID == product
 	}
 	if kind == "history" {
 		for i := len(catalog.EventRecords) - 1; i >= 0; i-- {

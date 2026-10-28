@@ -21,9 +21,9 @@ func (handler Handler) runtimes(request *http.Request, parts []string) (any, err
 		}
 		widgets := []domain.Widget{}
 		runtimes := []domain.Runtime{}
-		project := request.URL.Query().Get("projectId")
+		product := request.URL.Query().Get("productId")
 		for _, widget := range handler.Service.Widgets(0) {
-			if project != "" && widget.Runtime.ProjectID != project {
+			if product != "" && widget.Runtime.ProductID != product {
 				continue
 			}
 			widgets = append(widgets, widget)

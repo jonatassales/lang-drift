@@ -1,4 +1,4 @@
-// Package application owns the seed use cases; it never executes project recipes.
+// Package application owns the seed use cases; it never executes product recipes.
 package application
 
 import (
@@ -26,28 +26,28 @@ func (service Service) Snapshot() domain.Catalog { return service.Store.Snapshot
 func (service Service) Widgets(sequence uint64) []domain.Widget {
 	return service.Snapshot().Widgets(service.Now(), sequence)
 }
-func (service Service) CreateProject(folder, name string) (domain.Project, error) {
+func (service Service) CreateProduct(folder, name string) (domain.Product, error) {
 	if !strings.HasPrefix(folder, "/") || len(folder) > 1024 || strings.ContainsRune(folder, 0) || len(name) > 100 {
-		return domain.Project{}, domain.ErrInvalid
+		return domain.Product{}, domain.ErrInvalid
 	}
 	folder = path.Clean(folder)
 	name = strings.TrimSpace(name)
 	if name == "" {
 		name = path.Base(folder)
 	}
-	var result domain.Project
+	var result domain.Product
 	err := service.Store.Update(func(catalog *domain.Catalog) error {
-		for _, project := range catalog.Projects {
-			if project.Source.Path == folder {
-				result = project
+		for _, product := range catalog.Products {
+			if product.Source.Path == folder {
+				result = product
 				return nil
 			}
 		}
-		if len(catalog.Projects) >= 16 {
+		if len(catalog.Products) >= 16 {
 			return domain.ErrLimit
 		}
-		result = domain.Project{ID: fmt.Sprintf("seed-project-%d", len(catalog.Projects)+1), Name: name, Source: domain.Source{Kind: "local", Path: folder}, Components: []domain.Component{}, CreatedAt: service.Now().UTC().Format(time.RFC3339Nano)}
-		catalog.Projects = append([]domain.Project{result}, catalog.Projects...)
+		result = domain.Product{ID: fmt.Sprintf("seed-product-%d", len(catalog.Products)+1), Name: name, Source: domain.Source{Kind: "local", Path: folder}, Components: []domain.Component{}, CreatedAt: service.Now().UTC().Format(time.RFC3339Nano)}
+		catalog.Products = append([]domain.Product{result}, catalog.Products...)
 		return nil
 	})
 	return result, err
@@ -76,7 +76,7 @@ func (service Service) SaveRuntime(id string, input domain.Runtime) (domain.Runt
 			result = current
 			return nil
 		}
-		if _, err := catalog.Project(input.ProjectID); err != nil {
+		if _, err := catalog.Product(input.ProductID); err != nil {
 			return err
 		}
 		if len(catalog.Runtimes) >= 16 {
@@ -132,14 +132,14 @@ func (service Service) Operate(id, action string) error {
 		return nil
 	})
 }
-func (service Service) CreateSecret(project, name string) (domain.Secret, error) {
+func (service Service) CreateSecret(product, name string) (domain.Secret, error) {
 	name = strings.TrimSpace(name)
 	if len(name) > 100 {
 		return domain.Secret{}, domain.ErrInvalid
 	}
 	var result domain.Secret
 	err := service.Store.Update(func(catalog *domain.Catalog) error {
-		if _, err := catalog.Project(project); err != nil {
+		if _, err := catalog.Product(product); err != nil {
 			return err
 		}
 		if len(catalog.Secrets) >= 32 {
@@ -148,17 +148,17 @@ func (service Service) CreateSecret(project, name string) (domain.Secret, error)
 		if name == "" {
 			name = fmt.Sprintf("Connection %d", len(catalog.Secrets)+1)
 		}
-		result = domain.Secret{ID: fmt.Sprintf("seed-secret-%d", len(catalog.Secrets)+1), ProjectID: project, Name: name, CreatedAt: service.Now().UTC().Format(time.RFC3339Nano)}
+		result = domain.Secret{ID: fmt.Sprintf("seed-secret-%d", len(catalog.Secrets)+1), ProductID: product, Name: name, CreatedAt: service.Now().UTC().Format(time.RFC3339Nano)}
 		catalog.Secrets = append(catalog.Secrets, result)
 		return nil
 	})
 	return result, err
 }
-func (service Service) RevokeSecret(project, id string) error {
+func (service Service) RevokeSecret(product, id string) error {
 	return service.Store.Update(func(catalog *domain.Catalog) error {
 		for i := range catalog.Secrets {
 			secret := &catalog.Secrets[i]
-			if secret.ID == id && secret.ProjectID == project {
+			if secret.ID == id && secret.ProductID == product {
 				now := service.Now().UTC().Format(time.RFC3339Nano)
 				secret.RevokedAt = &now
 				return nil

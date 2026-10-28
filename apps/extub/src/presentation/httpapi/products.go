@@ -5,16 +5,16 @@ import (
 	"net/http"
 )
 
-func (handler Handler) projects(request *http.Request, parts []string) (any, error) {
+func (handler Handler) products(request *http.Request, parts []string) (any, error) {
 	method := request.Method
 	if len(parts) == 0 {
 		if method == http.MethodGet {
 			catalog := handler.Service.Snapshot()
-			runtimeProjects := map[string]string{}
+			runtimeProducts := map[string]string{}
 			for _, runtime := range catalog.Runtimes {
-				runtimeProjects[runtime.ID] = runtime.ProjectID
+				runtimeProducts[runtime.ID] = runtime.ProductID
 			}
-			return map[string]any{"source": "stub", "projects": catalog.Projects, "runtimeProjects": runtimeProjects}, nil
+			return map[string]any{"source": "stub", "products": catalog.Products, "runtimeProducts": runtimeProducts}, nil
 		}
 		if method != http.MethodPost {
 			return nil, errMethod
@@ -26,11 +26,11 @@ func (handler Handler) projects(request *http.Request, parts []string) (any, err
 		if err := decode(request, &input); err != nil {
 			return nil, err
 		}
-		project, err := handler.Service.CreateProject(input.Path, input.Name)
-		return envelope("project", project), err
+		product, err := handler.Service.CreateProduct(input.Path, input.Name)
+		return envelope("product", product), err
 	}
 	catalog := handler.Service.Snapshot()
-	project, err := catalog.Project(parts[0])
+	product, err := catalog.Product(parts[0])
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func (handler Handler) projects(request *http.Request, parts []string) (any, err
 		if method != http.MethodGet || len(parts) != 2 {
 			return nil, errMethod
 		}
-		return catalog.Activity(project.ID, action, request.URL.Query().Get("cursor"), handler.Service.Now())
+		return catalog.Activity(product.ID, action, request.URL.Query().Get("cursor"), handler.Service.Now())
 	case "secrets":
 		return handler.secrets(request, parts)
 	case "episodes":
@@ -69,7 +69,7 @@ func (handler Handler) projects(request *http.Request, parts []string) (any, err
 	}
 	unknown := 0
 	for _, widget := range catalog.Widgets(handler.Service.Now(), 0) {
-		if widget.Runtime.ProjectID != project.ID {
+		if widget.Runtime.ProductID != product.ID {
 			continue
 		}
 		for _, execution := range widget.Executions {
@@ -78,15 +78,15 @@ func (handler Handler) projects(request *http.Request, parts []string) (any, err
 			}
 		}
 	}
-	return map[string]any{"source": "stub", "project": project, "agent": map[string]any{"state": "connected", "lastSeenAt": handler.Service.Now().UTC()}, "unknownCount": unknown}, nil
+	return map[string]any{"source": "stub", "product": product, "agent": map[string]any{"state": "connected", "lastSeenAt": handler.Service.Now().UTC()}, "unknownCount": unknown}, nil
 }
 func (handler Handler) secrets(request *http.Request, parts []string) (any, error) {
-	project := parts[0]
+	product := parts[0]
 	switch request.Method {
 	case http.MethodGet:
 		own := []domain.Secret{}
 		for _, secret := range handler.Service.Snapshot().Secrets {
-			if secret.ProjectID == project {
+			if secret.ProductID == product {
 				own = append(own, secret)
 			}
 		}
@@ -101,13 +101,13 @@ func (handler Handler) secrets(request *http.Request, parts []string) (any, erro
 		if err := decode(request, &input); err != nil {
 			return nil, err
 		}
-		secret, err := handler.Service.CreateSecret(project, input.Name)
+		secret, err := handler.Service.CreateSecret(product, input.Name)
 		return map[string]any{"source": "stub", "credential": secret, "secret": "synthetic-" + secret.ID + "-not-a-credential"}, err
 	case http.MethodDelete:
 		if len(parts) != 3 {
 			return nil, domain.ErrNotFound
 		}
-		return envelope("revoked", true), handler.Service.RevokeSecret(project, parts[2])
+		return envelope("revoked", true), handler.Service.RevokeSecret(product, parts[2])
 	default:
 		return nil, errMethod
 	}

@@ -39,7 +39,7 @@ type Configuration struct {
 	LLMBudgetUSD    *float64 `json:"llmBudgetUsd,omitempty"`
 	NativeRuntimeID string   `json:"nativeRuntimeId,omitempty"`
 }
-type Project struct {
+type Product struct {
 	ID             string          `json:"id"`
 	Name           string          `json:"name"`
 	Source         Source          `json:"source"`
@@ -51,7 +51,7 @@ type Project struct {
 type Runtime struct {
 	ID                string          `json:"id"`
 	NativeRuntimeID   string          `json:"nativeRuntimeId"`
-	ProjectID         string          `json:"projectId"`
+	ProductID         string          `json:"productId"`
 	Name              string          `json:"name"`
 	Components        []Component     `json:"components"`
 	Configuration     Configuration   `json:"configuration"`
@@ -67,7 +67,7 @@ type Runtime struct {
 }
 type Secret struct {
 	ID        string  `json:"id"`
-	ProjectID string  `json:"projectId"`
+	ProductID string  `json:"productId"`
 	Name      string  `json:"name"`
 	CreatedAt string  `json:"createdAt"`
 	RevokedAt *string `json:"revokedAt"`
@@ -77,7 +77,7 @@ type Catalog struct {
 	ExecutionRecords []ExecutionRecord `json:"executionRecords"`
 	EventRecords     []EventRecord     `json:"eventRecords"`
 	Source           string            `json:"source"`
-	Projects         []Project         `json:"projects"`
+	Products         []Product         `json:"products"`
 	Runtimes         []Runtime         `json:"runtimes"`
 	Secrets          []Secret          `json:"secrets"`
 	StartedAt        string            `json:"startedAt"`
@@ -105,13 +105,13 @@ func (catalog Catalog) Clone() Catalog {
 	_ = json.Unmarshal(data, &copy)
 	return copy
 }
-func (catalog Catalog) Project(id string) (Project, error) {
-	for _, item := range catalog.Projects {
+func (catalog Catalog) Product(id string) (Product, error) {
+	for _, item := range catalog.Products {
 		if item.ID == id {
 			return item, nil
 		}
 	}
-	return Project{}, ErrNotFound
+	return Product{}, ErrNotFound
 }
 func (catalog Catalog) RuntimeIndex(id string) int {
 	return slices.IndexFunc(catalog.Runtimes, func(item Runtime) bool { return item.ID == id })
@@ -190,13 +190,13 @@ func (catalog Catalog) Widgets(now time.Time, sequence uint64) []Widget {
 		if active {
 			widget.Tone = severity(ratio)
 		}
-		project, _ := catalog.Project(runtime.ProjectID)
+		product, _ := catalog.Product(runtime.ProductID)
 		paths := make(map[string]bool, len(runtime.Components))
 		for _, component := range runtime.Components {
 			paths[component.Path] = true
 		}
 		// Only authored fixture dependencies whose endpoints are in this runtime.
-		for _, link := range project.ComponentLinks {
+		for _, link := range product.ComponentLinks {
 			if paths[link.From] && paths[link.To] {
 				widget.ComponentLinks = append(widget.ComponentLinks, link)
 			}
