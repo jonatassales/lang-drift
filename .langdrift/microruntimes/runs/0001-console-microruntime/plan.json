@@ -1,0 +1,255 @@
+{
+	"version": 1,
+	"sample": true,
+	"run": "0001-console-microruntime",
+	"state": "authorized",
+	"ticket": {
+		"path": ".langdrift/vision/artifacts/tickets/0001-TICKET-console-microruntime.ticket.md",
+		"number": "0001",
+		"slug": "console-microruntime",
+		"title": "Bring the console preview up as a microruntime",
+		"status": "ready-for-agent"
+	},
+	"context": {
+		"sha256": "8eab41020062c36b9e88e094b6b818e312e532974cb12b7cba2ffae5ac667e17",
+		"rule": "sha256 over the sorted path<TAB>sha256 lines of the sources; source hashes are byte hashes until canonical hashing lands",
+		"sources": [
+			{
+				"role": "ticket",
+				"path": ".langdrift/vision/artifacts/tickets/0001-TICKET-console-microruntime.ticket.md",
+				"sha256": "9fdd7a90a8725394ffb06417d572b9a40e78d175cb9dd0010628b8408a41c7ba"
+			},
+			{
+				"role": "prd",
+				"path": ".langdrift/vision/artifacts/prds/0001-PRD-console-preview.prd.md",
+				"sha256": "5cd148d9c61e7eb41f269748b2065931534db5671dbc5bcd1ab5cb8f3af73363"
+			},
+			{
+				"role": "design-doc",
+				"path": ".langdrift/vision/artifacts/designs/0001-DD-console-microruntime.dd.md",
+				"sha256": "5372d90bb43a5849607c79659317f3571bdb89e7429a73e058b2eae493482269"
+			},
+			{
+				"role": "spec",
+				"path": ".langdrift/vision/artifacts/specs/0001-SPEC-console-microruntime.spec.md",
+				"sha256": "e050715bc08f017984480bea038e511f4f52404d8c9046f71bdf636ca0794300"
+			},
+			{
+				"role": "guardrail",
+				"path": ".langdrift/harness/guardrails/0001-finops.gr.md",
+				"sha256": "52dec7dc62975afb1a8b46734a6297e0593a77109aff98c37a224f5c1baea446"
+			},
+			{
+				"role": "envelope",
+				"path": ".langdrift/harness/envelope.json",
+				"sha256": "4d8dce8929f2bfb29cc6ff6357bd21928a08627559ed68d052b6e2e5a50e53b8"
+			},
+			{
+				"role": "budget",
+				"path": ".langdrift/finops/budgets.json",
+				"sha256": "cde4e8ddd35034947e617d97ef34012ad916f24428b57ede1560afc481226a42"
+			},
+			{
+				"role": "gates",
+				"path": ".langdrift/finops/gates.json",
+				"sha256": "a3c8ab50bf43645b8deeafb74e77ee223a85c2f56bdb27ed6d8a06c5de37adc5"
+			},
+			{
+				"role": "forecast",
+				"path": ".langdrift/finops/forecasts.json",
+				"sha256": "87423b1122258a2a02fd39b6db1d1dceba2c6181ecb744f9bc31f77fe3393424"
+			},
+			{
+				"role": "prices",
+				"path": ".langdrift/finops/prices/0001-illustrative.prices.json",
+				"sha256": "47b976b7857720473521fd3be92d5ce93684facb5a8b1ada922a8aa60c10a687"
+			}
+		]
+	},
+	"documents": [
+		{
+			"role": "prd",
+			"file": "0001-PRD-console-preview.prd.md",
+			"read": true,
+			"facts": ["use case: a console preview anyone on the team can run"]
+		},
+		{
+			"role": "design-doc",
+			"file": "0001-DD-console-microruntime.dd.md",
+			"read": true,
+			"facts": [
+				"envelope 2,000m · 3,072 MiB · set by the team",
+				"budget $25.00 per run · set by the team",
+				"one image, two processes"
+			]
+		},
+		{
+			"role": "spec",
+			"file": "0001-SPEC-console-microruntime.spec.md",
+			"read": true,
+			"facts": ["1 component", "3 acceptance criteria"]
+		},
+		{
+			"role": "guardrail",
+			"file": "0001-finops.gr.md",
+			"read": true,
+			"facts": [
+				"FIN-02 · FIN-03 · FIN-04",
+				"review rule, no automatic enforcement"
+			],
+			"criteria": [
+				{
+					"id": "FIN-02",
+					"summary": "estimate before a paid call"
+				},
+				{
+					"id": "FIN-03",
+					"summary": "a budget before a paid run"
+				},
+				{
+					"id": "FIN-04",
+					"summary": "size cpu and memory to the load"
+				}
+			],
+			"enforcement": "none"
+		}
+	],
+	"bounds": {
+		"cpuMillis": {
+			"value": 2000,
+			"source": ".langdrift/harness/envelope.json#default"
+		},
+		"memoryMiB": {
+			"value": 3072,
+			"source": ".langdrift/harness/envelope.json#default"
+		},
+		"ceiling": {
+			"cpuMillis": 4000,
+			"memoryMiB": 6144,
+			"source": ".langdrift/harness/envelope.json#perExecution"
+		},
+		"modelBudgetCents": {
+			"value": 2500,
+			"source": ".langdrift/finops/budgets.json#bounded.perRun"
+		},
+		"notRuntimeFields": ["gpu", "disk"]
+	},
+	"retrieval": {
+		"method": "structured",
+		"criteria": [
+			"same-component-path",
+			"same-stack",
+			"measured-resources",
+			"measured-tokens"
+		],
+		"keepAtMatches": 2,
+		"considered": [],
+		"note": "first run of this project; no earlier run to cite"
+	},
+	"sizing": {
+		"basis": "spec-and-envelope",
+		"measuredRunsCited": [],
+		"note": "no cited run measured cpu or memory · sizing follows the spec, not history"
+	},
+	"suggestion": {
+		"by": "recommendation",
+		"model": "claude-sonnet-5-5",
+		"modelName": "Claude Sonnet 5.5",
+		"effort": "medium",
+		"reasons": [
+			"one component, no broker wiring: high effort is not warranted",
+			"Opus 5.5 at high effort reserves more than the per-run budget"
+		],
+		"authorizedBy": "team"
+	},
+	"components": [
+		{
+			"path": ".",
+			"name": "console",
+			"kind": "web",
+			"technologies": [
+				{
+					"id": "nextjs",
+					"label": "Next.js"
+				},
+				{
+					"id": "go",
+					"label": "Go"
+				}
+			],
+			"image": "langdrift-console:local",
+			"port": 3001,
+			"readinessPath": "/icon.svg",
+			"proposed": {
+				"cpuMillis": 1500,
+				"memoryMiB": 2048
+			},
+			"executed": {
+				"cpuMillis": 2000,
+				"memoryMiB": 3072,
+				"rule": "equal split of the runtime envelope; runtime.md v1 carries no per-component share"
+			}
+		}
+	],
+	"totals": {
+		"proposed": {
+			"cpuMillis": 1500,
+			"memoryMiB": 2048
+		},
+		"bounded": {
+			"cpuMillis": 2000,
+			"memoryMiB": 3072
+		},
+		"headroom": {
+			"cpuMillis": 500,
+			"memoryMiB": 1024
+		}
+	},
+	"materialization": {
+		"deployments": 1,
+		"replicasEach": 1
+	},
+	"price": {
+		"source": ".langdrift/finops/prices/0001-illustrative.prices.json",
+		"readOn": "2026-10-06",
+		"runtimePriced": false,
+		"note": "the runtime has no price source; cpu and memory stay in units"
+	},
+	"checks": [
+		{
+			"id": "schema",
+			"result": "passed",
+			"errors": 0
+		},
+		{
+			"id": "ports-distinct",
+			"result": "passed",
+			"detail": "3001"
+		},
+		{
+			"id": "images-resolved",
+			"result": "passed",
+			"detail": "langdrift-console:local"
+		},
+		{
+			"id": "recipe-allowed",
+			"result": "passed",
+			"detail": "committed script platform/microruntime/console/build-image.sh"
+		},
+		{
+			"id": "within-ceiling",
+			"result": "passed",
+			"detail": "2,000m of 4,000m · 3,072 MiB of 6,144 MiB"
+		}
+	],
+	"runtime": {
+		"path": ".langdrift/microruntimes/runtimes/console-local/runtime.md",
+		"revision": 1,
+		"sha256": "850298225316b7e66427aeafdf3210b323c65b4a4aefe0f6a81dba3b25717720",
+		"state": "authorized"
+	},
+	"contractGaps": [
+		"per-component cpu and memory are not runtime.md v1 fields, so the proposal and the execution can differ",
+		"technologies are not runtime.md v1 fields; the plan keeps them for display"
+	]
+}

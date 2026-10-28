@@ -1,0 +1,60 @@
+{
+	"version": 1,
+	"status": "draft",
+	"gates": [
+		{
+			"id": "FG-01",
+			"name": "price-source-required",
+			"criterion": "FIN-02",
+			"when": "before-authorization",
+			"blocksIf": "the plan has paid work and no dated price source covers it",
+			"action": "block",
+			"enforcement": "planned"
+		},
+		{
+			"id": "FG-02",
+			"name": "budget-required",
+			"criterion": "FIN-03",
+			"when": "before-authorization",
+			"blocksIf": "the ticket has no allocation in budgets.json",
+			"action": "block",
+			"enforcement": "planned"
+		},
+		{
+			"id": "FG-03",
+			"name": "reservation-within-bounds",
+			"criterion": "FIN-03",
+			"when": "before-authorization",
+			"blocksIf": "estimate plus margin exceeds the per-run cap, the ticket allocation or what is left of the period",
+			"action": "pause",
+			"enforcement": "planned"
+		},
+		{
+			"id": "FG-04",
+			"name": "reservation-exhausted",
+			"criterion": "FIN-03",
+			"when": "during-run",
+			"blocksIf": "observed spend reaches the reservation",
+			"action": "pause-paid-calls",
+			"enforcement": "planned"
+		},
+		{
+			"id": "FG-05",
+			"name": "overspend-acknowledged",
+			"criterion": "FIN-03",
+			"when": "before-authorization",
+			"blocksIf": "an earlier run of the ticket has overspend the owner has not acknowledged",
+			"action": "require-owner",
+			"enforcement": "planned"
+		},
+		{
+			"id": "FG-06",
+			"name": "billing-pending",
+			"criterion": "FIN-02",
+			"when": "after-run",
+			"blocksIf": "the provider has not billed the run yet",
+			"action": "keep-provisional",
+			"enforcement": "guidance"
+		}
+	]
+}

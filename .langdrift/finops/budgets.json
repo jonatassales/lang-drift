@@ -1,0 +1,19 @@
+{
+	"version": 1,
+	"status": "draft",
+	"owner": "team",
+	"currency": "USD",
+	"period": "2026-10",
+	"bounded": {
+		"periodCents": 50000,
+		"perRunCents": 2500,
+		"reserveMarginPercent": 20
+	},
+	"allocations": [
+		{
+			"ticket": "0001-TICKET-console-microruntime",
+			"cents": 2500
+		}
+	],
+	"unallocatedCents": 47500
+}

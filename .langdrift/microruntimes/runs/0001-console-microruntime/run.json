@@ -1,0 +1,123 @@
+{
+	"version": 1,
+	"sample": true,
+	"id": "0001-console-microruntime",
+	"kind": "ticket",
+	"ticket": ".langdrift/vision/artifacts/tickets/0001-TICKET-console-microruntime.ticket.md",
+	"runtime": "console-local",
+	"state": "finished",
+	"outcome": "completed",
+	"proposedTicketStatus": {
+		"status": "in-review",
+		"decidedBy": "owner",
+		"decided": false
+	},
+	"window": {
+		"started": "2026-10-28T13:48:05Z",
+		"finished": "2026-10-28T14:52:30Z"
+	},
+	"files": {
+		"plan": "plan.json",
+		"memory": "0001-console-microruntime.run.md",
+		"ledger": ".langdrift/finops/ledger/0001-console-microruntime.ledger.json",
+		"evidence": "evidence/"
+	},
+	"humanInTheLoop": {
+		"source": ".langdrift/harness/workflow.json",
+		"chosen": ["planning", "review", "merge"]
+	},
+	"laps": [
+		{
+			"number": "0001",
+			"file": "laps/0001.lap.md",
+			"choice": {
+				"model": "claude-opus-5-5",
+				"effort": "high",
+				"by": "owner",
+				"overrode": "suggestion"
+			},
+			"outcome": "paused-at-gate",
+			"gate": "FG-03",
+			"nothingPaid": true
+		},
+		{
+			"number": "0002",
+			"file": "laps/0002.lap.md",
+			"choice": {
+				"model": "claude-sonnet-5-5",
+				"effort": "medium",
+				"by": "owner",
+				"overrode": null
+			},
+			"outcome": "completed",
+			"execution": "exec-5c1e9a",
+			"nothingPaid": false
+		}
+	],
+	"stages": [
+		{
+			"id": "planning",
+			"state": "done",
+			"human": true,
+			"confirmedBy": "owner",
+			"at": "2026-10-28T13:56:40Z"
+		},
+		{
+			"id": "spec",
+			"state": "done",
+			"human": false,
+			"at": "2026-10-28T13:58:02Z"
+		},
+		{
+			"id": "tickets",
+			"state": "done",
+			"human": false,
+			"at": "2026-10-28T13:59:15Z"
+		},
+		{
+			"id": "implement",
+			"state": "done",
+			"human": false,
+			"at": "2026-10-28T14:27:31Z"
+		},
+		{
+			"id": "review",
+			"state": "waiting",
+			"human": true,
+			"at": null
+		},
+		{
+			"id": "merge",
+			"state": "pending",
+			"human": true,
+			"at": null
+		}
+	],
+	"delivery": {
+		"branch": "feat/0001-console-microruntime",
+		"commit": "0000000",
+		"pullRequest": {
+			"number": 0,
+			"title": "feat(console): run the console preview as a microruntime",
+			"state": "ready-for-review"
+		},
+		"checks": [
+			{
+				"name": "Build",
+				"result": "passed"
+			},
+			{
+				"name": "Check",
+				"result": "passed"
+			},
+			{
+				"name": "Test",
+				"result": "passed"
+			},
+			{
+				"name": "Guardrails",
+				"result": "passed"
+			}
+		]
+	}
+}

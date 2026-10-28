@@ -1,0 +1,35 @@
+{
+	"version": 1,
+	"roots": [
+		{
+			"name": "vision",
+			"path": ".langdrift/vision/artifacts"
+		},
+		{
+			"name": "harness",
+			"path": ".langdrift/harness"
+		},
+		{
+			"name": "repository",
+			"path": ".agents/workflow"
+		}
+	],
+	"match": "exact-file-name",
+	"roles": {
+		"PRD": "prd",
+		"Design doc": "design-doc",
+		"Spec": "spec",
+		"Guardrail": "guardrail",
+		"Blocked by": "ticket"
+	},
+	"links": {
+		"maxDepth": 2,
+		"unresolved": "record"
+	},
+	"limits": {
+		"fileBytes": 1048576,
+		"contextBytes": 4194304
+	},
+	"symlinks": "refuse",
+	"outsideProject": "refuse"
+}
