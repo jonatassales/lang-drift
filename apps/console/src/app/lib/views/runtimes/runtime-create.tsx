@@ -1,0 +1,68 @@
+'use client'
+
+import { useTranslations } from 'next-intl'
+import { useState } from 'react'
+
+import { ErrorNotice } from '@components/error-notice/error-notice'
+import { linkClass } from '@components/form-styles/form-styles'
+import { PageHeading } from '@components/page-heading/page-heading'
+import { useResource } from '@data/resource.hook'
+import type { Product, Runtime } from '@data/types'
+import { Link } from '@i18n/navigation'
+
+import { ConnectionInstructions } from './connection-instructions'
+import { RuntimeForm } from './runtime-form'
+
+interface RuntimeCreateProps {
+	initial: Promise<{ product: Product }>
+	productId: string
+}
+
+export function RuntimeCreate(props: RuntimeCreateProps) {
+	const { productId, initial } = props
+
+	const t = useTranslations('ui')
+	const product = useResource<{ product: Product }>(
+		`products/${productId}`,
+		0,
+		initial,
+	)
+	const [created, setCreated] = useState<{
+		runtime: Runtime
+		secret?: string
+	} | null>(null)
+	if (product.error)
+		return <ErrorNotice error={product.error} retry={product.refresh} />
+	if (!product.data) return null
+
+	return (
+		<>
+			<PageHeading
+				title={created ? created.runtime.name : t('createRuntime')}
+				description={t('configurationIntro')}
+			/>
+			{created ? (
+				<div className="grid max-w-2xl gap-5">
+					<ConnectionInstructions
+						secret={created.secret}
+						local={!!product.data.product.source}
+					/>
+					<Link href={`/runtimes/${created.runtime.id}`} className={linkClass}>
+						{t('viewRuntime')}
+					</Link>
+				</div>
+			) : (
+				<RuntimeForm
+					productId={productId}
+					components={product.data.product.components}
+					onSaved={(runtime, secret) =>
+						setCreated({
+							runtime,
+							secret,
+						})
+					}
+				/>
+			)}
+		</>
+	)
+}

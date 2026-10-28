@@ -86,7 +86,9 @@
 									"!@factories/**",
 									"!@i18n/**",
 									"!@services/**",
-									"!@state"
+									"!@state",
+									"!@ui/**",
+									"!@views/**"
 								]
 							},
 							":BLANK_LINE:",
@@ -99,7 +101,9 @@
 								"@factories/**",
 								"@i18n/**",
 								"@services/**",
-								"@state"
+								"@state",
+								"@ui/**",
+								"@views/**"
 							],
 							":BLANK_LINE:",
 							":PATH:"
