@@ -2,9 +2,7 @@ import { FaqTabs } from '@components/home/faq-tabs'
 import { FaqSectionShell } from '@components/product-page/faq-section-shell'
 import { finopsFaqIds } from '@data/finops-content'
 import { microruntimesFaqIds } from '@data/microruntimes-content'
-import { visionFaqIds } from '@data/vision-faq'
 import {
-	conversionMessages,
 	finopsMessages,
 	headerMessages,
 	microruntimesMessages,
@@ -23,18 +21,9 @@ export function PlatformFaqSection(props: PlatformFaqSectionProps) {
 
 	const copy = platformMessages[locale].faq
 	const names = headerMessages[locale]
-	const vision = conversionMessages[locale].faq.items
 	const microruntimes = microruntimesMessages[locale].faq.items
 	const finops = finopsMessages[locale].faq.items
 	const groups = [
-		{
-			id: 'vision',
-			items: visionFaqIds.map((id) => ({
-				id,
-				...vision[id],
-			})),
-			label: names.vision,
-		},
 		{
 			id: 'microruntimes',
 			items: microruntimesFaqIds.map((id) => ({

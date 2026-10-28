@@ -11,4 +11,3 @@ export apps/console/src/app/lib/components/route-state/page-template.tsx#PageTem
 dependency apps/website:react-dom # Next.js requires it as a peer.
 dependency apps/docs:react-dom # Next.js requires it as a peer.
 dependency apps/console:react-dom # Next.js requires it as a peer.
-class recharts-* # Recharts renders these classes.

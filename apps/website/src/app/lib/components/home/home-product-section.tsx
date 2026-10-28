@@ -12,9 +12,9 @@ interface HomeProductSectionProps {
 	/** The product's demo, with its own grid. */
 	children: ReactNode
 	description: string
-	/** A string, or the Vision question with its chroma span. */
+	/** A string, or a heading with inline markup. */
 	headline: ReactNode
-	id: 'vision' | 'microruntimes' | 'finops'
+	id: 'microruntimes' | 'finops'
 	/** The label of the way to the product page. */
 	link?: string
 	locale: WebsiteLocale
@@ -25,8 +25,8 @@ interface HomeProductSectionProps {
 
 // One product on the home page: the product's icon and name on a row of
 // their own at the right, the question and its answer at the left, the demo,
-// and the way to the product page last. The heading and lead carry the
-// Vision hero's type, so the sections and that page read as one family.
+// and the way to the product page last. Every section shares the heading
+// and lead type.
 export function HomeProductSection(props: HomeProductSectionProps) {
 	const {
 		caption,

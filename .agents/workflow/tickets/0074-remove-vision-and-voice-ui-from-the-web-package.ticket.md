@@ -6,7 +6,9 @@
 
 **Blocked by:** 0072
 
-**Status:** ready-for-agent
+**Status:** wontfix
+
+**Resolution:** absorbed by 0071 and 0072. The dead-code check fails as soon as the website stops importing a module of the shared web package, so each removal left the package together with the website change that orphaned it.
 
 - [ ] No app imports any removed export, and the package's export map lists only modules with a consumer.
 - [ ] The dead-code check passes with no stale allow entry, and the lockfile loses only the removed dependencies.

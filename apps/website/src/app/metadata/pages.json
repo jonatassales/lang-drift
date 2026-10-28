@@ -2,45 +2,23 @@
 	"home": {
 		"en": {
 			"title": "LangDrift — Agentic Platform",
-			"description": "LangDrift is the agentic platform: Vision keeps a product honest to its vision, FinOps keeps agent-assisted delivery honest to a team budget. One domain, one console."
+			"description": "LangDrift is the agentic FinOps platform: Microruntimes bound each run, and FinOps keeps agent-assisted delivery inside a team budget. One domain, one console."
 		},
 		"pt-BR": {
 			"title": "LangDrift — Agentic Platform",
-			"description": "LangDrift é a plataforma agêntica: o Vision mantém o produto fiel à sua visão e o FinOps mantém a entrega assistida por agentes fiel ao orçamento do time. Um domínio, um console."
+			"description": "LangDrift é a plataforma agêntica de FinOps: o Microruntimes delimita cada execução e o FinOps mantém a entrega assistida por agentes dentro do orçamento do time. Um domínio, um console."
 		},
 		"zh-Hant": {
 			"title": "LangDrift — Agentic Platform",
-			"description": "LangDrift 是代理式平台：Vision 讓產品忠於願景，FinOps 讓代理協助的交付忠於團隊預算。同一網域，同一主控台。"
+			"description": "LangDrift 是代理式 FinOps 平台：Microruntimes 為每次執行劃定邊界，FinOps 讓代理協助的交付留在團隊預算之內。同一網域，同一主控台。"
 		},
 		"ja": {
 			"title": "LangDrift — Agentic Platform",
-			"description": "LangDrift はエージェンティック プラットフォームです。Vision はプロダクトをビジョンに忠実に保ち、FinOps はエージェント支援の開発をチーム予算に忠実に保ちます。ひとつのドメイン、ひとつのコンソール。"
+			"description": "LangDrift はエージェンティック FinOps プラットフォームです。Microruntimes が各実行に境界を引き、FinOps がエージェント支援の開発をチーム予算の内側に保ちます。ひとつのドメイン、ひとつのコンソール。"
 		},
 		"vi": {
 			"title": "LangDrift — Agentic Platform",
-			"description": "LangDrift là nền tảng tác tử: Vision giữ sản phẩm trung thành với định hướng, FinOps giữ việc giao hàng có tác tử hỗ trợ trung thành với ngân sách của đội. Một tên miền, một bảng điều khiển."
-		}
-	},
-	"vision": {
-		"en": {
-			"title": "LangDrift Vision — Keep the why.",
-			"description": "Visual product intelligence for understanding how products evolve relative to their vision."
-		},
-		"pt-BR": {
-			"title": "LangDrift Vision — continuamos no comando",
-			"description": "Inteligência visual de produto para entender como os produtos evoluem em relação à sua visão."
-		},
-		"zh-Hant": {
-			"title": "LangDrift Vision — 我們依然掌握方向",
-			"description": "以視覺化產品洞察，了解產品如何相對於願景持續演進。"
-		},
-		"ja": {
-			"title": "LangDrift Vision — 私たちが方向を決める",
-			"description": "製品がビジョンに対してどのように進化しているかを理解するための、視覚的な製品インテリジェンス。"
-		},
-		"vi": {
-			"title": "LangDrift Vision — Giữ lại lý do.",
-			"description": "Thông tin sản phẩm trực quan giúp bạn hiểu cách sản phẩm phát triển so với định hướng."
+			"description": "LangDrift là nền tảng FinOps tác tử: Microruntimes giới hạn từng lần chạy, FinOps giữ việc giao hàng có tác tử hỗ trợ trong ngân sách của đội. Một tên miền, một bảng điều khiển."
 		}
 	},
 	"finops": {
@@ -112,23 +90,23 @@
 	"book-a-demo": {
 		"en": {
 			"title": "LangDrift — Book a demo",
-			"description": "Ask for a walkthrough of the LangDrift platform: Vision, Microruntimes and FinOps, with your questions in mind."
+			"description": "Ask for a walkthrough of the LangDrift platform: Microruntimes and FinOps, with your questions in mind."
 		},
 		"pt-BR": {
 			"title": "LangDrift — Agende uma demo",
-			"description": "Peça uma apresentação da plataforma LangDrift: Vision, Microruntimes e FinOps, com as suas perguntas em mente."
+			"description": "Peça uma apresentação da plataforma LangDrift: Microruntimes e FinOps, com as suas perguntas em mente."
 		},
 		"zh-Hant": {
 			"title": "LangDrift — 預約展示",
-			"description": "預約一次 LangDrift 平台導覽：Vision、Microruntimes 與 FinOps，圍繞你的問題。"
+			"description": "預約一次 LangDrift 平台導覽：Microruntimes 與 FinOps，圍繞你的問題。"
 		},
 		"ja": {
 			"title": "LangDrift — デモを予約",
-			"description": "LangDrift プラットフォームのウォークスルーをご予約ください。Vision、Microruntimes、FinOps を、あなたの質問に沿ってご案内します。"
+			"description": "LangDrift プラットフォームのウォークスルーをご予約ください。Microruntimes と FinOps を、あなたの質問に沿ってご案内します。"
 		},
 		"vi": {
 			"title": "LangDrift — Đặt lịch demo",
-			"description": "Yêu cầu một buổi hướng dẫn về nền tảng LangDrift: Vision, Microruntimes và FinOps, theo câu hỏi của bạn."
+			"description": "Yêu cầu một buổi hướng dẫn về nền tảng LangDrift: Microruntimes và FinOps, theo câu hỏi của bạn."
 		}
 	},
 	"privacy": {

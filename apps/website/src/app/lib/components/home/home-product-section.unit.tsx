@@ -14,7 +14,7 @@ import { headerMessages } from '@i18n/messages/index'
 
 import { HomeProductSection } from './home-product-section'
 
-const vision = platformProduct('vision')
+const microruntimes = platformProduct('microruntimes')
 const finops = platformProduct('finops')
 
 afterEach(() => {
@@ -25,34 +25,32 @@ describe('a home product section', () => {
 	it('names the product, is labelled by its heading and ends with the link', () => {
 		render(
 			<HomeProductSection
-				description="LangDrift shows how your product moved."
-				headline="Why did your Product Vision fall?"
-				id="vision"
-				link="Explore Vision"
+				description="A run is bounded before it starts."
+				headline="How does a run stay bounded?"
+				id="microruntimes"
+				link="Explore Microruntimes"
 				locale="en"
-				product={vision}
+				product={microruntimes}
 			>
 				<p>The demo</p>
 			</HomeProductSection>,
 		)
 
 		const region = screen.getByRole('region', {
-			name: 'Why did your Product Vision fall?',
+			name: 'How does a run stay bounded?',
 		})
 		const demo = screen.getByText('The demo')
-		const link = screen.getByRole('link', { name: 'Explore Vision' })
+		const link = screen.getByRole('link', { name: 'Explore Microruntimes' })
 
-		expect(region.textContent).toContain(headerMessages.en.vision)
+		expect(region.textContent).toContain(headerMessages.en.microruntimes)
 		expect(
 			screen.getByRole('heading', {
 				level: 2,
-				name: 'Why did your Product Vision fall?',
+				name: 'How does a run stay bounded?',
 			}).id,
-		).toBe('vision-heading')
-		expect(
-			screen.getByText('LangDrift shows how your product moved.'),
-		).toBeTruthy()
-		expect(link.getAttribute('href')).toBe('/platform/vision')
+		).toBe('microruntimes-heading')
+		expect(screen.getByText('A run is bounded before it starts.')).toBeTruthy()
+		expect(link.getAttribute('href')).toBe('/platform/microruntimes')
 		expect(
 			demo.compareDocumentPosition(link) & Node.DOCUMENT_POSITION_FOLLOWING,
 		).toBeTruthy()
@@ -93,7 +91,7 @@ describe('a home product section', () => {
 				headline="Keep its context in view."
 				id="microruntimes"
 				locale="en"
-				product={platformProduct('microruntimes')}
+				product={microruntimes}
 			>
 				<p>The orb</p>
 			</HomeProductSection>,

@@ -72,7 +72,7 @@ export function PlatformHero(props: PlatformHeroProps) {
 					<div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
 						<Link
 							className="inline-flex min-h-11 items-center gap-2 rounded-full bg-foreground px-5 text-sm font-semibold whitespace-nowrap text-background transition-opacity hover:opacity-85"
-							href="/platform/vision"
+							href="/platform/finops"
 							locale={locale}
 						>
 							{copy.primaryCta}

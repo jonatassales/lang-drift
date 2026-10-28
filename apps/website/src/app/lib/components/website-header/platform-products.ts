@@ -1,18 +1,8 @@
-import {
-	FinopsIcon,
-	MicroruntimesIcon,
-	VisionIcon,
-} from '@langdrift/web/ui/icons/platform'
+import { FinopsIcon, MicroruntimesIcon } from '@langdrift/web/ui/icons/platform'
 
 // The products the header's Platform menu lists, by their message keys. Each
 // one has a page of its own.
 export const platformProducts = [
-	{
-		label: 'vision',
-		description: 'visionDescription',
-		icon: VisionIcon,
-		href: '/platform/vision',
-	},
 	{
 		label: 'microruntimes',
 		description: 'microruntimesDescription',

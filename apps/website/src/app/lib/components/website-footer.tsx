@@ -2,11 +2,7 @@ import { AgentOrb } from '@langdrift/web/ui/agent-orb'
 import { LogoMark } from '@langdrift/web/ui/brand'
 import { GithubLogo, LinkedinLogo } from '@langdrift/web/ui/icons/server'
 
-import {
-	footerMessages,
-	homeMessages,
-	privacyMessages,
-} from '@i18n/messages/index'
+import { footerMessages, privacyMessages } from '@i18n/messages/index'
 import { Link } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
 
@@ -34,14 +30,14 @@ export function WebsiteFooter(props: WebsiteFooterProps) {
 							<LogoMark size={23} />
 							LangDrift
 						</Link>
-						<p>{homeMessages[locale].footer.description}</p>
+						<p>{copy.description}</p>
 					</div>
 				) : null}
 				<nav aria-label={copy.navigation} className="website-footer-links">
 					{/* <Link href="/pricing" locale={locale}>
             {headerMessages[locale].pricing}
           </Link> */}
-					<Link href="/platform/vision#faq" locale={locale}>
+					<Link href="/#faq" locale={locale}>
 						{copy.faq}
 					</Link>
 					<Link href="/privacy">{privacyMessages[locale].title}</Link>

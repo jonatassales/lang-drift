@@ -2,33 +2,14 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
-import {
-	conversionMessages,
-	finopsMessages,
-	microruntimesMessages,
-} from '@i18n/messages/index'
+import { finopsMessages, microruntimesMessages } from '@i18n/messages/index'
 
 import { FaqTabs } from './faq-tabs'
 
-const vision = conversionMessages.en.faq.items
 const microruntimes = microruntimesMessages.en.faq.items
 const finops = finopsMessages.en.faq.items
 
 const groups = [
-	{
-		id: 'vision',
-		items: [
-			{
-				id: 'meaning',
-				...vision.meaning,
-			},
-			{
-				id: 'tools',
-				...vision.tools,
-			},
-		],
-		label: 'Vision',
-	},
 	{
 		id: 'microruntimes',
 		items: [
@@ -64,24 +45,22 @@ describe('the FAQ by product', () => {
 		render(<FaqTabs groups={groups} tabsLabel="Product" />)
 
 		expect(
-			screen.getByRole('button', { name: vision.meaning.question }),
+			screen.getByRole('button', { name: microruntimes.what.question }),
+		).toBeTruthy()
+		expect(
+			screen.queryByRole('button', { name: finops.budget.question }),
+		).toBeNull()
+
+		fireEvent.click(screen.getByRole('tab', { name: 'FinOps' }))
+
+		expect(
+			screen.getByRole('button', { name: finops.budget.question }),
 		).toBeTruthy()
 		expect(
 			screen.queryByRole('button', { name: microruntimes.what.question }),
 		).toBeNull()
-
-		fireEvent.click(screen.getByRole('tab', { name: 'Microruntimes' }))
-
 		expect(
-			screen.getByRole('button', { name: microruntimes.what.question }),
-		).toBeTruthy()
-		expect(
-			screen.queryByRole('button', { name: vision.meaning.question }),
-		).toBeNull()
-		expect(
-			screen
-				.getByRole('tab', { name: 'Microruntimes' })
-				.getAttribute('aria-selected'),
+			screen.getByRole('tab', { name: 'FinOps' }).getAttribute('aria-selected'),
 		).toBe('true')
 	})
 
@@ -89,13 +68,13 @@ describe('the FAQ by product', () => {
 		render(<FaqTabs groups={groups} tabsLabel="Product" />)
 
 		const question = () =>
-			screen.getByRole('button', { name: vision.meaning.question })
+			screen.getByRole('button', { name: microruntimes.what.question })
 		fireEvent.click(question())
 		expect(question().getAttribute('aria-expanded')).toBe('true')
-		expect(screen.getByText(vision.meaning.answer)).toBeTruthy()
+		expect(screen.getByText(microruntimes.what.answer)).toBeTruthy()
 
 		fireEvent.click(screen.getByRole('tab', { name: 'FinOps' }))
-		fireEvent.click(screen.getByRole('tab', { name: 'Vision' }))
+		fireEvent.click(screen.getByRole('tab', { name: 'Microruntimes' }))
 
 		expect(question().getAttribute('aria-expanded')).toBe('false')
 	})
@@ -103,17 +82,15 @@ describe('the FAQ by product', () => {
 	it('moves the selection with the arrow keys', () => {
 		render(<FaqTabs groups={groups} tabsLabel="Product" />)
 
-		const visionTab = screen.getByRole('tab', { name: 'Vision' })
-		visionTab.focus()
-		fireEvent.keyDown(visionTab, { key: 'ArrowRight' })
+		const microruntimesTab = screen.getByRole('tab', { name: 'Microruntimes' })
+		microruntimesTab.focus()
+		fireEvent.keyDown(microruntimesTab, { key: 'ArrowRight' })
 
 		expect(
-			screen
-				.getByRole('tab', { name: 'Microruntimes' })
-				.getAttribute('aria-selected'),
+			screen.getByRole('tab', { name: 'FinOps' }).getAttribute('aria-selected'),
 		).toBe('true')
 		expect(
-			screen.getByRole('button', { name: microruntimes.what.question }),
+			screen.getByRole('button', { name: finops.budget.question }),
 		).toBeTruthy()
 	})
 })

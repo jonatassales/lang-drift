@@ -2,10 +2,10 @@
 	"en": {
 		"skip": "Skip to the form",
 		"title": "Book a demo",
-		"lead": "Tell us where you work and what you do, and we will walk you through the platform: Vision, Microruntimes and FinOps, with your questions in mind.",
+		"lead": "Tell us where you work and what you do, and we will walk you through the platform: Microruntimes and FinOps, with your questions in mind.",
 		"band": {
 			"title": "Book a demo",
-			"description": "See how Vision keeps the why, how Microruntimes bounds a run and how FinOps keeps delivery inside a team envelope, on a walkthrough with your questions in mind.",
+			"description": "See how Microruntimes bounds a run and how FinOps keeps delivery inside a team envelope, on a walkthrough with your questions in mind.",
 			"cta": "Book a demo"
 		},
 		"form": {
@@ -50,10 +50,10 @@
 	"pt-BR": {
 		"skip": "Ir para o formulário",
 		"title": "Agende uma demo",
-		"lead": "Conte onde você trabalha e o que faz, e mostraremos a plataforma: Vision, Microruntimes e FinOps, com as suas perguntas em mente.",
+		"lead": "Conte onde você trabalha e o que faz, e mostraremos a plataforma: Microruntimes e FinOps, com as suas perguntas em mente.",
 		"band": {
 			"title": "Agende uma demo",
-			"description": "Veja como o Vision guarda o porquê, como o Microruntimes delimita uma execução e como o FinOps mantém a entrega dentro do envelope do time, em uma apresentação feita para as suas perguntas.",
+			"description": "Veja como o Microruntimes delimita uma execução e como o FinOps mantém a entrega dentro do envelope do time, em uma apresentação feita para as suas perguntas.",
 			"cta": "Agende uma demo"
 		},
 		"form": {
@@ -98,10 +98,10 @@
 	"zh-Hant": {
 		"skip": "跳至表單",
 		"title": "預約展示",
-		"lead": "告訴我們你在哪裡工作、做什麼，我們會帶你看過整個平台：Vision、Microruntimes 與 FinOps，並圍繞你的問題。",
+		"lead": "告訴我們你在哪裡工作、做什麼，我們會帶你看過整個平台：Microruntimes 與 FinOps，並圍繞你的問題。",
 		"band": {
 			"title": "預約展示",
-			"description": "看看 Vision 如何留住「為什麼」、Microruntimes 如何為一次執行劃定邊界、FinOps 如何讓交付留在團隊信封之內，由一次圍繞你的問題的導覽呈現。",
+			"description": "看看 Microruntimes 如何為一次執行劃定邊界、FinOps 如何讓交付留在團隊信封之內，由一次圍繞你的問題的導覽呈現。",
 			"cta": "預約展示"
 		},
 		"form": {
@@ -146,10 +146,10 @@
 	"ja": {
 		"skip": "フォームへ移動",
 		"title": "デモを予約",
-		"lead": "所属と役割を教えてください。Vision、Microruntimes、FinOps をひとつのプラットフォームとして、あなたの質問に沿ってご案内します。",
+		"lead": "所属と役割を教えてください。Microruntimes、FinOps をひとつのプラットフォームとして、あなたの質問に沿ってご案内します。",
 		"band": {
 			"title": "デモを予約",
-			"description": "Vision が「なぜ」を保ち、Microruntimes が実行に境界を引き、FinOps が開発をチームのエンベロープの内側に保つ様子を、あなたの質問に沿ったウォークスルーでご覧ください。",
+			"description": "Microruntimes が実行に境界を引き、FinOps が開発をチームのエンベロープの内側に保つ様子を、あなたの質問に沿ったウォークスルーでご覧ください。",
 			"cta": "デモを予約"
 		},
 		"form": {
@@ -194,10 +194,10 @@
 	"vi": {
 		"skip": "Chuyển đến biểu mẫu",
 		"title": "Đặt lịch demo",
-		"lead": "Cho chúng tôi biết bạn làm việc ở đâu và làm gì, chúng tôi sẽ dẫn bạn đi qua nền tảng: Vision, Microruntimes và FinOps, theo những câu hỏi của bạn.",
+		"lead": "Cho chúng tôi biết bạn làm việc ở đâu và làm gì, chúng tôi sẽ dẫn bạn đi qua nền tảng: Microruntimes và FinOps, theo những câu hỏi của bạn.",
 		"band": {
 			"title": "Đặt lịch demo",
-			"description": "Xem cách Vision giữ lại lý do, cách Microruntimes giới hạn một lần chạy và cách FinOps giữ việc giao hàng trong phong bì của đội, trong một buổi hướng dẫn theo câu hỏi của bạn.",
+			"description": "Xem cách Microruntimes giới hạn một lần chạy và cách FinOps giữ việc giao hàng trong phong bì của đội, trong một buổi hướng dẫn theo câu hỏi của bạn.",
 			"cta": "Đặt lịch demo"
 		},
 		"form": {
