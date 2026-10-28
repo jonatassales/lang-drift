@@ -23,10 +23,7 @@ export function MicroruntimesSection(props: MicroruntimesSectionProps) {
 			description={sections.description}
 			headline={sections.title}
 			id="microruntimes"
-			link={{
-				href: '/platform/microruntimes',
-				label: sections.link,
-			}}
+			link={sections.link}
 			locale={locale}
 			product={platformProduct('microruntimes')}
 			summary={copy.hero.summary}

@@ -30,17 +30,10 @@ export function VisionSection(props: VisionSectionProps) {
 			caption={copy.caption}
 			description={copy.description}
 			headline={t.rich('title', {
-				movement: (chunks) => (
-					<ChromaText className="motion-reduce:[animation:none]">
-						{chunks}
-					</ChromaText>
-				),
+				movement: (chunks) => <ChromaText>{chunks}</ChromaText>,
 			})}
 			id="vision"
-			link={{
-				href: '/platform/vision',
-				label: sections.vision.link,
-			}}
+			link={sections.vision.link}
 			locale={locale}
 			product={platformProduct('vision')}
 			summary={copy.summary}

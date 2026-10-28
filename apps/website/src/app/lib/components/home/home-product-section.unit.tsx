@@ -28,10 +28,7 @@ describe('a home product section', () => {
 				description="LangDrift shows how your product moved."
 				headline="Why did your Product Vision fall?"
 				id="vision"
-				link={{
-					href: '/platform/vision',
-					label: 'Explore Vision',
-				}}
+				link="Explore Vision"
 				locale="en"
 				product={vision}
 			>

@@ -29,10 +29,7 @@ export function FinopsSection(props: FinopsSectionProps) {
 				</>
 			}
 			id="finops"
-			link={{
-				href: '/platform/finops',
-				label: sections.link,
-			}}
+			link={sections.link}
 			locale={locale}
 			product={platformProduct('finops')}
 			summary={copy.hero.summary}

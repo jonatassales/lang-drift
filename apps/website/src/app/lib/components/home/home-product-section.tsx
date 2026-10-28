@@ -15,8 +15,8 @@ interface HomeProductSectionProps {
 	/** A string, or the Vision question with its chroma span. */
 	headline: ReactNode
 	id: 'vision' | 'microruntimes' | 'finops' | 'ai-voice'
-	/** The product page; absent while the product has none. */
-	link?: { href: string; label: string }
+	/** The label of the way to the product page; shown while the product has one. */
+	link?: string
 	locale: WebsiteLocale
 	product: PlatformProduct
 	/** What the demo shows, for screen readers. */
@@ -41,6 +41,7 @@ export function HomeProductSection(props: HomeProductSectionProps) {
 	} = props
 
 	const Icon = product.icon
+	const href = 'href' in product ? product.href : undefined
 	const headingId = `${id}-heading`
 	const captionId = `${id}-caption`
 	const summaryId = `${id}-summary`
@@ -87,14 +88,14 @@ export function HomeProductSection(props: HomeProductSectionProps) {
 					{summary}
 				</p>
 			) : null}
-			{link ? (
+			{link && href ? (
 				<p className="mt-8 mb-0">
 					<Link
 						className="smooth-text-link inline-flex min-h-11 items-center gap-2"
-						href={link.href}
+						href={href}
 						locale={locale}
 					>
-						{link.label}
+						{link}
 						<ArrowRightIcon />
 					</Link>
 				</p>
