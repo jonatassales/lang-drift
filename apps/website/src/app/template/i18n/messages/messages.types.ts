@@ -457,4 +457,11 @@ export interface PlatformMessages {
 		// One line under each product in the hero, keyed by its header label.
 		products: Record<'vision' | 'finops' | 'microruntimes' | 'aiVoice', string>
 	}
+	// The home sections' own copy; the headlines Vision and FinOps reuse live
+	// in their catalogs.
+	sections: {
+		vision: { link: string }
+		microruntimes: { title: string; description: string; link: string }
+		finops: { description: string; link: string }
+	}
 }
