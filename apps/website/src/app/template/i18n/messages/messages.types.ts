@@ -464,4 +464,9 @@ export interface PlatformMessages {
 		microruntimes: { title: string; description: string; link: string }
 		finops: { description: string; link: string }
 	}
+	faq: {
+		title: string
+		description: string
+		tabsLabel: string
+	}
 }

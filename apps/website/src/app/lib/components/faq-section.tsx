@@ -1,19 +1,9 @@
 import { BasicAccordion } from '@langdrift/web/vendors/smoothui/basic-accordion'
 
+import { visionFaqIds } from '@data/vision-faq'
 import { conversionMessages } from '@i18n/messages/index'
 import type { WebsiteLocale } from '@i18n/routing'
 import './conversion.css'
-
-const faqIds = [
-	'meaning',
-	'expected',
-	'connection',
-	'tools',
-	// 'trial',
-	// 'free',
-	// 'paid',
-	'availability',
-] as const
 
 interface FaqSectionProps {
 	locale: WebsiteLocale
@@ -39,7 +29,7 @@ export function FaqSection(props: FaqSectionProps) {
 				className="website-faq [&_button]:whitespace-normal!"
 				headingLevel={3}
 				layoutId="website-faq"
-				items={faqIds.map((id) => ({
+				items={visionFaqIds.map((id) => ({
 					id,
 					title: copy.items[id].question,
 					content: <p>{copy.items[id].answer}</p>,
