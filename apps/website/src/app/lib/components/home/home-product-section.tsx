@@ -14,7 +14,7 @@ interface HomeProductSectionProps {
 	description: string
 	/** A string, or a heading with inline markup. */
 	headline: ReactNode
-	id: 'microruntimes' | 'finops'
+	id: PlatformProduct['label']
 	/** The label of the way to the product page. */
 	link?: string
 	locale: WebsiteLocale

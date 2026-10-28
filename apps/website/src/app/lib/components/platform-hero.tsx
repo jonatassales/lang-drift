@@ -5,7 +5,10 @@ import { GravityStars } from '@langdrift/web/vendors/smoothui/gravity-stars'
 import { MagneticField } from '@langdrift/web/vendors/smoothui/magnetic-field'
 import { ShortSlideDown } from '@langdrift/web/vendors/smoothui/short-slide-down'
 
-import { platformProducts } from '@components/website-header/platform-products'
+import {
+	platformProduct,
+	platformProducts,
+} from '@components/website-header/platform-products'
 import { headerMessages, platformMessages } from '@i18n/messages/index'
 import { Link } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
@@ -72,7 +75,7 @@ export function PlatformHero(props: PlatformHeroProps) {
 					<div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
 						<Link
 							className="inline-flex min-h-11 items-center gap-2 rounded-full bg-foreground px-5 text-sm font-semibold whitespace-nowrap text-background transition-opacity hover:opacity-85"
-							href="/platform/finops"
+							href={platformProduct('finops').href}
 							locale={locale}
 						>
 							{copy.primaryCta}
@@ -142,7 +145,7 @@ export function PlatformHero(props: PlatformHeroProps) {
 							id: product.label,
 						}
 					})}
-					label={names.platformMenu}
+					label={names.productList}
 				/>
 			</MagneticField>
 		</section>

@@ -87,18 +87,18 @@ describe('a home product section', () => {
 	it('relates nothing it is not given', () => {
 		render(
 			<HomeProductSection
-				description="Ask about a change."
-				headline="Keep its context in view."
+				description="A run stays inside its envelope."
+				headline="Bounded before it starts."
 				id="microruntimes"
 				locale="en"
 				product={microruntimes}
 			>
-				<p>The orb</p>
+				<p>The session</p>
 			</HomeProductSection>,
 		)
 
 		const region = screen.getByRole('region', {
-			name: 'Keep its context in view.',
+			name: 'Bounded before it starts.',
 		})
 
 		expect(region.getAttribute('aria-describedby')).toBeNull()
