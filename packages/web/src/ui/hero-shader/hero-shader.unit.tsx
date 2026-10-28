@@ -49,6 +49,22 @@ describe('HeroShader markup', () => {
 		expect(canvas).not.toBeNull()
 		expect(canvas?.hasAttribute('data-unavailable')).toBe(false)
 	})
+
+	it('draws in grays when its tone is monochrome, and in the brand otherwise', () => {
+		const neutral = '[--primary:var(--muted-foreground)]'
+		const brand = new DOMParser().parseFromString(
+			renderToString(<HeroShader />),
+			'text/html',
+		).body.firstElementChild
+		const monochrome = new DOMParser().parseFromString(
+			renderToString(<HeroShader tone="monochrome" />),
+			'text/html',
+		).body.firstElementChild
+
+		expect(monochrome?.classList.contains(neutral)).toBe(true)
+		expect(monochrome?.classList.contains('opacity-45')).toBe(true)
+		expect(brand?.classList.contains(neutral)).toBe(false)
+	})
 })
 
 describe('shader palette', () => {

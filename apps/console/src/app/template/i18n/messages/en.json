@@ -33,8 +33,6 @@
 		"email": "Email",
 		"password": "Password",
 		"passwordHint": "Use at least 12 characters.",
-		"signupIntro": "Bring your components together. Operate with evidence.",
-		"loginIntro": "Welcome back to your workspace.",
 		"haveAccount": "Already have an account? Sign in.",
 		"needAccount": "New here? Create an account.",
 		"connectIntro": "Connect the tools that hold your components.",

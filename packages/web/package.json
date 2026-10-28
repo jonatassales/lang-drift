@@ -15,6 +15,7 @@
 		"./ui/brand": "./src/ui/brand/index.ts",
 		"./ui/chroma-text": "./src/ui/chroma-text/index.ts",
 		"./ui/detail-list": "./src/ui/detail-list/index.ts",
+		"./ui/elevated-frame": "./src/ui/elevated-frame/index.ts",
 		"./ui/eyebrow": "./src/ui/eyebrow/index.ts",
 		"./ui/hero-shader": "./src/ui/hero-shader/index.ts",
 		"./ui/icons/arrow": "./src/ui/icons/arrow/index.ts",
