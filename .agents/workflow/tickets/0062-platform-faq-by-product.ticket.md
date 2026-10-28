@@ -8,7 +8,7 @@
 
 **Status:** ready-for-agent
 
-- [ ] The Vision FAQ's id list is exported for reuse; the Vision page's FAQ section is unchanged.
+- [ ] The Vision FAQ's id list moves to a data module the Vision page and the home read; the Vision page's FAQ renders as before.
 - [ ] A `PlatformFaqSection` Server Component builds the three groups from the three product catalogs, labelled with the header's product names, in the product FAQ's shell with the fragment id `faq`, and renders `FaqTabs`.
 - [ ] `FaqTabs` is a Client Component: controlled Animated Tabs, a tab panel per group wired by the tabs' ids, the Basic Accordion mounted only inside the active panel so a switch shows it collapsed.
 - [ ] The platform catalog gains the FAQ's title, description and tab-list label in five locales, drafted for the owner's review.
