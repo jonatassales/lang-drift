@@ -3,7 +3,7 @@
 	"products": [
 		{
 			"id": "seed-microruntimes",
-			"name": "Microruntimes",
+			"name": "LangDrift Studio",
 			"source": {
 				"kind": "local",
 				"path": "/seeds/microruntimes"

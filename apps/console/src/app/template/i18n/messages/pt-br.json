@@ -3,7 +3,7 @@
 		"product": "Produto",
 		"console": "Console",
 		"projects": "Projetos",
-		"runtimes": "Microruntimes",
+		"runtimes": "Runtimes",
 		"connectors": "Conectores",
 		"executions": "Execuções",
 		"history": "Histórico",
@@ -258,7 +258,13 @@
 		"loadMore": "Carregar mais",
 		"generateSecret": "Gerar segredo",
 		"secretCopied": "Copiado",
-		"secretCopyFailed": "Não foi possível acessar a área de transferência. Permita o acesso e tente novamente."
+		"secretCopyFailed": "Não foi possível acessar a área de transferência. Permita o acesso e tente novamente.",
+		"area": "Área",
+		"areas": "Áreas da plataforma",
+		"microruntimes": "Microruntimes",
+		"finops": "FinOps",
+		"costOverview": "Visão de custo",
+		"openAccount": "Menu da conta"
 	},
 	"status": {
 		"running": "Em execução",

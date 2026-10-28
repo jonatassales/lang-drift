@@ -1,6 +1,6 @@
 # extub
 
-The local Go stub API the [console](/apps/console/README.md) reads. It serves FinOps and runtimes only: one seeded project, Microruntimes, with its four runtimes, their executions, history, secrets and FinOps readings, and the routes to create projects and runtimes, start, stop, revoke and load-test them. Every reply is marked `"source": "stub"`; nothing is real.
+The local Go stub API the [console](/apps/console/README.md) reads. It serves FinOps and runtimes only: one seeded project, LangDrift Studio, with its four runtimes, their executions, history, secrets and FinOps readings, and the routes to create projects and runtimes, start, stop, revoke and load-test them. Every reply is marked `"source": "stub"`; nothing is real.
 
 ## Local development
 

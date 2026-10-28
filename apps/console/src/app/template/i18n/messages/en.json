@@ -3,7 +3,7 @@
 		"product": "Product",
 		"console": "Console",
 		"projects": "Projects",
-		"runtimes": "Microruntimes",
+		"runtimes": "Runtimes",
 		"connectors": "Connectors",
 		"executions": "Executions",
 		"history": "History",
@@ -258,7 +258,13 @@
 		"loadMore": "Load more",
 		"generateSecret": "Generate Secret",
 		"secretCopied": "Copied",
-		"secretCopyFailed": "Clipboard access failed. Allow clipboard access and try again."
+		"secretCopyFailed": "Clipboard access failed. Allow clipboard access and try again.",
+		"area": "Area",
+		"areas": "Platform areas",
+		"microruntimes": "Microruntimes",
+		"finops": "FinOps",
+		"costOverview": "Cost overview",
+		"openAccount": "Account menu"
 	},
 	"status": {
 		"running": "Running",

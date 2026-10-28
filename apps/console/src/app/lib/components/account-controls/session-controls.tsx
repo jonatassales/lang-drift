@@ -5,6 +5,7 @@ import { readConsole } from '@data/server'
 import type { User } from '@data/types'
 import { redirect } from '@i18n/navigation'
 
+import { AccountMenu } from './account-menu'
 import { SignOutButton } from './sign-out-button'
 
 export async function SessionControls() {
@@ -26,11 +27,8 @@ export async function SessionControls() {
 	}
 
 	return (
-		<>
-			<span className="max-w-40 truncate text-[11px] text-muted-foreground max-sm:hidden">
-				{user.email}
-			</span>
+		<AccountMenu email={user.email}>
 			<SignOutButton />
-		</>
+		</AccountMenu>
 	)
 }

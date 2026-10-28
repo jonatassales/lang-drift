@@ -3,7 +3,7 @@
 		"product": "製品",
 		"console": "コンソール",
 		"projects": "プロジェクト",
-		"runtimes": "Microruntimes",
+		"runtimes": "ランタイム",
 		"connectors": "コネクター",
 		"executions": "実行",
 		"history": "履歴",
@@ -258,7 +258,13 @@
 		"loadMore": "さらに読み込む",
 		"generateSecret": "シークレットを生成",
 		"secretCopied": "コピー済み",
-		"secretCopyFailed": "クリップボードにアクセスできませんでした。アクセスを許可して再試行してください。"
+		"secretCopyFailed": "クリップボードにアクセスできませんでした。アクセスを許可して再試行してください。",
+		"area": "エリア",
+		"areas": "プラットフォームのエリア",
+		"microruntimes": "Microruntimes",
+		"finops": "FinOps",
+		"costOverview": "コスト概要",
+		"openAccount": "アカウントメニュー"
 	},
 	"status": {
 		"running": "実行中",

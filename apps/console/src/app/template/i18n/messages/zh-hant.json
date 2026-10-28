@@ -3,7 +3,7 @@
 		"product": "產品",
 		"console": "控制台",
 		"projects": "專案",
-		"runtimes": "Microruntimes",
+		"runtimes": "執行環境",
 		"connectors": "連接器",
 		"executions": "執行作業",
 		"history": "歷史記錄",
@@ -258,7 +258,13 @@
 		"loadMore": "載入更多",
 		"generateSecret": "產生密鑰",
 		"secretCopied": "已複製",
-		"secretCopyFailed": "無法存取剪貼簿。請允許剪貼簿存取後再試一次。"
+		"secretCopyFailed": "無法存取剪貼簿。請允許剪貼簿存取後再試一次。",
+		"area": "區域",
+		"areas": "平台區域",
+		"microruntimes": "Microruntimes",
+		"finops": "FinOps",
+		"costOverview": "成本總覽",
+		"openAccount": "帳戶選單"
 	},
 	"status": {
 		"running": "執行中",

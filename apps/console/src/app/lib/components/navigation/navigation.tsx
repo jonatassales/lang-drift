@@ -2,12 +2,13 @@
 
 import { Brand } from '@langdrift/web/ui/brand'
 import { useTranslations } from 'next-intl'
-import { useEffect, useId, useRef, useState } from 'react'
+import { useId } from 'react'
 
 import type { Product } from '@data/types'
 import { Link, usePathname } from '@i18n/navigation'
 import {
 	CaretDown,
+	ChartLineUp,
 	CheckCircle,
 	Cube,
 	FileText,
@@ -15,6 +16,10 @@ import {
 	GitBranch,
 	House,
 } from '@ui/icons'
+
+import { areaOf } from './area'
+import { AreaSwitcher } from './area-switcher'
+import { useDismissableMenu } from './use-dismissable-menu.hook'
 
 interface NavigationProps {
 	product?: Product
@@ -29,82 +34,77 @@ export function Navigation(props: NavigationProps) {
 	const t = useTranslations('ui')
 	const pathname = usePathname()
 	const base = product ? `/products/${product.id}` : ''
-	const groups = [
-		{
-			key: 'account',
-			entries: [
+	const area = areaOf(pathname)
+	const projectGroup = product
+		? [
 				{
-					href: '/home',
-					key: 'home',
-					icon: House,
+					key: 'project',
+					entries: [
+						{
+							href: base,
+							key: 'runtimes',
+							icon: Cube,
+						},
+						{
+							href: `${base}/executions`,
+							key: 'executions',
+							icon: GitBranch,
+						},
+						{
+							href: `${base}/history`,
+							key: 'history',
+							icon: FileText,
+						},
+						{
+							href: `${base}/config/secrets`,
+							key: 'config',
+							icon: Gear,
+						},
+					],
 				},
-				{
-					href: '/products',
-					key: 'projects',
-					icon: GitBranch,
-				},
-				{
-					href: '/settings',
-					key: 'settings',
-					icon: Gear,
-				},
-			],
-		},
-		...(product
+			]
+		: []
+	const groups =
+		area === 'finops'
 			? [
 					{
-						key: 'project',
+						key: 'finops',
 						entries: [
 							{
-								href: base,
-								key: 'runtimes',
-								icon: Cube,
-							},
-							{
-								href: `${base}/executions`,
-								key: 'executions',
-								icon: GitBranch,
-							},
-							{
-								href: `${base}/history`,
-								key: 'history',
-								icon: FileText,
-							},
-							{
-								href: `${base}/config/secrets`,
-								key: 'config',
-								icon: Gear,
+								href: '/finops',
+								key: 'costOverview',
+								icon: ChartLineUp,
 							},
 						],
 					},
 				]
-			: []),
-	]
-	const [open, setOpen] = useState(false)
-	const selectorRef = useRef<HTMLDivElement>(null)
-	const triggerRef = useRef<HTMLButtonElement>(null)
+			: [
+					{
+						key: 'microruntimes',
+						entries: [
+							{
+								href: '/home',
+								key: 'home',
+								icon: House,
+							},
+							{
+								href: '/products',
+								key: 'projects',
+								icon: GitBranch,
+							},
+						],
+					},
+					...projectGroup,
+				]
 	const menuId = useId()
-	useEffect(() => {
-		if (!open) return
-		function dismiss(event: Event) {
-			if (!selectorRef.current?.contains(event.target as Node)) setOpen(false)
-		}
-		function handleEscape(event: KeyboardEvent) {
-			if (event.key === 'Escape') {
-				setOpen(false)
-				triggerRef.current?.focus()
-			}
-		}
-		document.addEventListener('pointerdown', dismiss)
-		document.addEventListener('focusin', dismiss)
-		document.addEventListener('keydown', handleEscape)
-
-		return () => {
-			document.removeEventListener('pointerdown', dismiss)
-			document.removeEventListener('focusin', dismiss)
-			document.removeEventListener('keydown', handleEscape)
-		}
-	}, [open])
+	const {
+		containerRef: selectorRef,
+		open,
+		setOpen,
+		triggerRef,
+	} = useDismissableMenu()
+	const settingsActive =
+		pathname === '/settings' || pathname.startsWith('/settings/')
 	function navigate() {
 		setOpen(false)
 		onNavigate?.()
@@ -122,6 +122,7 @@ export function Navigation(props: NavigationProps) {
 			>
 				<Brand className="text-foreground" compact />
 			</Link>
+			<AreaSwitcher onNavigate={onNavigate} />
 			<nav aria-label={t('navigation')} className="grid gap-1">
 				{groups.map((group) => (
 					<section
@@ -130,9 +131,11 @@ export function Navigation(props: NavigationProps) {
 							group.key === 'project' ? 'mt-4 border-t border-border pt-4' : ''
 						}
 					>
-						<h2 className="px-3 pb-2 text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
-							{t(group.key)}
-						</h2>
+						{group.key === 'project' ? (
+							<h2 className="px-3 pb-2 text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
+								{t(group.key)}
+							</h2>
+						) : null}
 						{group.key === 'project' && product ? (
 							<div className="relative mb-2" ref={selectorRef}>
 								<button
@@ -211,13 +214,20 @@ export function Navigation(props: NavigationProps) {
 					</section>
 				))}
 			</nav>
-			<div className="mt-auto flex items-center justify-between gap-2 px-3 pt-8 pb-4 text-[10px]">
-				{product ? (
-					<>
-						<span className="text-muted-foreground">{t('project')}</span>
-						<span className="truncate font-medium">{product.name}</span>
-					</>
-				) : null}
+			<div className="mt-auto pt-8">
+				<Link
+					aria-current={settingsActive ? 'page' : undefined}
+					className={linkStyle(settingsActive)}
+					href="/settings"
+					onClick={navigate}
+				>
+					<Gear
+						aria-hidden
+						className={settingsActive ? 'text-primary' : undefined}
+						size={17}
+					/>
+					{t('settings')}
+				</Link>
 			</div>
 		</>
 	)
