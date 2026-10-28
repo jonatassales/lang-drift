@@ -17,6 +17,6 @@ runs:
       with:
         go-version-file: go.work
         cache-dependency-path: |
-          exphere/cli/go.sum
+          packages/ex/go.sum
           apps/extub/go.sum
           go.work.sum

@@ -4,6 +4,6 @@ toolchain go1.26.10
 
 use (
 	./apps/extub
-	./exphere/cli
-	./exphere/contracts
+	./packages/contracts
+	./packages/ex
 )
