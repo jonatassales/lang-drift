@@ -15,6 +15,7 @@ import {
 	Gear,
 	GitBranch,
 	House,
+	Ticket,
 } from '@ui/icons'
 
 import { areaOf } from './area'
@@ -43,6 +44,11 @@ export function Navigation(props: NavigationProps) {
 							href: base,
 							key: 'runtimes',
 							icon: Cube,
+						},
+						{
+							href: `${base}/tickets`,
+							key: 'tickets',
+							icon: Ticket,
 						},
 						{
 							href: `${base}/executions`,

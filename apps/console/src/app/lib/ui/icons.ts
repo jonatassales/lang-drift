@@ -17,6 +17,7 @@ export {
 	SignOut,
 	Stop,
 	Sun,
+	Ticket,
 	Trash,
 	UserCircle,
 	WarningDiamond,

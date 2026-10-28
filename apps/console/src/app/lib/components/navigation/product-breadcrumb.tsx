@@ -1,8 +1,14 @@
 import { getTranslations } from 'next-intl/server'
 
 import { readConsole } from '@data/server'
-import type { ProductNavigation, RuntimeDetailSnapshot } from '@data/types'
+import type {
+	ProductNavigation,
+	RuntimeDetailSnapshot,
+	TicketDetailSnapshot,
+} from '@data/types'
 import { Link } from '@i18n/navigation'
+
+const ticketSections = ['tickets', 'analysis', 'plans', 'workflows']
 
 interface ProductBreadcrumbProps {
 	locale: string
@@ -12,10 +18,10 @@ interface ProductBreadcrumbProps {
 export async function ProductBreadcrumb(props: ProductBreadcrumbProps) {
 	const { locale, segments } = props
 
-	const [root, id, section] = segments
+	const [root, id, section, ticketId] = segments
 	if (!id || !['products', 'runtimes'].includes(root) || id === 'new')
 		return null
-	const [t, navigation, detail] = await Promise.all([
+	const [t, navigation, detail, ticket] = await Promise.all([
 		getTranslations({
 			locale,
 			namespace: 'ui',
@@ -23,6 +29,11 @@ export async function ProductBreadcrumb(props: ProductBreadcrumbProps) {
 		readConsole<ProductNavigation>('products'),
 		root === 'runtimes'
 			? readConsole<RuntimeDetailSnapshot>(`runtimes/${encodeURIComponent(id)}`)
+			: null,
+		section === 'tickets' && ticketId
+			? readConsole<TicketDetailSnapshot>(
+					`tickets/${encodeURIComponent(ticketId)}`,
+				)
 			: null,
 	])
 
@@ -75,6 +86,18 @@ export async function ProductBreadcrumb(props: ProductBreadcrumbProps) {
 				href: `${base}/runtimes/new`,
 			},
 		)
+	} else if (section && ticketSections.includes(section)) {
+		items.push({
+			key: section,
+			label: t(section),
+			href: `${base}/${section}`,
+		})
+		if (ticket)
+			items.push({
+				key: 'ticket',
+				label: `${ticket.ticket.number} · ${ticket.ticket.slug}`,
+				href: `${base}/tickets/${ticket.ticket.id}`,
+			})
 	} else {
 		items.push({
 			key: section || 'runtimes',
