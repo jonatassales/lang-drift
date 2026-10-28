@@ -264,7 +264,17 @@
 		"microruntimes": "Microruntimes",
 		"finops": "FinOps",
 		"costOverview": "成本總覽",
-		"openAccount": "帳戶選單"
+		"openAccount": "帳戶選單",
+		"costOverviewDescription": "每個執行環境回報的 LLM 成本、CPU 與記憶體，對照其上限與預算。沒有任何執行回報的成本維持為無法取得。",
+		"knownLlmCost": "已回報的 LLM 成本",
+		"unreportedLlmCosts": "{count, plural, =0 {每次執行都已回報 LLM 成本} other {{total} 次執行中有 # 次未回報 LLM 成本}}",
+		"llmBudgets": "已設定的 LLM 預算",
+		"unbudgetedRuntimes": "{count, plural, =0 {每個執行環境都有預算} other {# 個執行環境沒有預算}}",
+		"llmCostBudget": "LLM 成本 / 預算（USD）",
+		"cpuAgainstLimit": "已用 CPU / 上限（核心）",
+		"memoryAgainstLimit": "已用 RAM / 上限（MiB）",
+		"noRuntimes": "尚未註冊任何執行環境。",
+		"openRecommendations": "建議與歷史記錄"
 	},
 	"status": {
 		"running": "執行中",

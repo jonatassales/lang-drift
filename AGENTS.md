@@ -23,7 +23,7 @@ FinOps grew out of the Exphere project. Its value comes from data the platform p
 
 ### One console
 
-The LangDrift console is where a team manages FinOps: projects registered from a local folder, their microruntimes, executions, history and secrets, supervised by one connected `ex` agent per project, with FinOps readings and recommendations that stay advisory. It lives here as `apps/console`, imported from Exphere's console (`jonatassales/exphere`), and reads `apps/extub`, a local stub API that seeds one project, LangDrift Studio, with its runtimes and their FinOps readings. The console keeps requested state apart from observed state and labels illustrative or stub data as such. The account and the shell are planned.
+The LangDrift console is where a team manages FinOps: projects registered from a local folder, their microruntimes, executions, history and secrets, supervised by one connected `ex` agent per project, with FinOps readings and recommendations that stay advisory. It lives here as `apps/console`, imported from Exphere's console (`jonatassales/exphere`), and reads `apps/extub`, a local stub API that seeds one project, LangDrift Studio, with its runtimes and their FinOps readings. Its sidebar switches between two areas, Microruntimes and FinOps, and the URL decides which. The console keeps requested state apart from observed state and labels illustrative or stub data as such. The account and the shell are planned.
 
 ### Principles the platform holds
 

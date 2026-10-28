@@ -264,7 +264,17 @@
 		"microruntimes": "Microruntimes",
 		"finops": "FinOps",
 		"costOverview": "Cost overview",
-		"openAccount": "Account menu"
+		"openAccount": "Account menu",
+		"costOverviewDescription": "The LLM cost, CPU and memory each runtime reported, against its limits and budget. A cost no execution reported stays unavailable.",
+		"knownLlmCost": "Reported LLM cost",
+		"unreportedLlmCosts": "{count, plural, =0 {Every execution reported its LLM cost} one {# of {total} executions without a reported LLM cost} other {# of {total} executions without a reported LLM cost}}",
+		"llmBudgets": "Configured LLM budgets",
+		"unbudgetedRuntimes": "{count, plural, =0 {Every runtime has a budget} one {# runtime without a budget} other {# runtimes without a budget}}",
+		"llmCostBudget": "LLM cost / budget (USD)",
+		"cpuAgainstLimit": "CPU used / limit (cores)",
+		"memoryAgainstLimit": "RAM used / limit (MiB)",
+		"noRuntimes": "No runtime is registered yet.",
+		"openRecommendations": "Recommendations and history"
 	},
 	"status": {
 		"running": "Running",

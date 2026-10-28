@@ -264,7 +264,17 @@
 		"microruntimes": "Microruntimes",
 		"finops": "FinOps",
 		"costOverview": "コスト概要",
-		"openAccount": "アカウントメニュー"
+		"openAccount": "アカウントメニュー",
+		"costOverviewDescription": "各ランタイムが報告した LLM コスト、CPU、メモリを、上限と予算に照らして示します。どの実行も報告していないコストは利用不可のままです。",
+		"knownLlmCost": "報告済みの LLM コスト",
+		"unreportedLlmCosts": "{count, plural, =0 {すべての実行が LLM コストを報告済みです} other {{total} 件の実行のうち # 件は LLM コスト未報告}}",
+		"llmBudgets": "設定済みの LLM 予算",
+		"unbudgetedRuntimes": "{count, plural, =0 {すべてのランタイムに予算があります} other {予算のないランタイム # 件}}",
+		"llmCostBudget": "LLM コスト / 予算（USD）",
+		"cpuAgainstLimit": "使用 CPU / 上限（コア）",
+		"memoryAgainstLimit": "使用 RAM / 上限（MiB）",
+		"noRuntimes": "登録済みのランタイムはまだありません。",
+		"openRecommendations": "推奨と履歴"
 	},
 	"status": {
 		"running": "実行中",
