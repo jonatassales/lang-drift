@@ -4,8 +4,6 @@ import { useTranslations } from 'next-intl'
 
 import type { TicketStage } from '@data/types'
 
-import { ReadMark } from './read-mark'
-
 interface WorkflowStageListProps {
 	stages: TicketStage[]
 }
@@ -38,7 +36,12 @@ export function WorkflowStageList(props: WorkflowStageListProps) {
 						key={stage.id}
 					>
 						{stage.progress === 'done' ? (
-							<ReadMark />
+							<span
+								aria-hidden="true"
+								className="font-mono text-status-success"
+							>
+								✓
+							</span>
 						) : (
 							<span
 								aria-hidden="true"
