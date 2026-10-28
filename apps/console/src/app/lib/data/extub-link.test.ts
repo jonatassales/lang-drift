@@ -1,0 +1,59 @@
+import assert from 'node:assert/strict'
+import test from 'node:test'
+
+import { consoleHostAllowed, extubBase } from './extub-link.ts'
+
+test('without a token the console serves loopback hosts only', () => {
+	assert.equal(consoleHostAllowed('localhost', undefined), true)
+	assert.equal(consoleHostAllowed('127.0.0.1', ''), true)
+	assert.equal(
+		consoleHostAllowed('langdrift-console.vercel.app', undefined),
+		false,
+	)
+})
+
+test('a token of only whitespace keeps the local contract', () => {
+	assert.equal(
+		consoleHostAllowed('langdrift-console.vercel.app', '  \n'),
+		false,
+	)
+	assert.equal(extubBase('https://langdrift-stubs.vercel.app', ' '), null)
+})
+
+test('with a token the console serves its hosted host', () => {
+	assert.equal(
+		consoleHostAllowed('langdrift-console.vercel.app', 'shared-token'),
+		true,
+	)
+})
+
+test('without a token extub must be plain http on loopback', () => {
+	assert.equal(extubBase(undefined, undefined)?.href, 'http://127.0.0.1:3401/')
+	assert.equal(
+		extubBase('http://localhost:3402', undefined)?.href,
+		'http://localhost:3402/',
+	)
+	assert.equal(extubBase('https://langdrift-stubs.vercel.app', undefined), null)
+	assert.equal(extubBase('http://example.com', undefined), null)
+})
+
+test('with a token extub may be https on any host, or http on loopback', () => {
+	assert.equal(
+		extubBase('https://langdrift-stubs.vercel.app', 'shared-token')?.href,
+		'https://langdrift-stubs.vercel.app/',
+	)
+	assert.equal(
+		extubBase('http://127.0.0.1:3489', 'shared-token')?.href,
+		'http://127.0.0.1:3489/',
+	)
+	assert.equal(extubBase('http://example.com', 'shared-token'), null)
+})
+
+test('extub never carries credentials in its URL', () => {
+	assert.equal(
+		extubBase('https://user:secret@example.com', 'shared-token'),
+		null,
+	)
+	assert.equal(extubBase('http://user@127.0.0.1:3401', undefined), null)
+	assert.throws(() => extubBase('not a url', 'shared-token'))
+})

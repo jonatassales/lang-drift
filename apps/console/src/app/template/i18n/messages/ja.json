@@ -364,7 +364,10 @@
 		"ticket_contains_credentials": "提案を要求する前にチケットから認証情報を削除してください。",
 		"extub_unavailable": "extub に接続できません。ポート 3401 でローカル API を起動してください。",
 		"invalid_data_source": "CONSOLE_DATA_SOURCE は stub または local に設定してください。",
-		"load_test_busy": "バーストは実行中または待機期間中です。10 秒後に再試行してください。"
+		"load_test_busy": "バーストは実行中または待機期間中です。10 秒後に再試行してください。",
+		"read_only_preview": "これは読み取り専用のプレビューです。ここでは変更できません。",
+		"token_required": "プレビューがデータサービスで認証できませんでした。",
+		"stream_unavailable": "このプレビューではライブ更新がオフです。ページは自動で更新されます。"
 	},
 	"event": {
 		"configured": "設定を保存",

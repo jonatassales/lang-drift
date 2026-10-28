@@ -2,9 +2,9 @@
 	"name": "@langdrift/extub",
 	"private": true,
 	"scripts": {
-		"dev": "go run ./src",
+		"dev": "go run ./cmd/server",
 		"start": "./dist/extub",
-		"build": "go build -o dist/extub ./src",
+		"build": "go build -o dist/extub ./cmd/server",
 		"test": "go test ./...",
 		"typecheck": "go vet ./..."
 	}

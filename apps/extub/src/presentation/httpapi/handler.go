@@ -3,6 +3,7 @@ package httpapi
 
 import (
 	"context"
+	"crypto/subtle"
 	"encoding/json"
 	"errors"
 	"io"
@@ -17,12 +18,55 @@ import (
 type Handler struct {
 	Service  application.Service
 	Signaler application.Signaler
+	// Token switches extub to its hosted preview: empty keeps the local,
+	// loopback-only contract; set, every request but the health check must
+	// carry it, and nothing may change the seed.
+	Token string
+}
+
+// hosted is true when extub runs as the token-gated preview.
+func (handler Handler) hosted() bool {
+	return handler.Token != ""
+}
+
+// carriesToken compares the bearer token in constant time.
+func (handler Handler) carriesToken(request *http.Request) bool {
+	presented, found := strings.CutPrefix(request.Header.Get("Authorization"), "Bearer ")
+	return found && subtle.ConstantTimeCompare([]byte(presented), []byte(handler.Token)) == 1
+}
+
+// admit applies the hosted preview's rules: reading the health check needs
+// nothing, every other request needs the token, and only reads pass. A
+// WebRTC offer passes to its route, which answers that the preview has no
+// stream.
+func (handler Handler) admit(writer http.ResponseWriter, request *http.Request) bool {
+	path := strings.Trim(request.URL.Path, "/")
+	read := request.Method == http.MethodGet
+	if path == "health" && read {
+		return true
+	}
+	if !handler.carriesToken(request) {
+		respondError(writer, http.StatusUnauthorized, "token_required")
+		return false
+	}
+	if !read && path != "webrtc/offer" {
+		respondError(writer, http.StatusForbidden, "read_only_preview")
+		return false
+	}
+	return true
 }
 
 func (handler Handler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 	writer.Header().Set("Cache-Control", "no-store")
 	writer.Header().Set("X-Content-Type-Options", "nosniff")
+	if handler.hosted() {
+		request.Body = http.MaxBytesReader(writer, request.Body, 65536)
+		if handler.admit(writer, request) {
+			handler.respond(writer, request)
+		}
+		return
+	}
 	host := request.Host
 	if name, _, err := net.SplitHostPort(host); err == nil {
 		host = name
@@ -37,6 +81,11 @@ func (handler Handler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 		writer.WriteHeader(http.StatusNoContent)
 		return
 	}
+	handler.respond(writer, request)
+}
+
+// respond routes an admitted request and writes its result or its error.
+func (handler Handler) respond(writer http.ResponseWriter, request *http.Request) {
 	result, err := handler.route(request)
 	if err != nil {
 		status := http.StatusInternalServerError
@@ -60,6 +109,9 @@ func (handler Handler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 		case errors.Is(err, errMethod):
 			status = http.StatusMethodNotAllowed
 			code = "method_not_allowed"
+		case errors.Is(err, errStreamUnavailable):
+			status = http.StatusServiceUnavailable
+			code = "stream_unavailable"
 		case errors.Is(err, context.Canceled), errors.Is(err, context.DeadlineExceeded):
 			status = http.StatusRequestTimeout
 			code = "negotiation_timeout"
@@ -71,6 +123,10 @@ func (handler Handler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 }
 
 var errMethod = errors.New("method_not_allowed")
+
+// errStreamUnavailable answers a WebRTC offer the hosted preview cannot take:
+// Vercel's functions receive no UDP, so the console keeps polling instead.
+var errStreamUnavailable = errors.New("stream_unavailable")
 
 func respondError(writer http.ResponseWriter, status int, code string) {
 	writer.WriteHeader(status)
@@ -98,6 +154,9 @@ func (handler Handler) route(request *http.Request) (any, error) {
 	if path == "webrtc/offer" {
 		if method != http.MethodPost {
 			return nil, errMethod
+		}
+		if handler.hosted() {
+			return nil, errStreamUnavailable
 		}
 		var input application.Description
 		if err := decode(request, &input); err != nil {
