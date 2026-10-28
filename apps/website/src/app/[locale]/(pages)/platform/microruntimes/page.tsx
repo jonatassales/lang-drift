@@ -10,9 +10,9 @@ import { EarlyAccessSection } from '@components/early-access/section'
 import { AuthoringFlow } from '@components/microruntimes/authoring-flow'
 import { LifecycleSteps } from '@components/microruntimes/lifecycle-steps'
 import { RuntimeDescriptorCard } from '@components/microruntimes/runtime-descriptor-card'
+import { SessionCards } from '@components/microruntimes/session-cards'
 import { SessionTerminal } from '@components/microruntimes/session-terminal'
 import { StageEvidence } from '@components/microruntimes/stage-evidence'
-import { TicketCard } from '@components/microruntimes/ticket-card'
 import { PillarScenarios } from '@components/product-page/pillar-scenarios'
 import { ProductFaqSection } from '@components/product-page/product-faq-section'
 import { ProductSection } from '@components/product-page/product-section'
@@ -99,8 +99,11 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 						aria-describedby="microruntimes-hero-summary"
 						className="mt-8 grid gap-6 lg:grid-cols-[fit-content(50%)_1fr]"
 					>
-						<SessionTerminal copy={copy.session.terminal} />
-						<TicketCard copy={copy.session.card} locale={locale} />
+						<SessionTerminal
+							control={copy.session.card.control}
+							copy={copy.session.terminal}
+						/>
+						<SessionCards copy={copy.session.card} locale={locale} />
 					</div>
 					<p className="sr-only" id="microruntimes-hero-summary">
 						{copy.hero.summary}

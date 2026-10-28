@@ -2,14 +2,16 @@
 
 import { cn } from '@langdrift/web/utilities'
 import { useReducedMotion } from 'motion/react'
-import { useEffect, useRef, useState } from 'react'
+import { type ReactNode, useEffect, useRef, useState } from 'react'
 
 // Adapted from SmoothUI's Mac Terminal (smoothui.dev): a macOS terminal
 // window that types its commands and prints their output line by line. It
 // plays while it is on screen and the tab is visible, shows the whole session
 // at once under reduced motion, and keeps the full transcript available to
 // screen readers. The colors are the tokens' roles, so the window follows the
-// color scheme, and the traffic lights take the status colors.
+// color scheme, and the traffic lights take the status colors. The window
+// takes its height from its className; the transcript fills what the title
+// bar leaves and scrolls, so the window never grows as it types.
 
 export type TerminalLineType =
 	| 'command'
@@ -28,14 +30,14 @@ export interface TerminalLine {
 }
 
 export interface MacTerminalProps {
+	/** A control shown at the right of the title bar. */
+	action?: ReactNode
+	/** The window's classes, among them its height. */
 	className?: string
 	/** The accessible name of the window. */
-	/** A fixed height for the transcript, so the window never grows as it types. */
-	height?: number | string
 	label: string
 	lines: TerminalLine[]
 	loop?: boolean
-	maxHeight?: number | string
 	/** Called with the number of completed lines whenever it changes. */
 	onProgress?: (completedCount: number) => void
 	/** Freezes the session while true. */
@@ -84,12 +86,11 @@ const createMachine = (): Machine => ({
 
 export function MacTerminal(props: MacTerminalProps) {
 	const {
+		action,
 		className,
-		height,
 		label,
 		lines,
 		loop = false,
-		maxHeight = 360,
 		onProgress,
 		paused = false,
 		prompt = '~ %',
@@ -247,7 +248,7 @@ export function MacTerminal(props: MacTerminalProps) {
 		<figure
 			aria-label={label}
 			className={cn(
-				'm-0 overflow-hidden rounded-xl border border-border bg-card text-left shadow-lg',
+				'm-0 flex flex-col overflow-hidden rounded-xl border border-border bg-card text-left shadow-lg',
 				className,
 			)}
 			ref={containerRef}
@@ -261,17 +262,12 @@ export function MacTerminal(props: MacTerminalProps) {
 				<p className="m-0 flex-1 truncate text-center text-xs font-medium text-muted-foreground">
 					{title}
 				</p>
-				<span aria-hidden="true" className="w-14" />
+				<span className="flex min-w-14 items-center justify-end">{action}</span>
 			</div>
 
 			<div
-				className="overflow-y-auto px-4 py-3 font-mono text-xs leading-relaxed sm:text-sm"
+				className="min-h-48 flex-1 contain-size overflow-y-auto px-4 py-3 font-mono text-xs leading-relaxed sm:text-sm"
 				ref={scrollRef}
-				style={{
-					height: typeof height === 'number' ? `${height}px` : height,
-					maxHeight:
-						typeof maxHeight === 'number' ? `${maxHeight}px` : maxHeight,
-				}}
 			>
 				<pre
 					aria-hidden={shouldReduceMotion ? undefined : 'true'}
@@ -298,22 +294,22 @@ export function MacTerminal(props: MacTerminalProps) {
 						</div>
 					)}
 				</pre>
-				<pre
-					aria-hidden="true"
-					className="invisible m-0 h-0 overflow-hidden font-mono whitespace-pre"
-				>
-					{lines.map((line) =>
-						line.type === 'command'
-							? `${prompt} ${line.text}\n`
-							: `${line.text}\n`,
-					)}
-				</pre>
 				{!shouldReduceMotion && (
 					<pre className="sr-only">
 						{lines.map((line) => line.text).join('\n')}
 					</pre>
 				)}
 			</div>
+			<pre
+				aria-hidden="true"
+				className="invisible m-0 h-0 overflow-hidden px-4 font-mono text-xs whitespace-pre sm:text-sm"
+			>
+				{lines.map((line) =>
+					line.type === 'command'
+						? `${prompt} ${line.text}\n`
+						: `${line.text}\n`,
+				)}
+			</pre>
 		</figure>
 	)
 }

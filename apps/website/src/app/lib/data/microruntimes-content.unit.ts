@@ -3,12 +3,20 @@ import { describe, expect, it } from 'vitest'
 import { microruntimesMessages } from '@i18n/messages/index'
 
 import {
+	documentIds,
+	documentReads,
+	episodes,
 	formatDescriptor,
 	hasPlayed,
 	lifecycleStageIds,
+	phaseOf,
+	planLineIndex,
+	planPhaseIds,
+	planPhases,
 	planReveals,
 	planSession,
 	runtimeDescriptor,
+	similarityThreshold,
 	suggestedTotals,
 	ticketPlan,
 } from './microruntimes-content'
@@ -23,7 +31,7 @@ describe('the simulated planning session', () => {
 		}
 	})
 
-	it('lasts between fifteen and twenty seconds at the default typing speed', () => {
+	it('lasts between twenty-four and thirty-two seconds at the default typing speed', () => {
 		const charactersPerSecond = 24
 		const typed = microruntimesMessages.en.session.terminal.lines.plan
 		const typingMs = (typed.length / charactersPerSecond) * 1000
@@ -31,8 +39,8 @@ describe('the simulated planning session', () => {
 			(total, line) => total + (line.delay ?? 0),
 			0,
 		)
-		expect(typingMs + waitingMs).toBeGreaterThanOrEqual(15_000)
-		expect(typingMs + waitingMs).toBeLessThanOrEqual(20_000)
+		expect(typingMs + waitingMs).toBeGreaterThanOrEqual(24_000)
+		expect(typingMs + waitingMs).toBeLessThanOrEqual(32_000)
 	})
 
 	it('reveals every card field on a line of the session', () => {
@@ -40,6 +48,43 @@ describe('the simulated planning session', () => {
 		for (const lineId of Object.values(planReveals)) {
 			expect(ids).toContain(lineId)
 		}
+	})
+
+	it('plays its three acts in order, each opened by a comment', () => {
+		const opening = planPhaseIds.map((phase) => planPhases[phase])
+		expect(opening).toEqual(['plan', 'analysis', 'planning'])
+		for (const lineId of opening.slice(1)) {
+			const line = planSession.find((candidate) => candidate.id === lineId)
+			expect(line?.type).toBe('comment')
+		}
+
+		expect(phaseOf(0)).toBe('ticket')
+		expect(phaseOf(planLineIndex('analysis'))).toBe('ticket')
+		expect(phaseOf(planLineIndex('analysis') + 1)).toBe('analysis')
+		expect(phaseOf(planLineIndex('planning') + 1)).toBe('plan')
+		expect(phaseOf(planSession.length)).toBe('plan')
+	})
+
+	it('reads every linked document on a line of the analysis act', () => {
+		for (const id of documentIds) {
+			const index = planLineIndex(documentReads[id])
+			expect(index).toBeGreaterThan(planLineIndex('analysis'))
+			expect(index).toBeLessThan(planLineIndex('planning'))
+		}
+	})
+
+	it('keeps the episodes at or above the threshold and drops the rest with a reason', () => {
+		expect(episodes.map((episode) => episode.similarity)).toEqual(
+			[...episodes].map((episode) => episode.similarity).sort((a, b) => b - a),
+		)
+		for (const episode of episodes) {
+			const aboveThreshold = episode.similarity >= similarityThreshold
+			expect(episode.verdict).toBe(aboveThreshold ? 'kept' : 'dropped')
+			expect(episode.reason === undefined).toBe(aboveThreshold)
+		}
+		expect(
+			episodes.filter((episode) => episode.verdict === 'kept'),
+		).toHaveLength(3)
 	})
 
 	it('resolves five components whose shares fill the suggested totals inside the envelope', () => {

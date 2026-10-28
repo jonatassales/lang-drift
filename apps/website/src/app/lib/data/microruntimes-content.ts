@@ -68,7 +68,9 @@ export type MicroruntimesFaqId = (typeof microruntimesFaqIds)[number]
 // The hero terminal's simulated planning session: each line's kind and the
 // wait before it prints, in order. The text lives in the catalog. The typed
 // command is the intended entry point of the connected agent; the planning
-// lines describe the console's proposed flow, not a shipped planner.
+// lines describe the console's proposed flow, not a shipped planner. The
+// session plays in three acts, each opened by a comment: the ticket, the
+// analysis of its documents and the project's episodes, and the plan.
 export const planSession = [
 	{
 		id: 'plan',
@@ -81,69 +83,174 @@ export const planSession = [
 		delay: 400,
 	},
 	{
-		id: 'memory',
+		id: 'readTicket',
 		type: 'output',
-		delay: 900,
+		delay: 500,
 	},
 	{
-		id: 'episodes',
-		type: 'output',
-		delay: 1400,
-	},
-	{
-		id: 'suggest',
-		type: 'success',
-		delay: 900,
-	},
-	{
-		id: 'reads',
-		type: 'output',
-		delay: 700,
-	},
-	{
-		id: 'guardrail',
+		id: 'links',
 		type: 'output',
 		delay: 600,
 	},
 	{
+		id: 'analysis',
+		type: 'comment',
+		delay: 900,
+	},
+	{
+		id: 'readPrd',
+		type: 'output',
+		delay: 500,
+	},
+	{
+		id: 'readDesignDoc',
+		type: 'output',
+		delay: 450,
+	},
+	{
+		id: 'readSpec',
+		type: 'output',
+		delay: 450,
+	},
+	{
+		id: 'reads',
+		type: 'success',
+		delay: 600,
+	},
+	{
+		id: 'guardrail',
+		type: 'output',
+		delay: 500,
+	},
+	{
+		id: 'judgeGuardrail',
+		type: 'output',
+		delay: 900,
+	},
+	{
 		id: 'bounds',
 		type: 'output',
+		delay: 700,
+	},
+	{
+		id: 'memory',
+		type: 'output',
+		delay: 800,
+	},
+	{
+		id: 'embed',
+		type: 'output',
+		delay: 450,
+	},
+	{
+		id: 'vectorSearch',
+		type: 'output',
+		delay: 500,
+	},
+	{
+		id: 'candidates',
+		type: 'output',
+		delay: 600,
+	},
+	{
+		id: 'judgeRelevance',
+		type: 'output',
+		delay: 1000,
+	},
+	{
+		id: 'drop',
+		type: 'output',
+		delay: 700,
+	},
+	{
+		id: 'episodes',
+		type: 'output',
+		delay: 600,
+	},
+	{
+		id: 'reasonResources',
+		type: 'output',
+		delay: 1000,
+	},
+	{
+		id: 'weighEffort',
+		type: 'output',
+		delay: 900,
+	},
+	{
+		id: 'suggest',
+		type: 'success',
+		delay: 800,
+	},
+	{
+		id: 'planning',
+		type: 'comment',
 		delay: 900,
 	},
 	{
 		id: 'resolve',
 		type: 'output',
-		delay: 800,
+		delay: 600,
+	},
+	{
+		id: 'inspectGo',
+		type: 'output',
+		delay: 400,
 	},
 	{
 		id: 'go',
 		type: 'success',
-		delay: 650,
+		delay: 450,
+	},
+	{
+		id: 'inspectNode',
+		type: 'output',
+		delay: 400,
 	},
 	{
 		id: 'node',
 		type: 'success',
-		delay: 650,
+		delay: 450,
+	},
+	{
+		id: 'inspectNats',
+		type: 'output',
+		delay: 400,
 	},
 	{
 		id: 'nats',
 		type: 'success',
-		delay: 650,
+		delay: 450,
+	},
+	{
+		id: 'inspectRedis',
+		type: 'output',
+		delay: 400,
 	},
 	{
 		id: 'redis',
 		type: 'success',
-		delay: 650,
+		delay: 450,
+	},
+	{
+		id: 'inspectNext',
+		type: 'output',
+		delay: 400,
 	},
 	{
 		id: 'next',
 		type: 'success',
-		delay: 650,
+		delay: 450,
+	},
+	{
+		id: 'crossCheck',
+		type: 'output',
+		delay: 800,
 	},
 	{
 		id: 'size',
 		type: 'success',
-		delay: 1200,
+		delay: 900,
 	},
 	{
 		id: 'limits',
@@ -153,12 +260,17 @@ export const planSession = [
 	{
 		id: 'price',
 		type: 'output',
-		delay: 800,
+		delay: 700,
+	},
+	{
+		id: 'validate',
+		type: 'output',
+		delay: 700,
 	},
 	{
 		id: 'draft',
 		type: 'success',
-		delay: 1200,
+		delay: 1000,
 	},
 	{
 		id: 'handoff',
@@ -183,6 +295,27 @@ export function hasPlayed(playedCount: number, id: PlanLineId) {
 	return playedCount > planLineIndex(id)
 }
 
+// The three acts of the session, each the concern of one card beside the
+// terminal, and the line that opens each.
+export const planPhaseIds = ['ticket', 'analysis', 'plan'] as const
+
+export type PlanPhaseId = (typeof planPhaseIds)[number]
+
+export const planPhases = {
+	ticket: 'plan',
+	analysis: 'analysis',
+	plan: 'planning',
+} as const satisfies Record<PlanPhaseId, PlanLineId>
+
+// The act the session is in: the last one whose opening line has played.
+export function phaseOf(playedCount: number): PlanPhaseId {
+	const reached = planPhaseIds.filter((phase) =>
+		hasPlayed(playedCount, planPhases[phase]),
+	)
+
+	return reached.at(-1) ?? 'ticket'
+}
+
 export type PlanEffort = 'low' | 'medium' | 'high'
 export type ComponentKind = 'api' | 'broker' | 'cache' | 'web'
 export type Technology = 'Go' | 'Node.js' | 'NATS' | 'Redis' | 'Next.js'
@@ -194,14 +327,30 @@ export interface Resources {
 }
 
 // One component the plan resolves from the spec: where it lives, what it
-// is, and the share of the envelope the plan proposes for it. The id is the
-// session line that resolves it.
+// is, the manifest and port the agent inspects, and the share of the
+// envelope the plan proposes for it. The id is the session line that
+// resolves it.
 export interface PlanComponent extends Resources {
 	id: PlanLineId
 	kind: ComponentKind
+	manifest: string
 	path: string
+	port: number
 	technology: Technology
 }
+
+// The documents the ticket links, in the order the agent reads them, and
+// the session line that reads each.
+export const documentIds = ['prd', 'designDoc', 'spec', 'guardrail'] as const
+
+export type DocumentId = (typeof documentIds)[number]
+
+export const documentReads = {
+	prd: 'readPrd',
+	designDoc: 'readDesignDoc',
+	spec: 'readSpec',
+	guardrail: 'guardrail',
+} as const satisfies Record<DocumentId, PlanLineId>
 
 // The ticket the session plans, as the agent reads it from the project's
 // artifacts: the numbers follow the scaffold ex init produces. The envelope
@@ -216,10 +365,12 @@ export const ticketPlan = {
 		prd: '0002-PRD-early-access.prd.md',
 		designDoc: '0005-DD-early-access-runtime.dd.md',
 		spec: '0011-SPEC-early-access-runtime.spec.md',
-	},
-	guardrail: {
-		file: '0001-finops.gr.md',
-		criteria: ['FIN-02', 'FIN-04'],
+		guardrail: '0001-finops.gr.md',
+	} satisfies Record<DocumentId, string>,
+	guardrailCriteria: ['FIN-02', 'FIN-04'],
+	spec: {
+		components: 5,
+		acceptanceCriteria: 3,
 	},
 	model: 'operator/allowed-model',
 	effort: 'medium' satisfies PlanEffort,
@@ -232,40 +383,50 @@ export const ticketPlan = {
 			cpuMillis: 250,
 			id: 'go',
 			kind: 'api',
+			manifest: 'go.mod',
 			memoryMiB: 256,
 			path: 'services/signup-api',
+			port: 8080,
 			technology: 'Go',
 		},
 		{
 			cpuMillis: 300,
 			id: 'node',
 			kind: 'api',
+			manifest: 'package.json',
 			memoryMiB: 512,
 			path: 'services/notify-api',
+			port: 8081,
 			technology: 'Node.js',
 		},
 		{
 			cpuMillis: 200,
 			id: 'nats',
 			kind: 'broker',
+			manifest: 'nats.conf',
 			memoryMiB: 256,
 			path: 'platform/nats',
+			port: 4222,
 			technology: 'NATS',
 		},
 		{
 			cpuMillis: 200,
 			id: 'redis',
 			kind: 'cache',
+			manifest: 'redis.conf',
 			memoryMiB: 256,
 			path: 'platform/redis',
+			port: 6379,
 			technology: 'Redis',
 		},
 		{
 			cpuMillis: 500,
 			id: 'next',
 			kind: 'web',
+			manifest: 'next.config.ts',
 			memoryMiB: 1024,
 			path: 'apps/signup',
+			port: 3000,
 			technology: 'Next.js',
 		},
 	] satisfies readonly PlanComponent[],
@@ -288,27 +449,102 @@ export function suggestedTotals(
 	)
 }
 
-// Which line of the session reveals which part of the card. Each component
-// row is revealed by its own line.
+// What the envelope leaves once the plan's totals are taken from it.
+export function headroom(bounded: Resources, suggested: Resources): Resources {
+	return {
+		cpuMillis: bounded.cpuMillis - suggested.cpuMillis,
+		memoryMiB: bounded.memoryMiB - suggested.memoryMiB,
+	}
+}
+
+export type EpisodeVerdict = 'kept' | 'dropped'
+export type DropReason = 'otherRuntime' | 'noBroker' | 'docsOnly'
+
+// One of the project's episodes the retrieval ranks for the ticket: its
+// similarity to the ticket's intent, and whether the judgment kept it as a
+// precedent or dropped it, with the reason. The slugs are illustrative.
+export interface Episode {
+	id: string
+	reason?: DropReason
+	similarity: number
+	slug: string
+	verdict: EpisodeVerdict
+}
+
+// Below this similarity a candidate is dropped before it is cited.
+export const similarityThreshold = 0.55
+
+export const episodes: readonly Episode[] = [
+	{
+		id: 'ep-0412',
+		similarity: 0.81,
+		slug: 'checkout-preview-sizing',
+		verdict: 'kept',
+	},
+	{
+		id: 'ep-0388',
+		similarity: 0.74,
+		slug: 'notify-api-rollout',
+		verdict: 'kept',
+	},
+	{
+		id: 'ep-0351',
+		similarity: 0.66,
+		slug: 'signup-redesign-preview',
+		verdict: 'kept',
+	},
+	{
+		id: 'ep-0297',
+		reason: 'docsOnly',
+		similarity: 0.52,
+		slug: 'docs-search-index',
+		verdict: 'dropped',
+	},
+	{
+		id: 'ep-0240',
+		reason: 'otherRuntime',
+		similarity: 0.47,
+		slug: 'batch-export-worker',
+		verdict: 'dropped',
+	},
+	{
+		id: 'ep-0188',
+		reason: 'noBroker',
+		similarity: 0.42,
+		slug: 'storefront-cache-warmup',
+		verdict: 'dropped',
+	},
+]
+
+// Which line of the session reveals which part of the cards. Each component
+// row is revealed by its own line, each document by its read.
 export const planReveals = {
-	card: 'plan',
-	suggestionSkeleton: 'memory',
-	suggestion: 'suggest',
-	artifactsRead: 'reads',
-	guardrail: 'guardrail',
-	componentsSkeleton: 'resolve',
+	cards: 'plan',
+	links: 'links',
+	documentsRead: 'reads',
+	guardrailJudged: 'judgeGuardrail',
 	bounded: 'bounds',
+	suggestionSkeleton: 'memory',
+	episodesSkeleton: 'vectorSearch',
+	candidates: 'candidates',
+	verdicts: 'drop',
+	cited: 'episodes',
+	measured: 'reasonResources',
+	suggestion: 'suggest',
+	componentsSkeleton: 'resolve',
+	crossChecked: 'crossCheck',
 	suggested: 'size',
 	limits: 'limits',
 	priceBasis: 'price',
-	report: 'draft',
+	validated: 'validate',
+	drafted: 'draft',
 	finished: 'handoff',
 } as const satisfies Record<string, PlanLineId>
 
 export type PlanRevealId = keyof typeof planReveals
 
 // True once the terminal has completed the line that reveals this part of
-// the card.
+// the cards.
 export function revealed(playedCount: number, id: PlanRevealId) {
 	return hasPlayed(playedCount, planReveals[id])
 }
@@ -408,46 +644,65 @@ export interface MicroruntimesMessages {
 			lines: Record<PlanLineId, string>
 		}
 		card: {
-			ticket: string
-			status: string
-			title: string
 			readMark: string
 			notSet: string
 			resolving: string
-			artifacts: Record<'prd' | 'designDoc' | 'spec' | 'guardrail', string>
-			guardrailNote: string
-			suggestedModel: string
-			suggestedEffort: string
-			efforts: Record<PlanEffort, string>
-			kinds: Record<ComponentKind, string>
-			recommendationNote: string
-			components: string
-			columns: { cpu: string; memory: string }
-			resolvedProgress: string
-			componentsTotal: string
-			figures: string
-			hardware: Record<
-				| 'resource'
-				| 'bounded'
-				| 'suggested'
-				| 'cpu'
-				| 'memory'
-				| 'gpu'
-				| 'disk',
-				string
-			>
-			notRuntimeField: string
-			none: string
-			priceBasis: string
-			report: Record<
-				'bounded' | 'suggested' | 'suggestedResource' | 'final',
-				string
-			>
-			deployments: string
-			pendingAuthorization: string
-			finalDetail: string
-			planPath: string
+			labels: Record<PlanPhaseId, string>
+			ticket: {
+				status: string
+				title: string
+				links: string
+				artifacts: Record<DocumentId, string>
+			}
+			analysis: {
+				documents: string
+				extracted: Record<DocumentId, string>
+				guardrailJudgment: string
+				documentsSummary: string
+				episodes: string
+				threshold: string
+				verdicts: Record<EpisodeVerdict, string>
+				reasons: Record<DropReason, string>
+				episodesSummary: string
+				measured: string
+				measuredNone: string
+				measuredReasoning: string
+				suggestedModel: string
+				suggestedEffort: string
+				efforts: Record<PlanEffort, string>
+				recommendationNote: string
+				suggestionSummary: string
+			}
+			plan: {
+				proposed: string
+				pendingAuthorization: string
+				envelope: { cpu: string; memory: string }
+				ofBounded: string
+				components: string
+				columns: { cpu: string; memory: string }
+				kinds: Record<ComponentKind, string>
+				resolvedProgress: string
+				componentsTotal: string
+				crossCheck: string
+				report: Record<
+					| 'bounded'
+					| 'headroom'
+					| 'suggestedResource'
+					| 'limits'
+					| 'price'
+					| 'validation'
+					| 'evidence',
+					string
+				>
+				deployments: string
+				notRuntimeFields: string
+				priceBasis: string
+				validated: string
+				planPath: string
+				summary: string
+			}
 			control: { pause: string; resume: string; replay: string }
+			figures: string
 			cpuValue: string
 			memoryValue: string
 		}

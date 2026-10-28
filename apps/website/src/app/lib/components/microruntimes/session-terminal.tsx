@@ -1,28 +1,33 @@
 'use client'
 
 import { MacTerminal } from '@langdrift/web/vendors/smoothui/mac-terminal'
-import { useAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 
 import {
 	type MicroruntimesMessages,
 	planSession,
 } from '@data/microruntimes-content'
-import { microruntimeSessionAtom } from '@state'
+import { microruntimeSessionAtom, recordPlayedCountAtom } from '@state'
+
+import { SessionControl } from './session-control'
 
 interface SessionTerminalProps {
+	control: MicroruntimesMessages['session']['card']['control']
 	copy: MicroruntimesMessages['session']['terminal']
 }
 
 // The hero's simulated planning session: the terminal plays the script on
-// its own clock and writes how many lines it has completed to the session,
-// which the ticket card beside it reads. A replay remounts it through the
-// run counter. Its height is fixed and follows the viewport, so nothing
-// below it shifts as it types and the ticket head fits in a phone's first
-// screen.
+// its own clock and records how many lines it has completed in the session,
+// which the cards beside it read. Its one control, pause and replay, sits
+// in the title bar. A replay remounts it through the run counter. The
+// window keeps a fixed height where the cards stack under it, so nothing
+// below shifts as it types, and stretches to the cards' height beside
+// them, so the two columns end together whatever card is open.
 export function SessionTerminal(props: SessionTerminalProps) {
-	const { copy } = props
+	const { control, copy } = props
 
-	const [session, setSession] = useAtom(microruntimeSessionAtom)
+	const session = useAtomValue(microruntimeSessionAtom)
+	const recordPlayedCount = useSetAtom(recordPlayedCountAtom)
 	const lines = planSession.map((line) => ({
 		...line,
 		text: copy.lines[line.id],
@@ -31,15 +36,11 @@ export function SessionTerminal(props: SessionTerminalProps) {
 	return (
 		<MacTerminal
 			key={session.run}
+			action={<SessionControl copy={control} />}
+			className="h-[clamp(240px,40vh,360px)] lg:h-auto"
 			label={copy.label}
 			lines={lines}
-			height="clamp(200px, 38vh, 320px)"
-			onProgress={(playedCount) =>
-				setSession((current) => ({
-					...current,
-					playedCount,
-				}))
-			}
+			onProgress={recordPlayedCount}
 			paused={session.paused}
 			prompt="~/shop %"
 			title={copy.title}

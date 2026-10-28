@@ -1,11 +1,16 @@
 // @vitest-environment jsdom
 
-import { act, cleanup, render } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { createStore, Provider } from 'jotai'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { planSession } from '@data/microruntimes-content'
 import { microruntimesMessages } from '@i18n/messages/index'
-import { microruntimeSessionAtom } from '@state'
+import {
+	initialMicroruntimeSession,
+	microruntimeSessionAtom,
+	recordPlayedCountAtom,
+} from '@state'
 
 import { SessionTerminal } from './session-terminal'
 
@@ -62,14 +67,23 @@ function advance(milliseconds: number) {
 	}
 }
 
+function mount() {
+	const store = createStore()
+	render(
+		<Provider store={store}>
+			<SessionTerminal
+				control={microruntimesMessages.en.session.card.control}
+				copy={microruntimesMessages.en.session.terminal}
+			/>
+		</Provider>,
+	)
+
+	return store
+}
+
 describe('Microruntimes session terminal', () => {
 	it('writes the number of completed lines to the session as it plays', () => {
-		const store = createStore()
-		render(
-			<Provider store={store}>
-				<SessionTerminal copy={microruntimesMessages.en.session.terminal} />
-			</Provider>,
-		)
+		const store = mount()
 		expect(store.get(microruntimeSessionAtom).playedCount).toBe(0)
 
 		advance(2000)
@@ -77,5 +91,28 @@ describe('Microruntimes session terminal', () => {
 
 		advance(600)
 		expect(store.get(microruntimeSessionAtom).playedCount).toBe(2)
+	})
+
+	it('pauses and resumes the session from its title bar, and replays it once it has ended', () => {
+		const store = mount()
+		advance(2600)
+		fireEvent.click(screen.getByRole('button', { name: 'Pause' }))
+		expect(store.get(microruntimeSessionAtom).paused).toBe(true)
+
+		advance(2000)
+		expect(store.get(microruntimeSessionAtom).playedCount).toBe(2)
+
+		fireEvent.click(screen.getByRole('button', { name: 'Resume' }))
+		advance(1000)
+		expect(store.get(microruntimeSessionAtom).playedCount).toBeGreaterThan(2)
+
+		act(() => {
+			store.set(recordPlayedCountAtom, planSession.length)
+		})
+		fireEvent.click(screen.getByRole('button', { name: 'Replay' }))
+		expect(store.get(microruntimeSessionAtom)).toEqual({
+			...initialMicroruntimeSession,
+			run: 1,
+		})
 	})
 })
