@@ -1,4 +1,5 @@
 import { ChromaText } from '@langdrift/web/ui/chroma-text'
+import { DotWaves } from '@langdrift/web/ui/dot-waves'
 import { HeroShader } from '@langdrift/web/ui/hero-shader'
 import { RotatingText } from '@langdrift/web/ui/rotating-text'
 
@@ -16,7 +17,9 @@ interface PlatformHeroProps {
 // "Platform" as the page's one touch of color. The shader's brand roles are
 // swapped for neutral ones, so it draws in grays: the light scheme takes the
 // secondary text gray, so its veils show over the pale field, and the dark
-// one takes the quiet surface grays. Under the headline, one frame holds the
+// one takes the border and secondary text grays at reduced opacity, so its
+// veils are lighter than the black but stay quiet. Purple dot waves travel
+// over the shader from the pointer. Under the headline, one frame holds the
 // Microruntimes terminal and the ticket, plan and workflow cards it plays
 // into, side by side; its top 21rem show at the bottom of the first screen.
 // The hero starts under the transparent header, so the two read as one
@@ -25,7 +28,7 @@ interface PlatformHeroProps {
 // scrolls its transcript inside; below `lg`, the cards stack under the
 // terminal.
 const monochrome =
-	'[--primary-hover:var(--muted-foreground)] [--primary:var(--muted-foreground)] dark:[--primary-hover:var(--border)] dark:[--primary:var(--muted)]'
+	'[--primary-hover:var(--muted-foreground)] [--primary:var(--muted-foreground)] dark:opacity-60 dark:[--primary-hover:var(--muted-foreground)] dark:[--primary:var(--border)]'
 
 export function PlatformHero(props: PlatformHeroProps) {
 	const { locale } = props
@@ -41,6 +44,7 @@ export function PlatformHero(props: PlatformHeroProps) {
 			className="relative isolate -mt-[70px] overflow-hidden bg-background pt-[70px] min-[761px]:-mt-20 min-[761px]:pt-20"
 		>
 			<HeroShader className={monochrome} />
+			<DotWaves />
 			<div
 				aria-hidden="true"
 				className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-linear-to-b from-transparent to-background"
