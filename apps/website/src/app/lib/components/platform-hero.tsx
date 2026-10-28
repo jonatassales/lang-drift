@@ -17,8 +17,8 @@ interface PlatformHeroProps {
 // swapped for neutral ones, so it draws in grays: the light scheme takes the
 // secondary text gray at under half opacity, so its veils show over the
 // pale field while it stays closer to white than to silver, and the dark
-// one takes the border and secondary text grays at reduced opacity, so its
-// veils are lighter than the black but stay quiet. Under the headline, one
+// one takes the surface and border grays at under half opacity, so its
+// veils barely lift from the black. Under the headline, one
 // frame holds the Microruntimes terminal and the ticket, plan and workflow
 // cards it plays into, side by side; its top 21rem show at the bottom of the first screen.
 // The hero starts under the transparent header, so the two read as one
@@ -27,7 +27,7 @@ interface PlatformHeroProps {
 // scrolls its transcript inside; below `lg`, the cards stack under the
 // terminal.
 const monochrome =
-	'opacity-45 [--primary-hover:var(--muted-foreground)] [--primary:var(--muted-foreground)] dark:opacity-60 dark:[--primary-hover:var(--muted-foreground)] dark:[--primary:var(--border)]'
+	'opacity-45 [--primary-hover:var(--muted-foreground)] [--primary:var(--muted-foreground)] dark:opacity-45 dark:[--primary-hover:var(--border)] dark:[--primary:var(--muted)]'
 
 export function PlatformHero(props: PlatformHeroProps) {
 	const { locale } = props
