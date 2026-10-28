@@ -1,8 +1,17 @@
 {
+	"mirror": {
+		"of": "exphere-server",
+		"record": "ledger-run-0001",
+		"setBy": "exphere-server",
+		"via": "server",
+		"setAt": "2026-10-28T14:31:48Z",
+		"readOnly": true,
+		"note": "Written by the tool from the server record. No gate reads this file; an edit here is shown as an unauthorized change."
+	},
 	"version": 1,
 	"sample": true,
 	"run": "0001-console-microruntime",
-	"ticket": "0001-TICKET-console-microruntime",
+	"ticket": "0070-console-microruntime",
 	"state": "provisional",
 	"currency": "USD",
 	"priceSource": ".langdrift/finops/prices/0001-illustrative.prices.json",
@@ -11,6 +20,18 @@
 		"perRunCents": 2500,
 		"ticketAllocationCents": 2500,
 		"periodLeftCents": 50000
+	},
+	"planning": {
+		"model": "claude-sonnet-5-5",
+		"note": "the collection agent that built plan.json; paid work under the same gates",
+		"cents": {
+			"estimate": 12,
+			"reserved": 15,
+			"observed": 9,
+			"billed": null,
+			"recovered": 6,
+			"overspend": 0
+		}
 	},
 	"laps": [
 		{
@@ -105,12 +126,12 @@
 	],
 	"totals": {
 		"cents": {
-			"reserved": 1140,
-			"observed": 980,
+			"reserved": 1155,
+			"observed": 989,
 			"billed": null,
-			"recovered": 160,
+			"recovered": 166,
 			"overspend": 0
 		},
-		"periodLeftAfterCents": 49020
+		"periodLeftAfterCents": 49011
 	}
 }

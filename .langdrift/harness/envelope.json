@@ -1,4 +1,13 @@
 {
+	"mirror": {
+		"of": "exphere-server",
+		"record": "envelope-7c2a",
+		"setBy": "owner",
+		"via": "console",
+		"setAt": "2026-10-27T18:04:00Z",
+		"readOnly": true,
+		"note": "Written by the tool from the server record. No gate reads this file; an edit here is shown as an unauthorized change."
+	},
 	"version": 1,
 	"status": "draft",
 	"owner": "team",

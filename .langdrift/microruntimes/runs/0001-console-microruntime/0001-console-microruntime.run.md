@@ -2,7 +2,7 @@
 
 > **Illustrative sample.** No run happened. Hashes match the files in this tree; times, ids and figures show the format. The branch, commit and pull request in `run.json` are placeholders.
 
-**Ticket:** 0001-TICKET-console-microruntime.ticket.md
+**Ticket:** 0070-console-microruntime.ticket.md
 **Kind:** ticket
 **Outcome:** completed in two laps
 **Proposed ticket status:** in-review, pending the owner
@@ -22,7 +22,7 @@ The first lap stopped in the pit: the owner chose Claude Opus 5.5 at high effort
 {
   "run": "0001-console-microruntime",
   "sample": true,
-  "ticket": "0001-TICKET-console-microruntime",
+  "ticket": "0070-console-microruntime",
   "kind": "ticket",
   "outcome": "completed",
   "laps": 2,
