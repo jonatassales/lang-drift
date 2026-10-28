@@ -343,6 +343,9 @@ func generateTicket(number int, startedAt time.Time) Ticket {
 	if number == 31 {
 		inputK, outputK, estimate = 3500, 250, 950
 	}
+	if outcome == "paused" {
+		estimate = 2200
+	}
 	reserve := estimate * 6 / 5
 	workflow := &TicketWorkflow{
 		Model:         model,
@@ -405,7 +408,6 @@ func generateTicket(number int, startedAt time.Time) Ticket {
 	}
 	if outcome == "paused" {
 		workflow.ObservedCents = intPointer(0)
-		workflow.ReleasedCents = intPointer(reserve)
 	}
 	ticket.Workflow = workflow
 	ticket.Status = "in-workflow"
