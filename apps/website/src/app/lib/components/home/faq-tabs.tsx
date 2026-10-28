@@ -6,7 +6,7 @@ import { useId, useState } from 'react'
 
 import type { ProductFaqItem } from '@components/product-page/product-faq-section'
 
-export interface FaqGroup {
+interface FaqGroup {
 	id: string
 	items: readonly ProductFaqItem[]
 	label: string
