@@ -53,6 +53,7 @@ export default async function FinopsPage(props: FinopsPageProps) {
 			<WebsiteHeader />
 			<main id="top">
 				<section
+					aria-describedby="finops-hero-caption finops-hero-summary"
 					aria-labelledby="finops-hero-heading"
 					className="mx-auto max-w-[1280px] px-[clamp(18px,3vw,36px)] pt-[58px] pb-[70px] max-md:pt-10 max-md:pb-12"
 				>
@@ -66,10 +67,7 @@ export default async function FinopsPage(props: FinopsPageProps) {
 						<span className="block">{copy.hero.titleStart}</span>{' '}
 						<span className="block">{copy.hero.titleEnd}</span>
 					</h1>
-					<div
-						aria-describedby="finops-hero-caption finops-hero-summary"
-						className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]"
-					>
+					<div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
 						<BudgetLedgerDemo copy={copy.ledger} locale={locale} />
 						<DeliveryReceipt
 							copy={copy.receipt}

@@ -42,7 +42,9 @@ describe('FinOps gate flow', () => {
 	it('names the work item the figures come from and never shows zero', () => {
 		const { container } = mount()
 		expect(
-			screen.getByText(/Figures from the Checkout retries work item/),
+			screen.getByText(
+				/Figures from the Checkout retries receipt at the top of the page/,
+			),
 		).toBeTruthy()
 		expect(container.textContent).not.toMatch(/\$0\b/)
 	})
