@@ -11,6 +11,12 @@ export interface LogoMarkProps {
 	size?: number
 }
 
+// The fixed wordmark colors a caller can ask for by tone.
+const toneColor: Record<NonNullable<BrandProps['tone']>, string> = {
+	dark: '#f5f5f5',
+	light: '#111111',
+}
+
 const wordmarkStyle: CSSProperties = {
 	letterSpacing: '-0.055em',
 	lineHeight: 1,
@@ -48,8 +54,7 @@ export function LogoMark(props: LogoMarkProps) {
 export function Brand(props: BrandProps) {
 	const { className, compact = false, tone } = props
 
-	const textColor =
-		tone === 'dark' ? '#f5f5f5' : tone === 'light' ? '#111111' : undefined
+	const textColor = tone ? toneColor[tone] : undefined
 
 	return (
 		<span

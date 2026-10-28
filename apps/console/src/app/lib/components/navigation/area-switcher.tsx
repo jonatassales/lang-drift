@@ -2,13 +2,12 @@
 
 import { FinopsIcon, MicroruntimesIcon } from '@langdrift/web/ui/icons/platform'
 import { useTranslations } from 'next-intl'
-import { useId } from 'react'
 
+import { useDismissibleMenu } from '@components/menu/use-dismissible-menu.hook'
 import { Link, usePathname } from '@i18n/navigation'
 import { CaretDown, CheckCircle } from '@ui/icons'
 
 import { type Area, areaHome, areaOf, areas } from './area'
-import { useDismissableMenu } from './use-dismissable-menu.hook'
 
 interface AreaSwitcherProps {
 	onNavigate?: () => void
@@ -26,8 +25,8 @@ export function AreaSwitcher(props: AreaSwitcherProps) {
 
 	const t = useTranslations('ui')
 	const pathname = usePathname()
-	const menuId = useId()
-	const { containerRef, open, setOpen, triggerRef } = useDismissableMenu()
+	const { containerRef, menuId, open, setOpen, triggerRef } =
+		useDismissibleMenu()
 	const current = areaOf(pathname)
 	const CurrentIcon = areaIcon[current]
 

@@ -1,9 +1,9 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { type ReactNode, useId } from 'react'
+import type { ReactNode } from 'react'
 
-import { useDismissableMenu } from '@components/navigation/use-dismissable-menu.hook'
+import { useDismissibleMenu } from '@components/menu/use-dismissible-menu.hook'
 import { Link } from '@i18n/navigation'
 import { CaretDown, Gear, UserCircle } from '@ui/icons'
 
@@ -19,8 +19,8 @@ export function AccountMenu(props: AccountMenuProps) {
 	const { children, email } = props
 
 	const t = useTranslations('ui')
-	const menuId = useId()
-	const { containerRef, open, setOpen, triggerRef } = useDismissableMenu()
+	const { containerRef, menuId, open, setOpen, triggerRef } =
+		useDismissibleMenu()
 
 	return (
 		<div className="relative" ref={containerRef}>

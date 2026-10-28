@@ -2,8 +2,8 @@
 
 import { Brand } from '@langdrift/web/ui/brand'
 import { useTranslations } from 'next-intl'
-import { useId } from 'react'
 
+import { useDismissibleMenu } from '@components/menu/use-dismissible-menu.hook'
 import type { Product } from '@data/types'
 import { Link, usePathname } from '@i18n/navigation'
 import {
@@ -19,7 +19,6 @@ import {
 
 import { areaOf } from './area'
 import { AreaSwitcher } from './area-switcher'
-import { useDismissableMenu } from './use-dismissable-menu.hook'
 
 interface NavigationProps {
 	product?: Product
@@ -96,13 +95,13 @@ export function Navigation(props: NavigationProps) {
 					},
 					...projectGroup,
 				]
-	const menuId = useId()
 	const {
 		containerRef: selectorRef,
+		menuId,
 		open,
 		setOpen,
 		triggerRef,
-	} = useDismissableMenu()
+	} = useDismissibleMenu()
 	const settingsActive =
 		pathname === '/settings' || pathname.startsWith('/settings/')
 	function navigate() {

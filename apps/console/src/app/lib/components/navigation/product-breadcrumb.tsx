@@ -13,11 +13,7 @@ export async function ProductBreadcrumb(props: ProductBreadcrumbProps) {
 	const { locale, segments } = props
 
 	const [root, id, section] = segments
-	if (
-		!id ||
-		!['products', 'runtimes'].includes(root) ||
-		['new', 'import'].includes(id)
-	)
+	if (!id || !['products', 'runtimes'].includes(root) || id === 'new')
 		return null
 	const [t, navigation, detail] = await Promise.all([
 		getTranslations({

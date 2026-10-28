@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 
 // A menu that opens from a trigger and closes on Escape, on a press outside
-// it or when focus leaves it. Escape returns focus to the trigger.
-export function useDismissableMenu() {
+// it or when focus leaves it. Escape returns focus to the trigger. It owns the
+// menu's id, which the trigger's aria-controls names while the menu is open.
+export function useDismissibleMenu() {
+	const menuId = useId()
 	const [open, setOpen] = useState(false)
 	const containerRef = useRef<HTMLDivElement>(null)
 	const triggerRef = useRef<HTMLButtonElement>(null)
@@ -32,6 +34,7 @@ export function useDismissableMenu() {
 
 	return {
 		containerRef,
+		menuId,
 		open,
 		setOpen,
 		triggerRef,
