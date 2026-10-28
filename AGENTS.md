@@ -60,7 +60,7 @@ A pnpm and Turborepo monorepo. `apps/website` is the platform site, one page wit
 
 ## Commands
 
-Run from the repository root. [`.agents/context.md`](.agents/context.md) has the full table and what each command touches.
+Run from the repository root. `pnpm website` serves the site on port 3000, `pnpm console` the console on 3001 with its stub API on 3401, and `pnpm docs` the docs at `http://localhost:3002/docs`, so all three run at once. [`.agents/context.md`](.agents/context.md) has the full table and what each command touches.
 
 ```bash
 pnpm install
@@ -68,6 +68,10 @@ pnpm install
 
 ```bash
 pnpm website
+```
+
+```bash
+pnpm console
 ```
 
 ```bash

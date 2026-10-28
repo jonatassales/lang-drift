@@ -10,9 +10,9 @@ Run commands from the repository root:
 
 | Command | Purpose |
 | --- | --- |
-| `pnpm docs` | Build shared dependencies and start development at `http://localhost:3001/docs`. |
+| `pnpm docs` | Build shared dependencies and start development at `http://localhost:3002/docs`. |
 | `pnpm turbo run build --filter=docs...` | Build shared dependencies, compile the docs and generate search assets. |
-| `pnpm --filter docs start` | Serve the completed production build on port 3001. |
+| `pnpm --filter docs start` | Serve the completed production build on port 3002. |
 | `pnpm --filter docs typecheck` | Generate Next.js route types and check TypeScript. |
 
 No secrets, backing service or environment variables are required.

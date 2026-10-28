@@ -18,7 +18,7 @@ Monorepo with four packages, `@langdrift/tokens`, `@langdrift/web`, the `ex` CLI
 
 - pnpm is the only package manager. `devEngines.packageManager` in the root `package.json` makes other package managers fail, and `engineStrict` in `pnpm-workspace.yaml` enforces the Node range in `engines`.
 - Dependency install scripts run only when `allowBuilds` in `pnpm-workspace.yaml` allows them. Prebuilt binaries ship as optional dependencies, so the entries there are denials; approve a new one only when its build is required.
-- Work that spans the monorepo runs through Turborepo. The only root scripts that wrap `turbo run` are the two app launchers below; do not add others.
+- Work that spans the monorepo runs through Turborepo. The only root scripts that wrap `turbo run` are the three app launchers below; do not add others.
 - A package's scripts call its tool directly (for example `tsc --noEmit`). Turborepo tasks run those scripts by name. Do not add shell or JavaScript wrappers for what Turborepo or pnpm already do.
 
 Run from the repository root:
@@ -27,7 +27,8 @@ Run from the repository root:
 | --- | --- |
 | `pnpm install` | Installs dependencies and the Git hooks, then links the `drift` launcher. Fails under another package manager or an unsupported Node version. |
 | `pnpm website` | Builds the packages the website depends on, then starts it in dev mode on port 3000. |
-| `pnpm docs` | Builds the packages the docs depend on, then starts them in dev mode at `http://localhost:3001/docs`. |
+| `pnpm console` | Starts the console in dev mode on `http://127.0.0.1:3001` together with its stub API, extub, on `127.0.0.1:3401`. Extub needs a Go toolchain. |
+| `pnpm docs` | Builds the packages the docs depend on, then starts them in dev mode at `http://localhost:3002/docs`. |
 | `pnpm turbo run build` | Builds every package that has a `build` script, upstream packages first. |
 | `pnpm turbo run dev --filter=<package-name>` | Builds the packages an app depends on, then starts the app. |
 | `pnpm turbo run typecheck` | Runs each package's `typecheck` script. |

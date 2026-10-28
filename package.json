@@ -16,6 +16,7 @@
 		"prepare": "husky platform/versioning/.husky",
 		"website": "turbo run dev --filter=website",
 		"docs": "turbo run dev --filter=docs",
+		"console": "turbo run dev --filter=console",
 		"check": "biome check .",
 		"fix": "biome check --write ."
 	},
