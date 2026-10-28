@@ -12,7 +12,9 @@ interface PlatformHeroProps {
 
 // The hero is the moving headline alone, centered on the first screen over a
 // black-and-white shader: the shader's brand roles are swapped for neutral
-// ones, so it draws in grays. Under the headline, one frame holds the
+// ones, so it draws in grays. The light scheme takes the secondary text gray,
+// so its veils show over the pale field; the dark one takes the quiet surface
+// grays. Under the headline, one frame holds the
 // Microruntimes terminal and the ticket, plan and workflow cards it plays
 // into, side by side; its top 21rem show at the bottom of the first screen.
 // The hero starts under the transparent header, so the two read as one
@@ -20,7 +22,8 @@ interface PlatformHeroProps {
 // cards, so they never scroll; the terminal stretches to the same height and
 // scrolls its transcript inside; below `lg`, the cards stack under the
 // terminal.
-const monochrome = '[--primary-hover:var(--border)] [--primary:var(--muted)]'
+const monochrome =
+	'[--primary-hover:var(--muted-foreground)] [--primary:var(--muted-foreground)] dark:[--primary-hover:var(--border)] dark:[--primary:var(--muted)]'
 
 export function PlatformHero(props: PlatformHeroProps) {
 	const { locale } = props
