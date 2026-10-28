@@ -1,0 +1,11 @@
+{
+	"name": "@langdrift/extub",
+	"private": true,
+	"scripts": {
+		"dev": "go run ./src",
+		"start": "./dist/extub",
+		"build": "go build -o dist/extub ./src",
+		"test": "go test ./...",
+		"typecheck": "go vet ./..."
+	}
+}
