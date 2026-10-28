@@ -37,6 +37,7 @@ The console returns from the copy last committed here, which matches Exphere's c
 - **FinOps overview.** A server-rendered page reads the runtime list and the products from the stub. It shows the summed known LLM cost, the count of executions with an unknown cost, the CPU and memory used against each envelope, each runtime's LLM budget when configured, each runtime's existing FinOps reading, and the existing recommendation action. Illustrative and stub notices stay.
 - **Dead code.** Redirect-only routes go, and the sidebar links straight to the secrets page. Whatever the dead-code check reports afterwards goes or is justified in the allow list.
 - **Docs.** The docs app, its launcher, its preview configuration, its token theme and export, and its mentions in AGENTS.md and the context file go. Two root launchers remain: the website and the console.
+- **Sign-in screens.** Login and sign-up stand on the website's background and aesthetic: the black-and-white hero shader behind a full screen, and the form in the website's elevated glass frame. The shader tone and the frame are shared components of the web package, used by the website's hero and by the console.
 - **Stub.** Only the seeded project's display name changes, to LangDrift Studio; its id and every route stay.
 
 ## Testing Decisions
