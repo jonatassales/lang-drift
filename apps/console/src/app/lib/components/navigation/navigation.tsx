@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import { Brand } from '@langdrift/web/ui/brand'
 import { useTranslations } from 'next-intl'
 import { useEffect, useId, useRef, useState } from 'react'
 
@@ -120,14 +120,7 @@ export function Navigation(props: NavigationProps) {
 				href="/home"
 				onClick={navigate}
 			>
-				<Image
-					src="/brand/exphere-logo.svg"
-					alt="Exphere"
-					width={132}
-					height={31}
-					priority
-					className="h-auto w-[132px] dark:invert"
-				/>
+				<Brand className="text-foreground" compact />
 			</Link>
 			<nav aria-label={t('navigation')} className="grid gap-1">
 				{groups.map((group) => (

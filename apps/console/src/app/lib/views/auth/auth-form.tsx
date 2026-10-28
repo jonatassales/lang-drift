@@ -1,5 +1,5 @@
 'use client'
-import Image from 'next/image'
+import { Brand } from '@langdrift/web/ui/brand'
 import { useTranslations } from 'next-intl'
 import { useState, useTransition } from 'react'
 
@@ -27,14 +27,7 @@ export function AuthForm(props: AuthFormProps) {
 	return (
 		<div className="mx-auto flex min-h-screen max-w-md flex-col justify-center gap-6 px-5 py-10">
 			<div className="text-center">
-				<Image
-					src="/brand/exphere-logo.svg"
-					alt="Exphere"
-					width={165}
-					height={38}
-					priority
-					className="mx-auto h-auto w-[165px] dark:invert"
-				/>
+				<Brand className="text-foreground" />
 				<h1 className="mt-4 text-2xl font-medium">
 					{t(signup ? 'signup' : 'login')}
 				</h1>

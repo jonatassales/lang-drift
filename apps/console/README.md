@@ -1,6 +1,6 @@
 # Console
 
-The LangDrift console, where a team manages FinOps: projects registered from a local folder, their microruntimes, executions, history and secrets, with FinOps readings and recommendations that stay advisory. It was imported from Exphere's console and still carries its brand. Every screen reads [extub](/apps/extub/README.md), the local stub API, so nothing here reaches a live service.
+The LangDrift console, where a team manages FinOps: projects registered from a local folder, their microruntimes, executions, history and secrets, with FinOps readings and recommendations that stay advisory. It was imported from Exphere's console (`jonatassales/exphere`) and carries the LangDrift brand. Every screen reads [extub](/apps/extub/README.md), the local stub API, so nothing here reaches a live service.
 
 ## Local development
 

@@ -61,18 +61,11 @@ export async function ProductBreadcrumb(props: ProductBreadcrumbProps) {
 				href: `/runtimes/${id}/${section}`,
 			})
 	} else if (section === 'config') {
-		items.push(
-			{
-				key: 'config',
-				label: t('config'),
-				href: `${base}/config`,
-			},
-			{
-				key: 'secrets',
-				label: t('secrets'),
-				href: `${base}/config/secrets`,
-			},
-		)
+		items.push({
+			key: 'secrets',
+			label: t('secrets'),
+			href: `${base}/config/secrets`,
+		})
 	} else if (section === 'runtimes' && segments[3] === 'new') {
 		items.push(
 			{
