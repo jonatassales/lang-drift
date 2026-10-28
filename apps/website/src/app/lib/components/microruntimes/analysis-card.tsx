@@ -11,6 +11,7 @@ import {
 	similarityThreshold,
 	ticketPlan,
 } from '@data/microruntimes-content'
+import { budgetCents, workflowModel } from '@data/microruntimes-workflow'
 
 import { CardSection } from './card-section'
 import { CardValue, revealState } from './card-value'
@@ -25,6 +26,7 @@ interface AnalysisCardProps {
 }
 
 const aside = 'font-mono text-[11px] text-muted-foreground'
+const suggestedModel = workflowModel(ticketPlan.model)
 const keptCount = episodes.filter(
 	(episode) => episode.verdict === 'kept',
 ).length
@@ -40,6 +42,7 @@ function extractedFact(
 			return copy.analysis.extracted.prd
 		case 'designDoc':
 			return format.message('analysis.extracted.designDoc', {
+				budget: format.money(budgetCents),
 				cpu: format.formatNumber.format(ticketPlan.bounded.cpuMillis),
 				memory: format.formatNumber.format(ticketPlan.bounded.memoryMiB),
 			})
@@ -171,12 +174,15 @@ export function AnalysisCard(props: AnalysisCardProps) {
 				<div className="grid gap-1.5">
 					<Eyebrow>{analysis.suggestedModel}</Eyebrow>
 					<CardValue
-						className="font-mono text-[14px]"
+						className="grid gap-0.5"
 						labels={copy}
 						state={suggestionState}
 						width="w-32"
 					>
-						{ticketPlan.model}
+						<span className="text-[14px]">{suggestedModel.name}</span>
+						<span className="font-mono text-[11px] text-muted-foreground">
+							{suggestedModel.id}
+						</span>
 					</CardValue>
 				</div>
 				<div className="grid gap-1.5">
@@ -210,7 +216,7 @@ export function analysisSummary(
 	if (revealed(playedCount, 'suggestion')) {
 		return format.message('analysis.suggestionSummary', {
 			effort: copy.analysis.efforts[ticketPlan.effort],
-			model: ticketPlan.model,
+			model: suggestedModel.name,
 		})
 	}
 	if (revealed(playedCount, 'verdicts')) {

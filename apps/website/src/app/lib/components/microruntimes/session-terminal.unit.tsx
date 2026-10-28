@@ -9,6 +9,7 @@ import { microruntimesMessages } from '@i18n/messages/index'
 import {
 	initialMicroruntimeSession,
 	microruntimeSessionAtom,
+	playWorkflowAtom,
 	recordPlayedCountAtom,
 } from '@state'
 
@@ -114,5 +115,34 @@ describe('Microruntimes session terminal', () => {
 			...initialMicroruntimeSession,
 			run: 1,
 		})
+	})
+
+	it('scrolls up to the window when the workflow plays, starts the run a second later and records its lines', () => {
+		const scrollIntoView = vi.fn()
+		Element.prototype.scrollIntoView = scrollIntoView
+		const store = mount()
+		act(() => {
+			store.set(recordPlayedCountAtom, planSession.length)
+			store.set(playWorkflowAtom)
+		})
+		expect(store.get(microruntimeSessionAtom).stage).toBe('launching')
+		expect(scrollIntoView).toHaveBeenCalledWith(
+			expect.objectContaining({ block: 'start' }),
+		)
+
+		advance(960)
+		expect(store.get(microruntimeSessionAtom).stage).toBe('launching')
+
+		advance(80)
+		expect(store.get(microruntimeSessionAtom)).toMatchObject({
+			playedCount: 0,
+			run: 1,
+			stage: 'running',
+		})
+		expect(scrollIntoView).toHaveBeenCalledOnce()
+
+		advance(1500)
+		expect(store.get(microruntimeSessionAtom).playedCount).toBeGreaterThan(0)
+		expect(screen.getByRole('button', { name: 'Pause' })).toBeTruthy()
 	})
 })

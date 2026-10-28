@@ -3,12 +3,12 @@
 		"skip": "Skip to the lifecycle",
 		"hero": {
 			"title": "Microruntimes",
-			"summary": "A simulated planning session for the ticket 0031-TICKET-early-access-runtime, \"Run the early-access sign-up use case as a microruntime\". The typed command, ex agent plan, is the intended entry point; the console cites three project episodes and suggests the model operator/allowed-model at medium effort, a recommendation the team authorizes. It reads the ticket's PRD, design doc, spec and guardrail, takes the envelope the team set, 2,000 millicores and 3,072 MiB, and resolves five components from the spec: a Go API, a Node.js API, a NATS broker, a Redis cache and a Next.js app, 1,450 millicores and 2,304 MiB in total. GPU and disk are not runtime.md fields and no price source is configured, so the figures stay in units. The plan ends as a runtime.md draft pending the team's authorization. Nothing is built, started or paid for; the retrieval and the suggestion describe the console's proposed planning flow."
+			"summary": "A simulated ex session for the ticket 0031-TICKET-early-access-runtime, \"Run the early-access sign-up use case as a microruntime\", told in four cards. The typed command, ex agent plan, is the intended entry point. The console reads the ticket's PRD, design doc, spec and guardrail, takes the envelope the team set, 2,000 millicores and 3,072 MiB, and a budget of $25.00 per run for model calls, cites three project episodes and suggests Claude Sonnet 5.5 at medium effort, a recommendation the team authorizes. It resolves five components from the spec, a Go API, a Node.js API, a NATS broker, a Redis cache and a Next.js app, 1,450 millicores and 2,304 MiB in total; the runtime itself has no price source, so its figures stay in units. The Workflow card prices the run at Anthropic list prices: Claude Sonnet 5.5 at medium effort is estimated at $9.50 and reserves $11.40 of the $25.00 budget. By default a person confirms the planning and reviews the pull request, and the merge is always the owner's. Playing the workflow runs ex agent run through the console's gate, the stages, the push and pull request #19 with its checks, and ends ready for review; a reservation over the budget pauses the run at the gate with nothing paid for. Every step is simulated: nothing is built, started or paid for."
 		},
 		"session": {
 			"terminal": {
 				"title": "ex — project",
-				"label": "Terminal: a simulated ex planning session",
+				"label": "Terminal: a simulated ex session",
 				"lines": {
 					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
 					"scope": "# plan only · nothing is built, started or paid for in this step",
@@ -20,7 +20,7 @@
 					"readSpec": "console › tool call: read 0011-SPEC · 5 components named · 3 acceptance criteria",
 					"reads": "✓ read       4 documents · nothing outside the ticket's links",
 					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
-					"judgeGuardrail": "console › judging · FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
+					"judgeGuardrail": "console › judging · FIN-02 estimate before a paid call · FIN-03 a budget before a paid run · FIN-04 size cpu and memory to the load",
 					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
 					"budget": "budget     $25.00 per run for model calls · set by the team in the design doc",
 					"memory": "console › RAG over project episodes · a model and effort for this ticket",
@@ -49,10 +49,39 @@
 					"crossCheck": "console › cross-checking · 5 ports distinct · 5 images resolved · no collisions",
 					"size": "✓ size       1450m of 2000m · 2304 of 3072 MiB · 5 one-replica Deployments · proposed shares",
 					"limits": "limits     gpu and disk are not runtime.md fields · none requested",
-					"price": "estimate   no price source configured · figures stay in millicores and MiB",
+					"price": "estimate   runtime has no price source · cpu and memory stay in millicores and MiB",
 					"validate": "console › tool call: validate runtime.md draft against the schema · 0 errors",
 					"draft": "✓ plan       runtime.md draft, revision 1 · proposed to the console",
 					"handoff": "# next: once the team authorizes, ex agent run applies the recorded intent"
+				},
+				"run": {
+					"command": "ex agent run",
+					"scope": "# run · 0031-TICKET-early-access-runtime · the recorded intent, authorized by the team",
+					"intent": "console › intent     {model} · effort {effort} · runtime.md revision 1",
+					"estimate": "console › estimate   {estimate} · {input} input · {output} output · list prices · FIN-02",
+					"budget": "console › budget     {budget} per run · set by the team · FIN-03",
+					"gateOpened": "console › gate       reserved {reserved} of {budget} · opened",
+					"gatePaused": "console › gate       reservation {reserved} exceeds the {budget} budget · paused",
+					"paused": "# needs a decision: raise the budget or lower the effort · nothing was paid for",
+					"waiting": "console › waiting    {stage} · the owner confirms",
+					"confirmed": "✓ confirmed  {stage} · by the owner",
+					"grilling": "console › grilling   3 open questions settled",
+					"toSpec": "console › to-spec    0011-SPEC revised · 3 acceptance criteria",
+					"toTickets": "console › to-tickets 3 tickets · blocking edges recorded",
+					"hook": "console › hook       effort recorded · implement unblocked",
+					"implement": "console › implement  tdd · 5 components · 14 files · 32 tests green",
+					"codeReview": "console › code-review 2 findings · fixed",
+					"runtimeReady": "runtime    early-access-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
+					"completed": "✓ completed  implementation · {observed} observed of {reserved} reserved · usage record",
+					"pushed": "✓ pushed     {branch} · {hash}",
+					"pullRequest": "✓ pr #{number}     feat(signup): run early access as a microruntime",
+					"checks": "checks     build · check · test · guardrails · running",
+					"checksPassed": "✓ checks     4 of 4 passed",
+					"runtimeStopped": "runtime    stopped · 5 Deployments removed · nothing left",
+					"readyForReview": "✓ ready      #{number} for review · {released} released to the envelope",
+					"readyToMerge": "✓ ready      #{number} to merge · {released} released to the envelope",
+					"nextReview": "# next: the owner reviews #{number} and decides whether to merge",
+					"nextMerge": "# next: the merge stays the owner's"
 				}
 			},
 			"card": {
@@ -62,7 +91,8 @@
 				"labels": {
 					"ticket": "Ticket",
 					"analysis": "Analysis",
-					"plan": "Plan"
+					"plan": "Plan",
+					"workflow": "Workflow"
 				},
 				"ticket": {
 					"status": "ready-for-agent",
@@ -79,11 +109,11 @@
 					"documents": "Documents",
 					"extracted": {
 						"prd": "use case: early-access sign-up",
-						"designDoc": "envelope {cpu}m · {memory} MiB · set by the team",
+						"designDoc": "envelope {cpu}m · {memory} MiB · budget {budget} per run · set by the team",
 						"spec": "{components} components · {criteria} acceptance criteria",
 						"guardrail": "{criteria} · review rule, no automatic enforcement"
 					},
-					"guardrailJudgment": "FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
+					"guardrailJudgment": "FIN-02: estimate before a paid call · FIN-03: a budget before a paid run · FIN-04: size cpu and memory to the load",
 					"documentsSummary": "{count, plural, one {# document read} other {# documents read}}",
 					"episodes": "Episodes",
 					"threshold": "threshold {value}",
@@ -143,10 +173,54 @@
 					},
 					"deployments": "{count, plural, one {# one-replica Deployment} other {# one-replica Deployments}}",
 					"notRuntimeFields": "not runtime.md fields",
-					"priceBasis": "no price source configured · units only",
+					"priceBasis": "runtime: no price source · units only",
 					"validated": "schema · 0 errors",
 					"planPath": "runtime.md draft · revision {revision} · proposed to the console",
 					"summary": "{figures} · {pending}"
+				},
+				"workflow": {
+					"humanInTheLoop": "Human in the loop",
+					"stages": {
+						"planning": "Planning",
+						"spec": "Spec",
+						"tickets": "Tickets",
+						"implement": "Implement",
+						"review": "Review",
+						"merge": "Merge"
+					},
+					"humanStage": "{stage} · human in the loop",
+					"mergeLocked": "always the owner's",
+					"requiredStage": "{stage} always has a person in this workflow",
+					"waiting": "waiting for the owner",
+					"model": "Model",
+					"effort": "Effort",
+					"modelPrice": "{input} / {output} per MTok · list price, {date}",
+					"estimate": "Estimated spend",
+					"tokens": "{input} input · {output} output · uncached list prices",
+					"reserves": "reserves {reserved} of the {budget} budget",
+					"overBudget": "over the budget · the gate will pause this run",
+					"play": "Play workflow",
+					"starting": "Starting…",
+					"playing": "Playing…",
+					"playAgain": "Play again",
+					"playUnavailable": "available once the plan is drafted",
+					"result": {
+						"reserved": "Reserved",
+						"observed": "Observed",
+						"released": "Released"
+					},
+					"nothingPaid": "nothing paid",
+					"pullRequest": "Pull request",
+					"checksRunning": "checks running",
+					"checksPassed": "4 of 4 checks passed",
+					"readyForReview": "ready for review",
+					"readyToMerge": "ready to merge",
+					"needsDecision": "paused at the gate · needs a decision",
+					"summaryChoice": "{model} · {effort} · {estimate} of {budget}",
+					"summaryPaused": "paused at the gate",
+					"summaryDone": "#{number} · {state} · {observed}",
+					"statusDone": "The simulated run ended: pull request #{number} is {state}, {observed} observed of {reserved} reserved.",
+					"statusPaused": "The simulated run paused at the gate: the reservation of {reserved} exceeds the {budget} budget, and nothing was paid for."
 				},
 				"control": {
 					"pause": "Pause",
@@ -441,12 +515,12 @@
 		"skip": "Pular para o ciclo de vida",
 		"hero": {
 			"title": "Microruntimes",
-			"summary": "Uma sessão simulada de planejamento para o ticket 0031-TICKET-early-access-runtime, \"Rodar o caso de uso de inscrição no early access como um microruntime\". O comando digitado, ex agent plan, é o ponto de entrada pretendido; o console cita três episódios do projeto e sugere o modelo operator/allowed-model com effort medium, uma recomendação que o time autoriza. Ele lê o PRD, o design doc, a spec e o guardrail do ticket, toma o envelope definido pelo time, 2.000 milicores e 3.072 MiB, e resolve cinco componentes a partir da spec: uma API em Go, uma API em Node.js, um broker NATS, um cache Redis e um app Next.js, 1.450 milicores e 2.304 MiB no total. GPU e disco não são campos de runtime.md e nenhuma base de preço está configurada, então os valores ficam em unidades. O plano termina como um rascunho de runtime.md aguardando a autorização do time. Nada é construído, iniciado ou pago; a recuperação e a sugestão descrevem o fluxo de planejamento proposto do console."
+			"summary": "Uma sessão simulada do ex para o ticket 0031-TICKET-early-access-runtime, \"Rodar o caso de uso de inscrição no early access como um microruntime\", contada em quatro cards. O comando digitado, ex agent plan, é o ponto de entrada pretendido. O console lê o PRD, o design doc, a spec e o guardrail do ticket, toma o envelope definido pelo time, 2.000 milicores e 3.072 MiB, e um orçamento de US$ 25,00 por execução para chamadas de modelo, cita três episódios do projeto e sugere o Claude Sonnet 5.5 com effort medium, uma recomendação que o time autoriza. Ele resolve cinco componentes a partir da spec, uma API em Go, uma API em Node.js, um broker NATS, um cache Redis e um app Next.js, 1.450 milicores e 2.304 MiB no total; o runtime em si não tem fonte de preço, então seus valores ficam em unidades. O card Workflow precifica a execução pelos preços de tabela da Anthropic: o Claude Sonnet 5.5 com effort medium tem estimativa de US$ 9,50 e reserva US$ 11,40 do orçamento de US$ 25,00. Por padrão, uma pessoa confirma o planejamento e revisa o pull request, e o merge é sempre do responsável. Rodar o workflow executa ex agent run pelo gate do console, pelas etapas, pelo push e pelo pull request #19 com seus checks, e termina pronto para revisão; uma reserva acima do orçamento pausa a execução no gate sem nada pago. Cada etapa é simulada: nada é construído, iniciado ou pago."
 		},
 		"session": {
 			"terminal": {
 				"title": "ex — project",
-				"label": "Terminal: uma sessão simulada de planejamento do ex",
+				"label": "Terminal: uma sessão simulada do ex",
 				"lines": {
 					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
 					"scope": "# só planejamento · nada é construído, iniciado ou pago nesta etapa",
@@ -458,7 +532,7 @@
 					"readSpec": "console › tool call: read 0011-SPEC · 5 components named · 3 acceptance criteria",
 					"reads": "✓ read       4 documents · nothing outside the ticket's links",
 					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
-					"judgeGuardrail": "console › judging · FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
+					"judgeGuardrail": "console › judging · FIN-02 estimate before a paid call · FIN-03 a budget before a paid run · FIN-04 size cpu and memory to the load",
 					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
 					"budget": "budget     $25.00 per run for model calls · set by the team in the design doc",
 					"memory": "console › RAG over project episodes · a model and effort for this ticket",
@@ -487,10 +561,39 @@
 					"crossCheck": "console › cross-checking · 5 ports distinct · 5 images resolved · no collisions",
 					"size": "✓ size       1450m of 2000m · 2304 of 3072 MiB · 5 one-replica Deployments · proposed shares",
 					"limits": "limits     gpu and disk are not runtime.md fields · none requested",
-					"price": "estimate   no price source configured · figures stay in millicores and MiB",
+					"price": "estimate   runtime has no price source · cpu and memory stay in millicores and MiB",
 					"validate": "console › tool call: validate runtime.md draft against the schema · 0 errors",
 					"draft": "✓ plan       runtime.md draft, revision 1 · proposed to the console",
 					"handoff": "# próximo: quando o time autorizar, ex agent run aplica a intenção registrada"
+				},
+				"run": {
+					"command": "ex agent run",
+					"scope": "# execução · 0031-TICKET-early-access-runtime · a intenção registrada, autorizada pelo time",
+					"intent": "console › intent     {model} · effort {effort} · runtime.md revision 1",
+					"estimate": "console › estimate   {estimate} · {input} input · {output} output · list prices · FIN-02",
+					"budget": "console › budget     {budget} per run · set by the team · FIN-03",
+					"gateOpened": "console › gate       reserved {reserved} of {budget} · opened",
+					"gatePaused": "console › gate       reservation {reserved} exceeds the {budget} budget · paused",
+					"paused": "# requer uma decisão: aumentar o orçamento ou reduzir o effort · nada foi pago",
+					"waiting": "console › waiting    {stage} · the owner confirms",
+					"confirmed": "✓ confirmed  {stage} · by the owner",
+					"grilling": "console › grilling   3 open questions settled",
+					"toSpec": "console › to-spec    0011-SPEC revised · 3 acceptance criteria",
+					"toTickets": "console › to-tickets 3 tickets · blocking edges recorded",
+					"hook": "console › hook       effort recorded · implement unblocked",
+					"implement": "console › implement  tdd · 5 components · 14 files · 32 tests green",
+					"codeReview": "console › code-review 2 findings · fixed",
+					"runtimeReady": "runtime    early-access-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
+					"completed": "✓ completed  implementation · {observed} observed of {reserved} reserved · usage record",
+					"pushed": "✓ pushed     {branch} · {hash}",
+					"pullRequest": "✓ pr #{number}     feat(signup): run early access as a microruntime",
+					"checks": "checks     build · check · test · guardrails · running",
+					"checksPassed": "✓ checks     4 of 4 passed",
+					"runtimeStopped": "runtime    stopped · 5 Deployments removed · nothing left",
+					"readyForReview": "✓ ready      #{number} for review · {released} released to the envelope",
+					"readyToMerge": "✓ ready      #{number} to merge · {released} released to the envelope",
+					"nextReview": "# próximo: o responsável revisa o #{number} e decide se faz o merge",
+					"nextMerge": "# próximo: o merge continua sendo do responsável"
 				}
 			},
 			"card": {
@@ -500,7 +603,8 @@
 				"labels": {
 					"ticket": "Ticket",
 					"analysis": "Análise",
-					"plan": "Plano"
+					"plan": "Plano",
+					"workflow": "Workflow"
 				},
 				"ticket": {
 					"status": "ready-for-agent",
@@ -517,11 +621,11 @@
 					"documents": "Documentos",
 					"extracted": {
 						"prd": "caso de uso: inscrição no early access",
-						"designDoc": "envelope {cpu}m · {memory} MiB · definido pelo time",
+						"designDoc": "envelope {cpu}m · {memory} MiB · orçamento de {budget} por execução · definido pelo time",
 						"spec": "{components} componentes · {criteria} critérios de aceite",
 						"guardrail": "{criteria} · regra de revisão, sem aplicação automática"
 					},
-					"guardrailJudgment": "FIN-02: uma ação paga precisa de um gate · FIN-04: o orçamento é do time",
+					"guardrailJudgment": "FIN-02: estimar antes de uma chamada paga · FIN-03: um orçamento antes de uma execução paga · FIN-04: dimensionar cpu e memória para a carga",
 					"documentsSummary": "{count, plural, one {# documento lido} other {# documentos lidos}}",
 					"episodes": "Episódios",
 					"threshold": "limiar {value}",
@@ -581,10 +685,54 @@
 					},
 					"deployments": "{count, plural, one {# Deployment de uma réplica} other {# Deployments de uma réplica}}",
 					"notRuntimeFields": "não são campos de runtime.md",
-					"priceBasis": "nenhuma fonte de preço configurada · só unidades",
+					"priceBasis": "runtime: sem fonte de preço · só unidades",
 					"validated": "schema · 0 erros",
 					"planPath": "rascunho de runtime.md · revisão {revision} · proposto ao console",
 					"summary": "{figures} · {pending}"
+				},
+				"workflow": {
+					"humanInTheLoop": "Human in the loop",
+					"stages": {
+						"planning": "Planejamento",
+						"spec": "Spec",
+						"tickets": "Tickets",
+						"implement": "Implementação",
+						"review": "Revisão",
+						"merge": "Merge"
+					},
+					"humanStage": "{stage} · human in the loop",
+					"mergeLocked": "sempre do responsável",
+					"requiredStage": "{stage} sempre tem uma pessoa neste workflow",
+					"waiting": "aguardando o responsável",
+					"model": "Modelo",
+					"effort": "Effort",
+					"modelPrice": "{input} / {output} por MTok · preço de tabela, {date}",
+					"estimate": "Gasto estimado",
+					"tokens": "{input} de entrada · {output} de saída · preços de tabela sem cache",
+					"reserves": "reserva {reserved} do orçamento de {budget}",
+					"overBudget": "acima do orçamento · o gate vai pausar esta execução",
+					"play": "Rodar workflow",
+					"starting": "Iniciando…",
+					"playing": "Rodando…",
+					"playAgain": "Rodar de novo",
+					"playUnavailable": "disponível quando o plano estiver redigido",
+					"result": {
+						"reserved": "Reservado",
+						"observed": "Observado",
+						"released": "Liberado"
+					},
+					"nothingPaid": "nada pago",
+					"pullRequest": "Pull request",
+					"checksRunning": "checks em execução",
+					"checksPassed": "4 de 4 checks aprovados",
+					"readyForReview": "pronto para revisão",
+					"readyToMerge": "pronto para merge",
+					"needsDecision": "pausado no gate · requer uma decisão",
+					"summaryChoice": "{model} · {effort} · {estimate} de {budget}",
+					"summaryPaused": "pausado no gate",
+					"summaryDone": "#{number} · {state} · {observed}",
+					"statusDone": "A execução simulada terminou: o pull request #{number} está {state}, {observed} observados de {reserved} reservados.",
+					"statusPaused": "A execução simulada pausou no gate: a reserva de {reserved} excede o orçamento de {budget}, e nada foi pago."
 				},
 				"control": {
 					"pause": "Pausar",
@@ -879,12 +1027,12 @@
 		"skip": "跳到生命週期",
 		"hero": {
 			"title": "Microruntimes",
-			"summary": "這是針對工單 0031-TICKET-early-access-runtime「以 microruntime 執行 early access 註冊使用案例」的模擬規劃工作階段。輸入的指令 ex agent plan 是預期的進入點；主控台引用專案的三個過往案例，並建議以 medium effort 使用模型 operator/allowed-model。這是建議，須由團隊授權。它會讀取工單的 PRD、design doc、spec 與 guardrail，採用團隊設定的額度 2,000 millicores 與 3,072 MiB，並從 spec 解析出五個元件：一個 Go API、一個 Node.js API、一個 NATS broker、一個 Redis 快取與一個 Next.js 應用程式，合計 1,450 millicores 與 2,304 MiB。GPU 與磁碟不是 runtime.md 的欄位，也未設定價格來源，因此數值僅以單位表示。規劃最終產出一份 runtime.md 草稿，等待團隊授權。過程中不會建置、啟動，也不會付費；其中的檢索與建議，描述的是主控台所提議的規劃流程。"
+			"summary": "這是針對工單 0031-TICKET-early-access-runtime「以 microruntime 執行 early access 註冊使用案例」的模擬 ex 工作階段，以四張卡片呈現。輸入的指令 ex agent plan 是預期的進入點。主控台讀取工單的 PRD、design doc、spec 與 guardrail，採用團隊設定的額度 2,000 millicores 與 3,072 MiB，以及每次執行 US$25.00 的模型呼叫預算，引用專案的三個過往案例，並建議以 medium effort 使用 Claude Sonnet 5.5，這是建議，須由團隊授權。它從 spec 解析出五個元件：一個 Go API、一個 Node.js API、一個 NATS broker、一個 Redis 快取與一個 Next.js 應用程式，合計 1,450 millicores 與 2,304 MiB；runtime 本身沒有價格來源，因此其數值僅以單位表示。工作流程卡片以 Anthropic 牌價為執行定價：以 medium effort 使用 Claude Sonnet 5.5 預估 US$9.50，並從 US$25.00 的預算中保留 US$11.40。預設由人員確認規劃並審查 pull request，合併一律由負責人決定。執行工作流程時，ex agent run 會依序通過主控台的 gate、各個階段、push，以及含檢查的 pull request #19，最後可供審查；若保留額超出預算，執行會在 gate 暫停，不產生任何費用。每個步驟都是模擬：不會建置、啟動，也不會付費。"
 		},
 		"session": {
 			"terminal": {
 				"title": "ex — project",
-				"label": "終端機：模擬的 ex 規劃工作階段",
+				"label": "終端機：模擬的 ex 工作階段",
 				"lines": {
 					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
 					"scope": "# 僅規劃 · 此步驟不建置、不啟動、不付費",
@@ -896,7 +1044,7 @@
 					"readSpec": "console › tool call: read 0011-SPEC · 5 components named · 3 acceptance criteria",
 					"reads": "✓ read       4 documents · nothing outside the ticket's links",
 					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
-					"judgeGuardrail": "console › judging · FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
+					"judgeGuardrail": "console › judging · FIN-02 estimate before a paid call · FIN-03 a budget before a paid run · FIN-04 size cpu and memory to the load",
 					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
 					"budget": "budget     $25.00 per run for model calls · set by the team in the design doc",
 					"memory": "console › RAG over project episodes · a model and effort for this ticket",
@@ -925,10 +1073,39 @@
 					"crossCheck": "console › cross-checking · 5 ports distinct · 5 images resolved · no collisions",
 					"size": "✓ size       1450m of 2000m · 2304 of 3072 MiB · 5 one-replica Deployments · proposed shares",
 					"limits": "limits     gpu and disk are not runtime.md fields · none requested",
-					"price": "estimate   no price source configured · figures stay in millicores and MiB",
+					"price": "estimate   runtime has no price source · cpu and memory stay in millicores and MiB",
 					"validate": "console › tool call: validate runtime.md draft against the schema · 0 errors",
 					"draft": "✓ plan       runtime.md draft, revision 1 · proposed to the console",
 					"handoff": "# 下一步：團隊授權後，ex agent run 會套用已記錄的意圖"
+				},
+				"run": {
+					"command": "ex agent run",
+					"scope": "# 執行 · 0031-TICKET-early-access-runtime · 已記錄的意圖，由團隊授權",
+					"intent": "console › intent     {model} · effort {effort} · runtime.md revision 1",
+					"estimate": "console › estimate   {estimate} · {input} input · {output} output · list prices · FIN-02",
+					"budget": "console › budget     {budget} per run · set by the team · FIN-03",
+					"gateOpened": "console › gate       reserved {reserved} of {budget} · opened",
+					"gatePaused": "console › gate       reservation {reserved} exceeds the {budget} budget · paused",
+					"paused": "# 需要決定：提高預算或降低 effort · 尚未付費",
+					"waiting": "console › waiting    {stage} · the owner confirms",
+					"confirmed": "✓ confirmed  {stage} · by the owner",
+					"grilling": "console › grilling   3 open questions settled",
+					"toSpec": "console › to-spec    0011-SPEC revised · 3 acceptance criteria",
+					"toTickets": "console › to-tickets 3 tickets · blocking edges recorded",
+					"hook": "console › hook       effort recorded · implement unblocked",
+					"implement": "console › implement  tdd · 5 components · 14 files · 32 tests green",
+					"codeReview": "console › code-review 2 findings · fixed",
+					"runtimeReady": "runtime    early-access-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
+					"completed": "✓ completed  implementation · {observed} observed of {reserved} reserved · usage record",
+					"pushed": "✓ pushed     {branch} · {hash}",
+					"pullRequest": "✓ pr #{number}     feat(signup): run early access as a microruntime",
+					"checks": "checks     build · check · test · guardrails · running",
+					"checksPassed": "✓ checks     4 of 4 passed",
+					"runtimeStopped": "runtime    stopped · 5 Deployments removed · nothing left",
+					"readyForReview": "✓ ready      #{number} for review · {released} released to the envelope",
+					"readyToMerge": "✓ ready      #{number} to merge · {released} released to the envelope",
+					"nextReview": "# 下一步：負責人審查 #{number} 並決定是否合併",
+					"nextMerge": "# 下一步：合併仍由負責人決定"
 				}
 			},
 			"card": {
@@ -938,7 +1115,8 @@
 				"labels": {
 					"ticket": "工單",
 					"analysis": "分析",
-					"plan": "計畫"
+					"plan": "計畫",
+					"workflow": "工作流程"
 				},
 				"ticket": {
 					"status": "ready-for-agent",
@@ -955,11 +1133,11 @@
 					"documents": "文件",
 					"extracted": {
 						"prd": "使用案例：early access 註冊",
-						"designDoc": "envelope {cpu}m · {memory} MiB · 由團隊設定",
+						"designDoc": "envelope {cpu}m · {memory} MiB · 每次執行預算 {budget} · 由團隊設定",
 						"spec": "{components} 個元件 · {criteria} 項驗收準則",
 						"guardrail": "{criteria} · 審查規則，不自動強制執行"
 					},
-					"guardrailJudgment": "FIN-02：付費動作需要 gate · FIN-04：預算屬於團隊",
+					"guardrailJudgment": "FIN-02：付費呼叫前先估算 · FIN-03：付費執行前先有預算 · FIN-04：依負載配置 cpu 與記憶體",
 					"documentsSummary": "{count, plural, other {已讀 # 份文件}}",
 					"episodes": "Episodes",
 					"threshold": "門檻 {value}",
@@ -1019,10 +1197,54 @@
 					},
 					"deployments": "{count, plural, other {# 個單副本 Deployment}}",
 					"notRuntimeFields": "不是 runtime.md 的欄位",
-					"priceBasis": "未設定價格來源 · 僅以單位表示",
+					"priceBasis": "runtime：無價格來源 · 僅以單位表示",
 					"validated": "schema · 0 個錯誤",
 					"planPath": "runtime.md 草稿 · 修訂 {revision} · 已向主控台提出",
 					"summary": "{figures} · {pending}"
+				},
+				"workflow": {
+					"humanInTheLoop": "Human in the loop",
+					"stages": {
+						"planning": "規劃",
+						"spec": "Spec",
+						"tickets": "工單",
+						"implement": "實作",
+						"review": "審查",
+						"merge": "合併"
+					},
+					"humanStage": "{stage} · human in the loop",
+					"mergeLocked": "一律由負責人決定",
+					"requiredStage": "在這個工作流程中，{stage}一律由人員參與",
+					"waiting": "等待負責人",
+					"model": "模型",
+					"effort": "Effort",
+					"modelPrice": "每 MTok {input} / {output} · 牌價，{date}",
+					"estimate": "預估支出",
+					"tokens": "輸入 {input} · 輸出 {output} · 未計快取的牌價",
+					"reserves": "從 {budget} 預算中保留 {reserved}",
+					"overBudget": "超出預算 · gate 會暫停這次執行",
+					"play": "執行工作流程",
+					"starting": "啟動中…",
+					"playing": "執行中…",
+					"playAgain": "再次執行",
+					"playUnavailable": "規劃草稿完成後即可使用",
+					"result": {
+						"reserved": "保留",
+						"observed": "實際",
+						"released": "釋出"
+					},
+					"nothingPaid": "未付費",
+					"pullRequest": "Pull request",
+					"checksRunning": "檢查執行中",
+					"checksPassed": "4 項檢查全部通過",
+					"readyForReview": "可供審查",
+					"readyToMerge": "可供合併",
+					"needsDecision": "已在 gate 暫停 · 需要決定",
+					"summaryChoice": "{model} · {effort} · {estimate}／{budget}",
+					"summaryPaused": "已在 gate 暫停",
+					"summaryDone": "#{number} · {state} · {observed}",
+					"statusDone": "模擬執行已結束：pull request #{number} {state}，實際 {observed}，保留 {reserved}。",
+					"statusPaused": "模擬執行已在 gate 暫停：保留額 {reserved} 超出預算 {budget}，未產生任何費用。"
 				},
 				"control": {
 					"pause": "暫停",
@@ -1317,12 +1539,12 @@
 		"skip": "ライフサイクルへスキップ",
 		"hero": {
 			"title": "Microruntimes",
-			"summary": "これは、チケット 0031-TICKET-early-access-runtime「early access サインアップのユースケースを microruntime として実行する」の計画セッションをシミュレートしたものです。入力したコマンド ex agent plan が、想定されているエントリポイントです。コンソールはプロジェクトの過去の事例を 3 件引用し、モデル operator/allowed-model を effort medium で提案します。これは推奨であり、承認するのはチームです。コンソールはチケットの PRD、design doc、spec、guardrail を読み取り、チームが設定した枠である 2,000 ミリコアと 3,072 MiB を取り込み、spec から 5 つのコンポーネントを特定します。内訳は Go API、Node.js API、NATS ブローカー、Redis キャッシュ、Next.js アプリで、合計は 1,450 ミリコアと 2,304 MiB です。GPU とディスクは runtime.md のフィールドではなく、価格の取得元も設定されていないため、数値は単位のままです。計画は最終的に、チームの承認を待つ runtime.md のドラフトになります。ビルド、起動、支払いは一切行われません。ここでの検索と提案は、コンソールの計画フロー案を説明するものです。"
+			"summary": "これは、チケット 0031-TICKET-early-access-runtime「early access サインアップのユースケースを microruntime として実行する」の ex セッションをシミュレートしたもので、4 枚のカードで示します。入力したコマンド ex agent plan が、想定されているエントリポイントです。コンソールはチケットの PRD、design doc、spec、guardrail を読み取り、チームが設定した枠である 2,000 ミリコアと 3,072 MiB、そしてモデル呼び出しの予算である 1 回の実行あたり $25.00 を取り込み、プロジェクトの過去の事例を 3 件引用して、Claude Sonnet 5.5 を effort medium で提案します。これは推奨であり、承認するのはチームです。コンソールは spec から 5 つのコンポーネントを特定します。内訳は Go API、Node.js API、NATS ブローカー、Redis キャッシュ、Next.js アプリで、合計は 1,450 ミリコアと 2,304 MiB です。runtime 自体には価格ソースがないため、その数値は単位のままです。ワークフローのカードは Anthropic の定価で実行に価格を付けます。effort medium の Claude Sonnet 5.5 は見積もり $9.50 で、$25.00 の予算から $11.40 を確保します。既定では人が計画を確認し、pull request をレビューします。マージは常にオーナーが行います。ワークフローを実行すると、ex agent run がコンソールのゲート、各段階、push、チェック付きの pull request #19 を経て、レビュー待ちで終わります。確保額が予算を超える場合は、ゲートで実行が一時停止し、支払いは発生しません。すべての段階はシミュレーションです。ビルド、起動、支払いは一切行われません。"
 		},
 		"session": {
 			"terminal": {
 				"title": "ex — project",
-				"label": "ターミナル：ex の計画セッションのシミュレーション",
+				"label": "ターミナル：ex セッションのシミュレーション",
 				"lines": {
 					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
 					"scope": "# 計画のみ · このステップではビルド、起動、支払いを行いません",
@@ -1334,7 +1556,7 @@
 					"readSpec": "console › tool call: read 0011-SPEC · 5 components named · 3 acceptance criteria",
 					"reads": "✓ read       4 documents · nothing outside the ticket's links",
 					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
-					"judgeGuardrail": "console › judging · FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
+					"judgeGuardrail": "console › judging · FIN-02 estimate before a paid call · FIN-03 a budget before a paid run · FIN-04 size cpu and memory to the load",
 					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
 					"budget": "budget     $25.00 per run for model calls · set by the team in the design doc",
 					"memory": "console › RAG over project episodes · a model and effort for this ticket",
@@ -1363,10 +1585,39 @@
 					"crossCheck": "console › cross-checking · 5 ports distinct · 5 images resolved · no collisions",
 					"size": "✓ size       1450m of 2000m · 2304 of 3072 MiB · 5 one-replica Deployments · proposed shares",
 					"limits": "limits     gpu and disk are not runtime.md fields · none requested",
-					"price": "estimate   no price source configured · figures stay in millicores and MiB",
+					"price": "estimate   runtime has no price source · cpu and memory stay in millicores and MiB",
 					"validate": "console › tool call: validate runtime.md draft against the schema · 0 errors",
 					"draft": "✓ plan       runtime.md draft, revision 1 · proposed to the console",
 					"handoff": "# 次：チームが承認すると、ex agent run が記録済みの意図を適用します"
+				},
+				"run": {
+					"command": "ex agent run",
+					"scope": "# 実行 · 0031-TICKET-early-access-runtime · 記録済みの意図、チームが承認",
+					"intent": "console › intent     {model} · effort {effort} · runtime.md revision 1",
+					"estimate": "console › estimate   {estimate} · {input} input · {output} output · list prices · FIN-02",
+					"budget": "console › budget     {budget} per run · set by the team · FIN-03",
+					"gateOpened": "console › gate       reserved {reserved} of {budget} · opened",
+					"gatePaused": "console › gate       reservation {reserved} exceeds the {budget} budget · paused",
+					"paused": "# 判断が必要：予算を上げるか effort を下げる · 支払いは発生していません",
+					"waiting": "console › waiting    {stage} · the owner confirms",
+					"confirmed": "✓ confirmed  {stage} · by the owner",
+					"grilling": "console › grilling   3 open questions settled",
+					"toSpec": "console › to-spec    0011-SPEC revised · 3 acceptance criteria",
+					"toTickets": "console › to-tickets 3 tickets · blocking edges recorded",
+					"hook": "console › hook       effort recorded · implement unblocked",
+					"implement": "console › implement  tdd · 5 components · 14 files · 32 tests green",
+					"codeReview": "console › code-review 2 findings · fixed",
+					"runtimeReady": "runtime    early-access-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
+					"completed": "✓ completed  implementation · {observed} observed of {reserved} reserved · usage record",
+					"pushed": "✓ pushed     {branch} · {hash}",
+					"pullRequest": "✓ pr #{number}     feat(signup): run early access as a microruntime",
+					"checks": "checks     build · check · test · guardrails · running",
+					"checksPassed": "✓ checks     4 of 4 passed",
+					"runtimeStopped": "runtime    stopped · 5 Deployments removed · nothing left",
+					"readyForReview": "✓ ready      #{number} for review · {released} released to the envelope",
+					"readyToMerge": "✓ ready      #{number} to merge · {released} released to the envelope",
+					"nextReview": "# 次：オーナーが #{number} をレビューし、マージするかを決めます",
+					"nextMerge": "# 次：マージは引き続きオーナーが行います"
 				}
 			},
 			"card": {
@@ -1376,7 +1627,8 @@
 				"labels": {
 					"ticket": "チケット",
 					"analysis": "分析",
-					"plan": "計画"
+					"plan": "計画",
+					"workflow": "ワークフロー"
 				},
 				"ticket": {
 					"status": "ready-for-agent",
@@ -1393,11 +1645,11 @@
 					"documents": "ドキュメント",
 					"extracted": {
 						"prd": "ユースケース：early access サインアップ",
-						"designDoc": "envelope {cpu}m · {memory} MiB · チームが設定",
+						"designDoc": "envelope {cpu}m · {memory} MiB · 1 回の実行の予算 {budget} · チームが設定",
 						"spec": "{components} 個のコンポーネント · {criteria} 件の受け入れ基準",
 						"guardrail": "{criteria} · レビュールール、自動強制なし"
 					},
-					"guardrailJudgment": "FIN-02：有料アクションにはゲートが必要 · FIN-04：予算はチームのもの",
+					"guardrailJudgment": "FIN-02：有料の呼び出しの前に見積もる · FIN-03：有料の実行の前に予算を定める · FIN-04：負荷に合わせて cpu とメモリを決める",
 					"documentsSummary": "{count, plural, other {# 件のドキュメントを読了}}",
 					"episodes": "エピソード",
 					"threshold": "しきい値 {value}",
@@ -1457,10 +1709,54 @@
 					},
 					"deployments": "{count, plural, other {# 個の単一レプリカ Deployment}}",
 					"notRuntimeFields": "runtime.md のフィールドではありません",
-					"priceBasis": "価格ソース未設定 · 単位のみ",
+					"priceBasis": "runtime：価格ソースなし · 単位のみ",
 					"validated": "スキーマ · エラー 0 件",
 					"planPath": "runtime.md ドラフト · リビジョン {revision} · コンソールに提案済み",
 					"summary": "{figures} · {pending}"
+				},
+				"workflow": {
+					"humanInTheLoop": "Human in the loop",
+					"stages": {
+						"planning": "計画",
+						"spec": "Spec",
+						"tickets": "チケット",
+						"implement": "実装",
+						"review": "レビュー",
+						"merge": "マージ"
+					},
+					"humanStage": "{stage} · human in the loop",
+					"mergeLocked": "常にオーナーが行う",
+					"requiredStage": "このワークフローでは、{stage}に必ず人が関わります",
+					"waiting": "オーナーの確認待ち",
+					"model": "モデル",
+					"effort": "Effort",
+					"modelPrice": "MTok あたり {input} / {output} · 定価、{date}",
+					"estimate": "見積もり支出",
+					"tokens": "入力 {input} · 出力 {output} · キャッシュなしの定価",
+					"reserves": "予算 {budget} のうち {reserved} を確保",
+					"overBudget": "予算超過 · ゲートがこの実行を一時停止します",
+					"play": "ワークフローを実行",
+					"starting": "開始中…",
+					"playing": "実行中…",
+					"playAgain": "もう一度実行",
+					"playUnavailable": "計画のドラフト完成後に利用できます",
+					"result": {
+						"reserved": "確保",
+						"observed": "実績",
+						"released": "解放"
+					},
+					"nothingPaid": "支払いなし",
+					"pullRequest": "Pull request",
+					"checksRunning": "チェック実行中",
+					"checksPassed": "チェック 4 件中 4 件が合格",
+					"readyForReview": "レビュー待ち",
+					"readyToMerge": "マージ可能",
+					"needsDecision": "ゲートで一時停止 · 判断が必要",
+					"summaryChoice": "{model} · {effort} · {estimate}／{budget}",
+					"summaryPaused": "ゲートで一時停止",
+					"summaryDone": "#{number} · {state} · {observed}",
+					"statusDone": "シミュレーションの実行が終了しました：pull request #{number} は{state}です。実績 {observed}、確保 {reserved}。",
+					"statusPaused": "シミュレーションの実行はゲートで一時停止しました：確保額 {reserved} が予算 {budget} を超えており、支払いは発生していません。"
 				},
 				"control": {
 					"pause": "一時停止",
@@ -1755,12 +2051,12 @@
 		"skip": "Chuyển đến vòng đời",
 		"hero": {
 			"title": "Microruntimes",
-			"summary": "Đây là phiên lập kế hoạch mô phỏng cho ticket 0031-TICKET-early-access-runtime, “Chạy trường hợp sử dụng đăng ký early access dưới dạng microruntime”. Lệnh được gõ, ex agent plan, là điểm vào dự kiến; console trích dẫn ba trường hợp trước đây của dự án và đề xuất mô hình operator/allowed-model với effort medium, một khuyến nghị cần nhóm phê duyệt. Console đọc PRD, design doc, spec và guardrail của ticket, lấy hạn mức nhóm đã đặt, gồm 2.000 millicore và 3.072 MiB, rồi xác định năm thành phần từ spec: một API Go, một API Node.js, một broker NATS, một bộ nhớ đệm Redis và một ứng dụng Next.js, tổng cộng 1.450 millicore và 2.304 MiB. GPU và đĩa không phải là trường trong runtime.md, đồng thời chưa có nguồn giá nào được cấu hình, nên các con số được giữ nguyên theo đơn vị. Kế hoạch kết thúc bằng một bản nháp runtime.md đang chờ nhóm phê duyệt. Không có gì được build hay khởi chạy, và cũng không phát sinh chi phí; phần truy xuất và gợi ý chỉ mô tả luồng lập kế hoạch mà console đề xuất."
+			"summary": "Đây là phiên ex mô phỏng cho ticket 0031-TICKET-early-access-runtime, “Chạy trường hợp sử dụng đăng ký early access dưới dạng microruntime”, được trình bày trong bốn thẻ. Lệnh được gõ, ex agent plan, là điểm vào dự kiến. Console đọc PRD, design doc, spec và guardrail của ticket, lấy hạn mức nhóm đã đặt, gồm 2.000 millicore và 3.072 MiB, cùng ngân sách 25,00 US$ mỗi lần chạy cho các lệnh gọi mô hình, trích dẫn ba trường hợp trước đây của dự án và đề xuất Claude Sonnet 5.5 với effort medium, một khuyến nghị cần nhóm phê duyệt. Console xác định năm thành phần từ spec: một API Go, một API Node.js, một broker NATS, một bộ nhớ đệm Redis và một ứng dụng Next.js, tổng cộng 1.450 millicore và 2.304 MiB; bản thân runtime không có nguồn giá, nên các con số của nó được giữ theo đơn vị. Thẻ Quy trình định giá lần chạy theo giá niêm yết của Anthropic: Claude Sonnet 5.5 với effort medium ước tính 9,50 US$ và giữ 11,40 US$ trong ngân sách 25,00 US$. Theo mặc định, một người xác nhận phần lập kế hoạch và rà soát pull request, còn việc merge luôn thuộc về chủ sở hữu. Khi chạy quy trình, ex agent run đi qua gate của console, các giai đoạn, lần push và pull request #19 cùng các kiểm tra, rồi kết thúc ở trạng thái sẵn sàng để rà soát; nếu khoản giữ vượt ngân sách, lần chạy tạm dừng tại gate và chưa chi trả gì. Mọi bước đều là mô phỏng: không có gì được build, khởi chạy hay chi trả."
 		},
 		"session": {
 			"terminal": {
 				"title": "ex — project",
-				"label": "Terminal: phiên lập kế hoạch ex mô phỏng",
+				"label": "Terminal: phiên ex mô phỏng",
 				"lines": {
 					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
 					"scope": "# chỉ lập kế hoạch · bước này không build, không khởi chạy, không phát sinh chi phí",
@@ -1772,7 +2068,7 @@
 					"readSpec": "console › tool call: read 0011-SPEC · 5 components named · 3 acceptance criteria",
 					"reads": "✓ read       4 documents · nothing outside the ticket's links",
 					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
-					"judgeGuardrail": "console › judging · FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
+					"judgeGuardrail": "console › judging · FIN-02 estimate before a paid call · FIN-03 a budget before a paid run · FIN-04 size cpu and memory to the load",
 					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
 					"budget": "budget     $25.00 per run for model calls · set by the team in the design doc",
 					"memory": "console › RAG over project episodes · a model and effort for this ticket",
@@ -1801,10 +2097,39 @@
 					"crossCheck": "console › cross-checking · 5 ports distinct · 5 images resolved · no collisions",
 					"size": "✓ size       1450m of 2000m · 2304 of 3072 MiB · 5 one-replica Deployments · proposed shares",
 					"limits": "limits     gpu and disk are not runtime.md fields · none requested",
-					"price": "estimate   no price source configured · figures stay in millicores and MiB",
+					"price": "estimate   runtime has no price source · cpu and memory stay in millicores and MiB",
 					"validate": "console › tool call: validate runtime.md draft against the schema · 0 errors",
 					"draft": "✓ plan       runtime.md draft, revision 1 · proposed to the console",
 					"handoff": "# tiếp theo: khi nhóm phê duyệt, ex agent run sẽ áp dụng ý định đã ghi lại"
+				},
+				"run": {
+					"command": "ex agent run",
+					"scope": "# chạy · 0031-TICKET-early-access-runtime · ý định đã ghi lại, được nhóm phê duyệt",
+					"intent": "console › intent     {model} · effort {effort} · runtime.md revision 1",
+					"estimate": "console › estimate   {estimate} · {input} input · {output} output · list prices · FIN-02",
+					"budget": "console › budget     {budget} per run · set by the team · FIN-03",
+					"gateOpened": "console › gate       reserved {reserved} of {budget} · opened",
+					"gatePaused": "console › gate       reservation {reserved} exceeds the {budget} budget · paused",
+					"paused": "# cần một quyết định: tăng ngân sách hoặc giảm effort · chưa chi trả gì",
+					"waiting": "console › waiting    {stage} · the owner confirms",
+					"confirmed": "✓ confirmed  {stage} · by the owner",
+					"grilling": "console › grilling   3 open questions settled",
+					"toSpec": "console › to-spec    0011-SPEC revised · 3 acceptance criteria",
+					"toTickets": "console › to-tickets 3 tickets · blocking edges recorded",
+					"hook": "console › hook       effort recorded · implement unblocked",
+					"implement": "console › implement  tdd · 5 components · 14 files · 32 tests green",
+					"codeReview": "console › code-review 2 findings · fixed",
+					"runtimeReady": "runtime    early-access-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
+					"completed": "✓ completed  implementation · {observed} observed of {reserved} reserved · usage record",
+					"pushed": "✓ pushed     {branch} · {hash}",
+					"pullRequest": "✓ pr #{number}     feat(signup): run early access as a microruntime",
+					"checks": "checks     build · check · test · guardrails · running",
+					"checksPassed": "✓ checks     4 of 4 passed",
+					"runtimeStopped": "runtime    stopped · 5 Deployments removed · nothing left",
+					"readyForReview": "✓ ready      #{number} for review · {released} released to the envelope",
+					"readyToMerge": "✓ ready      #{number} to merge · {released} released to the envelope",
+					"nextReview": "# tiếp theo: chủ sở hữu rà soát #{number} và quyết định có merge hay không",
+					"nextMerge": "# tiếp theo: việc merge vẫn thuộc về chủ sở hữu"
 				}
 			},
 			"card": {
@@ -1814,7 +2139,8 @@
 				"labels": {
 					"ticket": "Ticket",
 					"analysis": "Phân tích",
-					"plan": "Kế hoạch"
+					"plan": "Kế hoạch",
+					"workflow": "Quy trình"
 				},
 				"ticket": {
 					"status": "ready-for-agent",
@@ -1831,11 +2157,11 @@
 					"documents": "Tài liệu",
 					"extracted": {
 						"prd": "trường hợp sử dụng: đăng ký early access",
-						"designDoc": "envelope {cpu}m · {memory} MiB · do nhóm thiết lập",
+						"designDoc": "envelope {cpu}m · {memory} MiB · ngân sách {budget} mỗi lần chạy · do nhóm thiết lập",
 						"spec": "{components} thành phần · {criteria} tiêu chí chấp nhận",
 						"guardrail": "{criteria} · quy tắc rà soát, không tự động thực thi"
 					},
-					"guardrailJudgment": "FIN-02: hành động có phí cần một gate · FIN-04: ngân sách thuộc về nhóm",
+					"guardrailJudgment": "FIN-02: ước tính trước một lệnh gọi có phí · FIN-03: có ngân sách trước một lần chạy có phí · FIN-04: định cỡ cpu và bộ nhớ theo tải",
 					"documentsSummary": "{count, plural, other {đã đọc # tài liệu}}",
 					"episodes": "Episode",
 					"threshold": "ngưỡng {value}",
@@ -1895,10 +2221,54 @@
 					},
 					"deployments": "{count, plural, other {# Deployment một bản sao}}",
 					"notRuntimeFields": "không phải trường trong runtime.md",
-					"priceBasis": "chưa cấu hình nguồn giá · chỉ theo đơn vị",
+					"priceBasis": "runtime: không có nguồn giá · chỉ theo đơn vị",
 					"validated": "schema · 0 lỗi",
 					"planPath": "bản nháp runtime.md · bản sửa đổi {revision} · đã đề xuất lên console",
 					"summary": "{figures} · {pending}"
+				},
+				"workflow": {
+					"humanInTheLoop": "Human in the loop",
+					"stages": {
+						"planning": "Lập kế hoạch",
+						"spec": "Spec",
+						"tickets": "Ticket",
+						"implement": "Triển khai",
+						"review": "Rà soát",
+						"merge": "Merge"
+					},
+					"humanStage": "{stage} · human in the loop",
+					"mergeLocked": "luôn thuộc về chủ sở hữu",
+					"requiredStage": "{stage} luôn có người tham gia trong quy trình này",
+					"waiting": "đang chờ chủ sở hữu",
+					"model": "Mô hình",
+					"effort": "Effort",
+					"modelPrice": "{input} / {output} mỗi MTok · giá niêm yết, {date}",
+					"estimate": "Chi phí ước tính",
+					"tokens": "{input} đầu vào · {output} đầu ra · giá niêm yết không cache",
+					"reserves": "giữ {reserved} trong ngân sách {budget}",
+					"overBudget": "vượt ngân sách · gate sẽ tạm dừng lần chạy này",
+					"play": "Chạy quy trình",
+					"starting": "Đang khởi động…",
+					"playing": "Đang chạy…",
+					"playAgain": "Chạy lại",
+					"playUnavailable": "khả dụng khi kế hoạch đã được soạn",
+					"result": {
+						"reserved": "Đã giữ",
+						"observed": "Thực tế",
+						"released": "Hoàn lại"
+					},
+					"nothingPaid": "chưa chi trả",
+					"pullRequest": "Pull request",
+					"checksRunning": "đang chạy kiểm tra",
+					"checksPassed": "4/4 kiểm tra đạt",
+					"readyForReview": "sẵn sàng để rà soát",
+					"readyToMerge": "sẵn sàng để merge",
+					"needsDecision": "tạm dừng tại gate · cần một quyết định",
+					"summaryChoice": "{model} · {effort} · {estimate} / {budget}",
+					"summaryPaused": "tạm dừng tại gate",
+					"summaryDone": "#{number} · {state} · {observed}",
+					"statusDone": "Lần chạy mô phỏng đã kết thúc: pull request #{number} {state}, thực tế {observed} trên {reserved} đã giữ.",
+					"statusPaused": "Lần chạy mô phỏng tạm dừng tại gate: khoản giữ {reserved} vượt ngân sách {budget}, và chưa chi trả gì."
 				},
 				"control": {
 					"pause": "Tạm dừng",

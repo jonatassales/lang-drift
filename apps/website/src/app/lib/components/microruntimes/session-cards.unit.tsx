@@ -11,11 +11,16 @@ import {
 	microruntimeSessionAtom,
 	recordPlayedCountAtom,
 	replaySessionAtom,
+	runScriptAtom,
+	startRunAtom,
+	workflowChoicesAtom,
 } from '@state'
 
 import { SessionCards } from './session-cards'
 
 afterEach(cleanup)
+
+type CardLabel = 'Ticket' | 'Analysis' | 'Plan' | 'Workflow'
 
 function mount() {
 	const store = createStore()
@@ -32,13 +37,13 @@ function mount() {
 			store.set(recordPlayedCountAtom, planLineIndex(lineId) + 1)
 		})
 
-	const header = (label: 'Ticket' | 'Analysis' | 'Plan') =>
+	const header = (label: CardLabel) =>
 		screen.getByRole('button', {
 			hidden: true,
 			name: new RegExp(`^${label}`),
 		})
 
-	const expanded = (label: 'Ticket' | 'Analysis' | 'Plan') =>
+	const expanded = (label: CardLabel) =>
 		header(label).getAttribute('aria-expanded') === 'true'
 
 	return {
@@ -109,7 +114,7 @@ describe('Microruntimes session cards', () => {
 		expect(screen.getAllByText('Read')).toHaveLength(4)
 		expect(
 			screen.getByText(
-				"FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
+				'FIN-02: estimate before a paid call · FIN-03: a budget before a paid run · FIN-04: size cpu and memory to the load',
 			),
 		).toBeTruthy()
 
@@ -126,7 +131,7 @@ describe('Microruntimes session cards', () => {
 		expect(screen.getByText('dropped · docs only')).toBeTruthy()
 
 		play('suggest')
-		expect(screen.getByText('operator/allowed-model')).toBeTruthy()
+		expect(screen.getByText('claude-sonnet-5-5')).toBeTruthy()
 		expect(
 			screen.getByText('recommendation · the team authorizes'),
 		).toBeTruthy()
@@ -146,7 +151,7 @@ describe('Microruntimes session cards', () => {
 
 		play('suggest')
 		expect(header('Analysis').textContent).toContain(
-			'operator/allowed-model · effort medium',
+			'Claude Sonnet 5.5 · effort medium',
 		)
 
 		play('go')
@@ -187,7 +192,7 @@ describe('Microruntimes session cards', () => {
 
 		play('price')
 		expect(
-			screen.getByText('no price source configured · units only'),
+			screen.getByText('runtime: no price source · units only'),
 		).toBeTruthy()
 
 		play('validate')
@@ -217,5 +222,180 @@ describe('Microruntimes session cards', () => {
 		})
 		expect(expanded('Ticket')).toBe(true)
 		expect(expanded('Analysis')).toBe(false)
+	})
+})
+
+describe('Microruntimes Workflow card', () => {
+	const playButton = () =>
+		screen.getByRole('button', {
+			hidden: true,
+			name: /workflow|Starting|Playing|Play again/,
+		})
+
+	const selects = () => screen.getAllByRole('combobox', { hidden: true })
+
+	// Plays the launched run to a line, the way the terminal records it.
+	function playRunTo(store: ReturnType<typeof createStore>, count: number) {
+		act(() => {
+			store.set(recordPlayedCountAtom, count)
+		})
+	}
+
+	function launch(store: ReturnType<typeof createStore>) {
+		fireEvent.click(playButton())
+		act(() => {
+			store.set(startRunAtom)
+		})
+
+		return store.get(runScriptAtom)
+	}
+
+	it('opens when the plan is handed over, with the suggestion priced against the budget', () => {
+		const { expanded, header, play } = mount()
+		expect(playButton().getAttribute('aria-disabled')).toBe('true')
+		expect(screen.getByText('available once the plan is drafted')).toBeTruthy()
+
+		play('handoff')
+		expect(expanded('Workflow')).toBe(true)
+		expect(expanded('Plan')).toBe(false)
+		expect(header('Workflow').textContent).toContain(
+			'Sonnet 5.5 · medium · $9.50 of $25.00',
+		)
+		expect(screen.getByText('$9.50')).toBeTruthy()
+		expect(
+			screen.getByText('reserves $11.40 of the $25.00 budget'),
+		).toBeTruthy()
+		expect(playButton().getAttribute('aria-disabled')).toBeNull()
+	})
+
+	it('keeps planning checked for a person and says why', () => {
+		const { play, store } = mount()
+		play('handoff')
+		const planning = screen.getByRole('checkbox', {
+			hidden: true,
+			name: 'Planning · human in the loop',
+		})
+		expect(planning.getAttribute('aria-disabled')).toBe('true')
+
+		fireEvent.click(planning)
+		expect(store.get(workflowChoicesAtom).human.planning).toBe(true)
+
+		const note = screen.getByRole('tooltip', { hidden: true })
+		expect(note.textContent).toBe(
+			'Planning always has a person in this workflow',
+		)
+		expect(planning.getAttribute('aria-describedby')).toBe(note.id)
+	})
+
+	it('reprices the run as the visitor chooses and warns over the budget', () => {
+		const { header, play } = mount()
+		play('handoff')
+		const [model, effort] = selects()
+
+		fireEvent.change(model, { target: { value: 'claude-haiku-5-5' } })
+		expect(header('Workflow').textContent).toContain(
+			'Haiku 5.5 · medium · $0.48',
+		)
+
+		fireEvent.change(model, { target: { value: 'claude-opus-5-5' } })
+		fireEvent.change(effort, { target: { value: 'high' } })
+		expect(screen.getByText('$34.00')).toBeTruthy()
+		expect(
+			screen.getByText('over the budget · the gate will pause this run'),
+		).toBeTruthy()
+	})
+
+	it('launches with a snapshot, locks the choices and plays to a reviewed pull request', () => {
+		const { header, play, store } = mount()
+		play('handoff')
+
+		fireEvent.click(playButton())
+		expect(store.get(microruntimeSessionAtom).stage).toBe('launching')
+		expect(playButton().textContent).toContain('Starting…')
+
+		fireEvent.click(
+			screen.getByRole('checkbox', {
+				hidden: true,
+				name: 'Spec · human in the loop',
+			}),
+		)
+		expect(store.get(workflowChoicesAtom).human.spec).toBe(false)
+
+		act(() => {
+			store.set(startRunAtom)
+		})
+		const session = store.get(microruntimeSessionAtom)
+		expect(session).toMatchObject({
+			playedCount: 0,
+			ran: store.get(workflowChoicesAtom),
+			run: 1,
+			stage: 'running',
+		})
+		expect(screen.getByRole('status', { hidden: true }).textContent).toBe('')
+
+		const script = store.get(runScriptAtom)
+		playRunTo(store, script.findIndex((line) => line.id === 'gateOpened') + 1)
+		expect(screen.getByText('$11.40')).toBeTruthy()
+
+		playRunTo(store, script.findIndex((line) => line.id === 'completed') + 1)
+		expect(screen.getByText('$9.80')).toBeTruthy()
+
+		playRunTo(store, script.length)
+		const pullRequest = screen.getByText('#19 ·3f9c2e1')
+		expect(pullRequest.querySelector('svg.text-status-success')).toBeTruthy()
+		expect(header('Workflow').textContent).toContain(
+			'#19 · ready for review · $9.80',
+		)
+		expect(screen.getByRole('status', { hidden: true }).textContent).toBe(
+			'The simulated run ended: pull request #19 is ready for review, $9.80 observed of $11.40 reserved.',
+		)
+		expect(playButton().textContent).toContain('Play again')
+	})
+
+	it('pauses at the gate when the reservation breaks the budget', () => {
+		const { header, play, store } = mount()
+		play('handoff')
+		const [model, effort] = selects()
+		fireEvent.change(model, { target: { value: 'claude-opus-5-5' } })
+		fireEvent.change(effort, { target: { value: 'high' } })
+
+		const script = launch(store)
+		expect(script.some((line) => line.id === 'pullRequest')).toBe(false)
+
+		playRunTo(store, script.length)
+		expect(
+			screen.getByText('paused at the gate · needs a decision'),
+		).toBeTruthy()
+		expect(header('Workflow').textContent).toContain('paused at the gate')
+		expect(screen.getByRole('status', { hidden: true }).textContent).toBe(
+			'The simulated run paused at the gate: the reservation of $40.80 exceeds the $25.00 budget, and nothing was paid for.',
+		)
+	})
+
+	it('ends ready to merge when the review is left out of the loop, and keeps the choices on replay', () => {
+		const { header, play, store } = mount()
+		play('handoff')
+		fireEvent.click(
+			screen.getByRole('checkbox', {
+				hidden: true,
+				name: 'Review · human in the loop',
+			}),
+		)
+		expect(
+			screen.queryByRole('checkbox', {
+				hidden: true,
+				name: 'Merge · human in the loop',
+			}),
+		).toBeNull()
+
+		const script = launch(store)
+		playRunTo(store, script.length)
+		expect(header('Workflow').textContent).toContain('#19 · ready to merge')
+
+		act(() => {
+			store.set(replaySessionAtom)
+		})
+		expect(store.get(microruntimeSessionAtom).stage).toBe('plan')
+		expect(store.get(workflowChoicesAtom).human.review).toBe(false)
 	})
 })
