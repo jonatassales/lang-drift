@@ -38,7 +38,7 @@ describe('FinOps ledger and receipt', () => {
 		expect(button.getAttribute('aria-pressed')).toBe('true')
 		expect(
 			screen.getByRole('heading', {
-				level: 3,
+				level: 2,
 				name: 'Tenant migration',
 			}),
 		).toBeTruthy()
@@ -49,7 +49,7 @@ describe('FinOps ledger and receipt', () => {
 		fireEvent.click(screen.getByRole('button', { name: /Invoice export job/ }))
 		const receipt = screen
 			.getByRole('heading', {
-				level: 3,
+				level: 2,
 				name: 'Invoice export job',
 			})
 			.closest('article')

@@ -1,3 +1,5 @@
+import type { DetailTone } from '@langdrift/web/ui/detail-list'
+
 // Illustrative FinOps content: the ids, amounts and states the FinOps page and
 // its demos render. Sentences live in the finops catalog; this module holds
 // what a reader does not read as prose. Amounts are simulated US dollars, and
@@ -120,17 +122,44 @@ export type WorkItemId = (typeof workItems)[number]['id']
 
 export const initialWorkItemId: WorkItemId = 'checkout-retries'
 
+// A work item whose spend is known: the provider's usage record arrived.
+export interface ObservedWorkItem extends WorkItem {
+	observed: number
+}
+
+// The work item the gate section walks through: the first in the ledger, the
+// one it selects first, delivered inside the envelope.
+export const gateExample = workItems[0]
+
+export interface GateFigures {
+	proposed: number
+	reserved: number
+	observed: number
+	released: number
+}
+
+// The amounts a work item carries through the gate: the estimate the agent
+// proposed, the hold the gate took before the first paid call, the spend the
+// provider reported and what returned to the envelope once it was reconciled.
+// Only a work item with observed spend has them; unknown is never zero.
+export function gateFigures(item: ObservedWorkItem): GateFigures {
+	return {
+		proposed: item.estimate,
+		reserved: item.reserved,
+		observed: item.observed,
+		released: item.reserved - item.observed,
+	}
+}
+
 export const chainPillarIds = [
 	'intent',
 	'delivery',
 	'evidence',
 	'outcome',
 ] as const
-export const chainScenarioIds = [
-	'within-envelope',
-	'pause-and-replan',
-	'unknown-spend',
-] as const
+// The two ways delivery leaves the plan. The case that lands inside the
+// envelope is the hero's receipt and the gate's figures, not a scenario.
+export const failureScenarioIds = ['pause-and-replan', 'unknown-spend'] as const
 export const finopsFaqIds = [
 	'budget',
 	'spending',
@@ -139,28 +168,53 @@ export const finopsFaqIds = [
 	'availability',
 ] as const
 
-export const budgetCardIds = ['envelope', 'allocation', 'reservation'] as const
-export const authorizationCardIds = ['recommend', 'gate', 'reconcile'] as const
+export const budgetTermIds = ['envelope', 'allocation', 'reservation'] as const
+export const gateStepIds = ['recommend', 'gate', 'reconcile'] as const
+export const sourceIds = [
+	'providers',
+	'microruntimes',
+	'evidence',
+	'billing',
+] as const
 
+export type BudgetTermId = (typeof budgetTermIds)[number]
 export type ChainPillarId = (typeof chainPillarIds)[number]
-export type ChainScenarioId = (typeof chainScenarioIds)[number]
+export type FailureScenarioId = (typeof failureScenarioIds)[number]
 export type FinopsFaqId = (typeof finopsFaqIds)[number]
+export type GateStepId = (typeof gateStepIds)[number]
 
-export interface FinopsCard {
+// The state each failure leaves behind: a paused job needs a decision; an
+// unknown charge waits for a usage record.
+export const failureStatusTones: Record<FailureScenarioId, DetailTone> = {
+	'pause-and-replan': 'danger',
+	'unknown-spend': 'warning',
+}
+
+export interface BudgetTermCopy {
+	term: string
+	title: string
 	description: string
+}
+
+export interface GateStepCopy {
 	eyebrow: string
 	title: string
+	description: string
+	figure: string
+}
+
+export interface FailureScenarioCopy extends Record<ChainPillarId, string> {
+	title: string
+	context: string
+	status: { term: string; detail: string }
 }
 
 export interface FinopsMessages {
 	skip: string
 	hero: {
+		eyebrow: string
 		titleStart: string
-		titleHighlight: string
 		titleEnd: string
-		lead: string
-		primaryCta: string
-		secondaryCta: string
 		caption: string
 		summary: string
 	}
@@ -180,22 +234,14 @@ export interface FinopsMessages {
 		selectHint: string
 		items: Record<WorkItemId, { title: string; owner: string }>
 	}
-	chain: {
-		title: string
-		lead: string
-		selectorLabel: string
-		pillars: Record<ChainPillarId, string>
-		scenarios: Record<
-			ChainScenarioId,
-			{ tabLabel: string; context: string } & Record<ChainPillarId, string>
-		>
-		outro: string
-		outroLink: string
-	}
-	receipt: {
+	failures: {
 		kicker: string
 		title: string
 		lead: string
+		pillars: Record<ChainPillarId, string>
+		scenarios: Record<FailureScenarioId, FailureScenarioCopy>
+	}
+	receipt: {
 		selected: string
 		labels: {
 			estimate: string
@@ -219,29 +265,21 @@ export interface FinopsMessages {
 		kicker: string
 		title: string
 		lead: string
-		cards: Record<(typeof budgetCardIds)[number], FinopsCard>
+		terms: Record<BudgetTermId, BudgetTermCopy>
 	}
 	authorization: {
 		kicker: string
 		title: string
 		lead: string
-		cards: Record<(typeof authorizationCardIds)[number], FinopsCard>
-	}
-	report: {
-		kicker: string
-		title: string
-		lead: string
-		weekly: string
-		period: string
-		rows: Record<
-			'envelopeUsed' | 'largestConsumer' | 'unknownCharges' | 'attention',
-			{ term: string; detail: string }
-		>
+		steps: Record<GateStepId, GateStepCopy>
+		released: string
+		source: string
 	}
 	sources: {
 		kicker: string
 		title: string
 		lead: string
+		intended: string
 		intendedModel: string
 		items: {
 			providers: { title: string; description: string }
@@ -254,5 +292,8 @@ export interface FinopsMessages {
 		title: string
 		description: string
 		items: Record<FinopsFaqId, { question: string; answer: string }>
+	}
+	earlyAccess: {
+		description: string
 	}
 }

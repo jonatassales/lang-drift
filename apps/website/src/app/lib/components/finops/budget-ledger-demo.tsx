@@ -32,7 +32,8 @@ const segmentColors: Record<EnvelopeSegmentId, string> = {
 const amountColumn = 'font-mono text-[13px] tabular-nums sm:text-right'
 
 // The FinOps hero demo: an illustrative team envelope as a stacked bar, then
-// the work items drawing on it. Selecting an item drives the receipt below.
+// the work items drawing on it. Selecting an item drives the receipt docked
+// beside it.
 export function BudgetLedgerDemo(props: BudgetLedgerDemoProps) {
 	const { copy, locale } = props
 
@@ -48,7 +49,7 @@ export function BudgetLedgerDemo(props: BudgetLedgerDemoProps) {
 		.join(', ')
 
 	return (
-		<article className="mx-auto max-w-[1040px] rounded-2xl border border-border bg-card p-5 text-left sm:p-7">
+		<article className="rounded-2xl border border-border bg-card p-5 sm:p-7">
 			<header className="flex flex-wrap items-end justify-between gap-4">
 				<div className="grid gap-1.5">
 					<Eyebrow className="text-[10px]">{copy.label}</Eyebrow>
@@ -130,13 +131,13 @@ export function BudgetLedgerDemo(props: BudgetLedgerDemoProps) {
 										</span>
 									</span>
 									<span className={amountColumn}>
-										<span className="text-muted-foreground sm:sr-only">
+										<span className="block text-muted-foreground sm:sr-only">
 											{copy.columns.estimate}{' '}
 										</span>
 										{money.format(item.estimate)}
 									</span>
 									<span className={amountColumn}>
-										<span className="text-muted-foreground sm:sr-only">
+										<span className="block text-muted-foreground sm:sr-only">
 											{copy.columns.reserved}{' '}
 										</span>
 										{money.format(item.reserved)}
@@ -144,7 +145,7 @@ export function BudgetLedgerDemo(props: BudgetLedgerDemoProps) {
 									<span
 										className={cn(amountColumn, 'col-span-2 sm:col-span-1')}
 									>
-										<span className="text-muted-foreground sm:sr-only">
+										<span className="block text-muted-foreground sm:sr-only">
 											{copy.columns.observed}{' '}
 										</span>
 										{item.observed === null ? (

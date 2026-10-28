@@ -53,6 +53,33 @@ describe('paused requests', () => {
 	}
 })
 
+describe('the landing band description', () => {
+	it('shows the description a product page passes instead of the shared sentence', () => {
+		render(
+			<EarlyAccessSection
+				description="See a team envelope for your own work."
+				locale="en"
+				source="landing"
+			/>,
+		)
+
+		expect(
+			screen.getByText('See a team envelope for your own work.'),
+		).toBeTruthy()
+		expect(
+			screen.queryByText(earlyAccessMessages.en.demoDescription),
+		).toBeNull()
+	})
+
+	it('keeps the shared sentence when the page passes none', () => {
+		render(<EarlyAccessSection locale="en" source="landing" />)
+
+		expect(
+			screen.getByText(earlyAccessMessages.en.demoDescription),
+		).toBeTruthy()
+	})
+})
+
 // Sign-up is paused until feature flags have a proper home. Restore this
 // test with the commented form in section.tsx.
 // describe('active Early Access', () => {
