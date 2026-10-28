@@ -2,16 +2,14 @@
 
 import { TextMorph } from '@langdrift/web/vendors/smoothui/text-morph'
 import { useReducedMotion } from 'motion/react'
-import { useEffect, useState } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 
 export interface RotatingTextProps {
 	className?: string
 	/** Time each word stays before the next one morphs in, in milliseconds. */
 	interval?: number
-	/** Fixed text after the word, gliding as the word changes width. */
-	suffix?: string
-	/** Classes for the suffix alone. */
-	suffixClassName?: string
+	/** Fixed content after the word, gliding as the word changes width. */
+	suffix?: ReactNode
 	words: string[]
 }
 
@@ -21,13 +19,7 @@ const DEFAULT_INTERVAL = 2600
 // holds the first word, and it waits while the tab is hidden. Server and client both start on the first word, so
 // hydration matches.
 export function RotatingText(props: RotatingTextProps) {
-	const {
-		className,
-		interval = DEFAULT_INTERVAL,
-		suffix,
-		suffixClassName,
-		words,
-	} = props
+	const { className, interval = DEFAULT_INTERVAL, suffix, words } = props
 
 	const shouldReduceMotion = useReducedMotion()
 	const [index, setIndex] = useState(0)
@@ -48,7 +40,6 @@ export function RotatingText(props: RotatingTextProps) {
 		<TextMorph
 			className={className}
 			suffix={suffix}
-			suffixClassName={suffixClassName}
 			text={words[index] ?? ''}
 		/>
 	)

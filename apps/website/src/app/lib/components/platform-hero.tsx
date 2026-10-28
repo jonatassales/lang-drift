@@ -1,3 +1,4 @@
+import { ChromaText } from '@langdrift/web/ui/chroma-text'
 import { HeroShader } from '@langdrift/web/ui/hero-shader'
 import { RotatingText } from '@langdrift/web/ui/rotating-text'
 
@@ -11,10 +12,11 @@ interface PlatformHeroProps {
 }
 
 // The hero is the moving headline alone, centered on the first screen over a
-// black-and-white shader: the shader's brand roles are swapped for neutral
-// ones, so it draws in grays. The light scheme takes the secondary text gray,
-// so its veils show over the pale field; the dark one takes the quiet surface
-// grays. Under the headline, one frame holds the
+// black-and-white shader, with the rainbow flowing through the word
+// "Platform" as the page's one touch of color. The shader's brand roles are
+// swapped for neutral ones, so it draws in grays: the light scheme takes the
+// secondary text gray, so its veils show over the pale field, and the dark
+// one takes the quiet surface grays. Under the headline, one frame holds the
 // Microruntimes terminal and the ticket, plan and workflow cards it plays
 // into, side by side; its top 21rem show at the bottom of the first screen.
 // The hero starts under the transparent header, so the two read as one
@@ -24,11 +26,6 @@ interface PlatformHeroProps {
 // terminal.
 const monochrome =
 	'[--primary-hover:var(--muted-foreground)] [--primary:var(--muted-foreground)] dark:[--primary-hover:var(--border)] dark:[--primary:var(--muted)]'
-
-// The six fixed rainbow stops fill the word "Platform": the page's one touch
-// of color, clipped to the letters.
-const rainbowText =
-	'bg-[linear-gradient(90deg,var(--lg-rainbow-1),var(--lg-rainbow-2),var(--lg-rainbow-3),var(--lg-rainbow-4),var(--lg-rainbow-5),var(--lg-rainbow-6))] bg-clip-text text-transparent'
 
 export function PlatformHero(props: PlatformHeroProps) {
 	const { locale } = props
@@ -57,8 +54,7 @@ export function PlatformHero(props: PlatformHeroProps) {
 						<span className="block">{copy.titleStart}</span>
 						<RotatingText
 							className="block whitespace-nowrap"
-							suffix={copy.titleEnd}
-							suffixClassName={rainbowText}
+							suffix={<ChromaText>{copy.titleEnd}</ChromaText>}
 							words={copy.words}
 						/>
 					</h1>
