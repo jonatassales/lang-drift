@@ -4,23 +4,16 @@ import { describe, expect, it } from 'vitest'
 import {
 	bookDemoMessages,
 	conversionMessages,
-	demoMessages,
 	earlyAccessMessages,
 	earlyAccessSentMessages,
-	executiveReviewMessages,
 	finopsMessages,
 	footerMessages,
-	getWebsiteMessages,
 	headerMessages,
-	homeMessages,
-	integrationsMessages,
 	microruntimesMessages,
 	platformMessages,
 	privacyMessages,
-	visionLoopMessages,
 } from './messages'
 import routeState from './messages/route-state.json'
-import type { WebsiteLocale } from './routing'
 
 function leaves(value: unknown, prefix = ''): Record<string, string> {
 	if (typeof value === 'string') return { [prefix]: value }
@@ -56,18 +49,13 @@ describe('Website production translations', () => {
 		'%s preserves every key, ICU argument and rich-text tag and formats the acceptance counts',
 		(locale) => {
 			for (const family of [
-				homeMessages,
 				headerMessages,
-				demoMessages,
 				conversionMessages,
 				earlyAccessMessages,
 				earlyAccessSentMessages,
 				footerMessages,
-				integrationsMessages,
 				platformMessages,
 				privacyMessages,
-				visionLoopMessages,
-				executiveReviewMessages,
 				finopsMessages,
 				microruntimesMessages,
 				bookDemoMessages,
@@ -111,26 +99,4 @@ describe('Website production translations', () => {
 			}
 		},
 	)
-	it('discloses the scripted preview in Vietnamese', () => {
-		const copy = getWebsiteMessages('vi' as WebsiteLocale)
-		expect(copy.home?.voice.description).toContain('không dùng micrô')
-		expect(copy.home?.voice.ask).toBe('Khám phá câu trả lời mẫu')
-	})
-
-	it.each([
-		['en', '0 points'],
-		['pt-BR', '0 pontos'],
-		['zh-Hant', '0 點'],
-		['ja', '0 ポイント'],
-		['vi', '0 điểm'],
-	] as const)('formats the %s empty count without errors', (locale, text) => {
-		const errors: unknown[] = []
-		const t = createTranslator({
-			locale,
-			messages: homeMessages[locale as WebsiteLocale],
-			onError: (error) => errors.push(error),
-		})
-		expect(t('intent.points', { count: 0 })).toBe(text)
-		expect(errors).toEqual([])
-	})
 })

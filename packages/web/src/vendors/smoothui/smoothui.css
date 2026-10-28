@@ -34,45 +34,9 @@
 	text-underline-offset: 5px;
 }
 
-.chroma-text {
-	animation: langdrift-chroma 7s linear infinite;
-	background: linear-gradient(
-		100deg,
-		var(--primary),
-		#ffb36f,
-		var(--lg-classification-intentional),
-		var(--lg-classification-review),
-		var(--primary)
-	);
-	background-clip: text;
-	background-size: 220% 100%;
-	color: transparent;
-}
-
-@keyframes langdrift-chroma {
-	0% {
-		background-position: 0% 50%;
-	}
-	100% {
-		background-position: 220% 50%;
-	}
-}
-
-.avatar-group {
-	align-items: center;
-	display: flex;
-}
-
 .smooth-footer {
 	border-top: 1px solid var(--border);
 	margin: 0 auto;
 	max-width: 1240px;
 	padding: 52px 28px 24px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.chroma-text {
-		animation: none;
-		background-position: 0 50%;
-	}
 }

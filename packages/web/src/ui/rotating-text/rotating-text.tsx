@@ -2,14 +2,14 @@
 
 import { TextMorph } from '@langdrift/web/vendors/smoothui/text-morph'
 import { useReducedMotion } from 'motion/react'
-import { useEffect, useState } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 
 export interface RotatingTextProps {
 	className?: string
 	/** Time each word stays before the next one morphs in, in milliseconds. */
 	interval?: number
-	/** Fixed text after the word, gliding as the word changes width. */
-	suffix?: string
+	/** Fixed content after the word, gliding as the word changes width. */
+	suffix?: ReactNode
 	words: string[]
 }
 

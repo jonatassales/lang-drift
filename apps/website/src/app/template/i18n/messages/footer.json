@@ -1,29 +1,34 @@
 {
 	"en": {
+		"description": "From vision to reality, and everything in between.",
 		"navigation": "Footer navigation",
 		"faq": "Questions & answers",
 		"social": "Follow LangDrift",
 		"copyright": "© 2026 LangDrift · Made in Brazil"
 	},
 	"pt-BR": {
+		"description": "Da visão à realidade, e tudo o que acontece no caminho.",
 		"navigation": "Navegação do rodapé",
 		"faq": "Perguntas frequentes",
 		"social": "Acompanhe o LangDrift",
 		"copyright": "© 2026 LangDrift · Feito no Brasil"
 	},
 	"zh-Hant": {
+		"description": "從願景到現實，以及其間的每一步。",
 		"navigation": "頁尾導覽",
 		"faq": "常見問題",
 		"social": "追蹤 LangDrift",
 		"copyright": "© 2026 LangDrift · 源自巴西"
 	},
 	"ja": {
+		"description": "ビジョンから現実へ。その間にあるすべてを。",
 		"navigation": "フッターナビゲーション",
 		"faq": "よくある質問",
 		"social": "LangDriftをフォロー",
 		"copyright": "© 2026 LangDrift · ブラジル発"
 	},
 	"vi": {
+		"description": "Từ định hướng đến thực tế, và mọi điều ở giữa.",
 		"navigation": "Điều hướng cuối trang",
 		"faq": "Câu hỏi và trả lời",
 		"social": "Theo dõi LangDrift",

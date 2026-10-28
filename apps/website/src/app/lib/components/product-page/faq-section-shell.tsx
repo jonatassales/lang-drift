@@ -1,7 +1,10 @@
+import { cn } from '@langdrift/web/utilities'
 import type { ReactNode } from 'react'
 
 interface FaqSectionShellProps {
 	children: ReactNode
+	/** Overrides the landmark's width where a page sets its own, as the home does. */
+	className?: string
 	description: string
 	title: string
 }
@@ -9,12 +12,15 @@ interface FaqSectionShellProps {
 // The FAQ landmark the product pages and the home share: a heading, a lead
 // and the answers that follow.
 export function FaqSectionShell(props: FaqSectionShellProps) {
-	const { children, description, title } = props
+	const { children, className, description, title } = props
 
 	return (
 		<section
 			aria-labelledby="faq-heading"
-			className="mx-auto max-w-[1180px] scroll-mt-24 border-t border-border px-[clamp(18px,3vw,36px)] py-16 sm:py-20"
+			className={cn(
+				'mx-auto max-w-[1180px] scroll-mt-24 border-t border-border px-[clamp(18px,3vw,36px)] py-16 sm:py-20',
+				className,
+			)}
 			id="faq"
 		>
 			<div className="max-w-[760px]">

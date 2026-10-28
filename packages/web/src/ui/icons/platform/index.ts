@@ -1,5 +1,3 @@
-export { AiVoiceIcon } from './ai-voice-icon'
 export { FinopsIcon } from './finops-icon'
 export { MicroruntimesIcon } from './microruntimes-icon'
 export type { PlatformIconProps } from './platform-icon-props'
-export { VisionIcon } from './vision-icon'

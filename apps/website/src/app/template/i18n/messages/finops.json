@@ -217,9 +217,6 @@
 					"answer": "The pages describe the intended model with illustrative values. The ledger, the gate and the integrations shown here are not available yet, and demo requests are paused for now."
 				}
 			}
-		},
-		"earlyAccess": {
-			"description": "See what a team envelope, a reservation and a receipt would look like for your own work, and what FinOps does not promise."
 		}
 	},
 	"pt-BR": {
@@ -440,9 +437,6 @@
 					"answer": "As páginas descrevem o modelo pretendido com valores ilustrativos. O livro-razão, o gate e as integrações mostrados aqui ainda não estão disponíveis, e os pedidos de demonstração estão pausados por enquanto."
 				}
 			}
-		},
-		"earlyAccess": {
-			"description": "Veja como ficariam um envelope do time, uma reserva e um recibo para o seu próprio trabalho, e o que o FinOps não promete."
 		}
 	},
 	"zh-Hant": {
@@ -663,9 +657,6 @@
 					"answer": "這些頁面以示意數值描述預期中的模型。這裡展示的帳本、閘門與整合尚未可用，示範申請目前暫停。"
 				}
 			}
-		},
-		"earlyAccess": {
-			"description": "看看團隊預算額度、保留與收據套用在你們自己的工作上會是什麼樣子，以及 FinOps 不承諾的事。"
 		}
 	},
 	"ja": {
@@ -886,9 +877,6 @@
 					"answer": "これらのページはイメージ上の値で想定するモデルを説明しています。ここに示した台帳、ゲート、連携はまだ利用できず、デモの申し込みは当面停止しています。"
 				}
 			}
-		},
-		"earlyAccess": {
-			"description": "チームの予算枠、予約、レシートが自分たちの作業ではどう見えるのか。そして FinOps が約束しないことも、確かめてください。"
 		}
 	},
 	"vi": {
@@ -1109,9 +1097,6 @@
 					"answer": "Các trang này mô tả mô hình dự kiến với các giá trị minh họa. Sổ cái, cổng kiểm soát và các tích hợp ở đây chưa khả dụng, và yêu cầu demo hiện đang tạm dừng."
 				}
 			}
-		},
-		"earlyAccess": {
-			"description": "Xem hạn mức của đội, khoản giữ chỗ và biên lai sẽ trông thế nào với công việc của chính bạn, và những gì FinOps không hứa hẹn."
 		}
 	}
 }

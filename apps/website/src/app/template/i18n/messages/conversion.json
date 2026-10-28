@@ -1,75 +1,5 @@
 {
 	"en": {
-		"roi": {
-			"eyebrow": "Return on your product investment",
-			"title": "Make your product investment go further.",
-			"description": "Every release commits time, talent, and budget. Understand the decisions behind your product’s evolution, revisit trade-offs before expanding your investment, and recognize opportunities worth pursuing.",
-			"benefits": {
-				"context": {
-					"title": "Spend less time rebuilding context.",
-					"description": "Bring connected decisions, changes, and supporting records into the discussion, so your team can focus on what happens next."
-				},
-				"tradeoff": {
-					"title": "Revisit the trade-off before investing further.",
-					"description": "See which compromises still serve your goals and which deserve another decision before a broader rollout."
-				},
-				"opportunity": {
-					"title": "Recognize opportunities worth pursuing.",
-					"description": "Explore when a change reveals a promising direction—and which evidence you need before committing to it."
-				}
-			},
-			"earlyAccess": "Book a demo",
-			"explorePlans": "Explore plans",
-			"brief": {
-				"label": "Product brief",
-				"context": "Manual setup helped bring the integration forward. Its effect on new customers still needs validation.",
-				"question": "Expand with the current setup, or invest in completing the guided experience first?",
-				"evidence": [
-					"Recorded trade-off",
-					"Implementation verification",
-					"User feedback pending"
-				]
-			}
-		},
-		"faq": {
-			"title": "A few things worth knowing.",
-			"description": "What drift means, how LangDrift fits your workflow, and what the product demonstration shows.",
-			"offer": "Demo requests are temporarily paused. Please check back soon.",
-			"items": {
-				"meaning": {
-					"question": "What does “drift” mean?",
-					"answer": "Drift describes a change in relation to a product goal. It can reveal a gap, an intentional trade-off, a course correction, or a valuable discovery. Context and evidence help explain its meaning; a drift event is not a score of an individual’s performance."
-				},
-				"expected": {
-					"question": "Does “Expected” mean a change was beneficial?",
-					"answer": "No. Expected and Unexpected describe whether a change was anticipated. Its effect on a Vision Target is a separate question. An intentional compromise can move away from a goal, while an unexpected discovery can reveal a better direction."
-				},
-				"connection": {
-					"question": "What do I need to connect?",
-					"answer": "LangDrift’s core setup requires the platform’s SDK/MCP connection to bring project context and records into the dashboard. Additional integrations extend the workflow into the tools your team uses."
-				},
-				"tools": {
-					"question": "Do I need GitHub, Obsidian, and Linear?",
-					"answer": "In the planned workflow, GitHub is required for automatically opening pull requests. Obsidian and Linear are optional: Obsidian can be used to begin PRDs and Research in the knowledge workspace your team already uses, while Linear can replicate specs and tickets into your planning workflow. Choose the additional connections that fit your team."
-				},
-				"trial": {
-					"question": "When does the 15-day trial start?",
-					"answer": "Your trial starts when your access is activated, not when you join the early-adopter list. Early-access availability will be announced before activation."
-				},
-				"free": {
-					"question": "Is there a permanent free plan?",
-					"answer": "The current early-adopter offer is a 15-day free trial. Plus and Pro are planned options for continuing afterward; their final features and pricing will be announced before launch."
-				},
-				"paid": {
-					"question": "What is included in Plus and Pro?",
-					"answer": "Plus is being shaped around ongoing product tracking and review. Pro is being explored for deeper reporting and collaboration needs. The final plan comparison will be published before launch."
-				},
-				"availability": {
-					"question": "Can I use LangDrift today?",
-					"answer": "The interactive examples on this website illustrate LangDrift’s product direction. Demo requests are temporarily paused; we’ll be back soon."
-				}
-			}
-		},
 		"plans": {
 			"skip": "Skip to plans",
 			"eyebrow": "Plans & early access",
@@ -81,10 +11,10 @@
 					"badge": "Early adopter offer",
 					"value": "15 days",
 					"support": "Starts when your access is activated",
-					"description": "Explore how your product vision connects to changes, decisions, and evidence.",
+					"description": "Explore how a bounded run keeps agent-assisted delivery inside a team budget.",
 					"listLabel": "Explore the core experience",
 					"items": [
-						"Vision → Loop → Evidence",
+						"Budget → Run → Evidence",
 						"Changes and their context",
 						"Core product review experience"
 					],
@@ -124,76 +54,6 @@
 		}
 	},
 	"pt-BR": {
-		"roi": {
-			"eyebrow": "Retorno sobre o investimento no produto",
-			"title": "Faça seu investimento no produto ir mais longe.",
-			"description": "Cada release compromete tempo, talento e orçamento. Entenda as decisões por trás da evolução do seu produto, reveja concessões antes de ampliar o investimento e reconheça oportunidades que merecem ser exploradas.",
-			"benefits": {
-				"context": {
-					"title": "Gaste menos tempo reconstruindo o contexto.",
-					"description": "Traga decisões, mudanças e registros de apoio conectados para a discussão, para que sua equipe possa se concentrar no próximo passo."
-				},
-				"tradeoff": {
-					"title": "Reveja a concessão antes de investir mais.",
-					"description": "Veja quais compromissos ainda atendem aos seus objetivos e quais merecem uma nova decisão antes de uma expansão."
-				},
-				"opportunity": {
-					"title": "Reconheça oportunidades que vale a pena explorar.",
-					"description": "Investigue quando uma mudança revela uma direção promissora — e quais evidências você precisa antes de se comprometer com ela."
-				}
-			},
-			"earlyAccess": "Agende uma demo",
-			"explorePlans": "Explorar planos",
-			"brief": {
-				"label": "Resumo do produto",
-				"context": "A configuração manual ajudou a antecipar a integração. Seu efeito sobre novos clientes ainda precisa ser validado.",
-				"question": "Expandir com a configuração atual ou investir primeiro em concluir a experiência guiada?",
-				"evidence": [
-					"Concessão registrada",
-					"Verificação da implementação",
-					"Feedback de usuários pendente"
-				]
-			}
-		},
-		"faq": {
-			"title": "Algumas coisas que vale a pena saber.",
-			"description": "O que significa drift, como o LangDrift se encaixa no seu fluxo e o que a demonstração do produto apresenta.",
-			"offer": "As solicitações de demonstração estão temporariamente pausadas. Volte em breve.",
-			"items": {
-				"meaning": {
-					"question": "O que “drift” significa?",
-					"answer": "Drift descreve uma mudança em relação a um objetivo do produto. Pode revelar uma lacuna, uma concessão intencional, uma correção de rumo ou uma descoberta valiosa. Contexto e evidências ajudam a explicar seu significado; um evento de drift não é uma nota de desempenho individual."
-				},
-				"expected": {
-					"question": "“Esperado” significa que a mudança foi benéfica?",
-					"answer": "Não. Esperado e Inesperado descrevem se uma mudança foi antecipada. Seu efeito sobre um Vision Target é outra questão. Uma concessão intencional pode afastar o produto de um objetivo, enquanto uma descoberta inesperada pode revelar uma direção melhor."
-				},
-				"connection": {
-					"question": "O que preciso conectar?",
-					"answer": "A configuração principal do LangDrift exige a conexão SDK/MCP da plataforma para levar contexto e registros do projeto ao dashboard. Integrações adicionais estendem o fluxo às ferramentas usadas pela sua equipe."
-				},
-				"tools": {
-					"question": "Preciso de GitHub, Obsidian e Linear?",
-					"answer": "No fluxo planejado, o GitHub é necessário para abrir pull requests automaticamente. Obsidian e Linear são opcionais: o Obsidian pode ser usado para começar PRDs e Research no espaço de conhecimento que sua equipe já utiliza, enquanto o Linear pode replicar specs e tickets no seu planejamento. Escolha as conexões adicionais que fazem sentido para sua equipe."
-				},
-				"trial": {
-					"question": "Quando começa o teste de 15 dias?",
-					"answer": "Seu teste começa quando seu acesso é ativado, não ao entrar na lista de primeiros usuários. A disponibilidade do acesso antecipado será anunciada antes da ativação."
-				},
-				"free": {
-					"question": "Existe um plano gratuito permanente?",
-					"answer": "A oferta atual para os primeiros usuários é um teste gratuito de 15 dias. Plus e Pro são opções planejadas para continuar depois; os recursos e preços finais serão anunciados antes do lançamento."
-				},
-				"paid": {
-					"question": "O que está incluído no Plus e no Pro?",
-					"answer": "O Plus está sendo desenvolvido em torno do acompanhamento e da revisão contínuos do produto. O Pro está sendo estudado para necessidades mais aprofundadas de relatórios e colaboração. A comparação final dos planos será publicada antes do lançamento."
-				},
-				"availability": {
-					"question": "Já posso usar o LangDrift?",
-					"answer": "Os exemplos interativos deste site ilustram a direção do produto LangDrift. As solicitações de demonstração estão temporariamente pausadas; voltaremos em breve."
-				}
-			}
-		},
 		"plans": {
 			"skip": "Ir para os planos",
 			"eyebrow": "Planos e acesso antecipado",
@@ -205,10 +65,10 @@
 					"badge": "Oferta para primeiros usuários",
 					"value": "15 dias",
 					"support": "Começa quando seu acesso é ativado",
-					"description": "Explore como a visão do seu produto se conecta a mudanças, decisões e evidências.",
+					"description": "Explore como uma execução delimitada mantém a entrega assistida por agentes dentro do orçamento do time.",
 					"listLabel": "Explore a experiência principal",
 					"items": [
-						"Vision → Loop → Evidence",
+						"Orçamento → Execução → Evidência",
 						"Mudanças e seu contexto",
 						"Experiência central de revisão do produto"
 					],
@@ -248,72 +108,6 @@
 		}
 	},
 	"zh-Hant": {
-		"roi": {
-			"eyebrow": "產品投資的回報",
-			"title": "讓產品投資發揮更大價值。",
-			"description": "每次發布都投入了時間、人才與預算。了解產品演進背後的決策，在擴大投資前重新評估取捨，並找出值得探索的機會。",
-			"benefits": {
-				"context": {
-					"title": "減少重建脈絡所花的時間。",
-					"description": "將相互關聯的決策、變更與佐證紀錄帶入討論，讓團隊能專注於下一步。"
-				},
-				"tradeoff": {
-					"title": "追加投資前，重新評估取捨。",
-					"description": "了解哪些妥協仍符合目標，哪些在擴大推出前值得再次決策。"
-				},
-				"opportunity": {
-					"title": "找出值得探索的機會。",
-					"description": "探索變更何時揭示了有潛力的方向，以及在投入前需要哪些證據。"
-				}
-			},
-			"earlyAccess": "預約展示",
-			"explorePlans": "探索方案",
-			"brief": {
-				"label": "產品摘要",
-				"context": "手動設定讓整合得以提早推出，但對新客戶的影響仍需要驗證。",
-				"question": "沿用目前設定擴大推出，還是先投入資源完成引導式體驗？",
-				"evidence": ["已記錄的取捨", "實作驗證", "待收集使用者回饋"]
-			}
-		},
-		"faq": {
-			"title": "幾件值得了解的事。",
-			"description": "了解漂移的意義、LangDrift 如何融入您的工作流程，以及產品展示的內容。",
-			"offer": "產品展示申請暫時停止。請稍後再回來查看。",
-			"items": {
-				"meaning": {
-					"question": "「drift」是什麼意思？",
-					"answer": "Drift 描述相對於產品目標的變化。它可能揭示落差、有意識的取捨、方向調整或有價值的發現。脈絡與證據有助於解釋其意義；drift 事件不是個人績效評分。"
-				},
-				"expected": {
-					"question": "「預期內」代表變更有益嗎？",
-					"answer": "不是。預期內與預期外描述變更是否在預料之中；對 Vision Target 的影響是另一個問題。有意識的妥協可能使產品偏離目標，而意外的發現也可能揭示更好的方向。"
-				},
-				"connection": {
-					"question": "需要連接什麼？",
-					"answer": "LangDrift 的核心設定需要透過平台的 SDK/MCP 連線，將專案脈絡與紀錄帶入儀表板。其他整合則將工作流程延伸到團隊使用的工具。"
-				},
-				"tools": {
-					"question": "一定要使用 GitHub、Obsidian 和 Linear 嗎？",
-					"answer": "在規劃中的流程裡，自動建立 pull request 需要 GitHub。Obsidian 與 Linear 為選用：Obsidian 可用來在團隊熟悉的知識工作空間開始撰寫 PRD 與 Research，Linear 則可將規格與工單複製到規劃流程。請選擇適合團隊的額外連接。"
-				},
-				"trial": {
-					"question": "15 天試用何時開始？",
-					"answer": "試用從存取權限啟用時開始，而非加入早期使用者名單時。搶先體驗的開放資訊會在啟用前公布。"
-				},
-				"free": {
-					"question": "有永久免費方案嗎？",
-					"answer": "目前給早期使用者的優惠是 15 天免費試用。Plus 與 Pro 是後續使用的規劃選項；最終功能與價格將於正式推出前公布。"
-				},
-				"paid": {
-					"question": "Plus 和 Pro 包含什麼？",
-					"answer": "Plus 正以持續追蹤與檢視產品為方向規劃。Pro 則在探索更深入的報告與協作需求。最終方案比較將於正式推出前公布。"
-				},
-				"availability": {
-					"question": "現在就能使用 LangDrift 嗎？",
-					"answer": "本網站的互動範例展示 LangDrift 的產品方向。產品展示申請暫時停止；我們很快就會回來。"
-				}
-			}
-		},
 		"plans": {
 			"skip": "跳至方案",
 			"eyebrow": "方案與搶先體驗",
@@ -325,13 +119,9 @@
 					"badge": "早期使用者優惠",
 					"value": "15 天",
 					"support": "從存取權限啟用時開始",
-					"description": "探索產品願景如何與變更、決策及證據連結。",
+					"description": "探索有邊界的執行如何讓代理協助的交付留在團隊預算之內。",
 					"listLabel": "探索核心體驗",
-					"items": [
-						"Vision → Loop → Evidence",
-						"變更與其脈絡",
-						"核心產品檢視體驗"
-					],
+					"items": ["預算 → 執行 → 證據", "變更與其脈絡", "核心產品檢視體驗"],
 					"cta": "登記搶先體驗"
 				},
 				"plus": {
@@ -364,76 +154,6 @@
 		}
 	},
 	"ja": {
-		"roi": {
-			"eyebrow": "プロダクト投資の価値",
-			"title": "プロダクトへの投資を、より大きな価値へ。",
-			"description": "リリースには時間、人材、予算が投入されます。プロダクトの進化を支える意思決定を理解し、投資を拡大する前にトレードオフを見直し、追求する価値のある機会を見つけましょう。",
-			"benefits": {
-				"context": {
-					"title": "背景の再構築にかかる時間を減らす。",
-					"description": "関連する意思決定、変更、裏付けとなる記録を議論に持ち込み、チームが次の行動に集中できるようにします。"
-				},
-				"tradeoff": {
-					"title": "追加投資の前にトレードオフを見直す。",
-					"description": "どの妥協点が今も目標にかなっているのか、広く展開する前にどれを再判断すべきかを確認できます。"
-				},
-				"opportunity": {
-					"title": "追求する価値のある機会を見つける。",
-					"description": "変更が有望な方向を示す場面と、その方向に進む前に必要な根拠を探ります。"
-				}
-			},
-			"earlyAccess": "デモを予約",
-			"explorePlans": "プランを見る",
-			"brief": {
-				"label": "プロダクトブリーフ",
-				"context": "手動セットアップにより、連携を早く提供できました。新規顧客への影響は、引き続き検証が必要です。",
-				"question": "現在のセットアップで展開を広げるか、先にガイド付き体験の完成に投資するか？",
-				"evidence": [
-					"記録されたトレードオフ",
-					"実装の検証",
-					"ユーザーの声は収集待ち"
-				]
-			}
-		},
-		"faq": {
-			"title": "知っておきたいこと。",
-			"description": "ドリフトの意味、LangDrift がワークフローにどう役立つか、製品デモで紹介する内容をご案内します。",
-			"offer": "デモのリクエストは一時停止中です。しばらくしてからもう一度ご確認ください。",
-			"items": {
-				"meaning": {
-					"question": "「drift」とは何ですか？",
-					"answer": "Driftはプロダクトの目標に対する変化を表します。目標との隔たり、意図的なトレードオフ、軌道修正、価値ある発見が見えてくることがあります。背景と根拠がその意味の理解を支えます。driftイベントは、個人の業績を採点するものではありません。"
-				},
-				"expected": {
-					"question": "「想定どおり」なら、その変更は有益ですか？",
-					"answer": "いいえ。「想定どおり」と「想定外」は、その変更を予期していたかを表します。Vision Targetへの影響は別の問いです。意図的な妥協によって目標から離れる場合もあれば、予期しない発見がより良い方向を示す場合もあります。"
-				},
-				"connection": {
-					"question": "何を接続する必要がありますか？",
-					"answer": "LangDriftの基本設定には、プロジェクトの背景情報や記録をダッシュボードに届けるため、プラットフォームのSDK/MCP接続が必要です。追加の連携により、チームが使うツールへ業務を広げられます。"
-				},
-				"tools": {
-					"question": "GitHub、Obsidian、Linearはすべて必要ですか？",
-					"answer": "計画中のワークフローでは、pull requestを自動作成するためにGitHubが必要です。ObsidianとLinearは任意です。Obsidianではチームが普段使う知識のワークスペースでPRDやResearchを書き始められ、Linearでは仕様やチケットを計画業務に複製できます。チームに合う追加接続を選べます。"
-				},
-				"trial": {
-					"question": "15日間のトライアルはいつ始まりますか？",
-					"answer": "トライアルは、先行ユーザーのリストへの登録時ではなく、アクセスが有効になった時点で始まります。先行アクセスの提供については、有効化の前にお知らせします。"
-				},
-				"free": {
-					"question": "永続的な無料プランはありますか？",
-					"answer": "現在の先行ユーザー向けオファーは、15日間無料トライアルです。その後の継続利用にはPlusとProを計画しています。最終的な機能と料金は、正式提供前に発表します。"
-				},
-				"paid": {
-					"question": "PlusとProには何が含まれますか？",
-					"answer": "Plusは、プロダクトを継続的に把握しレビューするためのプランとして検討しています。Proは、より深いレポートと共同作業のニーズに向けて検討中です。最終的なプラン比較は、正式提供前に公開します。"
-				},
-				"availability": {
-					"question": "今すぐLangDriftを利用できますか？",
-					"answer": "このサイトのインタラクティブな例は、LangDrift の製品の方向性を示しています。デモのリクエストは一時停止中です。まもなく再開します。"
-				}
-			}
-		},
 		"plans": {
 			"skip": "プランへ移動",
 			"eyebrow": "プランと先行アクセス",
@@ -445,10 +165,10 @@
 					"badge": "先行ユーザー向けオファー",
 					"value": "15日間",
 					"support": "アクセスが有効になった時点で開始",
-					"description": "プロダクトのビジョンが、変更、意思決定、根拠とどのようにつながるかを確認できます。",
+					"description": "境界のある実行が、エージェント支援の開発をチームの予算内に保つ仕組みを確認できます。",
 					"listLabel": "基本の体験を探索",
 					"items": [
-						"Vision → Loop → Evidence",
+						"予算 → 実行 → 根拠",
 						"変更とその背景",
 						"プロダクトレビューの基本体験"
 					],
@@ -488,76 +208,6 @@
 		}
 	},
 	"vi": {
-		"roi": {
-			"eyebrow": "Giá trị từ khoản đầu tư vào sản phẩm",
-			"title": "Để khoản đầu tư vào sản phẩm mang lại nhiều giá trị hơn.",
-			"description": "Mỗi lần phát hành đều cần thời gian, năng lực và ngân sách. Hiểu những quyết định đằng sau sự phát triển của sản phẩm, xem lại các đánh đổi trước khi đầu tư thêm và nhận ra những cơ hội đáng theo đuổi.",
-			"benefits": {
-				"context": {
-					"title": "Bớt thời gian dựng lại bối cảnh.",
-					"description": "Đưa các quyết định, thay đổi và hồ sơ liên quan vào cuộc trao đổi để nhóm tập trung vào bước tiếp theo."
-				},
-				"tradeoff": {
-					"title": "Xem lại sự đánh đổi trước khi đầu tư thêm.",
-					"description": "Hiểu những thỏa hiệp nào vẫn phục vụ mục tiêu và những điều nào cần được quyết định lại trước khi triển khai rộng hơn."
-				},
-				"opportunity": {
-					"title": "Nhận ra cơ hội đáng theo đuổi.",
-					"description": "Khám phá khi nào một thay đổi mở ra hướng đi hứa hẹn và cần bằng chứng gì trước khi cam kết."
-				}
-			},
-			"earlyAccess": "Đặt lịch demo",
-			"explorePlans": "Khám phá các gói",
-			"brief": {
-				"label": "Bản tóm tắt sản phẩm",
-				"context": "Thiết lập thủ công giúp tích hợp có mặt sớm hơn. Tác động đối với khách hàng mới vẫn cần được xác minh.",
-				"question": "Mở rộng với cách thiết lập hiện tại hay hoàn thiện trải nghiệm có hướng dẫn trước?",
-				"evidence": [
-					"Đánh đổi đã ghi nhận",
-					"Xác minh triển khai",
-					"Đang chờ phản hồi người dùng"
-				]
-			}
-		},
-		"faq": {
-			"title": "Một vài điều bạn có thể muốn biết.",
-			"description": "Ý nghĩa của drift, cách LangDrift phù hợp với quy trình của bạn và những gì bản minh họa sản phẩm thể hiện.",
-			"offer": "Yêu cầu bản demo đang tạm dừng. Vui lòng quay lại sau.",
-			"items": {
-				"meaning": {
-					"question": "“Drift” nghĩa là gì?",
-					"answer": "Drift mô tả sự thay đổi so với một mục tiêu sản phẩm. Đó có thể là khoảng cách, sự đánh đổi có chủ đích, điều chỉnh hướng đi hoặc khám phá có giá trị. Bối cảnh và bằng chứng giúp lý giải ý nghĩa; một sự kiện drift không phải điểm đánh giá hiệu suất cá nhân."
-				},
-				"expected": {
-					"question": "“Dự kiến” có nghĩa là thay đổi có lợi không?",
-					"answer": "Không. Dự kiến và Ngoài dự kiến mô tả việc thay đổi có được lường trước hay không. Tác động đối với mục tiêu định hướng là một câu hỏi khác. Một thỏa hiệp có chủ đích có thể đưa sản phẩm xa mục tiêu, trong khi khám phá bất ngờ có thể mở ra hướng đi tốt hơn."
-				},
-				"connection": {
-					"question": "Tôi cần kết nối những gì?",
-					"answer": "Thiết lập cốt lõi của LangDrift cần kết nối SDK/MCP với nền tảng để đưa bối cảnh và hồ sơ dự án vào bảng điều khiển. Các tích hợp bổ sung mở rộng quy trình sang những công cụ nhóm đang dùng."
-				},
-				"tools": {
-					"question": "Tôi có cần GitHub, Obsidian và Linear không?",
-					"answer": "Trong quy trình dự kiến, GitHub là bắt buộc để tự động mở pull request. Obsidian và Linear là tùy chọn: bạn có thể bắt đầu PRD và nghiên cứu trong không gian tri thức Obsidian quen thuộc, còn Linear có thể đồng bộ đặc tả và phiếu công việc vào quy trình lập kế hoạch. Hãy chọn những kết nối phù hợp với nhóm."
-				},
-				"trial": {
-					"question": "Khi nào thời gian dùng thử 15 ngày bắt đầu?",
-					"answer": "Thời gian dùng thử bắt đầu khi quyền truy cập được kích hoạt, không phải khi bạn đăng ký danh sách người dùng sớm. Thông tin về quyền truy cập sớm sẽ được công bố trước khi kích hoạt."
-				},
-				"free": {
-					"question": "Có gói miễn phí vĩnh viễn không?",
-					"answer": "Ưu đãi hiện tại cho người dùng sớm là dùng thử miễn phí 15 ngày. Plus và Pro là những lựa chọn dự kiến để tiếp tục sau đó; tính năng và giá cuối cùng sẽ được công bố trước khi ra mắt."
-				},
-				"paid": {
-					"question": "Plus và Pro bao gồm những gì?",
-					"answer": "Plus đang được định hình cho việc theo dõi và đánh giá sản phẩm thường xuyên. Pro đang được nghiên cứu cho nhu cầu báo cáo và cộng tác sâu hơn. Bảng so sánh gói cuối cùng sẽ được công bố trước khi ra mắt."
-				},
-				"availability": {
-					"question": "Tôi có thể dùng LangDrift ngay hôm nay không?",
-					"answer": "Các ví dụ tương tác trên trang web minh họa định hướng sản phẩm của LangDrift. Yêu cầu bản demo đang tạm dừng; chúng tôi sẽ sớm trở lại."
-				}
-			}
-		},
 		"plans": {
 			"skip": "Chuyển đến các gói",
 			"eyebrow": "Các gói và truy cập sớm",
@@ -569,10 +219,10 @@
 					"badge": "Ưu đãi cho người dùng sớm",
 					"value": "15 ngày",
 					"support": "Bắt đầu khi quyền truy cập được kích hoạt",
-					"description": "Khám phá cách định hướng sản phẩm liên kết với thay đổi, quyết định và bằng chứng.",
+					"description": "Khám phá cách một lần chạy có giới hạn giữ việc giao hàng có tác tử hỗ trợ trong ngân sách của đội.",
 					"listLabel": "Khám phá trải nghiệm cốt lõi",
 					"items": [
-						"Định hướng → Vòng lặp → Bằng chứng",
+						"Ngân sách → Lần chạy → Bằng chứng",
 						"Thay đổi và bối cảnh",
 						"Trải nghiệm đánh giá sản phẩm cốt lõi"
 					],

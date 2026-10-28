@@ -1,15 +1,12 @@
+import { ScrollHint } from '@langdrift/web/ui/scroll-hint'
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
 import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
-import { BookDemoBand } from '@components/book-a-demo/band'
-import { AiVoiceSection } from '@components/home/ai-voice-section'
 import { FinopsSection } from '@components/home/finops-section'
-import { MicroruntimesSection } from '@components/home/microruntimes-section'
 import { PlatformFaqSection } from '@components/home/platform-faq-section'
-import { VisionSection } from '@components/home/vision-section'
 import { PlatformHero } from '@components/platform-hero'
 import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
@@ -47,14 +44,11 @@ export default async function WebsitePage(props: WebsitePageProps) {
 			<WebsiteHeader />
 			<main id="top">
 				<PlatformHero locale={locale} />
-				<VisionSection locale={locale} />
-				<MicroruntimesSection locale={locale} />
 				<FinopsSection locale={locale} />
-				<AiVoiceSection locale={locale} />
 				<PlatformFaqSection locale={locale} />
-				<BookDemoBand locale={locale} />
 			</main>
 			<WebsiteFooter locale={locale} />
+			<ScrollHint />
 		</>
 	)
 }

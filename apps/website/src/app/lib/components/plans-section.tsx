@@ -66,7 +66,7 @@ export function PlansSection(props: PlansSectionProps) {
 			</div>
 			<div className="plans-availability">
 				<p>{copy.availability}</p>
-				<Link className="smooth-text-link" href="/platform/vision#faq">
+				<Link className="smooth-text-link" href="/#faq">
 					{copy.faqLink}
 					<span aria-hidden="true">→</span>
 				</Link>

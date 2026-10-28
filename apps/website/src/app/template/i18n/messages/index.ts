@@ -1,34 +1,21 @@
-import type { ExecutiveReviewMessages } from '@data/executive-review-data'
 import type { FinopsMessages } from '@data/finops-content'
 import type { MicroruntimesMessages } from '@data/microruntimes-content'
-import type { VisionLoopMessages } from '@data/vision-loop-content'
 import type { WebsiteLocale } from '@i18n/routing'
 
 import bookDemoJson from './book-a-demo.json'
 import conversionJson from './conversion.json'
-import demoJson from './demo.json'
 import earlyAccessJson from './early-access.json'
 import earlyAccessSentJson from './early-access-sent.json'
-import reviewEn from './executive-review/en.json'
-import reviewJa from './executive-review/ja.json'
-import reviewPt from './executive-review/pt-br.json'
-import reviewVi from './executive-review/vi.json'
-import reviewZh from './executive-review/zh-hant.json'
 import finopsJson from './finops.json'
 import footerJson from './footer.json'
 import headerJson from './header.json'
-import homeJson from './home.json'
-import integrationsJson from './integrations.json'
 import type {
 	BookDemoMessages,
 	ConversionCopy,
-	DemoMessages,
 	EarlyAccessMessages,
 	EarlyAccessSentMessages,
 	FooterMessages,
 	HeaderMessages,
-	HomeMessages,
-	IntegrationsMessages,
 	PlatformMessages,
 	PrivacyMessages,
 } from './messages.types'
@@ -36,11 +23,6 @@ import microruntimesJson from './microruntimes.json'
 import platformJson from './platform.json'
 import privacyJson from './privacy.json'
 import routeStateJson from './route-state.json'
-import visionEn from './vision-loop/en.json'
-import visionJa from './vision-loop/ja.json'
-import visionPt from './vision-loop/pt-br.json'
-import visionVi from './vision-loop/vi.json'
-import visionZh from './vision-loop/zh-hant.json'
 
 const locales = ['en', 'pt-BR', 'zh-Hant', 'ja', 'vi'] as const
 
@@ -94,13 +76,6 @@ function triple(
 function loadConversion(locale: (typeof conversionJson)['en']): ConversionCopy {
 	return {
 		...locale,
-		roi: {
-			...locale.roi,
-			brief: {
-				...locale.roi.brief,
-				evidence: triple(locale.roi.brief.evidence, 'roi.brief.evidence'),
-			},
-		},
 		plans: {
 			...locale.plans,
 			cards: {
@@ -127,14 +102,11 @@ function loadConversion(locale: (typeof conversionJson)['en']): ConversionCopy {
 	}
 }
 
-assertCatalogShape('home', homeJson)
 assertCatalogShape('header', headerJson)
-assertCatalogShape('demo', demoJson)
 assertCatalogShape('privacy', privacyJson)
 assertCatalogShape('conversion', conversionJson)
 assertCatalogShape('early-access', earlyAccessJson)
 assertCatalogShape('early-access-sent', earlyAccessSentJson)
-assertCatalogShape('integrations', integrationsJson)
 assertCatalogShape('footer', footerJson)
 assertCatalogShape('platform', platformJson)
 assertCatalogShape('route-state', routeStateJson)
@@ -142,9 +114,7 @@ assertCatalogShape('finops', finopsJson)
 assertCatalogShape('microruntimes', microruntimesJson)
 assertCatalogShape('book-a-demo', bookDemoJson)
 
-export const homeMessages: Record<WebsiteLocale, HomeMessages> = homeJson
 export const headerMessages: Record<WebsiteLocale, HeaderMessages> = headerJson
-export const demoMessages: Record<WebsiteLocale, DemoMessages> = demoJson
 export const privacyMessages: Record<WebsiteLocale, PrivacyMessages> =
 	privacyJson
 export const earlyAccessMessages: Record<WebsiteLocale, EarlyAccessMessages> =
@@ -153,8 +123,6 @@ export const earlyAccessSentMessages: Record<
 	WebsiteLocale,
 	EarlyAccessSentMessages
 > = earlyAccessSentJson
-export const integrationsMessages: Record<WebsiteLocale, IntegrationsMessages> =
-	integrationsJson
 export const footerMessages: Record<WebsiteLocale, FooterMessages> = footerJson
 export const platformMessages: Record<WebsiteLocale, PlatformMessages> =
 	platformJson
@@ -174,35 +142,9 @@ export const conversionMessages: Record<WebsiteLocale, ConversionCopy> = {
 	vi: loadConversion(conversionJson.vi),
 }
 
-const visionLoopCatalog = {
-	en: visionEn,
-	'pt-BR': visionPt,
-	'zh-Hant': visionZh,
-	ja: visionJa,
-	vi: visionVi,
-}
-assertCatalogShape('vision-loop', visionLoopCatalog)
-export const visionLoopMessages: Record<WebsiteLocale, VisionLoopMessages> =
-	visionLoopCatalog
-
-const executiveReviewCatalog = {
-	en: reviewEn,
-	'pt-BR': reviewPt,
-	'zh-Hant': reviewZh,
-	ja: reviewJa,
-	vi: reviewVi,
-}
-assertCatalogShape('executive-review', executiveReviewCatalog)
-export const executiveReviewMessages: Record<
-	WebsiteLocale,
-	ExecutiveReviewMessages
-> = executiveReviewCatalog
-
 export function getWebsiteMessages(locale: WebsiteLocale) {
 	return {
-		home: homeMessages[locale],
 		header: headerMessages[locale],
-		demo: demoMessages[locale],
 		routeState: routeStateJson[locale],
 	}
 }

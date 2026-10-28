@@ -2,7 +2,7 @@
 
 import { cn } from '@langdrift/web/utilities'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import type { ElementType } from 'react'
+import type { ElementType, ReactNode } from 'react'
 import { useMemo } from 'react'
 
 // Adapted from SmoothUI's Text Morph (smoothui.dev): morphs one string into
@@ -26,10 +26,11 @@ export interface TextMorphProps {
 	/** Per-token stagger, in milliseconds. Capped so long strings stay snappy. */
 	stagger?: number
 	/**
-	 * Fixed text after the morphing string. It is not diffed: it glides as one
-	 * piece when the string before it changes width.
+	 * Fixed content after the morphing string, plain text or an element of its
+	 * own. It is not diffed: it glides as one piece when the string before it
+	 * changes width.
 	 */
-	suffix?: string
+	suffix?: ReactNode
 	/** The current string. Changing it triggers the morph. */
 	text: string
 }
@@ -101,15 +102,26 @@ export function TextMorph(props: TextMorphProps) {
 	const shouldReduceMotion = useReducedMotion()
 	const tokens = useMemo(() => buildTokens(text, mode), [text, mode])
 	const Tag = as as ElementType
-	const fullText = suffix ? `${text} ${suffix}` : text
 
-	if (shouldReduceMotion) return <Tag className={className}>{fullText}</Tag>
+	if (shouldReduceMotion) {
+		return (
+			<Tag className={className}>
+				{text}
+				{suffix ? ' ' : null}
+				{suffix}
+			</Tag>
+		)
+	}
 
 	return (
 		<Tag className={className}>
 			{/* The intact string is visually hidden text, so screen readers read
 			the word while every animated token stays aria-hidden. */}
-			<span className="sr-only">{fullText}</span>
+			<span className="sr-only">
+				{text}
+				{suffix ? ' ' : null}
+				{suffix}
+			</span>
 			<motion.span
 				className={cn('relative inline-flex flex-wrap', ALIGN_CLASS[align])}
 				layout
@@ -173,7 +185,8 @@ export function TextMorph(props: TextMorphProps) {
 								type: 'spring',
 							}}
 						>
-							{` ${suffix}`}
+							{' '}
+							{suffix}
 						</motion.span>
 					) : null}
 				</AnimatePresence>

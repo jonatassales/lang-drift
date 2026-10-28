@@ -1,6 +1,6 @@
 # Website
 
-The LangDrift platform site, started as today's langdrift.md and being reshaped into the platform site. For now it is the public, localized LangDrift website: the product story, the Product Vision demos, pricing, privacy and the early-access flow. Demo calls to action lead to `/book-a-demo/`, whose form validates a request and answers that requests are paused.
+The LangDrift site, started as today's langdrift.md and reshaped into one agentic FinOps platform page. It is the public, localized LangDrift website: the home page, the FinOps and Microruntimes pages, pricing, privacy and the early-access flow. Demo calls to action lead to `/book-a-demo/`, whose form validates a request and answers that requests are paused.
 
 Early access posts to a private registry service outside this repository. Admission → Turnstile Siteverify → registration in the registry, which persists the contact and sends the confirmation. The website holds no email credentials and never sends mail itself. HTTP 202 confirms persistence, not delivery.
 
@@ -53,7 +53,7 @@ Copy lives in JSON under `src/app/template/i18n/messages/`; localized metadata l
 
 ## Early access
 
-The voice interaction is a scripted preview with a prepared answer. Its description and accessible state feedback say it uses no microphone and generates no live answer. The early-access flow below stays paused until it is separately authorized.
+The early-access flow below stays paused until it is separately authorized.
 
 **Submission:**
 

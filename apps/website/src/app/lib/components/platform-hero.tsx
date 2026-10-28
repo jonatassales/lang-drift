@@ -1,153 +1,94 @@
+import { ChromaText } from '@langdrift/web/ui/chroma-text'
 import { HeroShader } from '@langdrift/web/ui/hero-shader'
-import { ArrowRightIcon } from '@langdrift/web/ui/icons/arrow'
 import { RotatingText } from '@langdrift/web/ui/rotating-text'
-import { GravityStars } from '@langdrift/web/vendors/smoothui/gravity-stars'
-import { MagneticField } from '@langdrift/web/vendors/smoothui/magnetic-field'
-import { ShortSlideDown } from '@langdrift/web/vendors/smoothui/short-slide-down'
+import { cn } from '@langdrift/web/utilities'
 
-import { platformProducts } from '@components/website-header/platform-products'
-import { headerMessages, platformMessages } from '@i18n/messages/index'
-import { Link } from '@i18n/navigation'
+import { SessionCards } from '@components/microruntimes/session-cards'
+import { SessionTerminal } from '@components/microruntimes/session-terminal'
+import { microruntimesMessages, platformMessages } from '@i18n/messages/index'
 import type { WebsiteLocale } from '@i18n/routing'
 
 interface PlatformHeroProps {
 	locale: WebsiteLocale
 }
 
-// The hero's centerpiece is a black hole sun: a dark disc in both color
-// schemes, with a thin rim, and a corona in the brand purple breathing behind it.
-// The disc holds still; the smoke behind it leans and turns toward the
-// pointer and brightens while the pointer is over the sun. Inside the disc,
-// and only there, a field of stars drifts and falls toward the pointer.
-const corona =
-	'absolute -inset-20 rounded-full opacity-80 transition-opacity duration-700 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_42%,color-mix(in_srgb,var(--primary)_62%,transparent)_0%,color-mix(in_srgb,var(--primary)_26%,transparent)_38%,transparent_70%)] blur-3xl motion-safe:animate-pulse dark:bg-[radial-gradient(circle_at_50%_42%,color-mix(in_srgb,var(--foreground)_58%,transparent)_0%,color-mix(in_srgb,var(--primary)_46%,transparent)_30%,transparent_70%)]'
-const rim =
-	'absolute -inset-2 rounded-full bg-[radial-gradient(circle_closest-side,transparent_92%,color-mix(in_srgb,var(--primary)_85%,transparent)_96%,transparent_100%)] blur-[1.5px] dark:bg-[radial-gradient(circle_closest-side,transparent_92%,color-mix(in_srgb,var(--foreground)_85%,transparent)_96%,transparent_100%)]'
-// The stars take the disc's text color, so they stay light on the dark disc
-// whichever scheme is active.
-const disc =
-	'absolute inset-0 rounded-full bg-foreground text-background dark:bg-background dark:text-foreground'
-// The products drop in on the right one after another, each name with one
-// line about it beneath. They stay solid foreground, white in the dark scheme
-// and black in the light one, and do not react to the pointer.
-const productItem =
-	'grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-1 text-foreground'
-const discShade =
-	'pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_0_80px_color-mix(in_srgb,var(--primary)_30%,transparent)]'
+// The hero is the moving headline alone, centered on the first screen over a
+// black-and-white shader, with the rainbow flowing through the word
+// "Platform" as the page's one touch of color. The shader's brand roles are
+// swapped for neutral ones, so it draws in grays: the light scheme takes the
+// secondary text gray at under half opacity, so its veils show over the
+// pale field while it stays closer to white than to silver, and the dark
+// one takes the surface and border grays at under half opacity, so its
+// veils barely lift from the black. Under the headline, one
+// frame holds the Microruntimes terminal and the ticket, plan and workflow
+// cards it plays into, side by side; its top 21rem show at the bottom of the first screen.
+// The hero starts under the transparent header, so the two read as one
+// background. From `lg` the frame is at least 40rem tall and grows with the
+// cards, so they never scroll; the terminal stretches to the same height and
+// scrolls its transcript inside; below `lg`, the cards stack under the
+// terminal.
+// The frame sits above the page: a lit top edge and a deep, soft shadow
+// under it, in the foreground's gray over the light field and in the
+// background's black over the dark one, where a lit edge does the lifting.
+const elevated =
+	'shadow-[inset_0_1px_0_color-mix(in_srgb,var(--foreground)_14%,transparent),0_32px_80px_-20px_color-mix(in_srgb,var(--foreground)_38%,transparent)] dark:shadow-[inset_0_1px_0_color-mix(in_srgb,var(--foreground)_16%,transparent),0_32px_80px_-16px_color-mix(in_srgb,var(--background)_95%,transparent)]'
+
+const monochrome =
+	'opacity-45 [--primary-hover:var(--muted-foreground)] [--primary:var(--muted-foreground)] dark:opacity-45 dark:[--primary-hover:var(--border)] dark:[--primary:var(--muted)]'
 
 export function PlatformHero(props: PlatformHeroProps) {
 	const { locale } = props
 
 	const copy = platformMessages[locale].hero
-	const names = headerMessages[locale]
+	const microruntimes = microruntimesMessages[locale]
+	const session = microruntimes.session
 
 	return (
 		<section
+			aria-describedby="platform-hero-summary"
 			aria-labelledby="platform-hero-heading"
-			className="relative isolate flex min-h-[calc(100dvh-5rem)] flex-col justify-center overflow-hidden bg-background"
+			className="relative isolate -mt-[70px] overflow-hidden bg-background pt-[70px] min-[761px]:-mt-20 min-[761px]:pt-20"
 		>
-			<HeroShader />
+			<HeroShader className={monochrome} />
 			<div
 				aria-hidden="true"
 				className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-linear-to-b from-transparent to-background"
 			/>
-			<MagneticField
-				className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4.5 py-20 sm:px-9 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-10"
-				radius={420}
-				rotate
-				strength={0.45}
-			>
-				<div className="order-2 flex flex-col items-start text-left lg:order-1">
+			<div className="relative mx-auto w-full max-w-7xl px-4.5 pb-20 sm:px-9">
+				<div className="flex min-h-[calc(100dvh-26rem)] items-center justify-center text-center">
 					<h1
-						className="text-[min(3rem,12vw)] leading-none font-normal tracking-[-0.055em] text-foreground sm:text-6xl lg:text-[clamp(3rem,calc((100vw-25rem)/13.2),4rem)]"
+						className="text-[min(3rem,11vw)] leading-none font-normal tracking-[-0.055em] text-foreground sm:text-6xl lg:text-7xl"
 						id="platform-hero-heading"
 					>
 						<span className="block">{copy.titleStart}</span>
 						<RotatingText
 							className="block whitespace-nowrap"
-							suffix={copy.titleEnd}
+							suffix={<ChromaText>{copy.titleEnd}</ChromaText>}
 							words={copy.words}
 						/>
 					</h1>
-					<div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
-						<Link
-							className="inline-flex min-h-11 items-center gap-2 rounded-full bg-foreground px-5 text-sm font-semibold whitespace-nowrap text-background transition-opacity hover:opacity-85"
-							href="/platform/vision"
-							locale={locale}
-						>
-							{copy.primaryCta}
-							<ArrowRightIcon />
-						</Link>
-						<Link
-							className="smooth-text-link"
-							href="/book-a-demo"
-							locale={locale}
-						>
-							{copy.secondaryCta}
-						</Link>
-					</div>
 				</div>
-				<div className="order-1 flex justify-center lg:order-2">
-					<div
-						aria-hidden="true"
-						className="group relative size-44 sm:size-54 lg:size-60"
-					>
-						<div
-							className={corona}
-							data-magnetic
-							style={{ animationDuration: '7s' }}
+				<div
+					className={cn(
+						'grid w-full min-w-0 gap-2 rounded-2xl border border-border bg-background/70 p-2 backdrop-blur-xl lg:min-h-160 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]',
+						elevated,
+					)}
+				>
+					<div className="min-h-0 min-w-0">
+						<SessionTerminal
+							className="h-[clamp(220px,34vh,300px)] shadow-none"
+							control={session.card.control}
+							copy={session.terminal}
 						/>
-						<div className={rim} />
-						<GravityStars
-							className={disc}
-							color="currentColor"
-							connectDistance={56}
-							count={320}
-							glow={5}
-							gravity={1.2}
-							speed={0.6}
-							starSize={1.1}
-							tint={0.3}
-						>
-							<div aria-hidden="true" className={discShade} />
-						</GravityStars>
+					</div>
+					<div className="min-h-0 min-w-0">
+						<SessionCards copy={session.card} locale={locale} />
 					</div>
 				</div>
-				<ShortSlideDown
-					className="order-3 flex flex-col items-start gap-4 lg:order-3 lg:justify-self-end xl:mr-[4vw]"
-					items={platformProducts.map((product) => {
-						const Icon = product.icon
-						const content = (
-							<>
-								<Icon className="size-4 shrink-0" />
-								<span className="text-lg font-normal tracking-tight lg:text-xl">
-									{names[product.label]}
-								</span>
-								<span className="col-start-2 text-sm whitespace-nowrap">
-									{copy.products[product.label]}
-								</span>
-							</>
-						)
-
-						return {
-							content:
-								'href' in product ? (
-									<Link
-										className={productItem}
-										href={product.href}
-										locale={locale}
-									>
-										{content}
-									</Link>
-								) : (
-									<span className={productItem}>{content}</span>
-								),
-							id: product.label,
-						}
-					})}
-					label={names.platformMenu}
-				/>
-			</MagneticField>
+			</div>
+			<p className="sr-only" id="platform-hero-summary">
+				{microruntimes.hero.summary}
+			</p>
 		</section>
 	)
 }

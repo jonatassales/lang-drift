@@ -1,5 +1,6 @@
 'use client'
 
+import { cn } from '@langdrift/web/utilities'
 import { MacTerminal } from '@langdrift/web/vendors/smoothui/mac-terminal'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { createTranslator } from 'next-intl'
@@ -19,6 +20,8 @@ import {
 import { SessionControl } from './session-control'
 
 interface SessionTerminalProps {
+	/** Overrides the window's height where it sits, as the home's hero does. */
+	className?: string
 	control: MicroruntimesMessages['session']['card']['control']
 	copy: MicroruntimesMessages['session']['terminal']
 }
@@ -38,7 +41,7 @@ const launchMs = 1000
 // it types, and stretches to the cards' height beside them, so the two
 // columns end together whatever card is open.
 export function SessionTerminal(props: SessionTerminalProps) {
-	const { control, copy } = props
+	const { className, control, copy } = props
 
 	const session = useAtomValue(microruntimeSessionAtom)
 	const script = useAtomValue(runScriptAtom)
@@ -89,7 +92,7 @@ export function SessionTerminal(props: SessionTerminalProps) {
 			<MacTerminal
 				key={run}
 				action={<SessionControl copy={control} />}
-				className="h-[clamp(240px,40vh,360px)] lg:h-full"
+				className={cn('h-[clamp(240px,40vh,360px)] lg:h-full', className)}
 				label={copy.label}
 				lines={lines}
 				onProgress={recordPlayedCount}
