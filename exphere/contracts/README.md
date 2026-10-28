@@ -30,12 +30,18 @@ These formats are the target of the next contract changes; the sample in `.langd
 
 | File | Holds | The console shows it in |
 | --- | --- | --- |
-| `plan.json` | Sources with role and hash, facts extracted per document, bounds with their sources, runs considered, sizing basis, suggestion, components proposed and executed, checks, the authorized `runtime.md` | Analysis and Plan |
+| `plan.json` | The collection: the agent, its limits and the context hash; every source the ticket's links reached, of any file type, with its type, hash, depth, the link that reached it, its state, and the agent's verdict, reason and confidence; facts by topic with citations; the input records that set each limit; discrepancies between facts and input; runs considered; sizing basis; suggestion; components inferred, confirmed, proposed and executed; checks; the authorized `runtime.md` | Ticket, Analysis and Plan |
 | `run.json` | Kind, state, outcome, proposed ticket status, laps with each choice and outcome, stages with where a person took part, delivery: branch, commit, pull request, checks | Workflow and the run list |
 | `NNNN-<slug>.run.md` | The memory: what the run teaches, and a `langdrift-run` JSON fence | The RAG |
 | `laps/NNNN.lap.md` | One pass: steps, resources proposed, executed and observed, and a `langdrift-lap` JSON fence | The run detail and the RAG |
 | `evidence/` | The operational record of each execution | Audits |
 
 A run the plan considered is one entry of `plan.json` › `retrieval.considered`: the run, the criteria it matched, the share it matched as `score`, `kept` or `dropped`, and the reason.
+
+A source is `read`, `binary` when it is recorded by type, size and hash without its content, `unresolved` when the link leads nowhere, or `refused` when it is a secret, a symlink, or outside the project. Its role is inferred and optional; nothing depends on it.
+
+## Input and mirrors
+
+Every value that can block or allow a run, hardware limits, budgets, gates, the price and forecast sources, model and effort, is explicit input in the console or the CLI, held by the server with who set it, when, and the value before. A fact collected from a source never sets one. The server writes each record to `.langdrift/harness/` or `.langdrift/finops/` as a mirror, with a `mirror` block naming the record; no gate reads a mirror, and a mirror that differs from the server is an unauthorized change.
 
 Rules for every record: the console reads fields, never prose; anything not measured is `null`, never zero; a record keeps what happened, never the content it read; hashes of JSON records are taken after canonical serialization, so a formatter cannot change them.

@@ -1,4 +1,13 @@
 {
+	"mirror": {
+		"of": "exphere-server",
+		"record": "budget-2026-10-9d4e",
+		"setBy": "owner",
+		"via": "console",
+		"setAt": "2026-10-27T18:06:40Z",
+		"readOnly": true,
+		"note": "Written by the tool from the server record. No gate reads this file; an edit here is shown as an unauthorized change."
+	},
 	"version": 1,
 	"status": "draft",
 	"owner": "team",
@@ -11,7 +20,7 @@
 	},
 	"allocations": [
 		{
-			"ticket": "0001-TICKET-console-microruntime",
+			"ticket": "0070-console-microruntime",
 			"cents": 2500
 		}
 	],
