@@ -7,7 +7,7 @@
 		},
 		"session": {
 			"terminal": {
-				"title": "ex — shop",
+				"title": "ex — project",
 				"label": "Terminal: a simulated ex planning session",
 				"lines": {
 					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
@@ -22,6 +22,7 @@
 					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
 					"judgeGuardrail": "console › judging · FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
 					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
+					"budget": "budget     $25.00 per run for model calls · set by the team in the design doc",
 					"memory": "console › RAG over project episodes · a model and effort for this ticket",
 					"embed": "console › embedding the ticket intent · 1 query vector",
 					"vectorSearch": "console › vector search · project episodes · top 6 by cosine similarity",
@@ -31,7 +32,8 @@
 					"episodes": "console › 3 episodes cited · none with measured resources",
 					"reasonResources": "console › reasoning · no cited episode measured cpu or memory · sizing follows the spec, not history",
 					"weighEffort": "console › weighing effort · low skips the broker wiring · high is not warranted by 5 components",
-					"suggest": "✓ suggests   operator/allowed-model · effort medium",
+					"weighModel": "console › weighing model · Haiku 5.5 retries the broker wiring · Opus 5.5 costs more per outcome",
+					"suggest": "✓ suggests   claude-sonnet-5-5 · effort medium",
 					"planning": "# plan · resolving the components, then sizing them inside the envelope",
 					"resolve": "console › resolving 5 components named in the spec · paths, images, ports",
 					"inspectGo": "console › tool call: inspect services/signup-api · go.mod · :8080",
@@ -443,7 +445,7 @@
 		},
 		"session": {
 			"terminal": {
-				"title": "ex — shop",
+				"title": "ex — project",
 				"label": "Terminal: uma sessão simulada de planejamento do ex",
 				"lines": {
 					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
@@ -458,6 +460,7 @@
 					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
 					"judgeGuardrail": "console › judging · FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
 					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
+					"budget": "budget     $25.00 per run for model calls · set by the team in the design doc",
 					"memory": "console › RAG over project episodes · a model and effort for this ticket",
 					"embed": "console › embedding the ticket intent · 1 query vector",
 					"vectorSearch": "console › vector search · project episodes · top 6 by cosine similarity",
@@ -467,7 +470,8 @@
 					"episodes": "console › 3 episodes cited · none with measured resources",
 					"reasonResources": "console › reasoning · no cited episode measured cpu or memory · sizing follows the spec, not history",
 					"weighEffort": "console › weighing effort · low skips the broker wiring · high is not warranted by 5 components",
-					"suggest": "✓ suggests   operator/allowed-model · effort medium",
+					"weighModel": "console › weighing model · Haiku 5.5 retries the broker wiring · Opus 5.5 costs more per outcome",
+					"suggest": "✓ suggests   claude-sonnet-5-5 · effort medium",
 					"planning": "# plano · resolvendo os componentes, depois dimensionando-os dentro do envelope",
 					"resolve": "console › resolving 5 components named in the spec · paths, images, ports",
 					"inspectGo": "console › tool call: inspect services/signup-api · go.mod · :8080",
@@ -879,7 +883,7 @@
 		},
 		"session": {
 			"terminal": {
-				"title": "ex — shop",
+				"title": "ex — project",
 				"label": "終端機：模擬的 ex 規劃工作階段",
 				"lines": {
 					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
@@ -894,6 +898,7 @@
 					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
 					"judgeGuardrail": "console › judging · FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
 					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
+					"budget": "budget     $25.00 per run for model calls · set by the team in the design doc",
 					"memory": "console › RAG over project episodes · a model and effort for this ticket",
 					"embed": "console › embedding the ticket intent · 1 query vector",
 					"vectorSearch": "console › vector search · project episodes · top 6 by cosine similarity",
@@ -903,7 +908,8 @@
 					"episodes": "console › 3 episodes cited · none with measured resources",
 					"reasonResources": "console › reasoning · no cited episode measured cpu or memory · sizing follows the spec, not history",
 					"weighEffort": "console › weighing effort · low skips the broker wiring · high is not warranted by 5 components",
-					"suggest": "✓ suggests   operator/allowed-model · effort medium",
+					"weighModel": "console › weighing model · Haiku 5.5 retries the broker wiring · Opus 5.5 costs more per outcome",
+					"suggest": "✓ suggests   claude-sonnet-5-5 · effort medium",
 					"planning": "# 規劃 · 先解析元件，再在 envelope 內為其配置大小",
 					"resolve": "console › resolving 5 components named in the spec · paths, images, ports",
 					"inspectGo": "console › tool call: inspect services/signup-api · go.mod · :8080",
@@ -1315,7 +1321,7 @@
 		},
 		"session": {
 			"terminal": {
-				"title": "ex — shop",
+				"title": "ex — project",
 				"label": "ターミナル：ex の計画セッションのシミュレーション",
 				"lines": {
 					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
@@ -1330,6 +1336,7 @@
 					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
 					"judgeGuardrail": "console › judging · FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
 					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
+					"budget": "budget     $25.00 per run for model calls · set by the team in the design doc",
 					"memory": "console › RAG over project episodes · a model and effort for this ticket",
 					"embed": "console › embedding the ticket intent · 1 query vector",
 					"vectorSearch": "console › vector search · project episodes · top 6 by cosine similarity",
@@ -1339,7 +1346,8 @@
 					"episodes": "console › 3 episodes cited · none with measured resources",
 					"reasonResources": "console › reasoning · no cited episode measured cpu or memory · sizing follows the spec, not history",
 					"weighEffort": "console › weighing effort · low skips the broker wiring · high is not warranted by 5 components",
-					"suggest": "✓ suggests   operator/allowed-model · effort medium",
+					"weighModel": "console › weighing model · Haiku 5.5 retries the broker wiring · Opus 5.5 costs more per outcome",
+					"suggest": "✓ suggests   claude-sonnet-5-5 · effort medium",
 					"planning": "# 計画 · コンポーネントを特定し、次に envelope 内でサイズを決めます",
 					"resolve": "console › resolving 5 components named in the spec · paths, images, ports",
 					"inspectGo": "console › tool call: inspect services/signup-api · go.mod · :8080",
@@ -1751,7 +1759,7 @@
 		},
 		"session": {
 			"terminal": {
-				"title": "ex — shop",
+				"title": "ex — project",
 				"label": "Terminal: phiên lập kế hoạch ex mô phỏng",
 				"lines": {
 					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
@@ -1766,6 +1774,7 @@
 					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
 					"judgeGuardrail": "console › judging · FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
 					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
+					"budget": "budget     $25.00 per run for model calls · set by the team in the design doc",
 					"memory": "console › RAG over project episodes · a model and effort for this ticket",
 					"embed": "console › embedding the ticket intent · 1 query vector",
 					"vectorSearch": "console › vector search · project episodes · top 6 by cosine similarity",
@@ -1775,7 +1784,8 @@
 					"episodes": "console › 3 episodes cited · none with measured resources",
 					"reasonResources": "console › reasoning · no cited episode measured cpu or memory · sizing follows the spec, not history",
 					"weighEffort": "console › weighing effort · low skips the broker wiring · high is not warranted by 5 components",
-					"suggest": "✓ suggests   operator/allowed-model · effort medium",
+					"weighModel": "console › weighing model · Haiku 5.5 retries the broker wiring · Opus 5.5 costs more per outcome",
+					"suggest": "✓ suggests   claude-sonnet-5-5 · effort medium",
 					"planning": "# kế hoạch · xác định các thành phần, rồi định cỡ chúng trong envelope",
 					"resolve": "console › resolving 5 components named in the spec · paths, images, ports",
 					"inspectGo": "console › tool call: inspect services/signup-api · go.mod · :8080",

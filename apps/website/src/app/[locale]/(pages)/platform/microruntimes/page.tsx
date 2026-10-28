@@ -1,4 +1,5 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
+import { MicroruntimesIcon } from '@langdrift/web/ui/icons/platform'
 import { cn } from '@langdrift/web/utilities'
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -90,9 +91,15 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 					className="mx-auto max-w-[1280px] px-[clamp(18px,3vw,36px)] pt-[58px] pb-[70px] max-md:pt-10 max-md:pb-12"
 				>
 					<h1
-						className="m-0 text-[clamp(28px,3.2vw,43px)] leading-[1.16] font-medium tracking-[-0.045em] text-balance"
+						className="m-0 flex items-center gap-[0.35em] text-[clamp(28px,3.2vw,43px)] leading-[1.16] font-medium tracking-[-0.045em] text-balance"
 						id="microruntimes-hero-heading"
 					>
+						<span
+							aria-hidden="true"
+							className="inline-flex size-[0.74em] shrink-0 items-center justify-center rounded-[0.2em] border border-border bg-card text-foreground"
+						>
+							<MicroruntimesIcon className="size-[0.46em]" />
+						</span>
 						{copy.hero.title}
 					</h1>
 					<div

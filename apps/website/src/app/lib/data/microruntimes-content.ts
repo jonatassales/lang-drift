@@ -133,6 +133,11 @@ export const planSession = [
 		delay: 700,
 	},
 	{
+		id: 'budget',
+		type: 'output',
+		delay: 700,
+	},
+	{
 		id: 'memory',
 		type: 'output',
 		delay: 800,
@@ -174,6 +179,11 @@ export const planSession = [
 	},
 	{
 		id: 'weighEffort',
+		type: 'output',
+		delay: 900,
+	},
+	{
+		id: 'weighModel',
 		type: 'output',
 		delay: 900,
 	},
@@ -275,7 +285,7 @@ export const planSession = [
 	{
 		id: 'handoff',
 		type: 'comment',
-		delay: 800,
+		delay: 2500,
 	},
 ] as const satisfies readonly {
 	delay?: number

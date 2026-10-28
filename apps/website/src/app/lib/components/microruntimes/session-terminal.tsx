@@ -42,7 +42,7 @@ export function SessionTerminal(props: SessionTerminalProps) {
 			lines={lines}
 			onProgress={recordPlayedCount}
 			paused={session.paused}
-			prompt="~/shop %"
+			prompt="~/project %"
 			title={copy.title}
 		/>
 	)
