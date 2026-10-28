@@ -21,10 +21,6 @@ import { after, before, describe, test } from 'node:test'
 const theme = 'website'
 const prefix = 'site'
 
-// The docs theme and its prefix.
-const docsTheme = 'docs'
-const docsPrefix = 'docs'
-
 // The variables shadcn and SmoothUI components read, without the leading `--`.
 const shadcnVariables = [
 	'background',
@@ -425,33 +421,6 @@ describe('website theme', () => {
 				'--lg-color-sidebar-ring': 'var(--lg-color-primary)',
 				'--lg-color-chart-1': 'var(--lg-color-primary)',
 			})
-		}
-	})
-})
-
-describe('docs theme', () => {
-	test('binds the shared primary roles to the same Exphere purple', () => {
-		const copy = copyPackage(docsTheme)
-		const result = build(copy)
-		assert.equal(result.status, 0, result.stderr)
-		const css = stylesheet(copy, docsTheme)
-		for (const [selector, primary, hover] of [
-			[':root', '#6D0AD6', '#5408A5'],
-			['.dark', '#6D0AD6', '#8C3BEF'],
-		]) {
-			assert.deepEqual(
-				pick(declarations(css, selector), brandRolesOf(docsPrefix)),
-				{
-					[`--${docsPrefix}-color-primary`]: primary,
-					[`--${docsPrefix}-color-primary-hover`]: hover,
-					'--lg-color-primary': `var(--${docsPrefix}-color-primary)`,
-					'--lg-color-primary-hover': `var(--${docsPrefix}-color-primary-hover)`,
-					'--lg-color-ring': 'var(--lg-color-primary)',
-					'--lg-color-sidebar-primary': 'var(--lg-color-primary)',
-					'--lg-color-sidebar-ring': 'var(--lg-color-primary)',
-					'--lg-color-chart-1': 'var(--lg-color-primary)',
-				},
-			)
 		}
 	})
 })

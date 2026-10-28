@@ -36,7 +36,7 @@ The LangDrift console is where a team manages FinOps: projects registered from a
 
 ## Where things stand
 
-A pnpm and Turborepo monorepo. `apps/website` is the platform site, one page with the FinOps and Microruntimes pages beside it; it started as langdrift.md, ported from the earlier `langdrift` monorepo under spec 0003. `apps/docs` holds the documentation, ported from Exphere's Nextra site under spec 0006 and served under `/docs`. `apps/console` is the console and `apps/extub` its local stub API. `packages/tokens`, `packages/web`, `packages/ex` (the `ex` CLI) and `packages/contracts` (the Microruntimes contracts) exist; `shell`, `account` and `runtime` are planned. Each app and package has a README with its own contract.
+A pnpm and Turborepo monorepo. `apps/website` is the platform site, one page with the FinOps and Microruntimes pages beside it; it started as langdrift.md, ported from the earlier `langdrift` monorepo under spec 0003. `apps/console` is the console and `apps/extub` its local stub API. `packages/tokens`, `packages/web`, `packages/ex` (the `ex` CLI) and `packages/contracts` (the Microruntimes contracts) exist; `shell`, `account` and `runtime` are planned. Each app and package has a README with its own contract.
 
 ## How we work
 
@@ -55,12 +55,11 @@ A pnpm and Turborepo monorepo. `apps/website` is the platform site, one page wit
 | The project vocabulary | [`.agents/context.md`](.agents/context.md), `## Glossary` |
 | Specs, tickets, ADRs and research notes | `.agents/workflow/` |
 | The website's environment contract and sign-up pause | [`apps/website/README.md`](apps/website/README.md) |
-| The docs app, its search and its content structure | [`apps/docs/README.md`](apps/docs/README.md) |
 | The `ex` CLI and the Microruntimes contracts | [`packages/ex/README.md`](packages/ex/README.md), [`packages/contracts/README.md`](packages/contracts/README.md) |
 
 ## Commands
 
-Run from the repository root. `pnpm website` serves the site on port 3000, `pnpm console` the console on 3001 with its stub API on 3401, and `pnpm docs` the docs at `http://localhost:3002/docs`, so all three run at once. [`.agents/context.md`](.agents/context.md) has the full table and what each command touches.
+Run from the repository root. `pnpm website` serves the site on port 3000, `pnpm console` the console on 3001 with its stub API on 3401, so both run at once. [`.agents/context.md`](.agents/context.md) has the full table and what each command touches.
 
 ```bash
 pnpm install
@@ -72,10 +71,6 @@ pnpm website
 
 ```bash
 pnpm console
-```
-
-```bash
-pnpm docs
 ```
 
 ```bash

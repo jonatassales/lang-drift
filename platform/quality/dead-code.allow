@@ -9,5 +9,4 @@ export apps/website/src/app/template/formatters/*.fmt.ts#* # The owner keeps the
 export apps/console/src/app/lib/components/route-state/page-error.tsx#PageError # Next.js error.tsx routes re-export it as default.
 export apps/console/src/app/lib/components/route-state/page-template.tsx#PageTemplate # Next.js template.tsx routes re-export it as default.
 dependency apps/website:react-dom # Next.js requires it as a peer.
-dependency apps/docs:react-dom # Next.js requires it as a peer.
 dependency apps/console:react-dom # Next.js requires it as a peer.
