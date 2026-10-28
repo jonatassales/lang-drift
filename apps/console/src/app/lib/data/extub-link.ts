@@ -9,7 +9,7 @@ const loopbackHosts = ['localhost', '127.0.0.1', '[::1]']
 const localExtub = 'http://127.0.0.1:3401'
 
 function hosted(token: string | undefined) {
-	return Boolean(token)
+	return Boolean(token?.trim())
 }
 
 export function consoleHostAllowed(
@@ -20,14 +20,10 @@ export function consoleHostAllowed(
 }
 
 // The extub origin the console may read, or null when the configured URL
-// breaks the rule.
+// breaks the rule. A URL that does not parse throws, as it always has, and
+// the proxy reports extub as unavailable.
 export function extubBase(raw: string | undefined, token: string | undefined) {
-	let base: URL
-	try {
-		base = new URL(raw ?? localExtub)
-	} catch {
-		return null
-	}
+	const base = new URL(raw ?? localExtub)
 	if (base.username || base.password) return null
 
 	const onLoopback =

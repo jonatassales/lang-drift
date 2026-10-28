@@ -10,12 +10,11 @@ export async function extubRequest(
 		const host = request.headers.get('host') ?? url.host
 		const browser = new URL(`${url.protocol}//${host}`)
 		const origin = request.headers.get('origin')
-		const token = process.env.EXTUB_TOKEN
-		if (
-			!consoleHostAllowed(browser.hostname, token) ||
-			(origin && origin !== browser.origin) ||
+		const token = process.env.EXTUB_TOKEN?.trim()
+		const crossSite =
+			Boolean(origin && origin !== browser.origin) ||
 			request.headers.get('sec-fetch-site') === 'cross-site'
-		)
+		if (!consoleHostAllowed(browser.hostname, token) || crossSite)
 			return Response.json({ error: { code: 'local_only' } }, { status: 403 })
 		const base = extubBase(process.env.EXTUB_URL, token)
 		if (!base)
@@ -53,6 +52,7 @@ export async function extubRequest(
 			? { 'content-type': 'application/json' }
 			: {}
 		if (token) headers.authorization = `Bearer ${token}`
+
 		const response = await fetch(target, {
 			method: request.method,
 			headers,

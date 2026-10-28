@@ -16,4 +16,11 @@ The console listens on loopback only and answers only loopback hosts and same-or
 
 ## Hosted preview
 
-On Vercel's `langdrift-console` project the console reads extub's hosted preview (spec 0015). Setting `EXTUB_TOKEN` lets the console serve its own host, accept an `https` `EXTUB_URL` on any host, and send the token to extub as `Authorization: Bearer`. The preview is read-only: a change answers `read_only_preview`, and without a live stream the screens keep polling. Without the token, the loopback contract above holds. The variables and the owner's steps are in [extub's README](/apps/extub/README.md#hosted-preview); the console itself stays private behind Vercel's Deployment Protection.
+On Vercel's `langdrift-console` project the console reads extub's hosted preview (spec 0015). Setting `EXTUB_TOKEN` lets the console serve its own host, accept an `https` `EXTUB_URL` on any host, and send the token to extub as `Authorization: Bearer`. The preview is read-only: a change answers `read_only_preview`, and without a live stream the screens keep polling. Without the token, the loopback contract above holds. It needs two variables on Vercel:
+
+| Variable | Requirement |
+| --- | --- |
+| `EXTUB_TOKEN` | The secret shared with `langdrift-stubs`; switches the console to the hosted preview. |
+| `EXTUB_URL` | The stub's production URL, over `https`, without credentials. |
+
+The owner's steps on Vercel, which no agent takes, are in [extub's README](/apps/extub/README.md#hosted-preview). They set the token on both projects and `EXTUB_URL` on the console, and keep the console behind Deployment Protection for production and preview.

@@ -12,6 +12,14 @@ test('without a token the console serves loopback hosts only', () => {
 	)
 })
 
+test('a token of only whitespace keeps the local contract', () => {
+	assert.equal(
+		consoleHostAllowed('langdrift-console.vercel.app', '  \n'),
+		false,
+	)
+	assert.equal(extubBase('https://langdrift-stubs.vercel.app', ' '), null)
+})
+
 test('with a token the console serves its hosted host', () => {
 	assert.equal(
 		consoleHostAllowed('langdrift-console.vercel.app', 'shared-token'),
@@ -47,5 +55,5 @@ test('extub never carries credentials in its URL', () => {
 		null,
 	)
 	assert.equal(extubBase('http://user@127.0.0.1:3401', undefined), null)
-	assert.equal(extubBase('not a url', 'shared-token'), null)
+	assert.throws(() => extubBase('not a url', 'shared-token'))
 })
