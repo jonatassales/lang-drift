@@ -14,7 +14,7 @@ interface PlatformHeroProps {
 // black-and-white shader: the shader's brand roles are swapped for neutral
 // ones, so it draws in grays. Under the headline, one frame holds the
 // Microruntimes terminal and the ticket, plan and workflow cards it plays
-// into, side by side; its top 14rem show at the bottom of the first screen.
+// into, side by side; its top 21rem show at the bottom of the first screen.
 // The hero starts under the transparent header, so the two read as one
 // background. From `lg` the frame is at least 40rem tall and grows with the
 // cards, so they never scroll; the terminal stretches to the same height and
@@ -41,7 +41,7 @@ export function PlatformHero(props: PlatformHeroProps) {
 				className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-linear-to-b from-transparent to-background"
 			/>
 			<div className="relative mx-auto w-full max-w-7xl px-4.5 pb-20 sm:px-9">
-				<div className="flex min-h-[calc(100dvh-19rem)] items-center justify-center text-center">
+				<div className="flex min-h-[calc(100dvh-26rem)] items-center justify-center text-center">
 					<h1
 						className="text-[min(3rem,11vw)] leading-none font-normal tracking-[-0.055em] text-foreground sm:text-6xl lg:text-7xl"
 						id="platform-hero-heading"
