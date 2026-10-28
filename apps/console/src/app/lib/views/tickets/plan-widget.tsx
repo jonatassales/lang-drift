@@ -7,7 +7,7 @@ import type { Ticket, TicketPlan } from '@data/types'
 
 import { ComponentRow } from './component-row'
 import { type TicketFormat, useTicketFormat } from './ticket-format.hook'
-import { planFigures } from './ticket-phases'
+import { componentShare, planFigures } from './ticket-phases'
 import { TicketWidgetFrame } from './ticket-widget-frame'
 import { UnknownValue } from './unknown-value'
 import { WidgetSection } from './widget-section'
@@ -28,18 +28,59 @@ interface ReportCell {
 
 const figure = 'font-mono tabular-nums'
 
-// The plan's header line: a dash until it has totals, then the totals,
-// pending the team's authorization or authorized.
-function summaryLine(plan: TicketPlan, format: TicketFormat): ReactNode {
+// Whether the team has authorized the plan, in the viewer's locale.
+function authorizationLabel(plan: TicketPlan, format: TicketFormat) {
 	const { t } = format
+	if (plan.authorization === 'authorized') return t('plan.authorized')
+
+	return t('plan.pendingAuthorization')
+}
+
+// The plan's header line: a dash until it is drafted with totals, then the
+// totals and whether the team has authorized them.
+function summaryLine(plan: TicketPlan, format: TicketFormat): ReactNode {
 	if (!plan.suggested) return <UnknownValue />
 
-	return t('plan.summary', {
+	return format.t('plan.summary', {
 		figures: format.figures(plan.suggested),
-		pending:
-			plan.authorization === 'authorized'
-				? t('plan.authorized')
-				: t('plan.pendingAuthorization'),
+		pending: authorizationLabel(plan, format),
+	})
+}
+
+// The line under the components: how many have resolved of the spec's
+// count while the plan sizes, then the count and the totals.
+function componentsLine(
+	plan: TicketPlan,
+	specComponents: number | null,
+	format: TicketFormat,
+): ReactNode {
+	const { number, t } = format
+	const resolved = plan.components.reduce(
+		(totals, component) => ({
+			cpuMillis: totals.cpuMillis + component.cpuMillis,
+			memoryMiB: totals.memoryMiB + component.memoryMiB,
+		}),
+		{
+			cpuMillis: 0,
+			memoryMiB: 0,
+		},
+	)
+	const values = {
+		cpu: number.format(resolved.cpuMillis),
+		memory: number.format(resolved.memoryMiB),
+	}
+	if (plan.suggested) {
+		return t('plan.componentsTotal', {
+			count: plan.components.length,
+			...values,
+		})
+	}
+	if (specComponents === null) return <UnknownValue />
+
+	return t('plan.resolvedProgress', {
+		resolved: plan.components.length,
+		total: specComponents,
+		...values,
 	})
 }
 
@@ -54,6 +95,7 @@ export function PlanWidget(props: PlanWidgetProps) {
 	const format = useTicketFormat()
 	const { t } = format
 	const figures = planFigures(plan)
+	const drafted = plan.suggested !== null
 	const bounded = plan.bounded
 	const envelopeRows = [
 		{
@@ -131,18 +173,18 @@ export function PlanWidget(props: PlanWidgetProps) {
 							className={`${figure} text-[28px] leading-none font-medium`}
 						/>
 					)}
-					<span
-						className={cn(
-							'text-[12px]',
-							plan.authorization === 'authorized'
-								? 'text-status-success'
-								: 'text-status-warning',
-						)}
-					>
-						{plan.authorization === 'authorized'
-							? t('plan.authorized')
-							: t('plan.pendingAuthorization')}
-					</span>
+					{drafted && (
+						<span
+							className={cn(
+								'text-[12px]',
+								plan.authorization === 'authorized'
+									? 'text-status-success'
+									: 'text-status-warning',
+							)}
+						>
+							{authorizationLabel(plan, format)}
+						</span>
+					)}
 				</p>
 			</div>
 
@@ -181,17 +223,26 @@ export function PlanWidget(props: PlanWidgetProps) {
 							key={component.path}
 							kind={t(`plan.kinds.${component.kind}`)}
 							memory={format.memory(component.memoryMiB)}
-							share={component.cpuMillis / bounded.cpuMillis}
+							share={componentShare(component, bounded)}
 						/>
 					))}
 				</ul>
-				<p className="m-0 mt-1 border-t border-border pt-2 text-[11px] text-muted-foreground">
-					{t('plan.crossCheck', {
-						ports: plan.components
-							.map((component) => component.port)
-							.join(' · '),
-					})}
+				<p className="m-0 mt-1 border-t border-border pt-2 text-[12px] text-muted-foreground">
+					{componentsLine(
+						plan,
+						ticket.analysis?.specComponents ?? null,
+						format,
+					)}
 				</p>
+				{drafted && (
+					<p className="m-0 mt-1 text-[11px] text-muted-foreground">
+						{t('plan.crossCheck', {
+							ports: plan.components
+								.map((component) => component.port)
+								.join(' · '),
+						})}
+					</p>
+				)}
 			</WidgetSection>
 
 			<WidgetSection>
@@ -216,12 +267,14 @@ export function PlanWidget(props: PlanWidgetProps) {
 						</div>
 					))}
 				</dl>
-				<p className="m-0 mt-3 flex flex-wrap items-baseline gap-x-3 border-t border-border pt-2.5">
-					<Eyebrow>{t('plan.report.evidence')}</Eyebrow>
-					<code className="font-mono text-[12px] break-all">
-						{t('plan.planPath', { revision: plan.revision })}
-					</code>
-				</p>
+				{drafted && (
+					<p className="m-0 mt-3 flex flex-wrap items-baseline gap-x-3 border-t border-border pt-2.5">
+						<Eyebrow>{t('plan.report.evidence')}</Eyebrow>
+						<code className="font-mono text-[12px] break-all">
+							{t('plan.planPath', { revision: plan.revision })}
+						</code>
+					</p>
+				)}
 			</WidgetSection>
 		</TicketWidgetFrame>
 	)
