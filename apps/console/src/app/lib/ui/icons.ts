@@ -2,6 +2,7 @@ export {
 	CaretDown,
 	ChartLineUp,
 	CheckCircle,
+	ClipboardText,
 	Cube,
 	FileText,
 	Gear,

@@ -10,6 +10,7 @@ import {
 	CaretDown,
 	ChartLineUp,
 	CheckCircle,
+	ClipboardText,
 	Cube,
 	FileText,
 	Gear,
@@ -55,6 +56,11 @@ export function Navigation(props: NavigationProps) {
 							href: `${base}/analysis`,
 							key: 'analysis',
 							icon: MagnifyingGlass,
+						},
+						{
+							href: `${base}/plans`,
+							key: 'plans',
+							icon: ClipboardText,
 						},
 						{
 							href: `${base}/executions`,

@@ -1,6 +1,7 @@
 import type { Ticket, TicketPhase } from '@data/types'
 
 import { AnalysisWidget } from './analysis-widget'
+import { PlanWidget } from './plan-widget'
 import { TicketWidget } from './ticket-widget'
 
 interface PhaseWidgetProps {
@@ -24,6 +25,10 @@ export function PhaseWidget(props: PhaseWidgetProps) {
 					listed={listed}
 					ticket={ticket}
 				/>
+			) : null
+		case 'plan':
+			return ticket.plan ? (
+				<PlanWidget listed={listed} plan={ticket.plan} ticket={ticket} />
 			) : null
 		default:
 			return null
