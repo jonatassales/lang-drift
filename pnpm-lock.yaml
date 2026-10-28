@@ -162,10 +162,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  nextra@4.6.1>zod: 4.1.12
-  nextra-theme-docs@4.6.1>zod: 4.1.12
-
 importers:
 
   .:
