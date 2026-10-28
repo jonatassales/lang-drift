@@ -50,20 +50,22 @@ describe('HeroShader markup', () => {
 		expect(canvas?.hasAttribute('data-unavailable')).toBe(false)
 	})
 
-	it('draws in grays when its tone is monochrome, and in the brand otherwise', () => {
-		const neutral = '[--primary:var(--muted-foreground)]'
+	it('tints softly in the light scheme and draws in grays in the dark one when its tone is muted', () => {
+		const peach = '[--primary-hover:var(--lg-rainbow-2)]'
+		const darkGray = 'dark:[--primary:var(--muted)]'
 		const brand = new DOMParser().parseFromString(
 			renderToString(<HeroShader />),
 			'text/html',
 		).body.firstElementChild
-		const monochrome = new DOMParser().parseFromString(
-			renderToString(<HeroShader tone="monochrome" />),
+		const muted = new DOMParser().parseFromString(
+			renderToString(<HeroShader tone="muted" />),
 			'text/html',
 		).body.firstElementChild
 
-		expect(monochrome?.classList.contains(neutral)).toBe(true)
-		expect(monochrome?.classList.contains('opacity-45')).toBe(true)
-		expect(brand?.classList.contains(neutral)).toBe(false)
+		expect(muted?.classList.contains(peach)).toBe(true)
+		expect(muted?.classList.contains(darkGray)).toBe(true)
+		expect(muted?.classList.contains('opacity-35')).toBe(true)
+		expect(brand?.classList.contains(peach)).toBe(false)
 	})
 })
 

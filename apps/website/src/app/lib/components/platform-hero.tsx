@@ -13,7 +13,7 @@ interface PlatformHeroProps {
 }
 
 // The hero is the moving headline alone, centered on the first screen over
-// the shader in its monochrome tone, with the rainbow flowing through the word
+// the shader in its muted tone, with the rainbow flowing through the word
 // "Platform" as the page's one touch of color. Under the headline, one
 // elevated frame holds the Microruntimes terminal and the ticket, plan and
 // workflow cards it plays into, side by side; its top 21rem show at the bottom
@@ -35,7 +35,7 @@ export function PlatformHero(props: PlatformHeroProps) {
 			aria-labelledby="platform-hero-heading"
 			className="relative isolate -mt-[70px] overflow-hidden bg-background pt-[70px] min-[761px]:-mt-20 min-[761px]:pt-20"
 		>
-			<HeroShader tone="monochrome" />
+			<HeroShader tone="muted" />
 			<div
 				aria-hidden="true"
 				className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-linear-to-b from-transparent to-background"

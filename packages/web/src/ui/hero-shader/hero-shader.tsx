@@ -9,8 +9,11 @@ export interface HeroShaderProps {
 	className?: string
 	paused?: boolean
 	reducedMotion?: boolean
-	/** `monochrome` draws the shader in grays instead of the brand purple. */
-	tone?: 'brand' | 'monochrome'
+	/**
+	 * `muted` quiets the shader behind content: a faint purple and peach in the
+	 * light scheme, grays in the dark one.
+	 */
+	tone?: 'brand' | 'muted'
 }
 
 // A token-only gradient stands behind the canvas: it shows until the program
@@ -18,14 +21,16 @@ export interface HeroShaderProps {
 const fallbackGradient =
 	'bg-[radial-gradient(ellipse_at_72%_28%,color-mix(in_srgb,var(--primary)_24%,var(--card)),transparent_60%),linear-gradient(120deg,color-mix(in_srgb,var(--primary-hover)_18%,var(--background)),var(--background)_55%,color-mix(in_srgb,var(--primary)_22%,var(--card)))]'
 
-// The shader reads its colors from the brand roles; the monochrome tone swaps
-// them for neutral ones at under half opacity, so it draws in grays: the
-// secondary text gray over a light field, and the surface and border grays
-// over a dark one, where its veils barely lift from the black.
+// The shader reads its colors from the brand roles. The muted tone keeps the
+// brand purple in the light scheme and lends its second sheet the rainbow's
+// orange, which the pale field turns into peach, all at about a third of the
+// opacity, so the waves read as a faint purple-to-peach wash. In the dark
+// scheme it swaps the roles for the surface and border grays at under half
+// opacity, so the waves barely lift from the black.
 const toneClass: Record<NonNullable<HeroShaderProps['tone']>, string> = {
 	brand: '',
-	monochrome:
-		'opacity-45 [--primary-hover:var(--muted-foreground)] [--primary:var(--muted-foreground)] dark:[--primary-hover:var(--border)] dark:[--primary:var(--muted)]',
+	muted:
+		'opacity-35 [--primary-hover:var(--lg-rainbow-2)] dark:opacity-45 dark:[--primary-hover:var(--border)] dark:[--primary:var(--muted)]',
 }
 
 export function HeroShader(props: HeroShaderProps) {

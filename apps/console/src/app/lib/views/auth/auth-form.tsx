@@ -17,7 +17,7 @@ interface AuthFormProps {
 	signup?: boolean
 }
 // The console's way in, on the website's ground: the shader in its
-// monochrome tone across the screen, the language at the top left and the
+// muted tone across the screen, the language at the top left and the
 // theme at the top right as in the website's header, the LangDrift brand alone
 // above the form, and the form in the elevated frame.
 export function AuthForm(props: AuthFormProps) {
@@ -30,7 +30,7 @@ export function AuthForm(props: AuthFormProps) {
 
 	return (
 		<section className="relative isolate min-h-screen overflow-hidden bg-background">
-			<HeroShader tone="monochrome" />
+			<HeroShader tone="muted" />
 			<div
 				aria-hidden="true"
 				className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-linear-to-b from-transparent to-background"
