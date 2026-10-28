@@ -114,3 +114,7 @@ const (
 	NextReview         = "nextReview"
 	NextMerge          = "nextMerge"
 )
+
+// PlanBlocked is the plan's own line when a check fails: the website has no
+// such line, since its session never fails.
+const PlanBlocked = "blocked"

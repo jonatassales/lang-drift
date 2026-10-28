@@ -107,7 +107,7 @@ var catalog = map[string]line{
 		return Actor + "tool call: inspect " + text(data, "path") + " · " + text(data, "manifest") + " · :" + strconv.Itoa(number(data, "port"))
 	}},
 	key(session.PlanSession, session.Component): {session.Success, func(data session.Data) string {
-		return "✓ " + pad(text(data, "path"), 19) + "   " + pad(text(data, "technology")+" · "+text(data, "kind"), 16) + strconv.Itoa(number(data, "cpuMillis")) + "m · " + strconv.Itoa(number(data, "memoryMiB")) + " MiB"
+		return "✓ " + pad(text(data, "path"), 19) + "   " + pad(text(data, "technology")+" · "+text(data, "kind"), 15) + " " + strconv.Itoa(number(data, "cpuMillis")) + "m · " + strconv.Itoa(number(data, "memoryMiB")) + " MiB"
 	}},
 	key(session.PlanSession, session.CrossCheck): {session.Output, func(data session.Data) string {
 		return Actor + "cross-checking · " + strconv.Itoa(number(data, "ports")) + " ports distinct · " + strconv.Itoa(number(data, "images")) + " images resolved · " + text(data, "collisions")
@@ -132,6 +132,9 @@ var catalog = map[string]line{
 	}},
 	key(session.PlanSession, session.JudgeUnavailable): {session.Warning, func(data session.Data) string {
 		return "judge      unavailable · " + text(data, "reason")
+	}},
+	key(session.PlanSession, session.PlanBlocked): {session.Error, func(data session.Data) string {
+		return "✗ plan       runtime.md draft, revision " + strconv.Itoa(number(data, "revision")) + " · blocked · " + joined(data, "checks") + " failed"
 	}},
 
 	// The run session.

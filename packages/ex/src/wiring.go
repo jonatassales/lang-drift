@@ -12,6 +12,7 @@ import (
 	inputsinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/inputs"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kind"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kubectl"
+	manifestinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/manifest"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/records"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/scaffold"
@@ -128,6 +129,7 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 		Plan: plan.Service{
 			Projects:  projects,
 			Collector: collectioninfra.Collector{},
+			Inspector: manifestinfra.Inspector{},
 			Inputs:    inputsinfra.Store{},
 			Records:   records.Runtimes{},
 			IDs:       deps.IDs,

@@ -100,7 +100,16 @@ func TestPlanReadsTheTicketAndWritesTheRuntimeFile(t *testing.T) {
 		"reads      .langdrift/harness/guardrails/0001-finops.gr.md · FIN-01 · FIN-02 · FIN-03 · FIN-04 · FIN-05 · FIN-06 · FIN-07 · FIN-08",
 		"bounded    cpuMillis 2000 · memoryMiB 3072 · set by owner in the CLI · record envelope-7c2a",
 		"budget     $25.00 per run for model calls · set by owner in the CLI",
+		"agent › resolving 1 components named in the CLI · paths, images, ports",
+		"agent › tool call: inspect . · no manifest · :3001",
+		"✓ .                     Next.js+Go · web 500m · 1024 MiB",
+		"agent › cross-checking · 1 ports distinct · 1 images resolved · no collisions",
+		"✓ size       500m of 2000m · 1024 of 3072 MiB · 1 one-replica Deployments · proposed shares",
+		"limits     gpu and disk are not runtime.md fields · none requested",
+		"estimate   runtime has no price source · cpu and memory stay in millicores and MiB",
+		"agent › tool call: validate runtime.md draft against the schema · 0 errors",
 		"✓ plan       runtime.md draft, revision 1 · proposed · authorize with ex agent run",
+		"# next: once the team authorizes, ex agent run applies the recorded intent",
 	} {
 		if !strings.Contains(stdout, line+"\n") {
 			t.Errorf("the session did not print %q:\n%s", line, stdout)
@@ -204,5 +213,60 @@ func TestPlanRefusesWhatItCannotRead(t *testing.T) {
 	copyTree(t, projectFixture, bare.root)
 	if status, _, stderr := bare.ex("", "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 4 || !strings.Contains(stderr, "envelope") {
 		t.Errorf("a plan without inputs gave %d: %s", status, stderr)
+	}
+}
+
+// A draft that fails a cross-check is written as blocked, with the failing
+// check recorded, and the command refuses.
+func TestPlanBlocksADraftThatFailsACheck(t *testing.T) {
+	t.Parallel()
+
+	p, deps := seedProject(t)
+
+	status, stdout, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge",
+		"--component", "path=.,image=langdrift-console:local,port=3001,readiness=/icon.svg,build=rm,args=-rf /",
+		"--component", "path=apps/console,image=console:local,port=3001,readiness=/,build=docker,args=build -t console:local .")
+	if status != 3 || !strings.Contains(stderr, "ports-distinct") || !strings.Contains(stderr, "recipe-allowed") {
+		t.Fatalf("a failing draft gave %d: %s\n%s", status, stderr, stdout)
+	}
+
+	if !strings.Contains(stdout, "✗ plan       runtime.md draft, revision 1 · blocked · schema · ports-distinct · recipe-allowed failed\n") {
+		t.Errorf("the blocked line is missing:\n%s", stdout)
+	}
+
+	runtimePath := filepath.Join(p.root, ".langdrift", "microruntimes", "runtimes", "console-microruntime", "runtime.md")
+
+	var written run.Plan
+	decodeStrict(t, []byte(fenceBody(t, runtimePath, "langdrift-plan")), &written)
+
+	if written.State != "blocked" || written.Runtime.State != "blocked" {
+		t.Errorf("plan state = %s, runtime state = %s", written.State, written.Runtime.State)
+	}
+
+	results := map[string]string{}
+	for _, check := range written.Checks {
+		results[check.ID] = check.Result
+	}
+	if results["schema"] != "failed" || results["ports-distinct"] != "failed" || results["recipe-allowed"] != "failed" || results["images-resolved"] != "passed" || results["within-ceiling"] != "passed" {
+		t.Errorf("checks = %v", results)
+	}
+
+	if written.Totals.Proposed.CPUMillis != 1000 || written.Totals.Headroom.CPUMillis != 1000 || written.Components[1].Executed.CPUMillis != 1000 || written.Components[1].InferredFrom[0] != "apps/console/package.json" {
+		t.Errorf("components = %+v, totals = %+v", written.Components, written.Totals)
+	}
+
+	var record run.Run
+	decodeStrict(t, mustRead(t, filepath.Join(filepath.Dir(runtimePath), "run.json")), &record)
+	if record.State != "blocked" {
+		t.Errorf("run state = %s", record.State)
+	}
+
+	// A replan still finds the revision, even though the fence failed validation.
+	if status, _, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 0 {
+		t.Fatalf("the replan after a blocked draft = %d: %s", status, stderr)
+	}
+	again, err := connection.Parse(string(mustRead(t, runtimePath)))
+	if err != nil || again.Revision != 2 {
+		t.Errorf("the replan gave revision %d, %v; want 2", again.Revision, err)
 	}
 }

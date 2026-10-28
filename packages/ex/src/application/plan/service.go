@@ -8,6 +8,7 @@ import (
 	"path"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/jonatassales/tao/packages/contracts/configuration"
@@ -18,6 +19,7 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
 	"github.com/jonatassales/tao/packages/ex/src/domain/finops"
 	"github.com/jonatassales/tao/packages/ex/src/domain/harness"
+	"github.com/jonatassales/tao/packages/ex/src/domain/manifest"
 	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 	"github.com/jonatassales/tao/packages/ex/src/domain/run"
@@ -27,6 +29,7 @@ import (
 type Service struct {
 	Projects  application.ProjectOpener
 	Collector Collector
+	Inspector Inspector
 	Inputs    inputs.Store
 	Records   Records
 
@@ -76,10 +79,17 @@ const (
 	Blocked  = "blocked"
 )
 
+// The results a check may have.
+const (
+	passed = "passed"
+	failed = "failed"
+)
+
 var criterionID = regexp.MustCompile(`\bFIN-\d{2}\b`)
 
-// Plan reads the ticket, follows its links, takes the inputs and writes the
-// runtime file, the run record and the ledger's planning line.
+// Plan reads the ticket, follows its links, takes the inputs, resolves and
+// sizes the components, checks the draft and writes the runtime file, the
+// run record and the ledger's planning line.
 func (service Service) Plan(_ context.Context, request Request) (Result, error) {
 	if err := validate(request); err != nil {
 		return Result{}, err
@@ -152,6 +162,22 @@ func (service Service) Plan(_ context.Context, request Request) (Result, error) 
 	emit(sink, session.Bounds, session.Data{"cpuMillis": resources.CPUMillis, "memoryMiB": resources.MemoryMiB, "by": record.SetBy, "record": record.Record})
 	emit(sink, session.Budget, session.Data{"perRunCents": guards.budget.Bounded.PerRunCents, "by": guards.budget.Mirror.SetBy})
 
+	emit(sink, session.Planning, nil)
+	emit(sink, session.Resolve, session.Data{"count": len(request.Components), "namedIn": "the CLI"})
+
+	components, err := service.resolve(owner, request.Components, sink)
+	if err != nil {
+		return Result{}, err
+	}
+
+	checks := crossChecks(components, resources, guards.envelope.PerExecution)
+	emit(sink, session.CrossCheck, session.Data{"ports": distinctPorts(components), "images": len(components), "collisions": collisionsOf(checks)})
+
+	totals := totalsOf(components, resources)
+	emit(sink, session.Size, session.Data{"cpuMillis": totals.Proposed.CPUMillis, "boundedCpuMillis": resources.CPUMillis, "memoryMiB": totals.Proposed.MemoryMiB, "boundedMemoryMiB": resources.MemoryMiB, "deployments": len(components)})
+	emit(sink, session.Limits, session.Data{"requested": "none requested"})
+	emit(sink, session.Price, nil)
+
 	revision, runtimeUID, err := service.revision(owner, runtimeID)
 	if err != nil {
 		return Result{}, err
@@ -159,8 +185,20 @@ func (service Service) Plan(_ context.Context, request Request) (Result, error) 
 
 	config := service.configuration(request, guards, owner, runtimeID, runtimeUID, revision, resources, orDefault(request.Name, orDefault(ticket.Title, runtimeID.String())))
 
+	schema := run.Check{ID: "schema", Result: passed, Errors: number(0)}
 	if err := config.Validate(); err != nil {
-		return Result{}, fmt.Errorf("%w: %v", ErrBlocked, err)
+		schema = run.Check{ID: "schema", Result: failed, Errors: number(1), Detail: text(err.Error())}
+	}
+	checks = append([]run.Check{schema}, checks...)
+	emit(sink, session.Validate, session.Data{"errors": *schema.Errors})
+
+	state, failing := Proposed, failingChecks(checks)
+	if len(failing) > 0 {
+		state = Blocked
+		emit(sink, session.PlanBlocked, session.Data{"revision": revision, "checks": failing})
+	} else {
+		emit(sink, session.Draft, session.Data{"revision": revision})
+		emit(sink, session.Handoff, nil)
 	}
 
 	_, fenceSHA, err := service.Records.Fence(config)
@@ -168,11 +206,7 @@ func (service Service) Plan(_ context.Context, request Request) (Result, error) 
 		return Result{}, err
 	}
 
-	emit(sink, session.Validate, session.Data{"errors": 0})
-	emit(sink, session.Draft, session.Data{"revision": revision})
-	emit(sink, session.Handoff, nil)
-
-	plan := service.plan(ticket, collected, request, guards, config, runtimeID, record, resources, fenceSHA, by, now)
+	plan := service.plan(ticket, collected, request, guards, config, runtimeID, record, resources, components, totals, checks, state, fenceSHA, by)
 
 	document := Document{
 		Name:          config.Name,
@@ -195,7 +229,7 @@ func (service Service) Plan(_ context.Context, request Request) (Result, error) 
 		return Result{}, err
 	}
 
-	if err := service.Records.WriteRun(owner, runtimeID, service.run(ticket, guards, runtimeID)); err != nil {
+	if err := service.Records.WriteRun(owner, runtimeID, service.run(ticket, guards, runtimeID, state)); err != nil {
 		return Result{}, err
 	}
 
@@ -203,7 +237,11 @@ func (service Service) Plan(_ context.Context, request Request) (Result, error) 
 		return Result{}, err
 	}
 
-	return Result{Runtime: runtimeID.String(), Revision: revision, Path: runtimePath(runtimeID), State: Proposed}, nil
+	if state == Blocked {
+		return Result{}, fmt.Errorf("%w: %s failed; the plan is written as blocked", ErrBlocked, strings.Join(failing, ", "))
+	}
+
+	return Result{Runtime: runtimeID.String(), Revision: revision, Path: runtimePath(runtimeID), State: state}, nil
 }
 
 func validate(request Request) error {
@@ -238,13 +276,13 @@ func invalid(format string, arguments ...any) error {
 
 // guardrails are the inputs a plan needs, as recorded.
 type guardrails struct {
-	envelope  harness.Envelope
-	budget    finops.Budget
-	choice    harness.Choice
-	prices    *finops.Prices
-	pricesAt  string
-	forecasts *finops.Forecasts
-	workflow  *harness.Workflow
+	envelope   harness.Envelope
+	budget     finops.Budget
+	choice     harness.Choice
+	prices     *finops.Prices
+	pricesAt   string
+	forecasts  *finops.Forecasts
+	workflow   *harness.Workflow
 	workflowAt string
 }
 
@@ -273,16 +311,20 @@ func (service Service) guardrails(owner project.Project) (guardrails, error) {
 	}
 
 	var forecasts finops.Forecasts
-	if mirror, err := loadOptional(service.Inputs, owner, inputs.KindForecasts, &forecasts); err != nil {
+	mirror, err = loadOptional(service.Inputs, owner, inputs.KindForecasts, &forecasts)
+	if err != nil {
 		return guards, err
-	} else if mirror != "" {
+	}
+	if mirror != "" {
 		guards.forecasts = &forecasts
 	}
 
 	var workflow harness.Workflow
-	if mirror, err := loadOptional(service.Inputs, owner, inputs.KindWorkflow, &workflow); err != nil {
+	mirror, err = loadOptional(service.Inputs, owner, inputs.KindWorkflow, &workflow)
+	if err != nil {
 		return guards, err
-	} else if mirror != "" {
+	}
+	if mirror != "" {
 		guards.workflow, guards.workflowAt = &workflow, mirror
 	}
 
@@ -321,7 +363,7 @@ func loadOptional(store inputs.Store, owner project.Project, kind string, value 
 	return orDefault(record.Mirror, "-"), nil
 }
 
-// ticketPathOf makes the ticket's path project-relative and checks it exists.
+// ticketPathOf makes the ticket's path project-relative and checks it stays inside.
 func ticketPathOf(owner project.Project, ticket string) (string, error) {
 	relative := ticket
 	if filepath.IsAbs(ticket) {
@@ -359,7 +401,7 @@ func runtimeIDOf(override, slug string) (microruntime.Identifier, error) {
 }
 
 // revision is the next revision of the runtime, and its uid, kept across
-// revisions.
+// revisions. A fence that no longer validates still names its revision.
 func (service Service) revision(owner project.Project, runtime microruntime.Identifier) (int, string, error) {
 	existing, err := service.Records.ReadRuntime(owner, runtime)
 	if errors.Is(err, application.ErrNotFound) {
@@ -372,7 +414,7 @@ func (service Service) revision(owner project.Project, runtime microruntime.Iden
 	}
 
 	config, err := connection.Parse(string(existing))
-	if err != nil {
+	if config.Revision < 1 {
 		return 0, "", fmt.Errorf("the existing runtime.md of %s does not parse: %w", runtime, err)
 	}
 
@@ -391,6 +433,151 @@ func bounds(request Request, guards guardrails, runtime microruntime.Identifier,
 	mirror := guards.envelope.Mirror
 
 	return guards.envelope.Default, run.InputValue{Record: mirror.Record, SetBy: mirror.SetBy, Via: mirror.Via, SetAt: mirror.SetAt}
+}
+
+// resolved is one component, as named and as its manifests describe it.
+type resolved struct {
+	input        ComponentInput
+	manifestName string
+	technologies []run.Technology
+	kind         string
+	proposed     harness.Resources
+}
+
+// resolve inspects each component's manifests and sizes it, printing the
+// inspection and the resulting row. Input wins over what a manifest says.
+func (service Service) resolve(owner project.Project, components []ComponentInput, sink session.Sink) ([]resolved, error) {
+	results := make([]resolved, 0, len(components))
+
+	for _, input := range components {
+		inspection, err := service.Inspector.Inspect(owner, input.Path)
+		if err != nil {
+			return nil, fmt.Errorf("component %s: %w", input.Path, err)
+		}
+
+		component := resolved{input: input, manifestName: orDefault(inspection.Manifest, "no manifest"), kind: orDefault(input.Kind, orDefault(inspection.Kind, manifest.Web))}
+
+		technologies := inspection.Technologies
+		if len(input.Technologies) > 0 {
+			component.technologies = input.Technologies
+			technologies = nil
+			for _, technology := range input.Technologies {
+				technologies = append(technologies, manifest.Technology{ID: technology.ID, Label: technology.Label})
+			}
+		} else {
+			for _, technology := range technologies {
+				component.technologies = append(component.technologies, run.Technology{ID: technology.ID, Label: technology.Label})
+			}
+		}
+
+		component.proposed = manifest.Proposed(component.kind, technologies)
+
+		emit(sink, session.Inspect, session.Data{"path": input.Path, "manifest": component.manifestName, "port": input.Port})
+		emit(sink, session.Component, session.Data{"path": input.Path, "technology": manifest.Labels(technologies), "kind": component.kind, "cpuMillis": component.proposed.CPUMillis, "memoryMiB": component.proposed.MemoryMiB})
+
+		results = append(results, component)
+	}
+
+	return results, nil
+}
+
+// crossChecks are the checks of the draft beyond the schema.
+func crossChecks(components []resolved, bounded, ceiling harness.Resources) []run.Check {
+	ports := make([]string, 0, len(components))
+	distinct := map[int]bool{}
+	for _, component := range components {
+		ports = append(ports, strconv.Itoa(component.input.Port))
+		distinct[component.input.Port] = true
+	}
+	portsCheck := run.Check{ID: "ports-distinct", Result: passed, Detail: text(strings.Join(ports, " · "))}
+	if len(distinct) != len(components) {
+		portsCheck.Result = failed
+		portsCheck.Detail = text("ports repeat: " + strings.Join(ports, " · "))
+	}
+
+	images := make([]string, 0, len(components))
+	imagesCheck := run.Check{ID: "images-resolved", Result: passed}
+	for _, component := range components {
+		images = append(images, component.input.Image)
+		if !configuration.IsImageReference(component.input.Image) {
+			imagesCheck.Result = failed
+		}
+	}
+	imagesCheck.Detail = text(strings.Join(images, " · "))
+
+	recipes := make([]string, 0, len(components))
+	recipeCheck := run.Check{ID: "recipe-allowed", Result: passed}
+	for _, component := range components {
+		if err := component.input.Build.Validate(); err != nil {
+			recipeCheck.Result = failed
+			recipes = append(recipes, err.Error())
+
+			continue
+		}
+		recipes = append(recipes, recipeName(component.input.Build))
+	}
+	recipeCheck.Detail = text(strings.Join(recipes, " · "))
+
+	ceilingCheck := run.Check{ID: "within-ceiling", Result: passed, Detail: text(fmt.Sprintf("%sm of %sm · %s MiB of %s MiB", grouped(bounded.CPUMillis), grouped(ceiling.CPUMillis), grouped(bounded.MemoryMiB), grouped(ceiling.MemoryMiB)))}
+	if bounded.CPUMillis > ceiling.CPUMillis || bounded.MemoryMiB > ceiling.MemoryMiB {
+		ceilingCheck.Result = failed
+	}
+
+	return []run.Check{portsCheck, imagesCheck, recipeCheck, ceilingCheck}
+}
+
+func recipeName(build configuration.Build) string {
+	if strings.Contains(build.Executable, "/") {
+		return "committed script " + build.Executable
+	}
+
+	return strings.TrimSpace(build.Executable + " " + strings.Join(build.Args, " "))
+}
+
+func distinctPorts(components []resolved) int {
+	ports := map[int]bool{}
+	for _, component := range components {
+		ports[component.input.Port] = true
+	}
+
+	return len(ports)
+}
+
+func collisionsOf(checks []run.Check) string {
+	for _, check := range checks {
+		if check.ID == "ports-distinct" && check.Result == failed {
+			return "ports collide"
+		}
+	}
+
+	return "no collisions"
+}
+
+func failingChecks(checks []run.Check) []string {
+	var failing []string
+	for _, check := range checks {
+		if check.Result == failed {
+			failing = append(failing, check.ID)
+		}
+	}
+
+	return failing
+}
+
+// totalsOf sums the proposed shares against the envelope; headroom never
+// goes below zero.
+func totalsOf(components []resolved, bounded harness.Resources) run.Totals {
+	var proposed harness.Resources
+	for _, component := range components {
+		proposed.CPUMillis += component.proposed.CPUMillis
+		proposed.MemoryMiB += component.proposed.MemoryMiB
+	}
+
+	return run.Totals{
+		Proposed: proposed,
+		Bounded:  bounded,
+		Headroom: harness.Resources{CPUMillis: max(0, bounded.CPUMillis-proposed.CPUMillis), MemoryMiB: max(0, bounded.MemoryMiB-proposed.MemoryMiB)},
+	}
 }
 
 func (service Service) configuration(request Request, guards guardrails, owner project.Project, runtime microruntime.Identifier, uid string, revision int, resources harness.Resources, name string) configuration.Configuration {
@@ -429,22 +616,28 @@ func (service Service) configuration(request Request, guards guardrails, owner p
 	return config
 }
 
-func (service Service) plan(ticket collection.Ticket, collected collection.Result, request Request, guards guardrails, config configuration.Configuration, runtime microruntime.Identifier, record run.InputValue, resources harness.Resources, fenceSHA, by string, now harness.Timestamp) run.Plan {
-	shares := run.SplitEnvelope(resources, len(request.Components))
+func (service Service) plan(ticket collection.Ticket, collected collection.Result, request Request, guards guardrails, config configuration.Configuration, runtime microruntime.Identifier, record run.InputValue, resources harness.Resources, resolvedComponents []resolved, totals run.Totals, checks []run.Check, state, fenceSHA, by string) run.Plan {
+	shares := run.SplitEnvelope(resources, len(resolvedComponents))
 
-	components := make([]run.Component, 0, len(request.Components))
-	for index, input := range request.Components {
+	components := make([]run.Component, 0, len(resolvedComponents))
+	for index, component := range resolvedComponents {
+		input := component.input
+		inferredFrom := []string{}
+		if component.manifestName != "no manifest" {
+			inferredFrom = append(inferredFrom, path.Join(input.Path, component.manifestName))
+		}
+
 		components = append(components, run.Component{
 			Path:          input.Path,
 			Name:          orDefault(input.Name, componentName(input.Path)),
-			Kind:          input.Kind,
-			Technologies:  nonNil(input.Technologies),
+			Kind:          component.kind,
+			Technologies:  nonNil(component.technologies),
 			Image:         input.Image,
 			Port:          input.Port,
 			ReadinessPath: input.ReadinessPath,
-			InferredFrom:  []string{},
+			InferredFrom:  inferredFrom,
 			ConfirmedBy:   run.Actor{Person: by, Via: inputs.Via},
-			Proposed:      shares[index],
+			Proposed:      component.proposed,
 			Executed:      run.Executed{CPUMillis: shares[index].CPUMillis, MemoryMiB: shares[index].MemoryMiB, Rule: run.EqualSplitRule},
 		})
 	}
@@ -454,12 +647,7 @@ func (service Service) plan(ticket collection.Ticket, collected collection.Resul
 		sources = append(sources, sourceRecord(source))
 	}
 
-	allocation := 0
-	for _, entry := range guards.budget.Allocations {
-		if entry.Ticket == ticket.Reference() {
-			allocation = entry.Cents
-		}
-	}
+	allocation := allocationOf(guards.budget, ticket)
 
 	price := run.Price{RuntimePriced: false, Note: "the runtime has no price source; cpu and memory stay in units"}
 	var modelName *string
@@ -477,7 +665,7 @@ func (service Service) plan(ticket collection.Ticket, collected collection.Resul
 	return run.Plan{
 		Version: 1,
 		Run:     config.RuntimeID,
-		State:   Proposed,
+		State:   state,
 		Ticket: run.Ticket{
 			Path:    ticket.Path,
 			Number:  optional(ticket.Number),
@@ -509,7 +697,7 @@ func (service Service) plan(ticket collection.Ticket, collected collection.Resul
 			Considered:    []run.Considered{},
 			Note:          "retrieval not run yet",
 		},
-		Sizing: run.Sizing{Basis: "input", MeasuredRunsCited: []string{}, Note: "no episode retrieved yet · the envelope is the owner's input"},
+		Sizing: run.Sizing{Basis: "input", MeasuredRunsCited: []string{}, Note: "no episode retrieved yet · the proposed shares follow each component's kind"},
 		Suggestion: run.Suggestion{
 			By:           "input",
 			Model:        guards.choice.Model,
@@ -519,17 +707,27 @@ func (service Service) plan(ticket collection.Ticket, collected collection.Resul
 			AuthorizedBy: "pending",
 		},
 		Components:      components,
-		Totals:          run.Totals{Proposed: resources, Bounded: resources, Headroom: harness.Resources{}},
+		Totals:          totals,
 		Materialization: run.Materialization{Deployments: len(components), ReplicasEach: 1},
 		Price:           price,
-		Checks:          []run.Check{{ID: "schema", Result: "passed", Errors: number(0)}},
-		Runtime:         run.RuntimeRef{Path: runtimePath(runtime), Revision: config.Revision, SHA256: fenceSHA, State: Proposed},
+		Checks:          checks,
+		Runtime:         run.RuntimeRef{Path: runtimePath(runtime), Revision: config.Revision, SHA256: fenceSHA, State: state},
 		ContractGaps:    append([]string{}, run.ContractGaps...),
 	}
 }
 
+func allocationOf(budget finops.Budget, ticket collection.Ticket) int {
+	for _, entry := range budget.Allocations {
+		if entry.Ticket == ticket.Reference() {
+			return entry.Cents
+		}
+	}
+
+	return 0
+}
+
 // run is the execution record of a planned runtime: nothing has run yet.
-func (service Service) run(ticket collection.Ticket, guards guardrails, runtime microruntime.Identifier) run.Run {
+func (service Service) run(ticket collection.Ticket, guards guardrails, runtime microruntime.Identifier, state string) run.Run {
 	record := run.Run{
 		Version:  1,
 		ID:       runtime.String(),
@@ -541,6 +739,10 @@ func (service Service) run(ticket collection.Ticket, guards guardrails, runtime 
 		Laps:     []run.LapSummary{},
 		Stages:   []run.StageState{},
 		Delivery: run.Delivery{Checks: []run.CheckResult{}},
+	}
+
+	if state == Blocked {
+		record.State = Blocked
 	}
 
 	record.HumanInTheLoop = run.HumanInTheLoop{Chosen: []string{}}
@@ -575,13 +777,6 @@ func isHuman(stage harness.Stage, defaults harness.Defaults) bool {
 // ledger opens the runtime's ledger with its planning line: nothing paid,
 // since no collection agent ran.
 func (service Service) ledger(ticket collection.Ticket, guards guardrails, runtime microruntime.Identifier, now harness.Timestamp) finops.Ledger {
-	allocation := 0
-	for _, entry := range guards.budget.Allocations {
-		if entry.Ticket == ticket.Reference() {
-			allocation = entry.Cents
-		}
-	}
-
 	ledger := finops.Ledger{
 		Mirror:   harness.Mirror{Of: inputs.Via, Record: "ledger-" + runtime.String(), SetBy: "ex", Via: inputs.Via, SetAt: now, ReadOnly: true, Note: inputs.MirrorNote},
 		Version:  1,
@@ -589,7 +784,7 @@ func (service Service) ledger(ticket collection.Ticket, guards guardrails, runti
 		Ticket:   text(ticket.Reference()),
 		State:    "provisional",
 		Currency: guards.budget.Currency,
-		Bounded:  finops.LedgerBounds{PerRunCents: guards.budget.Bounded.PerRunCents, TicketAllocationCents: allocation, PeriodLeftCents: guards.budget.Bounded.PeriodCents},
+		Bounded:  finops.LedgerBounds{PerRunCents: guards.budget.Bounded.PerRunCents, TicketAllocationCents: allocationOf(guards.budget, ticket), PeriodLeftCents: guards.budget.Bounded.PeriodCents},
 		Planning: finops.PlanningLine{Model: nil, Note: "no collection agent ran; the plan was built by the deterministic shell, nothing paid", Cents: finops.PlanningCents{Billed: number(0)}},
 		Laps:     []finops.LapLine{},
 		Totals:   finops.LedgerTotals{Cents: finops.TotalCents{Billed: number(0)}, PeriodLeftAfterCents: guards.budget.Bounded.PeriodCents},
@@ -677,6 +872,23 @@ func componentName(componentPath string) string {
 
 func runtimePath(runtime microruntime.Identifier) string {
 	return microruntime.ConfigurationDirectory(runtime).String() + "/runtime.md"
+}
+
+// grouped prints a figure with thousands separators, as the checks do.
+func grouped(value int) string {
+	digits := strconv.Itoa(value)
+	if len(digits) <= 3 {
+		return digits
+	}
+
+	var parts []string
+	for len(digits) > 3 {
+		parts = append([]string{digits[len(digits)-3:]}, parts...)
+		digits = digits[:len(digits)-3]
+	}
+	parts = append([]string{digits}, parts...)
+
+	return strings.Join(parts, ",")
 }
 
 func emit(sink session.Sink, id string, data session.Data) {

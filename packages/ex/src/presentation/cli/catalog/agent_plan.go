@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/jonatassales/tao/packages/contracts/configuration"
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	"github.com/jonatassales/tao/packages/ex/src/application/plan"
 	"github.com/jonatassales/tao/packages/ex/src/domain/collection"
@@ -165,7 +164,3 @@ func runSession[Result any](command *cobra.Command, globals *support.Globals, op
 
 	return support.Render(command.OutOrStdout(), result, true)
 }
-
-// Build is the contracts' build recipe, named here so the catalog's flag
-// parsing reads as the fence does.
-type Build = configuration.Build

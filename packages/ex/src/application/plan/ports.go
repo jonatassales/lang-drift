@@ -10,6 +10,7 @@ import (
 	"github.com/jonatassales/tao/packages/contracts/configuration"
 	"github.com/jonatassales/tao/packages/ex/src/domain/collection"
 	"github.com/jonatassales/tao/packages/ex/src/domain/finops"
+	"github.com/jonatassales/tao/packages/ex/src/domain/manifest"
 	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 	"github.com/jonatassales/tao/packages/ex/src/domain/run"
@@ -46,3 +47,8 @@ type Records interface {
 
 // ErrBlocked says a check failed and the plan was not written.
 var ErrBlocked = errors.New("the plan is blocked")
+
+// Inspector reads a component's manifests.
+type Inspector interface {
+	Inspect(owner project.Project, componentPath string) (manifest.Inspection, error)
+}
