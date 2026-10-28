@@ -1,4 +1,13 @@
 {
+	"mirror": {
+		"of": "exphere-server",
+		"record": "prices-0001",
+		"setBy": "owner",
+		"via": "console",
+		"setAt": "2026-10-27T18:07:51Z",
+		"readOnly": true,
+		"note": "Written by the tool from the server record. No gate reads this file; an edit here is shown as an unauthorized change."
+	},
 	"version": 1,
 	"illustrative": true,
 	"note": "Illustrative list prices to exercise the format. Not a verified provider price list.",

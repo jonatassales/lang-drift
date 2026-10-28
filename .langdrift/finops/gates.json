@@ -1,4 +1,13 @@
 {
+	"mirror": {
+		"of": "exphere-server",
+		"record": "gates-51b0",
+		"setBy": "owner",
+		"via": "console",
+		"setAt": "2026-10-27T18:07:05Z",
+		"readOnly": true,
+		"note": "Written by the tool from the server record. No gate reads this file; an edit here is shown as an unauthorized change."
+	},
 	"version": 1,
 	"status": "draft",
 	"gates": [
@@ -16,7 +25,7 @@
 			"name": "budget-required",
 			"criterion": "FIN-03",
 			"when": "before-authorization",
-			"blocksIf": "the ticket has no allocation in budgets.json",
+			"blocksIf": "the ticket has no allocation recorded on the server",
 			"action": "block",
 			"enforcement": "planned"
 		},

@@ -2,11 +2,11 @@
 
 Configuration is interpreted by the connected project agent. Prose does not execute commands.
 
-**Ticket:** 0001-TICKET-console-microruntime.ticket.md · run `0001-console-microruntime`
-**Context:** sha256 8eab41020062c36b9e88e094b6b818e312e532974cb12b7cba2ffae5ac667e17
-**Authorized by:** the owner, 2026-10-28 (illustrative)
+**Ticket:** 0070-console-microruntime.ticket.md · run `0001-console-microruntime`
+**Context:** sha256 0d8ce74c47569bfd35cc820e302898ecde272d93715728f8de68e77ffe8f0dc7
+**Envelope and budget:** console input, record `runtime-console-local-r1`, set by the owner on 2026-10-28 (illustrative)
 
-The plan took the component from the spec's `langdrift-plan` fence and the envelope from `harness/envelope.json`, because no earlier run measured this runtime. The model and effort configure the console's recommendation; the agent makes no model call.
+The planner inferred the component from the ticket and the files it links, and the owner confirmed it in the console. Nothing collected set a limit: the envelope and the budget are console input. The model and effort configure the console's recommendation; the agent makes no model call.
 
 ```langdrift
 {

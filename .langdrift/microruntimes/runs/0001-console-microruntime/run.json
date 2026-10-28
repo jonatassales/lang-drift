@@ -3,7 +3,7 @@
 	"sample": true,
 	"id": "0001-console-microruntime",
 	"kind": "ticket",
-	"ticket": ".langdrift/vision/artifacts/tickets/0001-TICKET-console-microruntime.ticket.md",
+	"ticket": ".agents/workflow/tickets/0070-console-microruntime.ticket.md",
 	"runtime": "console-local",
 	"state": "finished",
 	"outcome": "completed",
@@ -23,7 +23,8 @@
 		"evidence": "evidence/"
 	},
 	"humanInTheLoop": {
-		"source": ".langdrift/harness/workflow.json",
+		"record": "workflow-3f81",
+		"mirror": ".langdrift/harness/workflow.json",
 		"chosen": ["planning", "review", "merge"]
 	},
 	"laps": [
@@ -34,7 +35,9 @@
 				"model": "claude-opus-5-5",
 				"effort": "high",
 				"by": "owner",
-				"overrode": "suggestion"
+				"overrode": "suggestion",
+				"via": "console",
+				"record": "lap-0001-choice"
 			},
 			"outcome": "paused-at-gate",
 			"gate": "FG-03",
@@ -47,7 +50,9 @@
 				"model": "claude-sonnet-5-5",
 				"effort": "medium",
 				"by": "owner",
-				"overrode": null
+				"overrode": null,
+				"via": "console",
+				"record": "lap-0002-choice"
 			},
 			"outcome": "completed",
 			"execution": "exec-5c1e9a",

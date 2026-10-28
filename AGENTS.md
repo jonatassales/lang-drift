@@ -21,11 +21,13 @@ Products carry the brand in their name: **LangDrift Vision** and **LangDrift Fin
 
 Vision's metric keeps its English name, "Product Vision", in every locale. FinOps grew out of the Exphere project; its Go CLI, `ex`, is already here in the Exphere workspace, `exphere/`, the engine of Microruntimes, beside the Microruntimes contracts.
 
+**Pivot, 2026-10-28.** The owner pivoted the project to FinOps, with Microruntimes as its engine: its value comes from data the platform produces itself. Vision is no longer developed as a product, because it would need ever more of the client's data and producing artifacts for it would break the other products. It may return as a connector, an MCP to tools such as GitHub, Linear or Obsidian, that brings their data into the console. The website, the brand and the Vision text above stay until the owner rewrites them; spec 0010 records the decision.
+
 ### One console
 
 Each product has a management surface today, in its upstream repository. LangDrift's dashboard (`jonatassales/langdrift`, `apps/dashboard`) is Vision's: Overview, Vision, Evolution and Evidence workspaces, with attention, briefs, targets, revisions, drifts, decisions, relations and sources beneath them. Exphere's console (`jonatassales/exphere`, `apps/console`) is FinOps's: projects registered from a local folder, their microruntimes, executions, history and secrets, supervised by one connected `ex` agent per project, with FinOps readings and recommendations that stay advisory.
 
-They become **one LangDrift console** on langdrift.md: one account, one shell, a product switcher between Vision and FinOps, and under it each product's own workspaces, sidebar and content. The dashboard's workspace switcher is the seed of that product switcher. Both surfaces already keep requested state apart from observed state and label illustrative or stub data as such; the unified console keeps both habits. Neither console is in this repository yet.
+They become **one LangDrift console** on langdrift.md: one account, one shell, a product switcher between Vision and FinOps, and under it each product's own workspaces, sidebar and content. The dashboard's workspace switcher is the seed of that product switcher. Both surfaces already keep requested state apart from observed state and label illustrative or stub data as such; the unified console keeps both habits. The FinOps console is in this repository as `apps/console`, reading the `apps/extub` stub; the Vision dashboard is not.
 
 ### Principles the products share
 
