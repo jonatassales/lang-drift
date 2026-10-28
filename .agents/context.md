@@ -16,7 +16,7 @@ Monorepo with four packages, `@langdrift/tokens`, `@langdrift/web`, the `ex` CLI
 
 ## Toolchain and commands
 
-- pnpm is the only package manager. `devEngines.packageManager` in the root `package.json` makes other package managers fail, and `engineStrict` in `pnpm-workspace.yaml` enforces the Node range in `engines`.
+- pnpm is the only package manager. `devEngines.packageManager` in the root `package.json` makes other package managers fail, and an older pnpm, such as the one Vercel's build image ships, downloads the required version and runs it instead of failing (`onFail: download`). `engineStrict` in `pnpm-workspace.yaml` enforces the Node range in `engines`.
 - Dependency install scripts run only when `allowBuilds` in `pnpm-workspace.yaml` allows them. Prebuilt binaries ship as optional dependencies, so the entries there are denials; approve a new one only when its build is required.
 - Work that spans the monorepo runs through Turborepo. The only root scripts that wrap `turbo run` are the two app launchers below; do not add others.
 - A package's scripts call its tool directly (for example `tsc --noEmit`). Turborepo tasks run those scripts by name. Do not add shell or JavaScript wrappers for what Turborepo or pnpm already do.
