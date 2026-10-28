@@ -39,30 +39,22 @@ function summaryLine(
 				observed: format.money(summary.observedCents),
 				state: t(`workflow.${summary.state}`),
 			})
-		case 'running':
+		case 'estimate':
 			return t('workflow.summaryChoice', {
 				budget: format.money(workflow.budgetCents),
 				effort: t(`analysis.efforts.${workflow.effort}`),
 				estimate: format.money(workflow.estimateCents),
-				model: workflow.model.name,
+				model: workflow.model.shortName,
 			})
 	}
 }
 
-// Where the pull request stands: its checks running or passed, then ready
-// for the owner's review or to merge.
+// Where the pull request stands: ready for the owner's review or to merge.
 function pullRequestState(workflow: TicketWorkflow, format: TicketFormat) {
 	const { t } = format
-	const pullRequest = workflow.pullRequest
-	if (!pullRequest) return null
-	if (workflow.outcome === 'readyForReview') return t('workflow.readyForReview')
 	if (workflow.outcome === 'readyToMerge') return t('workflow.readyToMerge')
-	if (pullRequest.checksPassed === null) return t('workflow.checksRunning')
 
-	return t('workflow.checksPassed', {
-		passed: pullRequest.checksPassed,
-		total: pullRequest.checksTotal,
-	})
+	return t('workflow.readyForReview')
 }
 
 // The workflow as the website's Workflow panel draws it, read-only: the
@@ -120,6 +112,14 @@ export function WorkflowWidget(props: WorkflowWidgetProps) {
 					</span>
 				</div>
 			</WidgetSection>
+
+			<p className="m-0 mt-2 text-[11px] text-muted-foreground">
+				{t('workflow.modelPrice', {
+					date: format.priceMonth(workflow.priceDate),
+					input: format.money(workflow.model.inputCents),
+					output: format.money(workflow.model.outputCents),
+				})}
+			</p>
 
 			<WidgetSection className="grid gap-1.5">
 				<Eyebrow>{t('workflow.estimate')}</Eyebrow>
@@ -195,7 +195,11 @@ export function WorkflowWidget(props: WorkflowWidgetProps) {
 										{workflow.pullRequest.commit}
 									</span>
 									<span className="text-[11px] text-status-success">
-										{pullRequestState(workflow, format)}
+										{t('workflow.checksPassed', {
+											passed: workflow.pullRequest.checksPassed,
+											total: workflow.pullRequest.checksTotal,
+										})}{' '}
+										· {pullRequestState(workflow, format)}
 									</span>
 								</>
 							) : (

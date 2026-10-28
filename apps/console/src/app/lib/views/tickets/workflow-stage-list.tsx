@@ -3,6 +3,7 @@ import { cn } from '@langdrift/web/utilities'
 import { useTranslations } from 'next-intl'
 
 import type { TicketStage } from '@data/types'
+import { UserCircle } from '@ui/icons'
 
 interface WorkflowStageListProps {
 	stages: TicketStage[]
@@ -49,13 +50,26 @@ export function WorkflowStageList(props: WorkflowStageListProps) {
 							/>
 						)}
 						<span>{t(`workflow.stages.${stage.id}`)}</span>
+						{stage.human && stage.id !== 'merge' && (
+							<UserCircle
+								aria-label={t('workflow.humanInTheLoop')}
+								className="shrink-0 text-muted-foreground"
+								role="img"
+								size={14}
+							/>
+						)}
 						<span className="font-mono text-[10px] text-muted-foreground">
 							{stage.id === 'merge'
 								? t('workflow.mergeLocked')
 								: t(`workflow.progress.${stage.progress}`)}
 						</span>
-						{stage.human && stage.id !== 'merge' && (
-							<span className="sr-only">{t('workflow.humanInTheLoop')}</span>
+						{stage.skills && (
+							<span
+								aria-hidden="true"
+								className="font-mono text-[10px] text-muted-foreground max-sm:hidden"
+							>
+								{stage.skills}
+							</span>
 						)}
 					</li>
 				))}
