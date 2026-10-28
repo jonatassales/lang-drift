@@ -26,6 +26,7 @@
 		"./ui/language-switcher": "./src/ui/language-switcher/index.ts",
 		"./ui/product-vision-curve": "./src/ui/product-vision-curve/index.ts",
 		"./ui/rotating-text": "./src/ui/rotating-text/index.ts",
+		"./ui/scroll-hint": "./src/ui/scroll-hint/index.ts",
 		"./ui/section-heading": "./src/ui/section-heading/index.ts",
 		"./ui/target-distribution-chart": "./src/ui/target-distribution-chart/index.tsx",
 		"./vendors/smoothui/animated-avatar-group": "./src/vendors/smoothui/animated-avatar-group.tsx",
