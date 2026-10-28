@@ -25,7 +25,7 @@ export function SessionCard(props: SessionCardProps) {
 	const regionId = `${id}-region`
 
 	return (
-		<article className="rounded-2xl border border-border bg-card text-left">
+		<article className="min-w-0 rounded-2xl border border-border bg-card text-left">
 			<button
 				aria-controls={regionId}
 				aria-expanded={expanded}

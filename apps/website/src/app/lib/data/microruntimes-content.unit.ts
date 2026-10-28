@@ -50,9 +50,9 @@ describe('the simulated planning session', () => {
 		}
 	})
 
-	it('plays its three acts in order, each opened by a comment', () => {
+	it('plays its acts in order, each opened by a comment, and hands over to the workflow', () => {
 		const opening = planPhaseIds.map((phase) => planPhases[phase])
-		expect(opening).toEqual(['plan', 'analysis', 'planning'])
+		expect(opening).toEqual(['plan', 'analysis', 'planning', 'handoff'])
 		for (const lineId of opening.slice(1)) {
 			const line = planSession.find((candidate) => candidate.id === lineId)
 			expect(line?.type).toBe('comment')
@@ -62,7 +62,15 @@ describe('the simulated planning session', () => {
 		expect(phaseOf(planLineIndex('analysis'))).toBe('ticket')
 		expect(phaseOf(planLineIndex('analysis') + 1)).toBe('analysis')
 		expect(phaseOf(planLineIndex('planning') + 1)).toBe('plan')
-		expect(phaseOf(planSession.length)).toBe('plan')
+		expect(phaseOf(planLineIndex('handoff'))).toBe('plan')
+		expect(phaseOf(planSession.length)).toBe('workflow')
+	})
+
+	it('delimits the budget in the analysis before the plan', () => {
+		expect(planLineIndex('budget')).toBeGreaterThan(planLineIndex('bounds'))
+		expect(planLineIndex('budget')).toBeLessThan(planLineIndex('planning'))
+		expect(ticketPlan.guardrailCriteria).toEqual(['FIN-02', 'FIN-03', 'FIN-04'])
+		expect(ticketPlan.model).toBe('claude-sonnet-5-5')
 	})
 
 	it('reads every linked document on a line of the analysis act', () => {

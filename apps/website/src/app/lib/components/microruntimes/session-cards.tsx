@@ -14,6 +14,9 @@ import {
 	microruntimeSessionAtom,
 	openCardAtom,
 	openCardByHandAtom,
+	planPlayedCountAtom,
+	runScriptAtom,
+	workflowChoicesAtom,
 } from '@state'
 
 import { AnalysisCard, analysisSummary } from './analysis-card'
@@ -24,27 +27,39 @@ import {
 	createTicketCardFormat,
 	type TicketCardCopy,
 } from './ticket-card-format'
+import {
+	runOutcome,
+	WorkflowCard,
+	workflowStatus,
+	workflowSummary,
+} from './workflow-card'
 
 interface SessionCardsProps {
 	copy: TicketCardCopy
 	locale: WebsiteLocale
 }
 
-// The three cards the session fills beside the terminal, one per act: the
-// ticket, the analysis of its documents and the project's episodes, and
-// the plan. The act opens its card and collapses the others to their
-// summary line; a click opens a card by hand until the next act. The stack
-// is absent until the command is entered, and its height is the row's, so
-// the terminal ends where the open card ends. It owns no clock; every
-// value derives from how many lines the terminal has completed.
+// The four cards the session fills beside the terminal, one per act: the
+// ticket, the analysis of its documents and the project's episodes, the
+// plan, and the workflow that plays the run. The act opens its card and
+// collapses the others to their summary line; a click opens a card by hand
+// until the next act. The stack is absent until the command is entered,
+// and its height is the row's, so the terminal ends where the open card
+// ends. The plan cards keep their end while a run plays; one status line
+// announces only how the run ended. Every value derives from how many lines
+// the terminal has completed.
 export function SessionCards(props: SessionCardsProps) {
 	const { copy, locale } = props
 
-	const { playedCount } = useAtomValue(microruntimeSessionAtom)
+	const session = useAtomValue(microruntimeSessionAtom)
+	const playedCount = useAtomValue(planPlayedCountAtom)
+	const choices = useAtomValue(workflowChoicesAtom)
+	const script = useAtomValue(runScriptAtom)
 	const openCard = useAtomValue(openCardAtom)
 	const openCardByHand = useSetAtom(openCardByHandAtom)
 	const format = createTicketCardFormat(copy, locale)
 	const visible = revealed(playedCount, 'cards')
+	const outcome = runOutcome(session, script)
 	const cards: Record<PlanPhaseId, { body: ReactNode; summary: ReactNode }> = {
 		ticket: {
 			body: <TicketCard copy={copy} playedCount={playedCount} />,
@@ -60,13 +75,17 @@ export function SessionCards(props: SessionCardsProps) {
 			body: <PlanCard copy={copy} format={format} playedCount={playedCount} />,
 			summary: planSummary(copy, format, playedCount),
 		},
+		workflow: {
+			body: <WorkflowCard copy={copy} format={format} />,
+			summary: workflowSummary(copy, format, choices, outcome),
+		},
 	}
 
 	return (
 		<div
 			aria-hidden={visible ? undefined : 'true'}
 			className={cn(
-				'grid content-start gap-3 motion-safe:transition-opacity motion-safe:duration-500',
+				'grid min-w-0 content-start gap-3 motion-safe:transition-opacity motion-safe:duration-500',
 				visible ? 'visible opacity-100' : 'invisible opacity-0',
 			)}
 		>
@@ -80,6 +99,9 @@ export function SessionCards(props: SessionCardsProps) {
 					summary={cards[phase].summary}
 				/>
 			))}
+			<p className="sr-only" role="status">
+				{workflowStatus(copy, format, outcome)}
+			</p>
 		</div>
 	)
 }

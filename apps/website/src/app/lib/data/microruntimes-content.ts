@@ -1,5 +1,11 @@
 import type { TerminalLineType } from '@langdrift/web/vendors/smoothui/mac-terminal'
 
+import type {
+	RunMessageId,
+	WorkflowModelId,
+	WorkflowStageId,
+} from './microruntimes-workflow'
+
 // Illustrative Microruntimes content: the ids, limits, identities and times
 // the Microruntimes page and its demos render. Sentences live in the
 // microruntimes catalog. The runtime file mirrors the contract of the ex
@@ -305,9 +311,10 @@ export function hasPlayed(playedCount: number, id: PlanLineId) {
 	return playedCount > planLineIndex(id)
 }
 
-// The three acts of the session, each the concern of one card beside the
-// terminal, and the line that opens each.
-export const planPhaseIds = ['ticket', 'analysis', 'plan'] as const
+// The acts of the session, each the concern of one card beside the
+// terminal, and the line that opens each. The workflow opens once the plan
+// is handed to the team, and its card plays the run.
+export const planPhaseIds = ['ticket', 'analysis', 'plan', 'workflow'] as const
 
 export type PlanPhaseId = (typeof planPhaseIds)[number]
 
@@ -315,6 +322,7 @@ export const planPhases = {
 	ticket: 'plan',
 	analysis: 'analysis',
 	plan: 'planning',
+	workflow: 'handoff',
 } as const satisfies Record<PlanPhaseId, PlanLineId>
 
 // The act the session is in: the last one whose opening line has played.
@@ -377,12 +385,12 @@ export const ticketPlan = {
 		spec: '0011-SPEC-early-access-runtime.spec.md',
 		guardrail: '0001-finops.gr.md',
 	} satisfies Record<DocumentId, string>,
-	guardrailCriteria: ['FIN-02', 'FIN-04'],
+	guardrailCriteria: ['FIN-02', 'FIN-03', 'FIN-04'],
 	spec: {
 		components: 5,
 		acceptanceCriteria: 3,
 	},
-	model: 'operator/allowed-model',
+	model: 'claude-sonnet-5-5' satisfies WorkflowModelId,
 	effort: 'medium' satisfies PlanEffort,
 	bounded: {
 		cpuMillis: 2000,
@@ -572,7 +580,7 @@ export const runtimeDescriptor = {
 	name: 'Checkout preview',
 	cpuMillis: 1500,
 	memoryMiB: 2048,
-	model: 'operator/allowed-model',
+	model: 'claude-sonnet-5-5',
 	effort: 'medium',
 	components: [
 		{
@@ -652,6 +660,7 @@ export interface MicroruntimesMessages {
 			title: string
 			label: string
 			lines: Record<PlanLineId, string>
+			run: Record<RunMessageId, string>
 		}
 		card: {
 			readMark: string
@@ -710,6 +719,39 @@ export interface MicroruntimesMessages {
 				validated: string
 				planPath: string
 				summary: string
+			}
+			workflow: {
+				humanInTheLoop: string
+				stages: Record<WorkflowStageId, string>
+				humanStage: string
+				mergeLocked: string
+				requiredStage: string
+				waiting: string
+				model: string
+				effort: string
+				modelPrice: string
+				estimate: string
+				tokens: string
+				reserves: string
+				overBudget: string
+				play: string
+				starting: string
+				playing: string
+				playAgain: string
+				playUnavailable: string
+				result: Record<'reserved' | 'observed' | 'released', string>
+				nothingPaid: string
+				pullRequest: string
+				checksRunning: string
+				checksPassed: string
+				readyForReview: string
+				readyToMerge: string
+				needsDecision: string
+				summaryChoice: string
+				summaryPaused: string
+				summaryDone: string
+				statusDone: string
+				statusPaused: string
 			}
 			control: { pause: string; resume: string; replay: string }
 			figures: string

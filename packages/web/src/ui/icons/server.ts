@@ -1,1 +1,5 @@
-export { GithubLogo, LinkedinLogo } from '@phosphor-icons/react/ssr'
+export {
+	GithubLogo,
+	GitPullRequest,
+	LinkedinLogo,
+} from '@phosphor-icons/react/ssr'
