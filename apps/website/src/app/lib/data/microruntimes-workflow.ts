@@ -126,10 +126,6 @@ export type WorkflowStageId = (typeof workflowStageIds)[number]
 // The stages a person can be asked to confirm; merge is always the owner's.
 export type HumanStageId = Exclude<WorkflowStageId, 'merge'>
 
-export const humanStageIds = workflowStageIds.filter(
-	(stage): stage is HumanStageId => stage !== 'merge',
-)
-
 // The stages this workflow always gives a person: planning ends only when
 // the owner confirms it, so its checkbox stays checked.
 const requiredHumanStages: readonly HumanStageId[] = ['planning']
