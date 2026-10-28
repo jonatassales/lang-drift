@@ -20,7 +20,10 @@ func (cliApplication *application) agentCommand() *cobra.Command {
 	)
 
 	if cliApplication.useCases.Plan != nil {
-		agentRoot.AddCommand(catalog.NewAgentPlanCommand(cliApplication.useCases.Plan, &cliApplication.globals))
+		agentRoot.AddCommand(
+			catalog.NewAgentPlanCommand(cliApplication.useCases.Plan, &cliApplication.globals),
+			catalog.NewAgentReindexCommand(cliApplication.useCases.Plan, &cliApplication.globals),
+		)
 	}
 
 	if cliApplication.useCases.ProjectAgent != nil {

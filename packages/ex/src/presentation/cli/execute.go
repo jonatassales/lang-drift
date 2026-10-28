@@ -26,7 +26,7 @@ type UseCases struct {
 	ClusterLoadImage catalog.ClusterImageLoader
 	AgentInit        catalog.AgentInitializer
 	Inputs           catalog.Inputs
-	Plan             catalog.Planner
+	Plan             catalog.PlanOperations
 }
 
 // Execute runs the CLI and returns the appropriate exit code.

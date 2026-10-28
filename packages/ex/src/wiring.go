@@ -5,6 +5,7 @@ import (
 	connectedapp "github.com/jonatassales/tao/packages/ex/src/application/connected"
 	"github.com/jonatassales/tao/packages/ex/src/application/inputs"
 	"github.com/jonatassales/tao/packages/ex/src/application/plan"
+	"github.com/jonatassales/tao/packages/ex/src/domain/rag"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/configuration"
 	collectioninfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/collection"
 	connectedinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/connected"
@@ -14,6 +15,7 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kubectl"
 	manifestinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/manifest"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
+	raginfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/rag"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/records"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/scaffold"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/storage"
@@ -24,8 +26,9 @@ import (
 
 // dependencies are the sources a test scripts; nil means the real ones.
 type dependencies struct {
-	IDs   application.IDSource
-	Clock application.Clock
+	IDs      application.IDSource
+	Clock    application.Clock
+	Embedder rag.Embedder
 }
 
 // useCases is the production composition.
@@ -132,6 +135,8 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 			Inspector: manifestinfra.Inspector{},
 			Inputs:    inputsinfra.Store{},
 			Records:   records.Runtimes{},
+			Index:     raginfra.Index{},
+			Embedder:  deps.Embedder,
 			IDs:       deps.IDs,
 			Clock:     deps.Clock,
 		},

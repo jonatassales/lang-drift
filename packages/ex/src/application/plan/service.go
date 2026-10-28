@@ -22,6 +22,7 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/domain/manifest"
 	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/rag"
 	"github.com/jonatassales/tao/packages/ex/src/domain/run"
 )
 
@@ -32,6 +33,8 @@ type Service struct {
 	Inspector Inspector
 	Inputs    inputs.Store
 	Records   Records
+	Index     Index
+	Embedder  rag.Embedder
 
 	// Injectable for tests; nil uses the real sources.
 	IDs   application.IDSource
@@ -162,10 +165,17 @@ func (service Service) Plan(_ context.Context, request Request) (Result, error) 
 	emit(sink, session.Bounds, session.Data{"cpuMillis": resources.CPUMillis, "memoryMiB": resources.MemoryMiB, "by": record.SetBy, "record": record.Record})
 	emit(sink, session.Budget, session.Data{"perRunCents": guards.budget.Bounded.PerRunCents, "by": guards.budget.Mirror.SetBy})
 
+	retrieval, err := service.retrieve(owner, ticket, collected, request.Components, sink)
+	if err != nil {
+		return Result{}, err
+	}
+
+	emit(sink, session.Suggest, session.Data{"model": guards.choice.Model, "effort": guards.choice.Effort})
+
 	emit(sink, session.Planning, nil)
 	emit(sink, session.Resolve, session.Data{"count": len(request.Components), "namedIn": "the CLI"})
 
-	components, err := service.resolve(owner, request.Components, sink)
+	components, err := service.resolve(owner, request.Components, retrieval, sink)
 	if err != nil {
 		return Result{}, err
 	}
@@ -206,7 +216,7 @@ func (service Service) Plan(_ context.Context, request Request) (Result, error) 
 		return Result{}, err
 	}
 
-	plan := service.plan(ticket, collected, request, guards, config, runtimeID, record, resources, components, totals, checks, state, fenceSHA, by)
+	plan := service.plan(ticket, collected, request, guards, config, runtimeID, record, resources, components, totals, checks, retrieval, state, fenceSHA, by)
 
 	document := Document{
 		Name:          config.Name,
@@ -446,7 +456,7 @@ type resolved struct {
 
 // resolve inspects each component's manifests and sizes it, printing the
 // inspection and the resulting row. Input wins over what a manifest says.
-func (service Service) resolve(owner project.Project, components []ComponentInput, sink session.Sink) ([]resolved, error) {
+func (service Service) resolve(owner project.Project, components []ComponentInput, retrieval retrieved, sink session.Sink) ([]resolved, error) {
 	results := make([]resolved, 0, len(components))
 
 	for _, input := range components {
@@ -471,6 +481,9 @@ func (service Service) resolve(owner project.Project, components []ComponentInpu
 		}
 
 		component.proposed = manifest.Proposed(component.kind, technologies)
+		if retrieval.measured != nil {
+			component.proposed = retrieval.share(len(components))
+		}
 
 		emit(sink, session.Inspect, session.Data{"path": input.Path, "manifest": component.manifestName, "port": input.Port})
 		emit(sink, session.Component, session.Data{"path": input.Path, "technology": manifest.Labels(technologies), "kind": component.kind, "cpuMillis": component.proposed.CPUMillis, "memoryMiB": component.proposed.MemoryMiB})
@@ -616,7 +629,7 @@ func (service Service) configuration(request Request, guards guardrails, owner p
 	return config
 }
 
-func (service Service) plan(ticket collection.Ticket, collected collection.Result, request Request, guards guardrails, config configuration.Configuration, runtime microruntime.Identifier, record run.InputValue, resources harness.Resources, resolvedComponents []resolved, totals run.Totals, checks []run.Check, state, fenceSHA, by string) run.Plan {
+func (service Service) plan(ticket collection.Ticket, collected collection.Result, request Request, guards guardrails, config configuration.Configuration, runtime microruntime.Identifier, record run.InputValue, resources harness.Resources, resolvedComponents []resolved, totals run.Totals, checks []run.Check, retrieval retrieved, state, fenceSHA, by string) run.Plan {
 	shares := run.SplitEnvelope(resources, len(resolvedComponents))
 
 	components := make([]run.Component, 0, len(resolvedComponents))
@@ -690,14 +703,8 @@ func (service Service) plan(ticket collection.Ticket, collected collection.Resul
 			NotRuntimeFields: nonNil(envelope.NotRuntimeFields),
 		},
 		Discrepancies: []run.Discrepancy{},
-		Retrieval: run.Retrieval{
-			Method:        "vector+structured",
-			Criteria:      []string{"same-component-path", "same-stack", "measured-resources", "measured-tokens"},
-			KeepAtMatches: 2,
-			Considered:    []run.Considered{},
-			Note:          "retrieval not run yet",
-		},
-		Sizing: run.Sizing{Basis: "input", MeasuredRunsCited: []string{}, Note: "no episode retrieved yet · the proposed shares follow each component's kind"},
+		Retrieval:     retrieval.record(),
+		Sizing:        retrieval.sizing(),
 		Suggestion: run.Suggestion{
 			By:           "input",
 			Model:        guards.choice.Model,
@@ -923,4 +930,212 @@ func nonNil[Item any](items []Item) []Item {
 	}
 
 	return items
+}
+
+// retrieved is what the RAG found for a ticket.
+type retrieved struct {
+	candidates []rag.Candidate
+	cited      []rag.Candidate
+	// measured is the strongest observation among the cited episodes, or nil.
+	measured *harness.Resources
+	note     string
+}
+
+// retrieve embeds the ticket, searches the episodes and prints lines 14 to
+// 21 of the session.
+func (service Service) retrieve(owner project.Project, ticket collection.Ticket, collected collection.Result, components []ComponentInput, sink session.Sink) (retrieved, error) {
+	emit(sink, session.Memory, nil)
+
+	embedder := service.embedder()
+	query := rag.Query{Vector: embedder.Embed(queryText(ticket, collected))}
+	for _, component := range components {
+		query.ComponentPaths = append(query.ComponentPaths, component.Path)
+		for _, technology := range component.Technologies {
+			query.Stacks = append(query.Stacks, technology.ID)
+		}
+	}
+	emit(sink, session.Embed, nil)
+
+	episodes, err := service.Index.Episodes(owner, embedder)
+	if err != nil {
+		return retrieved{}, err
+	}
+	emit(sink, session.VectorSearch, session.Data{"topK": rag.TopK})
+
+	result := retrieved{candidates: rag.Retrieve(query, episodes)}
+
+	if len(result.candidates) == 0 {
+		emit(sink, session.Candidates, session.Data{"count": 0})
+		emit(sink, session.Drop, session.Data{"dropped": 0, "threshold": fmt.Sprintf("%.2f", rag.Threshold), "kept": 0})
+		emit(sink, session.Episodes, session.Data{"cited": 0, "measured": "none with measured resources"})
+		result.note = "no cited episode measured cpu or memory · sizing follows the inputs, not history"
+		emit(sink, session.ReasonResources, session.Data{"reason": result.note})
+
+		return result, nil
+	}
+
+	var dropped []string
+	for _, candidate := range result.candidates {
+		if candidate.Kept {
+			result.cited = append(result.cited, candidate)
+
+			continue
+		}
+		dropped = append(dropped, "below "+fmt.Sprintf("%.2f", rag.Threshold))
+	}
+
+	emit(sink, session.Candidates, session.Data{"count": len(result.candidates), "highest": fmt.Sprintf("%.2f", result.candidates[0].Similarity), "lowest": fmt.Sprintf("%.2f", result.candidates[len(result.candidates)-1].Similarity)})
+	emit(sink, session.JudgeRelevance, session.Data{"kept": len(result.cited), "dropped": len(dropped), "reasons": strings.Join(distinct(dropped), ", ")})
+	emit(sink, session.Drop, session.Data{"dropped": len(dropped), "threshold": fmt.Sprintf("%.2f", rag.Threshold), "kept": len(result.cited)})
+
+	measured := 0
+	for _, candidate := range result.cited {
+		if !candidate.Episode.MeasuredResources {
+			continue
+		}
+		measured++
+		peak := harness.Resources{CPUMillis: candidate.Episode.CPUMillisPeak, MemoryMiB: candidate.Episode.MemoryMiBPeak}
+		if result.measured == nil || peak.CPUMillis > result.measured.CPUMillis || peak.MemoryMiB > result.measured.MemoryMiB {
+			result.measured = &harness.Resources{CPUMillis: max(peak.CPUMillis, cpuOf(result.measured)), MemoryMiB: max(peak.MemoryMiB, memoryOf(result.measured))}
+		}
+	}
+
+	measuredWords := "none with measured resources"
+	result.note = "no cited episode measured cpu or memory · sizing follows the inputs, not history"
+	if measured > 0 {
+		measuredWords = strconv.Itoa(measured) + " with measured resources"
+		result.note = strconv.Itoa(measured) + " cited episodes measured cpu and memory · sizing follows their peaks with headroom"
+	}
+
+	emit(sink, session.Episodes, session.Data{"cited": len(result.cited), "measured": measuredWords})
+	emit(sink, session.ReasonResources, session.Data{"reason": result.note})
+
+	return result, nil
+}
+
+func (service Service) embedder() rag.Embedder {
+	if service.Embedder != nil {
+		return service.Embedder
+	}
+
+	return rag.Local{}
+}
+
+// queryText is what the ticket is embedded from: its title and its text.
+func queryText(ticket collection.Ticket, collected collection.Result) string {
+	content := collected.Sources[0].Content
+	if len(content) > 4096 {
+		content = content[:4096]
+	}
+
+	return ticket.Title + "\n" + string(content)
+}
+
+// share is the proposed share of one component when cited episodes
+// measured resources: the strongest peak with half again as headroom,
+// rounded up to 50 millicores and 128 MiB, split equally.
+func (retrieval retrieved) share(count int) harness.Resources {
+	cpu := roundUp(retrieval.measured.CPUMillis*3/2, 50)
+	memory := roundUp(retrieval.measured.MemoryMiB*3/2, 128)
+
+	return harness.Resources{CPUMillis: max(1, cpu/count), MemoryMiB: max(1, memory/count)}
+}
+
+func roundUp(value, step int) int {
+	if value%step == 0 {
+		return value
+	}
+
+	return value + step - value%step
+}
+
+func (retrieval retrieved) record() run.Retrieval {
+	considered := make([]run.Considered, 0, len(retrieval.candidates))
+	for _, candidate := range retrieval.candidates {
+		verdict := "dropped"
+		if candidate.Kept {
+			verdict = "kept"
+		}
+		considered = append(considered, run.Considered{Run: candidate.Episode.Runtime, Similarity: candidate.Similarity, Criteria: nonNil(candidate.Criteria), Score: candidate.Score, Verdict: verdict, Reason: candidate.Reason})
+	}
+
+	note := "first run of this project; no earlier run to cite"
+	if len(retrieval.candidates) > 0 {
+		note = strconv.Itoa(len(retrieval.cited)) + " of " + strconv.Itoa(len(retrieval.candidates)) + " candidates cited"
+	}
+
+	return run.Retrieval{Method: rag.Method, Criteria: append([]string{}, rag.Criteria...), KeepAtMatches: rag.KeepAtMatches, Considered: considered, Note: note}
+}
+
+func (retrieval retrieved) sizing() run.Sizing {
+	cited := []string{}
+	for _, candidate := range retrieval.cited {
+		if candidate.Episode.MeasuredResources {
+			cited = append(cited, candidate.Episode.Runtime)
+		}
+	}
+
+	if retrieval.measured == nil {
+		return run.Sizing{Basis: "input", MeasuredRunsCited: cited, Note: retrieval.note}
+	}
+
+	return run.Sizing{Basis: "measured-runs", MeasuredRunsCited: cited, Note: retrieval.note}
+}
+
+func cpuOf(resources *harness.Resources) int {
+	if resources == nil {
+		return 0
+	}
+
+	return resources.CPUMillis
+}
+
+func memoryOf(resources *harness.Resources) int {
+	if resources == nil {
+		return 0
+	}
+
+	return resources.MemoryMiB
+}
+
+func distinct(items []string) []string {
+	seen := map[string]bool{}
+	var unique []string
+	for _, item := range items {
+		if seen[item] {
+			continue
+		}
+		seen[item] = true
+		unique = append(unique, item)
+	}
+
+	return unique
+}
+
+// ReindexRequest rebuilds the episode index.
+type ReindexRequest struct {
+	Project application.ProjectSelection
+}
+
+// ReindexResult says how many episodes the index holds.
+type ReindexResult struct {
+	Episodes int    `json:"episodes"`
+	Embedder string `json:"embedder"`
+	Status   string `json:"status"`
+}
+
+// Reindex rebuilds the index from every runtime's memory.
+func (service Service) Reindex(_ context.Context, request ReindexRequest) (ReindexResult, error) {
+	owner, err := service.Projects.Open(request.Project)
+	if err != nil {
+		return ReindexResult{}, err
+	}
+
+	embedder := service.embedder()
+	episodes, err := service.Index.Rebuild(owner, embedder)
+	if err != nil {
+		return ReindexResult{}, err
+	}
+
+	return ReindexResult{Episodes: len(episodes), Embedder: embedder.ID(), Status: "rebuilt"}, nil
 }

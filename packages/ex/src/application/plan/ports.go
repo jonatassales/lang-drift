@@ -13,6 +13,7 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/domain/manifest"
 	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/rag"
 	"github.com/jonatassales/tao/packages/ex/src/domain/run"
 )
 
@@ -51,4 +52,10 @@ var ErrBlocked = errors.New("the plan is blocked")
 // Inspector reads a component's manifests.
 type Inspector interface {
 	Inspect(owner project.Project, componentPath string) (manifest.Inspection, error)
+}
+
+// Index holds the project's episodes, rebuilt from the runtimes' memories.
+type Index interface {
+	Episodes(owner project.Project, embedder rag.Embedder) ([]rag.Episode, error)
+	Rebuild(owner project.Project, embedder rag.Embedder) ([]rag.Episode, error)
 }
