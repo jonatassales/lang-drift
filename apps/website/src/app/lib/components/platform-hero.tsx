@@ -25,10 +25,10 @@ interface PlatformHeroProps {
 const monochrome =
 	'[--primary-hover:var(--muted-foreground)] [--primary:var(--muted-foreground)] dark:[--primary-hover:var(--border)] dark:[--primary:var(--muted)]'
 
-// The six fixed rainbow stops turn behind the headline, blurred into a soft
-// glow; it is the page's one touch of color.
-const rainbow =
-	'aspect-square w-[150%] shrink-0 motion-safe:animate-spin bg-[conic-gradient(var(--lg-rainbow-1),var(--lg-rainbow-2),var(--lg-rainbow-3),var(--lg-rainbow-4),var(--lg-rainbow-5),var(--lg-rainbow-6),var(--lg-rainbow-1))]'
+// The six fixed rainbow stops fill the word "Platform": the page's one touch
+// of color, clipped to the letters.
+const rainbowText =
+	'bg-[linear-gradient(90deg,var(--lg-rainbow-1),var(--lg-rainbow-2),var(--lg-rainbow-3),var(--lg-rainbow-4),var(--lg-rainbow-5),var(--lg-rainbow-6))] bg-clip-text text-transparent'
 
 export function PlatformHero(props: PlatformHeroProps) {
 	const { locale } = props
@@ -50,30 +50,18 @@ export function PlatformHero(props: PlatformHeroProps) {
 			/>
 			<div className="relative mx-auto w-full max-w-7xl px-4.5 pb-20 sm:px-9">
 				<div className="flex min-h-[calc(100dvh-26rem)] items-center justify-center text-center">
-					<div className="relative isolate">
-						<span
-							aria-hidden="true"
-							className="pointer-events-none absolute -inset-x-12 -inset-y-8 -z-10 overflow-hidden rounded-full opacity-40 blur-3xl"
-						>
-							<span className="absolute inset-0 flex items-center justify-center">
-								<span
-									className={rainbow}
-									style={{ animationDuration: '12s' }}
-								/>
-							</span>
-						</span>
-						<h1
-							className="text-[min(3rem,11vw)] leading-none font-normal tracking-[-0.055em] text-foreground sm:text-6xl lg:text-7xl"
-							id="platform-hero-heading"
-						>
-							<span className="block">{copy.titleStart}</span>
-							<RotatingText
-								className="block whitespace-nowrap"
-								suffix={copy.titleEnd}
-								words={copy.words}
-							/>
-						</h1>
-					</div>
+					<h1
+						className="text-[min(3rem,11vw)] leading-none font-normal tracking-[-0.055em] text-foreground sm:text-6xl lg:text-7xl"
+						id="platform-hero-heading"
+					>
+						<span className="block">{copy.titleStart}</span>
+						<RotatingText
+							className="block whitespace-nowrap"
+							suffix={copy.titleEnd}
+							suffixClassName={rainbowText}
+							words={copy.words}
+						/>
+					</h1>
 				</div>
 				<div className="grid w-full min-w-0 gap-2 rounded-2xl border border-border bg-background/70 p-2 shadow-2xl backdrop-blur-xl lg:min-h-160 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
 					<div className="min-h-0 min-w-0">

@@ -30,6 +30,8 @@ export interface TextMorphProps {
 	 * piece when the string before it changes width.
 	 */
 	suffix?: string
+	/** Classes for the suffix alone, such as a text fill of its own. */
+	suffixClassName?: string
 	/** The current string. Changing it triggers the morph. */
 	text: string
 }
@@ -95,6 +97,7 @@ export function TextMorph(props: TextMorphProps) {
 		mode = 'characters',
 		stagger = DEFAULT_STAGGER,
 		suffix,
+		suffixClassName,
 		text,
 	} = props
 
@@ -103,7 +106,15 @@ export function TextMorph(props: TextMorphProps) {
 	const Tag = as as ElementType
 	const fullText = suffix ? `${text} ${suffix}` : text
 
-	if (shouldReduceMotion) return <Tag className={className}>{fullText}</Tag>
+	if (shouldReduceMotion) {
+		return (
+			<Tag className={className}>
+				{text}
+				{suffix ? ' ' : null}
+				{suffix ? <span className={suffixClassName}>{suffix}</span> : null}
+			</Tag>
+		)
+	}
 
 	return (
 		<Tag className={className}>
@@ -173,7 +184,8 @@ export function TextMorph(props: TextMorphProps) {
 								type: 'spring',
 							}}
 						>
-							{` ${suffix}`}
+							{' '}
+							<span className={suffixClassName}>{suffix}</span>
 						</motion.span>
 					) : null}
 				</AnimatePresence>

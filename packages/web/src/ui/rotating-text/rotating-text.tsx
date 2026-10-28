@@ -10,6 +10,8 @@ export interface RotatingTextProps {
 	interval?: number
 	/** Fixed text after the word, gliding as the word changes width. */
 	suffix?: string
+	/** Classes for the suffix alone. */
+	suffixClassName?: string
 	words: string[]
 }
 
@@ -19,7 +21,13 @@ const DEFAULT_INTERVAL = 2600
 // holds the first word, and it waits while the tab is hidden. Server and client both start on the first word, so
 // hydration matches.
 export function RotatingText(props: RotatingTextProps) {
-	const { className, interval = DEFAULT_INTERVAL, suffix, words } = props
+	const {
+		className,
+		interval = DEFAULT_INTERVAL,
+		suffix,
+		suffixClassName,
+		words,
+	} = props
 
 	const shouldReduceMotion = useReducedMotion()
 	const [index, setIndex] = useState(0)
@@ -40,6 +48,7 @@ export function RotatingText(props: RotatingTextProps) {
 		<TextMorph
 			className={className}
 			suffix={suffix}
+			suffixClassName={suffixClassName}
 			text={words[index] ?? ''}
 		/>
 	)
