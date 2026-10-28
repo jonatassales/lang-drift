@@ -19,6 +19,10 @@ func (cliApplication *application) agentCommand() *cobra.Command {
 		catalog.NewAgentInitCommand(cliApplication.useCases.AgentInit, &cliApplication.globals),
 	)
 
+	if cliApplication.useCases.Plan != nil {
+		agentRoot.AddCommand(catalog.NewAgentPlanCommand(cliApplication.useCases.Plan, &cliApplication.globals))
+	}
+
 	if cliApplication.useCases.ProjectAgent != nil {
 		agentRoot.AddCommand(
 			catalog.NewAgentConnectCommand(cliApplication.useCases.ProjectAgent, &cliApplication.globals),

@@ -565,7 +565,7 @@ func (service Service) record(owner project.Project, stamp stamp, value any, mir
 		return Result{}, err
 	}
 
-	record := Record{Kind: stamp.kind, ID: stamp.id, SetBy: stamp.by, Via: Via, SetAt: stamp.setAt, Value: encoded}
+	record := Record{Kind: stamp.kind, ID: stamp.id, SetBy: stamp.by, Via: Via, SetAt: stamp.setAt, Value: encoded, Mirror: mirror}
 
 	previous, err := service.Store.Load(owner, stamp.kind)
 	switch {

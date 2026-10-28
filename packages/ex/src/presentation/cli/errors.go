@@ -11,6 +11,7 @@ import (
 	app "github.com/jonatassales/tao/packages/ex/src/application"
 	connected "github.com/jonatassales/tao/packages/ex/src/application/connected"
 	"github.com/jonatassales/tao/packages/ex/src/application/inputs"
+	"github.com/jonatassales/tao/packages/ex/src/application/plan"
 	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
 	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
@@ -39,6 +40,7 @@ func exitCode(
 		errors.Is(executionError, app.ErrConfigurationChanged) ||
 		errors.Is(executionError, app.ErrAlreadyExists) ||
 		errors.Is(executionError, connection.ErrRecipeRefused) ||
+		errors.Is(executionError, plan.ErrBlocked) ||
 		errors.Is(executionError, connected.ErrAccessRevoked):
 		return 3
 

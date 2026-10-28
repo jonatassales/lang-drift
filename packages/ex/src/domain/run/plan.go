@@ -250,3 +250,33 @@ type RuntimeRef struct {
 	SHA256   string `json:"sha256"`
 	State    string `json:"state"`
 }
+
+// SplitEnvelope divides an envelope equally among count components, the
+// remainder going to the first ones: the share runtime.md v1 can express.
+func SplitEnvelope(envelope harness.Resources, count int) []harness.Resources {
+	if count <= 0 {
+		return nil
+	}
+
+	shares := make([]harness.Resources, count)
+	for index := range shares {
+		shares[index] = harness.Resources{CPUMillis: envelope.CPUMillis / count, MemoryMiB: envelope.MemoryMiB / count}
+		if index < envelope.CPUMillis%count {
+			shares[index].CPUMillis++
+		}
+		if index < envelope.MemoryMiB%count {
+			shares[index].MemoryMiB++
+		}
+	}
+
+	return shares
+}
+
+// EqualSplitRule is how the executed shares were given.
+const EqualSplitRule = "equal split of the runtime envelope; runtime.md v1 carries no per-component share"
+
+// The contract gaps a plan records while the fence is at version 1.
+var ContractGaps = []string{
+	"per-component cpu and memory are not runtime.md v1 fields, so the proposal and the execution can differ",
+	"technologies are not runtime.md v1 fields; the plan keeps them for display",
+}

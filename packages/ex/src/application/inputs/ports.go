@@ -52,6 +52,7 @@ type Record struct {
 	Via      string            `json:"via"`
 	SetAt    harness.Timestamp `json:"setAt"`
 	Value    json.RawMessage   `json:"value"`
+	Mirror   string            `json:"mirror,omitempty"`
 	Previous *Record           `json:"previous"`
 }
 

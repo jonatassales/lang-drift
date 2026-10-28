@@ -4,7 +4,9 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	connectedapp "github.com/jonatassales/tao/packages/ex/src/application/connected"
 	"github.com/jonatassales/tao/packages/ex/src/application/inputs"
+	"github.com/jonatassales/tao/packages/ex/src/application/plan"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/configuration"
+	collectioninfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/collection"
 	connectedinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/connected"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/hooks"
 	inputsinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/inputs"
@@ -122,6 +124,14 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 			Mirrors:  records.Mirrors{},
 			IDs:      deps.IDs,
 			Clock:    deps.Clock,
+		},
+		Plan: plan.Service{
+			Projects:  projects,
+			Collector: collectioninfra.Collector{},
+			Inputs:    inputsinfra.Store{},
+			Records:   records.Runtimes{},
+			IDs:       deps.IDs,
+			Clock:     deps.Clock,
 		},
 		Doctor: application.Diagnose{
 			Prerequisites: tools,
