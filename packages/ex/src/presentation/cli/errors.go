@@ -41,6 +41,7 @@ func exitCode(
 		errors.Is(executionError, app.ErrAlreadyExists) ||
 		errors.Is(executionError, connection.ErrRecipeRefused) ||
 		errors.Is(executionError, plan.ErrBlocked) ||
+		errors.Is(executionError, plan.ErrPaused) ||
 		errors.Is(executionError, connected.ErrAccessRevoked):
 		return 3
 

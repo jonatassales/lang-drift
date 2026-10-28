@@ -118,3 +118,7 @@ const (
 // PlanBlocked is the plan's own line when a check fails: the website has no
 // such line, since its session never fails.
 const PlanBlocked = "blocked"
+
+// JudgeStopped is the plan's own line when the judge stops mid-plan: a gate
+// paused its calls, a call failed, or an answer was refused.
+const JudgeStopped = "judgeStopped"

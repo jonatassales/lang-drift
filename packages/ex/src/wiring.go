@@ -16,6 +16,7 @@ import (
 	manifestinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/manifest"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 	raginfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/rag"
+	judgeinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/judge"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/records"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/scaffold"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/storage"
@@ -29,6 +30,7 @@ type dependencies struct {
 	IDs      application.IDSource
 	Clock    application.Clock
 	Embedder rag.Embedder
+	Model    plan.Model
 }
 
 // useCases is the production composition.
@@ -137,6 +139,7 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 			Records:   records.Runtimes{},
 			Index:     raginfra.Index{},
 			Embedder:  deps.Embedder,
+			Model:     modelOf(deps),
 			IDs:       deps.IDs,
 			Clock:     deps.Clock,
 		},
@@ -199,4 +202,13 @@ type lifecycles struct {
 	Logs     application.ReadRuntimeLogs
 	Forward  application.ForwardRuntime
 	Hook     application.RunRuntimeHook
+}
+
+// modelOf is the planner's model client: the scripted one, or Claude.
+func modelOf(deps dependencies) plan.Model {
+	if deps.Model != nil {
+		return deps.Model
+	}
+
+	return judgeinfra.Anthropic{}
 }
