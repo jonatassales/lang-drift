@@ -10,6 +10,7 @@ import (
 
 	app "github.com/jonatassales/tao/packages/ex/src/application"
 	connected "github.com/jonatassales/tao/packages/ex/src/application/connected"
+	"github.com/jonatassales/tao/packages/ex/src/application/inputs"
 	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
 	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
@@ -29,7 +30,8 @@ func exitCode(
 		errors.Is(executionError, context.Canceled):
 		return 130
 
-	case errors.As(executionError, &invalidUsage):
+	case errors.As(executionError, &invalidUsage) ||
+		errors.Is(executionError, inputs.ErrInvalid):
 		return 2
 
 	case errors.Is(executionError, app.ErrAdoptionRefused) ||

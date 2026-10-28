@@ -25,6 +25,7 @@ type UseCases struct {
 	ClusterInspect   catalog.ClusterInspector
 	ClusterLoadImage catalog.ClusterImageLoader
 	AgentInit        catalog.AgentInitializer
+	Inputs           catalog.Inputs
 }
 
 // Execute runs the CLI and returns the appropriate exit code.

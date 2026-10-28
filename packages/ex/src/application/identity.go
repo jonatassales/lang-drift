@@ -40,3 +40,10 @@ func newID() (string, error) {
 
 	return hex.EncodeToString(random[:]), nil
 }
+
+// ID is id() for the packages beside this one, so their use cases inherit the
+// same deterministic injection.
+func (source IDSource) ID() (string, error) { return source.id() }
+
+// Now is now() for the packages beside this one.
+func (clock Clock) Now() time.Time { return clock.now() }

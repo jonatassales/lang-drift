@@ -3,12 +3,15 @@ package main
 import (
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	connectedapp "github.com/jonatassales/tao/packages/ex/src/application/connected"
+	"github.com/jonatassales/tao/packages/ex/src/application/inputs"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/configuration"
 	connectedinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/connected"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/hooks"
+	inputsinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/inputs"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kind"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kubectl"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/records"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/scaffold"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/storage"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/terraform"
@@ -16,10 +19,19 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/presentation/cli"
 )
 
-// useCases is the composition root: the only place that knows every concrete
-// adapter. It builds each adapter once and hands every use case exactly the
-// ports it declares.
-func useCases() (cli.UseCases, lifecycles) {
+// dependencies are the sources a test scripts; nil means the real ones.
+type dependencies struct {
+	IDs   application.IDSource
+	Clock application.Clock
+}
+
+// useCases is the production composition.
+func useCases() (cli.UseCases, lifecycles) { return useCasesWith(dependencies{}) }
+
+// useCasesWith is the composition root: the only place that knows every
+// concrete adapter. It builds each adapter once and hands every use case
+// exactly the ports it declares.
+func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 	runner := process.Local{}
 
 	var (
@@ -102,6 +114,14 @@ func useCases() (cli.UseCases, lifecycles) {
 			Projects:  projects,
 			Creator:   projects,
 			Bootstrap: scaffold.LangDrift{},
+			IDs:       deps.IDs,
+		},
+		Inputs: inputs.Service{
+			Projects: projects,
+			Store:    inputsinfra.Store{},
+			Mirrors:  records.Mirrors{},
+			IDs:      deps.IDs,
+			Clock:    deps.Clock,
 		},
 		Doctor: application.Diagnose{
 			Prerequisites: tools,
