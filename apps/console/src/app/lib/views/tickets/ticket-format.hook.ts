@@ -22,6 +22,12 @@ export function useTicketFormat() {
 		})
 	const money = (cents: number) => dollars(locale, cents)
 	const tokens = (thousands: number) => compactTokens(locale, thousands)
+	const priceMonth = (date: string) =>
+		new Intl.DateTimeFormat(locale, {
+			month: 'short',
+			timeZone: 'UTC',
+			year: 'numeric',
+		}).format(new Date(`${date}T00:00:00Z`))
 
 	return {
 		cpu,
@@ -29,6 +35,7 @@ export function useTicketFormat() {
 		memory,
 		money,
 		number,
+		priceMonth,
 		t,
 		tokens,
 	}

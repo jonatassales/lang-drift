@@ -6,6 +6,8 @@ import { StatusLabel } from '@components/status-label/status-label'
 import type { Ticket, TicketPhase } from '@data/types'
 import { Link } from '@i18n/navigation'
 
+import { ticketSummary } from './ticket-phases'
+
 interface TicketWidgetFrameProps {
 	children: ReactNode
 	phase: TicketPhase
@@ -30,11 +32,10 @@ export function TicketWidgetFrame(props: TicketWidgetFrameProps) {
 			{ticket && linkLine && (
 				<div className="flex flex-wrap items-center justify-between gap-2">
 					<Link
-						aria-label={t('openTicket', { number: ticket.number })}
 						className="font-mono text-[12px] text-foreground underline-offset-4 hover:underline"
 						href={`/products/${ticket.productId}/tickets/${ticket.id}`}
 					>
-						{ticket.number} · {ticket.slug}
+						{ticketSummary(ticket)}
 					</Link>
 					<StatusLabel value={ticket.status} />
 				</div>

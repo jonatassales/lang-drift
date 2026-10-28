@@ -27,7 +27,9 @@ export default async function Page(props: PageProps) {
 		<Suspense fallback={<RuntimeDetailSkeleton />}>
 			<TicketDetail
 				id={ticketId}
-				initial={readConsole<TicketDetailSnapshot>(`tickets/${ticketId}`)}
+				initial={readConsole<TicketDetailSnapshot>(
+					`tickets/${encodeURIComponent(ticketId)}`,
+				)}
 			/>
 		</Suspense>
 	)

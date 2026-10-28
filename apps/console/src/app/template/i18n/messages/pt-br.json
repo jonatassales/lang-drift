@@ -500,9 +500,9 @@
 				"merge": "Merge"
 			},
 			"mergeLocked": "sempre do responsável",
-			"waiting": "aguardando o responsável",
 			"model": "Modelo",
 			"effort": "Effort",
+			"modelPrice": "{input} / {output} por MTok · preço de tabela, {date}",
 			"estimate": "Gasto estimado",
 			"tokens": "{input} de entrada · {output} de saída · preços de tabela sem cache",
 			"reserves": "reserva {reserved} do orçamento de {budget}",
@@ -514,7 +514,6 @@
 			},
 			"nothingPaid": "nada pago",
 			"pullRequest": "Pull request",
-			"checksRunning": "checks em execução",
 			"readyForReview": "pronto para revisão",
 			"readyToMerge": "pronto para merge",
 			"needsDecision": "pausado no gate · requer uma decisão",
@@ -522,7 +521,6 @@
 			"summaryPaused": "pausado no gate",
 			"summaryDone": "#{number} · {state} · {observed}",
 			"checksPassed": "{passed} de {total} checks aprovados",
-			"running": "em execução",
 			"progress": {
 				"pending": "pendente",
 				"active": "em andamento",

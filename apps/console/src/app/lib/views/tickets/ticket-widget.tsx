@@ -2,9 +2,11 @@ import { DetailList } from '@langdrift/web/ui/detail-list'
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { useTranslations } from 'next-intl'
 
-import type { Ticket, TicketDocumentId } from '@data/types'
+import { StatusLabel } from '@components/status-label/status-label'
+import type { Ticket } from '@data/types'
 import { Link } from '@i18n/navigation'
 
+import { ticketDocumentIds, ticketSummary } from './ticket-phases'
 import { TicketWidgetFrame } from './ticket-widget-frame'
 import { WidgetSection } from './widget-section'
 
@@ -13,13 +15,6 @@ interface TicketWidgetProps {
 	listed?: boolean
 	ticket: Ticket
 }
-
-const documentIds: readonly TicketDocumentId[] = [
-	'prd',
-	'designDoc',
-	'spec',
-	'guardrail',
-]
 
 // The ticket as the website's Ticket panel draws it: its number, slug,
 // status and title, then the artifacts it links.
@@ -32,7 +27,7 @@ export function TicketWidget(props: TicketWidgetProps) {
 		<TicketWidgetFrame
 			linkLine={false}
 			phase="ticket"
-			summary={`${ticket.number} · ${ticket.slug}`}
+			summary={ticketSummary(ticket)}
 			ticket={listed ? ticket : undefined}
 		>
 			<div className="grid gap-2">
@@ -53,9 +48,7 @@ export function TicketWidget(props: TicketWidgetProps) {
 					<span className="font-mono text-[13px] text-muted-foreground">
 						{ticket.slug}
 					</span>
-					<span className="rounded-full border border-border px-2 py-[3px] font-mono text-[11px]">
-						{ticket.status}
-					</span>
+					<StatusLabel value={ticket.status} />
 				</p>
 				<p className="m-0 text-[15px] leading-snug font-medium">
 					{ticket.title}
@@ -64,7 +57,7 @@ export function TicketWidget(props: TicketWidgetProps) {
 					<Eyebrow>{t('ticket.links')}</Eyebrow>
 					<DetailList
 						className="mt-1"
-						items={documentIds.map((id) => ({
+						items={ticketDocumentIds.map((id) => ({
 							detail: (
 								<span className="font-mono text-[12px] break-all">
 									{ticket.artifacts[id]}

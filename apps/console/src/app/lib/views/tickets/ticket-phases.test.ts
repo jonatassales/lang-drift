@@ -6,9 +6,11 @@ import type { Ticket, TicketPlan, TicketWorkflow } from '@data/types'
 import { compactTokens, dollars } from './ticket-format.ts'
 import {
 	analysisSummary,
+	componentShare,
 	keptEpisodes,
 	phaseReached,
 	planFigures,
+	ticketSummary,
 	workflowSummary,
 } from './ticket-phases.ts'
 
@@ -80,7 +82,7 @@ test('the analysis summary names its latest settled step, or nothing yet', () =>
 	assert.deepEqual(
 		analysisSummary({
 			documentsRead: [],
-			episodes: [],
+			episodes: null,
 			model: null,
 			effort: null,
 		} as unknown as Ticket['analysis'] & object),
@@ -143,8 +145,23 @@ test('the workflow summary follows the outcome', () => {
 			pullRequest: null,
 			observedCents: null,
 		}),
-		{ kind: 'running' },
+		{ kind: 'estimate' },
 	)
+})
+
+test('the ticket summary is its number and slug', () => {
+	assert.equal(
+		ticketSummary({
+			number: '0031',
+			slug: 'early-access-runtime',
+		}),
+		'0031 · early-access-runtime',
+	)
+})
+
+test('a component takes its share of the CPU envelope', () => {
+	assert.equal(componentShare({ cpuMillis: 500 }, plan.bounded), 0.25)
+	assert.equal(componentShare({ cpuMillis: 250 }, plan.bounded), 0.125)
 })
 
 test('kept episodes are counted against all of them', () => {

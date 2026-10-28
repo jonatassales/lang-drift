@@ -313,9 +313,13 @@ export interface Resources {
 
 export type TicketDocumentId = 'prd' | 'designDoc' | 'spec' | 'guardrail'
 
+// A model with its list prices in cents per million tokens.
 export interface TicketModel {
 	id: string
 	name: string
+	shortName: string
+	inputCents: number
+	outputCents: number
 }
 
 export type EpisodeDropReason = 'docsOnly' | 'otherRuntime' | 'noBroker'
@@ -337,9 +341,9 @@ export interface TicketAnalysis {
 	budgetCents: number | null
 	specComponents: number | null
 	acceptanceCriteria: number | null
-	criteria: string[]
+	criteria: string[] | null
 	threshold: number
-	episodes: TicketEpisode[]
+	episodes: TicketEpisode[] | null
 	measuredResources: Resources | null
 	model: TicketModel | null
 	effort: TicketEffort | null
@@ -375,6 +379,8 @@ export type WorkflowStageId =
 
 export interface TicketStage {
 	id: WorkflowStageId
+	/** The harness skills the stage runs; review and merge run none. */
+	skills: string | null
 	human: boolean
 	progress: 'pending' | 'active' | 'waiting' | 'done'
 }
@@ -382,7 +388,7 @@ export interface TicketStage {
 export interface TicketPullRequest {
 	number: number
 	commit: string
-	checksPassed: number | null
+	checksPassed: number
 	checksTotal: number
 }
 
@@ -405,6 +411,8 @@ export interface TicketWorkflow {
 	releasedCents: number | null
 	pullRequest: TicketPullRequest | null
 	outcome: WorkflowOutcome
+	/** The date the model's list prices were read, as YYYY-MM-DD. */
+	priceDate: string
 }
 
 export interface Ticket {

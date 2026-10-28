@@ -500,9 +500,9 @@
 				"merge": "合併"
 			},
 			"mergeLocked": "一律由負責人決定",
-			"waiting": "等待負責人",
 			"model": "模型",
 			"effort": "Effort",
+			"modelPrice": "每 MTok {input} / {output} · 牌價，{date}",
 			"estimate": "預估支出",
 			"tokens": "輸入 {input} · 輸出 {output} · 未計快取的牌價",
 			"reserves": "從 {budget} 預算中保留 {reserved}",
@@ -514,7 +514,6 @@
 			},
 			"nothingPaid": "未付費",
 			"pullRequest": "Pull request",
-			"checksRunning": "檢查執行中",
 			"readyForReview": "可供審查",
 			"readyToMerge": "可供合併",
 			"needsDecision": "已在 gate 暫停 · 需要決定",
@@ -522,7 +521,6 @@
 			"summaryPaused": "已在 gate 暫停",
 			"summaryDone": "#{number} · {state} · {observed}",
 			"checksPassed": "{total} 項檢查中 {passed} 項通過",
-			"running": "執行中",
 			"progress": {
 				"pending": "待處理",
 				"active": "進行中",

@@ -500,9 +500,9 @@
 				"merge": "Merge"
 			},
 			"mergeLocked": "always the owner's",
-			"waiting": "waiting for the owner",
 			"model": "Model",
 			"effort": "Effort",
+			"modelPrice": "{input} / {output} per MTok · list price, {date}",
 			"estimate": "Estimated spend",
 			"tokens": "{input} input · {output} output · uncached list prices",
 			"reserves": "reserves {reserved} of the {budget} budget",
@@ -514,7 +514,6 @@
 			},
 			"nothingPaid": "nothing paid",
 			"pullRequest": "Pull request",
-			"checksRunning": "checks running",
 			"readyForReview": "ready for review",
 			"readyToMerge": "ready to merge",
 			"needsDecision": "paused at the gate · needs a decision",
@@ -522,7 +521,6 @@
 			"summaryPaused": "paused at the gate",
 			"summaryDone": "#{number} · {state} · {observed}",
 			"checksPassed": "{passed} of {total} checks passed",
-			"running": "running",
 			"progress": {
 				"pending": "pending",
 				"active": "in progress",

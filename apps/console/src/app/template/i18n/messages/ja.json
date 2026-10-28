@@ -500,9 +500,9 @@
 				"merge": "マージ"
 			},
 			"mergeLocked": "常にオーナーが行う",
-			"waiting": "オーナーの確認待ち",
 			"model": "モデル",
 			"effort": "Effort",
+			"modelPrice": "MTok あたり {input} / {output} · 定価、{date}",
 			"estimate": "見積もり支出",
 			"tokens": "入力 {input} · 出力 {output} · キャッシュなしの定価",
 			"reserves": "予算 {budget} のうち {reserved} を確保",
@@ -514,7 +514,6 @@
 			},
 			"nothingPaid": "支払いなし",
 			"pullRequest": "Pull request",
-			"checksRunning": "チェック実行中",
 			"readyForReview": "レビュー待ち",
 			"readyToMerge": "マージ可能",
 			"needsDecision": "ゲートで一時停止 · 判断が必要",
@@ -522,7 +521,6 @@
 			"summaryPaused": "ゲートで一時停止",
 			"summaryDone": "#{number} · {state} · {observed}",
 			"checksPassed": "チェック {total} 件中 {passed} 件が合格",
-			"running": "実行中",
 			"progress": {
 				"pending": "保留中",
 				"active": "進行中",

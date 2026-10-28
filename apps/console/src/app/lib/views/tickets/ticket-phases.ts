@@ -2,6 +2,8 @@ import type {
 	Resources,
 	Ticket,
 	TicketAnalysis,
+	TicketComponent,
+	TicketDocumentId,
 	TicketEpisode,
 	TicketPhase,
 	TicketPlan,
@@ -14,6 +16,18 @@ export const ticketPhases: readonly TicketPhase[] = [
 	'plan',
 	'workflow',
 ]
+
+export const ticketDocumentIds: readonly TicketDocumentId[] = [
+	'prd',
+	'designDoc',
+	'spec',
+	'guardrail',
+]
+
+// The ticket's header line: its number and slug.
+export function ticketSummary(ticket: Pick<Ticket, 'number' | 'slug'>) {
+	return `${ticket.number} · ${ticket.slug}`
+}
 
 // True once the ticket's phase is this one or a later one.
 export function phaseReached(ticket: Ticket, phase: TicketPhase) {
@@ -43,7 +57,7 @@ export function analysisSummary(analysis: TicketAnalysis): AnalysisSummary {
 			effort: analysis.effort,
 		}
 	}
-	if (analysis.episodes.length > 0) {
+	if (analysis.episodes && analysis.episodes.length > 0) {
 		return {
 			kind: 'episodes',
 			...keptEpisodes(analysis.episodes),
@@ -64,6 +78,14 @@ export interface PlanFigures {
 	headroom: Resources | null
 	cpuShare: number
 	memoryShare: number
+}
+
+// A component's share of the plan's CPU envelope, from 0 to 1.
+export function componentShare(
+	component: Pick<TicketComponent, 'cpuMillis'>,
+	bounded: Resources,
+) {
+	return component.cpuMillis / bounded.cpuMillis
 }
 
 // The plan's totals, what they leave in the envelope and the share they
@@ -99,14 +121,15 @@ export type WorkflowSummary =
 			state: 'readyForReview' | 'readyToMerge'
 	  }
 	| { kind: 'paused' }
-	| { kind: 'running' }
+	| { kind: 'estimate' }
 
-// The workflow's header line: how the run ended, or that it is running.
+// The workflow's header line: how the run ended, or, until it has ended
+// with a pull request and an observed spend, its estimate.
 export function workflowSummary(workflow: TicketWorkflow): WorkflowSummary {
 	if (workflow.outcome === 'paused') return { kind: 'paused' }
-	if (workflow.outcome === 'running') return { kind: 'running' }
+	if (workflow.outcome === 'running') return { kind: 'estimate' }
 	if (!workflow.pullRequest || workflow.observedCents === null) {
-		return { kind: 'running' }
+		return { kind: 'estimate' }
 	}
 
 	return {

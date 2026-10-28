@@ -24,7 +24,7 @@ export function TicketDetail(props: TicketDetailProps) {
 
 	const t = useTranslations('tickets')
 	const resource = useResource<TicketDetailSnapshot>(
-		`tickets/${id}`,
+		`tickets/${encodeURIComponent(id)}`,
 		10000,
 		initial,
 	)
