@@ -23,7 +23,7 @@
 		"reviewReference": "Pedido de revisão: {reviewTitle}",
 		"week": "Semana {week}",
 		"pendingCondition": "Condição pendente",
-		"earlyAccess": "Solicite uma demonstração",
+		"earlyAccess": "Agende uma demo",
 		"selectionSummary": "{focus} · {target} · {classification}",
 		"resultStatus": "{count, plural, =0 {Nenhum evento corresponde a esta seleção.} one {# evento nesta seleção.} other {# eventos nesta seleção.}}"
 	},

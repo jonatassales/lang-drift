@@ -70,7 +70,7 @@
 			"cta": "Get started"
 		},
 		"earlyAccess": {
-			"title": "Ask for a Demo",
+			"title": "Book a demo",
 			"description": "Demo requests are temporarily paused. Please check back soon."
 		},
 		"footer": {
@@ -149,7 +149,7 @@
 			"cta": "Começar"
 		},
 		"earlyAccess": {
-			"title": "Solicite uma demonstração",
+			"title": "Agende uma demo",
 			"description": "As solicitações de demonstração estão temporariamente pausadas. Volte em breve."
 		},
 		"footer": {
@@ -228,7 +228,7 @@
 			"cta": "開始使用"
 		},
 		"earlyAccess": {
-			"title": "申請產品展示",
+			"title": "預約展示",
 			"description": "產品展示申請暫時停止。請稍後再回來查看。"
 		},
 		"footer": {
@@ -307,7 +307,7 @@
 			"cta": "始める"
 		},
 		"earlyAccess": {
-			"title": "デモをリクエスト",
+			"title": "デモを予約",
 			"description": "デモのリクエストは一時停止中です。しばらくしてからもう一度ご確認ください。"
 		},
 		"footer": {
@@ -386,7 +386,7 @@
 			"cta": "Bắt đầu"
 		},
 		"earlyAccess": {
-			"title": "Yêu cầu bản demo",
+			"title": "Đặt lịch demo",
 			"description": "Yêu cầu bản demo đang tạm dừng. Vui lòng quay lại sau."
 		},
 		"footer": {

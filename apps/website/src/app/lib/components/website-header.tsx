@@ -235,7 +235,7 @@ export function WebsiteHeader() {
 				<div className="website-drawer-access">
 					<LanguagePill fromDrawer />
 					<div className="website-drawer-buttons">
-						<DemoButton />
+						<DemoButton onClick={closeDrawer} />
 					</div>
 				</div>
 			</dialog>

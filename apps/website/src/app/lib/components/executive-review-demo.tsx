@@ -575,7 +575,7 @@ export function ExecutiveReviewDemo(props: ExecutiveReviewDemoProps) {
 					/>
 				) : null}
 			</div>
-			<a className="smooth-text-link review-early-access" href="#early-access">
+			<a className="smooth-text-link review-early-access" href="#book-a-demo">
 				{copy.labels.earlyAccess}
 				<span aria-hidden="true">↗</span>
 			</a>

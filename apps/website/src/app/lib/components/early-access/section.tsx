@@ -5,21 +5,19 @@ import './early-access.css'
 
 interface EarlyAccessSectionProps {
 	locale: WebsiteLocale
-	source: 'landing' | 'pricing'
 	compact?: boolean
-	/** A product page's own sentence for the landing band. */
-	description?: string
 }
 
-// Sign-up is paused until feature flags have a proper home, so the section
-// shows the return-soon notice. To open it, restore the form import, the
-// helper id and the commented section below, which used `compact`.
+// The pricing page's early-access band. Sign-up is paused until feature
+// flags have a proper home, so the section shows the return-soon notice. To
+// open it, restore the form import, the helper id and the commented section
+// below, which used `compact`.
 export function EarlyAccessSection(props: EarlyAccessSectionProps) {
-	const { description, locale, source } = props
+	const { locale } = props
 
 	const copy = earlyAccessMessages[locale]
-	const headingId = `early-access-${source}-heading`
-	// const helperId = `early-access-${source}-helper`
+	const headingId = 'early-access-pricing-heading'
+	// const helperId = 'early-access-pricing-helper'
 
 	return (
 		<section
@@ -28,29 +26,12 @@ export function EarlyAccessSection(props: EarlyAccessSectionProps) {
 			aria-labelledby={headingId}
 		>
 			<div className="rounded-2xl border border-border border-t-3 border-t-primary bg-card p-6.5 text-foreground sm:p-11">
-				{source === 'landing' ? (
-					<>
-						<h2
-							id={headingId}
-							className="m-0 text-3xl leading-tight font-medium tracking-tight text-balance sm:text-4xl"
-						>
-							{copy.demoHeading}
-						</h2>
-						<p className="mt-5 mb-0 max-w-3xl text-base leading-relaxed text-muted-foreground">
-							{description ?? copy.demoDescription}
-						</p>
-						<p className="mt-8 mb-0 text-xl font-medium">
-							{copy.pausedHeading}
-						</p>
-					</>
-				) : (
-					<h2
-						id={headingId}
-						className="m-0 text-3xl leading-tight font-medium tracking-tight text-balance"
-					>
-						{copy.pausedHeading}
-					</h2>
-				)}
+				<h2
+					id={headingId}
+					className="m-0 text-3xl leading-tight font-medium tracking-tight text-balance"
+				>
+					{copy.pausedHeading}
+				</h2>
 				<p className="mt-3 mb-0 max-w-3xl text-base leading-relaxed text-muted-foreground">
 					{copy.pausedDescription}
 				</p>
@@ -66,9 +47,7 @@ export function EarlyAccessSection(props: EarlyAccessSectionProps) {
 	// 	>
 	// 		<div className="early-access-surface">
 	// 			<div className="early-access-intro">
-	// 				<h2 id={headingId}>
-	// 					{source === 'pricing' ? copy.pricingHeading : copy.homeHeading}
-	// 				</h2>
+	// 				<h2 id={headingId}>{copy.pricingHeading}</h2>
 	// 				<p>{copy.description}</p>
 	// 				<p id={helperId} className="early-access-trial-note">
 	// 					{copy.helper}
@@ -78,7 +57,7 @@ export function EarlyAccessSection(props: EarlyAccessSectionProps) {
 	// 				copy={copy}
 	// 				helperId={helperId}
 	// 				locale={locale}
-	// 				source={source}
+	// 				source="pricing"
 	// 			/>
 	// 		</div>
 	// 	</section>

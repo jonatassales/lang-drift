@@ -7,7 +7,7 @@ import { createTranslator, hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
 import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
-import { EarlyAccessSection } from '@components/early-access/section'
+import { BookDemoBand } from '@components/book-a-demo/band'
 import { AuthoringFlow } from '@components/microruntimes/authoring-flow'
 import { LifecycleSteps } from '@components/microruntimes/lifecycle-steps'
 import { RuntimeDescriptorCard } from '@components/microruntimes/runtime-descriptor-card'
@@ -311,7 +311,7 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 					}))}
 					title={copy.faq.title}
 				/>
-				<EarlyAccessSection locale={locale} source="landing" />
+				<BookDemoBand locale={locale} />
 			</main>
 			<WebsiteFooter locale={locale} />
 		</>

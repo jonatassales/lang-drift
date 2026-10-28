@@ -12,7 +12,7 @@ import {
 } from 'next-intl/server'
 
 import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
-import { EarlyAccessSection } from '@components/early-access/section'
+import { BookDemoBand } from '@components/book-a-demo/band'
 import { ExecutiveReviewSection } from '@components/executive-review-section'
 import { FaqSection } from '@components/faq-section'
 import { HeroChart } from '@components/hero-chart'
@@ -208,7 +208,7 @@ export default async function VisionPage(props: VisionPageProps) {
 				<ExecutiveReviewSection locale={locale} />
 				<RoiSection locale={locale} />
 				<FaqSection locale={locale} />
-				<EarlyAccessSection locale={locale} source="landing" />
+				<BookDemoBand locale={locale} />
 			</main>
 			<WebsiteFooter locale={locale} />
 		</>

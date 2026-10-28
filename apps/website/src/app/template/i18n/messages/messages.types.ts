@@ -363,8 +363,6 @@ export interface ConversionCopy {
 }
 
 export interface EarlyAccessMessages {
-	demoHeading: string
-	demoDescription: string
 	pausedHeading: string
 	pausedDescription: string
 	homeHeading: string

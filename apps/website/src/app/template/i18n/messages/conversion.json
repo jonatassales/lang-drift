@@ -18,7 +18,7 @@
 					"description": "Explore when a change reveals a promising direction—and which evidence you need before committing to it."
 				}
 			},
-			"earlyAccess": "Ask for a Demo",
+			"earlyAccess": "Book a demo",
 			"explorePlans": "Explore plans",
 			"brief": {
 				"label": "Product brief",
@@ -142,7 +142,7 @@
 					"description": "Investigue quando uma mudança revela uma direção promissora — e quais evidências você precisa antes de se comprometer com ela."
 				}
 			},
-			"earlyAccess": "Solicite uma demonstração",
+			"earlyAccess": "Agende uma demo",
 			"explorePlans": "Explorar planos",
 			"brief": {
 				"label": "Resumo do produto",
@@ -266,7 +266,7 @@
 					"description": "探索變更何時揭示了有潛力的方向，以及在投入前需要哪些證據。"
 				}
 			},
-			"earlyAccess": "申請產品展示",
+			"earlyAccess": "預約展示",
 			"explorePlans": "探索方案",
 			"brief": {
 				"label": "產品摘要",
@@ -382,7 +382,7 @@
 					"description": "変更が有望な方向を示す場面と、その方向に進む前に必要な根拠を探ります。"
 				}
 			},
-			"earlyAccess": "デモをリクエスト",
+			"earlyAccess": "デモを予約",
 			"explorePlans": "プランを見る",
 			"brief": {
 				"label": "プロダクトブリーフ",
@@ -506,7 +506,7 @@
 					"description": "Khám phá khi nào một thay đổi mở ra hướng đi hứa hẹn và cần bằng chứng gì trước khi cam kết."
 				}
 			},
-			"earlyAccess": "Yêu cầu bản demo",
+			"earlyAccess": "Đặt lịch demo",
 			"explorePlans": "Khám phá các gói",
 			"brief": {
 				"label": "Bản tóm tắt sản phẩm",

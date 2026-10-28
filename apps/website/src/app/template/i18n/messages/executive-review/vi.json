@@ -23,7 +23,7 @@
 		"reviewReference": "Yêu cầu xem xét: {reviewTitle}",
 		"week": "Tuần {week}",
 		"pendingCondition": "Điều kiện đang chờ",
-		"earlyAccess": "Yêu cầu bản demo",
+		"earlyAccess": "Đặt lịch demo",
 		"selectionSummary": "{focus} · {target} · {classification}",
 		"resultStatus": "{count, plural, =0 {Không có sự kiện phù hợp với lựa chọn này.} other {Có # sự kiện trong lựa chọn này.}}"
 	},

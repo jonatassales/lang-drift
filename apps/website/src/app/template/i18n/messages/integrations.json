@@ -45,7 +45,7 @@
 		},
 		"closing": {
 			"description": "Start with the platform connection. Add the tools that support your team's workflow.",
-			"cta": "Ask for a Demo"
+			"cta": "Book a demo"
 		}
 	},
 	"pt-BR": {
@@ -94,7 +94,7 @@
 		},
 		"closing": {
 			"description": "Comece pela conexão com a plataforma. Adicione as ferramentas que apoiam o fluxo de trabalho da sua equipe.",
-			"cta": "Solicite uma demonstração"
+			"cta": "Agende uma demo"
 		}
 	},
 	"zh-Hant": {
@@ -143,7 +143,7 @@
 		},
 		"closing": {
 			"description": "先建立平台連線，再加入支援團隊工作流程的工具。",
-			"cta": "申請產品展示"
+			"cta": "預約展示"
 		}
 	},
 	"ja": {
@@ -192,7 +192,7 @@
 		},
 		"closing": {
 			"description": "まずプラットフォームを接続し、チームのワークフローを支えるツールを追加しましょう。",
-			"cta": "デモをリクエスト"
+			"cta": "デモを予約"
 		}
 	},
 	"vi": {
@@ -241,7 +241,7 @@
 		},
 		"closing": {
 			"description": "Bắt đầu với kết nối nền tảng. Thêm những công cụ hỗ trợ quy trình của nhóm.",
-			"cta": "Yêu cầu bản demo"
+			"cta": "Đặt lịch demo"
 		}
 	}
 }

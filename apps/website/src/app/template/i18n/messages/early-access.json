@@ -18,9 +18,7 @@
 			"emailRequired": "Enter your email address.",
 			"emailInvalid": "Enter a valid email address.",
 			"emailTooLong": "Use an email address with 254 characters or fewer."
-		},
-		"demoHeading": "Ask for a Demo",
-		"demoDescription": "Talk to your company state. Understand what changed, why, and the evidence behind product decisions."
+		}
 	},
 	"pt-BR": {
 		"pausedHeading": "Voltaremos em breve.",
@@ -41,9 +39,7 @@
 			"emailRequired": "Informe seu e-mail.",
 			"emailInvalid": "Informe um e-mail válido.",
 			"emailTooLong": "Use um e-mail com até 254 caracteres."
-		},
-		"demoHeading": "Solicite uma demonstração",
-		"demoDescription": "Converse com o estado da sua empresa. Entenda o que mudou, por quê e quais evidências sustentam as decisões de produto."
+		}
 	},
 	"zh-Hant": {
 		"pausedHeading": "我們很快就會回來。",
@@ -64,9 +60,7 @@
 			"emailRequired": "請輸入您的電子郵件地址。",
 			"emailInvalid": "請輸入有效的電子郵件地址。",
 			"emailTooLong": "請使用不超過 254 個字元的電子郵件地址。"
-		},
-		"demoHeading": "申請產品展示",
-		"demoDescription": "與您的企業現況對話。了解產品發生了哪些變化、原因，以及支持產品決策的證據。"
+		}
 	},
 	"ja": {
 		"pausedHeading": "まもなく再開します。",
@@ -87,9 +81,7 @@
 			"emailRequired": "メールアドレスを入力してください。",
 			"emailInvalid": "有効なメールアドレスを入力してください。",
 			"emailTooLong": "メールアドレスは254文字以内で入力してください。"
-		},
-		"demoHeading": "デモをリクエスト",
-		"demoDescription": "企業の現状と対話する。製品で何が変わったのか、その理由と意思決定を支えるエビデンスを理解しましょう。"
+		}
 	},
 	"vi": {
 		"pausedHeading": "Chúng tôi sẽ sớm trở lại.",
@@ -110,8 +102,6 @@
 			"emailRequired": "Nhập địa chỉ email của bạn.",
 			"emailInvalid": "Nhập địa chỉ email hợp lệ.",
 			"emailTooLong": "Dùng địa chỉ email có tối đa 254 ký tự."
-		},
-		"demoHeading": "Yêu cầu bản demo",
-		"demoDescription": "Đặt câu hỏi về tình hình công ty. Hiểu điều gì thay đổi, vì sao và bằng chứng đằng sau các quyết định sản phẩm."
+		}
 	}
 }

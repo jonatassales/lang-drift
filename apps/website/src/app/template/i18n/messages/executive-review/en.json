@@ -23,7 +23,7 @@
 		"reviewReference": "Review request: {reviewTitle}",
 		"week": "Week {week}",
 		"pendingCondition": "Pending condition",
-		"earlyAccess": "Ask for a Demo",
+		"earlyAccess": "Book a demo",
 		"selectionSummary": "{focus} · {target} · {classification}",
 		"resultStatus": "{count, plural, =0 {No events match this selection.} one {# event in this selection.} other {# events in this selection.}}"
 	},

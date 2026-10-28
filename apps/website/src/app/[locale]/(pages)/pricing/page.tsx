@@ -41,7 +41,7 @@ export default async function PricingPage(props: PricingPageProps) {
 			<WebsiteHeader />
 			<main className="plans-page" id="plans-main">
 				<PlansSection locale={locale} />
-				<EarlyAccessSection locale={locale} source="pricing" compact />
+				<EarlyAccessSection locale={locale} compact />
 			</main>
 			<WebsiteFooter locale={locale} compact />
 		</>

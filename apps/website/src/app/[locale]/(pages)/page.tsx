@@ -4,6 +4,7 @@ import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
 import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
+import { BookDemoBand } from '@components/book-a-demo/band'
 import { AiVoiceSection } from '@components/home/ai-voice-section'
 import { FinopsSection } from '@components/home/finops-section'
 import { MicroruntimesSection } from '@components/home/microruntimes-section'
@@ -51,6 +52,7 @@ export default async function WebsitePage(props: WebsitePageProps) {
 				<FinopsSection locale={locale} />
 				<AiVoiceSection locale={locale} />
 				<PlatformFaqSection locale={locale} />
+				<BookDemoBand locale={locale} />
 			</main>
 			<WebsiteFooter locale={locale} />
 		</>
