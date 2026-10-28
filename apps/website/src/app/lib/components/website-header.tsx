@@ -29,7 +29,7 @@ const drawerItem =
 // on a layer behind the bar's content, not on the header itself: an element
 // with a backdrop filter becomes the backdrop root of everything inside it.
 const glass =
-	"before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-transparent before:content-[''] before:transition-colors data-[scrolled=true]:before:bg-background/90 supports-[backdrop-filter]:data-[scrolled=true]:before:bg-background/45 supports-[backdrop-filter]:data-[scrolled=true]:before:backdrop-blur-2xl"
+	"before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-transparent before:content-[''] before:transition-colors data-[scrolled=true]:before:bg-background/60 supports-[backdrop-filter]:data-[scrolled=true]:before:bg-background/25 supports-[backdrop-filter]:data-[scrolled=true]:before:backdrop-blur-2xl"
 
 export function WebsiteHeader() {
 	const t = useTranslations('header')
