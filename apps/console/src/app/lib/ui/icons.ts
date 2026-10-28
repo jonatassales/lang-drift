@@ -1,5 +1,6 @@
 export {
 	CaretDown,
+	ChartLineUp,
 	CheckCircle,
 	Cube,
 	FileText,
@@ -17,6 +18,7 @@ export {
 	Stop,
 	Sun,
 	Trash,
+	UserCircle,
 	WarningDiamond,
 	X,
 } from '@phosphor-icons/react'

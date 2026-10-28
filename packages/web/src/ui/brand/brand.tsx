@@ -3,11 +3,18 @@ import type { CSSProperties } from 'react'
 export interface BrandProps {
 	className?: string
 	compact?: boolean
+	/** A fixed wordmark color; without it the wordmark takes the surrounding text color. */
 	tone?: 'dark' | 'light'
 }
 
 export interface LogoMarkProps {
 	size?: number
+}
+
+// The fixed wordmark colors a caller can ask for by tone.
+const toneColor: Record<NonNullable<BrandProps['tone']>, string> = {
+	dark: '#f5f5f5',
+	light: '#111111',
 }
 
 const wordmarkStyle: CSSProperties = {
@@ -45,9 +52,9 @@ export function LogoMark(props: LogoMarkProps) {
 }
 
 export function Brand(props: BrandProps) {
-	const { className, compact = false, tone = 'light' } = props
+	const { className, compact = false, tone } = props
 
-	const textColor = tone === 'dark' ? '#f5f5f5' : '#111111'
+	const textColor = tone ? toneColor[tone] : undefined
 
 	return (
 		<span

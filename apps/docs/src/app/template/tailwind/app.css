@@ -1,8 +1,0 @@
-@layer theme, base, components, utilities;
-
-@import 'tailwindcss';
-@import 'nextra-theme-docs/style.css';
-@import '@langdrift/tokens/docs.css';
-
-/* Tailwind does not scan @langdrift/web; the LangDrift mark strokes with this. */
-@source inline('stroke-foreground');

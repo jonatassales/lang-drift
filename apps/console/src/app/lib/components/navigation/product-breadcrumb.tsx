@@ -13,11 +13,7 @@ export async function ProductBreadcrumb(props: ProductBreadcrumbProps) {
 	const { locale, segments } = props
 
 	const [root, id, section] = segments
-	if (
-		!id ||
-		!['products', 'runtimes'].includes(root) ||
-		['new', 'import'].includes(id)
-	)
+	if (!id || !['products', 'runtimes'].includes(root) || id === 'new')
 		return null
 	const [t, navigation, detail] = await Promise.all([
 		getTranslations({
@@ -61,18 +57,11 @@ export async function ProductBreadcrumb(props: ProductBreadcrumbProps) {
 				href: `/runtimes/${id}/${section}`,
 			})
 	} else if (section === 'config') {
-		items.push(
-			{
-				key: 'config',
-				label: t('config'),
-				href: `${base}/config`,
-			},
-			{
-				key: 'secrets',
-				label: t('secrets'),
-				href: `${base}/config/secrets`,
-			},
-		)
+		items.push({
+			key: 'secrets',
+			label: t('secrets'),
+			href: `${base}/config/secrets`,
+		})
 	} else if (section === 'runtimes' && segments[3] === 'new') {
 		items.push(
 			{

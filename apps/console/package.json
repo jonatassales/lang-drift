@@ -7,7 +7,7 @@
 		"build": "next build",
 		"start": "next start --hostname 127.0.0.1 --port 3001",
 		"typecheck": "next typegen && tsc --noEmit",
-		"test": "node --test src/app/lib/views/runtimes/*.test.ts"
+		"test": "node --test 'src/app/lib/**/*.test.ts'"
 	},
 	"dependencies": {
 		"@langdrift/tokens": "workspace:*",

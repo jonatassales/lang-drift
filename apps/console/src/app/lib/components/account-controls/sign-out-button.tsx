@@ -17,10 +17,8 @@ export function SignOutButton() {
 		<div className="relative">
 			<button
 				disabled={pending}
-				aria-label={t('logout')}
-				title={t('logout')}
 				type="button"
-				className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-muted"
+				className="flex min-h-9 w-full cursor-pointer items-center gap-2.5 rounded-md px-2.5 text-left text-[12px] text-foreground hover:bg-muted"
 				onClick={() =>
 					startTransition(async () => {
 						setError(null)
@@ -35,7 +33,8 @@ export function SignOutButton() {
 					})
 				}
 			>
-				<SignOut aria-hidden size={16} />
+				<SignOut aria-hidden size={15} />
+				{t('logout')}
 			</button>
 			{error ? (
 				<div className="absolute right-0 top-full w-64">

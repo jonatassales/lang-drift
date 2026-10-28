@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 import type { ReactNode } from 'react'
 
+import '@langdrift/web/styles.css'
 import '@app/template/tailwind/app.css'
 import { isLocale, languageTags } from '@i18n/config'
 

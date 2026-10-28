@@ -4,7 +4,7 @@ Project knowledge for agents working in this repository. [`AGENTS.md`](/AGENTS.m
 
 ## Repository
 
-Monorepo with four packages, `@langdrift/tokens`, `@langdrift/web`, the `ex` CLI as `@langdrift/ex` and the Microruntimes contracts as `@langdrift/contracts`, and four apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/docs` is the Nextra documentation for LangDrift, ported from Exphere's docs under spec 0006 and served under `basePath: '/docs'`. `apps/extub` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from extub.
+Monorepo with four packages, `@langdrift/tokens`, `@langdrift/web`, the `ex` CLI as `@langdrift/ex` and the Microruntimes contracts as `@langdrift/contracts`, and three apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/extub` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from extub.
 
 - `apps/<app>/`: one deployable app each, Next.js except `extub`. `pnpm-workspace.yaml` picks them up through `apps/*`.
 - `packages/<capability>/`: shared across apps, never inside one. `tokens`, `web`, `ex` and `contracts` exist; `shell`, `account` and `runtime` are planned.
@@ -18,7 +18,7 @@ Monorepo with four packages, `@langdrift/tokens`, `@langdrift/web`, the `ex` CLI
 
 - pnpm is the only package manager. `devEngines.packageManager` in the root `package.json` makes other package managers fail, and `engineStrict` in `pnpm-workspace.yaml` enforces the Node range in `engines`.
 - Dependency install scripts run only when `allowBuilds` in `pnpm-workspace.yaml` allows them. Prebuilt binaries ship as optional dependencies, so the entries there are denials; approve a new one only when its build is required.
-- Work that spans the monorepo runs through Turborepo. The only root scripts that wrap `turbo run` are the three app launchers below; do not add others.
+- Work that spans the monorepo runs through Turborepo. The only root scripts that wrap `turbo run` are the two app launchers below; do not add others.
 - A package's scripts call its tool directly (for example `tsc --noEmit`). Turborepo tasks run those scripts by name. Do not add shell or JavaScript wrappers for what Turborepo or pnpm already do.
 
 Run from the repository root:
@@ -28,7 +28,6 @@ Run from the repository root:
 | `pnpm install` | Installs dependencies and the Git hooks, then links the `drift` launcher. Fails under another package manager or an unsupported Node version. |
 | `pnpm website` | Builds the packages the website depends on, then starts it in dev mode on port 3000. |
 | `pnpm console` | Builds the packages the console depends on, then starts it in dev mode on `http://127.0.0.1:3001` together with its stub API, extub, on `127.0.0.1:3401`. Extub needs a Go toolchain. |
-| `pnpm docs` | Builds the packages the docs depend on, then starts them in dev mode at `http://localhost:3002/docs`. |
 | `pnpm turbo run build` | Builds every package that has a `build` script, upstream packages first. |
 | `pnpm turbo run dev --filter=<package-name>` | Builds the packages an app depends on, then starts the app. |
 | `pnpm turbo run typecheck` | Runs each package's `typecheck` script. |
@@ -52,10 +51,10 @@ When the shell resolves `drift` to another program (a link from an older checkou
 
 ## Design and tokens
 
-- `@langdrift/tokens` builds the tokens with Style Dictionary. Each app imports one self-contained stylesheet built from the shared tokens and its app theme: `@langdrift/tokens/website.css` and `@langdrift/tokens/docs.css`.
+- `@langdrift/tokens` builds the tokens with Style Dictionary. Each app imports one self-contained stylesheet built from the shared tokens and its app theme: `@langdrift/tokens/website.css`, which the website and the console share.
 - Purple (primary) surfaces such as buttons carry `primary-foreground` text, which is white in both color schemes.
 - Components use roles, never a foundation or a brand color directly. Roles take shadcn's names (`background`, `foreground`, `primary`, `muted-foreground`, …) because the web apps use SmoothUI and shadcn components.
-- Prefixes: shared tokens are `--lg-*`; the website's app theme is `--site-*` and the docs' is `--docs-*`. Each app theme lives in `packages/tokens/themes/` and defines only primary and primary hover (the Exphere purple for both), which `--lg-color-primary` points to.
+- Prefixes: shared tokens are `--lg-*`; the website's app theme is `--site-*`. Each app theme lives in `packages/tokens/themes/` and defines only primary and primary hover (the Exphere purple for both), which `--lg-color-primary` points to.
 - Status colors (`--lg-status-*`), classification colors (`--lg-classification-*`), classification text tones (`--lg-classification-text-*`), drift colors (`--lg-drift-*`) and rainbow colors (`--lg-rainbow-1` to `--lg-rainbow-6`) are fixed across apps and never inherit a brand color; the rainbow colors serve the header's demo button highlight. See ADR 0003.
 - Light is declared in `:root` and dark in `.dark`. Apps render with the `.dark` class, so dark is the default, and the stylesheet points Tailwind's `dark:` variant at that class.
 - Each stylesheet also bridges the roles to shadcn's unprefixed variables and sets Tailwind's theme. The native color palette is reset, so only roles and the fixed color groups exist as Tailwind colors. See ADR 0001 and `.claude/rules/03-tailwind.rule.md`.
@@ -153,7 +152,7 @@ A design token with the same value in every app.
 _Avoid_: Global token, base token
 
 **App theme**:
-The tokens through which one app expresses its brand. It holds only the primary color and its hover state; the website and the docs each have one.
+The tokens through which one app expresses its brand. It holds only the primary color and its hover state; the website's is the one theme today, shared with the console.
 _Avoid_: Theme (alone), product theme, brand theme, skin
 
 **Foundation**:

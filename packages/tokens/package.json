@@ -4,8 +4,7 @@
 	"private": true,
 	"type": "module",
 	"exports": {
-		"./website.css": "./dist/website.css",
-		"./docs.css": "./dist/docs.css"
+		"./website.css": "./dist/website.css"
 	},
 	"files": [
 		"dist"

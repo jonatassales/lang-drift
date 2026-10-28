@@ -12,12 +12,6 @@
 			"runtimeExecutable": "pnpm",
 			"runtimeArgs": ["turbo", "run", "dev", "--filter=console"],
 			"port": 3001
-		},
-		{
-			"name": "docs",
-			"runtimeExecutable": "pnpm",
-			"runtimeArgs": ["turbo", "run", "dev", "--filter=docs"],
-			"port": 3002
 		}
 	]
 }
