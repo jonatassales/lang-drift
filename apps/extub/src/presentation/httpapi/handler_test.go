@@ -100,6 +100,10 @@ func TestHTTPBoundaryAndProductIsolation(t *testing.T) {
 	if len(list["widgets"].([]any)) != 0 {
 		t.Fatal("cross-product widgets")
 	}
+	status, vision := call(t, handler, "GET", "/console/products/seed-vision", nil)
+	if status != 200 || vision["product"].(map[string]any)["visionFixture"] == nil {
+		t.Fatalf("missing visionFixture on GET /console/products/seed-vision: %v", vision)
+	}
 	_, secret := call(t, handler, "POST", "/console/products/seed-microruntimes/secrets", map[string]string{"name": "Fixture"})
 	id := secret["credential"].(map[string]any)["id"].(string)
 	if status, _ := call(t, handler, "DELETE", "/console/products/seed-vision/secrets/"+id, nil); status != 404 {

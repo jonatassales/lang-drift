@@ -262,7 +262,774 @@
 			},
 			"ref": "",
 			"components": [],
-			"createdAt": "2026-10-20T12:00:00Z"
+			"createdAt": "2026-10-20T12:00:00Z",
+			"visionFixture": {
+				"fixtureVersion": "dashboard-v1",
+				"illustrative": true,
+				"overview": {
+					"fixtureVersion": "overview-v1",
+					"illustrative": true,
+					"productVision": 73,
+					"intentionalEvolution": 14,
+					"unexplainedDrift": 4
+				},
+				"history": {
+					"fixtureVersion": "overview-v1",
+					"illustrative": true,
+					"points": [
+						{
+							"month": "apr",
+							"value": 91,
+							"eventId": "baseline",
+							"event": {
+								"id": "baseline",
+								"actors": [
+									{
+										"id": "marina",
+										"name": "Marina Reis",
+										"initials": "MR",
+										"avatarKey": "marina",
+										"teamKey": "leadership"
+									}
+								],
+								"classification": "baseline",
+								"date": {
+									"month": 4,
+									"day": 2
+								},
+								"dateKey": "baseline",
+								"decisionKey": "events.baseline.decision",
+								"delta": 0,
+								"productAreaKey": "vision",
+								"reasonKey": "events.baseline.reason",
+								"titleKey": "events.baseline.title"
+							}
+						},
+						{
+							"month": "may",
+							"value": 88,
+							"eventId": ""
+						},
+						{
+							"month": "jun",
+							"value": 84,
+							"eventId": "pricing",
+							"event": {
+								"id": "pricing",
+								"actors": [
+									{
+										"id": "ana",
+										"name": "Ana",
+										"initials": "AN",
+										"avatarKey": "ana",
+										"teamKey": "product"
+									},
+									{
+										"id": "carlos",
+										"name": "Carlos",
+										"initials": "CA",
+										"avatarKey": "carlos",
+										"teamKey": "platform"
+									}
+								],
+								"classification": "intentional",
+								"date": {
+									"month": 6,
+									"day": 28
+								},
+								"dateKey": "pricing",
+								"decisionKey": "events.pricing.decision",
+								"delta": -9,
+								"productAreaKey": "pricing",
+								"reasonKey": "events.pricing.reason",
+								"titleKey": "events.pricing.title"
+							}
+						},
+						{
+							"month": "jul",
+							"value": 79,
+							"eventId": "authentication",
+							"event": {
+								"id": "authentication",
+								"actors": [
+									{
+										"id": "carlos",
+										"name": "Carlos",
+										"initials": "CA",
+										"avatarKey": "carlos",
+										"teamKey": "platform"
+									}
+								],
+								"classification": "unexplained",
+								"date": {
+									"month": 7,
+									"day": 22
+								},
+								"dateKey": "authentication",
+								"decisionKey": "events.authentication.decision",
+								"delta": -6,
+								"productAreaKey": "authentication",
+								"reasonKey": "events.authentication.reason",
+								"titleKey": "events.authentication.title"
+							}
+						},
+						{
+							"month": "aug",
+							"value": 73,
+							"eventId": "exports",
+							"event": {
+								"id": "exports",
+								"actors": [
+									{
+										"id": "ana",
+										"name": "Ana",
+										"initials": "AN",
+										"avatarKey": "ana",
+										"teamKey": "product"
+									}
+								],
+								"classification": "review",
+								"date": {
+									"month": 8,
+									"day": 20
+								},
+								"dateKey": "exports",
+								"decisionKey": "events.exports.decision",
+								"delta": -3,
+								"productAreaKey": "exports",
+								"reasonKey": "events.exports.reason",
+								"titleKey": "events.exports.title"
+							}
+						}
+					]
+				},
+				"vision": {
+					"baselineValue": 91,
+					"currentValue": 73,
+					"baselineDelta": 18,
+					"baselineVersion": "1.0",
+					"movementCount": 3,
+					"intentionalEvolution": 14,
+					"unexplainedDrift": 4
+				},
+				"baseline": {
+					"version": "1.0",
+					"date": {
+						"month": 4,
+						"day": 2
+					},
+					"dateKey": "baseline",
+					"approver": {
+						"id": "marina",
+						"name": "Marina Reis",
+						"initials": "MR",
+						"avatarKey": "marina",
+						"teamKey": "leadership"
+					},
+					"approverRole": "CEO",
+					"sourceArtifact": "PRD-001",
+					"strategyVersion": 3,
+					"productId": "atlas-home-hub",
+					"scopeKey": "baseline.coreProduct",
+					"areaKeys": ["pricing", "authentication", "onboarding", "exports"],
+					"supersedesKey": "baseline.supersedesValue",
+					"reasonKey": "baseline.reasonValue"
+				},
+				"decisions": [
+					{
+						"id": "pricing",
+						"titleKey": "decisions.pricingTitle",
+						"date": {
+							"month": 6,
+							"day": 28
+						},
+						"dateKey": "pricing",
+						"areaKey": "pricing",
+						"delta": -9,
+						"peopleKey": "decisions.pricingPeople",
+						"participants": [
+							{
+								"actor": {
+									"id": "ana",
+									"name": "Ana",
+									"initials": "AN",
+									"avatarKey": "ana",
+									"teamKey": "product"
+								},
+								"actionKey": "proposed"
+							},
+							{
+								"actor": {
+									"id": "marina",
+									"name": "Marina",
+									"initials": "MR",
+									"avatarKey": "marina",
+									"teamKey": "leadership"
+								},
+								"actionKey": "approved"
+							},
+							{
+								"actor": {
+									"id": "carlos",
+									"name": "Carlos",
+									"initials": "CA",
+									"avatarKey": "carlos",
+									"teamKey": "platform"
+								},
+								"actionKey": "implemented"
+							}
+						],
+						"evidence": [
+							{
+								"artifact": "PRD-014",
+								"messageKey": "",
+								"actorName": ""
+							},
+							{
+								"artifact": "",
+								"messageKey": "decisions.note",
+								"actorName": ""
+							},
+							{
+								"artifact": "",
+								"messageKey": "decisions.reviewMarina",
+								"actorName": "Marina"
+							}
+						]
+					},
+					{
+						"id": "authentication",
+						"titleKey": "decisions.authenticationTitle",
+						"date": {
+							"month": 7,
+							"day": 22
+						},
+						"dateKey": "authentication",
+						"areaKey": "authentication",
+						"delta": -6,
+						"peopleKey": "decisions.authenticationPeople",
+						"participants": [
+							{
+								"actor": {
+									"id": "carlos",
+									"name": "Carlos",
+									"initials": "CA",
+									"avatarKey": "carlos",
+									"teamKey": "platform"
+								},
+								"actionKey": "implemented"
+							},
+							{
+								"actor": {
+									"id": "ana",
+									"name": "Ana",
+									"initials": "AN",
+									"avatarKey": "ana",
+									"teamKey": "product"
+								},
+								"actionKey": "reviewed"
+							}
+						],
+						"evidence": [
+							{
+								"artifact": "PR #821",
+								"messageKey": "",
+								"actorName": ""
+							},
+							{
+								"artifact": "ADR-042",
+								"messageKey": "",
+								"actorName": ""
+							},
+							{
+								"artifact": "",
+								"messageKey": "decisions.reviewAna",
+								"actorName": "Ana"
+							},
+							{
+								"artifact": "",
+								"messageKey": "decisions.noDecision",
+								"actorName": ""
+							}
+						]
+					}
+				],
+				"people": [
+					{
+						"id": "ana",
+						"name": "Ana",
+						"fullName": "Ana",
+						"initials": "AN",
+						"avatarKey": "ana",
+						"teamKey": "product",
+						"roleKey": "people.anaRole",
+						"roleLiteral": "",
+						"detailKey": "people.anaDetail",
+						"decisions": 5,
+						"approvals": 3,
+						"implementations": 0,
+						"reviews": 0,
+						"proposals": 0,
+						"ownsKey": "pricing"
+					},
+					{
+						"id": "carlos",
+						"name": "Carlos",
+						"fullName": "Carlos",
+						"initials": "CA",
+						"avatarKey": "carlos",
+						"teamKey": "platform",
+						"roleKey": "people.carlosRole",
+						"roleLiteral": "",
+						"detailKey": "people.carlosDetail",
+						"decisions": 0,
+						"approvals": 0,
+						"implementations": 4,
+						"reviews": 2,
+						"proposals": 0,
+						"ownsKey": "authentication"
+					},
+					{
+						"id": "marina",
+						"name": "Marina",
+						"fullName": "Marina Reis",
+						"initials": "MR",
+						"avatarKey": "marina",
+						"teamKey": "leadership",
+						"roleKey": "",
+						"roleLiteral": "CEO",
+						"detailKey": "people.marinaDetail",
+						"decisions": 0,
+						"approvals": 3,
+						"implementations": 0,
+						"reviews": 0,
+						"proposals": 0,
+						"ownsKey": "vision"
+					},
+					{
+						"id": "lia",
+						"name": "Lia",
+						"fullName": "Lia",
+						"initials": "",
+						"avatarKey": "lia",
+						"teamKey": "",
+						"roleKey": "people.liaRole",
+						"roleLiteral": "",
+						"detailKey": "people.liaDetail",
+						"decisions": 0,
+						"approvals": 0,
+						"implementations": 0,
+						"reviews": 0,
+						"proposals": 3,
+						"ownsKey": "navigation"
+					}
+				],
+				"teams": [
+					{
+						"key": "product",
+						"areaKeys": ["pricing", "exports"],
+						"areasKey": "teamGroups.productAreas",
+						"detailKey": "teamGroups.productDetail",
+						"decisions": 2,
+						"unexplained": 0,
+						"approvals": 0
+					},
+					{
+						"key": "platform",
+						"areaKeys": ["pricing", "authentication"],
+						"areasKey": "teamGroups.platformAreas",
+						"detailKey": "teamGroups.platformDetail",
+						"decisions": 1,
+						"unexplained": 1,
+						"approvals": 0
+					},
+					{
+						"key": "leadership",
+						"areaKeys": ["vision"],
+						"areasKey": "teamGroups.leadershipAreas",
+						"detailKey": "teamGroups.leadershipDetail",
+						"decisions": 0,
+						"unexplained": 0,
+						"approvals": 1
+					}
+				],
+				"evidence": [
+					{
+						"artifact": "PR #821",
+						"observationKey": "evidence.authentication",
+						"statusKey": "evidence.linked"
+					},
+					{
+						"artifact": "ADR-042",
+						"observationKey": "evidence.strategy",
+						"statusKey": "evidence.linked"
+					},
+					{
+						"artifact": "exports-roadmap.md",
+						"observationKey": "events.exports.title",
+						"statusKey": "classifications.review"
+					}
+				],
+				"report": {
+					"fromValue": 79,
+					"toValue": 73,
+					"intentionalEvolution": 14,
+					"unexplainedDrift": 4,
+					"summaryKey": "reports.summary"
+				},
+				"attention": [
+					{
+						"id": "authentication",
+						"eventId": "authentication",
+						"classification": "unexplained",
+						"titleKey": "attention.authentication",
+						"detailKey": "attention.classification",
+						"actorName": "Carlos",
+						"teamKey": "platform",
+						"actionKey": "reviewDecision"
+					},
+					{
+						"id": "exports",
+						"eventId": "exports",
+						"classification": "review",
+						"titleKey": "attention.exports",
+						"detailKey": "events.exports.reason",
+						"actorName": "",
+						"teamKey": "",
+						"actionKey": "inspectEvolution"
+					}
+				],
+				"comment": {
+					"author": {
+						"id": "ana",
+						"name": "Ana",
+						"initials": "AN",
+						"avatarKey": "ana",
+						"teamKey": "product"
+					},
+					"date": {
+						"month": 8,
+						"day": 20
+					},
+					"dateKey": "exports",
+					"messageKey": "vision.comment"
+				},
+				"products": [
+					{
+						"id": "atlas-home-hub",
+						"name": "Atlas Home Hub",
+						"initials": "A"
+					},
+					{
+						"id": "atlas-checkout",
+						"name": "Atlas Checkout",
+						"initials": "A"
+					},
+					{
+						"id": "atlas-mobile",
+						"name": "Atlas Mobile",
+						"initials": "A"
+					}
+				],
+				"account": {
+					"id": "jonny",
+					"avatarKey": "jonny"
+				},
+				"notifications": {
+					"count": 2,
+					"eventIds": ["authentication", "exports"],
+					"descriptionKey": "attentionDescription"
+				},
+				"voice": {
+					"baselineValue": 91,
+					"currentValue": 73,
+					"weeklyIntentional": 4,
+					"weeklyUnexplained": 2,
+					"answerKeys": ["vision", "week", "unexplained"],
+					"fallbackKey": "fallback"
+				},
+				"workspace": {
+					"version": "workspace-v1",
+					"artifacts": [
+						{
+							"id": "RES-001",
+							"kind": "research",
+							"titleKey": "workspace.artifacts.researchMobile.title",
+							"summaryKey": "workspace.artifacts.researchMobile.summary",
+							"path": ".drifts/vision/research/RES-001.md",
+							"source": "local",
+							"status": "approved",
+							"occurredAt": "2026-09-25T13:00:00Z",
+							"revision": "1.0",
+							"references": [],
+							"contentKey": "workspace.artifacts.researchMobile.content"
+						},
+						{
+							"id": "PRD-001",
+							"kind": "prd",
+							"titleKey": "workspace.artifacts.webMobile.title",
+							"summaryKey": "workspace.artifacts.webMobile.summary",
+							"path": ".drifts/vision/prd/PRD-001.md",
+							"source": "local",
+							"status": "approved",
+							"occurredAt": "2026-09-26T13:00:00Z",
+							"revision": "1.2",
+							"references": ["RES-001", "VT-01"],
+							"contentKey": "workspace.artifacts.webMobile.content"
+						},
+						{
+							"id": "DEC-04",
+							"kind": "adr",
+							"titleKey": "workspace.artifacts.deferPwa.title",
+							"summaryKey": "workspace.artifacts.deferPwa.summary",
+							"path": ".drifts/evidence/adr/DEC-04.md",
+							"source": "local",
+							"status": "approved",
+							"occurredAt": "2026-10-01T13:00:00Z",
+							"revision": "1.0",
+							"references": ["PRD-001", "VT-01"],
+							"contentKey": "workspace.artifacts.deferPwa.content"
+						},
+						{
+							"id": "REC-108",
+							"kind": "record",
+							"titleKey": "workspace.artifacts.removePwa.title",
+							"summaryKey": "workspace.artifacts.removePwa.summary",
+							"path": ".drifts/evidence/record/REC-108.json",
+							"source": "github",
+							"status": "recorded",
+							"occurredAt": "2026-10-02T13:38:00Z",
+							"revision": "7c19e2a",
+							"references": ["DEC-04", "PRD-001"],
+							"contentKey": "workspace.artifacts.removePwa.content"
+						},
+						{
+							"id": "FB-017",
+							"kind": "feedback",
+							"titleKey": "workspace.artifacts.mobileFeedback.title",
+							"summaryKey": "workspace.artifacts.mobileFeedback.summary",
+							"path": ".drifts/evidence/record/FB-017.json",
+							"source": "feedback",
+							"status": "unverified",
+							"occurredAt": "2026-10-03T13:38:00Z",
+							"revision": "1",
+							"references": ["VT-01"],
+							"contentKey": "workspace.artifacts.mobileFeedback.content"
+						},
+						{
+							"id": "REV-004-01",
+							"kind": "audit",
+							"titleKey": "workspace.artifacts.initialReview.title",
+							"summaryKey": "workspace.artifacts.initialReview.summary",
+							"path": ".drifts/evidence/audit/reports/REV-004-01.md",
+							"source": "local",
+							"status": "reviewed",
+							"occurredAt": "2026-10-03T13:12:00Z",
+							"revision": "1",
+							"references": ["DR-004", "DEC-04", "REC-108"],
+							"contentKey": "workspace.artifacts.initialReview.content"
+						},
+						{
+							"id": "PRD-002",
+							"kind": "prd",
+							"titleKey": "workspace.artifacts.provenance.title",
+							"summaryKey": "workspace.artifacts.provenance.summary",
+							"path": ".drifts/vision/prd/PRD-002.md",
+							"source": "local",
+							"status": "approved",
+							"occurredAt": "2026-09-26T14:00:00Z",
+							"revision": "1.1",
+							"references": ["VT-02"],
+							"contentKey": "workspace.artifacts.provenance.content"
+						},
+						{
+							"id": "REC-110",
+							"kind": "record",
+							"titleKey": "workspace.artifacts.sourceChange.title",
+							"summaryKey": "workspace.artifacts.sourceChange.summary",
+							"path": ".drifts/evidence/record/REC-110.json",
+							"source": "github",
+							"status": "recorded",
+							"occurredAt": "2026-10-03T12:00:00Z",
+							"revision": "a82bd10",
+							"references": ["PRD-002"],
+							"contentKey": "workspace.artifacts.sourceChange.content"
+						},
+						{
+							"id": "PRD-003",
+							"kind": "prd",
+							"titleKey": "workspace.artifacts.decisionContext.title",
+							"summaryKey": "workspace.artifacts.decisionContext.summary",
+							"path": ".drifts/vision/prd/PRD-003.md",
+							"source": "local",
+							"status": "approved",
+							"occurredAt": "2026-09-26T15:00:00Z",
+							"revision": "1.0",
+							"references": ["VT-03"],
+							"contentKey": "workspace.artifacts.decisionContext.content"
+						},
+						{
+							"id": "REC-109",
+							"kind": "record",
+							"titleKey": "workspace.artifacts.missingReferences.title",
+							"summaryKey": "workspace.artifacts.missingReferences.summary",
+							"path": ".drifts/evidence/record/REC-109.json",
+							"source": "github",
+							"status": "recorded",
+							"occurredAt": "2026-10-02T16:00:00Z",
+							"revision": "f32ca18",
+							"references": ["PRD-003"],
+							"contentKey": "workspace.artifacts.missingReferences.content"
+						}
+					],
+					"drifts": [
+						{
+							"id": "DR-004",
+							"titleKey": "workspace.drifts.mobile.title",
+							"summaryKey": "workspace.drifts.mobile.summary",
+							"classification": "expected",
+							"reviewStatus": "evidence-requested",
+							"productionStatus": "unverified",
+							"targetId": "VT-01",
+							"artifactIds": ["PRD-001", "DEC-04", "REC-108", "REV-004-01"],
+							"observedAt": "2026-10-02T13:38:00Z",
+							"decisionId": "DEC-04"
+						},
+						{
+							"id": "DR-006",
+							"titleKey": "workspace.drifts.references.title",
+							"summaryKey": "workspace.drifts.references.summary",
+							"classification": "unexpected",
+							"reviewStatus": "pending",
+							"productionStatus": "unverified",
+							"targetId": "VT-03",
+							"artifactIds": ["PRD-003", "REC-109"],
+							"observedAt": "2026-10-02T16:00:00Z",
+							"decisionId": ""
+						},
+						{
+							"id": "DR-008",
+							"titleKey": "workspace.drifts.provenance.title",
+							"summaryKey": "workspace.drifts.provenance.summary",
+							"classification": "review",
+							"reviewStatus": "in-progress",
+							"productionStatus": "unverified",
+							"targetId": "VT-02",
+							"artifactIds": ["PRD-002", "REC-110"],
+							"observedAt": "2026-10-03T12:00:00Z",
+							"decisionId": ""
+						}
+					],
+					"targets": [
+						{
+							"id": "VT-01",
+							"titleKey": "workspace.targets.mobile.title",
+							"summaryKey": "workspace.targets.mobile.summary",
+							"revision": "1.2",
+							"status": "active",
+							"artifactIds": ["PRD-001", "RES-001", "DEC-04"]
+						},
+						{
+							"id": "VT-02",
+							"titleKey": "workspace.targets.provenance.title",
+							"summaryKey": "workspace.targets.provenance.summary",
+							"revision": "1.1",
+							"status": "active",
+							"artifactIds": ["PRD-002"]
+						},
+						{
+							"id": "VT-03",
+							"titleKey": "workspace.targets.context.title",
+							"summaryKey": "workspace.targets.context.summary",
+							"revision": "1.0",
+							"status": "active",
+							"artifactIds": ["PRD-003"]
+						}
+					],
+					"timeline": [
+						{
+							"id": "EV-001",
+							"titleKey": "workspace.timeline.research.title",
+							"date": "2026-09-25T13:00:00Z",
+							"kind": "research",
+							"artifactId": "RES-001",
+							"driftId": ""
+						},
+						{
+							"id": "EV-002",
+							"titleKey": "workspace.timeline.vision.title",
+							"date": "2026-09-26T13:00:00Z",
+							"kind": "vision",
+							"artifactId": "PRD-001",
+							"driftId": ""
+						},
+						{
+							"id": "EV-003",
+							"titleKey": "workspace.timeline.decision.title",
+							"date": "2026-10-01T13:00:00Z",
+							"kind": "decision",
+							"artifactId": "DEC-04",
+							"driftId": "DR-004"
+						},
+						{
+							"id": "EV-004",
+							"titleKey": "workspace.timeline.implementation.title",
+							"date": "2026-10-02T13:38:00Z",
+							"kind": "record",
+							"artifactId": "REC-108",
+							"driftId": "DR-004"
+						},
+						{
+							"id": "EV-005",
+							"titleKey": "workspace.timeline.references.title",
+							"date": "2026-10-02T16:00:00Z",
+							"kind": "record",
+							"artifactId": "REC-109",
+							"driftId": "DR-006"
+						},
+						{
+							"id": "EV-006",
+							"titleKey": "workspace.timeline.sourceChange.title",
+							"date": "2026-10-03T12:00:00Z",
+							"kind": "record",
+							"artifactId": "REC-110",
+							"driftId": "DR-008"
+						},
+						{
+							"id": "EV-007",
+							"titleKey": "workspace.timeline.review.title",
+							"date": "2026-10-03T13:12:00Z",
+							"kind": "review",
+							"artifactId": "REV-004-01",
+							"driftId": "DR-004"
+						}
+					],
+					"pullRequest": {
+						"id": "REC-108",
+						"number": 108,
+						"repository": "langdrift/example-product",
+						"baseSha": "bc423d1e796dc98bc1b5f0a18ad83c04816b5e82",
+						"headSha": "7c19e2a01bdc398a831efda7cb93bd0a14c8d172",
+						"branch": "scope/defer-pwa",
+						"files": [
+							{
+								"path": "apps/website/next.config.ts",
+								"before": "import type { NextConfig } from 'next'\nimport withPWA from 'next-pwa'\n\nconst config: NextConfig = {\n  reactStrictMode: true,\n  output: 'standalone'\n}\n\nexport default withPWA({\n  dest: 'public',\n  register: true\n})(config)\n",
+								"after": "import type { NextConfig } from 'next'\n\nconst config: NextConfig = {\n  reactStrictMode: true,\n  output: 'standalone'\n}\n\nexport default config\n",
+								"additions": 1,
+								"deletions": 5
+							},
+							{
+								"path": "apps/website/src/app/register-service-worker.ts",
+								"before": "export async function registerServiceWorker() {\n  if (!('serviceWorker' in navigator)) return\n\n  await navigator.serviceWorker.register('/sw.js', {\n    scope: '/'\n  })\n}\n",
+								"after": "",
+								"additions": 0,
+								"deletions": 7
+							}
+						]
+					}
+				}
+			}
 		}
 	],
 	"runtimes": [
@@ -270,7 +1037,7 @@
 			"id": "seed-runtime-1",
 			"nativeRuntimeId": "seed-runtime-1",
 			"productId": "seed-microruntimes",
-			"name": "Ticket 02 \u00b7 Commerce platform",
+			"name": "Ticket 02 · Commerce platform",
 			"components": [
 				{
 					"name": "storefront",
@@ -474,7 +1241,7 @@
 			"id": "seed-runtime-2",
 			"nativeRuntimeId": "seed-runtime-2",
 			"productId": "seed-microruntimes",
-			"name": "Ticket 06 \u00b7 Memory indexing",
+			"name": "Ticket 06 · Memory indexing",
 			"components": [
 				{
 					"name": "gateway",
@@ -548,7 +1315,7 @@
 			"id": "seed-runtime-3",
 			"nativeRuntimeId": "seed-runtime-3",
 			"productId": "seed-microruntimes",
-			"name": "Ticket 11 \u00b7 Batch processing",
+			"name": "Ticket 11 · Batch processing",
 			"components": [
 				{
 					"name": "gateway",
@@ -622,7 +1389,7 @@
 			"id": "seed-runtime-4",
 			"nativeRuntimeId": "seed-runtime-4",
 			"productId": "seed-microruntimes",
-			"name": "Ticket 15 \u00b7 Integration checks",
+			"name": "Ticket 15 · Integration checks",
 			"components": [
 				{
 					"name": "gateway",
