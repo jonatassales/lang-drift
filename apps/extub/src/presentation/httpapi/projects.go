@@ -1,0 +1,117 @@
+package httpapi
+
+import (
+	"github.com/jonatassales/tao/apps/extub/src/domain"
+	"net/http"
+)
+
+func (handler Handler) projects(request *http.Request, parts []string) (any, error) {
+	method := request.Method
+	if len(parts) == 0 {
+		if method == http.MethodGet {
+			catalog := handler.Service.Snapshot()
+			runtimeProjects := map[string]string{}
+			for _, runtime := range catalog.Runtimes {
+				runtimeProjects[runtime.ID] = runtime.ProjectID
+			}
+			return map[string]any{"source": "stub", "projects": catalog.Projects, "runtimeProjects": runtimeProjects}, nil
+		}
+		if method != http.MethodPost {
+			return nil, errMethod
+		}
+		var input struct {
+			Path string `json:"path"`
+			Name string `json:"name"`
+		}
+		if err := decode(request, &input); err != nil {
+			return nil, err
+		}
+		project, err := handler.Service.CreateProject(input.Path, input.Name)
+		return envelope("project", project), err
+	}
+	catalog := handler.Service.Snapshot()
+	project, err := catalog.Project(parts[0])
+	if err != nil {
+		return nil, err
+	}
+	action := ""
+	if len(parts) > 1 {
+		action = parts[1]
+	}
+	switch action {
+	case "executions", "history":
+		if method != http.MethodGet || len(parts) != 2 {
+			return nil, errMethod
+		}
+		return catalog.Activity(project.ID, action, request.URL.Query().Get("cursor"), handler.Service.Now())
+	case "secrets":
+		return handler.secrets(request, parts)
+	case "episodes":
+		if method != http.MethodGet {
+			return nil, errMethod
+		}
+		return envelope("episodes", []any{}), nil
+	case "recommendations":
+		if method != http.MethodPost {
+			return nil, errMethod
+		}
+		return recommendation(), nil
+	case "prepare", "discover":
+		if method != http.MethodPost {
+			return nil, errMethod
+		}
+	case "":
+		if method != http.MethodGet {
+			return nil, errMethod
+		}
+	default:
+		return nil, domain.ErrNotFound
+	}
+	unknown := 0
+	for _, widget := range catalog.Widgets(handler.Service.Now(), 0) {
+		if widget.Runtime.ProjectID != project.ID {
+			continue
+		}
+		for _, execution := range widget.Executions {
+			if execution.State == "unknown" {
+				unknown++
+			}
+		}
+	}
+	return map[string]any{"source": "stub", "project": project, "agent": map[string]any{"state": "connected", "lastSeenAt": handler.Service.Now().UTC()}, "unknownCount": unknown}, nil
+}
+func (handler Handler) secrets(request *http.Request, parts []string) (any, error) {
+	project := parts[0]
+	switch request.Method {
+	case http.MethodGet:
+		own := []domain.Secret{}
+		for _, secret := range handler.Service.Snapshot().Secrets {
+			if secret.ProjectID == project {
+				own = append(own, secret)
+			}
+		}
+		return envelope("secrets", own), nil
+	case http.MethodPost:
+		if len(parts) != 2 {
+			return nil, domain.ErrNotFound
+		}
+		var input struct {
+			Name string `json:"name"`
+		}
+		if err := decode(request, &input); err != nil {
+			return nil, err
+		}
+		secret, err := handler.Service.CreateSecret(project, input.Name)
+		return map[string]any{"source": "stub", "credential": secret, "secret": "synthetic-" + secret.ID + "-not-a-credential"}, err
+	case http.MethodDelete:
+		if len(parts) != 3 {
+			return nil, domain.ErrNotFound
+		}
+		return envelope("revoked", true), handler.Service.RevokeSecret(project, parts[2])
+	default:
+		return nil, errMethod
+	}
+}
+func recommendation() any {
+	return envelope("recommendation", map[string]any{"status": "suggested", "values": map[string]any{"cpu": 2, "memoryMiB": 2048, "model": "seed/model", "effort": "high", "llmBudgetUsd": 10}, "episodeIds": []string{}, "reasonCode": "stub_suggestion", "limitationCodes": []string{"future_workload_unverified"}})
+}

@@ -1,0 +1,729 @@
+{
+	"source": "stub",
+	"projects": [
+		{
+			"id": "seed-project",
+			"name": "Exphere Studio",
+			"source": {
+				"kind": "local",
+				"path": "/seeds/exphere-studio"
+			},
+			"ref": "",
+			"components": [
+				{
+					"name": "storefront",
+					"path": "storefront",
+					"kind": "dockerfile",
+					"image": "storefront:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "storefront:seed", "storefront"]
+					},
+					"stacks": ["nextjs", "react", "nodejs"]
+				},
+				{
+					"name": "dashboard",
+					"path": "dashboard",
+					"kind": "dockerfile",
+					"image": "dashboard:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "dashboard:seed", "dashboard"]
+					},
+					"stacks": ["react"]
+				},
+				{
+					"name": "gateway",
+					"path": "gateway",
+					"kind": "dockerfile",
+					"image": "gateway:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "gateway:seed", "gateway"]
+					},
+					"stacks": ["nodejs"]
+				},
+				{
+					"name": "identity",
+					"path": "identity",
+					"kind": "dockerfile",
+					"image": "identity:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "identity:seed", "identity"]
+					},
+					"stacks": ["go"]
+				},
+				{
+					"name": "catalog",
+					"path": "catalog",
+					"kind": "dockerfile",
+					"image": "catalog:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "catalog:seed", "catalog"]
+					},
+					"stacks": ["nodejs"]
+				},
+				{
+					"name": "checkout",
+					"path": "checkout",
+					"kind": "dockerfile",
+					"image": "checkout:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "checkout:seed", "checkout"]
+					},
+					"stacks": ["nodejs"]
+				},
+				{
+					"name": "payments",
+					"path": "payments",
+					"kind": "dockerfile",
+					"image": "payments:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "payments:seed", "payments"]
+					},
+					"stacks": ["go"]
+				},
+				{
+					"name": "orders",
+					"path": "orders",
+					"kind": "dockerfile",
+					"image": "orders:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "orders:seed", "orders"]
+					},
+					"stacks": ["go"]
+				},
+				{
+					"name": "inventory",
+					"path": "inventory",
+					"kind": "dockerfile",
+					"image": "inventory:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "inventory:seed", "inventory"]
+					},
+					"stacks": ["go"]
+				},
+				{
+					"name": "notifications",
+					"path": "notifications",
+					"kind": "dockerfile",
+					"image": "notifications:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "notifications:seed", "notifications"]
+					},
+					"stacks": ["nodejs"]
+				},
+				{
+					"name": "worker",
+					"path": "worker",
+					"kind": "dockerfile",
+					"image": "worker:seed",
+					"port": 3001,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "worker:seed", "worker"]
+					},
+					"stacks": ["python"]
+				},
+				{
+					"name": "memory",
+					"path": "memory",
+					"kind": "dockerfile",
+					"image": "memory:seed",
+					"port": 3002,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "memory:seed", "memory"]
+					},
+					"stacks": ["postgresql"]
+				},
+				{
+					"name": "events",
+					"path": "events",
+					"kind": "dockerfile",
+					"image": "events:seed",
+					"port": 3003,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "events:seed", "events"]
+					},
+					"stacks": ["kafka"]
+				},
+				{
+					"name": "cache",
+					"path": "cache",
+					"kind": "dockerfile",
+					"image": "cache:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "cache:seed", "cache"]
+					},
+					"stacks": ["redis"]
+				}
+			],
+			"createdAt": "2026-10-21T12:00:00Z",
+			"componentLinks": [
+				{
+					"from": "storefront",
+					"to": "gateway"
+				},
+				{
+					"from": "storefront",
+					"to": "cache"
+				},
+				{
+					"from": "dashboard",
+					"to": "identity"
+				},
+				{
+					"from": "gateway",
+					"to": "identity"
+				},
+				{
+					"from": "gateway",
+					"to": "checkout"
+				},
+				{
+					"from": "gateway",
+					"to": "catalog"
+				},
+				{
+					"from": "checkout",
+					"to": "payments"
+				},
+				{
+					"from": "payments",
+					"to": "memory"
+				},
+				{
+					"from": "orders",
+					"to": "memory"
+				},
+				{
+					"from": "inventory",
+					"to": "events"
+				},
+				{
+					"from": "notifications",
+					"to": "events"
+				},
+				{
+					"from": "worker",
+					"to": "events"
+				},
+				{
+					"from": "worker",
+					"to": "memory"
+				},
+				{
+					"from": "catalog",
+					"to": "inventory"
+				}
+			]
+		},
+		{
+			"id": "seed-lab",
+			"name": "Runtime Lab",
+			"source": {
+				"kind": "local",
+				"path": "/seeds/runtime-lab"
+			},
+			"ref": "",
+			"components": [
+				{
+					"name": "gateway",
+					"path": "gateway",
+					"kind": "dockerfile",
+					"image": "gateway:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "gateway:seed", "gateway"]
+					},
+					"stacks": ["nodejs"]
+				},
+				{
+					"name": "worker",
+					"path": "worker",
+					"kind": "dockerfile",
+					"image": "worker:seed",
+					"port": 3001,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "worker:seed", "worker"]
+					},
+					"stacks": ["python"]
+				}
+			],
+			"createdAt": "2026-10-20T12:00:00Z",
+			"componentLinks": [
+				{
+					"from": "gateway",
+					"to": "worker"
+				}
+			]
+		}
+	],
+	"runtimes": [
+		{
+			"id": "seed-runtime-1",
+			"nativeRuntimeId": "seed-runtime-1",
+			"projectId": "seed-project",
+			"name": "Ticket 02 \u00b7 Commerce platform",
+			"components": [
+				{
+					"name": "storefront",
+					"path": "storefront",
+					"kind": "dockerfile",
+					"image": "storefront:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "storefront:seed", "storefront"]
+					},
+					"stacks": ["nextjs", "react", "nodejs"]
+				},
+				{
+					"name": "dashboard",
+					"path": "dashboard",
+					"kind": "dockerfile",
+					"image": "dashboard:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "dashboard:seed", "dashboard"]
+					},
+					"stacks": ["react"]
+				},
+				{
+					"name": "gateway",
+					"path": "gateway",
+					"kind": "dockerfile",
+					"image": "gateway:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "gateway:seed", "gateway"]
+					},
+					"stacks": ["nodejs"]
+				},
+				{
+					"name": "identity",
+					"path": "identity",
+					"kind": "dockerfile",
+					"image": "identity:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "identity:seed", "identity"]
+					},
+					"stacks": ["go"]
+				},
+				{
+					"name": "catalog",
+					"path": "catalog",
+					"kind": "dockerfile",
+					"image": "catalog:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "catalog:seed", "catalog"]
+					},
+					"stacks": ["nodejs"]
+				},
+				{
+					"name": "checkout",
+					"path": "checkout",
+					"kind": "dockerfile",
+					"image": "checkout:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "checkout:seed", "checkout"]
+					},
+					"stacks": ["nodejs"]
+				},
+				{
+					"name": "payments",
+					"path": "payments",
+					"kind": "dockerfile",
+					"image": "payments:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "payments:seed", "payments"]
+					},
+					"stacks": ["go"]
+				},
+				{
+					"name": "orders",
+					"path": "orders",
+					"kind": "dockerfile",
+					"image": "orders:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "orders:seed", "orders"]
+					},
+					"stacks": ["go"]
+				},
+				{
+					"name": "inventory",
+					"path": "inventory",
+					"kind": "dockerfile",
+					"image": "inventory:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "inventory:seed", "inventory"]
+					},
+					"stacks": ["go"]
+				},
+				{
+					"name": "notifications",
+					"path": "notifications",
+					"kind": "dockerfile",
+					"image": "notifications:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "notifications:seed", "notifications"]
+					},
+					"stacks": ["nodejs"]
+				},
+				{
+					"name": "worker",
+					"path": "worker",
+					"kind": "dockerfile",
+					"image": "worker:seed",
+					"port": 3001,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "worker:seed", "worker"]
+					},
+					"stacks": ["python"]
+				},
+				{
+					"name": "memory",
+					"path": "memory",
+					"kind": "dockerfile",
+					"image": "memory:seed",
+					"port": 3002,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "memory:seed", "memory"]
+					},
+					"stacks": ["postgresql"]
+				},
+				{
+					"name": "events",
+					"path": "events",
+					"kind": "dockerfile",
+					"image": "events:seed",
+					"port": 3003,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "events:seed", "events"]
+					},
+					"stacks": ["kafka"]
+				},
+				{
+					"name": "cache",
+					"path": "cache",
+					"kind": "dockerfile",
+					"image": "cache:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "cache:seed", "cache"]
+					},
+					"stacks": ["redis"]
+				}
+			],
+			"configuration": {
+				"cpu": 2,
+				"memoryMiB": 2048,
+				"model": "seed/model",
+				"effort": "high",
+				"llmBudgetUsd": 10
+			},
+			"revision": 1,
+			"markdown": "# Synthetic microruntime\n\nSeed configuration; no workload is executed.",
+			"desiredState": "running",
+			"intentVersion": 1,
+			"credentialRevoked": false,
+			"createdAt": "2026-10-21T12:00:00Z",
+			"updatedAt": "2026-10-21T12:00:00Z"
+		},
+		{
+			"id": "seed-runtime-2",
+			"nativeRuntimeId": "seed-runtime-2",
+			"projectId": "seed-project",
+			"name": "Ticket 06 \u00b7 Memory indexing",
+			"components": [
+				{
+					"name": "gateway",
+					"path": "gateway",
+					"kind": "dockerfile",
+					"image": "gateway:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "gateway:seed", "gateway"]
+					},
+					"stacks": ["nodejs"]
+				},
+				{
+					"name": "worker",
+					"path": "worker",
+					"kind": "dockerfile",
+					"image": "worker:seed",
+					"port": 3001,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "worker:seed", "worker"]
+					},
+					"stacks": ["python"]
+				},
+				{
+					"name": "memory",
+					"path": "memory",
+					"kind": "dockerfile",
+					"image": "memory:seed",
+					"port": 3002,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "memory:seed", "memory"]
+					},
+					"stacks": ["postgresql"]
+				},
+				{
+					"name": "events",
+					"path": "events",
+					"kind": "dockerfile",
+					"image": "events:seed",
+					"port": 3003,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "events:seed", "events"]
+					},
+					"stacks": ["kafka"]
+				}
+			],
+			"configuration": {
+				"cpu": 2,
+				"memoryMiB": 2048,
+				"model": "seed/model",
+				"effort": "high",
+				"llmBudgetUsd": 10
+			},
+			"revision": 1,
+			"markdown": "# Synthetic microruntime\n\nSeed configuration; no workload is executed.",
+			"desiredState": "running",
+			"intentVersion": 1,
+			"credentialRevoked": false,
+			"createdAt": "2026-10-21T12:00:00Z",
+			"updatedAt": "2026-10-21T12:00:00Z"
+		},
+		{
+			"id": "seed-runtime-3",
+			"nativeRuntimeId": "seed-runtime-3",
+			"projectId": "seed-project",
+			"name": "Ticket 11 \u00b7 Batch processing",
+			"components": [
+				{
+					"name": "gateway",
+					"path": "gateway",
+					"kind": "dockerfile",
+					"image": "gateway:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "gateway:seed", "gateway"]
+					},
+					"stacks": ["nodejs"]
+				},
+				{
+					"name": "worker",
+					"path": "worker",
+					"kind": "dockerfile",
+					"image": "worker:seed",
+					"port": 3001,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "worker:seed", "worker"]
+					},
+					"stacks": ["python"]
+				},
+				{
+					"name": "memory",
+					"path": "memory",
+					"kind": "dockerfile",
+					"image": "memory:seed",
+					"port": 3002,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "memory:seed", "memory"]
+					},
+					"stacks": ["postgresql"]
+				},
+				{
+					"name": "events",
+					"path": "events",
+					"kind": "dockerfile",
+					"image": "events:seed",
+					"port": 3003,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "events:seed", "events"]
+					},
+					"stacks": ["kafka"]
+				}
+			],
+			"configuration": {
+				"cpu": 2,
+				"memoryMiB": 2048,
+				"model": "seed/model",
+				"effort": "high",
+				"llmBudgetUsd": 10
+			},
+			"revision": 1,
+			"markdown": "# Synthetic microruntime\n\nSeed configuration; no workload is executed.",
+			"desiredState": "running",
+			"intentVersion": 1,
+			"credentialRevoked": false,
+			"createdAt": "2026-10-21T12:00:00Z",
+			"updatedAt": "2026-10-21T12:00:00Z"
+		},
+		{
+			"id": "seed-runtime-4",
+			"nativeRuntimeId": "seed-runtime-4",
+			"projectId": "seed-project",
+			"name": "Ticket 15 \u00b7 Integration checks",
+			"components": [
+				{
+					"name": "gateway",
+					"path": "gateway",
+					"kind": "dockerfile",
+					"image": "gateway:seed",
+					"port": 3000,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "gateway:seed", "gateway"]
+					},
+					"stacks": ["nodejs"]
+				},
+				{
+					"name": "worker",
+					"path": "worker",
+					"kind": "dockerfile",
+					"image": "worker:seed",
+					"port": 3001,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "worker:seed", "worker"]
+					},
+					"stacks": ["python"]
+				},
+				{
+					"name": "memory",
+					"path": "memory",
+					"kind": "dockerfile",
+					"image": "memory:seed",
+					"port": 3002,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "memory:seed", "memory"]
+					},
+					"stacks": ["postgresql"]
+				},
+				{
+					"name": "events",
+					"path": "events",
+					"kind": "dockerfile",
+					"image": "events:seed",
+					"port": 3003,
+					"readinessPath": "/health",
+					"build": {
+						"executable": "docker",
+						"args": ["build", "-t", "events:seed", "events"]
+					},
+					"stacks": ["kafka"]
+				}
+			],
+			"configuration": {
+				"cpu": 2,
+				"memoryMiB": 2048,
+				"model": "seed/model",
+				"effort": "high",
+				"llmBudgetUsd": 10
+			},
+			"revision": 1,
+			"markdown": "# Synthetic microruntime\n\nSeed configuration; no workload is executed.",
+			"desiredState": "running",
+			"intentVersion": 1,
+			"credentialRevoked": false,
+			"createdAt": "2026-10-21T12:00:00Z",
+			"updatedAt": "2026-10-21T12:00:00Z"
+		}
+	]
+}

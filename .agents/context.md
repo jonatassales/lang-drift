@@ -4,11 +4,11 @@ Project knowledge for agents working in this repository. [`AGENTS.md`](/AGENTS.m
 
 ## Repository
 
-Monorepo with three packages, `@langdrift/tokens`, `@langdrift/web` and `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and two apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/docs` is the Nextra documentation for LangDrift and every platform product, ported from Exphere's docs under spec 0006 and served under `basePath: '/docs'`.
+Monorepo with three packages, `@langdrift/tokens`, `@langdrift/web` and `@langdrift/ex` (the Go agent-harness CLI; see `packages/ex/README.md`), and three apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/docs` is the Nextra documentation for LangDrift and every platform product, ported from Exphere's docs under spec 0006 and served under `basePath: '/docs'`. `apps/extub` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository.
 
-- `apps/<app>/`: one deployable Next.js app each. `pnpm-workspace.yaml` picks them up through `apps/*`.
+- `apps/<app>/`: one deployable app each, Next.js except `extub`. `pnpm-workspace.yaml` picks them up through `apps/*`.
 - `packages/<capability>/`: shared across apps, never inside one. `tokens`, `web` and `ex` exist; `shell`, `account`, `runtime` and `contracts` are planned.
-- `packages/ex` is Go: Turborepo runs its `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds it (no Go toolchain required for frontend work).
+- `packages/ex` and `apps/extub` are Go: Turborepo runs their `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds them (no Go toolchain required for frontend work).
 - A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package. Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
 - `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, `quality/` the lint-staged config, the Biome plugin and `dead-code.allow`, `versioning/` the commitlint config and the Git hooks (`.husky/`).
