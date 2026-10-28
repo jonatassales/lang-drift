@@ -130,18 +130,15 @@ export function PlatformHero(props: PlatformHeroProps) {
 						)
 
 						return {
-							content:
-								'href' in product ? (
-									<Link
-										className={productItem}
-										href={product.href}
-										locale={locale}
-									>
-										{content}
-									</Link>
-								) : (
-									<span className={productItem}>{content}</span>
-								),
+							content: (
+								<Link
+									className={productItem}
+									href={product.href}
+									locale={locale}
+								>
+									{content}
+								</Link>
+							),
 							id: product.label,
 						}
 					})}

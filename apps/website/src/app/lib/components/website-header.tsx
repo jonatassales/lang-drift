@@ -209,7 +209,7 @@ export function WebsiteHeader() {
 					{platformProducts.map((product) => {
 						const Icon = product.icon
 
-						return 'href' in product ? (
+						return (
 							<Link
 								className="flex items-center gap-3"
 								href={product.href}
@@ -219,11 +219,6 @@ export function WebsiteHeader() {
 								<Icon className="size-5" />
 								{t(product.label)}
 							</Link>
-						) : (
-							<span className={drawerItem} key={product.label}>
-								<Icon className="size-5" />
-								{t(product.label)}
-							</span>
 						)
 					})}
 					<span className={drawerItem}>{t('docs')}</span>

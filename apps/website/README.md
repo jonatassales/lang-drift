@@ -53,7 +53,7 @@ Copy lives in JSON under `src/app/template/i18n/messages/`; localized metadata l
 
 ## Early access
 
-The voice interaction is a scripted preview with a prepared answer. Its description and accessible state feedback say it uses no microphone and generates no live answer. The early-access flow below stays paused until it is separately authorized.
+The early-access flow below stays paused until it is separately authorized.
 
 **Submission:**
 

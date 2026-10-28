@@ -36,20 +36,6 @@ export interface HomeMessages {
 		unexplained: string
 		review: string
 	}
-	voice: {
-		title: string
-		description: string
-		question: string
-		ask: string
-		points: string
-		largest: string
-		answerTitle: string
-		answer: string
-		listening: string
-		thinking: string
-		speaking: string
-		idle: string
-	}
 	report: {
 		kicker: string
 		title: string
@@ -89,11 +75,9 @@ export interface HeaderMessages {
 	vision: string
 	finops: string
 	microruntimes: string
-	aiVoice: string
 	visionDescription: string
 	finopsDescription: string
 	microruntimesDescription: string
-	aiVoiceDescription: string
 	pricing: string
 	docs: string
 	github: string
@@ -481,7 +465,7 @@ export interface PlatformMessages {
 		primaryCta: string
 		secondaryCta: string
 		// One line under each product in the hero, keyed by its header label.
-		products: Record<'vision' | 'finops' | 'microruntimes' | 'aiVoice', string>
+		products: Record<'vision' | 'finops' | 'microruntimes', string>
 	}
 	// The home sections' own copy; the headlines Vision and FinOps reuse live
 	// in their catalogs.

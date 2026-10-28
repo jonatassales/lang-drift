@@ -91,9 +91,9 @@ describe('a home product section', () => {
 			<HomeProductSection
 				description="Ask about a change."
 				headline="Keep its context in view."
-				id="ai-voice"
+				id="microruntimes"
 				locale="en"
-				product={platformProduct('aiVoice')}
+				product={platformProduct('microruntimes')}
 			>
 				<p>The orb</p>
 			</HomeProductSection>,

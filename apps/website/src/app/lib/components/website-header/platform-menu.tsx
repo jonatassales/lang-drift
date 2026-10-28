@@ -126,21 +126,14 @@ export function PlatformMenu() {
 
 							return (
 								<li key={product.label}>
-									{'href' in product ? (
-										<Link
-											className={cn(
-												item,
-												'hover:bg-card focus-visible:bg-card',
-											)}
-											href={product.href}
-											onBlur={trackFocusLeaving}
-											onClick={() => setOpen(false)}
-										>
-											{copy}
-										</Link>
-									) : (
-										<div className={item}>{copy}</div>
-									)}
+									<Link
+										className={cn(item, 'hover:bg-card focus-visible:bg-card')}
+										href={product.href}
+										onBlur={trackFocusLeaving}
+										onClick={() => setOpen(false)}
+									>
+										{copy}
+									</Link>
 								</li>
 							)
 						})}

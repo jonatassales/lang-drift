@@ -10,7 +10,6 @@ import {
 	executiveReviewMessages,
 	finopsMessages,
 	footerMessages,
-	getWebsiteMessages,
 	headerMessages,
 	homeMessages,
 	integrationsMessages,
@@ -111,12 +110,6 @@ describe('Website production translations', () => {
 			}
 		},
 	)
-	it('discloses the scripted preview in Vietnamese', () => {
-		const copy = getWebsiteMessages('vi' as WebsiteLocale)
-		expect(copy.home?.voice.description).toContain('không dùng micrô')
-		expect(copy.home?.voice.ask).toBe('Khám phá câu trả lời mẫu')
-	})
-
 	it.each([
 		['en', '0 points'],
 		['pt-BR', '0 pontos'],

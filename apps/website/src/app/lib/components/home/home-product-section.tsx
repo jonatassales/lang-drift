@@ -14,8 +14,8 @@ interface HomeProductSectionProps {
 	description: string
 	/** A string, or the Vision question with its chroma span. */
 	headline: ReactNode
-	id: 'vision' | 'microruntimes' | 'finops' | 'ai-voice'
-	/** The label of the way to the product page; shown while the product has one. */
+	id: 'vision' | 'microruntimes' | 'finops'
+	/** The label of the way to the product page. */
 	link?: string
 	locale: WebsiteLocale
 	product: PlatformProduct
@@ -26,7 +26,7 @@ interface HomeProductSectionProps {
 // One product on the home page: the product's icon and name on a row of
 // their own at the right, the question and its answer at the left, the demo,
 // and the way to the product page last. The heading and lead carry the
-// Vision hero's type, so the four sections and that page read as one family.
+// Vision hero's type, so the sections and that page read as one family.
 export function HomeProductSection(props: HomeProductSectionProps) {
 	const {
 		caption,
@@ -41,7 +41,6 @@ export function HomeProductSection(props: HomeProductSectionProps) {
 	} = props
 
 	const Icon = product.icon
-	const href = 'href' in product ? product.href : undefined
 	const headingId = `${id}-heading`
 	const captionId = `${id}-caption`
 	const summaryId = `${id}-summary`
@@ -88,11 +87,11 @@ export function HomeProductSection(props: HomeProductSectionProps) {
 					{summary}
 				</p>
 			) : null}
-			{link && href ? (
+			{link ? (
 				<p className="mt-8 mb-0">
 					<Link
 						className="smooth-text-link inline-flex min-h-11 items-center gap-2"
-						href={href}
+						href={product.href}
 						locale={locale}
 					>
 						{link}
