@@ -16,17 +16,18 @@ function dotAt(left: number, top: number): Dot {
 }
 
 describe('the dot field', () => {
-	it('lays one dot per cell, jittered inside it, the same way every time', () => {
-		const dots = layoutDots(spacing * 4, spacing * 3)
-		const again = layoutDots(spacing * 4, spacing * 3)
+	it('keeps about half the cells, each dot jittered inside its cell, the same way every time', () => {
+		const dots = layoutDots(spacing * 20, spacing * 20)
+		const again = layoutDots(spacing * 20, spacing * 20)
 
-		expect(dots).toHaveLength(12)
+		expect(dots.length).toBeGreaterThan(400 * 0.4)
+		expect(dots.length).toBeLessThan(400 * 0.6)
 		expect(again).toEqual(dots)
 		for (const dot of dots) {
 			expect(dot.left).toBeGreaterThanOrEqual(0)
-			expect(dot.left).toBeLessThanOrEqual(spacing * 4)
+			expect(dot.left).toBeLessThanOrEqual(spacing * 20)
 			expect(dot.top).toBeGreaterThanOrEqual(0)
-			expect(dot.top).toBeLessThanOrEqual(spacing * 3)
+			expect(dot.top).toBeLessThanOrEqual(spacing * 20)
 		}
 	})
 

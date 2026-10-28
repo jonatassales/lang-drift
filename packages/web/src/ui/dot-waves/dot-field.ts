@@ -29,6 +29,8 @@ const wavesPerSecond = 0.6
 const restingAlpha = 0.18
 const crestPush = 8
 const jitterShare = 0.6
+// The share of cells that hold a dot; the rest stay empty.
+const filledShare = 0.5
 
 // A fixed pseudo-random value for a cell, so the grid never reads as a grid
 // and the layout is the same on every render.
@@ -38,12 +40,16 @@ function cellNoise(left: number, top: number) {
 	return value - Math.floor(value)
 }
 
+// Half the cells hold a dot, chosen by the cell's own noise, so the field
+// reads as scattered rather than gridded.
 export function layoutDots(width: number, height: number): Dot[] {
 	const dots: Dot[] = []
 	for (let top = spacing / 2; top < height; top += spacing) {
 		for (let left = spacing / 2; left < width; left += spacing) {
 			const noise = cellNoise(left, top)
 			const otherNoise = (noise * 7) % 1
+			const keep = (noise * 13) % 1
+			if (keep > filledShare) continue
 			dots.push({
 				left: left + (noise - 0.5) * spacing * jitterShare,
 				phase: noise,

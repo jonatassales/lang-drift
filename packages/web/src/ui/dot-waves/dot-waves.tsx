@@ -21,13 +21,31 @@ interface Field {
 	width: number
 }
 
-// The brand purple, lighter in the dark scheme so the dots read on black.
-function purpleFor(canvas: HTMLCanvasElement) {
+// The stops of the chroma gradient the headline's "Platform" flows through:
+// orange, a warm blend toward yellow, blue and violet, from the fixed rainbow
+// tokens. Mixing the second stop needs a 2D canvas, which the field already has.
+function chromaStops(
+	canvas: HTMLCanvasElement,
+	context: CanvasRenderingContext2D,
+) {
 	const styles = getComputedStyle(canvas)
-	const dark = document.documentElement.classList.contains('dark')
-	const role = dark ? '--primary-hover' : '--primary'
+	const token = (name: string) =>
+		styles.getPropertyValue(`--lg-rainbow-${name}`).trim()
+	context.fillStyle = `color-mix(in srgb, ${token('2')} 55%, ${token('3')})`
+	const warm = String(context.fillStyle)
 
-	return styles.getPropertyValue(role).trim()
+	return [token('2'), warm, token('5'), token('6')]
+}
+
+// One horizontal gradient across the field, so each dash takes the color of
+// the headline's gradient at its place from left to right.
+function chromaAcross(field: Field, stops: string[]) {
+	const gradient = field.context.createLinearGradient(0, 0, field.width, 0)
+	stops.forEach((stop, index) => {
+		gradient.addColorStop(index / (stops.length - 1), stop)
+	})
+
+	return gradient
 }
 
 // With no pointer over the field, the center wanders slowly across it.
@@ -38,7 +56,12 @@ function wanderingCenter(field: Field, seconds: number): Point {
 	}
 }
 
-function draw(field: Field, center: Point, seconds: number, color: string) {
+function draw(
+	field: Field,
+	center: Point,
+	seconds: number,
+	color: CanvasGradient,
+) {
 	const { context, dots, height, width } = field
 	context.clearRect(0, 0, width, height)
 	context.strokeStyle = color
@@ -62,8 +85,9 @@ function draw(field: Field, center: Point, seconds: number, color: string) {
 	context.globalAlpha = 1
 }
 
-// A field of small purple dashes in rings that travel outward from the
-// pointer, the way Google Antigravity's hero moves. The canvas fills its
+// A field of small dashes in rings that travel outward from the pointer, the
+// way Google Antigravity's hero moves, colored by the headline's chroma
+// gradient from left to right. The canvas fills its
 // positioned parent and ignores the pointer itself; it listens on the window.
 // Under reduced motion it draws one still frame, and it pauses while it is off
 // screen or the tab is hidden.
@@ -86,7 +110,8 @@ export function DotWaves(props: DotWavesProps) {
 			height: 0,
 			width: 0,
 		}
-		let color = purpleFor(canvas)
+		const stops = chromaStops(canvas, context)
+		let color = chromaAcross(field, stops)
 		let pointer: Point | null = null
 		let center: Point = {
 			left: 0,
@@ -105,6 +130,7 @@ export function DotWaves(props: DotWavesProps) {
 			canvas.height = Math.round(field.height * ratio)
 			context?.setTransform(ratio, 0, 0, ratio, 0, 0)
 			field.dots = layoutDots(field.width, field.height)
+			color = chromaAcross(field, stops)
 			center = wanderingCenter(field, 0)
 			if (reducedMotion) draw(field, center, 0, color)
 		}
@@ -143,14 +169,6 @@ export function DotWaves(props: DotWavesProps) {
 			visible = entry?.isIntersecting ?? false
 		})
 		viewObserver.observe(canvas)
-		// The theme toggles a class on <html>; the purple follows it.
-		const schemeObserver = new MutationObserver(() => {
-			color = purpleFor(canvas)
-			if (reducedMotion) draw(field, center, 0, color)
-		})
-		schemeObserver.observe(document.documentElement, {
-			attributeFilter: ['class'],
-		})
 		resize()
 		if (!reducedMotion) {
 			window.addEventListener('pointermove', trackPointer, { passive: true })
@@ -162,7 +180,6 @@ export function DotWaves(props: DotWavesProps) {
 			window.removeEventListener('pointermove', trackPointer)
 			sizeObserver.disconnect()
 			viewObserver.disconnect()
-			schemeObserver.disconnect()
 		}
 	}, [])
 
