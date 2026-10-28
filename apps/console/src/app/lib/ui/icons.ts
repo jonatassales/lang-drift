@@ -5,6 +5,7 @@ export {
 	ClipboardText,
 	Cube,
 	FileText,
+	FlowArrow,
 	Gear,
 	GitBranch,
 	GithubLogo,

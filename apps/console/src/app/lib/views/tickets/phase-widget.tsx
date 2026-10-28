@@ -3,6 +3,7 @@ import type { Ticket, TicketPhase } from '@data/types'
 import { AnalysisWidget } from './analysis-widget'
 import { PlanWidget } from './plan-widget'
 import { TicketWidget } from './ticket-widget'
+import { WorkflowWidget } from './workflow-widget'
 
 interface PhaseWidgetProps {
 	/** Set in a listing, so the card names and links its ticket. */
@@ -30,7 +31,13 @@ export function PhaseWidget(props: PhaseWidgetProps) {
 			return ticket.plan ? (
 				<PlanWidget listed={listed} plan={ticket.plan} ticket={ticket} />
 			) : null
-		default:
-			return null
+		case 'workflow':
+			return ticket.workflow ? (
+				<WorkflowWidget
+					listed={listed}
+					ticket={ticket}
+					workflow={ticket.workflow}
+				/>
+			) : null
 	}
 }

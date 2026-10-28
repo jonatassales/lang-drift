@@ -13,6 +13,7 @@ import {
 	ClipboardText,
 	Cube,
 	FileText,
+	FlowArrow,
 	Gear,
 	GitBranch,
 	House,
@@ -61,6 +62,11 @@ export function Navigation(props: NavigationProps) {
 							href: `${base}/plans`,
 							key: 'plans',
 							icon: ClipboardText,
+						},
+						{
+							href: `${base}/workflows`,
+							key: 'workflows',
+							icon: FlowArrow,
 						},
 						{
 							href: `${base}/executions`,
