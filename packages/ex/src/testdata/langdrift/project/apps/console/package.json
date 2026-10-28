@@ -1,0 +1,33 @@
+{
+	"name": "console",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "next dev --hostname 127.0.0.1 --port 3001",
+		"build": "next build",
+		"start": "next start --hostname 127.0.0.1 --port 3001",
+		"typecheck": "next typegen && tsc --noEmit",
+		"test": "node --test src/app/lib/views/runtimes/*.test.ts"
+	},
+	"dependencies": {
+		"@langdrift/tokens": "workspace:*",
+		"@langdrift/web": "workspace:*",
+		"@phosphor-icons/react": "^2.1.10",
+		"@tanstack/react-virtual": "3.14.21",
+		"next": "16.4.0",
+		"next-intl": "4.14.5",
+		"react": "19.3.0",
+		"react-dom": "19.3.0",
+		"server-only": "^0.0.1",
+		"sinapsi": "0.4.0"
+	},
+	"devDependencies": {
+		"@tailwindcss/postcss": "4.3.3",
+		"@types/node": "^24",
+		"@types/react": "19.3.0",
+		"@types/react-dom": "19.3.0",
+		"postcss": "8.5.29",
+		"tailwindcss": "4.3.3",
+		"typescript": "6.0.3"
+	}
+}

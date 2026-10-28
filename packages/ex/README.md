@@ -45,6 +45,20 @@ FinOps gate before any paid work. A server that answers the agent's protocol and
 holds each runtime's intent is planned; until it exists, nothing in this
 repository can drive `ex agent`.
 
+## The `.langdrift` folder
+
+The folder is machine-local and gitignored: `ex` regenerates it, and nothing a team authors lives inside it. Spec 0015 defines the layout below; the reference copy is the sample under `src/testdata/langdrift/sample`, which the test suite pins, beside a frozen copy of the ticket its run planned and the sources that ticket links.
+
+| Path | Scope | Written by |
+| --- | --- | --- |
+| `config.json` | general | `ex init`: the project identity |
+| `agent/state/` | general, private | the CLI: input records, the RAG index, execution ledgers, Terraform state, build logs, connection records, credentials, locks |
+| `harness/` | general | the CLI, as mirrors of its inputs: the hardware envelope and the delivery stages |
+| `microruntimes/` | Microruntimes | the engine: the execution rules, one folder per runtime with its `runtime.md` (the plan), `run.json`, `run.md` (the memory), `laps/` and `evidence/` |
+| `finops/` | FinOps | the CLI, as mirrors of its inputs: budgets, gates, prices, forecasts, one ledger per runtime |
+
+Every value that can block or allow a run is CLI input held in the private store. The JSON files mirror it for reading; no gate reads them. A microruntime is the car, a lap is one pass of its run.
+
 ## Commands
 
 In the commands below, `ex` means this tree's compiled `./dist/ex` executable.
