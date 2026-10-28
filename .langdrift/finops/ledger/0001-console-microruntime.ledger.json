@@ -2,7 +2,7 @@
 	"mirror": {
 		"of": "console",
 		"record": "ledger-run-0001",
-		"setBy": "console",
+		"setBy": "server",
 		"via": "server",
 		"setAt": "2026-10-28T14:31:48Z",
 		"readOnly": true,

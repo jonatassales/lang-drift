@@ -4,7 +4,7 @@ Project knowledge for agents working in this repository. [`AGENTS.md`](/AGENTS.m
 
 ## Repository
 
-Monorepo with four packages, `@langdrift/tokens`, `@langdrift/web`, the `ex` CLI as `@langdrift/ex` and the Microruntimes contracts as `@langdrift/contracts`, and four apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/docs` is the Nextra documentation for LangDrift and every platform product, ported from Exphere's docs under spec 0006 and served under `basePath: '/docs'`. `apps/extub` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from extub.
+Monorepo with four packages, `@langdrift/tokens`, `@langdrift/web`, the `ex` CLI as `@langdrift/ex` and the Microruntimes contracts as `@langdrift/contracts`, and four apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/docs` is the Nextra documentation for LangDrift, ported from Exphere's docs under spec 0006 and served under `basePath: '/docs'`. `apps/extub` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from extub.
 
 - `apps/<app>/`: one deployable app each, Next.js except `extub`. `pnpm-workspace.yaml` picks them up through `apps/*`.
 - `packages/<capability>/`: shared across apps, never inside one. `tokens`, `web`, `ex` and `contracts` exist; `shell`, `account` and `runtime` are planned.
@@ -27,7 +27,7 @@ Run from the repository root:
 | --- | --- |
 | `pnpm install` | Installs dependencies and the Git hooks, then links the `drift` launcher. Fails under another package manager or an unsupported Node version. |
 | `pnpm website` | Builds the packages the website depends on, then starts it in dev mode on port 3000. |
-| `pnpm console` | Starts the console in dev mode on `http://127.0.0.1:3001` together with its stub API, extub, on `127.0.0.1:3401`. Extub needs a Go toolchain. |
+| `pnpm console` | Builds the packages the console depends on, then starts it in dev mode on `http://127.0.0.1:3001` together with its stub API, extub, on `127.0.0.1:3401`. Extub needs a Go toolchain. |
 | `pnpm docs` | Builds the packages the docs depend on, then starts them in dev mode at `http://localhost:3002/docs`. |
 | `pnpm turbo run build` | Builds every package that has a `build` script, upstream packages first. |
 | `pnpm turbo run dev --filter=<package-name>` | Builds the packages an app depends on, then starts the app. |
