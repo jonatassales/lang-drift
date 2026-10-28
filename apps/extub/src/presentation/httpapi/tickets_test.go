@@ -143,6 +143,10 @@ func TestEarlyAccessTicketCarriesTheWebsiteFigures(t *testing.T) {
 	if bounded["cpuMillis"] != float64(2000) || bounded["memoryMiB"] != float64(3072) {
 		t.Fatalf("bounded %v", bounded)
 	}
+	episode := early["analysis"].(map[string]any)["episodes"].([]any)[0].(map[string]any)
+	if episode["id"] != "ep-0412" || episode["similarity"] != 0.81 {
+		t.Fatalf("first episode %v", episode)
+	}
 	workflow := early["workflow"].(map[string]any)
 	if workflow["estimateCents"] != float64(950) || workflow["budgetCents"] != float64(2500) {
 		t.Fatalf("workflow %v", workflow)
