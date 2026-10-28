@@ -67,7 +67,7 @@ func TestPerRuntimeLifecycleFences(t *testing.T) {
 		}
 	}
 	_, home := call(t, handler, "GET", "/console/home", nil)
-	if len(home["products"].([]any)) != 2 || len(home["running"].([]any)) != 3 {
+	if len(home["products"].([]any)) != 1 || len(home["running"].([]any)) != 3 {
 		t.Fatal("an individual action changed unrelated fixtures")
 	}
 	_, created := call(t, handler, "POST", "/console/products", map[string]string{"path": "/seeds/new", "name": "Empty"})
@@ -84,6 +84,20 @@ func TestPerRuntimeLifecycleFences(t *testing.T) {
 		t.Fatal("creation started a fixture")
 	}
 }
+func TestSeedsOnlyFinOpsAndRuntimes(t *testing.T) {
+	handler, store := fixture(t)
+	catalog := store.Snapshot()
+	if len(catalog.Products) != 1 || catalog.Products[0].ID != "seed-microruntimes" {
+		t.Fatalf("seeded products: %v", catalog.Products)
+	}
+	_, listed := call(t, handler, "GET", "/console/local/folders", nil)
+	for _, folder := range listed["folders"].([]any) {
+		if folder.(map[string]any)["path"] != "/seeds/microruntimes" {
+			t.Fatalf("offered folder %v", folder)
+		}
+	}
+}
+
 func TestHTTPBoundaryAndProductIsolation(t *testing.T) {
 	handler, store := fixture(t)
 	for _, check := range []struct{ host, origin string }{{"attacker.test", ""}, {"127.0.0.1:3401", "https://foreign.example"}} {
@@ -96,17 +110,15 @@ func TestHTTPBoundaryAndProductIsolation(t *testing.T) {
 			t.Fatal("accepted foreign request")
 		}
 	}
-	_, list := call(t, handler, "GET", "/console/runtimes?productId=seed-vision", nil)
+	_, created := call(t, handler, "POST", "/console/products", map[string]string{"path": "/seeds/other", "name": "Other"})
+	other := created["product"].(map[string]any)["id"].(string)
+	_, list := call(t, handler, "GET", "/console/runtimes?productId="+other, nil)
 	if len(list["widgets"].([]any)) != 0 {
 		t.Fatal("cross-product widgets")
 	}
-	status, vision := call(t, handler, "GET", "/console/products/seed-vision", nil)
-	if status != 200 || vision["product"].(map[string]any)["visionFixture"] == nil {
-		t.Fatalf("missing visionFixture on GET /console/products/seed-vision: %v", vision)
-	}
 	_, secret := call(t, handler, "POST", "/console/products/seed-microruntimes/secrets", map[string]string{"name": "Fixture"})
 	id := secret["credential"].(map[string]any)["id"].(string)
-	if status, _ := call(t, handler, "DELETE", "/console/products/seed-vision/secrets/"+id, nil); status != 404 {
+	if status, _ := call(t, handler, "DELETE", "/console/products/"+other+"/secrets/"+id, nil); status != 404 {
 		t.Fatal("cross-product revocation")
 	}
 	if status, _ := call(t, handler, "POST", "/console/runtimes", map[string]any{}); status != 400 {

@@ -47,7 +47,11 @@ func TestActivityPagesAndGeneratedSecrets(t *testing.T) {
 	if code != 200 || secret["secret"] == "" {
 		t.Fatal("secret not generated")
 	}
-	_, listed := call(t, handler, "GET", "/console/products/"+store.Snapshot().Products[1].ID+"/history", nil)
+	other, err := handler.Service.CreateProduct("/seeds/other", "Other")
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, listed := call(t, handler, "GET", "/console/products/"+other.ID+"/history", nil)
 	if len(listed["items"].([]any)) != 0 {
 		t.Fatal("product data leaked")
 	}

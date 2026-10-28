@@ -46,7 +46,6 @@ type Product struct {
 	Ref            string          `json:"ref"`
 	Components     []Component     `json:"components"`
 	ComponentLinks []ComponentLink `json:"componentLinks,omitempty"`
-	VisionFixture  *VisionFixture  `json:"visionFixture,omitempty"`
 	CreatedAt      string          `json:"createdAt"`
 }
 type Runtime struct {
