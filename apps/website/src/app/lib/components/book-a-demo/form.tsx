@@ -1,0 +1,190 @@
+'use client'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect, useId, useRef, useState } from 'react'
+import { useForm } from 'react-hook-form'
+
+import type { BookDemoMessages } from '@i18n/messages/messages.types'
+import type { WebsiteLocale } from '@i18n/routing'
+
+import {
+	type BookDemoData,
+	type BookDemoField,
+	type BookDemoInput,
+	bookDemoSchema,
+	isBookDemoErrorCode,
+} from './form.schema'
+import { positionIds } from './positions'
+
+interface BookDemoFormProps {
+	copy: BookDemoMessages
+	locale: WebsiteLocale
+}
+
+const label = 'text-sm font-medium text-foreground'
+const control =
+	'min-h-11 w-full rounded-lg border border-border bg-background px-3.5 text-sm text-foreground aria-[invalid=true]:border-status-danger'
+const error = 'm-0 text-xs text-status-danger'
+
+// The demo request: validated as the visitor leaves each field and again on
+// submit, posted with the locale, and answered with the return-soon notice
+// while requests are paused.
+export function BookDemoForm(props: BookDemoFormProps) {
+	const { copy, locale } = props
+
+	const { formState, handleSubmit, register } = useForm<
+		BookDemoInput,
+		unknown,
+		BookDemoData
+	>({
+		defaultValues: {
+			company: '',
+			email: '',
+			position: '',
+		},
+		mode: 'onTouched',
+		resolver: zodResolver(bookDemoSchema),
+	})
+	const [outcome, setOutcome] = useState<'idle' | 'unavailable' | 'failed'>(
+		'idle',
+	)
+	const noticeRef = useRef<HTMLHeadingElement>(null)
+	const id = useId()
+
+	useEffect(() => {
+		if (outcome === 'unavailable') noticeRef.current?.focus()
+	}, [outcome])
+
+	function errorOf(field: BookDemoField) {
+		const code = formState.errors[field]?.message
+		if (!isBookDemoErrorCode(code)) return undefined
+
+		return copy.errors[code]
+	}
+
+	async function send(data: BookDemoData) {
+		try {
+			const response = await fetch('/api/book-a-demo/', {
+				body: JSON.stringify({
+					...data,
+					locale,
+				}),
+				headers: { 'content-type': 'application/json' },
+				method: 'POST',
+			})
+
+			setOutcome(response.status === 503 ? 'unavailable' : 'failed')
+		} catch {
+			setOutcome('failed')
+		}
+	}
+
+	if (outcome === 'unavailable') {
+		return (
+			<div>
+				<h2
+					className="m-0 text-2xl font-medium tracking-tight outline-none"
+					ref={noticeRef}
+					tabIndex={-1}
+				>
+					{copy.form.unavailable.title}
+				</h2>
+				<p className="mt-3 mb-0 text-base leading-relaxed text-muted-foreground">
+					{copy.form.unavailable.description}
+				</p>
+			</div>
+		)
+	}
+
+	const emailError = errorOf('email')
+	const companyError = errorOf('company')
+	const positionError = errorOf('position')
+
+	return (
+		<form
+			aria-busy={formState.isSubmitting}
+			className="grid gap-5"
+			noValidate
+			onSubmit={handleSubmit(send)}
+		>
+			<div className="grid gap-2">
+				<label className={label} htmlFor={`${id}-email`}>
+					{copy.form.email}
+				</label>
+				<input
+					aria-describedby={emailError ? `${id}-email-error` : undefined}
+					aria-invalid={Boolean(emailError)}
+					autoComplete="email"
+					className={control}
+					id={`${id}-email`}
+					inputMode="email"
+					placeholder={copy.form.emailPlaceholder}
+					type="email"
+					{...register('email')}
+				/>
+				{emailError ? (
+					<p className={error} id={`${id}-email-error`}>
+						{emailError}
+					</p>
+				) : null}
+			</div>
+			<div className="grid gap-2">
+				<label className={label} htmlFor={`${id}-company`}>
+					{copy.form.company}
+				</label>
+				<input
+					aria-describedby={companyError ? `${id}-company-error` : undefined}
+					aria-invalid={Boolean(companyError)}
+					autoComplete="organization"
+					className={control}
+					id={`${id}-company`}
+					placeholder={copy.form.companyPlaceholder}
+					type="text"
+					{...register('company')}
+				/>
+				{companyError ? (
+					<p className={error} id={`${id}-company-error`}>
+						{companyError}
+					</p>
+				) : null}
+			</div>
+			<div className="grid gap-2">
+				<label className={label} htmlFor={`${id}-position`}>
+					{copy.form.position}
+				</label>
+				<select
+					aria-describedby={positionError ? `${id}-position-error` : undefined}
+					aria-invalid={Boolean(positionError)}
+					autoComplete="organization-title"
+					className={control}
+					id={`${id}-position`}
+					{...register('position')}
+				>
+					<option value="">{copy.form.positionPlaceholder}</option>
+					{positionIds.map((position) => (
+						<option key={position} value={position}>
+							{copy.positions[position]}
+						</option>
+					))}
+				</select>
+				{positionError ? (
+					<p className={error} id={`${id}-position-error`}>
+						{positionError}
+					</p>
+				) : null}
+			</div>
+			<div className="flex flex-wrap items-center gap-4">
+				<button
+					className="smooth-primary-button"
+					disabled={formState.isSubmitting}
+					type="submit"
+				>
+					{formState.isSubmitting ? copy.form.submitting : copy.form.submit}
+				</button>
+				<output aria-live="polite" className="text-sm text-status-danger">
+					{outcome === 'failed' ? copy.form.failed : ''}
+				</output>
+			</div>
+		</form>
+	)
+}

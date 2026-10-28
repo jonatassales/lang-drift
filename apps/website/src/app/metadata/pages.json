@@ -109,6 +109,28 @@
 			"description": "Khám phá dùng thử miễn phí 15 ngày của LangDrift và các gói Plus, Pro dự kiến. Dùng thử bắt đầu khi quyền truy cập được kích hoạt; giá cuối cùng sẽ được công bố trước khi ra mắt."
 		}
 	},
+	"book-a-demo": {
+		"en": {
+			"title": "LangDrift — Book a demo",
+			"description": "Ask for a walkthrough of the LangDrift platform: Vision, Microruntimes and FinOps, with your questions in mind."
+		},
+		"pt-BR": {
+			"title": "LangDrift — Agende uma demo",
+			"description": "Peça uma apresentação da plataforma LangDrift: Vision, Microruntimes e FinOps, com as suas perguntas em mente."
+		},
+		"zh-Hant": {
+			"title": "LangDrift — 預約展示",
+			"description": "預約一次 LangDrift 平台導覽：Vision、Microruntimes 與 FinOps，圍繞你的問題。"
+		},
+		"ja": {
+			"title": "LangDrift — デモを予約",
+			"description": "LangDrift プラットフォームのウォークスルーをご予約ください。Vision、Microruntimes、FinOps を、あなたの質問に沿ってご案内します。"
+		},
+		"vi": {
+			"title": "LangDrift — Đặt lịch demo",
+			"description": "Yêu cầu một buổi hướng dẫn về nền tảng LangDrift: Vision, Microruntimes và FinOps, theo câu hỏi của bạn."
+		}
+	},
 	"privacy": {
 		"en": {
 			"title": "Privacy Policy | LangDrift",

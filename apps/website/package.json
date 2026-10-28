@@ -9,6 +9,7 @@
 		"test": "vitest run"
 	},
 	"dependencies": {
+		"@hookform/resolvers": "6.0.0",
 		"@langdrift/tokens": "workspace:*",
 		"@langdrift/web": "workspace:*",
 		"clsx": "^2.1.1",
@@ -18,6 +19,7 @@
 		"next-intl": "4.14.5",
 		"react": "19.2.4",
 		"react-dom": "19.2.4",
+		"react-hook-form": "7.91.0",
 		"server-only": "^0.0.1",
 		"sinapsi": "0.2.0",
 		"tailwind-merge": "^3.7.0",

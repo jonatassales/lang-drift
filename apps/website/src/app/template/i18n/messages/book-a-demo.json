@@ -1,0 +1,242 @@
+{
+	"en": {
+		"skip": "Skip to the form",
+		"title": "Book a demo",
+		"lead": "Tell us where you work and what you do, and we will walk you through the platform: Vision, Microruntimes and FinOps, with your questions in mind.",
+		"band": {
+			"title": "Book a demo",
+			"description": "See how Vision keeps the why, how Microruntimes bounds a run and how FinOps keeps delivery inside a team envelope, on a walkthrough with your questions in mind.",
+			"cta": "Book a demo"
+		},
+		"form": {
+			"email": "Company email",
+			"emailPlaceholder": "you@company.com",
+			"company": "Company",
+			"companyPlaceholder": "Your company’s name",
+			"position": "Position",
+			"positionPlaceholder": "Choose your position",
+			"submit": "Book a demo",
+			"submitting": "Sending…",
+			"failed": "We couldn’t send your request. Please try again.",
+			"unavailable": {
+				"title": "We’ll be back soon.",
+				"description": "Demo requests are temporarily paused. Your request was not stored; please check back soon."
+			}
+		},
+		"positions": {
+			"founder": "Founder",
+			"ceo": "CEO",
+			"cto": "CTO",
+			"vpEngineering": "VP of Engineering",
+			"vpProduct": "VP of Product",
+			"engineeringManager": "Engineering manager",
+			"productManager": "Product manager",
+			"staffEngineer": "Staff engineer",
+			"softwareEngineer": "Software engineer",
+			"platformEngineer": "Platform engineer",
+			"finance": "Finance",
+			"other": "Other"
+		},
+		"errors": {
+			"emailRequired": "Enter your company email address.",
+			"emailInvalid": "Enter a valid email address.",
+			"emailTooLong": "Use an email address with 254 characters or fewer.",
+			"emailFreeMail": "Use your company email address, not a personal one.",
+			"companyRequired": "Enter your company’s name.",
+			"companyTooLong": "Use a company name with 120 characters or fewer.",
+			"positionRequired": "Choose your position."
+		}
+	},
+	"pt-BR": {
+		"skip": "Ir para o formulário",
+		"title": "Agende uma demo",
+		"lead": "Conte onde você trabalha e o que faz, e mostraremos a plataforma: Vision, Microruntimes e FinOps, com as suas perguntas em mente.",
+		"band": {
+			"title": "Agende uma demo",
+			"description": "Veja como o Vision guarda o porquê, como o Microruntimes delimita uma execução e como o FinOps mantém a entrega dentro do envelope do time, em uma apresentação feita para as suas perguntas.",
+			"cta": "Agende uma demo"
+		},
+		"form": {
+			"email": "E-mail corporativo",
+			"emailPlaceholder": "voce@empresa.com",
+			"company": "Empresa",
+			"companyPlaceholder": "Nome da sua empresa",
+			"position": "Cargo",
+			"positionPlaceholder": "Escolha o seu cargo",
+			"submit": "Agendar demo",
+			"submitting": "Enviando…",
+			"failed": "Não conseguimos enviar o seu pedido. Tente novamente.",
+			"unavailable": {
+				"title": "Voltamos em breve.",
+				"description": "Os pedidos de demo estão temporariamente pausados. O seu pedido não foi armazenado; volte em breve."
+			}
+		},
+		"positions": {
+			"founder": "Fundador(a)",
+			"ceo": "CEO",
+			"cto": "CTO",
+			"vpEngineering": "VP de Engenharia",
+			"vpProduct": "VP de Produto",
+			"engineeringManager": "Gerente de engenharia",
+			"productManager": "Gerente de produto",
+			"staffEngineer": "Staff engineer",
+			"softwareEngineer": "Engenheiro(a) de software",
+			"platformEngineer": "Engenheiro(a) de plataforma",
+			"finance": "Financeiro",
+			"other": "Outro"
+		},
+		"errors": {
+			"emailRequired": "Informe o seu e-mail corporativo.",
+			"emailInvalid": "Informe um e-mail válido.",
+			"emailTooLong": "Use um e-mail com no máximo 254 caracteres.",
+			"emailFreeMail": "Use o e-mail da sua empresa, não um e-mail pessoal.",
+			"companyRequired": "Informe o nome da sua empresa.",
+			"companyTooLong": "Use um nome de empresa com no máximo 120 caracteres.",
+			"positionRequired": "Escolha o seu cargo."
+		}
+	},
+	"zh-Hant": {
+		"skip": "跳至表單",
+		"title": "預約展示",
+		"lead": "告訴我們你在哪裡工作、做什麼，我們會帶你看過整個平台：Vision、Microruntimes 與 FinOps，並圍繞你的問題。",
+		"band": {
+			"title": "預約展示",
+			"description": "看看 Vision 如何留住「為什麼」、Microruntimes 如何為一次執行劃定邊界、FinOps 如何讓交付留在團隊信封之內，由一次圍繞你的問題的導覽呈現。",
+			"cta": "預約展示"
+		},
+		"form": {
+			"email": "公司電子郵件",
+			"emailPlaceholder": "you@company.com",
+			"company": "公司",
+			"companyPlaceholder": "你的公司名稱",
+			"position": "職位",
+			"positionPlaceholder": "選擇你的職位",
+			"submit": "預約展示",
+			"submitting": "傳送中…",
+			"failed": "無法送出你的請求，請再試一次。",
+			"unavailable": {
+				"title": "我們很快回來。",
+				"description": "展示預約暫時停止。你的請求未被儲存；請稍後再來。"
+			}
+		},
+		"positions": {
+			"founder": "創辦人",
+			"ceo": "CEO",
+			"cto": "CTO",
+			"vpEngineering": "工程副總裁",
+			"vpProduct": "產品副總裁",
+			"engineeringManager": "工程經理",
+			"productManager": "產品經理",
+			"staffEngineer": "Staff 工程師",
+			"softwareEngineer": "軟體工程師",
+			"platformEngineer": "平台工程師",
+			"finance": "財務",
+			"other": "其他"
+		},
+		"errors": {
+			"emailRequired": "請輸入你的公司電子郵件。",
+			"emailInvalid": "請輸入有效的電子郵件。",
+			"emailTooLong": "電子郵件請勿超過 254 個字元。",
+			"emailFreeMail": "請使用公司電子郵件，而非個人信箱。",
+			"companyRequired": "請輸入你的公司名稱。",
+			"companyTooLong": "公司名稱請勿超過 120 個字元。",
+			"positionRequired": "請選擇你的職位。"
+		}
+	},
+	"ja": {
+		"skip": "フォームへ移動",
+		"title": "デモを予約",
+		"lead": "所属と役割を教えてください。Vision、Microruntimes、FinOps をひとつのプラットフォームとして、あなたの質問に沿ってご案内します。",
+		"band": {
+			"title": "デモを予約",
+			"description": "Vision が「なぜ」を保ち、Microruntimes が実行に境界を引き、FinOps が開発をチームのエンベロープの内側に保つ様子を、あなたの質問に沿ったウォークスルーでご覧ください。",
+			"cta": "デモを予約"
+		},
+		"form": {
+			"email": "会社のメールアドレス",
+			"emailPlaceholder": "you@company.com",
+			"company": "会社名",
+			"companyPlaceholder": "会社の名前",
+			"position": "役職",
+			"positionPlaceholder": "役職を選択",
+			"submit": "デモを予約",
+			"submitting": "送信中…",
+			"failed": "リクエストを送信できませんでした。もう一度お試しください。",
+			"unavailable": {
+				"title": "まもなく再開します。",
+				"description": "デモの受付は一時停止しています。リクエストは保存されていません。しばらくしてから再度お試しください。"
+			}
+		},
+		"positions": {
+			"founder": "創業者",
+			"ceo": "CEO",
+			"cto": "CTO",
+			"vpEngineering": "エンジニアリング担当VP",
+			"vpProduct": "プロダクト担当VP",
+			"engineeringManager": "エンジニアリングマネージャー",
+			"productManager": "プロダクトマネージャー",
+			"staffEngineer": "スタッフエンジニア",
+			"softwareEngineer": "ソフトウェアエンジニア",
+			"platformEngineer": "プラットフォームエンジニア",
+			"finance": "財務",
+			"other": "その他"
+		},
+		"errors": {
+			"emailRequired": "会社のメールアドレスを入力してください。",
+			"emailInvalid": "有効なメールアドレスを入力してください。",
+			"emailTooLong": "メールアドレスは 254 文字以内にしてください。",
+			"emailFreeMail": "個人用ではなく会社のメールアドレスを使用してください。",
+			"companyRequired": "会社名を入力してください。",
+			"companyTooLong": "会社名は 120 文字以内にしてください。",
+			"positionRequired": "役職を選択してください。"
+		}
+	},
+	"vi": {
+		"skip": "Chuyển đến biểu mẫu",
+		"title": "Đặt lịch demo",
+		"lead": "Cho chúng tôi biết bạn làm việc ở đâu và làm gì, chúng tôi sẽ dẫn bạn đi qua nền tảng: Vision, Microruntimes và FinOps, theo những câu hỏi của bạn.",
+		"band": {
+			"title": "Đặt lịch demo",
+			"description": "Xem cách Vision giữ lại lý do, cách Microruntimes giới hạn một lần chạy và cách FinOps giữ việc giao hàng trong phong bì của đội, trong một buổi hướng dẫn theo câu hỏi của bạn.",
+			"cta": "Đặt lịch demo"
+		},
+		"form": {
+			"email": "Email công ty",
+			"emailPlaceholder": "ban@congty.com",
+			"company": "Công ty",
+			"companyPlaceholder": "Tên công ty của bạn",
+			"position": "Vị trí",
+			"positionPlaceholder": "Chọn vị trí của bạn",
+			"submit": "Đặt lịch demo",
+			"submitting": "Đang gửi…",
+			"failed": "Chúng tôi không gửi được yêu cầu của bạn. Vui lòng thử lại.",
+			"unavailable": {
+				"title": "Chúng tôi sẽ sớm quay lại.",
+				"description": "Yêu cầu demo đang tạm dừng. Yêu cầu của bạn chưa được lưu; vui lòng quay lại sau."
+			}
+		},
+		"positions": {
+			"founder": "Nhà sáng lập",
+			"ceo": "CEO",
+			"cto": "CTO",
+			"vpEngineering": "Phó chủ tịch kỹ thuật",
+			"vpProduct": "Phó chủ tịch sản phẩm",
+			"engineeringManager": "Quản lý kỹ thuật",
+			"productManager": "Quản lý sản phẩm",
+			"staffEngineer": "Kỹ sư staff",
+			"softwareEngineer": "Kỹ sư phần mềm",
+			"platformEngineer": "Kỹ sư nền tảng",
+			"finance": "Tài chính",
+			"other": "Khác"
+		},
+		"errors": {
+			"emailRequired": "Nhập email công ty của bạn.",
+			"emailInvalid": "Nhập một địa chỉ email hợp lệ.",
+			"emailTooLong": "Dùng email có tối đa 254 ký tự.",
+			"emailFreeMail": "Dùng email công ty, không dùng email cá nhân.",
+			"companyRequired": "Nhập tên công ty của bạn.",
+			"companyTooLong": "Dùng tên công ty có tối đa 120 ký tự.",
+			"positionRequired": "Chọn vị trí của bạn."
+		}
+	}
+}

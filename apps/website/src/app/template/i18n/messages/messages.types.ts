@@ -1,3 +1,5 @@
+import type { BookDemoErrorCode } from '@components/book-a-demo/form.schema'
+import type { PositionId } from '@components/book-a-demo/positions'
 import type { EmailErrorCode } from '@components/early-access/form.types'
 
 export interface HomeMessages {
@@ -378,6 +380,34 @@ export interface EarlyAccessMessages {
 	rateLimited: string
 	challengeFailed: string
 	errors: Record<EmailErrorCode, string>
+}
+
+export interface BookDemoMessages {
+	skip: string
+	title: string
+	lead: string
+	band: {
+		title: string
+		description: string
+		cta: string
+	}
+	form: {
+		email: string
+		emailPlaceholder: string
+		company: string
+		companyPlaceholder: string
+		position: string
+		positionPlaceholder: string
+		submit: string
+		submitting: string
+		failed: string
+		unavailable: {
+			title: string
+			description: string
+		}
+	}
+	positions: Record<PositionId, string>
+	errors: Record<BookDemoErrorCode, string>
 }
 
 export interface EarlyAccessSentMessages {

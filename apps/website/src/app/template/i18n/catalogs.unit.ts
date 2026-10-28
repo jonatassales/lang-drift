@@ -2,6 +2,7 @@ import { createTranslator } from 'next-intl'
 import { describe, expect, it } from 'vitest'
 
 import {
+	bookDemoMessages,
 	conversionMessages,
 	demoMessages,
 	earlyAccessMessages,
@@ -69,6 +70,7 @@ describe('Website production translations', () => {
 				executiveReviewMessages,
 				finopsMessages,
 				microruntimesMessages,
+				bookDemoMessages,
 				routeState,
 			]) {
 				const source = leaves(family.en)
