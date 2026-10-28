@@ -21,7 +21,6 @@ Rules for React and Next.js code in this repository. Loaded in every session.
    - `apps/website/src/app/lib/components/hero-demo.css`
    - `apps/website/src/app/lib/components/integrations-section.css`
    - `apps/website/src/app/lib/components/vision-loop-evidence.css`
-   - `apps/website/src/app/lib/components/voice-preview/voice-preview.css`
    - `apps/website/src/app/lib/components/website-footer.css`
    - `apps/website/src/app/lib/components/website-header.css`
    - `apps/website/src/app/responsive.css`
