@@ -11,14 +11,13 @@ import { themeAtom } from '@state'
 import { DemoButton } from './website-header/demo-button'
 import { drawerFocus } from './website-header/drawer-focus'
 import { LanguagePill } from './website-header/language-pill'
-import { PlatformMenu } from './website-header/platform-menu'
 import { platformProducts } from './website-header/platform-products'
 import { panelSurface } from './website-header/surface'
 
 import './website-header.css'
 
 // Entries without a destination yet read like their neighbors but do not
-// navigate: Docs and GitHub, and the products without a page.
+// navigate: Docs and GitHub.
 const utilityItem =
 	'inline-flex min-h-11 items-center text-[13px] font-medium whitespace-nowrap text-muted-foreground'
 const drawerItem =
@@ -27,9 +26,7 @@ const drawerItem =
 // The bar is glass over whatever scrolls under it; without backdrop filters
 // it falls back to a nearly solid background. The glass sits on a layer behind
 // the bar's content, not on the header itself: an element with a backdrop
-// filter becomes the backdrop root of everything inside it, so the Platform
-// dropdown, which hangs below the bar, could only blur the bar and would show
-// the page through it sharp.
+// filter becomes the backdrop root of everything inside it.
 const glass =
 	"before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-background/90 before:content-[''] supports-[backdrop-filter]:before:bg-background/55 supports-[backdrop-filter]:before:backdrop-blur-[28px] supports-[backdrop-filter]:before:backdrop-saturate-150 supports-[backdrop-filter]:data-[scrolled=true]:before:bg-background/70"
 
@@ -135,7 +132,11 @@ export function WebsiteHeader() {
 						aria-label={t('navigation')}
 						className="website-desktop-nav hidden items-center justify-center gap-4.5 lg:flex"
 					>
-						<PlatformMenu />
+						{platformProducts.map((product) => (
+							<Link href={product.href} key={product.label}>
+								{t(product.label)}
+							</Link>
+						))}
 						<span className={utilityItem}>{t('docs')}</span>
 						<span className={utilityItem}>{t('github')}</span>
 						<Link href="/pricing">{t('pricing')}</Link>
@@ -203,9 +204,6 @@ export function WebsiteHeader() {
 					</button>
 				</div>
 				<nav aria-label={t('navigation')} className="website-drawer-nav">
-					<p className="px-2 pt-2 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-						{t('platform')}
-					</p>
 					{platformProducts.map((product) => {
 						const Icon = product.icon
 
