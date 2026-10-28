@@ -25,13 +25,13 @@ function reply(
 		'X-Content-Type-Options': 'nosniff',
 	}
 	if (status === 503) headers['Retry-After'] = '30'
-	const named = fieldErrors && Object.keys(fieldErrors).length > 0
+	const hasFieldErrors = fieldErrors && Object.keys(fieldErrors).length > 0
 
 	return Response.json(
 		{
 			ok: false,
 			code,
-			...(named ? { fieldErrors } : {}),
+			...(hasFieldErrors ? { fieldErrors } : {}),
 		},
 		{
 			status,
@@ -40,14 +40,13 @@ function reply(
 	)
 }
 
-// A demo request is validated as the form validates it, then refused as
-// paused: requests have no destination yet, and nothing is stored, logged or
-// forwarded. The destination, when it exists, answers after the validation
-// behind this same contract.
+// A demo request is validated as the form validates it, so that a destination
+// slots in behind this same contract when one exists.
 export async function postBookDemo(request: Request): Promise<Response> {
 	let body: unknown
 	try {
 		const text = await readBoundedBody(request.body, bodyLimit, request.signal)
+
 		body = parseSubmissionJSON(text)
 	} catch (error) {
 		const status = error instanceof BodyError ? error.status : 400
@@ -59,5 +58,7 @@ export async function postBookDemo(request: Request): Promise<Response> {
 		return reply(400, 'VALIDATION_ERROR', fieldErrorsOf(result.error))
 	}
 
+	// Requests have no destination yet: refused as paused, and nothing is
+	// stored, logged or forwarded.
 	return reply(503, 'UNAVAILABLE')
 }

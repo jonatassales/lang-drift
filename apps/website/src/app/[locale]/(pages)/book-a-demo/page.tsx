@@ -20,15 +20,19 @@ export async function generateMetadata(
 	parent: ResolvingMetadata,
 ): Promise<Metadata> {
 	const { locale } = await params
+
 	if (!hasLocale(routing.locales, locale)) notFound()
 
-	return pageMetadata('book-a-demo', locale, await socialImages(parent))
+	const images = await socialImages(parent)
+
+	return pageMetadata('book-a-demo', locale, images)
 }
 
 export default async function BookDemoPage(props: BookDemoPageProps) {
 	const { params } = props
 
 	const { locale } = await params
+
 	if (!hasLocale(routing.locales, locale)) notFound()
 	setRequestLocale(locale)
 	const copy = bookDemoMessages[locale]

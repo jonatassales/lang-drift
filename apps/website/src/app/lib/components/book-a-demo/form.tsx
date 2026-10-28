@@ -24,7 +24,7 @@ interface BookDemoFormProps {
 const label = 'text-sm font-medium text-foreground'
 const control =
 	'min-h-11 w-full rounded-lg border border-border bg-background px-3.5 text-sm text-foreground aria-[invalid=true]:border-status-danger'
-const error = 'm-0 text-xs text-status-danger'
+const errorText = 'm-0 text-xs text-status-danger'
 
 // The demo request: validated as the visitor leaves each field and again on
 // submit, posted with the locale, and answered with the return-soon notice
@@ -49,7 +49,7 @@ export function BookDemoForm(props: BookDemoFormProps) {
 		'idle',
 	)
 	const noticeRef = useRef<HTMLHeadingElement>(null)
-	const id = useId()
+	const fieldId = useId()
 
 	useEffect(() => {
 		if (outcome === 'unavailable') noticeRef.current?.focus()
@@ -108,56 +108,60 @@ export function BookDemoForm(props: BookDemoFormProps) {
 			onSubmit={handleSubmit(send)}
 		>
 			<div className="grid gap-2">
-				<label className={label} htmlFor={`${id}-email`}>
+				<label className={label} htmlFor={`${fieldId}-email`}>
 					{copy.form.email}
 				</label>
 				<input
-					aria-describedby={emailError ? `${id}-email-error` : undefined}
+					aria-describedby={emailError ? `${fieldId}-email-error` : undefined}
 					aria-invalid={Boolean(emailError)}
 					autoComplete="email"
 					className={control}
-					id={`${id}-email`}
+					id={`${fieldId}-email`}
 					inputMode="email"
 					placeholder={copy.form.emailPlaceholder}
 					type="email"
 					{...register('email')}
 				/>
 				{emailError ? (
-					<p className={error} id={`${id}-email-error`}>
+					<p className={errorText} id={`${fieldId}-email-error`}>
 						{emailError}
 					</p>
 				) : null}
 			</div>
 			<div className="grid gap-2">
-				<label className={label} htmlFor={`${id}-company`}>
+				<label className={label} htmlFor={`${fieldId}-company`}>
 					{copy.form.company}
 				</label>
 				<input
-					aria-describedby={companyError ? `${id}-company-error` : undefined}
+					aria-describedby={
+						companyError ? `${fieldId}-company-error` : undefined
+					}
 					aria-invalid={Boolean(companyError)}
 					autoComplete="organization"
 					className={control}
-					id={`${id}-company`}
+					id={`${fieldId}-company`}
 					placeholder={copy.form.companyPlaceholder}
 					type="text"
 					{...register('company')}
 				/>
 				{companyError ? (
-					<p className={error} id={`${id}-company-error`}>
+					<p className={errorText} id={`${fieldId}-company-error`}>
 						{companyError}
 					</p>
 				) : null}
 			</div>
 			<div className="grid gap-2">
-				<label className={label} htmlFor={`${id}-position`}>
+				<label className={label} htmlFor={`${fieldId}-position`}>
 					{copy.form.position}
 				</label>
 				<select
-					aria-describedby={positionError ? `${id}-position-error` : undefined}
+					aria-describedby={
+						positionError ? `${fieldId}-position-error` : undefined
+					}
 					aria-invalid={Boolean(positionError)}
 					autoComplete="organization-title"
 					className={control}
-					id={`${id}-position`}
+					id={`${fieldId}-position`}
 					{...register('position')}
 				>
 					<option value="">{copy.form.positionPlaceholder}</option>
@@ -168,7 +172,7 @@ export function BookDemoForm(props: BookDemoFormProps) {
 					))}
 				</select>
 				{positionError ? (
-					<p className={error} id={`${id}-position-error`}>
+					<p className={errorText} id={`${fieldId}-position-error`}>
 						{positionError}
 					</p>
 				) : null}

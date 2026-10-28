@@ -70,7 +70,7 @@ function domainOf(email: string) {
 
 // The early-access rules say what a valid address is and lowercase its
 // domain; a demo request adds that the domain is not a free-mail provider.
-export const companyEmailSchema = earlyAccessEmailSchema.refine(
+const companyEmailSchema = earlyAccessEmailSchema.refine(
 	(email) => !freeMailDomains.has(domainOf(email)),
 	{ error: 'emailFreeMail' },
 )
