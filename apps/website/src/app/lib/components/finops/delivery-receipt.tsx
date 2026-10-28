@@ -11,6 +11,8 @@ import { selectedWorkItemAtom } from '@state'
 
 interface DeliveryReceiptProps {
 	copy: FinopsMessages['receipt']
+	/** 2 under the FinOps page's title, 3 under a home section's heading. */
+	headingLevel?: 2 | 3
 	items: FinopsMessages['ledger']['items']
 	locale: WebsiteLocale
 }
@@ -20,7 +22,9 @@ interface DeliveryReceiptProps {
 // Its head stacks at every width, so it reads the same docked beside the
 // ledger and under it.
 export function DeliveryReceipt(props: DeliveryReceiptProps) {
-	const { copy, items, locale } = props
+	const { copy, headingLevel = 2, items, locale } = props
+
+	const Heading = headingLevel === 3 ? 'h3' : 'h2'
 
 	const selectedId = useAtomValue(selectedWorkItemAtom)
 	const item = workItems.find((workItem) => workItem.id === selectedId)
@@ -42,9 +46,9 @@ export function DeliveryReceipt(props: DeliveryReceiptProps) {
 			<div className="grid gap-5">
 				<div className="grid gap-[7px]">
 					<Eyebrow>{copy.selected}</Eyebrow>
-					<h2 className="m-0 text-[28px] font-medium tracking-[-0.025em]">
+					<Heading className="m-0 text-[28px] font-medium tracking-[-0.025em]">
 						{itemCopy.title}
-					</h2>
+					</Heading>
 					<p className="m-0 text-[12px] text-muted-foreground">
 						{itemCopy.owner}
 					</p>

@@ -1,3 +1,5 @@
+import type { BookDemoErrorCode } from '@components/book-a-demo/form.schema'
+import type { PositionId } from '@components/book-a-demo/positions'
 import type { EmailErrorCode } from '@components/early-access/form.types'
 
 export interface HomeMessages {
@@ -35,7 +37,6 @@ export interface HomeMessages {
 		review: string
 	}
 	voice: {
-		kicker: string
 		title: string
 		description: string
 		question: string
@@ -361,11 +362,8 @@ export interface ConversionCopy {
 }
 
 export interface EarlyAccessMessages {
-	demoHeading: string
-	demoDescription: string
 	pausedHeading: string
 	pausedDescription: string
-	homeHeading: string
 	pricingHeading: string
 	description: string
 	helper: string
@@ -378,6 +376,34 @@ export interface EarlyAccessMessages {
 	rateLimited: string
 	challengeFailed: string
 	errors: Record<EmailErrorCode, string>
+}
+
+export interface BookDemoMessages {
+	skip: string
+	title: string
+	lead: string
+	band: {
+		title: string
+		description: string
+		cta: string
+	}
+	form: {
+		email: string
+		emailPlaceholder: string
+		company: string
+		companyPlaceholder: string
+		position: string
+		positionPlaceholder: string
+		submit: string
+		submitting: string
+		failed: string
+		unavailable: {
+			title: string
+			description: string
+		}
+	}
+	positions: Record<PositionId, string>
+	errors: Record<BookDemoErrorCode, string>
 }
 
 export interface EarlyAccessSentMessages {
@@ -457,8 +483,16 @@ export interface PlatformMessages {
 		// One line under each product in the hero, keyed by its header label.
 		products: Record<'vision' | 'finops' | 'microruntimes' | 'aiVoice', string>
 	}
-	features: {
+	// The home sections' own copy; the headlines Vision and FinOps reuse live
+	// in their catalogs.
+	sections: {
+		vision: { link: string }
+		microruntimes: { title: string; description: string; link: string }
+		finops: { description: string; link: string }
+	}
+	faq: {
 		title: string
-		lead: string
+		description: string
+		tabsLabel: string
 	}
 }

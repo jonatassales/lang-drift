@@ -15,16 +15,16 @@ export const platformProducts = [
 		href: '/platform/vision',
 	},
 	{
-		label: 'finops',
-		description: 'finopsDescription',
-		icon: FinopsIcon,
-		href: '/platform/finops',
-	},
-	{
 		label: 'microruntimes',
 		description: 'microruntimesDescription',
 		icon: MicroruntimesIcon,
 		href: '/platform/microruntimes',
+	},
+	{
+		label: 'finops',
+		description: 'finopsDescription',
+		icon: FinopsIcon,
+		href: '/platform/finops',
 	},
 	{
 		label: 'aiVoice',
@@ -32,3 +32,12 @@ export const platformProducts = [
 		icon: AiVoiceIcon,
 	},
 ] as const
+
+export type PlatformProduct = (typeof platformProducts)[number]
+
+export function platformProduct(label: PlatformProduct['label']) {
+	const product = platformProducts.find((entry) => entry.label === label)
+	if (!product) throw new Error(`Unknown platform product: ${label}`)
+
+	return product
+}

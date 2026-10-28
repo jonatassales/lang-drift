@@ -4,6 +4,7 @@ import type { MicroruntimesMessages } from '@data/microruntimes-content'
 import type { VisionLoopMessages } from '@data/vision-loop-content'
 import type { WebsiteLocale } from '@i18n/routing'
 
+import bookDemoJson from './book-a-demo.json'
 import conversionJson from './conversion.json'
 import demoJson from './demo.json'
 import earlyAccessJson from './early-access.json'
@@ -19,6 +20,7 @@ import headerJson from './header.json'
 import homeJson from './home.json'
 import integrationsJson from './integrations.json'
 import type {
+	BookDemoMessages,
 	ConversionCopy,
 	DemoMessages,
 	EarlyAccessMessages,
@@ -138,6 +140,7 @@ assertCatalogShape('platform', platformJson)
 assertCatalogShape('route-state', routeStateJson)
 assertCatalogShape('finops', finopsJson)
 assertCatalogShape('microruntimes', microruntimesJson)
+assertCatalogShape('book-a-demo', bookDemoJson)
 
 export const homeMessages: Record<WebsiteLocale, HomeMessages> = homeJson
 export const headerMessages: Record<WebsiteLocale, HeaderMessages> = headerJson
@@ -160,6 +163,8 @@ export const microruntimesMessages: Record<
 	WebsiteLocale,
 	MicroruntimesMessages
 > = microruntimesJson
+export const bookDemoMessages: Record<WebsiteLocale, BookDemoMessages> =
+	bookDemoJson
 
 export const conversionMessages: Record<WebsiteLocale, ConversionCopy> = {
 	en: loadConversion(conversionJson.en),

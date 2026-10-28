@@ -75,7 +75,7 @@ export function RoiSection(props: RoiSectionProps) {
 				<p className="roi-brief-limit">{reviewCopy.reviews.R01.limit}</p>
 			</article>
 			<div className="conversion-actions roi-actions">
-				<a className="smooth-primary-button" href="#early-access">
+				<a className="smooth-primary-button" href="#book-a-demo">
 					{copy.earlyAccess}
 					<span aria-hidden="true">↗</span>
 				</a>

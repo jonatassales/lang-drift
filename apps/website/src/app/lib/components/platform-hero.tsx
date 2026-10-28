@@ -80,7 +80,7 @@ export function PlatformHero(props: PlatformHeroProps) {
 						</Link>
 						<Link
 							className="smooth-text-link"
-							href="/platform/vision#early-access"
+							href="/book-a-demo"
 							locale={locale}
 						>
 							{copy.secondaryCta}

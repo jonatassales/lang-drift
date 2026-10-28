@@ -21,63 +21,21 @@ describe('paused requests', () => {
 		'zh-Hant',
 		'ja',
 	] satisfies WebsiteLocale[]) {
-		it.each(['landing', 'pricing'] as const)(
-			`replaces the ${locale} %s form with a return-soon notice`,
-			(source) => {
-				const { container } = render(
-					<EarlyAccessSection locale={locale} source={source} />,
-				)
+		it(`replaces the ${locale} form with a return-soon notice`, () => {
+			const { container } = render(<EarlyAccessSection locale={locale} />)
 
-				expect(
-					screen.getByRole('heading', {
-						name:
-							source === 'landing'
-								? earlyAccessMessages[locale].demoHeading
-								: earlyAccessMessages[locale].pausedHeading,
-					}),
-				).toBeTruthy()
-				expect(
-					screen.getByText(earlyAccessMessages[locale].pausedHeading),
-				).toBeTruthy()
-				expect(
-					screen.getByText(earlyAccessMessages[locale].pausedDescription),
-				).toBeTruthy()
-				expect(
-					container.querySelector('form, input, button, script'),
-				).toBeNull()
-				expect(
-					screen.queryByText(earlyAccessMessages[locale].helper),
-				).toBeNull()
-			},
-		)
+			expect(
+				screen.getByRole('heading', {
+					name: earlyAccessMessages[locale].pausedHeading,
+				}),
+			).toBeTruthy()
+			expect(
+				screen.getByText(earlyAccessMessages[locale].pausedDescription),
+			).toBeTruthy()
+			expect(container.querySelector('form, input, button, script')).toBeNull()
+			expect(screen.queryByText(earlyAccessMessages[locale].helper)).toBeNull()
+		})
 	}
-})
-
-describe('the landing band description', () => {
-	it('shows the description a product page passes instead of the shared sentence', () => {
-		render(
-			<EarlyAccessSection
-				description="See a team envelope for your own work."
-				locale="en"
-				source="landing"
-			/>,
-		)
-
-		expect(
-			screen.getByText('See a team envelope for your own work.'),
-		).toBeTruthy()
-		expect(
-			screen.queryByText(earlyAccessMessages.en.demoDescription),
-		).toBeNull()
-	})
-
-	it('keeps the shared sentence when the page passes none', () => {
-		render(<EarlyAccessSection locale="en" source="landing" />)
-
-		expect(
-			screen.getByText(earlyAccessMessages.en.demoDescription),
-		).toBeTruthy()
-	})
 })
 
 // Sign-up is paused until feature flags have a proper home. Restore this
@@ -91,12 +49,10 @@ describe('the landing band description', () => {
 // 	] satisfies WebsiteLocale[]) {
 // 		it(`renders the ${locale} email form`, () => {
 // 			vi.stubEnv('NEXT_PUBLIC_TURNSTILE_SITE_KEY', '1x00000000000000000000BB')
-// 			const { container } = render(
-// 				<EarlyAccessSection locale={locale} source="landing" />,
-// 			)
+// 			const { container } = render(<EarlyAccessSection locale={locale} />)
 // 			expect(
 // 				screen.getByRole('heading', {
-// 					name: earlyAccessMessages[locale].homeHeading,
+// 					name: earlyAccessMessages[locale].pricingHeading,
 // 				}),
 // 			).toBeTruthy()
 // 			expect(

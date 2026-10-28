@@ -118,7 +118,7 @@ export function IntegrationsSection(props: IntegrationsSectionProps) {
 			/>
 			<div className="integrations-outro">
 				<p>{copy.closing.description}</p>
-				<a className="smooth-text-link" href="#early-access">
+				<a className="smooth-text-link" href="#book-a-demo">
 					{copy.closing.cta}
 					<span aria-hidden="true">↗</span>
 				</a>

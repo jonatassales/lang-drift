@@ -13,7 +13,15 @@ import {
 } from '@data/hero-demo-data'
 import { selectHeroGraphPointAtom, themeAtom } from '@state'
 
-export function HeroSinapsiGraph() {
+interface HeroSinapsiGraphProps {
+	/** 2 under the Vision page's title, 3 under a home section's heading. */
+	headingLevel?: 2 | 3
+}
+
+export function HeroSinapsiGraph(props: HeroSinapsiGraphProps) {
+	const { headingLevel = 2 } = props
+
+	const Heading = headingLevel === 3 ? 'h3' : 'h2'
 	const t = useTranslations('demo')
 	const locale = useLocale()
 	const theme = useAtomValue(themeAtom)
@@ -89,7 +97,7 @@ export function HeroSinapsiGraph() {
 			className="hero-graph-region"
 		>
 			<div className="hero-graph-heading">
-				<h2 id={headingId}>{t('graph.title')}</h2>
+				<Heading id={headingId}>{t('graph.title')}</Heading>
 				<p>{t('graph.description')}</p>
 			</div>
 			<p className="ld-visually-hidden" id={descriptionId}>

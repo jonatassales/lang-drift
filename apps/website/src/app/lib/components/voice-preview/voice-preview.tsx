@@ -1,10 +1,9 @@
 'use client'
 
 import { AgentOrb, type AgentOrbState } from '@langdrift/web/ui/agent-orb'
+import { cn } from '@langdrift/web/utilities'
 import { useFormatter, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
-
-import './voice-preview.css'
 
 const scriptedStates: AgentOrbState[] = [
 	'listening',
@@ -13,6 +12,8 @@ const scriptedStates: AgentOrbState[] = [
 	'idle',
 ]
 
+// The orb beside the sample question and its scripted answer. The section
+// around it says what the preview is; this component only plays it.
 export function VoicePreview() {
 	const t = useTranslations('home.voice')
 	const format = useFormatter()
@@ -41,41 +42,48 @@ export function VoicePreview() {
 	}
 
 	return (
-		<div className="voice-preview">
-			<div className="voice-orb-wrap" aria-hidden="true">
+		<div className="grid w-full items-center gap-7 md:grid-cols-[minmax(220px,0.75fr)_minmax(0,1.25fr)] md:gap-16">
+			<div
+				aria-hidden="true"
+				className="flex min-h-[190px] items-center justify-center md:min-h-[250px]"
+			>
 				<AgentOrb size="190px" speed={0.82} state={state} />
 			</div>
-			<div className="voice-copy">
-				<span className="section-kicker section-kicker-dark">
-					{t('kicker')}
-				</span>
-				<h2>{t('title')}</h2>
-				<p>{t('description')}</p>
-				<div className="voice-question">
-					<span>{t('question')}</span>
+			<div className="grid gap-[18px]">
+				<div className="flex flex-col items-stretch justify-between gap-[18px] border-t border-border pt-[18px] md:flex-row md:items-center">
+					<span className="text-[13px]">{t('question')}</span>
 					<button
-						className="max-w-full whitespace-normal! py-2! [overflow-wrap:anywhere]"
+						className="min-h-[38px] max-w-full shrink-0 cursor-pointer rounded-lg border-0 bg-primary px-3.5 py-2 text-primary-foreground whitespace-normal [overflow-wrap:anywhere]"
 						type="button"
 						onClick={runPreview}
 					>
 						{t('ask')}
 					</button>
 				</div>
-				<output className="website-sr-only">{t(state)}</output>
+				<output className="sr-only">{t(state)}</output>
 				<div
 					aria-live="polite"
-					className={`voice-answer ${showAnswer ? 'voice-answer-visible' : ''}`}
+					className={cn(
+						'grid items-start gap-[18px] rounded-xl border border-border p-4 transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none md:grid-cols-[auto_1fr]',
+						showAnswer
+							? 'translate-y-0 opacity-100'
+							: 'translate-y-2 opacity-0',
+					)}
 					aria-hidden={!showAnswer}
 				>
-					<div className="voice-answer-stat">
-						<strong data-drift-sign="negative">
+					<div className="grid gap-[3px]">
+						<strong className="text-[22px]" data-drift-sign="negative">
 							{t('points', { count: format.number(-9) })}
 						</strong>
-						<span>{t('largest')}</span>
+						<span className="text-[10px] text-muted-foreground">
+							{t('largest')}
+						</span>
 					</div>
 					<div>
 						<strong>{t('answerTitle')}</strong>
-						<p>{t('answer')}</p>
+						<p className="mt-[5px] mb-0 text-[10px] text-muted-foreground">
+							{t('answer')}
+						</p>
 					</div>
 				</div>
 			</div>

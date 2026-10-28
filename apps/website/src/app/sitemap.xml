@@ -226,6 +226,51 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/pricing/"/>
   </url>
   <url>
+    <loc>https://langdrift.md/en/book-a-demo/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/book-a-demo/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/pt-br/book-a-demo/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/book-a-demo/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/zh-hant/book-a-demo/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/book-a-demo/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/ja/book-a-demo/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/book-a-demo/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/vi/book-a-demo/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/book-a-demo/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/book-a-demo/"/>
+  </url>
+  <url>
     <loc>https://langdrift.md/en/privacy/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/privacy/"/>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/privacy/"/>

@@ -9,5 +9,3 @@ export apps/website/src/app/template/formatters/*.fmt.ts#* # The owner keeps the
 dependency apps/website:react-dom # Next.js requires it as a peer.
 dependency apps/docs:react-dom # Next.js requires it as a peer.
 class recharts-* # Recharts renders these classes.
-module apps/website/src/app/lib/components/voice-preview/voice-preview.tsx # The voice preview left the Vision page; the AI Voice product page will reuse it.
-export apps/website/src/app/lib/components/voice-preview/voice-preview.tsx#* # The voice preview left the Vision page; the AI Voice product page will reuse it.

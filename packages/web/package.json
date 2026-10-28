@@ -33,8 +33,6 @@
 		"./vendors/smoothui/animated-tabs": "./src/vendors/smoothui/animated-tabs.tsx",
 		"./vendors/smoothui/basic-accordion": "./src/vendors/smoothui/basic-accordion.tsx",
 		"./vendors/smoothui/chroma-text": "./src/vendors/smoothui/chroma-text.tsx",
-		"./vendors/smoothui/features-grid": "./src/vendors/smoothui/features-grid.tsx",
-		"./vendors/smoothui/glow-hover-card": "./src/vendors/smoothui/glow-hover-card.tsx",
 		"./vendors/smoothui/gravity-stars": "./src/vendors/smoothui/gravity-stars.tsx",
 		"./vendors/smoothui/mac-terminal": "./src/vendors/smoothui/mac-terminal.tsx",
 		"./vendors/smoothui/magnetic-field": "./src/vendors/smoothui/magnetic-field.tsx",

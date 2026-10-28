@@ -23,7 +23,7 @@
 		"reviewReference": "レビュー依頼：{reviewTitle}",
 		"week": "第{week}週",
 		"pendingCondition": "未解決の条件",
-		"earlyAccess": "デモをリクエスト",
+		"earlyAccess": "デモを予約",
 		"selectionSummary": "{focus} · {target} · {classification}",
 		"resultStatus": "{count, plural, =0 {この選択に一致するイベントはありません。} other {この選択には#件のイベントがあります。}}"
 	},
