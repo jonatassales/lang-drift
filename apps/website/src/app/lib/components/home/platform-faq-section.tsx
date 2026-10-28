@@ -43,7 +43,11 @@ export function PlatformFaqSection(props: PlatformFaqSectionProps) {
 	]
 
 	return (
-		<FaqSectionShell description={copy.description} title={copy.title}>
+		<FaqSectionShell
+			className="max-w-[1280px]"
+			description={copy.description}
+			title={copy.title}
+		>
 			<FaqTabs groups={groups} tabsLabel={copy.tabsLabel} />
 		</FaqSectionShell>
 	)

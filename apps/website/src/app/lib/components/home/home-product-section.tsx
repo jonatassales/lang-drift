@@ -2,7 +2,6 @@ import { ArrowRightIcon } from '@langdrift/web/ui/icons/arrow'
 import type { ReactNode } from 'react'
 
 import type { PlatformProduct } from '@components/website-header/platform-products'
-import { headerMessages } from '@i18n/messages/index'
 import { Link } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
 
@@ -23,10 +22,9 @@ interface HomeProductSectionProps {
 	summary?: string
 }
 
-// One product on the home page: the product's icon and name on a row of
-// their own at the right, the question and its answer at the left, the demo,
-// and the way to the product page last. Every section shares the heading
-// and lead type.
+// One product on the home page: the question and its answer, the demo, and
+// the way to the product page last. Every section shares the heading and
+// lead type.
 export function HomeProductSection(props: HomeProductSectionProps) {
 	const {
 		caption,
@@ -40,7 +38,6 @@ export function HomeProductSection(props: HomeProductSectionProps) {
 		summary,
 	} = props
 
-	const Icon = product.icon
 	const headingId = `${id}-heading`
 	const captionId = `${id}-caption`
 	const summaryId = `${id}-summary`
@@ -55,17 +52,8 @@ export function HomeProductSection(props: HomeProductSectionProps) {
 			className="mx-auto max-w-[1280px] scroll-mt-24 border-t border-border px-[clamp(18px,3vw,36px)] py-16 sm:py-20"
 			id={id}
 		>
-			<p className="m-0 flex items-center justify-end gap-2.5 text-sm font-medium tracking-tight text-foreground">
-				<span
-					aria-hidden="true"
-					className="inline-flex size-7 shrink-0 items-center justify-center rounded-md border border-border bg-card"
-				>
-					<Icon className="size-4" />
-				</span>
-				{headerMessages[locale][product.label]}
-			</p>
 			<h2
-				className="m-0 mt-6 text-[clamp(28px,3.2vw,43px)] leading-[1.16] font-medium tracking-[-0.045em] text-balance text-foreground"
+				className="m-0 text-[clamp(28px,3.2vw,43px)] leading-[1.16] font-medium tracking-[-0.045em] text-balance text-foreground"
 				id={headingId}
 			>
 				{headline}

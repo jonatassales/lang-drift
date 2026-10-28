@@ -16,7 +16,8 @@ interface PlatformHeroProps {
 // black-and-white shader, with the rainbow flowing through the word
 // "Platform" as the page's one touch of color. The shader's brand roles are
 // swapped for neutral ones, so it draws in grays: the light scheme takes the
-// secondary text gray, so its veils show over the pale field, and the dark
+// secondary text gray at under half opacity, so its veils show over the
+// pale field while it stays closer to white than to silver, and the dark
 // one takes the border and secondary text grays at reduced opacity, so its
 // veils are lighter than the black but stay quiet. Purple dot waves travel
 // over the shader from the pointer. Under the headline, one frame holds the
@@ -28,7 +29,7 @@ interface PlatformHeroProps {
 // scrolls its transcript inside; below `lg`, the cards stack under the
 // terminal.
 const monochrome =
-	'[--primary-hover:var(--muted-foreground)] [--primary:var(--muted-foreground)] dark:opacity-60 dark:[--primary-hover:var(--muted-foreground)] dark:[--primary:var(--border)]'
+	'opacity-45 [--primary-hover:var(--muted-foreground)] [--primary:var(--muted-foreground)] dark:opacity-60 dark:[--primary-hover:var(--muted-foreground)] dark:[--primary:var(--border)]'
 
 export function PlatformHero(props: PlatformHeroProps) {
 	const { locale } = props

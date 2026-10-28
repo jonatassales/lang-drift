@@ -10,7 +10,6 @@ vi.mock('@i18n/navigation', () => ({
 }))
 
 import { platformProduct } from '@components/website-header/platform-products'
-import { headerMessages } from '@i18n/messages/index'
 
 import { HomeProductSection } from './home-product-section'
 
@@ -22,7 +21,7 @@ afterEach(() => {
 })
 
 describe('a home product section', () => {
-	it('names the product, is labelled by its heading and ends with the link', () => {
+	it('is labelled by its heading and ends with the link', () => {
 		render(
 			<HomeProductSection
 				description="A run is bounded before it starts."
@@ -36,13 +35,14 @@ describe('a home product section', () => {
 			</HomeProductSection>,
 		)
 
-		const region = screen.getByRole('region', {
-			name: 'How does a run stay bounded?',
-		})
 		const demo = screen.getByText('The demo')
 		const link = screen.getByRole('link', { name: 'Explore Microruntimes' })
 
-		expect(region.textContent).toContain(headerMessages.en.microruntimes)
+		expect(
+			screen.getByRole('region', {
+				name: 'How does a run stay bounded?',
+			}),
+		).toBeTruthy()
 		expect(
 			screen.getByRole('heading', {
 				level: 2,
@@ -76,7 +76,6 @@ describe('a home product section', () => {
 			.split(' ')
 			.map((id) => document.getElementById(id)?.textContent)
 
-		expect(region.textContent).toContain(headerMessages['pt-BR'].finops)
 		expect(describedBy).toEqual([
 			'Illustrative ledger.',
 			'An illustrative team budget.',
