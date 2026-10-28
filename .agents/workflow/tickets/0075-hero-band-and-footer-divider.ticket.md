@@ -8,7 +8,7 @@
 
 **Status:** ready-for-agent
 
-- [ ] The hero renders the headline and the terminal at its left and the session cards at its right, with no sun, no product column and no calls to action; on a phone the cards stack under the terminal.
+- [ ] The hero renders the headline and the terminal at its left and the session cards at its right, with no sun, no product column and no calls to action; from `lg` the whole terminal fits the first screen, and on a phone the cards stack under the terminal.
 - [ ] The home, the FinOps page and the Microruntimes page end with their FAQ, and the header's demo button still opens the Book a demo page.
 - [ ] The footer shows no line between its rows, and its other styles are unchanged.
 - [ ] The home shows the bottom scroll hint until its end is on screen.
