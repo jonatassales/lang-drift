@@ -6,6 +6,7 @@ import { type ReactNode, Suspense } from 'react'
 
 import site from '@app/metadata/site.json'
 import { LocaleAvailabilityNotice } from '@components/locale-availability-notice'
+import { ScrollToTop } from '@components/scroll-to-top'
 import { getWebsiteMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
 
@@ -65,6 +66,7 @@ export default async function LocaleLayout(props: LayoutProps) {
 					<Suspense>
 						<LocaleAvailabilityNotice />
 					</Suspense>
+					<ScrollToTop />
 					{children}
 				</NextIntlClientProvider>
 			</body>
