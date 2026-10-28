@@ -14,7 +14,7 @@ GOTOOLCHAIN=local go vet ./...
 ```
 
 The module, `github.com/jonatassales/tao/packages/ex`, is the private package
-`@langdrift/ex`. It imports the [Microruntimes contracts](../contracts/README.md),
+`@langdrift/ex`. It imports the [Microruntimes contracts](/packages/contracts/README.md),
 `github.com/jonatassales/tao/packages/contracts`, for the `runtime.md` fence,
 the lexical rules and the agent-server protocol. The root `go.work` ties the two
 modules and `apps/extub` together, so the CLI imports the contracts without a
@@ -161,8 +161,8 @@ GOTOOLCHAIN=local go test -race ./...
 Benchmarks need no infrastructure and run only when requested. They cover
 process startup, command dispatch, cluster inventory parsing, cluster
 deletion reconciliation, process spawn and cancellation, the project lock,
-and the durable state write. The recorded baseline and its limits are in
-[SPEC-EX-HARDENING](../../.langdrift/artifacts/specs/0039-SPEC-ex-hardening.spec.md).
+and the durable state write. The recorded baseline and its limits were kept
+in the upstream SPEC-EX-HARDENING, which did not come over with the CLI.
 
 ```sh
 GOTOOLCHAIN=local go test -run '^$' -bench . -count=10 ./...
