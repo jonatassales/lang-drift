@@ -15,6 +15,7 @@ import {
 	Gear,
 	GitBranch,
 	House,
+	MagnifyingGlass,
 	Ticket,
 } from '@ui/icons'
 
@@ -49,6 +50,11 @@ export function Navigation(props: NavigationProps) {
 							href: `${base}/tickets`,
 							key: 'tickets',
 							icon: Ticket,
+						},
+						{
+							href: `${base}/analysis`,
+							key: 'analysis',
+							icon: MagnifyingGlass,
 						},
 						{
 							href: `${base}/executions`,

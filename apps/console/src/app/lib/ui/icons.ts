@@ -9,6 +9,7 @@ export {
 	GithubLogo,
 	House,
 	List,
+	MagnifyingGlass,
 	Moon,
 	Pause,
 	Play,
