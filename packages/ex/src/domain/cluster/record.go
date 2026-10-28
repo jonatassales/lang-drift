@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 // SystemNamespace is the namespace whose UID identifies a cluster.

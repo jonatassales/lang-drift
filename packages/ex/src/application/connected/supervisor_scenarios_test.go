@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/connection"
+	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
 )
 
 // scriptedConsole walks one sync response per call and records what it saw.

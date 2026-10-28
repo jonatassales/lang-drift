@@ -4,7 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/jonatassales/tao/exphere/cli/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/application"
 )
 
 // Selection maps the project flags to a project selection. An explicit

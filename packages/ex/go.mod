@@ -1,4 +1,4 @@
-module github.com/jonatassales/tao/exphere/cli
+module github.com/jonatassales/tao/packages/ex
 
 go 1.26.0
 

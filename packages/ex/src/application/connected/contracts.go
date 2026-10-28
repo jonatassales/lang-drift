@@ -7,14 +7,14 @@ import (
 	"errors"
 	"time"
 
-	"github.com/jonatassales/tao/exphere/cli/src/application"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/connection"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/project"
-	"github.com/jonatassales/tao/exphere/contracts/protocol"
+	"github.com/jonatassales/tao/packages/contracts/protocol"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
-// The wire types the agent exchanges with the server belong to the Exphere
-// contracts; these names keep the agent's code reading as before.
+// The wire types the agent exchanges with the server belong to the
+// Microruntimes contracts; these names keep the agent's code reading as before.
 type (
 	Event               = protocol.Event
 	Observation         = protocol.Observation

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/cluster"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/cluster"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 // CreateCluster creates the project's local cluster and records its identity

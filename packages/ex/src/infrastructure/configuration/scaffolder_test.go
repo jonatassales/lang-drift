@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/microruntime"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 // tempDir returns a fresh directory with symlinks resolved, because these

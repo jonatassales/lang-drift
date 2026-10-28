@@ -4,12 +4,12 @@ import (
 	"path"
 	"strings"
 
-	"github.com/jonatassales/tao/exphere/contracts/configuration"
+	"github.com/jonatassales/tao/packages/contracts/configuration"
 )
 
 // RelativePath is a clean, slash-separated path that cannot leave its boundary.
 //
-// The lexical rules belong to the Exphere contracts. Whether the path exists,
+// The lexical rules belong to the Microruntimes contracts. Whether the path exists,
 // or crosses a symlink, depends on the filesystem and is checked by
 // infrastructure. The zero RelativePath means "not set".
 type RelativePath struct{ value string }

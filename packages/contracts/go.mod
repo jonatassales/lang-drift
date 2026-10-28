@@ -1,4 +1,4 @@
-module github.com/jonatassales/tao/exphere/contracts
+module github.com/jonatassales/tao/packages/contracts
 
 go 1.26.0
 

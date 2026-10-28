@@ -1,14 +1,14 @@
 package microruntime
 
-import "github.com/jonatassales/tao/exphere/contracts/configuration"
+import "github.com/jonatassales/tao/packages/contracts/configuration"
 
 // Identifier names a runtime, unit, namespace, hook, or agent. It is a DNS
 // label, so it is also safe as a Kubernetes label value. Only ParseIdentifier
 // produces a usable value; the zero Identifier means "not set".
 type Identifier struct{ value string }
 
-// ParseIdentifier validates text as an Identifier, by the Exphere contracts'
-// lexical rule.
+// ParseIdentifier validates text as an Identifier, by the Microruntimes
+// contracts' lexical rule.
 func ParseIdentifier(text string) (Identifier, error) {
 	if err := configuration.CheckIdentifier(text); err != nil {
 		return Identifier{}, err

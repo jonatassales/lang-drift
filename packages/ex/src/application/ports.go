@@ -3,9 +3,9 @@ package application
 import (
 	"context"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/cluster"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/microruntime"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/cluster"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 // The ports below are everything the application needs from the outside

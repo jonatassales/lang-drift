@@ -10,10 +10,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jonatassales/tao/exphere/cli/src/application"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/microruntime"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/project"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
 // recorder records Terraform invocations. While planning, it also captures

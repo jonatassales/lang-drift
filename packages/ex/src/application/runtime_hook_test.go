@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/jonatassales/tao/exphere/cli/src/application"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 )
 
 type fakeHookExecutor struct {

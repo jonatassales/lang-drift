@@ -8,9 +8,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/microruntime"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/files"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/terraform"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/files"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/terraform"
 )
 
 const (

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/jonatassales/tao/exphere/contracts/configuration"
+	"github.com/jonatassales/tao/packages/contracts/configuration"
 )
 
 // Domain errors classify why EX rejected a definition or refused an action.

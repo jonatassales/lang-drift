@@ -1,8 +1,8 @@
 {
 	"mirror": {
-		"of": "exphere-server",
+		"of": "console",
 		"record": "ledger-run-0001",
-		"setBy": "exphere-server",
+		"setBy": "console",
 		"via": "server",
 		"setAt": "2026-10-28T14:31:48Z",
 		"readOnly": true,

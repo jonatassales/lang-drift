@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/cluster"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/microruntime"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/cluster"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 // pollInterval paces every wait for the cluster to reach a state.

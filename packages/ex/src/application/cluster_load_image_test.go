@@ -6,8 +6,8 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/jonatassales/tao/exphere/cli/src/application"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/cluster"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/cluster"
 )
 
 func (w *world) loadImage() application.LoadClusterImage {

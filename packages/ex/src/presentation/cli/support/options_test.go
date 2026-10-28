@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jonatassales/tao/exphere/cli/src/presentation/cli/support"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
 
 func TestOptions_WithDefaults(t *testing.T) {

@@ -8,7 +8,7 @@
 		"typecheck": "go vet ./..."
 	},
 	"dependencies": {
-		"@langdrift/exphere-contracts": "workspace:*"
+		"@langdrift/contracts": "workspace:*"
 	},
 	"files": [
 		"src",

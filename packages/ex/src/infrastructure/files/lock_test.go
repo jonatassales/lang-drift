@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/files"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/files"
 )
 
 func TestLock(t *testing.T) {

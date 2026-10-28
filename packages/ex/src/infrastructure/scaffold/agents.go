@@ -6,8 +6,8 @@ import (
 	"path"
 	"strings"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/microruntime"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 // agentTemplates holds the editable TypeScript LangGraph runner shipped with EX.

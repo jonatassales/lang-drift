@@ -15,8 +15,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	app "github.com/jonatassales/tao/exphere/cli/src/application/connected"
-	"github.com/jonatassales/tao/exphere/contracts/protocol"
+	"github.com/jonatassales/tao/packages/contracts/protocol"
+	app "github.com/jonatassales/tao/packages/ex/src/application/connected"
 )
 
 // MCP uses bounded Streamable HTTP JSON responses with no credential-bearing

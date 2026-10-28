@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jonatassales/tao/exphere/cli/src/application"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/kubectl"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kubectl"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
 // call is one recorded kubectl invocation.

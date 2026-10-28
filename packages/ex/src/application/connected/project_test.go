@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/connection"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 type projectConsoleFake struct {

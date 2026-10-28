@@ -1,19 +1,19 @@
 package main
 
 import (
-	"github.com/jonatassales/tao/exphere/cli/src/application"
-	connectedapp "github.com/jonatassales/tao/exphere/cli/src/application/connected"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/configuration"
-	connectedinfra "github.com/jonatassales/tao/exphere/cli/src/infrastructure/connected"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/hooks"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/kind"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/kubectl"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/process"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/scaffold"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/storage"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/terraform"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/toolchain"
-	"github.com/jonatassales/tao/exphere/cli/src/presentation/cli"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	connectedapp "github.com/jonatassales/tao/packages/ex/src/application/connected"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/configuration"
+	connectedinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/connected"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/hooks"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kind"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kubectl"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/scaffold"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/storage"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/terraform"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/toolchain"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli"
 )
 
 // useCases is the composition root: the only place that knows every concrete

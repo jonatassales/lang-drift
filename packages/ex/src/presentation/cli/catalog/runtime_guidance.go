@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/jonatassales/tao/exphere/cli/src/application"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/microruntime"
-	"github.com/jonatassales/tao/exphere/cli/src/presentation/cli/support"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
 
 // guidedQuotas are the namespace quotas guided setup asks for.

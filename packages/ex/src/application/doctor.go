@@ -3,7 +3,7 @@ package application
 import (
 	"context"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/cluster"
+	"github.com/jonatassales/tao/packages/ex/src/domain/cluster"
 )
 
 // Diagnose reports the host's prerequisites and, when a project and its

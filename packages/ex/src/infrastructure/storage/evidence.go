@@ -3,9 +3,9 @@ package storage
 import (
 	"path/filepath"
 
-	"github.com/jonatassales/tao/exphere/cli/src/application"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/project"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/files"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/files"
 )
 
 // executionEvidence is the retained record of one lifecycle operation.

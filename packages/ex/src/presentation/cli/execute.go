@@ -9,8 +9,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/jonatassales/tao/exphere/cli/src/presentation/cli/catalog"
-	"github.com/jonatassales/tao/exphere/cli/src/presentation/cli/support"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/catalog"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
 
 // UseCases are the application operations the command tree exposes. Each

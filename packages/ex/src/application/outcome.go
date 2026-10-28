@@ -3,7 +3,7 @@ package application
 import (
 	"time"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 )
 
 // ExecutionOutcome is the externally visible part of an execution record:

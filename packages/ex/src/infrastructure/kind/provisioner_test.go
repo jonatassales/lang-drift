@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/kind"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kind"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
 // recorder records each invocation as its executable followed by its

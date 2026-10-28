@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/scaffold"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/scaffold"
 )
 
 // tempDir returns a fresh directory with symlinks resolved, because the

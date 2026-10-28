@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"path"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/microruntime"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/project"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/scaffold"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/scaffold"
 )
 
 const (

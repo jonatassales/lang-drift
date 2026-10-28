@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 )
 
 // Terraform resource types a preparation may manage.

@@ -4,7 +4,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/jonatassales/tao/exphere/contracts/configuration"
+	"github.com/jonatassales/tao/packages/contracts/configuration"
 )
 
 // WorkloadKind selects how Kubernetes runs a workload.

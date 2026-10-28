@@ -5,7 +5,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 )
 
 // validDescriptor declares a Deployment unit and a Job unit.

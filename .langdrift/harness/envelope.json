@@ -1,6 +1,6 @@
 {
 	"mirror": {
-		"of": "exphere-server",
+		"of": "console",
 		"record": "envelope-7c2a",
 		"setBy": "owner",
 		"via": "console",

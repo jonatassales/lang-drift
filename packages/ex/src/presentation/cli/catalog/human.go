@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/jonatassales/tao/exphere/cli/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/application"
 )
 
 // The renderers below are presentation only: each writes the same data the

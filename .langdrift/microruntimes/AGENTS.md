@@ -1,9 +1,9 @@
 # Microruntimes execution rules
 
-Rules every run follows, whoever starts it: a person in the console, which is the primary path, or the `ex` CLI. Exphere, the Microruntimes engine, applies them. Each rule says how it holds today.
+Rules every run follows, whoever starts it: a person in the console, which is the primary path, or the `ex` CLI. The Microruntimes engine, the `ex` CLI and the console's server, applies them. Each rule says how it holds today.
 
-- **Code** means the Exphere CLI applies it now.
-- **Planned** means Exphere will apply it; until then it is not a control.
+- **Code** means the `ex` CLI applies it now.
+- **Planned** means the engine will apply it; until then it is not a control.
 - **Guidance** means a person or an agent follows it; nothing checks it.
 
 A rule written here and applied by nobody is not a control. Promote a rule to code before relying on it.
@@ -59,4 +59,4 @@ A rule written here and applied by nobody is not a control. Promote a rule to co
 
 ## Boundary
 
-`.langdrift/` reads the project and writes only inside itself. Exphere writes only `microruntimes/`. It reads the client's artifacts, wherever they live, and the mirrors in `harness/` and `finops/`, and never writes them.
+`.langdrift/` reads the project and writes only inside itself. The engine writes only `microruntimes/`. It reads the client's artifacts, wherever they live, and the mirrors in `harness/` and `finops/`, and never writes them.

@@ -4,11 +4,11 @@ Project knowledge for agents working in this repository. [`AGENTS.md`](/AGENTS.m
 
 ## Repository
 
-Monorepo with two packages, `@langdrift/tokens` and `@langdrift/web`, the Exphere workspace (`exphere/`, the engine of Microruntimes: the `ex` CLI as `@langdrift/ex` and the Microruntimes contracts as `@langdrift/exphere-contracts`; see `exphere/README.md`), and four apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/docs` is the Nextra documentation for LangDrift and every platform product, ported from Exphere's docs under spec 0006 and served under `basePath: '/docs'`. `apps/extub` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from extub.
+Monorepo with four packages, `@langdrift/tokens`, `@langdrift/web`, the `ex` CLI as `@langdrift/ex` and the Microruntimes contracts as `@langdrift/contracts`, and four apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/docs` is the Nextra documentation for LangDrift and every platform product, ported from Exphere's docs under spec 0006 and served under `basePath: '/docs'`. `apps/extub` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from extub.
 
 - `apps/<app>/`: one deployable app each, Next.js except `extub`. `pnpm-workspace.yaml` picks them up through `apps/*`.
-- `packages/<capability>/`: shared across apps, never inside one. `tokens`, `web` and `ex` exist; `shell`, `account`, `runtime` and `contracts` are planned.
-- `exphere/` is a workspace of its own, picked up through `exphere/*`. Its members and `apps/extub` are Go modules tied together by the root `go.work`: Turborepo runs their `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds them (no Go toolchain required for frontend work).
+- `packages/<capability>/`: shared across apps, never inside one. `tokens`, `web`, `ex` and `contracts` exist; `shell`, `account` and `runtime` are planned.
+- `packages/ex`, `packages/contracts` and `apps/extub` are Go modules tied together by the root `go.work`: Turborepo runs their `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds them (no Go toolchain required for frontend work).
 - A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package. Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
 - `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, `quality/` the lint-staged config, the Biome plugin and `dead-code.allow`, `versioning/` the commitlint config and the Git hooks (`.husky/`).
@@ -212,10 +212,6 @@ _Avoid_: State file, journal
 **Evidence**:
 The token-free record ex keeps of every lifecycle operation and inspection, for later audit.
 _Avoid_: Log, report
-
-**Exphere**:
-The workspace that is the engine of Microruntimes: the `ex` CLI, the Microruntimes contracts and, next, the server the connected agent talks to. It holds nothing of Vision or FinOps, and writes only `.langdrift/microruntimes/` in a project.
-_Avoid_: Exphere as the name of the console or of extub
 
 **Run**:
 One execution of a microruntime toward one goal: a ticket, a test, a load test or an end-to-end run. The race of the metaphor in which the microruntime is the car.

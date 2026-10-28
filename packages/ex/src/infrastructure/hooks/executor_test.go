@@ -6,9 +6,9 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/jonatassales/tao/exphere/cli/src/application"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/hooks"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/hooks"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
 type recorder struct {

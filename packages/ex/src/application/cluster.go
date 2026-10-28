@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/cluster"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/cluster"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 // clusterOperationTimeout bounds creating, loading into, or deleting a cluster,

@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/files"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/files"
 )
 
 // Permissions of published, consumer-owned content.

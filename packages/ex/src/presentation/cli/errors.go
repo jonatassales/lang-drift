@@ -8,10 +8,10 @@ import (
 	"io"
 	"os/exec"
 
-	app "github.com/jonatassales/tao/exphere/cli/src/application"
-	connected "github.com/jonatassales/tao/exphere/cli/src/application/connected"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/connection"
-	"github.com/jonatassales/tao/exphere/cli/src/presentation/cli/support"
+	app "github.com/jonatassales/tao/packages/ex/src/application"
+	connected "github.com/jonatassales/tao/packages/ex/src/application/connected"
+	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
 
 // exitCode maps execution failures to the documented contract: 0 success,

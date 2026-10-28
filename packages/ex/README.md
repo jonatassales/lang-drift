@@ -13,12 +13,13 @@ GOTOOLCHAIN=local go test ./...
 GOTOOLCHAIN=local go vet ./...
 ```
 
-The module, `github.com/jonatassales/tao/exphere/cli`, is a member of the
-[Exphere workspace](../README.md) and the private package `@langdrift/ex`. It
-imports `github.com/jonatassales/tao/exphere/contracts` for the `runtime.md`
-fence, the lexical rules and the agent-server protocol, resolved through the
-root `go.work`; building it outside this repository needs that module
-published. This does not imply a published release. Native Go commands own the
+The module, `github.com/jonatassales/tao/packages/ex`, is the private package
+`@langdrift/ex`. It imports the [Microruntimes contracts](../contracts/README.md),
+`github.com/jonatassales/tao/packages/contracts`, for the `runtime.md` fence,
+the lexical rules and the agent-server protocol. The root `go.work` ties the two
+modules and `apps/extub` together, so the CLI imports the contracts without a
+`replace` directive; building it outside this repository needs the contracts
+module published. This does not imply a published release. Native Go commands own the
 build and checks. Building does not install infrastructure tools, alter shell
 profiles, or change PATH. Use `./dist/ex` to avoid invoking the unrelated system
 editor also named `ex`.
@@ -31,10 +32,18 @@ never changes shell profiles; `LANGDRIFT_SKIP_EX_BUILD=1` skips it. Installing
 the workspace does not run it. From the workspace root,
 `pnpm --filter @langdrift/ex build` rebuilds the executable.
 
-This package declares no npm bin. Run `exphere/cli/dist/ex` directly from this
+This package declares no npm bin. Run `packages/ex/dist/ex` directly from this
 repository. The separate SDK package and its bridge were removed on October 21, 2026. The former shell-setup command,
 package bridge, historical schemas, and consumer-harness fixtures were removed
 on October 17, 2026; Git history retains them.
+
+## Boundary
+
+In a project, the CLI writes only `.langdrift/microruntimes/`. It reads
+`.langdrift/harness/`, `.langdrift/finops/` and the team's artifacts, and asks a
+FinOps gate before any paid work. A server that answers the agent's protocol and
+holds each runtime's intent is planned; until it exists, nothing in this
+repository can drive `ex agent`.
 
 ## Commands
 
@@ -103,7 +112,7 @@ src/infrastructure/          Files, storage, native tools, embedded scaffolds
 ```
 
 The `runtime.md` fence, the lexical rules and the protocol types live in the
-Exphere contracts; `src/domain/connection` and `src/application/connected`
+Microruntimes contracts, `packages/contracts`; `src/domain/connection` and `src/application/connected`
 name them for the CLI, and `src/domain/microruntime` delegates its identifier
 and path rules to them. The domain does not import the CLI, filesystem, or
 native process adapters.

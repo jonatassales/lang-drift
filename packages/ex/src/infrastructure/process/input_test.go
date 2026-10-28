@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
 func pipe(t *testing.T) (*os.File, *os.File) {

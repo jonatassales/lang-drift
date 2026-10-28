@@ -1,6 +1,6 @@
 {
 	"mirror": {
-		"of": "exphere-server",
+		"of": "console",
 		"record": "prices-0001",
 		"setBy": "owner",
 		"via": "console",

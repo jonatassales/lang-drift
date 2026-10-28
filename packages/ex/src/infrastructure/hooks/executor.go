@@ -5,8 +5,8 @@ package hooks
 import (
 	"context"
 
-	"github.com/jonatassales/tao/exphere/cli/src/application"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/process"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
 // Runner is the direct native execution contract this adapter consumes.

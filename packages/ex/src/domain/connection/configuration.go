@@ -1,9 +1,9 @@
 // Package connection defines the versioned console-to-project configuration.
-// The runtime.md contract itself lives in the Exphere contracts; this package
+// The runtime.md contract itself lives in the Microruntimes contracts; this package
 // names it for the CLI and adds the supervision state machine.
 package connection
 
-import "github.com/jonatassales/tao/exphere/contracts/configuration"
+import "github.com/jonatassales/tao/packages/contracts/configuration"
 
 // Configuration is the concrete contract inside an authored Markdown document.
 type Configuration = configuration.Configuration

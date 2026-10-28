@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	app "github.com/jonatassales/tao/exphere/cli/src/application/connected"
+	app "github.com/jonatassales/tao/packages/ex/src/application/connected"
 )
 
 func TestLocalSourceIncludesEditsAndExcludesPrivateIgnoredAndLinkedFiles(t *testing.T) {

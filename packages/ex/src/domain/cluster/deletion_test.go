@@ -6,7 +6,7 @@ import (
 	"maps"
 	"testing"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/cluster"
+	"github.com/jonatassales/tao/packages/ex/src/domain/cluster"
 )
 
 // bootstrapInventory is what a fresh cluster holds: a controller chain in

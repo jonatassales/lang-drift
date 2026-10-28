@@ -1,6 +1,6 @@
-# Exphere contracts
+# Microruntimes contracts
 
-The contracts of LangDrift Microruntimes, and only of Microruntimes. The `ex` CLI and the planned server both depend on them; they depend on nothing but the Go standard library. Money formats belong to FinOps and artifact formats to Vision or the team's tracker; neither lives here.
+The contracts of LangDrift Microruntimes, and only of Microruntimes. The `ex` CLI and the planned server both depend on them; they depend on nothing but the Go standard library. Money formats belong to FinOps and artifact formats to the team's tracker; neither lives here. The root `go.work` resolves this module for the CLI; building the CLI outside this repository needs it published first.
 
 | Package | Contract |
 | --- | --- |

@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	app "github.com/jonatassales/tao/exphere/cli/src/application/connected"
+	app "github.com/jonatassales/tao/packages/ex/src/application/connected"
 )
 
 type roundTrip func(*http.Request) (*http.Response, error)

@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/cluster"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/cluster"
+	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
 const kubeconfig = "/workspace/.langdrift/state/cluster.kubeconfig"

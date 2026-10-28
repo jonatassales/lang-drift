@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/storage"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/storage"
 )
 
 func TestLocker_Lock(t *testing.T) {

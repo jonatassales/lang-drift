@@ -7,10 +7,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jonatassales/tao/exphere/cli/src/application"
-	app "github.com/jonatassales/tao/exphere/cli/src/application/connected"
-	"github.com/jonatassales/tao/exphere/cli/src/domain/connection"
-	"github.com/jonatassales/tao/exphere/cli/src/infrastructure/storage"
+	"github.com/jonatassales/tao/packages/ex/src/application"
+	app "github.com/jonatassales/tao/packages/ex/src/application/connected"
+	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/storage"
 )
 
 // A bind that died between writing .env and saving the record must not block

@@ -3,7 +3,7 @@ package microruntime_test
 import (
 	"testing"
 
-	"github.com/jonatassales/tao/exphere/cli/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 )
 
 func TestWorkload_NativeObjects(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jonatassales/tao/exphere/cli/src/presentation/cli/support"
+	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
 
 func TestGlobals_Bounded(t *testing.T) {

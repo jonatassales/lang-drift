@@ -3,7 +3,7 @@
 // what one execution created so cleanup removes exactly that.
 //
 // Like the rest of the domain, it depends only on the standard library, the
-// Exphere contracts, whose lexical rules it shares, and other domain
+// Microruntimes contracts, whose lexical rules it shares, and other domain
 // packages. It knows nothing about Cobra, configuration files,
 // the filesystem, Terraform, Kubernetes clients, or process execution; the
 // outer layers depend on it, never the other way around.
