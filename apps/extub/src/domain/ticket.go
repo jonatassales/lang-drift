@@ -29,9 +29,14 @@ type TicketArtifacts struct {
 	Guardrail string `json:"guardrail"`
 }
 
+// A model with its list prices in cents per million tokens, as read on
+// the date the workflow records.
 type TicketModel struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	ShortName   string `json:"shortName"`
+	InputCents  int    `json:"inputCents"`
+	OutputCents int    `json:"outputCents"`
 }
 
 type TicketEpisode struct {
@@ -77,15 +82,16 @@ type TicketPlan struct {
 }
 
 type TicketStage struct {
-	ID       string `json:"id"`
-	Human    bool   `json:"human"`
-	Progress string `json:"progress"`
+	ID       string  `json:"id"`
+	Skills   *string `json:"skills"`
+	Human    bool    `json:"human"`
+	Progress string  `json:"progress"`
 }
 
 type TicketPullRequest struct {
 	Number       int    `json:"number"`
 	Commit       string `json:"commit"`
-	ChecksPassed *int   `json:"checksPassed"`
+	ChecksPassed int    `json:"checksPassed"`
 	ChecksTotal  int    `json:"checksTotal"`
 }
 
@@ -102,6 +108,7 @@ type TicketWorkflow struct {
 	ReleasedCents *int               `json:"releasedCents"`
 	PullRequest   *TicketPullRequest `json:"pullRequest"`
 	Outcome       string             `json:"outcome"`
+	PriceDate     string             `json:"priceDate"`
 }
 
 type Ticket struct {
@@ -128,15 +135,15 @@ func phaseIndex(phase string) int {
 	return -1
 }
 
-// useCase is one kind of work the generated tickets are made of.
-type useCase struct {
+// workTemplate is one kind of work the generated tickets are made of.
+type workTemplate struct {
 	slug       string
 	title      string
 	useCase    string
 	components []TicketComponent
 }
 
-var useCases = []useCase{
+var workTemplates = []workTemplate{
 	{"early-access-runtime", "Run the early-access sign-up use case as a microruntime", "early-access sign-up", []TicketComponent{
 		{"services/signup-api", "Go", "api", 250, 256, 8080},
 		{"services/notify-api", "Node.js", "api", 300, 512, 8081},
@@ -177,17 +184,36 @@ var useCases = []useCase{
 }
 
 var ticketModels = []TicketModel{
-	{"claude-sonnet-5-5", "Claude Sonnet 5.5"},
-	{"claude-haiku-5-5", "Claude Haiku 5.5"},
-	{"claude-opus-5-5", "Claude Opus 5.5"},
+	{"claude-sonnet-5-5", "Claude Sonnet 5.5", "Sonnet 5.5", 200, 1000},
+	{"claude-haiku-5-5", "Claude Haiku 5.5", "Haiku 5.5", 10, 50},
+	{"claude-opus-5-5", "Claude Opus 5.5", "Opus 5.5", 400, 2000},
 }
+
+// The date the list prices above were read.
+const priceDate = "2026-10-06"
 
 var ticketEfforts = []string{"medium", "low", "high"}
 
 var workflowStageIDs = []string{"planning", "spec", "tickets", "implement", "review", "merge"}
 
-// The workflow outcomes the generated tickets cycle through.
+// The harness skills each stage runs; review and merge run none.
+var stageSkills = map[string]string{"planning": "grilling", "spec": "to-spec", "tickets": "to-tickets", "implement": "implement · tdd · code-review"}
+
+// The workflow outcomes the generated tickets cycle through, and the stage
+// each one has reached.
 var ticketOutcomes = []string{"readyForReview", "running", "paused", "readyToMerge"}
+
+var outcomeStage = map[string]int{"running": 3, "paused": 0, "readyForReview": 4, "readyToMerge": 5}
+
+const ticketCount = 120
+
+// The early-access ticket carries the website's figures, so the console
+// and the site describe it the same way.
+const earlyAccessNumber = 31
+
+func isEarlyAccess(number int) bool {
+	return number == earlyAccessNumber
+}
 
 func intPointer(value int) *int {
 	return &value
@@ -207,32 +233,32 @@ func sumResources(components []TicketComponent) Resources {
 }
 
 // The early-access ticket's episodes are the website's; the others reuse
-// their shape with similarities scaled to the ticket.
-func ticketEpisodes(seed int) []TicketEpisode {
-	shift := float64(seed%5) * 0.01
-	if seed == 31 {
+// their shape with similarities shifted by the ticket number.
+func ticketEpisodes(number int) []TicketEpisode {
+	shift := float64(number%5) * 0.01
+	if isEarlyAccess(number) {
 		shift = 0
 	}
 	return []TicketEpisode{
 		{"ep-0412", "checkout-preview-sizing", 0.81 - shift, "kept", nil},
-		{"ep-0388", "signup-load-baseline", 0.74 - shift, "kept", nil},
-		{"ep-0351", "notify-api-cold-start", 0.66 - shift, "kept", nil},
-		{"ep-0297", "docs-portal-build", 0.52 - shift, "dropped", stringPointer("docsOnly")},
-		{"ep-0240", "batch-runner-limits", 0.47 - shift, "dropped", stringPointer("otherRuntime")},
-		{"ep-0188", "cron-cleanup", 0.42 - shift, "dropped", stringPointer("noBroker")},
+		{"ep-0388", "notify-api-rollout", 0.74 - shift, "kept", nil},
+		{"ep-0351", "signup-redesign-preview", 0.66 - shift, "kept", nil},
+		{"ep-0297", "docs-search-index", 0.52 - shift, "dropped", stringPointer("docsOnly")},
+		{"ep-0240", "batch-export-worker", 0.47 - shift, "dropped", stringPointer("otherRuntime")},
+		{"ep-0188", "storefront-cache-warmup", 0.42 - shift, "dropped", stringPointer("noBroker")},
 	}
 }
 
-// ticketPhase spreads the generated tickets across the phases, newest
+// ticketPhase spreads the generated tickets across the phases, the newest
 // earliest in the work. The early-access ticket has reached the workflow.
 func ticketPhase(number int) string {
-	if number == 31 {
+	if isEarlyAccess(number) {
 		return "workflow"
 	}
 	switch {
-	case number > 52:
-		return TicketPhases[(60-number)%2]
-	case number > 44:
+	case number > ticketCount-8:
+		return TicketPhases[(ticketCount-number)%2]
+	case number > ticketCount-16:
 		return TicketPhases[1+(number%2)]
 	default:
 		return TicketPhases[number%4]
@@ -240,26 +266,24 @@ func ticketPhase(number int) string {
 }
 
 func generateTicket(number int, startedAt time.Time) Ticket {
-	work := useCases[number%len(useCases)]
-	if number == 31 {
-		work = useCases[0]
+	work := workTemplates[number%len(workTemplates)]
+	slug := fmt.Sprintf("%s-%d", work.slug, number)
+	if isEarlyAccess(number) {
+		work = workTemplates[0]
+		slug = work.slug
 	}
 	phase := ticketPhase(number)
 	reached := phaseIndex(phase)
 	padded := fmt.Sprintf("%04d", number)
-	slug := work.slug
-	if number != 31 {
-		slug = fmt.Sprintf("%s-%d", work.slug, number)
-	}
 	ticket := Ticket{
 		ID:        "ticket-" + padded,
 		ProductID: TicketProductID,
 		Number:    padded,
 		Slug:      slug,
 		Title:     work.title,
-		Status:    "ready-for-agent",
+		Status:    "needs-triage",
 		Phase:     phase,
-		CreatedAt: startedAt.Add(-time.Duration(60-number) * 3 * time.Hour).UTC().Format(time.RFC3339),
+		CreatedAt: startedAt.Add(-time.Duration(ticketCount-number) * 3 * time.Hour).UTC().Format(time.RFC3339),
 		Artifacts: TicketArtifacts{
 			PRD:       fmt.Sprintf("%04d-PRD-%s.prd.md", 1+number%7, work.slug),
 			DesignDoc: fmt.Sprintf("%04d-DD-%s.dd.md", 3+number%9, work.slug),
@@ -267,33 +291,55 @@ func generateTicket(number int, startedAt time.Time) Ticket {
 			Guardrail: "0001-finops.gr.md",
 		},
 	}
-	if reached == 0 {
-		ticket.Status = "needs-triage"
+	if reached < 1 {
 		return ticket
 	}
 
-	components := work.components
-	suggested := sumResources(components)
+	suggested := sumResources(work.components)
 	bounded := Resources{
 		CPUMillis: ((suggested.CPUMillis*4/3)/500 + 1) * 500,
 		MemoryMiB: ((suggested.MemoryMiB*4/3)/512 + 1) * 512,
 	}
-	if number == 31 {
-		bounded = Resources{CPUMillis: 2000, MemoryMiB: 3072}
-	}
 	model := ticketModels[number%len(ticketModels)]
 	effort := ticketEfforts[number%len(ticketEfforts)]
-	if number == 31 {
+	if isEarlyAccess(number) {
+		ticket.Artifacts = TicketArtifacts{
+			PRD:       "0002-PRD-early-access.prd.md",
+			DesignDoc: "0005-DD-early-access-runtime.dd.md",
+			Spec:      "0011-SPEC-early-access-runtime.spec.md",
+			Guardrail: "0001-finops.gr.md",
+		}
+		bounded = Resources{CPUMillis: 2000, MemoryMiB: 3072}
 		model = ticketModels[0]
 		effort = "medium"
 	}
-	analysisCurrent := reached == 1
+	ticket.Analysis = generateAnalysis(number, work, bounded, model, effort, reached == 1)
+	ticket.Status = "in-analysis"
+	if reached < 2 {
+		return ticket
+	}
+
+	ticket.Plan = generatePlan(number, work, bounded, suggested, reached == 2)
+	ticket.Status = "planned"
+	if reached < 3 {
+		return ticket
+	}
+
+	ticket.Plan.Authorization = "authorized"
+	ticket.Workflow = generateWorkflow(number, suggested, model, effort)
+	ticket.Status = "in-workflow"
+	return ticket
+}
+
+// An analysis still in progress has read only part of the documents: what it
+// has not read, judged or suggested yet is null.
+func generateAnalysis(number int, work workTemplate, bounded Resources, model TicketModel, effort string, current bool) *TicketAnalysis {
 	analysis := &TicketAnalysis{
 		DocumentsRead:      []string{"prd", "designDoc", "spec", "guardrail"},
 		UseCase:            stringPointer(work.useCase),
 		Bounded:            &bounded,
 		BudgetCents:        intPointer(2500),
-		SpecComponents:     intPointer(len(components)),
+		SpecComponents:     intPointer(len(work.components)),
 		AcceptanceCriteria: intPointer(2 + number%3),
 		Criteria:           []string{"FIN-02", "FIN-03", "FIN-04"},
 		Threshold:          0.55,
@@ -301,49 +347,49 @@ func generateTicket(number int, startedAt time.Time) Ticket {
 		Model:              &model,
 		Effort:             stringPointer(effort),
 	}
-	if analysisCurrent && number%2 == 0 {
-		analysis.DocumentsRead = []string{"prd", "designDoc"}
-		analysis.SpecComponents = nil
-		analysis.AcceptanceCriteria = nil
-		analysis.Episodes = []TicketEpisode{}
-		analysis.Model = nil
-		analysis.Effort = nil
+	if !current || number%2 == 1 {
+		return analysis
 	}
-	ticket.Analysis = analysis
-	ticket.Status = "in-analysis"
-	if reached == 1 {
-		return ticket
-	}
+	analysis.DocumentsRead = []string{"prd", "designDoc"}
+	analysis.SpecComponents = nil
+	analysis.AcceptanceCriteria = nil
+	analysis.Criteria = nil
+	analysis.Episodes = nil
+	analysis.Model = nil
+	analysis.Effort = nil
+	return analysis
+}
 
-	planCurrent := reached == 2
+// A plan still sizing has resolved only part of its components and has no
+// totals or validation yet.
+func generatePlan(number int, work workTemplate, bounded, suggested Resources, current bool) *TicketPlan {
 	plan := &TicketPlan{
 		Bounded:          bounded,
-		Components:       components,
+		Components:       work.components,
 		Suggested:        &suggested,
 		ValidationErrors: intPointer(0),
 		Revision:         1,
 		Authorization:    "pending",
 	}
-	if planCurrent && number%2 == 1 {
-		plan.Components = components[:len(components)/2+1]
-		plan.Suggested = nil
-		plan.ValidationErrors = nil
+	if !current || number%2 == 0 {
+		return plan
 	}
-	ticket.Plan = plan
-	ticket.Status = "planned"
-	if reached == 2 {
-		return ticket
-	}
+	plan.Components = work.components[:len(work.components)/2+1]
+	plan.Suggested = nil
+	plan.ValidationErrors = nil
+	return plan
+}
 
-	plan.Authorization = "authorized"
-	outcome := ticketOutcomes[number%len(ticketOutcomes)]
-	if number == 31 {
-		outcome = "readyForReview"
-	}
+// A workflow reserves its estimate plus a fifth before any paid call. A run
+// the gate paused asked for more than the budget, so no stage ran and
+// nothing was paid; a running one has no observed spend or pull request yet.
+func generateWorkflow(number int, suggested Resources, model TicketModel, effort string) *TicketWorkflow {
+	outcome := ticketOutcomes[(number/4)%len(ticketOutcomes)]
 	inputK := 2000 + suggested.CPUMillis
 	outputK := 150 + suggested.MemoryMiB/20
 	estimate := 300 + suggested.CPUMillis/2
-	if number == 31 {
+	if isEarlyAccess(number) {
+		outcome = "readyForReview"
 		inputK, outputK, estimate = 3500, 250, 950
 	}
 	if outcome == "paused" {
@@ -359,65 +405,52 @@ func generateTicket(number int, startedAt time.Time) Ticket {
 		InputTokensK:  inputK,
 		OutputTokensK: outputK,
 		Outcome:       outcome,
+		PriceDate:     priceDate,
 	}
-	active := len(workflowStageIDs)
-	switch outcome {
-	case "running":
-		active = 3
-	case "paused":
-		active = 1
-	case "readyForReview":
-		active = 4
-	case "readyToMerge":
-		active = 5
-	}
+	reachedStage := outcomeStage[outcome]
 	for index, id := range workflowStageIDs {
 		progress := "pending"
 		switch {
-		case index < active:
+		case outcome == "paused":
+		case index < reachedStage:
 			progress = "done"
-		case index == active && outcome == "paused":
-			progress = "waiting"
-		case index == active && outcome == "readyForReview":
-			progress = "waiting"
-		case index == active && outcome == "readyToMerge":
-			progress = "waiting"
-		case index == active:
+		case index == reachedStage && outcome == "running":
 			progress = "active"
+		case index == reachedStage:
+			progress = "waiting"
 		}
-		workflow.Stages = append(workflow.Stages, TicketStage{
+		stage := TicketStage{
 			ID:       id,
 			Human:    id != "tickets" && id != "implement",
 			Progress: progress,
-		})
+		}
+		if skills, ok := stageSkills[id]; ok {
+			stage.Skills = stringPointer(skills)
+		}
+		workflow.Stages = append(workflow.Stages, stage)
 	}
-	if outcome != "running" && outcome != "paused" {
+	switch outcome {
+	case "paused":
+		workflow.ObservedCents = intPointer(0)
+	case "readyForReview", "readyToMerge":
 		observed := estimate + estimate/30
-		if number == 31 {
+		pullRequest := TicketPullRequest{
+			Number:       number%40 + 1,
+			Commit:       fmt.Sprintf("%07x", number*0x3f9c2e1%0xfffffff),
+			ChecksPassed: 4,
+			ChecksTotal:  4,
+		}
+		if isEarlyAccess(number) {
 			observed = 980
+			pullRequest.Number = 19
+			pullRequest.Commit = "3f9c2e1"
 		}
 		workflow.ObservedCents = intPointer(observed)
 		workflow.ReleasedCents = intPointer(reserve - observed)
-		workflow.PullRequest = &TicketPullRequest{
-			Number:       number%40 + 1,
-			Commit:       fmt.Sprintf("%07x", number*0x3f9c2e1%0xfffffff),
-			ChecksPassed: intPointer(4),
-			ChecksTotal:  4,
-		}
-		if number == 31 {
-			workflow.PullRequest.Number = 19
-			workflow.PullRequest.Commit = "3f9c2e1"
-		}
+		workflow.PullRequest = &pullRequest
 	}
-	if outcome == "paused" {
-		workflow.ObservedCents = intPointer(0)
-	}
-	ticket.Workflow = workflow
-	ticket.Status = "in-workflow"
-	return ticket
+	return workflow
 }
-
-const ticketCount = 60
 
 // Tickets are generated, newest first, for the seeded project only.
 func (catalog Catalog) Tickets(product string) ([]Ticket, error) {
@@ -429,7 +462,7 @@ func (catalog Catalog) Tickets(product string) ([]Ticket, error) {
 	}
 	startedAt, err := time.Parse(time.RFC3339Nano, catalog.StartedAt)
 	if err != nil {
-		startedAt = time.Time{}
+		return nil, fmt.Errorf("catalog start time %q: %w", catalog.StartedAt, err)
 	}
 	tickets := make([]Ticket, 0, ticketCount)
 	for number := ticketCount; number >= 1; number-- {
@@ -439,7 +472,8 @@ func (catalog Catalog) Tickets(product string) ([]Ticket, error) {
 }
 
 // TicketPage lists the tickets that have reached a phase, twenty at a time.
-// The cursor is the number of the last ticket returned.
+// The cursor is the number of the last ticket returned; the tickets come
+// newest first, so the ticket at index i has number ticketCount - i.
 func (catalog Catalog) TicketPage(product, reached, cursor string) (map[string]any, error) {
 	if reached == "" {
 		reached = "ticket"
@@ -461,24 +495,20 @@ func (catalog Catalog) TicketPage(product, reached, cursor string) (map[string]a
 		return nil, err
 	}
 	items := []Ticket{}
-	for _, ticket := range tickets {
-		number, _ := strconv.Atoi(ticket.Number)
+	last := 0
+	for index, ticket := range tickets {
+		number := ticketCount - index
 		if number >= before || phaseIndex(ticket.Phase) < minimum {
 			continue
 		}
-		items = append(items, ticket)
-		if len(items) == ticketPageSize+1 {
-			break
+		if len(items) == ticketPageSize {
+			next := strconv.Itoa(last)
+			return map[string]any{"source": "stub", "items": items, "nextCursor": &next}, nil
 		}
+		items = append(items, ticket)
+		last = number
 	}
-	var next *string
-	if len(items) > ticketPageSize {
-		items = items[:ticketPageSize]
-		last, _ := strconv.Atoi(items[ticketPageSize-1].Number)
-		value := strconv.Itoa(last)
-		next = &value
-	}
-	return map[string]any{"source": "stub", "items": items, "nextCursor": next}, nil
+	return map[string]any{"source": "stub", "items": items, "nextCursor": nil}, nil
 }
 
 // Ticket finds one generated ticket by id.

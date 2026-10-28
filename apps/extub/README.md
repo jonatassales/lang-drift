@@ -1,6 +1,6 @@
 # extub
 
-The local Go stub API the [console](/apps/console/README.md) reads. It serves FinOps and runtimes only: one seeded project, LangDrift Studio, with its four runtimes, their executions, history, secrets and FinOps readings, and the routes to create projects and runtimes, start, stop, revoke and load-test them. Every reply is marked `"source": "stub"`; nothing is real.
+The local Go stub API the [console](/apps/console/README.md) reads. It serves one seeded project, LangDrift Studio, with its four runtimes, their executions, history, secrets and FinOps readings, the routes to create projects and runtimes, start, stop, revoke and load-test them, and the project's tickets. The tickets are generated, newest first, across the ticket, analysis, plan and workflow phases; `console/products/{id}/tickets?reached={phase}&cursor=` pages the ones that have reached a phase, twenty at a time, and `console/tickets/{id}` returns one. What a phase in progress does not know yet is `null`, never zero, and a project created at runtime has no tickets. Every reply is marked `"source": "stub"`; nothing is real.
 
 ## Local development
 

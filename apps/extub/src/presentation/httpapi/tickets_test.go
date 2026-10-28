@@ -65,6 +65,10 @@ func TestTicketsPageByPhaseWithoutDuplicates(t *testing.T) {
 	handler, store := fixture(t)
 	product := store.Snapshot().Products[0].ID
 
+	first, _ := ticketPage(t, handler, "/console/products/"+product+"/tickets")
+	if len(first) != 20 {
+		t.Fatalf("first page holds %d tickets", len(first))
+	}
 	every := allTickets(t, handler, product, "")
 	if len(every) < 40 {
 		t.Fatalf("expected a long list, got %d tickets", len(every))
@@ -89,6 +93,20 @@ func TestTicketsPageByPhaseWithoutDuplicates(t *testing.T) {
 			if ticket[phase] == nil && phase != "ticket" {
 				t.Fatalf("ticket under %s has no %s section", phase, phase)
 			}
+		}
+	}
+
+	outcomes := map[string]bool{}
+	workflows := allTickets(t, handler, product, "workflow")
+	if len(workflows) <= 20 {
+		t.Fatalf("the workflows fit one page: %d", len(workflows))
+	}
+	for _, ticket := range workflows {
+		outcomes[ticket["workflow"].(map[string]any)["outcome"].(string)] = true
+	}
+	for _, outcome := range []string{"running", "paused", "readyForReview", "readyToMerge"} {
+		if !outcomes[outcome] {
+			t.Fatalf("no workflow is %s", outcome)
 		}
 	}
 
@@ -133,6 +151,9 @@ func TestEarlyAccessTicketCarriesTheWebsiteFigures(t *testing.T) {
 	}
 	if early == nil {
 		t.Fatal("the early-access ticket has not reached the workflow")
+	}
+	if early["artifacts"].(map[string]any)["prd"] != "0002-PRD-early-access.prd.md" {
+		t.Fatalf("artifacts %v", early["artifacts"])
 	}
 	plan := early["plan"].(map[string]any)
 	suggested := plan["suggested"].(map[string]any)
