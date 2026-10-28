@@ -1,5 +1,4 @@
 import { ChromaText } from '@langdrift/web/ui/chroma-text'
-import { DotWaves } from '@langdrift/web/ui/dot-waves'
 import { HeroShader } from '@langdrift/web/ui/hero-shader'
 import { RotatingText } from '@langdrift/web/ui/rotating-text'
 
@@ -19,10 +18,9 @@ interface PlatformHeroProps {
 // secondary text gray at under half opacity, so its veils show over the
 // pale field while it stays closer to white than to silver, and the dark
 // one takes the border and secondary text grays at reduced opacity, so its
-// veils are lighter than the black but stay quiet. Purple dot waves travel
-// over the shader from the pointer. Under the headline, one frame holds the
-// Microruntimes terminal and the ticket, plan and workflow cards it plays
-// into, side by side; its top 21rem show at the bottom of the first screen.
+// veils are lighter than the black but stay quiet. Under the headline, one
+// frame holds the Microruntimes terminal and the ticket, plan and workflow
+// cards it plays into, side by side; its top 21rem show at the bottom of the first screen.
 // The hero starts under the transparent header, so the two read as one
 // background. From `lg` the frame is at least 40rem tall and grows with the
 // cards, so they never scroll; the terminal stretches to the same height and
@@ -45,7 +43,6 @@ export function PlatformHero(props: PlatformHeroProps) {
 			className="relative isolate -mt-[70px] overflow-hidden bg-background pt-[70px] min-[761px]:-mt-20 min-[761px]:pt-20"
 		>
 			<HeroShader className={monochrome} />
-			<DotWaves />
 			<div
 				aria-hidden="true"
 				className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-linear-to-b from-transparent to-background"
