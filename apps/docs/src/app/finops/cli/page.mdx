@@ -9,15 +9,15 @@ The `ex` CLI is implemented in Go with Cobra and distributed by the private `@la
 
 ## Build
 
-Use an existing Go 1.26 or newer toolchain on macOS or Linux. Installing the workspace builds `packages/ex/dist/ex`; set `LANGDRIFT_SKIP_EX_BUILD=1` to skip it, or rebuild it explicitly:
+Use an existing Go 1.26 or newer toolchain on macOS or Linux. Build `exphere/cli/dist/ex` explicitly; installing the workspace does not build it:
 
 ```sh
 pnpm --filter @langdrift/ex build
-packages/ex/dist/ex --help
-packages/ex/dist/ex version
+exphere/cli/dist/ex --help
+exphere/cli/dist/ex version
 ```
 
-The package declares no npm bin. Run `packages/ex/dist/ex` directly, which also avoids the unrelated system editor named `ex`. Building never installs Go or tools and never changes shell profiles or `PATH`.
+The package declares no npm bin. Run `exphere/cli/dist/ex` directly, which also avoids the unrelated system editor named `ex`. Building never installs Go or tools and never changes shell profiles or `PATH`.
 
 ## Commands
 
@@ -42,4 +42,4 @@ The console supplies each microruntime's **build recipe**; only a committed proj
 
 **Live cluster, Terraform, Kubernetes, and LangGraph Job execution remain operationally unverified.** The test suites run against fakes and recorded invocations, never Docker, kind, kubectl or Terraform. There is no implemented financial ledger or RAG.
 
-Read the package's [README](https://github.com/jonatassales/tao/blob/main/packages/ex/README.md) for exit codes, configuration, recovery and exact behavior. Use [Concepts](/finops/concepts#microruntimes-compose-around-existing-applications) to understand the microruntime boundary.
+Read the package's [README](https://github.com/jonatassales/tao/blob/main/exphere/cli/README.md) for exit codes, configuration, recovery and exact behavior. Use [Concepts](/finops/concepts#microruntimes-compose-around-existing-applications) to understand the microruntime boundary.

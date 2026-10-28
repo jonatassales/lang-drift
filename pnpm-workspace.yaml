@@ -1,5 +1,6 @@
 packages:
   - apps/*
+  - exphere/*
   - packages/*
 
 engineStrict: true
