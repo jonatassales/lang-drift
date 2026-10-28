@@ -9,7 +9,7 @@
 **Status:** ready-for-agent
 
 - [ ] The docs build has no Vision route, and its navigation lists no Vision entry.
-- [ ] A whole-word search for Vision outside historical records finds only the shared classification colors, the website's brand line and the logo comment.
+- [ ] A whole-word search for Vision outside historical records finds only the shared classification colors, the website's brand line, the logo comment and AGENTS.md's record of the pivot.
 
 ### Context
 

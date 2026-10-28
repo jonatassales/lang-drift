@@ -22,7 +22,6 @@
 		"evidence": "parser",
 		"triage": "activity",
 		"integrations": "deps",
-		"vision": "internal",
 		"prd": "target",
 		"design-doc": "sequence",
 		"mcp": "plugin",

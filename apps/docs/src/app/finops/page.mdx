@@ -22,7 +22,7 @@ Read [Concepts](/finops/concepts) for each idea in depth, and [Architecture](/fi
 | Surface | What you can do |
 | --- | --- |
 | `ex` CLI | Bootstrap a project, inspect native tools, administer the project's local cluster, and run the agent connected to the LangDrift console. See [CLI](/finops/cli). |
-| FinOps console | Register projects from a local folder and supervise their microruntimes. It lives upstream in Exphere and becomes FinOps's workspaces in the planned LangDrift console. |
+| FinOps console | Register projects from a local folder and supervise their microruntimes. It lives in this repository as `apps/console`, reading the local stub API `apps/extub`. |
 | Documentation | Explore the concepts, the proposed architecture and the CLI. |
 
 The private `@langdrift/ex` package owns the CLI. Live cluster, Terraform, Kubernetes and LangGraph Job execution remain operationally unverified. RAG, shared budget enforcement, a financial ledger and production integrations are not implemented. FinOps readings and recommendations stay advisory.

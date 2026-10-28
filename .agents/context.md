@@ -61,10 +61,10 @@ When the shell resolves `drift` to another program (a link from an older checkou
 
 ## Navigation and session
 
-- Everything is served under `https://langdrift.md` with a locale prefix. The product switcher moves between platform products as internal routing on that domain; it never links to another domain or subdomain.
+- Everything is served under `https://langdrift.md` with a locale prefix. Moving between pages, on the site and in the console, is internal routing on that domain; it never links to another domain or subdomain.
 - Account and session come from a central account package, `packages/account`, which is planned. No app owns them.
-- The switcher and the shell will live in `packages/shell`, which is planned. Each product owns its workspaces, sidebar and content.
-- The two consoles that merge into the LangDrift console live upstream for now: `jonatassales/langdrift` `apps/dashboard` (Vision) and `jonatassales/exphere` `apps/console` (FinOps).
+- The shell will live in `packages/shell`, which is planned.
+- The console lives here as `apps/console`, imported from `jonatassales/exphere`, and reads the local stub API `apps/extub`.
 
 ## Spec-driven development
 
@@ -132,16 +132,12 @@ Actions, container images and downloaded tools are pinned to full commit SHAs, d
 ### Platform
 
 **Platform product**:
-One of LangDrift's offerings under the shared brand, named `LangDrift <Product>`: Vision and FinOps. Each has its own page on the site and its own workspaces in the console.
+LangDrift's offering under the shared brand, named `LangDrift <Product>`: today only LangDrift FinOps, with Microruntimes as its engine. It has its pages on the site and its workspaces in the console.
 _Avoid_: Module, vertical, sub-app
 
 **Console**:
-The one authenticated LangDrift surface on langdrift.md where every platform product is managed, behind one account and one shell. It unifies the upstream LangDrift dashboard and Exphere console.
+The one authenticated LangDrift surface on langdrift.md where a team manages FinOps and its microruntimes, behind one account and one shell. It lives in `apps/console`, imported from Exphere's console.
 _Avoid_: Dashboard (for the whole), admin, control panel
-
-**Product switcher**:
-The shell control that moves between platform products inside the console, as routing on the same domain.
-_Avoid_: App switcher, domain switcher
 
 ### Apps
 
@@ -172,7 +168,7 @@ A role that signals success, warning, danger or info. It is the same in every ap
 _Avoid_: Feedback color, alert color
 
 **Classification color**:
-The color of one Product Vision classification: intentional, aligned, unexplained or review. It is the same in every app and color scheme, and never takes the brand color.
+The color of one classification: intentional, aligned, unexplained or review. It is the same in every app and color scheme, and never takes the brand color.
 _Avoid_: Category color, label color
 
 **Classification text tone**:
