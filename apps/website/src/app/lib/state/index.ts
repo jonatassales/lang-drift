@@ -6,6 +6,9 @@ export {
 	initialMicroruntimeSession,
 	type MicroruntimeSession,
 	microruntimeSessionAtom,
+	openCardAtom,
+	openCardByHandAtom,
+	recordPlayedCountAtom,
 	replaySessionAtom,
 	toggleSessionPauseAtom,
 } from '@app/atoms/microruntime-session.atom'

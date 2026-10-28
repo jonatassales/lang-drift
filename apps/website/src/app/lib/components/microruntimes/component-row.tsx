@@ -38,46 +38,43 @@ const technologyIcons: Record<
 
 const skeletonBar = 'h-2.5 rounded bg-foreground/10'
 const rowGrid =
-	'grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-x-3'
+	'grid grid-cols-[auto_minmax(0,1fr)_auto_auto_auto] items-center gap-x-3'
 
-// One row of the ticket card's components manifest: a pulsing skeleton while
-// the console resolves it, then the technology's mark and name, the path,
-// the kind, the figures, and a bar with its share of the CPU envelope. The
-// bar stays mounted through both states so its growth is a transition.
+// One row of the plan's components manifest: a pulsing skeleton while the
+// console resolves it, then on one line the technology's mark, the path,
+// the technology and kind, the figures, and under it a bar with its share
+// of the CPU envelope. The bar stays mounted through both states so its
+// growth is a transition.
 export function ComponentRow(props: ComponentRowProps) {
 	const { component, cpu, kind, labels, memory, share, state } = props
 
 	const Icon = technologyIcons[component.technology]
 
 	return (
-		<li className="grid gap-1.5 py-2">
+		<li className="grid gap-0.5 py-1">
 			{state === 'resolving' ? (
 				<span
 					aria-hidden="true"
 					className={`${rowGrid} animate-pulse motion-reduce:animate-none`}
 				>
 					<span className="size-4 rounded bg-foreground/10" />
-					<span className="grid gap-1">
-						<span className={`${skeletonBar} w-36`} />
-						<span className={`${skeletonBar} w-20`} />
-					</span>
-					<span className={`${skeletonBar} w-10`} />
+					<span className={`${skeletonBar} w-36`} />
 					<span className={`${skeletonBar} w-16`} />
+					<span className={`${skeletonBar} w-10`} />
+					<span className={`${skeletonBar} w-14`} />
 				</span>
 			) : (
 				<div
 					className={`${rowGrid} motion-safe:transition-opacity motion-safe:duration-300 starting:opacity-0`}
 				>
 					<Icon className="size-4 shrink-0" />
-					<span className="grid min-w-0 gap-0.5">
-						<span className="truncate font-mono text-[12px]">
-							{component.path}
-						</span>
-						<span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-							{component.technology}
-							<span className="rounded-full border border-border px-1.5 text-[10px]">
-								{kind}
-							</span>
+					<span className="truncate font-mono text-[12px]">
+						{component.path}
+					</span>
+					<span className="flex items-center gap-1.5 text-[11px] text-muted-foreground max-sm:hidden">
+						{component.technology}
+						<span className="rounded-full border border-border px-1.5 text-[10px]">
+							{kind}
 						</span>
 					</span>
 					<span className="font-mono text-[12px] tabular-nums">{cpu}</span>

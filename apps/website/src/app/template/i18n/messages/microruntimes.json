@@ -12,88 +12,146 @@
 				"lines": {
 					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
 					"scope": "# plan only · nothing is built, started or paid for in this step",
-					"memory": "console › RAG over project episodes · a model and effort for this ticket",
-					"episodes": "console › 3 episodes cited · none with measured resources",
-					"suggest": "✓ suggests   operator/allowed-model · effort medium",
-					"reads": "reads      0002-PRD · 0005-DD · 0011-SPEC · 0031-TICKET",
+					"readTicket": "console › tool call: read 0031-TICKET-early-access-runtime",
+					"links": "console › ready-for-agent · links 0002-PRD · 0005-DD · 0011-SPEC · guardrail 0001-finops",
+					"analysis": "# analysis · reading the linked documents, then the project's episodes",
+					"readPrd": "console › tool call: read 0002-PRD · use case: early-access sign-up",
+					"readDesignDoc": "console › tool call: read 0005-DD · envelope cpuMillis 2000 · memoryMiB 3072 · set by the team",
+					"readSpec": "console › tool call: read 0011-SPEC · 5 components named · 3 acceptance criteria",
+					"reads": "✓ read       4 documents · nothing outside the ticket's links",
 					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
+					"judgeGuardrail": "console › judging · FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
 					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
+					"memory": "console › RAG over project episodes · a model and effort for this ticket",
+					"embed": "console › embedding the ticket intent · 1 query vector",
+					"vectorSearch": "console › vector search · project episodes · top 6 by cosine similarity",
+					"candidates": "console › 6 candidates · similarity 0.81 to 0.42",
+					"judgeRelevance": "console › judging · 3 share the stack and scale · 3 differ: other runtime, no broker, docs only",
+					"drop": "console › dropped 3 below 0.55 · kept 3",
+					"episodes": "console › 3 episodes cited · none with measured resources",
+					"reasonResources": "console › reasoning · no cited episode measured cpu or memory · sizing follows the spec, not history",
+					"weighEffort": "console › weighing effort · low skips the broker wiring · high is not warranted by 5 components",
+					"suggest": "✓ suggests   operator/allowed-model · effort medium",
+					"planning": "# plan · resolving the components, then sizing them inside the envelope",
 					"resolve": "console › resolving 5 components named in the spec · paths, images, ports",
+					"inspectGo": "console › tool call: inspect services/signup-api · go.mod · :8080",
 					"go": "✓ services/signup-api   Go · api        250m · 256 MiB",
+					"inspectNode": "console › tool call: inspect services/notify-api · package.json · :8081",
 					"node": "✓ services/notify-api   Node.js · api   300m · 512 MiB",
+					"inspectNats": "console › tool call: inspect platform/nats · nats.conf · :4222",
 					"nats": "✓ platform/nats         NATS · broker   200m · 256 MiB",
+					"inspectRedis": "console › tool call: inspect platform/redis · redis.conf · :6379",
 					"redis": "✓ platform/redis        Redis · cache   200m · 256 MiB",
+					"inspectNext": "console › tool call: inspect apps/signup · next.config.ts · :3000",
 					"next": "✓ apps/signup           Next.js · web   500m · 1024 MiB",
+					"crossCheck": "console › cross-checking · 5 ports distinct · 5 images resolved · no collisions",
 					"size": "✓ size       1450m of 2000m · 2304 of 3072 MiB · 5 one-replica Deployments · proposed shares",
 					"limits": "limits     gpu and disk are not runtime.md fields · none requested",
 					"price": "estimate   no price source configured · figures stay in millicores and MiB",
+					"validate": "console › tool call: validate runtime.md draft against the schema · 0 errors",
 					"draft": "✓ plan       runtime.md draft, revision 1 · proposed to the console",
 					"handoff": "# next: once the team authorizes, ex agent run applies the recorded intent"
 				}
 			},
 			"card": {
-				"ticket": "Ticket",
-				"status": "ready-for-agent",
-				"title": "Run the early-access sign-up use case as a microruntime",
 				"readMark": "Read",
 				"notSet": "Not set yet",
 				"resolving": "Resolving",
-				"artifacts": {
-					"prd": "PRD",
-					"designDoc": "Design doc",
-					"spec": "Spec",
-					"guardrail": "Guardrail"
+				"labels": {
+					"ticket": "Ticket",
+					"analysis": "Analysis",
+					"plan": "Plan"
 				},
-				"guardrailNote": "review rule · no automatic enforcement",
-				"suggestedModel": "Suggested model",
-				"suggestedEffort": "Suggested effort",
-				"efforts": {
-					"low": "low",
-					"medium": "medium",
-					"high": "high"
+				"ticket": {
+					"status": "ready-for-agent",
+					"title": "Run the early-access sign-up use case as a microruntime",
+					"links": "Linked artifacts",
+					"artifacts": {
+						"prd": "PRD",
+						"designDoc": "Design doc",
+						"spec": "Spec",
+						"guardrail": "Guardrail"
+					}
 				},
-				"kinds": {
-					"api": "api",
-					"broker": "broker",
-					"cache": "cache",
-					"web": "web"
+				"analysis": {
+					"documents": "Documents",
+					"extracted": {
+						"prd": "use case: early-access sign-up",
+						"designDoc": "envelope {cpu}m · {memory} MiB · set by the team",
+						"spec": "{components} components · {criteria} acceptance criteria",
+						"guardrail": "{criteria} · review rule, no automatic enforcement"
+					},
+					"guardrailJudgment": "FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
+					"documentsSummary": "{count, plural, one {# document read} other {# documents read}}",
+					"episodes": "Episodes",
+					"threshold": "threshold {value}",
+					"verdicts": {
+						"kept": "kept",
+						"dropped": "dropped"
+					},
+					"reasons": {
+						"otherRuntime": "other runtime",
+						"noBroker": "no broker",
+						"docsOnly": "docs only"
+					},
+					"episodesSummary": "{kept} of {total} episodes kept",
+					"measured": "Measured resources",
+					"measuredNone": "none cited",
+					"measuredReasoning": "sizing follows the spec, not history",
+					"suggestedModel": "Suggested model",
+					"suggestedEffort": "Suggested effort",
+					"efforts": {
+						"low": "low",
+						"medium": "medium",
+						"high": "high"
+					},
+					"recommendationNote": "recommendation · the team authorizes",
+					"suggestionSummary": "{model} · effort {effort}"
 				},
-				"recommendationNote": "recommendation · the team authorizes",
-				"components": "Components",
-				"columns": {
-					"cpu": "CPU",
-					"memory": "Memory"
+				"plan": {
+					"proposed": "Proposed plan",
+					"pendingAuthorization": "pending team authorization",
+					"envelope": {
+						"cpu": "CPU",
+						"memory": "Memory"
+					},
+					"ofBounded": "{suggested} of {bounded}",
+					"components": "Components",
+					"columns": {
+						"cpu": "CPU",
+						"memory": "Memory"
+					},
+					"kinds": {
+						"api": "api",
+						"broker": "broker",
+						"cache": "cache",
+						"web": "web"
+					},
+					"resolvedProgress": "{resolved} of {total} resolved · {cpu}m · {memory} MiB",
+					"componentsTotal": "{count, plural, one {# component} other {# components}} · {cpu}m · {memory} MiB",
+					"crossCheck": "ports {ports} · distinct · no collisions",
+					"report": {
+						"bounded": "Bounded",
+						"headroom": "Headroom",
+						"suggestedResource": "Suggested resource",
+						"limits": "GPU · disk",
+						"price": "Price",
+						"validation": "Validation",
+						"evidence": "Evidence"
+					},
+					"deployments": "{count, plural, one {# one-replica Deployment} other {# one-replica Deployments}}",
+					"notRuntimeFields": "not runtime.md fields",
+					"priceBasis": "no price source configured · units only",
+					"validated": "schema · 0 errors",
+					"planPath": "runtime.md draft · revision {revision} · proposed to the console",
+					"summary": "{figures} · {pending}"
 				},
-				"resolvedProgress": "{resolved} of {total} resolved · {cpu}m · {memory} MiB",
-				"componentsTotal": "{count, plural, one {# component} other {# components}} · {cpu}m · {memory} MiB",
-				"figures": "{cpu}m · {memory} MiB",
-				"hardware": {
-					"resource": "Resource",
-					"bounded": "Bounded",
-					"suggested": "Suggested",
-					"cpu": "CPU",
-					"memory": "Memory",
-					"gpu": "GPU",
-					"disk": "Disk"
-				},
-				"notRuntimeField": "not a runtime.md field",
-				"none": "none",
-				"priceBasis": "price basis: none configured · units only",
-				"report": {
-					"bounded": "Bounded",
-					"suggested": "Suggested",
-					"suggestedResource": "Suggested resource",
-					"final": "Final"
-				},
-				"deployments": "{count, plural, one {# one-replica Deployment} other {# one-replica Deployments}}",
-				"pendingAuthorization": "pending team authorization",
-				"finalDetail": "{cpu}m · {memory} MiB · {pending}",
-				"planPath": "runtime.md draft · revision {revision} · proposed to the console",
 				"control": {
 					"pause": "Pause",
 					"resume": "Resume",
 					"replay": "Replay"
 				},
+				"figures": "{cpu}m · {memory} MiB",
 				"cpuValue": "{value}m",
 				"memoryValue": "{value} MiB"
 			}
@@ -390,88 +448,146 @@
 				"lines": {
 					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
 					"scope": "# só planejamento · nada é construído, iniciado ou pago nesta etapa",
-					"memory": "console › RAG over project episodes · a model and effort for this ticket",
-					"episodes": "console › 3 episodes cited · none with measured resources",
-					"suggest": "✓ suggests   operator/allowed-model · effort medium",
-					"reads": "reads      0002-PRD · 0005-DD · 0011-SPEC · 0031-TICKET",
+					"readTicket": "console › tool call: read 0031-TICKET-early-access-runtime",
+					"links": "console › ready-for-agent · links 0002-PRD · 0005-DD · 0011-SPEC · guardrail 0001-finops",
+					"analysis": "# análise · lendo os documentos vinculados, depois os episódios do projeto",
+					"readPrd": "console › tool call: read 0002-PRD · use case: early-access sign-up",
+					"readDesignDoc": "console › tool call: read 0005-DD · envelope cpuMillis 2000 · memoryMiB 3072 · set by the team",
+					"readSpec": "console › tool call: read 0011-SPEC · 5 components named · 3 acceptance criteria",
+					"reads": "✓ read       4 documents · nothing outside the ticket's links",
 					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
+					"judgeGuardrail": "console › judging · FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
 					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
+					"memory": "console › RAG over project episodes · a model and effort for this ticket",
+					"embed": "console › embedding the ticket intent · 1 query vector",
+					"vectorSearch": "console › vector search · project episodes · top 6 by cosine similarity",
+					"candidates": "console › 6 candidates · similarity 0.81 to 0.42",
+					"judgeRelevance": "console › judging · 3 share the stack and scale · 3 differ: other runtime, no broker, docs only",
+					"drop": "console › dropped 3 below 0.55 · kept 3",
+					"episodes": "console › 3 episodes cited · none with measured resources",
+					"reasonResources": "console › reasoning · no cited episode measured cpu or memory · sizing follows the spec, not history",
+					"weighEffort": "console › weighing effort · low skips the broker wiring · high is not warranted by 5 components",
+					"suggest": "✓ suggests   operator/allowed-model · effort medium",
+					"planning": "# plano · resolvendo os componentes, depois dimensionando-os dentro do envelope",
 					"resolve": "console › resolving 5 components named in the spec · paths, images, ports",
+					"inspectGo": "console › tool call: inspect services/signup-api · go.mod · :8080",
 					"go": "✓ services/signup-api   Go · api        250m · 256 MiB",
+					"inspectNode": "console › tool call: inspect services/notify-api · package.json · :8081",
 					"node": "✓ services/notify-api   Node.js · api   300m · 512 MiB",
+					"inspectNats": "console › tool call: inspect platform/nats · nats.conf · :4222",
 					"nats": "✓ platform/nats         NATS · broker   200m · 256 MiB",
+					"inspectRedis": "console › tool call: inspect platform/redis · redis.conf · :6379",
 					"redis": "✓ platform/redis        Redis · cache   200m · 256 MiB",
+					"inspectNext": "console › tool call: inspect apps/signup · next.config.ts · :3000",
 					"next": "✓ apps/signup           Next.js · web   500m · 1024 MiB",
+					"crossCheck": "console › cross-checking · 5 ports distinct · 5 images resolved · no collisions",
 					"size": "✓ size       1450m of 2000m · 2304 of 3072 MiB · 5 one-replica Deployments · proposed shares",
 					"limits": "limits     gpu and disk are not runtime.md fields · none requested",
 					"price": "estimate   no price source configured · figures stay in millicores and MiB",
+					"validate": "console › tool call: validate runtime.md draft against the schema · 0 errors",
 					"draft": "✓ plan       runtime.md draft, revision 1 · proposed to the console",
 					"handoff": "# próximo: quando o time autorizar, ex agent run aplica a intenção registrada"
 				}
 			},
 			"card": {
-				"ticket": "Ticket",
-				"status": "ready-for-agent",
-				"title": "Rodar o caso de uso de inscrição no early access como um microruntime",
 				"readMark": "Lido",
 				"notSet": "Ainda não definido",
 				"resolving": "Resolvendo",
-				"artifacts": {
-					"prd": "PRD",
-					"designDoc": "Design doc",
-					"spec": "Spec",
-					"guardrail": "Guardrail"
+				"labels": {
+					"ticket": "Ticket",
+					"analysis": "Análise",
+					"plan": "Plano"
 				},
-				"guardrailNote": "regra de revisão · sem aplicação automática",
-				"suggestedModel": "Modelo sugerido",
-				"suggestedEffort": "Effort sugerido",
-				"efforts": {
-					"low": "low",
-					"medium": "medium",
-					"high": "high"
+				"ticket": {
+					"status": "ready-for-agent",
+					"title": "Rodar o caso de uso de inscrição no early access como um microruntime",
+					"links": "Artefatos vinculados",
+					"artifacts": {
+						"prd": "PRD",
+						"designDoc": "Design doc",
+						"spec": "Spec",
+						"guardrail": "Guardrail"
+					}
 				},
-				"kinds": {
-					"api": "api",
-					"broker": "broker",
-					"cache": "cache",
-					"web": "web"
+				"analysis": {
+					"documents": "Documentos",
+					"extracted": {
+						"prd": "caso de uso: inscrição no early access",
+						"designDoc": "envelope {cpu}m · {memory} MiB · definido pelo time",
+						"spec": "{components} componentes · {criteria} critérios de aceite",
+						"guardrail": "{criteria} · regra de revisão, sem aplicação automática"
+					},
+					"guardrailJudgment": "FIN-02: uma ação paga precisa de um gate · FIN-04: o orçamento é do time",
+					"documentsSummary": "{count, plural, one {# documento lido} other {# documentos lidos}}",
+					"episodes": "Episódios",
+					"threshold": "limiar {value}",
+					"verdicts": {
+						"kept": "mantido",
+						"dropped": "descartado"
+					},
+					"reasons": {
+						"otherRuntime": "outro runtime",
+						"noBroker": "sem broker",
+						"docsOnly": "só docs"
+					},
+					"episodesSummary": "{kept} de {total} episódios mantidos",
+					"measured": "Recursos medidos",
+					"measuredNone": "nenhum citado",
+					"measuredReasoning": "o dimensionamento segue a spec, não o histórico",
+					"suggestedModel": "Modelo sugerido",
+					"suggestedEffort": "Effort sugerido",
+					"efforts": {
+						"low": "low",
+						"medium": "medium",
+						"high": "high"
+					},
+					"recommendationNote": "recomendação · o time autoriza",
+					"suggestionSummary": "{model} · effort {effort}"
 				},
-				"recommendationNote": "recomendação · o time autoriza",
-				"components": "Componentes",
-				"columns": {
-					"cpu": "CPU",
-					"memory": "Memória"
+				"plan": {
+					"proposed": "Plano proposto",
+					"pendingAuthorization": "aguardando autorização do time",
+					"envelope": {
+						"cpu": "CPU",
+						"memory": "Memória"
+					},
+					"ofBounded": "{suggested} de {bounded}",
+					"components": "Componentes",
+					"columns": {
+						"cpu": "CPU",
+						"memory": "Memória"
+					},
+					"kinds": {
+						"api": "api",
+						"broker": "broker",
+						"cache": "cache",
+						"web": "web"
+					},
+					"resolvedProgress": "{resolved} de {total} resolvidos · {cpu}m · {memory} MiB",
+					"componentsTotal": "{count, plural, one {# componente} other {# componentes}} · {cpu}m · {memory} MiB",
+					"crossCheck": "portas {ports} · distintas · sem colisões",
+					"report": {
+						"bounded": "Delimitado",
+						"headroom": "Folga",
+						"suggestedResource": "Recurso sugerido",
+						"limits": "GPU · disco",
+						"price": "Preço",
+						"validation": "Validação",
+						"evidence": "Evidência"
+					},
+					"deployments": "{count, plural, one {# Deployment de uma réplica} other {# Deployments de uma réplica}}",
+					"notRuntimeFields": "não são campos de runtime.md",
+					"priceBasis": "nenhuma fonte de preço configurada · só unidades",
+					"validated": "schema · 0 erros",
+					"planPath": "rascunho de runtime.md · revisão {revision} · proposto ao console",
+					"summary": "{figures} · {pending}"
 				},
-				"resolvedProgress": "{resolved} de {total} resolvidos · {cpu}m · {memory} MiB",
-				"componentsTotal": "{count, plural, one {# componente} other {# componentes}} · {cpu}m · {memory} MiB",
-				"figures": "{cpu}m · {memory} MiB",
-				"hardware": {
-					"resource": "Recurso",
-					"bounded": "Delimitado",
-					"suggested": "Sugerido",
-					"cpu": "CPU",
-					"memory": "Memória",
-					"gpu": "GPU",
-					"disk": "Disco"
-				},
-				"notRuntimeField": "não é um campo de runtime.md",
-				"none": "nenhum",
-				"priceBasis": "base de preço: nenhuma configurada · só unidades",
-				"report": {
-					"bounded": "Delimitado",
-					"suggested": "Sugerido",
-					"suggestedResource": "Recurso sugerido",
-					"final": "Final"
-				},
-				"deployments": "{count, plural, one {# Deployment de uma réplica} other {# Deployments de uma réplica}}",
-				"pendingAuthorization": "aguardando autorização do time",
-				"finalDetail": "{cpu}m · {memory} MiB · {pending}",
-				"planPath": "rascunho de runtime.md · revisão {revision} · proposto ao console",
 				"control": {
 					"pause": "Pausar",
 					"resume": "Retomar",
 					"replay": "Repetir"
 				},
+				"figures": "{cpu}m · {memory} MiB",
 				"cpuValue": "{value}m",
 				"memoryValue": "{value} MiB"
 			}
@@ -768,88 +884,146 @@
 				"lines": {
 					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
 					"scope": "# 僅規劃 · 此步驟不建置、不啟動、不付費",
-					"memory": "console › RAG over project episodes · a model and effort for this ticket",
-					"episodes": "console › 3 episodes cited · none with measured resources",
-					"suggest": "✓ suggests   operator/allowed-model · effort medium",
-					"reads": "reads      0002-PRD · 0005-DD · 0011-SPEC · 0031-TICKET",
+					"readTicket": "console › tool call: read 0031-TICKET-early-access-runtime",
+					"links": "console › ready-for-agent · links 0002-PRD · 0005-DD · 0011-SPEC · guardrail 0001-finops",
+					"analysis": "# 分析 · 先讀取連結的文件，再讀取專案的 episodes",
+					"readPrd": "console › tool call: read 0002-PRD · use case: early-access sign-up",
+					"readDesignDoc": "console › tool call: read 0005-DD · envelope cpuMillis 2000 · memoryMiB 3072 · set by the team",
+					"readSpec": "console › tool call: read 0011-SPEC · 5 components named · 3 acceptance criteria",
+					"reads": "✓ read       4 documents · nothing outside the ticket's links",
 					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
+					"judgeGuardrail": "console › judging · FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
 					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
+					"memory": "console › RAG over project episodes · a model and effort for this ticket",
+					"embed": "console › embedding the ticket intent · 1 query vector",
+					"vectorSearch": "console › vector search · project episodes · top 6 by cosine similarity",
+					"candidates": "console › 6 candidates · similarity 0.81 to 0.42",
+					"judgeRelevance": "console › judging · 3 share the stack and scale · 3 differ: other runtime, no broker, docs only",
+					"drop": "console › dropped 3 below 0.55 · kept 3",
+					"episodes": "console › 3 episodes cited · none with measured resources",
+					"reasonResources": "console › reasoning · no cited episode measured cpu or memory · sizing follows the spec, not history",
+					"weighEffort": "console › weighing effort · low skips the broker wiring · high is not warranted by 5 components",
+					"suggest": "✓ suggests   operator/allowed-model · effort medium",
+					"planning": "# 規劃 · 先解析元件，再在 envelope 內為其配置大小",
 					"resolve": "console › resolving 5 components named in the spec · paths, images, ports",
+					"inspectGo": "console › tool call: inspect services/signup-api · go.mod · :8080",
 					"go": "✓ services/signup-api   Go · api        250m · 256 MiB",
+					"inspectNode": "console › tool call: inspect services/notify-api · package.json · :8081",
 					"node": "✓ services/notify-api   Node.js · api   300m · 512 MiB",
+					"inspectNats": "console › tool call: inspect platform/nats · nats.conf · :4222",
 					"nats": "✓ platform/nats         NATS · broker   200m · 256 MiB",
+					"inspectRedis": "console › tool call: inspect platform/redis · redis.conf · :6379",
 					"redis": "✓ platform/redis        Redis · cache   200m · 256 MiB",
+					"inspectNext": "console › tool call: inspect apps/signup · next.config.ts · :3000",
 					"next": "✓ apps/signup           Next.js · web   500m · 1024 MiB",
+					"crossCheck": "console › cross-checking · 5 ports distinct · 5 images resolved · no collisions",
 					"size": "✓ size       1450m of 2000m · 2304 of 3072 MiB · 5 one-replica Deployments · proposed shares",
 					"limits": "limits     gpu and disk are not runtime.md fields · none requested",
 					"price": "estimate   no price source configured · figures stay in millicores and MiB",
+					"validate": "console › tool call: validate runtime.md draft against the schema · 0 errors",
 					"draft": "✓ plan       runtime.md draft, revision 1 · proposed to the console",
 					"handoff": "# 下一步：團隊授權後，ex agent run 會套用已記錄的意圖"
 				}
 			},
 			"card": {
-				"ticket": "工單",
-				"status": "ready-for-agent",
-				"title": "以 microruntime 執行 early access 註冊使用案例",
 				"readMark": "已讀",
 				"notSet": "尚未設定",
 				"resolving": "解析中",
-				"artifacts": {
-					"prd": "PRD",
-					"designDoc": "Design doc",
-					"spec": "Spec",
-					"guardrail": "Guardrail"
+				"labels": {
+					"ticket": "工單",
+					"analysis": "分析",
+					"plan": "計畫"
 				},
-				"guardrailNote": "審查規則 · 不自動強制執行",
-				"suggestedModel": "建議模型",
-				"suggestedEffort": "建議 effort",
-				"efforts": {
-					"low": "low",
-					"medium": "medium",
-					"high": "high"
+				"ticket": {
+					"status": "ready-for-agent",
+					"title": "以 microruntime 執行 early access 註冊使用案例",
+					"links": "連結的 artifacts",
+					"artifacts": {
+						"prd": "PRD",
+						"designDoc": "Design doc",
+						"spec": "Spec",
+						"guardrail": "Guardrail"
+					}
 				},
-				"kinds": {
-					"api": "api",
-					"broker": "broker",
-					"cache": "cache",
-					"web": "web"
+				"analysis": {
+					"documents": "文件",
+					"extracted": {
+						"prd": "使用案例：early access 註冊",
+						"designDoc": "envelope {cpu}m · {memory} MiB · 由團隊設定",
+						"spec": "{components} 個元件 · {criteria} 項驗收準則",
+						"guardrail": "{criteria} · 審查規則，不自動強制執行"
+					},
+					"guardrailJudgment": "FIN-02：付費動作需要 gate · FIN-04：預算屬於團隊",
+					"documentsSummary": "{count, plural, other {已讀 # 份文件}}",
+					"episodes": "Episodes",
+					"threshold": "門檻 {value}",
+					"verdicts": {
+						"kept": "保留",
+						"dropped": "捨棄"
+					},
+					"reasons": {
+						"otherRuntime": "其他 runtime",
+						"noBroker": "無 broker",
+						"docsOnly": "僅文件"
+					},
+					"episodesSummary": "保留 {kept}/{total} 個 episodes",
+					"measured": "已量測資源",
+					"measuredNone": "無引用",
+					"measuredReasoning": "大小依 spec 而定，不依歷史",
+					"suggestedModel": "建議模型",
+					"suggestedEffort": "建議 effort",
+					"efforts": {
+						"low": "low",
+						"medium": "medium",
+						"high": "high"
+					},
+					"recommendationNote": "建議 · 由團隊授權",
+					"suggestionSummary": "{model} · effort {effort}"
 				},
-				"recommendationNote": "建議 · 由團隊授權",
-				"components": "元件",
-				"columns": {
-					"cpu": "CPU",
-					"memory": "記憶體"
+				"plan": {
+					"proposed": "提議的計畫",
+					"pendingAuthorization": "待團隊授權",
+					"envelope": {
+						"cpu": "CPU",
+						"memory": "記憶體"
+					},
+					"ofBounded": "{suggested}，上限 {bounded}",
+					"components": "元件",
+					"columns": {
+						"cpu": "CPU",
+						"memory": "記憶體"
+					},
+					"kinds": {
+						"api": "api",
+						"broker": "broker",
+						"cache": "cache",
+						"web": "web"
+					},
+					"resolvedProgress": "已解析 {resolved}/{total} · {cpu}m · {memory} MiB",
+					"componentsTotal": "{count, plural, other {# 個元件}} · {cpu}m · {memory} MiB",
+					"crossCheck": "連接埠 {ports} · 不重複 · 無衝突",
+					"report": {
+						"bounded": "上限",
+						"headroom": "餘裕",
+						"suggestedResource": "建議資源",
+						"limits": "GPU · 磁碟",
+						"price": "價格",
+						"validation": "驗證",
+						"evidence": "證據"
+					},
+					"deployments": "{count, plural, other {# 個單副本 Deployment}}",
+					"notRuntimeFields": "不是 runtime.md 的欄位",
+					"priceBasis": "未設定價格來源 · 僅以單位表示",
+					"validated": "schema · 0 個錯誤",
+					"planPath": "runtime.md 草稿 · 修訂 {revision} · 已向主控台提出",
+					"summary": "{figures} · {pending}"
 				},
-				"resolvedProgress": "已解析 {resolved}/{total} · {cpu}m · {memory} MiB",
-				"componentsTotal": "{count, plural, other {# 個元件}} · {cpu}m · {memory} MiB",
-				"figures": "{cpu}m · {memory} MiB",
-				"hardware": {
-					"resource": "資源",
-					"bounded": "上限",
-					"suggested": "建議",
-					"cpu": "CPU",
-					"memory": "記憶體",
-					"gpu": "GPU",
-					"disk": "磁碟"
-				},
-				"notRuntimeField": "不是 runtime.md 的欄位",
-				"none": "無",
-				"priceBasis": "計價基準：未設定 · 僅以單位表示",
-				"report": {
-					"bounded": "上限",
-					"suggested": "建議",
-					"suggestedResource": "建議資源",
-					"final": "最終"
-				},
-				"deployments": "{count, plural, other {# 個單副本 Deployment}}",
-				"pendingAuthorization": "待團隊授權",
-				"finalDetail": "{cpu}m · {memory} MiB · {pending}",
-				"planPath": "runtime.md 草稿 · 修訂 {revision} · 已向主控台提出",
 				"control": {
 					"pause": "暫停",
 					"resume": "繼續",
 					"replay": "重播"
 				},
+				"figures": "{cpu}m · {memory} MiB",
 				"cpuValue": "{value}m",
 				"memoryValue": "{value} MiB"
 			}
@@ -1146,88 +1320,146 @@
 				"lines": {
 					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
 					"scope": "# 計画のみ · このステップではビルド、起動、支払いを行いません",
-					"memory": "console › RAG over project episodes · a model and effort for this ticket",
-					"episodes": "console › 3 episodes cited · none with measured resources",
-					"suggest": "✓ suggests   operator/allowed-model · effort medium",
-					"reads": "reads      0002-PRD · 0005-DD · 0011-SPEC · 0031-TICKET",
+					"readTicket": "console › tool call: read 0031-TICKET-early-access-runtime",
+					"links": "console › ready-for-agent · links 0002-PRD · 0005-DD · 0011-SPEC · guardrail 0001-finops",
+					"analysis": "# 分析 · リンクされたドキュメントを読み、次にプロジェクトのエピソードを読みます",
+					"readPrd": "console › tool call: read 0002-PRD · use case: early-access sign-up",
+					"readDesignDoc": "console › tool call: read 0005-DD · envelope cpuMillis 2000 · memoryMiB 3072 · set by the team",
+					"readSpec": "console › tool call: read 0011-SPEC · 5 components named · 3 acceptance criteria",
+					"reads": "✓ read       4 documents · nothing outside the ticket's links",
 					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
+					"judgeGuardrail": "console › judging · FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
 					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
+					"memory": "console › RAG over project episodes · a model and effort for this ticket",
+					"embed": "console › embedding the ticket intent · 1 query vector",
+					"vectorSearch": "console › vector search · project episodes · top 6 by cosine similarity",
+					"candidates": "console › 6 candidates · similarity 0.81 to 0.42",
+					"judgeRelevance": "console › judging · 3 share the stack and scale · 3 differ: other runtime, no broker, docs only",
+					"drop": "console › dropped 3 below 0.55 · kept 3",
+					"episodes": "console › 3 episodes cited · none with measured resources",
+					"reasonResources": "console › reasoning · no cited episode measured cpu or memory · sizing follows the spec, not history",
+					"weighEffort": "console › weighing effort · low skips the broker wiring · high is not warranted by 5 components",
+					"suggest": "✓ suggests   operator/allowed-model · effort medium",
+					"planning": "# 計画 · コンポーネントを特定し、次に envelope 内でサイズを決めます",
 					"resolve": "console › resolving 5 components named in the spec · paths, images, ports",
+					"inspectGo": "console › tool call: inspect services/signup-api · go.mod · :8080",
 					"go": "✓ services/signup-api   Go · api        250m · 256 MiB",
+					"inspectNode": "console › tool call: inspect services/notify-api · package.json · :8081",
 					"node": "✓ services/notify-api   Node.js · api   300m · 512 MiB",
+					"inspectNats": "console › tool call: inspect platform/nats · nats.conf · :4222",
 					"nats": "✓ platform/nats         NATS · broker   200m · 256 MiB",
+					"inspectRedis": "console › tool call: inspect platform/redis · redis.conf · :6379",
 					"redis": "✓ platform/redis        Redis · cache   200m · 256 MiB",
+					"inspectNext": "console › tool call: inspect apps/signup · next.config.ts · :3000",
 					"next": "✓ apps/signup           Next.js · web   500m · 1024 MiB",
+					"crossCheck": "console › cross-checking · 5 ports distinct · 5 images resolved · no collisions",
 					"size": "✓ size       1450m of 2000m · 2304 of 3072 MiB · 5 one-replica Deployments · proposed shares",
 					"limits": "limits     gpu and disk are not runtime.md fields · none requested",
 					"price": "estimate   no price source configured · figures stay in millicores and MiB",
+					"validate": "console › tool call: validate runtime.md draft against the schema · 0 errors",
 					"draft": "✓ plan       runtime.md draft, revision 1 · proposed to the console",
 					"handoff": "# 次：チームが承認すると、ex agent run が記録済みの意図を適用します"
 				}
 			},
 			"card": {
-				"ticket": "チケット",
-				"status": "ready-for-agent",
-				"title": "early access サインアップのユースケースを microruntime として実行する",
 				"readMark": "既読",
 				"notSet": "未設定",
 				"resolving": "特定中",
-				"artifacts": {
-					"prd": "PRD",
-					"designDoc": "Design doc",
-					"spec": "Spec",
-					"guardrail": "Guardrail"
+				"labels": {
+					"ticket": "チケット",
+					"analysis": "分析",
+					"plan": "計画"
 				},
-				"guardrailNote": "レビュールール · 自動強制なし",
-				"suggestedModel": "提案モデル",
-				"suggestedEffort": "提案 effort",
-				"efforts": {
-					"low": "low",
-					"medium": "medium",
-					"high": "high"
+				"ticket": {
+					"status": "ready-for-agent",
+					"title": "early access サインアップのユースケースを microruntime として実行する",
+					"links": "リンクされたアーティファクト",
+					"artifacts": {
+						"prd": "PRD",
+						"designDoc": "Design doc",
+						"spec": "Spec",
+						"guardrail": "Guardrail"
+					}
 				},
-				"kinds": {
-					"api": "api",
-					"broker": "broker",
-					"cache": "cache",
-					"web": "web"
+				"analysis": {
+					"documents": "ドキュメント",
+					"extracted": {
+						"prd": "ユースケース：early access サインアップ",
+						"designDoc": "envelope {cpu}m · {memory} MiB · チームが設定",
+						"spec": "{components} 個のコンポーネント · {criteria} 件の受け入れ基準",
+						"guardrail": "{criteria} · レビュールール、自動強制なし"
+					},
+					"guardrailJudgment": "FIN-02：有料アクションにはゲートが必要 · FIN-04：予算はチームのもの",
+					"documentsSummary": "{count, plural, other {# 件のドキュメントを読了}}",
+					"episodes": "エピソード",
+					"threshold": "しきい値 {value}",
+					"verdicts": {
+						"kept": "採用",
+						"dropped": "除外"
+					},
+					"reasons": {
+						"otherRuntime": "別の runtime",
+						"noBroker": "broker なし",
+						"docsOnly": "ドキュメントのみ"
+					},
+					"episodesSummary": "{total} 件中 {kept} 件のエピソードを採用",
+					"measured": "計測済みリソース",
+					"measuredNone": "引用なし",
+					"measuredReasoning": "サイズは履歴ではなく spec に従います",
+					"suggestedModel": "提案モデル",
+					"suggestedEffort": "提案 effort",
+					"efforts": {
+						"low": "low",
+						"medium": "medium",
+						"high": "high"
+					},
+					"recommendationNote": "推奨 · チームが承認",
+					"suggestionSummary": "{model} · effort {effort}"
 				},
-				"recommendationNote": "推奨 · チームが承認",
-				"components": "コンポーネント",
-				"columns": {
-					"cpu": "CPU",
-					"memory": "メモリ"
+				"plan": {
+					"proposed": "提案する計画",
+					"pendingAuthorization": "チームの承認待ち",
+					"envelope": {
+						"cpu": "CPU",
+						"memory": "メモリ"
+					},
+					"ofBounded": "{suggested} / 上限 {bounded}",
+					"components": "コンポーネント",
+					"columns": {
+						"cpu": "CPU",
+						"memory": "メモリ"
+					},
+					"kinds": {
+						"api": "api",
+						"broker": "broker",
+						"cache": "cache",
+						"web": "web"
+					},
+					"resolvedProgress": "{total} 件中 {resolved} 件が特定済み · {cpu}m · {memory} MiB",
+					"componentsTotal": "{count, plural, other {# 個のコンポーネント}} · {cpu}m · {memory} MiB",
+					"crossCheck": "ポート {ports} · 重複なし · 衝突なし",
+					"report": {
+						"bounded": "上限",
+						"headroom": "余裕",
+						"suggestedResource": "提案リソース",
+						"limits": "GPU · ディスク",
+						"price": "価格",
+						"validation": "検証",
+						"evidence": "エビデンス"
+					},
+					"deployments": "{count, plural, other {# 個の単一レプリカ Deployment}}",
+					"notRuntimeFields": "runtime.md のフィールドではありません",
+					"priceBasis": "価格ソース未設定 · 単位のみ",
+					"validated": "スキーマ · エラー 0 件",
+					"planPath": "runtime.md ドラフト · リビジョン {revision} · コンソールに提案済み",
+					"summary": "{figures} · {pending}"
 				},
-				"resolvedProgress": "{total} 件中 {resolved} 件が特定済み · {cpu}m · {memory} MiB",
-				"componentsTotal": "{count, plural, other {# 個のコンポーネント}} · {cpu}m · {memory} MiB",
-				"figures": "{cpu}m · {memory} MiB",
-				"hardware": {
-					"resource": "リソース",
-					"bounded": "上限",
-					"suggested": "提案",
-					"cpu": "CPU",
-					"memory": "メモリ",
-					"gpu": "GPU",
-					"disk": "ディスク"
-				},
-				"notRuntimeField": "runtime.md のフィールドではありません",
-				"none": "なし",
-				"priceBasis": "価格基準：未設定 · 単位のみ",
-				"report": {
-					"bounded": "上限",
-					"suggested": "提案",
-					"suggestedResource": "提案リソース",
-					"final": "最終"
-				},
-				"deployments": "{count, plural, other {# 個の単一レプリカ Deployment}}",
-				"pendingAuthorization": "チームの承認待ち",
-				"finalDetail": "{cpu}m · {memory} MiB · {pending}",
-				"planPath": "runtime.md ドラフト · リビジョン {revision} · コンソールに提案済み",
 				"control": {
 					"pause": "一時停止",
 					"resume": "再開",
 					"replay": "リプレイ"
 				},
+				"figures": "{cpu}m · {memory} MiB",
 				"cpuValue": "{value}m",
 				"memoryValue": "{value} MiB"
 			}
@@ -1524,88 +1756,146 @@
 				"lines": {
 					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
 					"scope": "# chỉ lập kế hoạch · bước này không build, không khởi chạy, không phát sinh chi phí",
-					"memory": "console › RAG over project episodes · a model and effort for this ticket",
-					"episodes": "console › 3 episodes cited · none with measured resources",
-					"suggest": "✓ suggests   operator/allowed-model · effort medium",
-					"reads": "reads      0002-PRD · 0005-DD · 0011-SPEC · 0031-TICKET",
+					"readTicket": "console › tool call: read 0031-TICKET-early-access-runtime",
+					"links": "console › ready-for-agent · links 0002-PRD · 0005-DD · 0011-SPEC · guardrail 0001-finops",
+					"analysis": "# phân tích · đọc các tài liệu được liên kết, rồi đến các episode của dự án",
+					"readPrd": "console › tool call: read 0002-PRD · use case: early-access sign-up",
+					"readDesignDoc": "console › tool call: read 0005-DD · envelope cpuMillis 2000 · memoryMiB 3072 · set by the team",
+					"readSpec": "console › tool call: read 0011-SPEC · 5 components named · 3 acceptance criteria",
+					"reads": "✓ read       4 documents · nothing outside the ticket's links",
 					"guardrail": "reads      harness/guardrails/0001-finops.gr.md · FIN-02 · FIN-04",
+					"judgeGuardrail": "console › judging · FIN-02: a paid action needs a gate · FIN-04: the budget is the team's",
 					"bounds": "bounded    cpuMillis 2000 · memoryMiB 3072 · set by the team in the design doc",
+					"memory": "console › RAG over project episodes · a model and effort for this ticket",
+					"embed": "console › embedding the ticket intent · 1 query vector",
+					"vectorSearch": "console › vector search · project episodes · top 6 by cosine similarity",
+					"candidates": "console › 6 candidates · similarity 0.81 to 0.42",
+					"judgeRelevance": "console › judging · 3 share the stack and scale · 3 differ: other runtime, no broker, docs only",
+					"drop": "console › dropped 3 below 0.55 · kept 3",
+					"episodes": "console › 3 episodes cited · none with measured resources",
+					"reasonResources": "console › reasoning · no cited episode measured cpu or memory · sizing follows the spec, not history",
+					"weighEffort": "console › weighing effort · low skips the broker wiring · high is not warranted by 5 components",
+					"suggest": "✓ suggests   operator/allowed-model · effort medium",
+					"planning": "# kế hoạch · xác định các thành phần, rồi định cỡ chúng trong envelope",
 					"resolve": "console › resolving 5 components named in the spec · paths, images, ports",
+					"inspectGo": "console › tool call: inspect services/signup-api · go.mod · :8080",
 					"go": "✓ services/signup-api   Go · api        250m · 256 MiB",
+					"inspectNode": "console › tool call: inspect services/notify-api · package.json · :8081",
 					"node": "✓ services/notify-api   Node.js · api   300m · 512 MiB",
+					"inspectNats": "console › tool call: inspect platform/nats · nats.conf · :4222",
 					"nats": "✓ platform/nats         NATS · broker   200m · 256 MiB",
+					"inspectRedis": "console › tool call: inspect platform/redis · redis.conf · :6379",
 					"redis": "✓ platform/redis        Redis · cache   200m · 256 MiB",
+					"inspectNext": "console › tool call: inspect apps/signup · next.config.ts · :3000",
 					"next": "✓ apps/signup           Next.js · web   500m · 1024 MiB",
+					"crossCheck": "console › cross-checking · 5 ports distinct · 5 images resolved · no collisions",
 					"size": "✓ size       1450m of 2000m · 2304 of 3072 MiB · 5 one-replica Deployments · proposed shares",
 					"limits": "limits     gpu and disk are not runtime.md fields · none requested",
 					"price": "estimate   no price source configured · figures stay in millicores and MiB",
+					"validate": "console › tool call: validate runtime.md draft against the schema · 0 errors",
 					"draft": "✓ plan       runtime.md draft, revision 1 · proposed to the console",
 					"handoff": "# tiếp theo: khi nhóm phê duyệt, ex agent run sẽ áp dụng ý định đã ghi lại"
 				}
 			},
 			"card": {
-				"ticket": "Ticket",
-				"status": "ready-for-agent",
-				"title": "Chạy trường hợp sử dụng đăng ký early access dưới dạng microruntime",
 				"readMark": "Đã đọc",
 				"notSet": "Chưa thiết lập",
 				"resolving": "Đang xác định",
-				"artifacts": {
-					"prd": "PRD",
-					"designDoc": "Design doc",
-					"spec": "Spec",
-					"guardrail": "Guardrail"
+				"labels": {
+					"ticket": "Ticket",
+					"analysis": "Phân tích",
+					"plan": "Kế hoạch"
 				},
-				"guardrailNote": "quy tắc rà soát · không tự động thực thi",
-				"suggestedModel": "Mô hình đề xuất",
-				"suggestedEffort": "Effort đề xuất",
-				"efforts": {
-					"low": "low",
-					"medium": "medium",
-					"high": "high"
+				"ticket": {
+					"status": "ready-for-agent",
+					"title": "Chạy trường hợp sử dụng đăng ký early access dưới dạng microruntime",
+					"links": "Artifact được liên kết",
+					"artifacts": {
+						"prd": "PRD",
+						"designDoc": "Design doc",
+						"spec": "Spec",
+						"guardrail": "Guardrail"
+					}
 				},
-				"kinds": {
-					"api": "api",
-					"broker": "broker",
-					"cache": "cache",
-					"web": "web"
+				"analysis": {
+					"documents": "Tài liệu",
+					"extracted": {
+						"prd": "trường hợp sử dụng: đăng ký early access",
+						"designDoc": "envelope {cpu}m · {memory} MiB · do nhóm thiết lập",
+						"spec": "{components} thành phần · {criteria} tiêu chí chấp nhận",
+						"guardrail": "{criteria} · quy tắc rà soát, không tự động thực thi"
+					},
+					"guardrailJudgment": "FIN-02: hành động có phí cần một gate · FIN-04: ngân sách thuộc về nhóm",
+					"documentsSummary": "{count, plural, other {đã đọc # tài liệu}}",
+					"episodes": "Episode",
+					"threshold": "ngưỡng {value}",
+					"verdicts": {
+						"kept": "giữ lại",
+						"dropped": "loại bỏ"
+					},
+					"reasons": {
+						"otherRuntime": "runtime khác",
+						"noBroker": "không có broker",
+						"docsOnly": "chỉ tài liệu"
+					},
+					"episodesSummary": "giữ lại {kept}/{total} episode",
+					"measured": "Tài nguyên đã đo",
+					"measuredNone": "không có trích dẫn",
+					"measuredReasoning": "định cỡ theo spec, không theo lịch sử",
+					"suggestedModel": "Mô hình đề xuất",
+					"suggestedEffort": "Effort đề xuất",
+					"efforts": {
+						"low": "low",
+						"medium": "medium",
+						"high": "high"
+					},
+					"recommendationNote": "khuyến nghị · nhóm phê duyệt",
+					"suggestionSummary": "{model} · effort {effort}"
 				},
-				"recommendationNote": "khuyến nghị · nhóm phê duyệt",
-				"components": "Thành phần",
-				"columns": {
-					"cpu": "CPU",
-					"memory": "Bộ nhớ"
+				"plan": {
+					"proposed": "Kế hoạch đề xuất",
+					"pendingAuthorization": "đang chờ nhóm phê duyệt",
+					"envelope": {
+						"cpu": "CPU",
+						"memory": "Bộ nhớ"
+					},
+					"ofBounded": "{suggested} trên {bounded}",
+					"components": "Thành phần",
+					"columns": {
+						"cpu": "CPU",
+						"memory": "Bộ nhớ"
+					},
+					"kinds": {
+						"api": "api",
+						"broker": "broker",
+						"cache": "cache",
+						"web": "web"
+					},
+					"resolvedProgress": "Đã xác định {resolved}/{total} · {cpu}m · {memory} MiB",
+					"componentsTotal": "{count, plural, other {# thành phần}} · {cpu}m · {memory} MiB",
+					"crossCheck": "cổng {ports} · riêng biệt · không xung đột",
+					"report": {
+						"bounded": "Giới hạn",
+						"headroom": "Dư địa",
+						"suggestedResource": "Tài nguyên đề xuất",
+						"limits": "GPU · đĩa",
+						"price": "Giá",
+						"validation": "Xác thực",
+						"evidence": "Bằng chứng"
+					},
+					"deployments": "{count, plural, other {# Deployment một bản sao}}",
+					"notRuntimeFields": "không phải trường trong runtime.md",
+					"priceBasis": "chưa cấu hình nguồn giá · chỉ theo đơn vị",
+					"validated": "schema · 0 lỗi",
+					"planPath": "bản nháp runtime.md · bản sửa đổi {revision} · đã đề xuất lên console",
+					"summary": "{figures} · {pending}"
 				},
-				"resolvedProgress": "Đã xác định {resolved}/{total} · {cpu}m · {memory} MiB",
-				"componentsTotal": "{count, plural, other {# thành phần}} · {cpu}m · {memory} MiB",
-				"figures": "{cpu}m · {memory} MiB",
-				"hardware": {
-					"resource": "Tài nguyên",
-					"bounded": "Giới hạn",
-					"suggested": "Đề xuất",
-					"cpu": "CPU",
-					"memory": "Bộ nhớ",
-					"gpu": "GPU",
-					"disk": "Đĩa"
-				},
-				"notRuntimeField": "không phải trường trong runtime.md",
-				"none": "không có",
-				"priceBasis": "cơ sở giá: chưa cấu hình · chỉ theo đơn vị",
-				"report": {
-					"bounded": "Giới hạn",
-					"suggested": "Đề xuất",
-					"suggestedResource": "Tài nguyên đề xuất",
-					"final": "Cuối cùng"
-				},
-				"deployments": "{count, plural, other {# Deployment một bản sao}}",
-				"pendingAuthorization": "đang chờ nhóm phê duyệt",
-				"finalDetail": "{cpu}m · {memory} MiB · {pending}",
-				"planPath": "bản nháp runtime.md · bản sửa đổi {revision} · đã đề xuất lên console",
 				"control": {
 					"pause": "Tạm dừng",
 					"resume": "Tiếp tục",
 					"replay": "Phát lại"
 				},
+				"figures": "{cpu}m · {memory} MiB",
 				"cpuValue": "{value}m",
 				"memoryValue": "{value} MiB"
 			}

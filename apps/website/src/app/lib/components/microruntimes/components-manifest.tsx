@@ -38,9 +38,9 @@ export function ComponentsManifest(props: ComponentsManifestProps) {
 	return (
 		<CardSection>
 			<div className="grid grid-cols-[minmax(0,1fr)_auto_auto] gap-x-3">
-				<Eyebrow>{copy.components}</Eyebrow>
-				<Eyebrow>{copy.columns.cpu}</Eyebrow>
-				<Eyebrow>{copy.columns.memory}</Eyebrow>
+				<Eyebrow>{copy.plan.components}</Eyebrow>
+				<Eyebrow>{copy.plan.columns.cpu}</Eyebrow>
+				<Eyebrow>{copy.plan.columns.memory}</Eyebrow>
 			</div>
 			{state === 'unset' ? (
 				<CardValue
@@ -56,7 +56,7 @@ export function ComponentsManifest(props: ComponentsManifestProps) {
 								component={component}
 								cpu={format.cpu(component.cpuMillis)}
 								key={component.id}
-								kind={copy.kinds[component.kind]}
+								kind={copy.plan.kinds[component.kind]}
 								labels={copy}
 								memory={format.memory(component.memoryMiB)}
 								share={component.cpuMillis / ticketPlan.bounded.cpuMillis}
@@ -73,12 +73,12 @@ export function ComponentsManifest(props: ComponentsManifestProps) {
 						width="w-44"
 					>
 						{allResolved
-							? format.message('componentsTotal', {
+							? format.message('plan.componentsTotal', {
 									count: resolved.length,
 									cpu: format.formatNumber.format(resolvedTotals.cpuMillis),
 									memory: format.formatNumber.format(resolvedTotals.memoryMiB),
 								})
-							: format.message('resolvedProgress', {
+							: format.message('plan.resolvedProgress', {
 									resolved: resolved.length,
 									total,
 									cpu: format.formatNumber.format(resolvedTotals.cpuMillis),
