@@ -11,7 +11,7 @@ import type {
 import { DocumentRow } from './document-row'
 import { EpisodeRow } from './episode-row'
 import { type TicketFormat, useTicketFormat } from './ticket-format.hook'
-import { analysisSummary } from './ticket-phases'
+import { analysisSummary, ticketDocumentIds } from './ticket-phases'
 import { TicketWidgetFrame } from './ticket-widget-frame'
 import { UnknownValue } from './unknown-value'
 import { WidgetSection } from './widget-section'
@@ -22,13 +22,6 @@ interface AnalysisWidgetProps {
 	listed?: boolean
 	ticket: Ticket
 }
-
-const documentIds: readonly TicketDocumentId[] = [
-	'prd',
-	'designDoc',
-	'spec',
-	'guardrail',
-]
 
 const aside = 'font-mono text-[11px] text-muted-foreground'
 
@@ -65,6 +58,7 @@ function extractedFact(
 				criteria: analysis.acceptanceCriteria,
 			})
 		case 'guardrail':
+			if (!analysis.criteria) return null
 			return t('analysis.extracted.guardrail', {
 				criteria: analysis.criteria.join(' · '),
 			})
@@ -105,7 +99,7 @@ export function AnalysisWidget(props: AnalysisWidgetProps) {
 				</span>
 			</div>
 			<ul className="m-0 mt-1 list-none p-0">
-				{documentIds.map((id) => (
+				{ticketDocumentIds.map((id) => (
 					<DocumentRow
 						extracted={extractedFact(id, analysis, format)}
 						file={ticket.artifacts[id]}
@@ -128,7 +122,7 @@ export function AnalysisWidget(props: AnalysisWidgetProps) {
 						})}
 					</span>
 				</div>
-				{analysis.episodes.length === 0 ? (
+				{!analysis.episodes ? (
 					<UnknownValue className="mt-2 block font-mono text-[12px]" />
 				) : (
 					<ul className="m-0 mt-1 list-none p-0">
@@ -223,7 +217,7 @@ function measuredLine(
 			</span>
 		)
 	}
-	if (analysis.episodes.length === 0) {
+	if (!analysis.episodes) {
 		return <UnknownValue className="font-mono text-[12px]" />
 	}
 
