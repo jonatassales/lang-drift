@@ -1,10 +1,7 @@
 {
 	"ui": {
-		"product": "Product",
-		"console": "Console",
 		"projects": "Projects",
 		"runtimes": "Runtimes",
-		"connectors": "Connectors",
 		"executions": "Executions",
 		"history": "History",
 		"settings": "Settings",
@@ -252,7 +249,6 @@
 		"loadTestObserved": "Measured stub API timings, including failures; not a workload capacity or security test.",
 		"loadTestEmpty": "No burst result recorded. The test is available while this microruntime is running.",
 		"executionMetrics": "Execution metrics",
-		"account": "Account",
 		"refresh": "Refresh",
 		"activityIntro": "All microruntimes in this project, newest first. Scroll for older records; refresh for current observations.",
 		"loadMore": "Load more",
@@ -268,13 +264,11 @@
 		"costOverviewDescription": "The LLM cost, CPU and memory each runtime reported, against its limits and budget. A cost no execution reported stays unavailable.",
 		"knownLlmCost": "Reported LLM cost",
 		"unreportedLlmCosts": "{count, plural, =0 {Every execution reported its LLM cost} one {# of {total} executions without a reported LLM cost} other {# of {total} executions without a reported LLM cost}}",
-		"llmBudgets": "Configured LLM budgets",
-		"unbudgetedRuntimes": "{count, plural, =0 {Every runtime has a budget} one {# runtime without a budget} other {# runtimes without a budget}}",
 		"llmCostBudget": "LLM cost / budget (USD)",
 		"cpuAgainstLimit": "CPU used / limit (cores)",
 		"memoryAgainstLimit": "RAM used / limit (MiB)",
 		"noRuntimes": "No runtime is registered yet.",
-		"openRecommendations": "Recommendations and history"
+		"noExecutionsYet": "No execution has reported yet."
 	},
 	"status": {
 		"running": "Running",

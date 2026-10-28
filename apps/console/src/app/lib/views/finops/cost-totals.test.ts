@@ -7,31 +7,27 @@ import { costTotals } from './cost-totals.ts'
 
 function execution(values: Partial<Execution>): Execution {
 	return {
+		state: 'running',
 		cpuUsed: null,
 		memoryUsedMiB: null,
 		...values,
 	} as Execution
 }
 
-function widget(
-	id: string,
-	executions: Execution[],
-	llmBudgetUsd?: number,
-): RuntimeWidgetSnapshot {
+function widget(id: string, executions: Execution[]): RuntimeWidgetSnapshot {
 	return {
 		runtime: {
 			id,
 			configuration: {
 				cpu: 2,
 				memoryMiB: 3072,
-				llmBudgetUsd,
 			},
 		},
 		executions,
 	} as RuntimeWidgetSnapshot
 }
 
-test('adds only measured LLM costs and counts the unknown ones', () => {
+test('adds only reported LLM costs and counts the unreported ones', () => {
 	const totals = costTotals([
 		widget('first', [
 			execution({ llmCostUsd: 2.5 }),
@@ -45,15 +41,25 @@ test('adds only measured LLM costs and counts the unknown ones', () => {
 	assert.equal(totals.executionCount, 4)
 })
 
-test('keeps a runtime with no measurement unknown, never zero', () => {
-	const [runtime] = costTotals([widget('first', [execution({})])]).runtimes
+test('keeps a cost nothing reported unknown, never zero', () => {
+	const totals = costTotals([widget('first', [execution({})])])
+	const [runtime] = totals.runtimes
 
+	assert.equal(totals.knownLlmCostUsd, null)
 	assert.equal(runtime?.knownLlmCostUsd, null)
+	assert.equal(runtime?.unknownLlmCostCount, 1)
 	assert.equal(runtime?.cpuUsed, null)
 	assert.equal(runtime?.memoryUsedMiB, null)
 })
 
-test('sums measured CPU and memory across a runtime executions', () => {
+test('keeps the total unknown when no runtime has an execution', () => {
+	const totals = costTotals([widget('first', [])])
+
+	assert.equal(totals.knownLlmCostUsd, null)
+	assert.equal(totals.executionCount, 0)
+})
+
+test('reads CPU and memory as the highest running observation, never a sum', () => {
 	const [runtime] = costTotals([
 		widget('first', [
 			execution({
@@ -64,20 +70,14 @@ test('sums measured CPU and memory across a runtime executions', () => {
 				cpuUsed: 1,
 				memoryUsedMiB: null,
 			}),
+			execution({
+				state: 'stopped',
+				cpuUsed: 4,
+				memoryUsedMiB: 4096,
+			}),
 		]),
 	]).runtimes
 
-	assert.equal(runtime?.cpuUsed, 1.5)
+	assert.equal(runtime?.cpuUsed, 1)
 	assert.equal(runtime?.memoryUsedMiB, 512)
-})
-
-test('adds the configured LLM budgets and counts runtimes without one', () => {
-	const totals = costTotals([
-		widget('first', [], 10),
-		widget('second', [], 5),
-		widget('third', []),
-	])
-
-	assert.equal(totals.budgetedLlmUsd, 15)
-	assert.equal(totals.unbudgetedRuntimeCount, 1)
 })

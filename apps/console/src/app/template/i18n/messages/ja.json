@@ -1,10 +1,7 @@
 {
 	"ui": {
-		"product": "製品",
-		"console": "コンソール",
 		"projects": "プロジェクト",
 		"runtimes": "ランタイム",
-		"connectors": "コネクター",
 		"executions": "実行",
 		"history": "履歴",
 		"settings": "設定",
@@ -252,7 +249,6 @@
 		"loadTestObserved": "失敗を含むスタブ API の実測時間です。ワークロードの容量やセキュリティのテストではありません。",
 		"loadTestEmpty": "バーストテストの結果はありません。このマイクロランタイムの実行中にテストできます。",
 		"executionMetrics": "実行メトリクス",
-		"account": "アカウント",
 		"refresh": "更新",
 		"activityIntro": "このプロジェクトのすべてのマイクロランタイムを新しい順に表示します。スクロールで過去の記録を読み込み、更新で最新の観測を取得します。",
 		"loadMore": "さらに読み込む",
@@ -268,13 +264,11 @@
 		"costOverviewDescription": "各ランタイムが報告した LLM コスト、CPU、メモリを、上限と予算に照らして示します。どの実行も報告していないコストは利用不可のままです。",
 		"knownLlmCost": "報告済みの LLM コスト",
 		"unreportedLlmCosts": "{count, plural, =0 {すべての実行が LLM コストを報告済みです} other {{total} 件の実行のうち # 件は LLM コスト未報告}}",
-		"llmBudgets": "設定済みの LLM 予算",
-		"unbudgetedRuntimes": "{count, plural, =0 {すべてのランタイムに予算があります} other {予算のないランタイム # 件}}",
 		"llmCostBudget": "LLM コスト / 予算（USD）",
 		"cpuAgainstLimit": "使用 CPU / 上限（コア）",
 		"memoryAgainstLimit": "使用 RAM / 上限（MiB）",
 		"noRuntimes": "登録済みのランタイムはまだありません。",
-		"openRecommendations": "推奨と履歴"
+		"noExecutionsYet": "まだ報告した実行はありません。"
 	},
 	"status": {
 		"running": "実行中",

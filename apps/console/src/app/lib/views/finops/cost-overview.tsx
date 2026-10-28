@@ -5,12 +5,14 @@ import { readConsole } from '@data/server'
 import type { ProductNavigation, RuntimeListSnapshot } from '@data/types'
 import { Link } from '@i18n/navigation'
 import { Card } from '@ui/card'
+import { RecommendationPanel } from '@views/runtimes/recommendation-panel'
 import { RuntimeFinops } from '@views/runtimes/runtime-finops'
 
 import { costTotals } from './cost-totals'
+import { Reading } from './reading'
 
 // FinOps' opening page: what every runtime reported against its limits and
-// budget, read from the stub. A reading no execution reported stays unknown.
+// budget, read from the stub. A value nothing reported stays unknown.
 export async function CostOverview() {
 	const [list, navigation] = await Promise.all([
 		readConsole<RuntimeListSnapshot>('runtimes'),
@@ -18,7 +20,9 @@ export async function CostOverview() {
 	])
 
 	const t = await getTranslations('ui')
+
 	const format = await getFormatter()
+
 	const totals = costTotals(list.widgets)
 	const projectNames = new Map(
 		navigation.products.map((product) => [product.id, product.name]),
@@ -28,8 +32,11 @@ export async function CostOverview() {
 			style: 'currency',
 			currency: 'USD',
 		})
-	const measured = (value: number | null, show: (value: number) => string) =>
-		value === null ? t('unknown') : show(value)
+	const plain = (value: number) => format.number(value)
+	const reported = (
+		value: number | null | undefined,
+		show: (value: number) => string = plain,
+	) => (value == null ? t('unknown') : show(value))
 
 	return (
 		<>
@@ -37,29 +44,20 @@ export async function CostOverview() {
 				title={t('costOverview')}
 				description={t('costOverviewDescription')}
 			/>
-			<section className="mb-8 grid gap-3 sm:grid-cols-2">
-				<Card className="p-4">
-					<p className="text-xs text-muted-foreground">{t('knownLlmCost')}</p>
-					<p className="mt-2 text-2xl font-medium">
-						{usd(totals.knownLlmCostUsd)}
-					</p>
-					<p className="mt-1 text-xs text-muted-foreground">
-						{t('unreportedLlmCosts', {
-							count: totals.unknownLlmCostCount,
-							total: totals.executionCount,
-						})}
-					</p>
-				</Card>
-				<Card className="p-4">
-					<p className="text-xs text-muted-foreground">{t('llmBudgets')}</p>
-					<p className="mt-2 text-2xl font-medium">
-						{usd(totals.budgetedLlmUsd)}
-					</p>
-					<p className="mt-1 text-xs text-muted-foreground">
-						{t('unbudgetedRuntimes', { count: totals.unbudgetedRuntimeCount })}
-					</p>
-				</Card>
-			</section>
+			<Card className="mb-8 p-4 sm:max-w-sm">
+				<p className="text-xs text-muted-foreground">{t('knownLlmCost')}</p>
+				<p className="mt-2 text-2xl font-medium">
+					{reported(totals.knownLlmCostUsd, usd)}
+				</p>
+				<p className="mt-1 text-xs text-muted-foreground">
+					{totals.executionCount === 0
+						? t('noExecutionsYet')
+						: t('unreportedLlmCosts', {
+								count: totals.unknownLlmCostCount,
+								total: totals.executionCount,
+							})}
+				</p>
+			</Card>
 			{totals.runtimes.length === 0 ? (
 				<p className="text-sm text-muted-foreground">{t('noRuntimes')}</p>
 			) : (
@@ -79,38 +77,27 @@ export async function CostOverview() {
 									</span>
 								</div>
 								<dl className="mt-3 grid gap-3 text-xs sm:grid-cols-3">
-									<div className="grid gap-1">
-										<dt className="text-muted-foreground">
-											{t('llmCostBudget')}
-										</dt>
-										<dd>
-											{measured(cost.knownLlmCostUsd, usd)} /{' '}
-											{configuration.llmBudgetUsd === undefined
-												? t('unknown')
-												: usd(configuration.llmBudgetUsd)}
-										</dd>
-									</div>
-									<div className="grid gap-1">
-										<dt className="text-muted-foreground">
-											{t('cpuAgainstLimit')}
-										</dt>
-										<dd>
-											{measured(cost.cpuUsed, (value) => format.number(value))}{' '}
-											/ {format.number(configuration.cpu)}
-										</dd>
-									</div>
-									<div className="grid gap-1">
-										<dt className="text-muted-foreground">
-											{t('memoryAgainstLimit')}
-										</dt>
-										<dd>
-											{measured(cost.memoryUsedMiB, (value) =>
-												format.number(value),
-											)}{' '}
-											/ {format.number(configuration.memoryMiB)}
-										</dd>
-									</div>
+									<Reading label={t('llmCostBudget')}>
+										{reported(cost.knownLlmCostUsd, usd)} /{' '}
+										{reported(configuration.llmBudgetUsd, usd)}
+									</Reading>
+									<Reading label={t('cpuAgainstLimit')}>
+										{reported(cost.cpuUsed)} /{' '}
+										{format.number(configuration.cpu)}
+									</Reading>
+									<Reading label={t('memoryAgainstLimit')}>
+										{reported(cost.memoryUsedMiB)} /{' '}
+										{format.number(configuration.memoryMiB)}
+									</Reading>
 								</dl>
+								{cost.unknownLlmCostCount > 0 ? (
+									<p className="mt-2 text-xs text-muted-foreground">
+										{t('unreportedLlmCosts', {
+											count: cost.unknownLlmCostCount,
+											total: cost.executionCount,
+										})}
+									</p>
+								) : null}
 								<details className="mt-4">
 									<summary className="cursor-pointer text-xs">
 										{t('finopsReport')}
@@ -119,12 +106,17 @@ export async function CostOverview() {
 										<RuntimeFinops snapshot={cost.snapshot} />
 									</div>
 								</details>
-								<Link
-									className="mt-3 inline-block text-xs"
-									href={`/runtimes/${runtime.id}/history`}
-								>
-									{t('openRecommendations')}
-								</Link>
+								<details className="mt-2">
+									<summary className="cursor-pointer text-xs">
+										{t('recommendations')}
+									</summary>
+									<div className="mt-3">
+										<RecommendationPanel
+											endpoint={`runtimes/${runtime.id}/recommendations`}
+											productId={runtime.productId}
+										/>
+									</div>
+								</details>
 							</Card>
 						)
 					})}

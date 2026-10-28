@@ -1,10 +1,7 @@
 {
 	"ui": {
-		"product": "Produto",
-		"console": "Console",
 		"projects": "Projetos",
 		"runtimes": "Runtimes",
-		"connectors": "Conectores",
 		"executions": "Execuções",
 		"history": "Histórico",
 		"settings": "Configurações",
@@ -252,7 +249,6 @@
 		"loadTestObserved": "Tempos medidos na API stub, incluindo falhas; não é um teste de capacidade ou segurança do workload.",
 		"loadTestEmpty": "Nenhum resultado registrado. O teste fica disponível enquanto este microruntime está em execução.",
 		"executionMetrics": "Métricas por execução",
-		"account": "Conta",
 		"refresh": "Atualizar",
 		"activityIntro": "Todos os microruntimes deste projeto, do mais recente ao mais antigo. Role para carregar registros anteriores; atualize para obter observações atuais.",
 		"loadMore": "Carregar mais",
@@ -268,13 +264,11 @@
 		"costOverviewDescription": "O custo de LLM, a CPU e a memória que cada runtime informou, contra os limites e o orçamento. Um custo que nenhuma execução informou continua indisponível.",
 		"knownLlmCost": "Custo de LLM informado",
 		"unreportedLlmCosts": "{count, plural, =0 {Toda execução informou o custo de LLM} one {# de {total} execuções sem custo de LLM informado} other {# de {total} execuções sem custo de LLM informado}}",
-		"llmBudgets": "Orçamentos de LLM configurados",
-		"unbudgetedRuntimes": "{count, plural, =0 {Todo runtime tem orçamento} one {# runtime sem orçamento} other {# runtimes sem orçamento}}",
 		"llmCostBudget": "Custo de LLM / orçamento (USD)",
 		"cpuAgainstLimit": "CPU usada / limite (núcleos)",
 		"memoryAgainstLimit": "RAM usada / limite (MiB)",
 		"noRuntimes": "Nenhum runtime registrado ainda.",
-		"openRecommendations": "Recomendações e histórico"
+		"noExecutionsYet": "Nenhuma execução informou ainda."
 	},
 	"status": {
 		"running": "Em execução",

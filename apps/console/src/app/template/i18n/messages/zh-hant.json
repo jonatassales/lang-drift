@@ -1,10 +1,7 @@
 {
 	"ui": {
-		"product": "產品",
-		"console": "控制台",
 		"projects": "專案",
 		"runtimes": "執行環境",
-		"connectors": "連接器",
 		"executions": "執行作業",
 		"history": "歷史記錄",
 		"settings": "設定",
@@ -252,7 +249,6 @@
 		"loadTestObserved": "實際量測 stub API 的時間，包含失敗請求；不是工作負載容量或安全性測試。",
 		"loadTestEmpty": "尚無突發測試結果。此微執行環境執行時可進行測試。",
 		"executionMetrics": "執行指標",
-		"account": "帳戶",
 		"refresh": "重新整理",
 		"activityIntro": "依時間由新到舊列出此專案的所有微執行環境。捲動以載入較舊的記錄；重新整理以取得最新觀測。",
 		"loadMore": "載入更多",
@@ -268,13 +264,11 @@
 		"costOverviewDescription": "每個執行環境回報的 LLM 成本、CPU 與記憶體，對照其上限與預算。沒有任何執行回報的成本維持為無法取得。",
 		"knownLlmCost": "已回報的 LLM 成本",
 		"unreportedLlmCosts": "{count, plural, =0 {每次執行都已回報 LLM 成本} other {{total} 次執行中有 # 次未回報 LLM 成本}}",
-		"llmBudgets": "已設定的 LLM 預算",
-		"unbudgetedRuntimes": "{count, plural, =0 {每個執行環境都有預算} other {# 個執行環境沒有預算}}",
 		"llmCostBudget": "LLM 成本 / 預算（USD）",
 		"cpuAgainstLimit": "已用 CPU / 上限（核心）",
 		"memoryAgainstLimit": "已用 RAM / 上限（MiB）",
 		"noRuntimes": "尚未註冊任何執行環境。",
-		"openRecommendations": "建議與歷史記錄"
+		"noExecutionsYet": "尚無任何執行回報。"
 	},
 	"status": {
 		"running": "執行中",
