@@ -4,11 +4,11 @@ Project knowledge for agents working in this repository. [`AGENTS.md`](/AGENTS.m
 
 ## Repository
 
-Monorepo with two packages, `@langdrift/tokens` and `@langdrift/web`, the Exphere workspace (`exphere/`, the engine of Microruntimes: the `ex` CLI as `@langdrift/ex` and the Microruntimes contracts as `@langdrift/exphere-contracts`; see `exphere/README.md`), and four apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/docs` is the Nextra documentation for LangDrift and every platform product, ported from Exphere's docs under spec 0006 and served under `basePath: '/docs'`. `apps/extub` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from extub.
+Monorepo with four packages, `@langdrift/tokens`, `@langdrift/web`, the `ex` CLI as `@langdrift/ex` and the Microruntimes contracts as `@langdrift/contracts`, and four apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/docs` is the Nextra documentation for LangDrift, ported from Exphere's docs under spec 0006 and served under `basePath: '/docs'`. `apps/extub` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from extub.
 
 - `apps/<app>/`: one deployable app each, Next.js except `extub`. `pnpm-workspace.yaml` picks them up through `apps/*`.
-- `packages/<capability>/`: shared across apps, never inside one. `tokens`, `web` and `ex` exist; `shell`, `account`, `runtime` and `contracts` are planned.
-- `exphere/` is a workspace of its own, picked up through `exphere/*`. Its members and `apps/extub` are Go modules tied together by the root `go.work`: Turborepo runs their `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds them (no Go toolchain required for frontend work).
+- `packages/<capability>/`: shared across apps, never inside one. `tokens`, `web`, `ex` and `contracts` exist; `shell`, `account` and `runtime` are planned.
+- `packages/ex`, `packages/contracts` and `apps/extub` are Go modules tied together by the root `go.work`: Turborepo runs their `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds them (no Go toolchain required for frontend work).
 - A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package. Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
 - `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, `quality/` the lint-staged config, the Biome plugin and `dead-code.allow`, `versioning/` the commitlint config and the Git hooks (`.husky/`).
@@ -18,7 +18,7 @@ Monorepo with two packages, `@langdrift/tokens` and `@langdrift/web`, the Expher
 
 - pnpm is the only package manager. `devEngines.packageManager` in the root `package.json` makes other package managers fail, and `engineStrict` in `pnpm-workspace.yaml` enforces the Node range in `engines`.
 - Dependency install scripts run only when `allowBuilds` in `pnpm-workspace.yaml` allows them. Prebuilt binaries ship as optional dependencies, so the entries there are denials; approve a new one only when its build is required.
-- Work that spans the monorepo runs through Turborepo. The only root scripts that wrap `turbo run` are the two app launchers below; do not add others.
+- Work that spans the monorepo runs through Turborepo. The only root scripts that wrap `turbo run` are the three app launchers below; do not add others.
 - A package's scripts call its tool directly (for example `tsc --noEmit`). Turborepo tasks run those scripts by name. Do not add shell or JavaScript wrappers for what Turborepo or pnpm already do.
 
 Run from the repository root:
@@ -27,7 +27,8 @@ Run from the repository root:
 | --- | --- |
 | `pnpm install` | Installs dependencies and the Git hooks, then links the `drift` launcher. Fails under another package manager or an unsupported Node version. |
 | `pnpm website` | Builds the packages the website depends on, then starts it in dev mode on port 3000. |
-| `pnpm docs` | Builds the packages the docs depend on, then starts them in dev mode at `http://localhost:3001/docs`. |
+| `pnpm console` | Builds the packages the console depends on, then starts it in dev mode on `http://127.0.0.1:3001` together with its stub API, extub, on `127.0.0.1:3401`. Extub needs a Go toolchain. |
+| `pnpm docs` | Builds the packages the docs depend on, then starts them in dev mode at `http://localhost:3002/docs`. |
 | `pnpm turbo run build` | Builds every package that has a `build` script, upstream packages first. |
 | `pnpm turbo run dev --filter=<package-name>` | Builds the packages an app depends on, then starts the app. |
 | `pnpm turbo run typecheck` | Runs each package's `typecheck` script. |
@@ -61,10 +62,10 @@ When the shell resolves `drift` to another program (a link from an older checkou
 
 ## Navigation and session
 
-- Everything is served under `https://langdrift.md` with a locale prefix. The product switcher moves between platform products as internal routing on that domain; it never links to another domain or subdomain.
+- Everything is served under `https://langdrift.md` with a locale prefix. Moving between pages, on the site and in the console, is internal routing on that domain; it never links to another domain or subdomain.
 - Account and session come from a central account package, `packages/account`, which is planned. No app owns them.
-- The switcher and the shell will live in `packages/shell`, which is planned. Each product owns its workspaces, sidebar and content.
-- The two consoles that merge into the LangDrift console live upstream for now: `jonatassales/langdrift` `apps/dashboard` (Vision) and `jonatassales/exphere` `apps/console` (FinOps).
+- The shell will live in `packages/shell`, which is planned.
+- The console lives here as `apps/console`, imported from `jonatassales/exphere`, and reads the local stub API `apps/extub`.
 
 ## Spec-driven development
 
@@ -132,16 +133,12 @@ Actions, container images and downloaded tools are pinned to full commit SHAs, d
 ### Platform
 
 **Platform product**:
-One of LangDrift's offerings under the shared brand, named `LangDrift <Product>`: Vision and FinOps. Each has its own page on the site and its own workspaces in the console.
+LangDrift's offering under the shared brand, named `LangDrift <Product>`: today only LangDrift FinOps, with Microruntimes as its engine. It has its pages on the site and its workspaces in the console.
 _Avoid_: Module, vertical, sub-app
 
 **Console**:
-The one authenticated LangDrift surface on langdrift.md where every platform product is managed, behind one account and one shell. It unifies the upstream LangDrift dashboard and Exphere console.
+The one authenticated LangDrift surface on langdrift.md where a team manages FinOps and its microruntimes, behind one account and one shell. It lives in `apps/console`, imported from Exphere's console.
 _Avoid_: Dashboard (for the whole), admin, control panel
-
-**Product switcher**:
-The shell control that moves between platform products inside the console, as routing on the same domain.
-_Avoid_: App switcher, domain switcher
 
 ### Apps
 
@@ -172,7 +169,7 @@ A role that signals success, warning, danger or info. It is the same in every ap
 _Avoid_: Feedback color, alert color
 
 **Classification color**:
-The color of one Product Vision classification: intentional, aligned, unexplained or review. It is the same in every app and color scheme, and never takes the brand color.
+The color of one classification: intentional, aligned, unexplained or review. It is the same in every app and color scheme, and never takes the brand color.
 _Avoid_: Category color, label color
 
 **Classification text tone**:
@@ -212,10 +209,6 @@ _Avoid_: State file, journal
 **Evidence**:
 The token-free record ex keeps of every lifecycle operation and inspection, for later audit.
 _Avoid_: Log, report
-
-**Exphere**:
-The workspace that is the engine of Microruntimes: the `ex` CLI, the Microruntimes contracts and, next, the server the connected agent talks to. It holds nothing of Vision or FinOps, and writes only `.langdrift/microruntimes/` in a project.
-_Avoid_: Exphere as the name of the console or of extub
 
 **Run**:
 One execution of a microruntime toward one goal: a ticket, a test, a load test or an end-to-end run. The race of the metaphor in which the microruntime is the car.

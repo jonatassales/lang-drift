@@ -1,6 +1,6 @@
 # Docs
 
-The documentation for LangDrift and every platform product: Getting Started, Platform, Vision, FinOps and Development. It was ported from Exphere's Nextra site under [spec 0006](/.agents/workflow/specs/0006-langdrift-docs.spec.md) with its homepage removed, so the documentation is the root. The design is Exphere's: Nextra's docs theme, dark only, the purple accent.
+The documentation for LangDrift: Getting Started, Platform, FinOps and Development. It was ported from Exphere's Nextra site under [spec 0006](/.agents/workflow/specs/0006-langdrift-docs.spec.md) with its homepage removed, so the documentation is the root. The design is Exphere's: Nextra's docs theme, dark only, the purple accent.
 
 Nextra owns navigation, breadcrumbs, the article wrapper, the table of contents, pagination, the mobile menu and Pagefind search. Pages are route-local `page.mdx` files under `src/app/`, ordered by `_meta.ts`.
 
@@ -10,9 +10,9 @@ Run commands from the repository root:
 
 | Command | Purpose |
 | --- | --- |
-| `pnpm docs` | Build shared dependencies and start development at `http://localhost:3001/docs`. |
+| `pnpm docs` | Build shared dependencies and start development at `http://localhost:3002/docs`. |
 | `pnpm turbo run build --filter=docs...` | Build shared dependencies, compile the docs and generate search assets. |
-| `pnpm --filter docs start` | Serve the completed production build on port 3001. |
+| `pnpm --filter docs start` | Serve the completed production build on port 3002. |
 | `pnpm --filter docs typecheck` | Generate Next.js route types and check TypeScript. |
 
 No secrets, backing service or environment variables are required.

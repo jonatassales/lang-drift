@@ -1,46 +1,42 @@
 # LangDrift
 
-LangDrift is an AI harness web OS for the agentic journey: one brand, one domain and a set of platform products that share account, plan and shell. This repository, code name **Tao**, builds the next LangDrift. This file holds the ideas an agent must carry into any task here; the mechanics live in [`.agents/context.md`](.agents/context.md).
+LangDrift is an agentic FinOps platform: one brand, one domain and one console. This repository, code name **Tao**, builds the next LangDrift. This file holds the ideas an agent must carry into any task here; the mechanics live in [`.agents/context.md`](.agents/context.md).
 
 ## The idea
 
 ### One platform, one domain
 
-LangDrift is a platform of products, not one product. The public site presents the platform and routes to each product's own page, the way a `Platform` menu does on a platform vendor's site. Everything is served under `https://langdrift.md` with a locale prefix (`/en/`, `/pt-br/`, `/zh-hant/`, `/ja/`, `/vi/`). Moving between products, on the site and in the console's product switcher, is routing on that one domain, never a redirect to another domain or subdomain.
+Everything is served under `https://langdrift.md` with a locale prefix (`/en/`, `/pt-br/`, `/zh-hant/`, `/ja/`, `/vi/`). The public site presents the platform on one page and routes to the FinOps and Microruntimes pages. Moving between pages, on the site and in the console, is routing on that one domain, never a redirect to another domain or subdomain.
 
-Today's langdrift.md is a single-product site. Once the platform site is ready it takes over the domain, and today's content becomes Vision's product page.
+### The product
 
-### The products
+The product carries the brand in its name: **LangDrift FinOps**, with **Microruntimes** as its engine.
 
-Products carry the brand in their name: **LangDrift Vision** and **LangDrift FinOps**.
-
-| Product | The idea it serves |
+| Part | The idea it serves |
 | --- | --- |
-| **Vision** | Keep the why. A product moves away from the vision it set out with; Vision measures that movement as a **Product Vision** score and keeps the context of every move: what changed, who moved it, why, whether a decision was recorded. Movement is classified as intentional evolution, unexplained drift or under review. Drift is not a verdict: it can reveal a gap, a trade-off or a better direction. The goal is shared understanding, not blame. |
 | **FinOps** | Make agent-assisted delivery accountable to a team budget. It connects product intent, delivery context, execution evidence and economic outcome in one inspectable chain, on three pillars: FinOps as the economic purpose, the agentic harness as the delivery workflow and its evidence, and microruntimes as bounded, consumer-owned execution around software that already exists. |
+| **Microruntimes** | The engine: plan, run and record a bounded execution around a team's own software. Its Go CLI, `ex`, lives in `packages/ex` beside the Microruntimes contracts in `packages/contracts`; every plan with Microruntimes includes FinOps. |
 
-Vision's metric keeps its English name, "Product Vision", in every locale. FinOps grew out of the Exphere project; its Go CLI, `ex`, is already here in the Exphere workspace, `exphere/`, the engine of Microruntimes, beside the Microruntimes contracts.
+FinOps grew out of the Exphere project. Its value comes from data the platform produces itself.
 
-**Pivot, 2026-10-28.** The owner pivoted the project to FinOps, with Microruntimes as its engine: its value comes from data the platform produces itself. Vision is no longer developed as a product, because it would need ever more of the client's data and producing artifacts for it would break the other products. It may return as a connector, an MCP to tools such as GitHub, Linear or Obsidian, that brings their data into the console. The website, the brand and the Vision text above stay until the owner rewrites them; spec 0010 records the decision.
+**Pivot, 2026-10-28.** The owner pivoted the project from a platform of products to FinOps, with Microruntimes as its engine. Vision is no longer developed as a product, because it would need ever more of the client's data and producing artifacts for it would break FinOps. It may return as a connector, an MCP to tools such as GitHub, Linear or Obsidian, that brings their data into the console. Spec 0010 records the decision.
 
 ### One console
 
-Each product has a management surface today, in its upstream repository. LangDrift's dashboard (`jonatassales/langdrift`, `apps/dashboard`) is Vision's: Overview, Vision, Evolution and Evidence workspaces, with attention, briefs, targets, revisions, drifts, decisions, relations and sources beneath them. Exphere's console (`jonatassales/exphere`, `apps/console`) is FinOps's: projects registered from a local folder, their microruntimes, executions, history and secrets, supervised by one connected `ex` agent per project, with FinOps readings and recommendations that stay advisory.
+The LangDrift console is where a team manages FinOps: projects registered from a local folder, their microruntimes, executions, history and secrets, supervised by one connected `ex` agent per project, with FinOps readings and recommendations that stay advisory. It lives here as `apps/console`, imported from Exphere's console (`jonatassales/exphere`), and reads `apps/extub`, a local stub API that seeds one project, Microruntimes, with its runtimes and their FinOps readings. The console keeps requested state apart from observed state and labels illustrative or stub data as such. The account and the shell are planned.
 
-They become **one LangDrift console** on langdrift.md: one account, one shell, a product switcher between Vision and FinOps, and under it each product's own workspaces, sidebar and content. The dashboard's workspace switcher is the seed of that product switcher. Both surfaces already keep requested state apart from observed state and label illustrative or stub data as such; the unified console keeps both habits. The FinOps console is in this repository as `apps/console`, reading the `apps/extub` stub; the Vision dashboard is not.
-
-### Principles the products share
+### Principles the platform holds
 
 - **The platform owns boundaries and mechanisms; the consumer owns the application and its domain choices.** A platform team may require observability, evidence, security and bounded execution without choosing every library.
 - **Recommendation is not authorization.** An agent may estimate, recommend and execute permitted work. A deterministic control decides whether a paid or risky action is allowed. A model's suggestion never widens scope, funding or access.
 - **The authorized budget belongs to the team**, not to a developer or a ticket. Allocations to work are subordinate to that envelope.
 - **Unknown is never zero.** Missing or stale evidence is shown as missing, not as zero spend or a confirmed stop. Desired state and observed state stay distinct.
 - **Evidence over assertion.** Every movement, recommendation and lifecycle operation keeps a token-free record with provenance. A claim of savings, delivery or readiness needs the evidence behind it.
-- **Meaning is fixed across products.** Status, classification and drift colors never take a brand color, so a classification reads the same in every product.
+- **Meaning is fixed everywhere.** Status, classification and drift colors never take a brand color, so a classification reads the same on every surface.
 
 ## Where things stand
 
-A pnpm and Turborepo monorepo. `apps/website` is where the platform site is built; it started as today's langdrift.md, ported from the earlier `langdrift` monorepo under spec 0003. `apps/docs` holds the documentation for LangDrift and every platform product, ported from Exphere's Nextra site under spec 0006 and served under `/docs`. `packages/tokens` and `packages/web` exist, and the `exphere/` workspace holds the `ex` CLI and the Microruntimes contracts; `shell`, `account` and `runtime` are planned. Each app and package has a README with its own contract.
+A pnpm and Turborepo monorepo. `apps/website` is the platform site, one page with the FinOps and Microruntimes pages beside it; it started as langdrift.md, ported from the earlier `langdrift` monorepo under spec 0003. `apps/docs` holds the documentation, ported from Exphere's Nextra site under spec 0006 and served under `/docs`. `apps/console` is the console and `apps/extub` its local stub API. `packages/tokens`, `packages/web`, `packages/ex` (the `ex` CLI) and `packages/contracts` (the Microruntimes contracts) exist; `shell`, `account` and `runtime` are planned. Each app and package has a README with its own contract.
 
 ## How we work
 
@@ -60,11 +56,11 @@ A pnpm and Turborepo monorepo. `apps/website` is where the platform site is buil
 | Specs, tickets, ADRs and research notes | `.agents/workflow/` |
 | The website's environment contract and sign-up pause | [`apps/website/README.md`](apps/website/README.md) |
 | The docs app, its search and its content structure | [`apps/docs/README.md`](apps/docs/README.md) |
-| The Exphere workspace, the `ex` CLI and the Microruntimes contracts | [`exphere/README.md`](exphere/README.md) |
+| The `ex` CLI and the Microruntimes contracts | [`packages/ex/README.md`](packages/ex/README.md), [`packages/contracts/README.md`](packages/contracts/README.md) |
 
 ## Commands
 
-Run from the repository root. [`.agents/context.md`](.agents/context.md) has the full table and what each command touches.
+Run from the repository root. `pnpm website` serves the site on port 3000, `pnpm console` the console on 3001 with its stub API on 3401, and `pnpm docs` the docs at `http://localhost:3002/docs`, so all three run at once. [`.agents/context.md`](.agents/context.md) has the full table and what each command touches.
 
 ```bash
 pnpm install
@@ -72,6 +68,10 @@ pnpm install
 
 ```bash
 pnpm website
+```
+
+```bash
+pnpm console
 ```
 
 ```bash

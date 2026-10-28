@@ -1,6 +1,6 @@
 {
 	"mirror": {
-		"of": "exphere-server",
+		"of": "console",
 		"record": "gates-51b0",
 		"setBy": "owner",
 		"via": "console",

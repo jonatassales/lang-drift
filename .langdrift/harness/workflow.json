@@ -1,6 +1,6 @@
 {
 	"mirror": {
-		"of": "exphere-server",
+		"of": "console",
 		"record": "workflow-3f81",
 		"setBy": "owner",
 		"via": "console",

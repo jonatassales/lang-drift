@@ -67,7 +67,7 @@ func TestPerRuntimeLifecycleFences(t *testing.T) {
 		}
 	}
 	_, home := call(t, handler, "GET", "/console/home", nil)
-	if len(home["products"].([]any)) != 2 || len(home["running"].([]any)) != 3 {
+	if len(home["products"].([]any)) != 1 || len(home["running"].([]any)) != 3 {
 		t.Fatal("an individual action changed unrelated fixtures")
 	}
 	_, created := call(t, handler, "POST", "/console/products", map[string]string{"path": "/seeds/new", "name": "Empty"})
@@ -84,6 +84,37 @@ func TestPerRuntimeLifecycleFences(t *testing.T) {
 		t.Fatal("creation started a fixture")
 	}
 }
+
+// createOtherProduct registers a second product through the API, so a test
+// can prove isolation without depending on a seeded product.
+func createOtherProduct(t *testing.T, handler Handler) string {
+	t.Helper()
+	status, created := call(t, handler, "POST", "/console/products", map[string]string{"path": "/seeds/other", "name": "Other"})
+	if status != 200 {
+		t.Fatalf("creating a product: status %d", status)
+	}
+
+	return created["product"].(map[string]any)["id"].(string)
+}
+
+func TestSeedsOneProjectAndItsRuntimes(t *testing.T) {
+	handler, _ := fixture(t)
+	_, listedProducts := call(t, handler, "GET", "/console/products", nil)
+	products := listedProducts["products"].([]any)
+	if len(products) != 1 || products[0].(map[string]any)["id"] != "seed-microruntimes" {
+		t.Fatalf("seeded products: %v", products)
+	}
+	_, listedRuntimes := call(t, handler, "GET", "/console/runtimes?productId=seed-microruntimes", nil)
+	if len(listedRuntimes["runtimes"].([]any)) != 4 {
+		t.Fatalf("seeded runtimes: %v", listedRuntimes["runtimes"])
+	}
+	_, listedFolders := call(t, handler, "GET", "/console/local/folders", nil)
+	folders := listedFolders["folders"].([]any)
+	if len(folders) != 1 || folders[0].(map[string]any)["path"] != "/seeds/microruntimes" {
+		t.Fatalf("offered folders: %v", folders)
+	}
+}
+
 func TestHTTPBoundaryAndProductIsolation(t *testing.T) {
 	handler, store := fixture(t)
 	for _, check := range []struct{ host, origin string }{{"attacker.test", ""}, {"127.0.0.1:3401", "https://foreign.example"}} {
@@ -96,17 +127,14 @@ func TestHTTPBoundaryAndProductIsolation(t *testing.T) {
 			t.Fatal("accepted foreign request")
 		}
 	}
-	_, list := call(t, handler, "GET", "/console/runtimes?productId=seed-vision", nil)
+	otherProductID := createOtherProduct(t, handler)
+	_, list := call(t, handler, "GET", "/console/runtimes?productId="+otherProductID, nil)
 	if len(list["widgets"].([]any)) != 0 {
 		t.Fatal("cross-product widgets")
 	}
-	status, vision := call(t, handler, "GET", "/console/products/seed-vision", nil)
-	if status != 200 || vision["product"].(map[string]any)["visionFixture"] == nil {
-		t.Fatalf("missing visionFixture on GET /console/products/seed-vision: %v", vision)
-	}
 	_, secret := call(t, handler, "POST", "/console/products/seed-microruntimes/secrets", map[string]string{"name": "Fixture"})
 	id := secret["credential"].(map[string]any)["id"].(string)
-	if status, _ := call(t, handler, "DELETE", "/console/products/seed-vision/secrets/"+id, nil); status != 404 {
+	if status, _ := call(t, handler, "DELETE", "/console/products/"+otherProductID+"/secrets/"+id, nil); status != 404 {
 		t.Fatal("cross-product revocation")
 	}
 	if status, _ := call(t, handler, "POST", "/console/runtimes", map[string]any{}); status != 400 {

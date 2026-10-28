@@ -123,7 +123,7 @@ func (handler Handler) route(request *http.Request) (any, error) {
 		if folder == "" {
 			folder = "/seeds"
 		}
-		return map[string]any{"source": "stub", "path": folder, "parent": nil, "folders": []map[string]string{{"name": "microruntimes", "path": "/seeds/microruntimes"}, {"name": "vision", "path": "/seeds/vision"}}}, nil
+		return map[string]any{"source": "stub", "path": folder, "parent": nil, "folders": []map[string]string{{"name": "microruntimes", "path": "/seeds/microruntimes"}}}, nil
 	}
 	if path == "home" && method == http.MethodGet {
 		return handler.home(), nil

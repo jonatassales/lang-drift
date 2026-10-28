@@ -29,8 +29,8 @@ The diagram is an AI-generated composition that uses the official Backstage artw
 
 | Location | Responsibility |
 | --- | --- |
-| `exphere/cli/` | Private `@langdrift/ex`, in the Exphere workspace: the Go CLI, the connected agent and the bounded runtime lifecycle. |
-| Upstream `jonatassales/exphere` `apps/console` | The FinOps console, until it joins the LangDrift console. |
+| `packages/ex/` | Private `@langdrift/ex`: the Go CLI, the connected agent and the bounded runtime lifecycle. |
+| `apps/console/` | The LangDrift console, where a team manages FinOps and its microruntimes, reading the local stub API `apps/extub/`. |
 
 See [Platform → Architecture](/platform/architecture) for the whole workspace.
 

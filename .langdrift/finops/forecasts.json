@@ -1,6 +1,6 @@
 {
 	"mirror": {
-		"of": "exphere-server",
+		"of": "console",
 		"record": "forecast-a613",
 		"setBy": "owner",
 		"via": "console",
