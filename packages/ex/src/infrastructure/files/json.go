@@ -93,7 +93,7 @@ func WriteJSON(path string, value any) error {
 		return err
 	}
 
-	temporary, err := writeTemporary(directory, append(data, '\n'))
+	temporary, err := writeTemporary(directory, append(data, '\n'), privateFileMode)
 	if err != nil {
 		return err
 	}
@@ -106,13 +106,13 @@ func WriteJSON(path string, value any) error {
 	return syncDirectory(directory)
 }
 
-func writeTemporary(directory string, data []byte) (string, error) {
+func writeTemporary(directory string, data []byte, mode fs.FileMode) (string, error) {
 	file, err := os.CreateTemp(directory, ".state-*")
 	if err != nil {
 		return "", err
 	}
 
-	writeErr := file.Chmod(privateFileMode)
+	writeErr := file.Chmod(mode)
 	if writeErr == nil {
 		_, writeErr = file.Write(data)
 	}

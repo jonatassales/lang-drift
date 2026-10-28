@@ -101,7 +101,7 @@ func useCases() (cli.UseCases, lifecycles) {
 		ProjectInit: application.InitializeProject{
 			Projects:  projects,
 			Creator:   projects,
-			Bootstrap: scaffold.Connected{},
+			Bootstrap: scaffold.LangDrift{},
 		},
 		Doctor: application.Diagnose{
 			Prerequisites: tools,

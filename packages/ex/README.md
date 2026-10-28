@@ -68,7 +68,7 @@ In the commands below, `ex` means this tree's compiled `./dist/ex` executable.
 | Command | Behavior |
 | --- | --- |
 | `ex version` | Print the version; `--version` and `-V` are equivalent. |
-| `ex init` | Create or reuse project identity; add the agent instructions, 26 installed Pocock skills with attribution, SDD workflow, policies and templates. Existing files remain unchanged. |
+| `ex init` | Create or reuse the project identity in `.langdrift/config.json` and add the Microruntimes execution rules at `.langdrift/microruntimes/AGENTS.md`. Existing files remain unchanged; no template, skill or policy text is written. |
 | `ex agent project <console-url>` | Read `PROJECT_SECRET` and supervise all microruntimes of one project, including those created after connection. The console normally launches this process. |
 | `ex agent connect <console-url>` | Read `RUNTIME_SECRET` from the environment, verify the selected GitHub checkout, and save a private environment binding. |
 | `ex agent run` | Synchronize all bound microruntimes, apply stopped configurations, build/start/observe/stop from authenticated console intent. |

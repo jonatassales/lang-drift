@@ -4,7 +4,6 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 
 	"github.com/jonatassales/tao/packages/ex/src/application"
@@ -77,8 +76,12 @@ func TestProjects_Create(t *testing.T) {
 	}
 
 	metadata, err := os.ReadFile(filepath.Join(root, ".langdrift", "config.json"))
-	if err != nil || !strings.Contains(string(metadata), `"version": 1`) || !strings.Contains(string(metadata), projectIDText) {
-		t.Errorf("metadata = %s, %v; want version 1 and the ID", metadata, err)
+	if err != nil || string(metadata) != "{\n\t\"version\": 1,\n\t\"id\": \""+projectIDText+"\"\n}\n" {
+		t.Errorf("metadata = %s, %v; want version 1 and the ID in the tab layout", metadata, err)
+	}
+
+	if info, err := os.Stat(filepath.Join(root, ".langdrift", "config.json")); err != nil || info.Mode().Perm() != 0o644 {
+		t.Errorf("metadata mode = %v, %v; want 0644, the consumer reads it", info.Mode().Perm(), err)
 	}
 
 	ignore, err := os.ReadFile(filepath.Join(root, ".langdrift", "agent", "state", ".gitignore"))
