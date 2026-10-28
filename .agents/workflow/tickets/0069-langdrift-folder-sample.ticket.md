@@ -1,0 +1,18 @@
+# 0069: An illustrative `.langdrift` folder covers the console
+
+**Spec:** .agents/workflow/specs/0010-exphere-and-the-langdrift-folder.spec.md
+
+**What to build:** the repository carries a versioned `.langdrift/` folder with one illustrative run of the ticket `0001-TICKET-console-microruntime`, executed as the microruntime `console-local` in two laps: the first paused at a FinOps gate, the second completed. It holds data only, with the layout of spec 0010, and every field of the Microruntimes page's Ticket, Analysis, Plan and Workflow cards has a source in it. The research note on what the real `ex` reproduces of the page joins the tracker.
+
+**Blocked by:** None (can start immediately).
+
+**Status:** ready-for-agent
+
+- [x] The tree matches spec 0010; only `agent/state/` is ignored.
+- [x] Nothing in it points outside the project's own folder except the workload it runs and the team's artifacts it reads.
+- [x] Every hash in `plan.json` and the laps matches its file, and `runtime.md` passes the CLI's parser.
+- [x] Each card field maps to a JSON field or a JSON fence, as the spec's coverage table lists.
+
+### Verification
+
+- `pnpm turbo run check`; the sample's hashes recomputed with `shasum -a 256`; `runtime.md` parsed with the CLI's `connection.Parse`.

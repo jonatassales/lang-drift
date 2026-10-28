@@ -1,0 +1,3 @@
+# Private operational state of the connected agent: locks, cluster record,
+# build copies, pending events. It never leaves this machine.
+agent/state/

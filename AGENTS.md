@@ -19,7 +19,7 @@ Products carry the brand in their name: **LangDrift Vision** and **LangDrift Fin
 | **Vision** | Keep the why. A product moves away from the vision it set out with; Vision measures that movement as a **Product Vision** score and keeps the context of every move: what changed, who moved it, why, whether a decision was recorded. Movement is classified as intentional evolution, unexplained drift or under review. Drift is not a verdict: it can reveal a gap, a trade-off or a better direction. The goal is shared understanding, not blame. |
 | **FinOps** | Make agent-assisted delivery accountable to a team budget. It connects product intent, delivery context, execution evidence and economic outcome in one inspectable chain, on three pillars: FinOps as the economic purpose, the agentic harness as the delivery workflow and its evidence, and microruntimes as bounded, consumer-owned execution around software that already exists. |
 
-Vision's metric keeps its English name, "Product Vision", in every locale. FinOps grew out of the Exphere project; its Go CLI, `ex`, is already here as `packages/ex`.
+Vision's metric keeps its English name, "Product Vision", in every locale. FinOps grew out of the Exphere project; its Go CLI, `ex`, is already here in the Exphere workspace, `exphere/`, the engine of Microruntimes, beside the Microruntimes contracts.
 
 ### One console
 
@@ -38,7 +38,7 @@ They become **one LangDrift console** on langdrift.md: one account, one shell, a
 
 ## Where things stand
 
-A pnpm and Turborepo monorepo. `apps/website` is where the platform site is built; it started as today's langdrift.md, ported from the earlier `langdrift` monorepo under spec 0003. `apps/docs` holds the documentation for LangDrift and every platform product, ported from Exphere's Nextra site under spec 0006 and served under `/docs`. `packages/tokens`, `packages/web` and `packages/ex` exist; `shell`, `account`, `runtime` and `contracts` are planned. Each app and package has a README with its own contract.
+A pnpm and Turborepo monorepo. `apps/website` is where the platform site is built; it started as today's langdrift.md, ported from the earlier `langdrift` monorepo under spec 0003. `apps/docs` holds the documentation for LangDrift and every platform product, ported from Exphere's Nextra site under spec 0006 and served under `/docs`. `packages/tokens` and `packages/web` exist, and the `exphere/` workspace holds the `ex` CLI and the Microruntimes contracts; `shell`, `account` and `runtime` are planned. Each app and package has a README with its own contract.
 
 ## How we work
 
@@ -58,7 +58,7 @@ A pnpm and Turborepo monorepo. `apps/website` is where the platform site is buil
 | Specs, tickets, ADRs and research notes | `.agents/workflow/` |
 | The website's environment contract and sign-up pause | [`apps/website/README.md`](apps/website/README.md) |
 | The docs app, its search and its content structure | [`apps/docs/README.md`](apps/docs/README.md) |
-| The `ex` CLI and its lifecycle contracts | [`packages/ex/README.md`](packages/ex/README.md) |
+| The Exphere workspace, the `ex` CLI and the Microruntimes contracts | [`exphere/README.md`](exphere/README.md) |
 
 ## Commands
 

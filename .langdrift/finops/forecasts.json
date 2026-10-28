@@ -1,0 +1,21 @@
+{
+	"version": 1,
+	"status": "draft",
+	"illustrative": true,
+	"note": "Tokens expected per effort, used when no earlier run measured tokens for the ticket.",
+	"unit": "thousands-of-tokens",
+	"byEffort": {
+		"low": {
+			"input": 2000,
+			"output": 120
+		},
+		"medium": {
+			"input": 3500,
+			"output": 250
+		},
+		"high": {
+			"input": 6000,
+			"output": 500
+		}
+	}
+}

@@ -1,0 +1,116 @@
+{
+	"version": 1,
+	"sample": true,
+	"run": "0001-console-microruntime",
+	"ticket": "0001-TICKET-console-microruntime",
+	"state": "provisional",
+	"currency": "USD",
+	"priceSource": ".langdrift/finops/prices/0001-illustrative.prices.json",
+	"forecastSource": ".langdrift/finops/forecasts.json",
+	"bounded": {
+		"perRunCents": 2500,
+		"ticketAllocationCents": 2500,
+		"periodLeftCents": 50000
+	},
+	"laps": [
+		{
+			"lap": "0001",
+			"model": "claude-opus-5-5",
+			"effort": "high",
+			"tokensThousands": {
+				"estimate": {
+					"input": 6000,
+					"output": 500
+				},
+				"observed": null
+			},
+			"cents": {
+				"estimate": 3400,
+				"requestedReservation": 4080,
+				"reserved": 0,
+				"observed": 0,
+				"billed": 0,
+				"recovered": 0,
+				"overspend": 0,
+				"variance": null
+			},
+			"gates": [
+				{
+					"id": "FG-01",
+					"result": "passed"
+				},
+				{
+					"id": "FG-02",
+					"result": "passed"
+				},
+				{
+					"id": "FG-03",
+					"result": "paused",
+					"detail": "requested reservation 4080 exceeds the per-run cap 2500"
+				}
+			],
+			"nothingPaid": true
+		},
+		{
+			"lap": "0002",
+			"model": "claude-sonnet-5-5",
+			"effort": "medium",
+			"tokensThousands": {
+				"estimate": {
+					"input": 3500,
+					"output": 250
+				},
+				"observed": {
+					"input": 3700,
+					"output": 240
+				}
+			},
+			"cents": {
+				"estimate": 950,
+				"requestedReservation": 1140,
+				"reserved": 1140,
+				"observed": 980,
+				"billed": null,
+				"recovered": 160,
+				"overspend": 0,
+				"variance": 30
+			},
+			"gates": [
+				{
+					"id": "FG-01",
+					"result": "passed"
+				},
+				{
+					"id": "FG-02",
+					"result": "passed"
+				},
+				{
+					"id": "FG-03",
+					"result": "passed",
+					"detail": "reservation 1140 within the per-run cap 2500"
+				},
+				{
+					"id": "FG-04",
+					"result": "not-reached",
+					"detail": "observed 980 stayed below the reservation 1140"
+				},
+				{
+					"id": "FG-06",
+					"result": "keep-provisional",
+					"detail": "the provider has not billed the lap; billed stays unknown"
+				}
+			],
+			"nothingPaid": false
+		}
+	],
+	"totals": {
+		"cents": {
+			"reserved": 1140,
+			"observed": 980,
+			"billed": null,
+			"recovered": 160,
+			"overspend": 0
+		},
+		"periodLeftAfterCents": 49020
+	}
+}

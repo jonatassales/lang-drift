@@ -1,0 +1,14 @@
+{
+	"version": 1,
+	"status": "draft",
+	"owner": "team",
+	"perExecution": {
+		"cpuMillis": 4000,
+		"memoryMiB": 6144
+	},
+	"default": {
+		"cpuMillis": 2000,
+		"memoryMiB": 3072
+	},
+	"notRuntimeFields": ["gpu", "disk"]
+}

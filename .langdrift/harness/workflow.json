@@ -1,0 +1,48 @@
+{
+	"version": 1,
+	"status": "draft",
+	"owner": "team",
+	"note": "The team's delivery stages and where a person takes part. LangDrift reads it; it does not prescribe it. Vision ships a default.",
+	"stages": [
+		{
+			"id": "planning",
+			"label": "Planning",
+			"skills": ["grilling"],
+			"human": "required"
+		},
+		{
+			"id": "spec",
+			"label": "Spec",
+			"skills": ["to-spec"],
+			"human": "optional"
+		},
+		{
+			"id": "tickets",
+			"label": "Tickets",
+			"skills": ["to-tickets"],
+			"human": "optional"
+		},
+		{
+			"id": "implement",
+			"label": "Implement",
+			"skills": ["implement", "tdd", "code-review"],
+			"human": "optional"
+		},
+		{
+			"id": "review",
+			"label": "Review",
+			"skills": [],
+			"human": "optional"
+		},
+		{
+			"id": "merge",
+			"label": "Merge",
+			"skills": [],
+			"human": "owner-only"
+		}
+	],
+	"defaults": {
+		"humanAt": ["planning", "review", "merge"]
+	},
+	"efforts": ["low", "medium", "high"]
+}
