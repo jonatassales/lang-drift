@@ -13,10 +13,6 @@
 				"microruntimes": "Bounded runs around what you already have.",
 				"aiVoice": "Ask about a change, keep its context."
 			}
-		},
-		"features": {
-			"title": "Four products. One platform.",
-			"lead": "Each product stands on its own; together they share one account, one plan and one console."
 		}
 	},
 	"pt-BR": {
@@ -33,10 +29,6 @@
 				"microruntimes": "Execução delimitada sobre o que já existe.",
 				"aiVoice": "Pergunte e mantenha o contexto da mudança."
 			}
-		},
-		"features": {
-			"title": "Quatro produtos. Uma plataforma.",
-			"lead": "Cada produto funciona por conta própria; juntos, compartilham uma conta, um plano e um console."
 		}
 	},
 	"zh-Hant": {
@@ -53,10 +45,6 @@
 				"microruntimes": "圍繞現有軟體的有界執行。",
 				"aiVoice": "詢問變動，保留它的脈絡。"
 			}
-		},
-		"features": {
-			"title": "四個產品，一個平台。",
-			"lead": "每個產品都能獨立運作；合在一起，共用同一個帳戶、方案與主控台。"
 		}
 	},
 	"ja": {
@@ -73,10 +61,6 @@
 				"microruntimes": "既存のソフトウェアを囲む、境界のある実行。",
 				"aiVoice": "変化について尋ね、文脈を保つ。"
 			}
-		},
-		"features": {
-			"title": "4つの製品、ひとつのプラットフォーム。",
-			"lead": "それぞれの製品は単体で使え、まとめて使えばアカウント、プラン、コンソールをひとつに共有します。"
 		}
 	},
 	"vi": {
@@ -93,10 +77,6 @@
 				"microruntimes": "Thực thi có giới hạn quanh phần mềm sẵn có.",
 				"aiVoice": "Hỏi về thay đổi, giữ nguyên bối cảnh."
 			}
-		},
-		"features": {
-			"title": "Bốn sản phẩm. Một nền tảng.",
-			"lead": "Mỗi sản phẩm tự đứng vững; cùng nhau, chúng dùng chung một tài khoản, một gói và một bảng điều khiển."
 		}
 	}
 }

@@ -15,16 +15,16 @@ export const platformProducts = [
 		href: '/platform/vision',
 	},
 	{
-		label: 'finops',
-		description: 'finopsDescription',
-		icon: FinopsIcon,
-		href: '/platform/finops',
-	},
-	{
 		label: 'microruntimes',
 		description: 'microruntimesDescription',
 		icon: MicroruntimesIcon,
 		href: '/platform/microruntimes',
+	},
+	{
+		label: 'finops',
+		description: 'finopsDescription',
+		icon: FinopsIcon,
+		href: '/platform/finops',
 	},
 	{
 		label: 'aiVoice',
