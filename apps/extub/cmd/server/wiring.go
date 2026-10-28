@@ -8,6 +8,7 @@ import (
 	"net"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/jonatassales/tao/apps/extub/src/application"
@@ -26,13 +27,20 @@ type config struct {
 }
 
 func configFromEnv(lookup func(string) string) config {
-	return config{token: lookup("EXTUB_TOKEN"), port: lookup("PORT"), extubPort: lookup("EXTUB_PORT")}
+	return config{token: strings.TrimSpace(lookup("EXTUB_TOKEN")), port: lookup("PORT"), extubPort: lookup("EXTUB_PORT")}
 }
+
+// A hosted token shorter than this is refused at start, so a pasted
+// fragment never becomes the only gate on the preview.
+const minimumTokenLength = 32
 
 // listenAddress is loopback on EXTUB_PORT, 3401 by default, for the local
 // contract; with a token it is every interface on PORT, 3000 by default, as
 // Vercel's Go preset requires.
 func listenAddress(settings config) (string, error) {
+	if settings.token != "" && len(settings.token) < minimumTokenLength {
+		return "", fmt.Errorf("EXTUB_TOKEN must be at least %d characters", minimumTokenLength)
+	}
 	host, port, name := "127.0.0.1", settings.extubPort, "EXTUB_PORT"
 	if port == "" {
 		port = "3401"
@@ -63,14 +71,16 @@ func run(ctx context.Context, settings config, log io.Writer) error {
 	if err != nil {
 		return err
 	}
-	service := application.Service{Store: store, Now: time.Now, LoadTests: &application.LoadTester{Probe: probe.New(port)}}
-	handler := httpapi.Handler{Service: service, Token: settings.token}
+	service := application.Service{Store: store, Now: time.Now}
+	handler := httpapi.Handler{Token: settings.token}
 	var hub *rtc.Hub
 	if !hosted {
+		service.LoadTests = &application.LoadTester{Probe: probe.New(port)}
 		hub = rtc.New()
 		defer hub.Close()
 		handler.Signaler = hub
 	}
+	handler.Service = service
 	listener, err := net.Listen("tcp", address)
 	if err != nil {
 		return err

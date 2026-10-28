@@ -35,22 +35,21 @@ func (handler Handler) carriesToken(request *http.Request) bool {
 	return found && subtle.ConstantTimeCompare([]byte(presented), []byte(handler.Token)) == 1
 }
 
-// readOnly is true for the methods the hosted preview serves.
-func readOnly(method string) bool {
-	return method == http.MethodGet || method == http.MethodHead
-}
-
-// admit applies the hosted preview's rules: the health check is open, every
-// other request needs the token, and only reads pass.
+// admit applies the hosted preview's rules: reading the health check needs
+// nothing, every other request needs the token, and only reads pass. A
+// WebRTC offer passes to its route, which answers that the preview has no
+// stream.
 func (handler Handler) admit(writer http.ResponseWriter, request *http.Request) bool {
-	if strings.Trim(request.URL.Path, "/") == "health" {
+	path := strings.Trim(request.URL.Path, "/")
+	read := request.Method == http.MethodGet
+	if path == "health" && read {
 		return true
 	}
 	if !handler.carriesToken(request) {
 		respondError(writer, http.StatusUnauthorized, "token_required")
 		return false
 	}
-	if !readOnly(request.Method) && request.URL.Path != "/webrtc/offer" {
+	if !read && path != "webrtc/offer" {
 		respondError(writer, http.StatusForbidden, "read_only_preview")
 		return false
 	}

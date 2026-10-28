@@ -10,8 +10,8 @@
 
 - [ ] `main.go` and the composition root live in `cmd/server/`; the package scripts build and run `./cmd/server`.
 - [ ] Hosted mode, decided once from `EXTUB_TOKEN`, listens on all interfaces at `PORT` (default 3000); local mode keeps `127.0.0.1:EXTUB_PORT`.
-- [ ] Hosted mode admits a request only with `Authorization: Bearer <token>`, compared in constant time, and answers `401 token_required` otherwise; `/health` stays open.
-- [ ] Hosted mode answers any method but `GET` and `HEAD` with `403 read_only_preview`, and `webrtc/offer` with `503 stream_unavailable`; the WebRTC hub and the stream loop do not start.
+- [ ] Hosted mode admits a request only with `Authorization: Bearer <token>`, compared in constant time, and answers `401 token_required` otherwise; reading `/health` stays open.
+- [ ] Hosted mode answers any method but `GET` with `403 read_only_preview`, and `webrtc/offer` with `503 stream_unavailable`; the WebRTC hub and the stream loop do not start.
 - [ ] The README lists the hosted mode, its variables and the owner's steps on Vercel.
 
 ### Verification

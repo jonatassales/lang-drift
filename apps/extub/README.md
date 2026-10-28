@@ -14,10 +14,11 @@ It needs a Go toolchain; `go.work` at the root ties it to the other Go modules. 
 
 ## Hosted preview
 
-Setting `EXTUB_TOKEN` switches extub to a read-only preview for Vercel's `langdrift-stubs` project (spec 0015). It listens on every interface at `PORT`, 3000 by default, as Vercel's Go preset requires. Every request but `/health` must carry `Authorization: Bearer <EXTUB_TOKEN>`, or it is answered `401 token_required`. Any method but `GET` and `HEAD` is answered `403 read_only_preview`, so the seed never changes and no instance diverges from another. There is no live stream: `webrtc/offer` answers `503 stream_unavailable`, and the console keeps polling. Without the token, nothing above applies.
+Setting `EXTUB_TOKEN` switches extub to a read-only preview for Vercel's `langdrift-stubs` project (spec 0015). It listens on every interface at `PORT`, 3000 by default, as Vercel's Go preset requires. Every request but a `GET` of `/health` must carry `Authorization: Bearer <EXTUB_TOKEN>`, or it is answered `401 token_required`. A token shorter than 32 characters stops extub at start. Locally, leave `EXTUB_TOKEN` unset: with it, extub binds every interface on port 3000. Any method but `GET` is answered `403 read_only_preview`, so the seed never changes and no instance diverges from another. There is no live stream: `webrtc/offer` answers `503 stream_unavailable`, and the console keeps polling. Without the token, nothing above applies.
 
 The owner's steps on Vercel, which no agent takes:
 
 1. Generate one token, for example with `openssl rand -base64 32`, and set it as `EXTUB_TOKEN` on `langdrift-stubs` and `langdrift-console`, for production and preview.
 2. Set `EXTUB_URL` on `langdrift-console` to the stub's production URL.
-3. Turn on Deployment Protection for the console.
+3. Turn on Deployment Protection for the console's production and preview deployments.
+4. Replace `CRYPTO_SECRET` on `langdrift-website` with a canonical 32-byte base64 key, for example from `openssl rand -base64 32`; the website answers 500 until then.
