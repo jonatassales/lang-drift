@@ -1,6 +1,6 @@
 import { cn } from '@langdrift/web/utilities'
 
-interface ShareBarProps {
+export interface ShareBarProps {
 	className?: string
 	/** The filled share of the track, from 0 to 1; more than 1 fills it. */
 	share: number

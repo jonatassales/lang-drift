@@ -1,4 +1,5 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
+import { ShareBar } from '@langdrift/web/ui/share-bar'
 import { cn } from '@langdrift/web/utilities'
 
 import type { PlanEffort } from '@data/microruntimes-content'
@@ -8,7 +9,6 @@ import {
 	type WorkflowFigures,
 } from '@data/microruntimes-workflow'
 
-import { ShareBar } from './share-bar'
 import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
 
 interface WorkflowSpendProps {
