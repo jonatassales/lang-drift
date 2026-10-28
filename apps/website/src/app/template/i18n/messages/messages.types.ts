@@ -153,13 +153,10 @@ export interface PlatformMessages {
 		titleStart: string
 		words: string[]
 		titleEnd: string
-		primaryCta: string
-		secondaryCta: string
 	}
 	// The home sections' own copy; the headline FinOps reuses lives in its
 	// catalog.
 	sections: {
-		microruntimes: { title: string; description: string; link: string }
 		finops: { description: string; link: string }
 	}
 	faq: {

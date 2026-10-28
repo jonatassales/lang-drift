@@ -1,25 +1,30 @@
 import { HeroShader } from '@langdrift/web/ui/hero-shader'
-import { ArrowRightIcon } from '@langdrift/web/ui/icons/arrow'
 import { RotatingText } from '@langdrift/web/ui/rotating-text'
 
-import { platformProduct } from '@components/website-header/platform-products'
-import { platformMessages } from '@i18n/messages/index'
-import { Link } from '@i18n/navigation'
+import { SessionCards } from '@components/microruntimes/session-cards'
+import { SessionTerminal } from '@components/microruntimes/session-terminal'
+import { microruntimesMessages, platformMessages } from '@i18n/messages/index'
 import type { WebsiteLocale } from '@i18n/routing'
 
 interface PlatformHeroProps {
 	locale: WebsiteLocale
 }
 
-// The hero is the moving headline and its two calls to action, at the top
-// left, over the shader.
+// The hero is the Microruntimes planning session over the shader: the moving
+// headline at the top left with the terminal under it, and the ticket, plan
+// and workflow cards the terminal plays into on the right. From `lg` the
+// terminal stretches so both columns end together; below it, the terminal
+// keeps its own fixed height and the cards stack under it.
 export function PlatformHero(props: PlatformHeroProps) {
 	const { locale } = props
 
 	const copy = platformMessages[locale].hero
+	const microruntimes = microruntimesMessages[locale]
+	const session = microruntimes.session
 
 	return (
 		<section
+			aria-describedby="platform-hero-summary"
 			aria-labelledby="platform-hero-heading"
 			className="relative isolate flex min-h-[calc(100dvh-5rem)] flex-col justify-start overflow-hidden bg-background"
 		>
@@ -28,36 +33,31 @@ export function PlatformHero(props: PlatformHeroProps) {
 				aria-hidden="true"
 				className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-linear-to-b from-transparent to-background"
 			/>
-			<div className="relative mx-auto flex w-full max-w-7xl flex-col items-start px-4.5 pt-16 pb-20 text-left sm:px-9 sm:pt-20">
-				<h1
-					className="text-[min(3rem,12vw)] leading-none font-normal tracking-[-0.055em] text-foreground sm:text-6xl lg:text-[clamp(3rem,calc((100vw-25rem)/13.2),4rem)]"
-					id="platform-hero-heading"
-				>
-					<span className="block">{copy.titleStart}</span>
-					<RotatingText
-						className="block whitespace-nowrap"
-						suffix={copy.titleEnd}
-						words={copy.words}
-					/>
-				</h1>
-				<div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
-					<Link
-						className="inline-flex min-h-11 items-center gap-2 rounded-full bg-foreground px-5 text-sm font-semibold whitespace-nowrap text-background transition-opacity hover:opacity-85"
-						href={platformProduct('finops').href}
-						locale={locale}
+			<div className="relative mx-auto grid w-full max-w-7xl gap-6 px-4.5 pt-16 pb-20 sm:px-9 sm:pt-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+				<div className="flex min-w-0 flex-col items-start text-left">
+					<h1
+						className="text-[min(3rem,12vw)] leading-none font-normal tracking-[-0.055em] text-foreground sm:text-6xl lg:text-[clamp(3rem,calc((100vw-25rem)/13.2),4rem)]"
+						id="platform-hero-heading"
 					>
-						{copy.primaryCta}
-						<ArrowRightIcon />
-					</Link>
-					<Link
-						className="smooth-text-link"
-						href="/book-a-demo"
-						locale={locale}
-					>
-						{copy.secondaryCta}
-					</Link>
+						<span className="block">{copy.titleStart}</span>
+						<RotatingText
+							className="block whitespace-nowrap"
+							suffix={copy.titleEnd}
+							words={copy.words}
+						/>
+					</h1>
+					<div className="mt-10 w-full lg:min-h-80 lg:flex-1">
+						<SessionTerminal
+							control={session.card.control}
+							copy={session.terminal}
+						/>
+					</div>
 				</div>
+				<SessionCards copy={session.card} locale={locale} />
 			</div>
+			<p className="sr-only" id="platform-hero-summary">
+				{microruntimes.hero.summary}
+			</p>
 		</section>
 	)
 }

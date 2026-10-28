@@ -1,3 +1,4 @@
+import { ScrollHint } from '@langdrift/web/ui/scroll-hint'
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
@@ -5,7 +6,6 @@ import { setRequestLocale } from 'next-intl/server'
 
 import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
 import { FinopsSection } from '@components/home/finops-section'
-import { MicroruntimesSection } from '@components/home/microruntimes-section'
 import { PlatformFaqSection } from '@components/home/platform-faq-section'
 import { PlatformHero } from '@components/platform-hero'
 import { SkipLink } from '@components/skip-link'
@@ -44,11 +44,11 @@ export default async function WebsitePage(props: WebsitePageProps) {
 			<WebsiteHeader />
 			<main id="top">
 				<PlatformHero locale={locale} />
-				<MicroruntimesSection locale={locale} />
 				<FinopsSection locale={locale} />
 				<PlatformFaqSection locale={locale} />
 			</main>
 			<WebsiteFooter locale={locale} />
+			<ScrollHint />
 		</>
 	)
 }

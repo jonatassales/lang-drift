@@ -4,16 +4,9 @@
 		"hero": {
 			"titleStart": "Agentic",
 			"words": ["DevEx", "FinOps", "Runtime"],
-			"titleEnd": "Platform",
-			"primaryCta": "Explore the products",
-			"secondaryCta": "Book a Demo"
+			"titleEnd": "Platform"
 		},
 		"sections": {
-			"microruntimes": {
-				"title": "What does one ticket need to run, before anything is built or paid for?",
-				"description": "Microruntimes plans a bounded run around the software you already have: the agent reads the ticket, resolves its components and resources inside the team’s envelope and drafts a runtime for the team to authorize. Nothing starts until they do. The planning session is simulated.",
-				"link": "Explore Microruntimes"
-			},
 			"finops": {
 				"description": "LangDrift FinOps holds a team’s spend in one envelope. Every paid call is estimated, reserved against the envelope before it runs and reconciled with a receipt afterwards; a spend that cannot be observed stays unknown, never zero.",
 				"link": "Explore FinOps"
@@ -30,16 +23,9 @@
 		"hero": {
 			"titleStart": "Agentic",
 			"words": ["DevEx", "FinOps", "Runtime"],
-			"titleEnd": "Platform",
-			"primaryCta": "Conheça os produtos",
-			"secondaryCta": "Agende uma demo"
+			"titleEnd": "Platform"
 		},
 		"sections": {
-			"microruntimes": {
-				"title": "O que um ticket precisa para rodar, antes que algo seja construído ou pago?",
-				"description": "O Microruntimes planeja uma execução delimitada em torno do software que você já tem: o agente lê o ticket, resolve seus componentes e recursos dentro do envelope do time e rascunha um runtime para o time autorizar. Nada começa antes disso. A sessão de planejamento é simulada.",
-				"link": "Explorar o Microruntimes"
-			},
 			"finops": {
 				"description": "O LangDrift FinOps mantém o gasto do time em um único envelope. Cada chamada paga é estimada, reservada contra o envelope antes de rodar e reconciliada com um recibo depois; um gasto que não pode ser observado permanece desconhecido, nunca zero.",
 				"link": "Explorar o FinOps"
@@ -56,16 +42,9 @@
 		"hero": {
 			"titleStart": "Agentic",
 			"words": ["DevEx", "FinOps", "Runtime"],
-			"titleEnd": "Platform",
-			"primaryCta": "探索產品",
-			"secondaryCta": "預約展示"
+			"titleEnd": "Platform"
 		},
 		"sections": {
-			"microruntimes": {
-				"title": "一張工單在建置或付費之前，需要什麼才能執行？",
-				"description": "Microruntimes 圍繞你既有的軟體規劃一次有界的執行：代理讀取工單，在團隊的預算信封內解析其元件與資源，並草擬一份 runtime 交由團隊授權。在授權之前，什麼都不會啟動。這段規劃會話是模擬的。",
-				"link": "探索 Microruntimes"
-			},
 			"finops": {
 				"description": "LangDrift FinOps 把團隊的支出放在同一個信封裡。每一次付費呼叫都會先估算、在執行前對信封預留、事後以收據對帳；無法觀測的支出維持未知，絕不是零。",
 				"link": "探索 FinOps"
@@ -82,16 +61,9 @@
 		"hero": {
 			"titleStart": "Agentic",
 			"words": ["DevEx", "FinOps", "Runtime"],
-			"titleEnd": "Platform",
-			"primaryCta": "製品を見る",
-			"secondaryCta": "デモを予約"
+			"titleEnd": "Platform"
 		},
 		"sections": {
-			"microruntimes": {
-				"title": "構築も支払いも始まる前に、ひとつのチケットを実行するには何が必要でしょうか？",
-				"description": "Microruntimes は、すでにあるソフトウェアの周りに境界のある実行を計画します。エージェントがチケットを読み、チームのエンベロープの中でコンポーネントとリソースを解決し、チームが承認するための runtime を下書きします。承認されるまで何も始まりません。この計画セッションはシミュレーションです。",
-				"link": "Microruntimes を見る"
-			},
 			"finops": {
 				"description": "LangDrift FinOps はチームの支出をひとつのエンベロープにまとめます。有料呼び出しはすべて見積もられ、実行前にエンベロープに対して予約され、実行後にレシートで照合されます。観測できない支出は不明のままで、ゼロにはなりません。",
 				"link": "FinOps を見る"
@@ -108,16 +80,9 @@
 		"hero": {
 			"titleStart": "Agentic",
 			"words": ["DevEx", "FinOps", "Runtime"],
-			"titleEnd": "Platform",
-			"primaryCta": "Khám phá các sản phẩm",
-			"secondaryCta": "Đặt lịch demo"
+			"titleEnd": "Platform"
 		},
 		"sections": {
-			"microruntimes": {
-				"title": "Một ticket cần gì để chạy, trước khi bất cứ thứ gì được xây hay được trả tiền?",
-				"description": "Microruntimes lập kế hoạch cho một lần chạy có giới hạn quanh phần mềm bạn đã có: tác tử đọc ticket, xác định các thành phần và tài nguyên trong phạm vi ngân sách của đội, rồi soạn một runtime để đội phê duyệt. Không có gì khởi chạy trước khi họ đồng ý. Phiên lập kế hoạch này là mô phỏng.",
-				"link": "Khám phá Microruntimes"
-			},
 			"finops": {
 				"description": "LangDrift FinOps giữ chi tiêu của đội trong một phong bì duy nhất. Mỗi lệnh gọi có trả phí đều được ước tính, được giữ chỗ trong phong bì trước khi chạy và được đối chiếu bằng biên lai sau đó; khoản chi không quan sát được giữ nguyên là chưa rõ, không bao giờ là 0.",
 				"link": "Khám phá FinOps"
