@@ -18,9 +18,6 @@
 
 .website-header[data-scrolled='true'] {
 	border-block-end-color: color-mix(in srgb, var(--border) 60%, transparent);
-	box-shadow:
-		inset 0 1px 0 color-mix(in srgb, var(--card) 45%, transparent),
-		0 8px 28px color-mix(in srgb, var(--foreground) 6%, transparent);
 }
 
 .website-header-inner {
