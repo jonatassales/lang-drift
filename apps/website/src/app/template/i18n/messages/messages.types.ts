@@ -364,7 +364,6 @@ export interface ConversionCopy {
 export interface EarlyAccessMessages {
 	pausedHeading: string
 	pausedDescription: string
-	homeHeading: string
 	pricingHeading: string
 	description: string
 	helper: string
