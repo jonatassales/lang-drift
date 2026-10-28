@@ -266,7 +266,15 @@
 		"cpuAgainstLimit": "CPU usada / limite (núcleos)",
 		"memoryAgainstLimit": "RAM usada / limite (MiB)",
 		"noRuntimes": "Nenhum runtime registrado ainda.",
-		"noExecutionsYet": "Nenhuma execução informou ainda."
+		"noExecutionsYet": "Nenhuma execução informou ainda.",
+		"tickets": "Tickets",
+		"analysis": "Análise",
+		"plans": "Planos",
+		"workflows": "Workflows",
+		"ticketsIntro": "Todos os tickets deste projeto, do mais recente ao mais antigo, com os artefatos que vinculam. Role para ver tickets mais antigos.",
+		"analysisIntro": "Todos os tickets que o agente analisou: os documentos que leu, os episódios que citou e o modelo e o effort que sugere.",
+		"plansIntro": "Todos os tickets com plano: os componentes que rodariam e o envelope que os limita, aguardando a autorização do time.",
+		"workflowsIntro": "Todos os tickets com workflow: suas etapas, o gasto que reservam contra o orçamento e onde está o pull request."
 	},
 	"status": {
 		"running": "Em execução",
@@ -279,7 +287,11 @@
 		"connected": "Conectado",
 		"unavailable": "Conexão indisponível",
 		"observed": "Observado",
-		"estimated": "Estimado"
+		"estimated": "Estimado",
+		"needs-triage": "Aguardando triagem",
+		"in-analysis": "Em análise",
+		"planned": "Planejado",
+		"in-workflow": "Em workflow"
 	},
 	"cause": {
 		"user": "Ação do usuário",
@@ -379,5 +391,142 @@
 		"start_started": "Início em andamento",
 		"started": "Disponibilidade confirmada",
 		"stop_started": "Parada em andamento"
+	},
+	"tickets": {
+		"labels": {
+			"ticket": "Ticket",
+			"analysis": "Análise",
+			"plan": "Plano",
+			"workflow": "Workflow"
+		},
+		"readMark": "Lido",
+		"notSet": "Ainda não definido",
+		"notReached": "{phase}: ainda não alcançado",
+		"openTicket": "Abrir ticket {number}",
+		"figures": "{cpu}m · {memory} MiB",
+		"cpuValue": "{value}m",
+		"memoryValue": "{value} MiB",
+		"ticket": {
+			"links": "Artefatos vinculados",
+			"artifacts": {
+				"prd": "PRD",
+				"designDoc": "Design doc",
+				"spec": "Spec",
+				"guardrail": "Guardrail"
+			}
+		},
+		"analysis": {
+			"documents": "Documentos",
+			"extracted": {
+				"prd": "caso de uso: {useCase}",
+				"designDoc": "envelope {cpu}m · {memory} MiB · orçamento de {budget} por execução · definido pelo time",
+				"spec": "{components} componentes · {criteria} critérios de aceite",
+				"guardrail": "{criteria} · regra de revisão, sem aplicação automática"
+			},
+			"guardrailJudgment": "FIN-02: estimar antes de uma chamada paga · FIN-03: um orçamento antes de uma execução paga · FIN-04: dimensionar cpu e memória para a carga",
+			"documentsSummary": "{count, plural, one {# documento lido} other {# documentos lidos}}",
+			"episodes": "Episódios",
+			"threshold": "limiar {value}",
+			"verdicts": {
+				"kept": "mantido",
+				"dropped": "descartado"
+			},
+			"reasons": {
+				"otherRuntime": "outro runtime",
+				"noBroker": "sem broker",
+				"docsOnly": "só docs"
+			},
+			"episodesSummary": "{kept} de {total} episódios mantidos",
+			"measured": "Recursos medidos",
+			"measuredNone": "nenhum citado",
+			"measuredReasoning": "o dimensionamento segue a spec, não o histórico",
+			"suggestedModel": "Modelo sugerido",
+			"suggestedEffort": "Effort sugerido",
+			"efforts": {
+				"low": "low",
+				"medium": "medium",
+				"high": "high"
+			},
+			"recommendationNote": "recomendação · o time autoriza",
+			"suggestionSummary": "{model} · effort {effort}"
+		},
+		"plan": {
+			"proposed": "Plano proposto",
+			"pendingAuthorization": "aguardando autorização do time",
+			"envelope": {
+				"cpu": "CPU",
+				"memory": "Memória"
+			},
+			"ofBounded": "{suggested} de {bounded}",
+			"components": "Componentes",
+			"columns": {
+				"cpu": "CPU",
+				"memory": "Memória"
+			},
+			"kinds": {
+				"api": "api",
+				"broker": "broker",
+				"cache": "cache",
+				"web": "web"
+			},
+			"resolvedProgress": "{resolved} de {total} resolvidos · {cpu}m · {memory} MiB",
+			"componentsTotal": "{count, plural, one {# componente} other {# componentes}} · {cpu}m · {memory} MiB",
+			"crossCheck": "portas {ports} · distintas · sem colisões",
+			"report": {
+				"bounded": "Delimitado",
+				"headroom": "Folga",
+				"suggestedResource": "Recurso sugerido",
+				"limits": "GPU · disco",
+				"price": "Preço",
+				"validation": "Validação",
+				"evidence": "Evidência"
+			},
+			"deployments": "{count, plural, one {# Deployment de uma réplica} other {# Deployments de uma réplica}}",
+			"notRuntimeFields": "não são campos de runtime.md",
+			"priceBasis": "runtime: sem fonte de preço · só unidades",
+			"validated": "schema · {count, plural, =0 {0 erros} one {# erro} other {# erros}}",
+			"planPath": "rascunho de runtime.md · revisão {revision} · proposto ao console",
+			"summary": "{figures} · {pending}",
+			"authorized": "autorizado pelo time"
+		},
+		"workflow": {
+			"humanInTheLoop": "Human in the loop",
+			"stages": {
+				"planning": "Planejamento",
+				"spec": "Spec",
+				"tickets": "Tickets",
+				"implement": "Implementação",
+				"review": "Revisão",
+				"merge": "Merge"
+			},
+			"mergeLocked": "sempre do responsável",
+			"model": "Modelo",
+			"effort": "Effort",
+			"modelPrice": "{input} / {output} por MTok · preço de tabela, {date}",
+			"estimate": "Gasto estimado",
+			"tokens": "{input} de entrada · {output} de saída · preços de tabela sem cache",
+			"reserves": "reserva {reserved} do orçamento de {budget}",
+			"overBudget": "acima do orçamento · o gate vai pausar esta execução",
+			"result": {
+				"reserved": "Reservado",
+				"observed": "Observado",
+				"released": "Liberado"
+			},
+			"nothingPaid": "nada pago",
+			"pullRequest": "Pull request",
+			"readyForReview": "pronto para revisão",
+			"readyToMerge": "pronto para merge",
+			"needsDecision": "pausado no gate · requer uma decisão",
+			"summaryChoice": "{model} · {effort} · {estimate} de {budget}",
+			"summaryPaused": "pausado no gate",
+			"summaryDone": "#{number} · {state} · {observed}",
+			"checksPassed": "{passed} de {total} checks aprovados",
+			"progress": {
+				"pending": "pendente",
+				"active": "em andamento",
+				"waiting": "aguardando o owner",
+				"done": "concluído"
+			}
+		}
 	}
 }

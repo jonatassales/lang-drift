@@ -134,6 +134,8 @@ func (handler Handler) route(request *http.Request) (any, error) {
 		return handler.products(request, parts[1:])
 	case "runtimes":
 		return handler.runtimes(request, parts[1:])
+	case "tickets":
+		return handler.tickets(request, parts[1:])
 	}
 	return nil, domain.ErrNotFound
 }

@@ -44,6 +44,12 @@ func (handler Handler) products(request *http.Request, parts []string) (any, err
 			return nil, errMethod
 		}
 		return catalog.Activity(product.ID, action, request.URL.Query().Get("cursor"), handler.Service.Now())
+	case "tickets":
+		if method != http.MethodGet || len(parts) != 2 {
+			return nil, errMethod
+		}
+		query := request.URL.Query()
+		return catalog.TicketPage(product.ID, query.Get("reached"), query.Get("cursor"))
 	case "secrets":
 		return handler.secrets(request, parts)
 	case "episodes":

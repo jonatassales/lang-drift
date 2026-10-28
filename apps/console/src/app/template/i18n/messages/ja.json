@@ -266,7 +266,15 @@
 		"cpuAgainstLimit": "使用 CPU / 上限（コア）",
 		"memoryAgainstLimit": "使用 RAM / 上限（MiB）",
 		"noRuntimes": "登録済みのランタイムはまだありません。",
-		"noExecutionsYet": "まだ報告した実行はありません。"
+		"noExecutionsYet": "まだ報告した実行はありません。",
+		"tickets": "チケット",
+		"analysis": "分析",
+		"plans": "プラン",
+		"workflows": "ワークフロー",
+		"ticketsIntro": "このプロジェクトのすべてのチケットを新しい順に、リンクされた成果物とともに表示します。古いチケットはスクロールで表示します。",
+		"analysisIntro": "エージェントが分析したすべてのチケット：読んだドキュメント、引用したエピソード、提案するモデルと effort。",
+		"plansIntro": "プランのあるすべてのチケット：実行するコンポーネントと、それを制限するエンベロープ。チームの承認待ちです。",
+		"workflowsIntro": "ワークフローのあるすべてのチケット：ステージ、予算に対して予約した支出、プルリクエストの状況。"
 	},
 	"status": {
 		"running": "実行中",
@@ -279,7 +287,11 @@
 		"connected": "接続済み",
 		"unavailable": "接続不可",
 		"observed": "観測済み",
-		"estimated": "推定"
+		"estimated": "推定",
+		"needs-triage": "トリアージ待ち",
+		"in-analysis": "分析中",
+		"planned": "プラン済み",
+		"in-workflow": "ワークフロー中"
 	},
 	"cause": {
 		"user": "ユーザー操作",
@@ -379,5 +391,142 @@
 		"start_started": "起動処理中",
 		"started": "稼働確認",
 		"stop_started": "停止処理中"
+	},
+	"tickets": {
+		"labels": {
+			"ticket": "チケット",
+			"analysis": "分析",
+			"plan": "計画",
+			"workflow": "ワークフロー"
+		},
+		"readMark": "既読",
+		"notSet": "未設定",
+		"notReached": "{phase}：まだ到達していません",
+		"openTicket": "チケット {number} を開く",
+		"figures": "{cpu}m · {memory} MiB",
+		"cpuValue": "{value}m",
+		"memoryValue": "{value} MiB",
+		"ticket": {
+			"links": "リンクされたアーティファクト",
+			"artifacts": {
+				"prd": "PRD",
+				"designDoc": "Design doc",
+				"spec": "Spec",
+				"guardrail": "Guardrail"
+			}
+		},
+		"analysis": {
+			"documents": "ドキュメント",
+			"extracted": {
+				"prd": "ユースケース：{useCase}",
+				"designDoc": "envelope {cpu}m · {memory} MiB · 1 回の実行の予算 {budget} · チームが設定",
+				"spec": "{components} 個のコンポーネント · {criteria} 件の受け入れ基準",
+				"guardrail": "{criteria} · レビュールール、自動強制なし"
+			},
+			"guardrailJudgment": "FIN-02：有料の呼び出しの前に見積もる · FIN-03：有料の実行の前に予算を定める · FIN-04：負荷に合わせて cpu とメモリを決める",
+			"documentsSummary": "{count, plural, other {# 件のドキュメントを読了}}",
+			"episodes": "エピソード",
+			"threshold": "しきい値 {value}",
+			"verdicts": {
+				"kept": "採用",
+				"dropped": "除外"
+			},
+			"reasons": {
+				"otherRuntime": "別の runtime",
+				"noBroker": "broker なし",
+				"docsOnly": "ドキュメントのみ"
+			},
+			"episodesSummary": "{total} 件中 {kept} 件のエピソードを採用",
+			"measured": "計測済みリソース",
+			"measuredNone": "引用なし",
+			"measuredReasoning": "サイズは履歴ではなく spec に従います",
+			"suggestedModel": "提案モデル",
+			"suggestedEffort": "提案 effort",
+			"efforts": {
+				"low": "low",
+				"medium": "medium",
+				"high": "high"
+			},
+			"recommendationNote": "推奨 · チームが承認",
+			"suggestionSummary": "{model} · effort {effort}"
+		},
+		"plan": {
+			"proposed": "提案する計画",
+			"pendingAuthorization": "チームの承認待ち",
+			"envelope": {
+				"cpu": "CPU",
+				"memory": "メモリ"
+			},
+			"ofBounded": "{suggested} / 上限 {bounded}",
+			"components": "コンポーネント",
+			"columns": {
+				"cpu": "CPU",
+				"memory": "メモリ"
+			},
+			"kinds": {
+				"api": "api",
+				"broker": "broker",
+				"cache": "cache",
+				"web": "web"
+			},
+			"resolvedProgress": "{total} 件中 {resolved} 件が特定済み · {cpu}m · {memory} MiB",
+			"componentsTotal": "{count, plural, other {# 個のコンポーネント}} · {cpu}m · {memory} MiB",
+			"crossCheck": "ポート {ports} · 重複なし · 衝突なし",
+			"report": {
+				"bounded": "上限",
+				"headroom": "余裕",
+				"suggestedResource": "提案リソース",
+				"limits": "GPU · ディスク",
+				"price": "価格",
+				"validation": "検証",
+				"evidence": "エビデンス"
+			},
+			"deployments": "{count, plural, other {# 個の単一レプリカ Deployment}}",
+			"notRuntimeFields": "runtime.md のフィールドではありません",
+			"priceBasis": "runtime：価格ソースなし · 単位のみ",
+			"validated": "スキーマ · {count, plural, other {エラー # 件}}",
+			"planPath": "runtime.md ドラフト · リビジョン {revision} · コンソールに提案済み",
+			"summary": "{figures} · {pending}",
+			"authorized": "チームが承認済み"
+		},
+		"workflow": {
+			"humanInTheLoop": "Human in the loop",
+			"stages": {
+				"planning": "計画",
+				"spec": "Spec",
+				"tickets": "チケット",
+				"implement": "実装",
+				"review": "レビュー",
+				"merge": "マージ"
+			},
+			"mergeLocked": "常にオーナーが行う",
+			"model": "モデル",
+			"effort": "Effort",
+			"modelPrice": "MTok あたり {input} / {output} · 定価、{date}",
+			"estimate": "見積もり支出",
+			"tokens": "入力 {input} · 出力 {output} · キャッシュなしの定価",
+			"reserves": "予算 {budget} のうち {reserved} を確保",
+			"overBudget": "予算超過 · ゲートがこの実行を一時停止します",
+			"result": {
+				"reserved": "確保",
+				"observed": "実績",
+				"released": "解放"
+			},
+			"nothingPaid": "支払いなし",
+			"pullRequest": "Pull request",
+			"readyForReview": "レビュー待ち",
+			"readyToMerge": "マージ可能",
+			"needsDecision": "ゲートで一時停止 · 判断が必要",
+			"summaryChoice": "{model} · {effort} · {estimate}／{budget}",
+			"summaryPaused": "ゲートで一時停止",
+			"summaryDone": "#{number} · {state} · {observed}",
+			"checksPassed": "チェック {total} 件中 {passed} 件が合格",
+			"progress": {
+				"pending": "保留中",
+				"active": "進行中",
+				"waiting": "オーナー待ち",
+				"done": "完了"
+			}
+		}
 	}
 }

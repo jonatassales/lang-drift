@@ -1,9 +1,9 @@
+import { ShareBar } from '@langdrift/web/ui/share-bar'
 import { cn } from '@langdrift/web/utilities'
 
 import type { Episode, EpisodeVerdict } from '@data/microruntimes-content'
 
 import type { CardValueLabels, CardValueState } from './card-value'
-import { ShareBar } from './share-bar'
 
 interface EpisodeRowProps {
 	episode: Episode

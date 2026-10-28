@@ -41,8 +41,11 @@ export function usePagedResource<T>(path: string, initial: Promise<Page<T>>) {
 			setLoading(true)
 			setError(null)
 			try {
+				const separator = path.includes('?') ? '&' : '?'
 				const query =
-					reset || !cursor ? '' : `?cursor=${encodeURIComponent(cursor)}`
+					reset || !cursor
+						? ''
+						: `${separator}cursor=${encodeURIComponent(cursor)}`
 				const page = await consoleRequest<Page<T>>(`${path}${query}`, {
 					signal: controller.signal,
 				})

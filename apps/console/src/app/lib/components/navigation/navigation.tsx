@@ -10,11 +10,15 @@ import {
 	CaretDown,
 	ChartLineUp,
 	CheckCircle,
+	ClipboardText,
 	Cube,
 	FileText,
+	FlowArrow,
 	Gear,
 	GitBranch,
 	House,
+	MagnifyingGlass,
+	Ticket,
 } from '@ui/icons'
 
 import { areaOf } from './area'
@@ -43,6 +47,26 @@ export function Navigation(props: NavigationProps) {
 							href: base,
 							key: 'runtimes',
 							icon: Cube,
+						},
+						{
+							href: `${base}/tickets`,
+							key: 'tickets',
+							icon: Ticket,
+						},
+						{
+							href: `${base}/analysis`,
+							key: 'analysis',
+							icon: MagnifyingGlass,
+						},
+						{
+							href: `${base}/plans`,
+							key: 'plans',
+							icon: ClipboardText,
+						},
+						{
+							href: `${base}/workflows`,
+							key: 'workflows',
+							icon: FlowArrow,
 						},
 						{
 							href: `${base}/executions`,

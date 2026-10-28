@@ -266,7 +266,15 @@
 		"cpuAgainstLimit": "已用 CPU / 上限（核心）",
 		"memoryAgainstLimit": "已用 RAM / 上限（MiB）",
 		"noRuntimes": "尚未註冊任何執行環境。",
-		"noExecutionsYet": "尚無任何執行回報。"
+		"noExecutionsYet": "尚無任何執行回報。",
+		"tickets": "工單",
+		"analysis": "分析",
+		"plans": "計畫",
+		"workflows": "工作流程",
+		"ticketsIntro": "此專案的所有工單，由新到舊，附上其連結的成品。捲動以查看較舊的工單。",
+		"analysisIntro": "代理已分析的所有工單：讀取的文件、引用的過往案例，以及建議的模型與 effort。",
+		"plansIntro": "已有計畫的所有工單：將執行的元件與限制它們的額度，等待團隊授權。",
+		"workflowsIntro": "已有工作流程的所有工單：其階段、對預算保留的花費，以及拉取請求的狀態。"
 	},
 	"status": {
 		"running": "執行中",
@@ -279,7 +287,11 @@
 		"connected": "已連線",
 		"unavailable": "連線無法使用",
 		"observed": "已觀察",
-		"estimated": "估計"
+		"estimated": "估計",
+		"needs-triage": "待分類",
+		"in-analysis": "分析中",
+		"planned": "已規劃",
+		"in-workflow": "工作流程中"
 	},
 	"cause": {
 		"user": "使用者操作",
@@ -379,5 +391,142 @@
 		"start_started": "啟動進行中",
 		"started": "已確認可用",
 		"stop_started": "停止進行中"
+	},
+	"tickets": {
+		"labels": {
+			"ticket": "工單",
+			"analysis": "分析",
+			"plan": "計畫",
+			"workflow": "工作流程"
+		},
+		"readMark": "已讀",
+		"notSet": "尚未設定",
+		"notReached": "{phase}：尚未到達",
+		"openTicket": "開啟工單 {number}",
+		"figures": "{cpu}m · {memory} MiB",
+		"cpuValue": "{value}m",
+		"memoryValue": "{value} MiB",
+		"ticket": {
+			"links": "連結的 artifacts",
+			"artifacts": {
+				"prd": "PRD",
+				"designDoc": "Design doc",
+				"spec": "Spec",
+				"guardrail": "Guardrail"
+			}
+		},
+		"analysis": {
+			"documents": "文件",
+			"extracted": {
+				"prd": "使用案例：{useCase}",
+				"designDoc": "envelope {cpu}m · {memory} MiB · 每次執行預算 {budget} · 由團隊設定",
+				"spec": "{components} 個元件 · {criteria} 項驗收準則",
+				"guardrail": "{criteria} · 審查規則，不自動強制執行"
+			},
+			"guardrailJudgment": "FIN-02：付費呼叫前先估算 · FIN-03：付費執行前先有預算 · FIN-04：依負載配置 cpu 與記憶體",
+			"documentsSummary": "{count, plural, other {已讀 # 份文件}}",
+			"episodes": "Episodes",
+			"threshold": "門檻 {value}",
+			"verdicts": {
+				"kept": "保留",
+				"dropped": "捨棄"
+			},
+			"reasons": {
+				"otherRuntime": "其他 runtime",
+				"noBroker": "無 broker",
+				"docsOnly": "僅文件"
+			},
+			"episodesSummary": "保留 {kept}/{total} 個 episodes",
+			"measured": "已量測資源",
+			"measuredNone": "無引用",
+			"measuredReasoning": "大小依 spec 而定，不依歷史",
+			"suggestedModel": "建議模型",
+			"suggestedEffort": "建議 effort",
+			"efforts": {
+				"low": "low",
+				"medium": "medium",
+				"high": "high"
+			},
+			"recommendationNote": "建議 · 由團隊授權",
+			"suggestionSummary": "{model} · effort {effort}"
+		},
+		"plan": {
+			"proposed": "提議的計畫",
+			"pendingAuthorization": "待團隊授權",
+			"envelope": {
+				"cpu": "CPU",
+				"memory": "記憶體"
+			},
+			"ofBounded": "{suggested}，上限 {bounded}",
+			"components": "元件",
+			"columns": {
+				"cpu": "CPU",
+				"memory": "記憶體"
+			},
+			"kinds": {
+				"api": "api",
+				"broker": "broker",
+				"cache": "cache",
+				"web": "web"
+			},
+			"resolvedProgress": "已解析 {resolved}/{total} · {cpu}m · {memory} MiB",
+			"componentsTotal": "{count, plural, other {# 個元件}} · {cpu}m · {memory} MiB",
+			"crossCheck": "連接埠 {ports} · 不重複 · 無衝突",
+			"report": {
+				"bounded": "上限",
+				"headroom": "餘裕",
+				"suggestedResource": "建議資源",
+				"limits": "GPU · 磁碟",
+				"price": "價格",
+				"validation": "驗證",
+				"evidence": "證據"
+			},
+			"deployments": "{count, plural, other {# 個單副本 Deployment}}",
+			"notRuntimeFields": "不是 runtime.md 的欄位",
+			"priceBasis": "runtime：無價格來源 · 僅以單位表示",
+			"validated": "schema · {count, plural, other {# 個錯誤}}",
+			"planPath": "runtime.md 草稿 · 修訂 {revision} · 已向主控台提出",
+			"summary": "{figures} · {pending}",
+			"authorized": "團隊已授權"
+		},
+		"workflow": {
+			"humanInTheLoop": "Human in the loop",
+			"stages": {
+				"planning": "規劃",
+				"spec": "Spec",
+				"tickets": "工單",
+				"implement": "實作",
+				"review": "審查",
+				"merge": "合併"
+			},
+			"mergeLocked": "一律由負責人決定",
+			"model": "模型",
+			"effort": "Effort",
+			"modelPrice": "每 MTok {input} / {output} · 牌價，{date}",
+			"estimate": "預估支出",
+			"tokens": "輸入 {input} · 輸出 {output} · 未計快取的牌價",
+			"reserves": "從 {budget} 預算中保留 {reserved}",
+			"overBudget": "超出預算 · gate 會暫停這次執行",
+			"result": {
+				"reserved": "保留",
+				"observed": "實際",
+				"released": "釋出"
+			},
+			"nothingPaid": "未付費",
+			"pullRequest": "Pull request",
+			"readyForReview": "可供審查",
+			"readyToMerge": "可供合併",
+			"needsDecision": "已在 gate 暫停 · 需要決定",
+			"summaryChoice": "{model} · {effort} · {estimate}／{budget}",
+			"summaryPaused": "已在 gate 暫停",
+			"summaryDone": "#{number} · {state} · {observed}",
+			"checksPassed": "{total} 項檢查中 {passed} 項通過",
+			"progress": {
+				"pending": "待處理",
+				"active": "進行中",
+				"waiting": "等待擁有者",
+				"done": "已完成"
+			}
+		}
 	}
 }

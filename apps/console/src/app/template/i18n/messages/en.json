@@ -266,7 +266,15 @@
 		"cpuAgainstLimit": "CPU used / limit (cores)",
 		"memoryAgainstLimit": "RAM used / limit (MiB)",
 		"noRuntimes": "No runtime is registered yet.",
-		"noExecutionsYet": "No execution has reported yet."
+		"noExecutionsYet": "No execution has reported yet.",
+		"tickets": "Tickets",
+		"analysis": "Analysis",
+		"plans": "Plans",
+		"workflows": "Workflows",
+		"ticketsIntro": "Every ticket in this project, newest first, with the artifacts it links. Scroll for older tickets.",
+		"analysisIntro": "Every ticket the agent has analyzed: the documents it read, the episodes it cited, and the model and effort it suggests.",
+		"plansIntro": "Every ticket with a plan: the components it would run and the envelope that bounds them, pending the team's authorization.",
+		"workflowsIntro": "Every ticket with a workflow: its stages, the spend it reserves against the budget, and where its pull request stands."
 	},
 	"status": {
 		"running": "Running",
@@ -279,7 +287,11 @@
 		"connected": "Connected",
 		"unavailable": "Connection unavailable",
 		"observed": "Observed",
-		"estimated": "Estimated"
+		"estimated": "Estimated",
+		"needs-triage": "Needs triage",
+		"in-analysis": "In analysis",
+		"planned": "Planned",
+		"in-workflow": "In workflow"
 	},
 	"cause": {
 		"user": "User action",
@@ -379,5 +391,142 @@
 		"start_started": "Start in progress",
 		"started": "Availability confirmed",
 		"stop_started": "Stop in progress"
+	},
+	"tickets": {
+		"labels": {
+			"ticket": "Ticket",
+			"analysis": "Analysis",
+			"plan": "Plan",
+			"workflow": "Workflow"
+		},
+		"readMark": "Read",
+		"notSet": "Not set yet",
+		"notReached": "{phase} not reached yet",
+		"openTicket": "Open ticket {number}",
+		"figures": "{cpu}m · {memory} MiB",
+		"cpuValue": "{value}m",
+		"memoryValue": "{value} MiB",
+		"ticket": {
+			"links": "Linked artifacts",
+			"artifacts": {
+				"prd": "PRD",
+				"designDoc": "Design doc",
+				"spec": "Spec",
+				"guardrail": "Guardrail"
+			}
+		},
+		"analysis": {
+			"documents": "Documents",
+			"extracted": {
+				"prd": "use case: {useCase}",
+				"designDoc": "envelope {cpu}m · {memory} MiB · budget {budget} per run · set by the team",
+				"spec": "{components} components · {criteria} acceptance criteria",
+				"guardrail": "{criteria} · review rule, no automatic enforcement"
+			},
+			"guardrailJudgment": "FIN-02: estimate before a paid call · FIN-03: a budget before a paid run · FIN-04: size cpu and memory to the load",
+			"documentsSummary": "{count, plural, one {# document read} other {# documents read}}",
+			"episodes": "Episodes",
+			"threshold": "threshold {value}",
+			"verdicts": {
+				"kept": "kept",
+				"dropped": "dropped"
+			},
+			"reasons": {
+				"otherRuntime": "other runtime",
+				"noBroker": "no broker",
+				"docsOnly": "docs only"
+			},
+			"episodesSummary": "{kept} of {total} episodes kept",
+			"measured": "Measured resources",
+			"measuredNone": "none cited",
+			"measuredReasoning": "sizing follows the spec, not history",
+			"suggestedModel": "Suggested model",
+			"suggestedEffort": "Suggested effort",
+			"efforts": {
+				"low": "low",
+				"medium": "medium",
+				"high": "high"
+			},
+			"recommendationNote": "recommendation · the team authorizes",
+			"suggestionSummary": "{model} · effort {effort}"
+		},
+		"plan": {
+			"proposed": "Proposed plan",
+			"pendingAuthorization": "pending team authorization",
+			"envelope": {
+				"cpu": "CPU",
+				"memory": "Memory"
+			},
+			"ofBounded": "{suggested} of {bounded}",
+			"components": "Components",
+			"columns": {
+				"cpu": "CPU",
+				"memory": "Memory"
+			},
+			"kinds": {
+				"api": "api",
+				"broker": "broker",
+				"cache": "cache",
+				"web": "web"
+			},
+			"resolvedProgress": "{resolved} of {total} resolved · {cpu}m · {memory} MiB",
+			"componentsTotal": "{count, plural, one {# component} other {# components}} · {cpu}m · {memory} MiB",
+			"crossCheck": "ports {ports} · distinct · no collisions",
+			"report": {
+				"bounded": "Bounded",
+				"headroom": "Headroom",
+				"suggestedResource": "Suggested resource",
+				"limits": "GPU · disk",
+				"price": "Price",
+				"validation": "Validation",
+				"evidence": "Evidence"
+			},
+			"deployments": "{count, plural, one {# one-replica Deployment} other {# one-replica Deployments}}",
+			"notRuntimeFields": "not runtime.md fields",
+			"priceBasis": "runtime: no price source · units only",
+			"validated": "schema · {count, plural, =0 {0 errors} one {# error} other {# errors}}",
+			"planPath": "runtime.md draft · revision {revision} · proposed to the console",
+			"summary": "{figures} · {pending}",
+			"authorized": "authorized by the team"
+		},
+		"workflow": {
+			"humanInTheLoop": "Human in the loop",
+			"stages": {
+				"planning": "Planning",
+				"spec": "Spec",
+				"tickets": "Tickets",
+				"implement": "Implement",
+				"review": "Review",
+				"merge": "Merge"
+			},
+			"mergeLocked": "always the owner's",
+			"model": "Model",
+			"effort": "Effort",
+			"modelPrice": "{input} / {output} per MTok · list price, {date}",
+			"estimate": "Estimated spend",
+			"tokens": "{input} input · {output} output · uncached list prices",
+			"reserves": "reserves {reserved} of the {budget} budget",
+			"overBudget": "over the budget · the gate will pause this run",
+			"result": {
+				"reserved": "Reserved",
+				"observed": "Observed",
+				"released": "Released"
+			},
+			"nothingPaid": "nothing paid",
+			"pullRequest": "Pull request",
+			"readyForReview": "ready for review",
+			"readyToMerge": "ready to merge",
+			"needsDecision": "paused at the gate · needs a decision",
+			"summaryChoice": "{model} · {effort} · {estimate} of {budget}",
+			"summaryPaused": "paused at the gate",
+			"summaryDone": "#{number} · {state} · {observed}",
+			"checksPassed": "{passed} of {total} checks passed",
+			"progress": {
+				"pending": "pending",
+				"active": "in progress",
+				"waiting": "waiting for the owner",
+				"done": "done"
+			}
+		}
 	}
 }

@@ -6,12 +6,12 @@ import {
 	RedisIcon,
 	type TechnologyIconProps,
 } from '@langdrift/web/ui/icons/technology'
+import { ShareBar } from '@langdrift/web/ui/share-bar'
 import type { ComponentType } from 'react'
 
 import type { PlanComponent, Technology } from '@data/microruntimes-content'
 
 import type { CardValueLabels, CardValueState } from './card-value'
-import { ShareBar } from './share-bar'
 
 interface ComponentRowProps {
 	component: PlanComponent

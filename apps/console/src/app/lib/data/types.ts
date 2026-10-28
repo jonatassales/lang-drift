@@ -300,3 +300,137 @@ export interface FolderListing {
 		path: string
 	}[]
 }
+
+// A ticket's phases, in order. Its phase is the last one reached; a
+// section exists once its phase is reached, and a null field inside a
+// current phase is not known yet: unknown, never zero.
+export type TicketPhase = 'ticket' | 'analysis' | 'plan' | 'workflow'
+
+export interface Resources {
+	cpuMillis: number
+	memoryMiB: number
+}
+
+export type TicketDocumentId = 'prd' | 'designDoc' | 'spec' | 'guardrail'
+
+// A model with its list prices in cents per million tokens.
+export interface TicketModel {
+	id: string
+	name: string
+	shortName: string
+	inputCents: number
+	outputCents: number
+}
+
+export type EpisodeDropReason = 'docsOnly' | 'otherRuntime' | 'noBroker'
+
+export interface TicketEpisode {
+	id: string
+	slug: string
+	similarity: number
+	verdict: 'kept' | 'dropped'
+	reason: EpisodeDropReason | null
+}
+
+export type TicketEffort = 'low' | 'medium' | 'high'
+
+export interface TicketAnalysis {
+	documentsRead: TicketDocumentId[]
+	useCase: string | null
+	bounded: Resources | null
+	budgetCents: number | null
+	specComponents: number | null
+	acceptanceCriteria: number | null
+	criteria: string[] | null
+	threshold: number
+	episodes: TicketEpisode[] | null
+	measuredResources: Resources | null
+	model: TicketModel | null
+	effort: TicketEffort | null
+}
+
+export type ComponentKind = 'api' | 'broker' | 'cache' | 'web'
+
+export type Technology = 'Go' | 'Node.js' | 'NATS' | 'Redis' | 'Next.js'
+
+export interface TicketComponent extends Resources {
+	path: string
+	technology: Technology
+	kind: ComponentKind
+	port: number
+}
+
+export interface TicketPlan {
+	bounded: Resources
+	components: TicketComponent[]
+	suggested: Resources | null
+	validationErrors: number | null
+	revision: number
+	authorization: 'pending' | 'authorized'
+}
+
+export type WorkflowStageId =
+	| 'planning'
+	| 'spec'
+	| 'tickets'
+	| 'implement'
+	| 'review'
+	| 'merge'
+
+export interface TicketStage {
+	id: WorkflowStageId
+	/** The harness skills the stage runs; review and merge run none. */
+	skills: string | null
+	human: boolean
+	progress: 'pending' | 'active' | 'waiting' | 'done'
+}
+
+export interface TicketPullRequest {
+	number: number
+	commit: string
+	checksPassed: number
+	checksTotal: number
+}
+
+export type WorkflowOutcome =
+	| 'running'
+	| 'paused'
+	| 'readyForReview'
+	| 'readyToMerge'
+
+export interface TicketWorkflow {
+	model: TicketModel
+	effort: TicketEffort
+	stages: TicketStage[]
+	budgetCents: number
+	estimateCents: number
+	reserveCents: number
+	inputTokensK: number
+	outputTokensK: number
+	observedCents: number | null
+	releasedCents: number | null
+	pullRequest: TicketPullRequest | null
+	outcome: WorkflowOutcome
+	/** The date the model's list prices were read, as YYYY-MM-DD. */
+	priceDate: string
+}
+
+export interface Ticket {
+	id: string
+	productId: string
+	number: string
+	slug: string
+	title: string
+	status: string
+	phase: TicketPhase
+	createdAt: string
+	artifacts: Record<TicketDocumentId, string>
+	analysis: TicketAnalysis | null
+	plan: TicketPlan | null
+	workflow: TicketWorkflow | null
+}
+
+export interface TicketDetailSnapshot {
+	source: 'stub'
+	ticket: Ticket
+}

@@ -1,4 +1,5 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
+import { ShareBar } from '@langdrift/web/ui/share-bar'
 import { cn } from '@langdrift/web/utilities'
 import type { ReactNode } from 'react'
 
@@ -13,7 +14,6 @@ import {
 import { CardSection } from './card-section'
 import { CardValue, type CardValueState, revealState } from './card-value'
 import { ComponentsManifest } from './components-manifest'
-import { ShareBar } from './share-bar'
 import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
 
 interface PlanCardProps {

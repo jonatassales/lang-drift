@@ -27,6 +27,7 @@
 		"./ui/rotating-text": "./src/ui/rotating-text/index.ts",
 		"./ui/scroll-hint": "./src/ui/scroll-hint/index.ts",
 		"./ui/section-heading": "./src/ui/section-heading/index.ts",
+		"./ui/share-bar": "./src/ui/share-bar/index.ts",
 		"./vendors/smoothui/animated-tabs": "./src/vendors/smoothui/animated-tabs.tsx",
 		"./vendors/smoothui/basic-accordion": "./src/vendors/smoothui/basic-accordion.tsx",
 		"./vendors/smoothui/mac-terminal": "./src/vendors/smoothui/mac-terminal.tsx",
