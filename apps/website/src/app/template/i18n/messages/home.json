@@ -34,7 +34,6 @@
 			"review": "Evidence exists, but the relationship is not ready for a confident classification."
 		},
 		"voice": {
-			"kicker": "Voice inquiry preview",
 			"title": "Ask about a change. Keep its context in view.",
 			"description": "Explore a scripted example of how a question can connect Product Vision, changes, people, and evidence. This preview does not use your microphone or generate a live answer.",
 			"question": "“Why did Product Vision move this week?”",
@@ -113,7 +112,6 @@
 			"review": "Existem evidências, mas a relação ainda não permite uma classificação segura."
 		},
 		"voice": {
-			"kicker": "Prévia de perguntas por voz",
 			"title": "Pergunte sobre uma mudança sem perder o contexto.",
 			"description": "Explore um exemplo simulado de como uma pergunta pode conectar Product Vision, mudanças, pessoas e evidências. Esta demonstração não usa o microfone nem gera respostas em tempo real.",
 			"question": "“Por que o Product Vision mudou nesta semana?”",
@@ -192,7 +190,6 @@
 			"review": "已有證據，但其關係尚不足以做出有把握的分類。"
 		},
 		"voice": {
-			"kicker": "語音查詢預覽",
 			"title": "詢問變更，掌握背景。",
 			"description": "透過預先編寫的範例，了解問題如何連結 Product Vision、變更、相關人員與證據。此預覽不會使用麥克風，也不會即時生成回答。",
 			"question": "「Product Vision 本週為什麼發生變動？」",
@@ -271,7 +268,6 @@
 			"review": "証拠はありますが、関係性を確信を持って分類するには至っていません。"
 		},
 		"voice": {
-			"kicker": "音声で問いかける体験のプレビュー",
 			"title": "変化について問いかけ、その背景をたどる。",
 			"description": "Product Vision、変化、関わった人、根拠を結びつけて問いかける流れを、あらかじめ用意した例で体験できます。このデモはマイクを使用せず、その場で回答を生成することもありません。",
 			"question": "「今週、Product Vision が変化したのはなぜですか？」",
@@ -350,7 +346,6 @@
 			"review": "Đã có bằng chứng, nhưng mối liên hệ chưa đủ rõ để phân loại chắc chắn."
 		},
 		"voice": {
-			"kicker": "Bản xem trước truy vấn bằng giọng nói",
 			"title": "Hỏi về một thay đổi. Luôn giữ bối cảnh trong tầm nhìn.",
 			"description": "Khám phá ví dụ theo kịch bản về cách một câu hỏi kết nối Product Vision, thay đổi, con người và bằng chứng. Bản xem trước này không dùng micrô và không tạo câu trả lời trực tiếp.",
 			"question": "“Vì sao Product Vision thay đổi trong tuần này?”",

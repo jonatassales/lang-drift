@@ -37,7 +37,6 @@ export interface HomeMessages {
 		review: string
 	}
 	voice: {
-		kicker: string
 		title: string
 		description: string
 		question: string
