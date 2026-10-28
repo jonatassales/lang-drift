@@ -364,7 +364,10 @@
 		"ticket_contains_credentials": "Remova credenciais do ticket antes de solicitar sugestões.",
 		"extub_unavailable": "A extub está indisponível. Inicie a API local na porta 3401.",
 		"invalid_data_source": "CONSOLE_DATA_SOURCE deve ser stub ou local.",
-		"load_test_busy": "Uma rajada está em execução ou em intervalo. Aguarde 10 segundos e tente novamente."
+		"load_test_busy": "Uma rajada está em execução ou em intervalo. Aguarde 10 segundos e tente novamente.",
+		"read_only_preview": "Esta é uma prévia somente leitura: alterações não estão disponíveis aqui.",
+		"token_required": "A prévia não conseguiu se autenticar no serviço de dados.",
+		"stream_unavailable": "As atualizações ao vivo estão desligadas nesta prévia; a página se atualiza sozinha."
 	},
 	"event": {
 		"configured": "Configuração salva",

@@ -364,7 +364,10 @@
 		"ticket_contains_credentials": "Remove credentials from the ticket before requesting suggestions.",
 		"extub_unavailable": "extub is unavailable. Start the local stub API on port 3401.",
 		"invalid_data_source": "CONSOLE_DATA_SOURCE must be stub or local.",
-		"load_test_busy": "A burst is already running or cooling down. Wait 10 seconds and try again."
+		"load_test_busy": "A burst is already running or cooling down. Wait 10 seconds and try again.",
+		"read_only_preview": "This is a read-only preview: changes are not available here.",
+		"token_required": "The preview could not authenticate with its data service.",
+		"stream_unavailable": "Live updates are off in this preview; the page refreshes on its own."
 	},
 	"event": {
 		"configured": "Configuration saved",
