@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"paths": {
+			"@app/*": ["./src/app/*"],
+			"@views/*": ["./src/app/lib/views/*"],
+			"@components/*": ["./src/app/lib/components/*"],
+			"@ui/*": ["./src/app/lib/ui/*"],
+			"@i18n/*": ["./src/app/template/i18n/*"],
+			"@data/*": ["./src/app/lib/data/*"]
+		}
+	}
+}

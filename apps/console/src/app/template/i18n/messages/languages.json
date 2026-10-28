@@ -1,0 +1,22 @@
+[
+	{
+		"locale": "en",
+		"label": "EN",
+		"name": "English"
+	},
+	{
+		"locale": "pt-br",
+		"label": "PT-BR",
+		"name": "Português (Brasil)"
+	},
+	{
+		"locale": "zh-hant",
+		"label": "中文",
+		"name": "繁體中文"
+	},
+	{
+		"locale": "ja",
+		"label": "あ",
+		"name": "日本語"
+	}
+]
