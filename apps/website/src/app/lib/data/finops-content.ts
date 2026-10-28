@@ -293,7 +293,4 @@ export interface FinopsMessages {
 		description: string
 		items: Record<FinopsFaqId, { question: string; answer: string }>
 	}
-	earlyAccess: {
-		description: string
-	}
 }

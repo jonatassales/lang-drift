@@ -1,7 +1,6 @@
 {
 	"en": {
 		"navigation": "Primary navigation",
-		"productList": "Platform products",
 		"finops": "FinOps",
 		"microruntimes": "Microruntimes",
 		"pricing": "Pricing",
@@ -24,7 +23,6 @@
 	},
 	"pt-BR": {
 		"navigation": "Navegação principal",
-		"productList": "Produtos da plataforma",
 		"finops": "FinOps",
 		"microruntimes": "Microruntimes",
 		"pricing": "Preços",
@@ -47,7 +45,6 @@
 	},
 	"zh-Hant": {
 		"navigation": "主要導覽",
-		"productList": "平台產品",
 		"finops": "FinOps",
 		"microruntimes": "Microruntimes",
 		"pricing": "價格",
@@ -70,7 +67,6 @@
 	},
 	"ja": {
 		"navigation": "メインナビゲーション",
-		"productList": "プラットフォームの製品",
 		"finops": "FinOps",
 		"microruntimes": "Microruntimes",
 		"pricing": "料金",
@@ -93,7 +89,6 @@
 	},
 	"vi": {
 		"navigation": "Điều hướng chính",
-		"productList": "Sản phẩm của nền tảng",
 		"finops": "FinOps",
 		"microruntimes": "Microruntimes",
 		"pricing": "Giá",

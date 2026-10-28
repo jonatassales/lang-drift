@@ -27,10 +27,7 @@
 		"./ui/section-heading": "./src/ui/section-heading/index.ts",
 		"./vendors/smoothui/animated-tabs": "./src/vendors/smoothui/animated-tabs.tsx",
 		"./vendors/smoothui/basic-accordion": "./src/vendors/smoothui/basic-accordion.tsx",
-		"./vendors/smoothui/gravity-stars": "./src/vendors/smoothui/gravity-stars.tsx",
 		"./vendors/smoothui/mac-terminal": "./src/vendors/smoothui/mac-terminal.tsx",
-		"./vendors/smoothui/magnetic-field": "./src/vendors/smoothui/magnetic-field.tsx",
-		"./vendors/smoothui/short-slide-down": "./src/vendors/smoothui/short-slide-down.tsx",
 		"./vendors/smoothui/text-morph": "./src/vendors/smoothui/text-morph.tsx",
 		"./vendors/vidro/code-editor": "./src/vendors/vidro/code-editor.tsx",
 		"./utilities": "./src/utilities/index.ts"

@@ -5,7 +5,6 @@ import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
 import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
-import { BookDemoBand } from '@components/book-a-demo/band'
 import { BudgetLedgerDemo } from '@components/finops/budget-ledger-demo'
 import { BudgetTerms } from '@components/finops/budget-terms'
 import { DeliveryReceipt } from '@components/finops/delivery-receipt'
@@ -134,10 +133,6 @@ export default async function FinopsPage(props: FinopsPageProps) {
 						id,
 					}))}
 					title={copy.faq.title}
-				/>
-				<BookDemoBand
-					description={copy.earlyAccess.description}
-					locale={locale}
 				/>
 			</main>
 			<WebsiteFooter locale={locale} />

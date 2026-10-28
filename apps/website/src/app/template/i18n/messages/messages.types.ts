@@ -5,7 +5,6 @@ import type { EmailErrorCode } from '@components/early-access/form.types'
 export interface HeaderMessages {
 	home: string
 	navigation: string
-	productList: string
 	finops: string
 	microruntimes: string
 	pricing: string
@@ -114,11 +113,6 @@ export interface BookDemoMessages {
 	skip: string
 	title: string
 	lead: string
-	band: {
-		title: string
-		description: string
-		cta: string
-	}
 	form: {
 		email: string
 		emailPlaceholder: string
@@ -161,8 +155,6 @@ export interface PlatformMessages {
 		titleEnd: string
 		primaryCta: string
 		secondaryCta: string
-		// One line under each product in the hero, keyed by its header label.
-		products: Record<'finops' | 'microruntimes', string>
 	}
 	// The home sections' own copy; the headline FinOps reuses lives in its
 	// catalog.

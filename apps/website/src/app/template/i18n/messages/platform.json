@@ -6,11 +6,7 @@
 			"words": ["DevEx", "FinOps", "Runtime"],
 			"titleEnd": "Platform",
 			"primaryCta": "Explore the products",
-			"secondaryCta": "Book a Demo",
-			"products": {
-				"finops": "Delivery accountable to a team budget.",
-				"microruntimes": "Bounded runs around what you already have."
-			}
+			"secondaryCta": "Book a Demo"
 		},
 		"sections": {
 			"microruntimes": {
@@ -36,11 +32,7 @@
 			"words": ["DevEx", "FinOps", "Runtime"],
 			"titleEnd": "Platform",
 			"primaryCta": "Conheça os produtos",
-			"secondaryCta": "Agende uma demo",
-			"products": {
-				"finops": "Entrega fiel ao orçamento do time.",
-				"microruntimes": "Execução delimitada sobre o que já existe."
-			}
+			"secondaryCta": "Agende uma demo"
 		},
 		"sections": {
 			"microruntimes": {
@@ -66,11 +58,7 @@
 			"words": ["DevEx", "FinOps", "Runtime"],
 			"titleEnd": "Platform",
 			"primaryCta": "探索產品",
-			"secondaryCta": "預約展示",
-			"products": {
-				"finops": "讓交付對團隊預算負責。",
-				"microruntimes": "圍繞現有軟體的有界執行。"
-			}
+			"secondaryCta": "預約展示"
 		},
 		"sections": {
 			"microruntimes": {
@@ -96,11 +84,7 @@
 			"words": ["DevEx", "FinOps", "Runtime"],
 			"titleEnd": "Platform",
 			"primaryCta": "製品を見る",
-			"secondaryCta": "デモを予約",
-			"products": {
-				"finops": "開発をチーム予算に説明できるものに。",
-				"microruntimes": "既存のソフトウェアを囲む、境界のある実行。"
-			}
+			"secondaryCta": "デモを予約"
 		},
 		"sections": {
 			"microruntimes": {
@@ -126,11 +110,7 @@
 			"words": ["DevEx", "FinOps", "Runtime"],
 			"titleEnd": "Platform",
 			"primaryCta": "Khám phá các sản phẩm",
-			"secondaryCta": "Đặt lịch demo",
-			"products": {
-				"finops": "Giao hàng bám sát ngân sách của đội.",
-				"microruntimes": "Thực thi có giới hạn quanh phần mềm sẵn có."
-			}
+			"secondaryCta": "Đặt lịch demo"
 		},
 		"sections": {
 			"microruntimes": {
