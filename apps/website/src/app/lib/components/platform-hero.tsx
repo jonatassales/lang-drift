@@ -1,6 +1,7 @@
 import { ChromaText } from '@langdrift/web/ui/chroma-text'
 import { HeroShader } from '@langdrift/web/ui/hero-shader'
 import { RotatingText } from '@langdrift/web/ui/rotating-text'
+import { cn } from '@langdrift/web/utilities'
 
 import { SessionCards } from '@components/microruntimes/session-cards'
 import { SessionTerminal } from '@components/microruntimes/session-terminal'
@@ -26,6 +27,12 @@ interface PlatformHeroProps {
 // cards, so they never scroll; the terminal stretches to the same height and
 // scrolls its transcript inside; below `lg`, the cards stack under the
 // terminal.
+// The frame sits above the page: a lit top edge and a deep, soft shadow
+// under it, in the foreground's gray over the light field and in the
+// background's black over the dark one, where a lit edge does the lifting.
+const elevated =
+	'shadow-[inset_0_1px_0_color-mix(in_srgb,var(--foreground)_14%,transparent),0_32px_80px_-20px_color-mix(in_srgb,var(--foreground)_38%,transparent)] dark:shadow-[inset_0_1px_0_color-mix(in_srgb,var(--foreground)_16%,transparent),0_32px_80px_-16px_color-mix(in_srgb,var(--background)_95%,transparent)]'
+
 const monochrome =
 	'opacity-45 [--primary-hover:var(--muted-foreground)] [--primary:var(--muted-foreground)] dark:opacity-45 dark:[--primary-hover:var(--border)] dark:[--primary:var(--muted)]'
 
@@ -61,7 +68,12 @@ export function PlatformHero(props: PlatformHeroProps) {
 						/>
 					</h1>
 				</div>
-				<div className="grid w-full min-w-0 gap-2 rounded-2xl border border-border bg-background/70 p-2 shadow-2xl backdrop-blur-xl lg:min-h-160 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+				<div
+					className={cn(
+						'grid w-full min-w-0 gap-2 rounded-2xl border border-border bg-background/70 p-2 backdrop-blur-xl lg:min-h-160 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]',
+						elevated,
+					)}
+				>
 					<div className="min-h-0 min-w-0">
 						<SessionTerminal
 							className="h-[clamp(220px,34vh,300px)] shadow-none"
