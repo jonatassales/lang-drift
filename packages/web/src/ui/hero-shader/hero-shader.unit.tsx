@@ -49,6 +49,24 @@ describe('HeroShader markup', () => {
 		expect(canvas).not.toBeNull()
 		expect(canvas?.hasAttribute('data-unavailable')).toBe(false)
 	})
+
+	it('tints softly in the light scheme and draws in grays in the dark one when its tone is muted', () => {
+		const peach = '[--primary-hover:var(--lg-rainbow-2)]'
+		const darkGray = 'dark:[--primary:var(--muted)]'
+		const brand = new DOMParser().parseFromString(
+			renderToString(<HeroShader />),
+			'text/html',
+		).body.firstElementChild
+		const muted = new DOMParser().parseFromString(
+			renderToString(<HeroShader tone="muted" />),
+			'text/html',
+		).body.firstElementChild
+
+		expect(muted?.classList.contains(peach)).toBe(true)
+		expect(muted?.classList.contains(darkGray)).toBe(true)
+		expect(muted?.classList.contains('opacity-35')).toBe(true)
+		expect(brand?.classList.contains(peach)).toBe(false)
+	})
 })
 
 describe('shader palette', () => {

@@ -33,8 +33,6 @@
 		"email": "電子郵件",
 		"password": "密碼",
 		"passwordHint": "請使用至少 12 個字元。",
-		"signupIntro": "整合元件，以實際證據掌握運作。",
-		"loginIntro": "歡迎回到您的工作區。",
 		"haveAccount": "已有帳戶？登入。",
 		"needAccount": "第一次使用？建立帳戶。",
 		"connectIntro": "連接存放元件的工具。",

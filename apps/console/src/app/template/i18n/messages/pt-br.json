@@ -33,8 +33,6 @@
 		"email": "E-mail",
 		"password": "Senha",
 		"passwordHint": "Use pelo menos 12 caracteres.",
-		"signupIntro": "Reúna seus componentes. Opere com evidências.",
-		"loginIntro": "Acesse seu espaço de trabalho.",
 		"haveAccount": "Já tem uma conta? Entre.",
 		"needAccount": "Primeira vez aqui? Crie uma conta.",
 		"connectIntro": "Conecte as ferramentas que contêm seus componentes.",
