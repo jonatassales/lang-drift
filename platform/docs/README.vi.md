@@ -111,21 +111,7 @@ npx @langdrift/ex init
 
 `npx @langdrift/ex init` tạo định danh dự án trong `.langdrift/config.json` và các quy tắc thực thi trong `.langdrift/microruntimes/AGENTS.md`, đồng thời giữ nguyên các tệp đã có. Hãy thêm `/.langdrift/` vào `.gitignore`: đó là trạng thái cục bộ của máy do `ex` ghi, và không có gì do đội bạn soạn nằm trong đó.
 
-### 2. Ghi lại quy tắc chi tiêu
-
-Ngân sách này cấp cho đội 500,00 USD cho tháng 10 năm 2026, giới hạn mỗi lượt chạy ở 25,00 USD, giữ thêm biên độ 20% trên mỗi ước tính và phân bổ 25,00 USD cho ticket 0070. Số tiền tính bằng cent.
-
-```sh
-npx @langdrift/ex finops budget set --period 2026-10 --period-cents 50000 --per-run-cents 2500 \
-  --reserve-margin-percent 20 --allocate 0070-console-microruntime=2500
-npx @langdrift/ex finops gates set --default
-npx @langdrift/ex finops prices set --file prices.json --slug list
-npx @langdrift/ex finops forecasts set --file forecasts.json
-```
-
-Mỗi lệnh in ra bản ghi mà nó đã viết, và mọi lệnh đầu vào đều nhận `--by` để ghi tên người đặt.
-
-### 3. Lập kế hoạch từ một ticket
+### 2. Lập kế hoạch từ một ticket
 
 Khai báo các thành phần mà runtime cần build và chạy, rồi để `ex` đọc ticket. `--no-judge` lập kế hoạch mà không gọi mô hình, nên không phát sinh chi phí; nếu bỏ cờ này và đặt `ANTHROPIC_API_KEY`, bộ lập kế hoạch sẽ đánh giá các nguồn qua một mô hình dưới cùng các cổng kiểm soát như một vòng, và chi phí được ghi vào dòng lập kế hoạch của sổ cái.
 
@@ -160,7 +146,7 @@ Kế hoạch được ghi vào `.langdrift/microruntimes/runtimes/console-micror
 
 Đoạn trích này lược bỏ phiên bản, tên và các định danh runtime và dự án của khối, những thứ do `ex` quản lý. Lập kế hoạch lại cùng ticket khi runtime đang dừng sẽ tăng số phiên bản sửa đổi.
 
-### 4. Chạy kế hoạch
+### 3. Chạy kế hoạch
 
 Chạy runtime chính là phê duyệt kế hoạch của nó. Một vòng sẽ build image, khởi động cụm cục bộ của dự án và thực hiện các lần gọi trả phí qua tác tử lập trình của bạn, vì vậy hãy chạy `npx @langdrift/ex doctor` trước.
 
@@ -176,7 +162,7 @@ npx @langdrift/ex agent run console-microruntime
 
 Mọi thay đổi đều được ghi vào tệp của vòng, `run.json` và sổ cái.
 
-### 5. Theo dõi lượt chạy
+### 4. Theo dõi lượt chạy
 
 ```sh
 npx @langdrift/ex agent status console-microruntime
