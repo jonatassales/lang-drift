@@ -36,7 +36,7 @@ Look for the originating spec, in this order:
 
 ### 3. Identify the standards sources
 
-Search the repo for every file that documents how code should be written. When `CODING_STANDARDS.md` or `CONTRIBUTING.md` exists, it must be on the list.
+Search the repo for every file that documents how code should be written. In this repository, the authoritative standards are all rule files in `.claude/rules/*.rule.md` (general, filesystem, frontend, tailwind, code, react, nextjs, jotai, localization, seo). They must always be included in full. When `CODING_STANDARDS.md` or `CONTRIBUTING.md` exists, it must also be on the list.
 
 On top of whatever the repo documents, the Standards axis always carries the **smell baseline** below: a fixed set of Fowler code smells (_Refactoring_, ch.3) that applies even when a repo documents nothing. Two rules bind it:
 

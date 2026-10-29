@@ -14,6 +14,6 @@ Call the Skill tool with "tdd" where possible, at pre-agreed seams.
 
 Run typechecking regularly, single test files regularly, and the full test suite once at the end.
 
-Once done, call the Skill tool with "code-review" to review the work.
+Once done, call the Skill tool with "code-review" to review the work against all rules in `.claude/rules/*.rule.md` and the originating spec. Any findings must be addressed and resolved before delivery.
 
 Then deliver the work as `.agents/policies/human-in-the-loop.policy.md` says: it sets whether you commit, push and open the pull request yourself, and which guardrails gate you. Without that file, do not commit; report the work as ready for review.

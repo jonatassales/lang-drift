@@ -40,10 +40,12 @@ case "$command" in
     subcommand=${1:-}
     [ "$#" -eq 0 ] || shift
     case "$subcommand" in
+      biome) exec "$commands/check-biome.sh" "$@" ;;
       dead-code) exec "$commands/check-dead-code.sh" "$@" ;;
       localization) exec "$commands/check-localization.sh" "$@" ;;
+      rules) exec "$commands/check-rules.sh" "$@" ;;
       workflows) exec "$commands/check-workflows.sh" "$@" ;;
-      *) drift_usage_error "Usage: drift check <dead-code|localization|workflows>" ;;
+      *) drift_usage_error "Usage: drift check <biome|dead-code|localization|rules|workflows>" ;;
     esac
     ;;
   ci)
