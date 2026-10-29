@@ -34,6 +34,7 @@ Run from the repository root:
 | `pnpm turbo run test` | Runs each package's `test` script. |
 | `pnpm turbo run check` | Runs Biome format, lint and import checks on the whole repository. Read-only. |
 | `pnpm turbo run fix` | Same as `check`, writing safe fixes. Review the diff afterwards. |
+| `packages/ex/dist/ex …` | The Microruntimes session in a project: `ex init`, the `ex harness` and `ex finops` inputs, then `ex agent plan`, `ex agent run`, `ex agent confirm`, `ex agent status` and `ex agent reindex`. `packages/ex/README.md` has the command table. |
 
 The website needs `CRYPTO_SECRET` even locally; without it every page answers 500. The tracked `.env.development` carries a development-only key, so a fresh checkout runs; `apps/website/README.md` says how to generate one for a deployment.
 
@@ -216,3 +217,23 @@ _Avoid_: Job, session
 **Lap**:
 One pass inside a run: an attempt paused at a gate, an execution, a load step, a suite pass.
 _Avoid_: Step, iteration (in new writing)
+
+**Episode**:
+One earlier run of the project as the RAG remembers it: the memory's fence, with its stacks, component paths, measured peaks and tokens, embedded for retrieval when a new ticket is planned.
+_Avoid_: Example, case, memory (for the whole)
+
+**Judge**:
+The model the planner calls through a port to keep or discard each source with its facts, weigh the episodes and suggest a model and effort. Its calls are paid work under the money gates; without a credential the plan keeps the deterministic shell and the judged fields stay null.
+_Avoid_: Planner model, LLM, evaluator
+
+**Stage driver**:
+The owner's coding agent as `ex` runs it for a stage's skills: a trusted process started with its configured arguments and environment, whose usage and one-line summary `ex` reads back.
+_Avoid_: Agent runner, executor, worker
+
+**Input record**:
+One value that can block or allow a run, as the private store keeps it: who set it, when, through what, its value and the record it replaced. Gates read the record, never its mirror.
+_Avoid_: Setting, config, preference
+
+**Mirror**:
+The JSON file `ex` writes from one of its input records so the consumer and a console can read it: the envelope, the workflow, the budget, the gates, the prices and the forecasts. No gate reads a mirror.
+_Avoid_: Config file, export, copy
