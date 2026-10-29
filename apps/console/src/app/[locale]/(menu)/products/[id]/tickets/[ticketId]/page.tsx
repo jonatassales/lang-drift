@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import { Suspense } from 'react'
 
-import { RuntimeDetailSkeleton } from '@components/route-state/runtime-detail-skeleton'
+import { TicketDetailSkeleton } from '@components/route-state/ticket-detail-skeleton'
 import { readConsole } from '@data/server'
 import type { TicketDetailSnapshot } from '@data/types'
 import { TicketDetail } from '@views/tickets/ticket-detail'
@@ -24,7 +24,7 @@ export default async function Page(props: PageProps) {
 	const { ticketId } = await params
 
 	return (
-		<Suspense fallback={<RuntimeDetailSkeleton />}>
+		<Suspense fallback={<TicketDetailSkeleton />}>
 			<TicketDetail
 				id={ticketId}
 				initial={readConsole<TicketDetailSnapshot>(

@@ -6,7 +6,7 @@ import { Link } from '@i18n/navigation'
 
 import { PhaseSummary } from './phase-summary'
 import { TicketCreated } from './ticket-created'
-import { listedPhase } from './ticket-phases'
+import { listedPhase, ticketPath } from './ticket-phases'
 
 interface TicketCardProps {
 	/** The listing the card sits in, which picks the summary it shows. */
@@ -55,7 +55,7 @@ export function TicketCard(props: TicketCardProps) {
 			<Link
 				aria-labelledby={`${numberId} ${titleId}`}
 				className="absolute inset-0 rounded-xl"
-				href={`/products/${ticket.productId}/tickets/${ticket.id}`}
+				href={ticketPath(ticket, listing)}
 				prefetch={false}
 			/>
 		</article>

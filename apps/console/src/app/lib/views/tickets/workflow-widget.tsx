@@ -7,7 +7,7 @@ import type { Ticket, TicketWorkflow } from '@data/types'
 
 import { PhaseSummary } from './phase-summary'
 import { type TicketFormat, useTicketFormat } from './ticket-format.hook'
-import { TicketWidgetFrame } from './ticket-widget-frame'
+import { TicketSection } from './ticket-section'
 import { UnknownValue } from './unknown-value'
 import { WidgetSection } from './widget-section'
 import { WorkflowStageList } from './workflow-stage-list'
@@ -58,9 +58,10 @@ export function WorkflowWidget(props: WorkflowWidgetProps) {
 	] as const
 
 	return (
-		<TicketWidgetFrame
-			phase="workflow"
+		<TicketSection
+			id="workflow"
 			summary={<PhaseSummary phase="workflow" ticket={ticket} />}
+			title={t('labels.workflow')}
 		>
 			<WorkflowStageList stages={workflow.stages} />
 
@@ -178,6 +179,6 @@ export function WorkflowWidget(props: WorkflowWidgetProps) {
 					</div>
 				)}
 			</WidgetSection>
-		</TicketWidgetFrame>
+		</TicketSection>
 	)
 }

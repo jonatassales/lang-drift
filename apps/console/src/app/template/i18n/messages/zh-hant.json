@@ -410,6 +410,10 @@
 		"memoryValue": "{value} MiB",
 		"ticket": {
 			"links": "連結的 artifacts",
+			"status": "狀態",
+			"phase": "階段",
+			"created": "建立時間",
+			"phaseProgress": "{phase} · {reached} / {total}",
 			"artifacts": {
 				"prd": "PRD",
 				"designDoc": "Design doc",

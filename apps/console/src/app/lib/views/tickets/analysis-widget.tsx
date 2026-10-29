@@ -13,7 +13,7 @@ import { EpisodeRow } from './episode-row'
 import { PhaseSummary } from './phase-summary'
 import { type TicketFormat, useTicketFormat } from './ticket-format.hook'
 import { ticketDocumentIds } from './ticket-phases'
-import { TicketWidgetFrame } from './ticket-widget-frame'
+import { TicketSection } from './ticket-section'
 import { UnknownValue } from './unknown-value'
 import { WidgetSection } from './widget-section'
 
@@ -84,9 +84,10 @@ export function AnalysisWidget(props: AnalysisWidgetProps) {
 	const guardrailRead = analysis.documentsRead.includes('guardrail')
 
 	return (
-		<TicketWidgetFrame
-			phase="analysis"
+		<TicketSection
+			id="analysis"
 			summary={<PhaseSummary phase="analysis" ticket={ticket} />}
+			title={t('labels.analysis')}
 		>
 			<div className="flex items-baseline justify-between gap-3">
 				<Eyebrow>{t('analysis.documents')}</Eyebrow>
@@ -172,7 +173,7 @@ export function AnalysisWidget(props: AnalysisWidgetProps) {
 					</p>
 				)}
 			</WidgetSection>
-		</TicketWidgetFrame>
+		</TicketSection>
 	)
 }
 

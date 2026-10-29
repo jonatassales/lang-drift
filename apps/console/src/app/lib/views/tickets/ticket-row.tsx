@@ -7,7 +7,7 @@ import { CaretRight } from '@ui/icons'
 
 import { PhaseSummary } from './phase-summary'
 import { TicketCreated } from './ticket-created'
-import { listedPhase } from './ticket-phases'
+import { listedPhase, ticketPath } from './ticket-phases'
 
 interface TicketRowProps {
 	/** The listing the row sits in, which picks the summary it shows. */
@@ -64,7 +64,7 @@ export function TicketRow(props: TicketRowProps) {
 			<Link
 				aria-labelledby={`${numberId} ${titleId}`}
 				className="absolute inset-0 rounded-xl"
-				href={`/products/${ticket.productId}/tickets/${ticket.id}`}
+				href={ticketPath(ticket, listing)}
 				prefetch={false}
 			/>
 		</article>

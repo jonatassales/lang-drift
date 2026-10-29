@@ -10,7 +10,11 @@ import {
 	keptEpisodes,
 	listedPhase,
 	phaseReached,
+	phaseStep,
 	planFigures,
+	summaryPhases,
+	ticketPath,
+	ticketPhases,
 	ticketSummary,
 	workflowSummary,
 } from './ticket-phases.ts'
@@ -61,6 +65,35 @@ test('an entry summarizes its listing phase, or the current one in Tickets', () 
 	assert.equal(listedPhase(running, 'analysis'), 'analysis')
 	assert.equal(listedPhase(running, 'plan'), 'plan')
 	assert.equal(listedPhase(running, 'workflow'), 'workflow')
+})
+
+test('only the analysis, plan and workflow phases have a summary of their own', () => {
+	assert.deepEqual(summaryPhases, ['analysis', 'plan', 'workflow'])
+	assert.deepEqual(ticketPhases, ['ticket', ...summaryPhases])
+})
+
+test('a ticket counts the phases it has reached out of four', () => {
+	assert.deepEqual(phaseStep(ticket({ phase: 'ticket' })), {
+		reached: 1,
+		total: 4,
+	})
+	assert.deepEqual(phaseStep(ticket({ phase: 'workflow' })), {
+		reached: 4,
+		total: 4,
+	})
+})
+
+test('an entry opens the ticket page, at its phase in a phase listing', () => {
+	const planned = ticket({
+		id: 'ticket-0102',
+		phase: 'plan',
+		productId: 'seed-microruntimes',
+	})
+	const page = '/products/seed-microruntimes/tickets/ticket-0102'
+	assert.equal(ticketPath(planned, 'ticket'), page)
+	assert.equal(ticketPath(planned, 'analysis'), `${page}#analysis`)
+	assert.equal(ticketPath(planned, 'plan'), `${page}#plan`)
+	assert.equal(ticketPath(planned, 'workflow'), `${page}#workflow`)
 })
 
 test('the analysis summary names its latest settled step, or nothing yet', () => {

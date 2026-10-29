@@ -9,7 +9,7 @@ import { ComponentRow } from './component-row'
 import { PhaseSummary } from './phase-summary'
 import { type TicketFormat, useTicketFormat } from './ticket-format.hook'
 import { componentShare, planFigures } from './ticket-phases'
-import { TicketWidgetFrame } from './ticket-widget-frame'
+import { TicketSection } from './ticket-section'
 import { UnknownValue } from './unknown-value'
 import { WidgetSection } from './widget-section'
 
@@ -134,9 +134,10 @@ export function PlanWidget(props: PlanWidgetProps) {
 	]
 
 	return (
-		<TicketWidgetFrame
-			phase="plan"
+		<TicketSection
+			id="plan"
 			summary={<PhaseSummary phase="plan" ticket={ticket} />}
+			title={t('labels.plan')}
 		>
 			<div className="grid gap-1.5">
 				<Eyebrow>{t('plan.proposed')}</Eyebrow>
@@ -255,6 +256,6 @@ export function PlanWidget(props: PlanWidgetProps) {
 					</p>
 				)}
 			</WidgetSection>
-		</TicketWidgetFrame>
+		</TicketSection>
 	)
 }

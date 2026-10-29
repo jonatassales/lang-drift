@@ -410,6 +410,10 @@
 		"memoryValue": "{value} MiB",
 		"ticket": {
 			"links": "Artefatos vinculados",
+			"status": "Status",
+			"phase": "Fase",
+			"created": "Criado em",
+			"phaseProgress": "{phase} · {reached} de {total}",
 			"artifacts": {
 				"prd": "PRD",
 				"designDoc": "Design doc",

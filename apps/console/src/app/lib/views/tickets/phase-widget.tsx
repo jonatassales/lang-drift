@@ -1,22 +1,20 @@
-import type { Ticket, TicketPhase } from '@data/types'
+import type { Ticket } from '@data/types'
 
 import { AnalysisWidget } from './analysis-widget'
 import { PlanWidget } from './plan-widget'
-import { TicketWidget } from './ticket-widget'
+import type { SummaryPhase } from './ticket-phases'
 import { WorkflowWidget } from './workflow-widget'
 
 interface PhaseWidgetProps {
-	phase: TicketPhase
+	phase: SummaryPhase
 	ticket: Ticket
 }
 
-// The widget for one phase of a ticket that has reached it.
+// The section for one phase of a ticket that has reached it.
 export function PhaseWidget(props: PhaseWidgetProps) {
 	const { phase, ticket } = props
 
 	switch (phase) {
-		case 'ticket':
-			return <TicketWidget ticket={ticket} />
 		case 'analysis':
 			return ticket.analysis ? (
 				<AnalysisWidget analysis={ticket.analysis} ticket={ticket} />

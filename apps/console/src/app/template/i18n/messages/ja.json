@@ -410,6 +410,10 @@
 		"memoryValue": "{value} MiB",
 		"ticket": {
 			"links": "リンクされたアーティファクト",
+			"status": "ステータス",
+			"phase": "フェーズ",
+			"created": "作成日時",
+			"phaseProgress": "{phase} · {reached} / {total}",
 			"artifacts": {
 				"prd": "PRD",
 				"designDoc": "Design doc",
