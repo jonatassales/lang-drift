@@ -10,11 +10,19 @@ const withNextIntl = createNextIntlPlugin('./src/app/template/i18n/request.ts')
 function contentSecurityPolicy(): string {
 	const directives = {
 		'default-src': ["'self'"],
-		'script-src': ["'self'", "'unsafe-inline'"],
+		'script-src': [
+			"'self'",
+			"'unsafe-inline'",
+			'https://va.vercel-scripts.com',
+		],
 		'style-src': ["'self'", "'unsafe-inline'"],
 		'img-src': ["'self'", 'data:', 'blob:'],
 		'font-src': ["'self'", 'data:'],
-		'connect-src': ["'self'"],
+		'connect-src': [
+			"'self'",
+			'https://va.vercel-scripts.com',
+			'https://vitals.vercel-insights.com',
+		],
 		'worker-src': ["'self'", 'blob:'],
 		'manifest-src': ["'self'"],
 		'frame-src': ["'none'"],

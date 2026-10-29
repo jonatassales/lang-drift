@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { notFound } from 'next/navigation'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
@@ -67,6 +68,7 @@ export default async function LocaleLayout(props: LayoutProps) {
 					<ScrollToTop />
 					{children}
 				</NextIntlClientProvider>
+				<Analytics />
 			</body>
 		</html>
 	)
