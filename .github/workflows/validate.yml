@@ -44,10 +44,14 @@ jobs:
         run: pnpm turbo run check
       - name: Types
         run: pnpm turbo run typecheck
+      - name: Biome configuration
+        run: platform/cli/drift check biome
       - name: Localization
         run: platform/cli/drift check localization
       - name: Dead code
         run: platform/cli/drift check dead-code
+      - name: Repository rules
+        run: platform/cli/drift check rules
       - uses: ./.github/actions/turbo-summary
         if: ${{ !cancelled() }}
         with:
