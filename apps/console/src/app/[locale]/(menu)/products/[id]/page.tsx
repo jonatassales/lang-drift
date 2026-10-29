@@ -33,7 +33,7 @@ export default async function Page(props: ProductPageProps) {
 			<ProductDetail
 				id={id}
 				initial={readConsole(`products/${id}`)}
-				runtimes={readConsole(`runtimes?productId=${id}`)}
+				runtimes={readConsole(`runtimes?productId=${encodeURIComponent(id)}`)}
 			/>
 		</Suspense>
 	)
