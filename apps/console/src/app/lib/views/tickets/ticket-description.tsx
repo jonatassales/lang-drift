@@ -4,7 +4,7 @@ import { StatusLabel } from '@components/status-label/status-label'
 import type { Ticket } from '@data/types'
 
 import { TicketCreated } from './ticket-created'
-import { phaseStep } from './ticket-phases'
+import { phaseProgress } from './ticket-phases'
 
 interface TicketDescriptionProps {
 	ticket: Ticket
@@ -16,7 +16,7 @@ export function TicketDescription(props: TicketDescriptionProps) {
 	const { ticket } = props
 
 	const t = useTranslations('tickets')
-	const step = phaseStep(ticket)
+	const progress = phaseProgress(ticket)
 	const items = [
 		{
 			detail: <StatusLabel value={ticket.status} />,
@@ -26,8 +26,8 @@ export function TicketDescription(props: TicketDescriptionProps) {
 		{
 			detail: t('ticket.phaseProgress', {
 				phase: t(`labels.${ticket.phase}`),
-				reached: step.reached,
-				total: step.total,
+				reached: progress.reached,
+				total: progress.total,
 			}),
 			id: 'phase',
 			term: t('ticket.phase'),
@@ -44,7 +44,7 @@ export function TicketDescription(props: TicketDescriptionProps) {
 			{items.map((item) => (
 				<div className="grid content-start gap-1.5" key={item.id}>
 					<dt className="text-[11px] text-muted-foreground">{item.term}</dt>
-					<dd className="m-0 text-sm tabular-nums">{item.detail}</dd>
+					<dd className="m-0 text-[14px] tabular-nums">{item.detail}</dd>
 				</div>
 			))}
 		</dl>

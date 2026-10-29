@@ -44,7 +44,7 @@ export const summaryPhases: readonly SummaryPhase[] = [
 ]
 
 // How far the ticket has come: the phases it has reached out of all four.
-export function phaseStep(ticket: Pick<Ticket, 'phase'>) {
+export function phaseProgress(ticket: Pick<Ticket, 'phase'>) {
 	return {
 		reached: ticketPhases.indexOf(ticket.phase) + 1,
 		total: ticketPhases.length,

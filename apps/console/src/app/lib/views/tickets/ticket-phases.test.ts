@@ -9,8 +9,8 @@ import {
 	componentShare,
 	keptEpisodes,
 	listedPhase,
+	phaseProgress,
 	phaseReached,
-	phaseStep,
 	planFigures,
 	summaryPhases,
 	ticketPath,
@@ -73,11 +73,11 @@ test('only the analysis, plan and workflow phases have a summary of their own', 
 })
 
 test('a ticket counts the phases it has reached out of four', () => {
-	assert.deepEqual(phaseStep(ticket({ phase: 'ticket' })), {
+	assert.deepEqual(phaseProgress(ticket({ phase: 'ticket' })), {
 		reached: 1,
 		total: 4,
 	})
-	assert.deepEqual(phaseStep(ticket({ phase: 'workflow' })), {
+	assert.deepEqual(phaseProgress(ticket({ phase: 'workflow' })), {
 		reached: 4,
 		total: 4,
 	})

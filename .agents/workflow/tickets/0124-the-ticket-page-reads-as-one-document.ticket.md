@@ -8,7 +8,7 @@
 
 **Status:** ready-for-agent
 
-- [x] `summaryPhases`, `phaseStep(ticket)` and `ticketPath(ticket, listing)`, test first: the phases without `ticket`; 1 of 4 and 4 of 4; no fragment in Tickets and the phase key in the other three listings.
+- [x] `summaryPhases`, `phaseProgress(ticket)` and `ticketPath(ticket, listing)`, test first: the phases without `ticket`; 1 of 4 and 4 of 4; no fragment in Tickets and the phase key in the other three listings.
 - [x] The widget frame becomes a section with an `h2` and the summary line, offset below the sticky header; the Analysis, Plan and Workflow widgets wrap their unchanged bodies in it.
 - [x] The Ticket widget becomes the linked artifacts section, without the number, slug, status and title the header now carries.
 - [x] The ticket page renders the header, the strip, the artifacts and the phases with no card; status appears once, in the strip.

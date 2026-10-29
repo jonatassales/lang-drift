@@ -10,7 +10,7 @@ export function useFragmentLanding(ready: boolean) {
 	useEffect(() => {
 		if (!ready) return
 
-		const fragment = decodeURIComponent(window.location.hash.slice(1))
+		const fragment = window.location.hash.slice(1)
 		if (!fragment) return
 
 		document.getElementById(fragment)?.scrollIntoView({ block: 'start' })
