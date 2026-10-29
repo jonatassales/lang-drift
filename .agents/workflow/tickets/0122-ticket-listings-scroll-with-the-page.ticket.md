@@ -8,11 +8,11 @@
 
 **Status:** ready-for-agent
 
-- [ ] A console UI piece renders Load more and, while there are more pages, nothing is loading and the last request has not failed, calls the listing's next page when it comes within reach of the viewport.
-- [ ] Each page that lands re-arms it, so a short page on a tall window keeps loading until the screen is filled.
-- [ ] A failed request disarms it; Retry and Load more resume.
-- [ ] The ticket listing renders an ordered list with no scroll box, keeps Refresh above it and the loading row, error notice and empty line below.
-- [ ] `VirtualList`, the Executions and the History overviews are unchanged.
+- [x] A console UI piece renders Load more and, while there are more pages, nothing is loading and the last request has not failed, calls the listing's next page when it comes within reach of the viewport.
+- [x] Each page that lands re-arms it, so a short page on a tall window keeps loading until the screen is filled.
+- [x] A failed request disarms it; Retry and Load more resume.
+- [x] The ticket listing renders an ordered list with no scroll box, keeps Refresh above it and the loading row, error notice and empty line below.
+- [x] `VirtualList`, the Executions and the History overviews are unchanged.
 
 ### Verification
 

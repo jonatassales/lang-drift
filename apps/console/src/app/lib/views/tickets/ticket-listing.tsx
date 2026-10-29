@@ -7,7 +7,7 @@ import { ActivityRowSkeleton } from '@components/route-state/activity-row-skelet
 import { usePagedResource } from '@data/paged-resource.hook'
 import type { Page, Ticket, TicketPhase } from '@data/types'
 import { Button } from '@ui/button'
-import { VirtualList } from '@ui/virtual-list'
+import { ListEnd } from '@ui/list-end'
 
 import { PhaseWidget } from './phase-widget'
 
@@ -26,8 +26,8 @@ const listLabels: Record<TicketPhase, string> = {
 }
 
 // One phase's listing: every ticket that has reached the phase, newest
-// first, each as that phase's widget, loading older tickets as the list
-// scrolls to its end.
+// first, in the page's flow, loading older tickets as the list's end comes
+// into view.
 export function TicketListing(props: TicketListingProps) {
 	const { initial, phase, productId } = props
 
@@ -45,15 +45,19 @@ export function TicketListing(props: TicketListingProps) {
 				</Button>
 			</div>
 			{resource.items.length ? (
-				<VirtualList
-					items={resource.items}
-					itemKey={(ticket) => ticket.id}
-					renderItem={(ticket) => (
-						<PhaseWidget listed phase={phase} ticket={ticket} />
-					)}
-					onEnd={resource.next}
-					label={t(listLabels[phase])}
-				/>
+				<ol
+					aria-label={t(listLabels[phase])}
+					className="m-0 grid list-none gap-3 p-0"
+				>
+					{resource.items.map((ticket) => (
+						<li
+							className="rounded-xl border border-border bg-card p-4"
+							key={ticket.id}
+						>
+							<PhaseWidget listed phase={phase} ticket={ticket} />
+						</li>
+					))}
+				</ol>
 			) : null}
 			{resource.loading ? <ActivityRowSkeleton /> : null}
 			{resource.error ? (
@@ -62,13 +66,13 @@ export function TicketListing(props: TicketListingProps) {
 			{!resource.loading && !resource.error && !resource.items.length ? (
 				<p className="text-sm text-muted-foreground">{t('empty')}</p>
 			) : null}
-			{resource.hasMore ? (
-				<div className="mt-4">
-					<Button disabled={resource.loading} onClick={resource.next}>
-						{t('loadMore')}
-					</Button>
-				</div>
-			) : null}
+			<ListEnd
+				failed={Boolean(resource.error)}
+				hasMore={resource.hasMore}
+				label={t('loadMore')}
+				loading={resource.loading}
+				onEnd={resource.next}
+			/>
 		</>
 	)
 }
