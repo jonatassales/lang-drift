@@ -1,6 +1,7 @@
 package domain_test
 
 import (
+	"strings"
 	"testing"
 	"time"
 
@@ -89,5 +90,54 @@ func TestPerRuntimeActivationKeepsMissingDataHonest(t *testing.T) {
 	widgets = catalog.Widgets(now, 2)
 	if widgets[0].Executions[0].LLMCostUSD != nil || !widgets[0].Partial {
 		t.Fatal("unbudgeted LLM cost was invented")
+	}
+}
+
+func TestComponentRunFieldsAreBounded(t *testing.T) {
+	store, err := seed.New(time.Now())
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, check := range []struct {
+		label  string
+		change func(*domain.Component)
+		valid  bool
+	}{
+		{"an unset port", func(component *domain.Component) { component.Port = 0 }, true},
+		{"port 1", func(component *domain.Component) { component.Port = 1 }, true},
+		{"port 65535", func(component *domain.Component) { component.Port = 65535 }, true},
+		{"a negative port", func(component *domain.Component) { component.Port = -1 }, false},
+		{"port 65536", func(component *domain.Component) { component.Port = 65536 }, false},
+		{"no image", func(component *domain.Component) { component.Image = "" }, true},
+		{"a 256-byte image", func(component *domain.Component) { component.Image = strings.Repeat("i", 256) }, true},
+		{"a 257-byte image", func(component *domain.Component) { component.Image = strings.Repeat("i", 257) }, false},
+		{"the root readiness path", func(component *domain.Component) { component.ReadinessPath = "/" }, true},
+		{"a 256-byte readiness path", func(component *domain.Component) { component.ReadinessPath = "/" + strings.Repeat("r", 255) }, true},
+		{"a 257-byte readiness path", func(component *domain.Component) { component.ReadinessPath = "/" + strings.Repeat("r", 256) }, false},
+		{"a relative readiness path", func(component *domain.Component) { component.ReadinessPath = "health" }, false},
+		{"no readiness path", func(component *domain.Component) { component.ReadinessPath = "" }, false},
+	} {
+		runtime := store.Snapshot().Runtimes[1]
+		check.change(&runtime.Components[0])
+		if valid := domain.ValidateRuntime(runtime) == nil; valid != check.valid {
+			t.Fatalf("%s: valid is %v", check.label, valid)
+		}
+	}
+}
+
+func TestFoldersFollowTheProductPathContract(t *testing.T) {
+	for folder, valid := range map[string]bool{
+		"/":                             true,
+		"/seeds/microruntimes":          true,
+		"/" + strings.Repeat("a", 1023): true,
+		"/" + strings.Repeat("a", 1024): false,
+		"":                              false,
+		"seeds":                         false,
+		"./seeds":                       false,
+		"/seeds\x00/microruntimes":      false,
+	} {
+		if accepted := domain.ValidateFolder(folder) == nil; accepted != valid {
+			t.Fatalf("folder %.40q: valid is %v", folder, accepted)
+		}
 	}
 }
