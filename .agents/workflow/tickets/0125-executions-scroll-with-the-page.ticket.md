@@ -8,14 +8,14 @@
 
 **Status:** ready-for-agent
 
-- [ ] The Executions overview renders an ordered list named by the page, with no scroll box, fixed height, list-wide border or virtualization; Refresh stays above it, and the loading row, error notice and empty line below.
-- [ ] The overview ends with `ListEnd` fed by the paged resource, and its own Load more button is gone.
-- [ ] `ExecutionEntry` renders its body in an item of its own with a border, rounded corners and the card colour, no hover colour and no link over the whole entry; the runtime link stays the only link, without prefetch.
-- [ ] A figure that was not observed still reads as unavailable, never as zero.
-- [ ] Long runtime names and ids wrap, so 375px has no horizontal overflow.
-- [ ] `ActivityEntrySkeleton` (one bordered item shaped like an entry) and `ActivityOverviewSkeleton` (a Refresh placeholder over six entry skeletons, busy and labelled as loading) exist; the Executions page uses the overview skeleton for its loading state and Suspense fallback, and the loading-more row uses the entry skeleton in a status region.
-- [ ] `ActivityListSkeleton` and the per-runtime History page are unchanged.
-- [ ] No copy changes; the four console catalogs keep the same keys.
+- [x] The Executions overview renders an ordered list named by the page, with no scroll box, fixed height, list-wide border or virtualization; Refresh stays above it, and the loading row, error notice and empty line below.
+- [x] The overview ends with `ListEnd` fed by the paged resource, and its own Load more button is gone.
+- [x] `ExecutionEntry` renders its body in an item of its own with a border, rounded corners and the card colour, no hover colour and no link over the whole entry; the runtime link stays the only link, without prefetch.
+- [x] A figure that was not observed still reads as unavailable, never as zero.
+- [x] Long runtime names and ids wrap, so 375px has no horizontal overflow.
+- [x] `ActivityEntrySkeleton` (one bordered item shaped like an entry) and `ActivityOverviewSkeleton` (a Refresh placeholder over six entry skeletons, busy and labelled as loading) exist; the Executions page uses the overview skeleton for its loading state and Suspense fallback, and the loading-more row uses the entry skeleton in a status region.
+- [x] `ActivityListSkeleton` and the per-runtime History page are unchanged.
+- [x] No copy changes; the four console catalogs keep the same keys.
 
 ### Verification
 

@@ -8,11 +8,11 @@
 
 **Status:** ready-for-agent
 
-- [ ] `VirtualList` is deleted.
-- [ ] `ActivityRowSkeleton` is deleted.
-- [ ] `@tanstack/react-virtual` is removed from the console's dependencies through pnpm, so the manifest and the lockfile change and nothing else in the lockfile moves; the copy in the `ex` package's sample project fixture is untouched.
-- [ ] `ActivityListSkeleton` stays, because the per-runtime History page still loads with it.
-- [ ] `drift check dead-code` passes with no new entry in the allow list.
+- [x] `VirtualList` is deleted.
+- [x] `ActivityRowSkeleton` is deleted.
+- [x] `@tanstack/react-virtual` is removed from the console's dependencies through pnpm, so the manifest and the lockfile change and nothing else in the lockfile moves; the copy in the `ex` package's sample project fixture is untouched.
+- [x] `ActivityListSkeleton` stays, because the per-runtime History page still loads with it.
+- [x] `drift check dead-code` passes with no new entry in the allow list.
 
 ### Verification
 

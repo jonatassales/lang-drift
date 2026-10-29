@@ -8,13 +8,13 @@
 
 **Status:** ready-for-agent
 
-- [ ] The History overview renders an ordered list named by the page, with no scroll box, fixed height, list-wide border or virtualization; Refresh stays above it, and the loading row, error notice and empty line below.
-- [ ] The overview ends with `ListEnd` fed by the paged resource, and its own Load more button is gone.
-- [ ] `HistoryEntry` renders its body in an item of its own with a border, rounded corners and the card colour, no hover colour and no link over the whole entry; the runtime link stays the only link, without prefetch.
-- [ ] Long runtime names, actors, ids and details wrap, so 375px has no horizontal overflow.
-- [ ] The History page uses `ActivityOverviewSkeleton` for its loading state and Suspense fallback, and the loading-more row uses `ActivityEntrySkeleton` in a status region.
-- [ ] The per-runtime History page and `ActivityListSkeleton` are unchanged.
-- [ ] No copy changes; the four console catalogs keep the same keys.
+- [x] The History overview renders an ordered list named by the page, with no scroll box, fixed height, list-wide border or virtualization; Refresh stays above it, and the loading row, error notice and empty line below.
+- [x] The overview ends with `ListEnd` fed by the paged resource, and its own Load more button is gone.
+- [x] `HistoryEntry` renders its body in an item of its own with a border, rounded corners and the card colour, no hover colour and no link over the whole entry; the runtime link stays the only link, without prefetch.
+- [x] Long runtime names, actors, ids and details wrap, so 375px has no horizontal overflow.
+- [x] The History page uses `ActivityOverviewSkeleton` for its loading state and Suspense fallback, and the loading-more row uses `ActivityEntrySkeleton` in a status region.
+- [x] The per-runtime History page and `ActivityListSkeleton` are unchanged.
+- [x] No copy changes; the four console catalogs keep the same keys.
 
 ### Verification
 
