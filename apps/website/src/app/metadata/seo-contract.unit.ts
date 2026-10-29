@@ -46,6 +46,20 @@ function sitemapEntries(xml: string): SitemapEntry[] {
 	}))
 }
 
+function robotsGroups(text: string) {
+	return text
+		.trim()
+		.split(/\n\s*\n/)
+		.map((block) => block.split('\n'))
+		.filter((lines) => lines[0].startsWith('User-agent:'))
+		.map((lines) => ({
+			agents: lines
+				.filter((line) => line.startsWith('User-agent:'))
+				.map((line) => line.replace('User-agent:', '').trim()),
+			rules: lines.filter((line) => !line.startsWith('User-agent:')),
+		}))
+}
+
 function canonicalOf(metadata: Metadata) {
 	return String(metadata.alternates?.canonical)
 }
@@ -173,6 +187,59 @@ describe('The early-access confirmation page', () => {
 		expect(
 			sitemap.some((entry) => entry.loc.includes('early-access-sent')),
 		).toBe(false)
+	})
+})
+
+describe('robots.txt', () => {
+	const groups = robotsGroups(readWebsiteFile('src/app/robots.txt'))
+	const trainingAgents = [
+		'GPTBot',
+		'ClaudeBot',
+		'Google-Extended',
+		'CCBot',
+		'Applebot-Extended',
+		'Bytespider',
+	]
+
+	it('lets every other crawler in, except on the API', () => {
+		expect(groups.find((group) => group.agents.includes('*'))).toEqual({
+			agents: ['*'],
+			rules: ['Allow: /', 'Disallow: /api/'],
+		})
+	})
+
+	it('keeps AI training crawlers out', () => {
+		expect(groups.find((group) => group.agents.includes('GPTBot'))).toEqual({
+			agents: trainingAgents,
+			rules: ['Disallow: /'],
+		})
+	})
+
+	it('names the sitemap on the public origin', () => {
+		expect(readWebsiteFile('src/app/robots.txt')).toContain(
+			`Sitemap: ${site.url}/sitemap.xml`,
+		)
+	})
+})
+
+describe('security.txt', () => {
+	const fields = Object.fromEntries(
+		readWebsiteFile('public/.well-known/security.txt')
+			.trim()
+			.split('\n')
+			.map((line) => line.split(/:\s(.*)/s).slice(0, 2)),
+	)
+
+	it('names the security contact, the languages and its canonical URL', () => {
+		expect(fields).toMatchObject({
+			Contact: 'mailto:security@langdrift.md',
+			'Preferred-Languages': 'en, pt',
+			Canonical: `${site.url}/.well-known/security.txt`,
+		})
+	})
+
+	it('has not expired', () => {
+		expect(new Date(fields.Expires).getTime()).toBeGreaterThan(Date.now())
 	})
 })
 
