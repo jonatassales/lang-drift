@@ -111,21 +111,7 @@ npx @langdrift/ex init
 
 `npx @langdrift/ex init` は `.langdrift/config.json` にプロジェクトの識別情報を、`.langdrift/microruntimes/AGENTS.md` に実行ルールを作成し、既存のファイルには手を加えません。`/.langdrift/` を `.gitignore` に追加してください。そこは `ex` が書き込むマシンローカルの状態であり、チームが書くものは何も置かれません。
 
-### 2. お金のルールを記録する
-
-この予算は、2026 年 10 月分としてチームに 500.00 ドルを与え、実行ごとの上限を 25.00 ドルとし、すべての見積もりに 20% のマージンを予約し、チケット 0070 に 25.00 ドルを配分します。金額の単位はセントです。
-
-```sh
-npx @langdrift/ex finops budget set --period 2026-10 --period-cents 50000 --per-run-cents 2500 \
-  --reserve-margin-percent 20 --allocate 0070-console-microruntime=2500
-npx @langdrift/ex finops gates set --default
-npx @langdrift/ex finops prices set --file prices.json --slug list
-npx @langdrift/ex finops forecasts set --file forecasts.json
-```
-
-各コマンドは書き込んだ記録を表示し、入力系のコマンドはすべて、設定した人を記録する `--by` を受け付けます。
-
-### 3. チケットから計画する
+### 2. チケットから計画する
 
 runtime がビルドして実行するコンポーネントを指定し、`ex` にチケットを読ませます。`--no-judge` はモデルを呼び出さずに計画するので、何も支払いは発生しません。これを付けずに `ANTHROPIC_API_KEY` を設定すると、プランナーはラップと同じゲートのもとでモデルを通して情報源を判定し、その費用は台帳の計画の行に記録されます。
 
@@ -160,7 +146,7 @@ CLI の出力は英語です。
 
 この抜粋では、ブロックのバージョン、名前、そして `ex` が管理する runtime とプロジェクトの識別情報を省いています。runtime が停止している間に同じチケットを再び計画すると、リビジョンが上がります。
 
-### 4. 計画を実行する
+### 3. 計画を実行する
 
 runtime を実行することが、その計画の承認になります。ラップはイメージをビルドし、プロジェクトのローカルクラスターを起動し、コーディングエージェントを通して有料呼び出しを行うので、先に `npx @langdrift/ex doctor` を実行してください。
 
@@ -176,7 +162,7 @@ npx @langdrift/ex agent run console-microruntime
 
 すべての変更は、ラップのファイル、`run.json`、台帳に記録されます。
 
-### 5. 実行を追う
+### 4. 実行を追う
 
 ```sh
 npx @langdrift/ex agent status console-microruntime

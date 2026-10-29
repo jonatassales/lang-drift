@@ -111,21 +111,7 @@ npx @langdrift/ex init
 
 `npx @langdrift/ex init` creates the project identity in `.langdrift/config.json` and the execution rules in `.langdrift/microruntimes/AGENTS.md`, and leaves existing files unchanged. Add `/.langdrift/` to `.gitignore`: it is machine-local state that `ex` writes, and nothing your team authors lives in it.
 
-### 2. Record the money rules
-
-This budget gives the team $500.00 for October 2026, caps each run at $25.00, reserves a 20% margin over every estimate and allocates $25.00 to ticket 0070. Amounts are in cents.
-
-```sh
-npx @langdrift/ex finops budget set --period 2026-10 --period-cents 50000 --per-run-cents 2500 \
-  --reserve-margin-percent 20 --allocate 0070-console-microruntime=2500
-npx @langdrift/ex finops gates set --default
-npx @langdrift/ex finops prices set --file prices.json --slug list
-npx @langdrift/ex finops forecasts set --file forecasts.json
-```
-
-Each command prints the record it wrote, and every input command takes `--by` to name who set it.
-
-### 3. Plan from a ticket
+### 2. Plan from a ticket
 
 Name the components the runtime should build and run, then let `ex` read the ticket. `--no-judge` plans without a model call, so nothing is paid; without it, and with `ANTHROPIC_API_KEY` set, the planner judges the sources through a model under the same gates as a lap, and its cost lands on the ledger's planning line.
 
@@ -158,7 +144,7 @@ The plan lands in `.langdrift/microruntimes/runtimes/console-microruntime/runtim
 
 This excerpt leaves out the fence's version, name and runtime and project identities, which `ex` manages. Planning the same ticket again, while the runtime is stopped, raises the revision.
 
-### 4. Run the plan
+### 3. Run the plan
 
 Running the runtime authorizes its plan. A lap builds images, starts the project's local cluster and makes paid calls through your coding agent, so run `npx @langdrift/ex doctor` first.
 
@@ -174,7 +160,7 @@ npx @langdrift/ex agent run console-microruntime
 
 Every change lands in the lap file, `run.json` and the ledger.
 
-### 5. Follow the run
+### 4. Follow the run
 
 ```sh
 npx @langdrift/ex agent status console-microruntime

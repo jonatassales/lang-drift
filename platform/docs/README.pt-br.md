@@ -111,21 +111,7 @@ npx @langdrift/ex init
 
 `npx @langdrift/ex init` cria a identidade do projeto em `.langdrift/config.json` e as regras de execução em `.langdrift/microruntimes/AGENTS.md`, e não altera arquivos existentes. Adicione `/.langdrift/` ao `.gitignore`: é estado local da máquina que o `ex` escreve, e nada que o seu time escreve fica ali.
 
-### 2. Registre as regras de dinheiro
-
-Este orçamento dá ao time US$ 500,00 para outubro de 2026, limita cada execução a US$ 25,00, reserva uma margem de 20% sobre cada estimativa e aloca US$ 25,00 ao ticket 0070. Os valores são em centavos.
-
-```sh
-npx @langdrift/ex finops budget set --period 2026-10 --period-cents 50000 --per-run-cents 2500 \
-  --reserve-margin-percent 20 --allocate 0070-console-microruntime=2500
-npx @langdrift/ex finops gates set --default
-npx @langdrift/ex finops prices set --file prices.json --slug list
-npx @langdrift/ex finops forecasts set --file forecasts.json
-```
-
-Cada comando imprime o registro que escreveu, e todo comando de entrada aceita `--by` para dizer quem definiu o valor.
-
-### 3. Planeje a partir de um ticket
+### 2. Planeje a partir de um ticket
 
 Informe os componentes que o runtime deve compilar e rodar e deixe o `ex` ler o ticket. `--no-judge` planeja sem chamada a modelo, então nada é pago; sem ele, e com `ANTHROPIC_API_KEY` definida, o planejador julga as fontes por um modelo sob os mesmos gates de uma volta, e o custo entra na linha de planejamento do livro-razão.
 
@@ -160,7 +146,7 @@ O plano fica em `.langdrift/microruntimes/runtimes/console-microruntime/runtime.
 
 Este trecho omite a versão, o nome e as identidades do runtime e do projeto, que o `ex` gerencia. Planejar o mesmo ticket de novo, com o runtime parado, aumenta a revisão.
 
-### 4. Rode o plano
+### 3. Rode o plano
 
 Rodar o runtime autoriza o seu plano. Uma volta compila imagens, inicia o cluster local do projeto e faz chamadas pagas pelo seu agente de código, então rode `npx @langdrift/ex doctor` antes.
 
@@ -176,7 +162,7 @@ npx @langdrift/ex agent run console-microruntime
 
 Toda mudança fica registrada no arquivo da volta, no `run.json` e no livro-razão.
 
-### 5. Acompanhe a execução
+### 4. Acompanhe a execução
 
 ```sh
 npx @langdrift/ex agent status console-microruntime
