@@ -3,14 +3,18 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import nextConfig from './next.config'
 
-// The policy production serves, directive by directive (spec 0018).
+// The policy production serves, directive by directive (spec 0018, spec 0022).
 const productionPolicy = {
 	'default-src': ["'self'"],
-	'script-src': ["'self'", "'unsafe-inline'"],
+	'script-src': ["'self'", "'unsafe-inline'", 'https://va.vercel-scripts.com'],
 	'style-src': ["'self'", "'unsafe-inline'"],
 	'img-src': ["'self'", 'data:', 'blob:'],
 	'font-src': ["'self'", 'data:'],
-	'connect-src': ["'self'"],
+	'connect-src': [
+		"'self'",
+		'https://va.vercel-scripts.com',
+		'https://vitals.vercel-insights.com',
+	],
 	'worker-src': ["'self'", 'blob:'],
 	'manifest-src': ["'self'"],
 	'frame-src': ["'none'"],
@@ -92,8 +96,18 @@ describe('the website security headers', () => {
 
 		expect(await policyAt('/en/')).toEqual({
 			...productionPolicy,
-			'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-			'connect-src': ["'self'", 'ws:'],
+			'script-src': [
+				"'self'",
+				"'unsafe-inline'",
+				'https://va.vercel-scripts.com',
+				"'unsafe-eval'",
+			],
+			'connect-src': [
+				"'self'",
+				'https://va.vercel-scripts.com',
+				'https://vitals.vercel-insights.com',
+				'ws:',
+			],
 		})
 	})
 
@@ -102,11 +116,21 @@ describe('the website security headers', () => {
 
 		expect(await policyAt('/en/')).toEqual({
 			...productionPolicy,
-			'script-src': ["'self'", "'unsafe-inline'", 'https://vercel.live'],
+			'script-src': [
+				"'self'",
+				"'unsafe-inline'",
+				'https://va.vercel-scripts.com',
+				'https://vercel.live',
+			],
 			'style-src': ["'self'", "'unsafe-inline'", 'https://vercel.live'],
 			'img-src': ["'self'", 'data:', 'blob:', 'https://vercel.live'],
 			'font-src': ["'self'", 'data:', 'https://vercel.live'],
-			'connect-src': ["'self'", 'https://vercel.live'],
+			'connect-src': [
+				"'self'",
+				'https://va.vercel-scripts.com',
+				'https://vitals.vercel-insights.com',
+				'https://vercel.live',
+			],
 			'frame-src': ['https://vercel.live'],
 		})
 	})

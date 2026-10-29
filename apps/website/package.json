@@ -12,6 +12,7 @@
 		"@hookform/resolvers": "6.0.0",
 		"@langdrift/tokens": "workspace:*",
 		"@langdrift/web": "workspace:*",
+		"@vercel/analytics": "^2.0.1",
 		"clsx": "^2.1.1",
 		"immer": "^11.1.18",
 		"jotai": "^2.15.1",
