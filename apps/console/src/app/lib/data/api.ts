@@ -1,3 +1,5 @@
+import { consolePathSafe } from './entity-id'
+
 export class ConsoleError extends Error {
 	constructor(
 		public readonly code: string,
@@ -11,6 +13,8 @@ export async function consoleRequest<T>(
 	path: string,
 	init?: RequestInit,
 ): Promise<T> {
+	// An id outside the alphabet names no record, so nothing is requested.
+	if (!consolePathSafe(path)) throw new ConsoleError('not_found', 404)
 	try {
 		const response = await fetch(`/api/console/${path}`, {
 			credentials: 'same-origin',

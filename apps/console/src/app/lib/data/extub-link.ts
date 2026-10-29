@@ -33,3 +33,24 @@ export function extubBase(raw: string | undefined, token: string | undefined) {
 
 	return null
 }
+
+// A browser call another site made: its Origin is not the console's own, or
+// its fetch metadata says cross-site. The console refuses it.
+export function crossSite(request: Request) {
+	const url = new URL(request.url)
+	const host = request.headers.get('host') ?? url.host
+	const own = new URL(`${url.protocol}//${host}`)
+	const origin = request.headers.get('origin')
+	const foreignOrigin = Boolean(origin && origin !== own.origin)
+	const crossSiteFetch = request.headers.get('sec-fetch-site') === 'cross-site'
+
+	return foreignOrigin || crossSiteFetch
+}
+
+// The request a server-rendered read hands the console's route boundary: the
+// incoming host and the path, nothing else. The browser's Origin, fetch
+// metadata and cookies describe its navigation, not this read, so a page
+// reached from another site, or rendered over HTTPS, reads normally.
+export function serverRead(host: string, path: string) {
+	return new Request(new URL(`/api/console/${path}`, `http://${host}`))
+}

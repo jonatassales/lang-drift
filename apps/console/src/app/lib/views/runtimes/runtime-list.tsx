@@ -24,7 +24,7 @@ export function RuntimeList(props: RuntimeListProps) {
 
 	const t = useTranslations('ui')
 	const resource = useResource<RuntimeListSnapshot>(
-		`runtimes${productId ? `?productId=${encodeURIComponent(productId)}` : ''}`,
+		`runtimes${productId ? `?productId=${productId}` : ''}`,
 		5000,
 		initial,
 	)

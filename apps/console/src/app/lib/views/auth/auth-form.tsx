@@ -51,6 +51,7 @@ export function AuthForm(props: AuthFormProps) {
 				<ElevatedFrame className="p-6">
 					<form
 						className="grid gap-5"
+						method="post"
 						onSubmit={(event) => {
 							event.preventDefault()
 							const form = new FormData(event.currentTarget)
