@@ -126,6 +126,7 @@ describe('a demo request at the route', () => {
 			}),
 			sameOrigin,
 		)
+
 		const submitted = request(JSON.stringify(valid), sameOrigin)
 		const paused = await postBookDemo(submitted)
 
