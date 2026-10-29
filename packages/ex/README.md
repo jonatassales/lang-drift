@@ -1,6 +1,6 @@
 # LangDrift CLI
 
-This Go module, adopted from the Exphere repository, performs the Microruntimes session inside a project. `ex agent plan` reads a ticket and the artifacts it links, judges them through a model, retrieves the project's earlier runs, sizes the components inside the team's envelope and writes the runtime file that plans the work. `ex agent run` runs that plan as laps under the team's money gates: it drives the owner's coding agent through the delivery stages, brings the runtime up on the bounded local kind/Terraform/Kubernetes lifecycle, observes what the harness delivered, settles the ledger and remembers what it measured. The module also keeps the connected agent that supervises microruntimes from a LangDrift console, which needs a server this repository does not have. Applications need no LangDrift dependency. This is a local development candidate, not a published release or a claim of operational readiness.
+This Go module, adopted from the Exphere repository, performs the Microruntimes session inside a project. `ex agent plan` reads a ticket and the artifacts it links, judges them through a model, retrieves the project's earlier runs, sizes the components inside the team's envelope and writes the runtime file that plans the work. `ex agent run` runs that plan as laps under the team's money gates: it drives the owner's coding agent through the delivery stages, brings the runtime up on the bounded local kind/Terraform/Kubernetes lifecycle, observes what the harness delivered, settles the ledger and remembers what it measured. The module also keeps the connected agent that supervises microruntimes from a LangDrift console, which needs a server this repository does not have. Applications need no LangDrift dependency. It is published on npm as `@langdrift/ex` (`npx @langdrift/ex`).
 
 ## Build and checks
 
@@ -13,30 +13,33 @@ GOTOOLCHAIN=local go test ./...
 GOTOOLCHAIN=local go vet ./...
 ```
 
-The module, `github.com/jonatassales/tao/packages/ex`, is the private package
+The module, `github.com/jonatassales/tao/packages/ex`, is published on npm as
 `@langdrift/ex`. It imports the [Microruntimes contracts](/packages/contracts/README.md),
 `github.com/jonatassales/tao/packages/contracts`, for the `runtime.md` fence,
 the lexical rules and the agent-server protocol, and the official Anthropic Go
 SDK for the planner's model calls. The root `go.work` ties the two modules and
 `apps/extub` together, so the CLI imports the contracts without a `replace`
-directive; building it outside this repository needs the contracts module
-published. This does not imply a published release. Native Go commands own the
-build and checks. Building does not install infrastructure tools, alter shell
-profiles, or change PATH. Use `./dist/ex` to avoid invoking the unrelated system
+directive; building it from source outside this repository needs the contracts
+module published. Native Go commands own the build and checks. Building does not
+install infrastructure tools, alter shell profiles, or change PATH. Use
+`npx @langdrift/ex` or `./dist/ex` to avoid invoking the unrelated system
 editor also named `ex`.
 
-## Workspace package
+## Package and `npx`
 
-The package holds only the Go module, its source, and `build.sh`. `build.sh`
-builds `dist/ex` with an existing Go toolchain, never installs Go or tools, and
-never changes shell profiles; `LANGDRIFT_SKIP_EX_BUILD=1` skips it. Installing
-the workspace does not run it. From the workspace root,
-`pnpm --filter @langdrift/ex build` rebuilds the executable.
+`@langdrift/ex` ships a POSIX shell launcher at `bin/ex` and prebuilt static
+`CGO_ENABLED=0` binaries for macOS and Linux (`darwin`/`linux` on `arm64`/`x64`).
+Run it directly with `npx @langdrift/ex <command>` (or `pnpm dlx @langdrift/ex <command>`),
+or `npx ex <command>` inside a project where `@langdrift/ex` is installed.
 
-This package declares no npm bin. Run `packages/ex/dist/ex` directly from this
-repository. The separate SDK package and its bridge were removed on October 21, 2026. The former shell-setup command,
-package bridge, historical schemas, and consumer-harness fixtures were removed
-on October 17, 2026; Git history retains them.
+In this repository, `build.sh` builds `dist/ex` for the host OS and architecture
+with an existing Go toolchain, injecting the version from `package.json` into
+`main.version`, never installs Go or tools, and never changes shell profiles;
+`LANGDRIFT_SKIP_EX_BUILD=1` skips it. Installing the workspace does not run it.
+From the workspace root, `pnpm --filter @langdrift/ex build` rebuilds the host
+executable, and `sh build.sh --release` (run automatically by `prepack`)
+cross-compiles all four target binaries (`dist/ex-darwin-arm64`,
+`dist/ex-darwin-amd64`, `dist/ex-linux-amd64` and `dist/ex-linux-arm64`).
 
 ## Boundary
 
@@ -113,7 +116,7 @@ The executable runs as a trusted process from the project root, never through a 
 
 ## Commands
 
-In the commands below, `ex` means this tree's compiled `./dist/ex` executable.
+In the commands below, `ex` means `npx @langdrift/ex` or this tree's compiled `./dist/ex` executable.
 
 | Command | Behavior |
 | --- | --- |
@@ -151,7 +154,7 @@ All previous `ex runtime ...` creation, configuration and operation commands now
 Global flags are `--project <directory>`, `--json`, and `--timeout <duration>`.
 Without `--project`, the nearest parent project is discovered. Finite commands default to two minutes; `ex agent run` is bounded by the driver's timeout per call and by `--checks-wait`. `ex agent supervise` owns a foreground process until interrupted; each native operation is separately bounded to two minutes and cleanup uses its own bounded context.
 
-The standalone binary can be built directly with Go and placed in a user-selected executable directory as `ex`; Node, pnpm and the SDK are unnecessary in consumer projects. Builds do not modify a shell profile or PATH. No binary download, package publication or personal installation was performed in this delivery.
+The standalone binary can be run via `npx @langdrift/ex` or built directly with Go and placed in a user-selected executable directory as `ex`; consumer application code needs no LangDrift dependency. Builds do not modify a shell profile or PATH.
 
 The local console normally handles bootstrap and agent launch. One project has one `.langdrift` and one agent; a process lock prevents a second project agent or a legacy supervision loop from concurrently owning the same checkout. The agent admits at most 128 runtime workers, polls membership every five seconds, and joins its workers on cancellation. A console-owned stdin pipe also cancels the agent if its parent disappears. This process does not install dependencies or start workloads merely by connecting.
 

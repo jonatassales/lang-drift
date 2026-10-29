@@ -1,24 +1,44 @@
 {
 	"name": "@langdrift/ex",
-	"version": "0.0.0",
-	"private": true,
-	"scripts": {
-		"build": "go build -o dist/ex ./src",
-		"test": "go test -race ./...",
-		"typecheck": "go vet ./..."
+	"version": "0.1.0",
+	"description": "LangDrift FinOps and Microruntimes CLI",
+	"license": "MIT",
+	"homepage": "https://langdrift.md",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/jonatassales/lang-drift.git",
+		"directory": "packages/ex"
 	},
-	"dependencies": {
-		"@langdrift/contracts": "workspace:*"
+	"publishConfig": {
+		"access": "public"
+	},
+	"bin": {
+		"ex": "./bin/ex"
 	},
 	"files": [
-		"src",
-		"go.mod",
-		"go.sum",
-		"build.sh",
+		"bin/ex",
+		"dist/ex-darwin-arm64",
+		"dist/ex-darwin-amd64",
+		"dist/ex-linux-amd64",
+		"dist/ex-linux-arm64",
+		"LICENSE",
 		"README.md"
 	],
 	"os": [
 		"darwin",
 		"linux"
-	]
+	],
+	"cpu": [
+		"x64",
+		"arm64"
+	],
+	"scripts": {
+		"build": "sh build.sh",
+		"prepack": "sh build.sh --release",
+		"test": "go test -race ./...",
+		"typecheck": "go vet ./..."
+	},
+	"devDependencies": {
+		"@langdrift/contracts": "workspace:*"
+	}
 }

@@ -84,7 +84,7 @@ Toda entrada que pode bloquear ou liberar uma execução é registrada com quem 
 
 ## Status do projeto
 
-**O LangDrift está em desenvolvimento.** O site está no ar em [langdrift.md](https://langdrift.md/pt-br/), em cinco idiomas. O console lê o `extub`, uma API stub que semeia um projeto, o LangDrift Studio, e marca as suas leituras de FinOps como ilustrativas. Você compila o `ex` a partir do código-fonte; nenhum binário é publicado.
+**O LangDrift está em desenvolvimento.** O site está no ar em [langdrift.md](https://langdrift.md/pt-br/), em cinco idiomas. O console lê o `extub`, uma API stub que semeia um projeto, o LangDrift Studio, e marca as suas leituras de FinOps como ilustrativas. A CLI está publicada no npm como `@langdrift/ex` (`npx @langdrift/ex`), ou você pode compilá-la a partir do código-fonte.
 
 `ex agent plan` e `ex agent run` funcionam localmente dentro de um projeto, e os gates de dinheiro rodam dentro do `ex` contra o livro-razão do próprio projeto; um livro-razão do time compartilhado por um servidor ainda não foi construído. O agente conectado (`ex agent connect`, `project`, `supervise` e `migrate`) precisa de um servidor que este repositório ainda não tem. As suítes de teste conduzem a CLI com modelos, agentes de código e ciclos de vida roteirizados; elas não comprovam o início de um cluster real, gasto real nem prontidão para produção. O cadastro no site está pausado.
 
@@ -99,9 +99,17 @@ Toda entrada que pode bloquear ou liberar uma execução é registrada com quem 
 
 ## Comece com `ex`
 
-Você precisa de macOS ou Linux e de Go 1.26 ou mais recente; isso basta para planejar. O juiz do planejador lê `ANTHROPIC_API_KEY`. Rodar uma volta também exige Docker, kind, kubectl e Terraform (`ex doctor` verifica e não instala nada), o agente de código que você configurar, como o Claude Code, e `gh` para observar pull requests.
+Você precisa de macOS ou Linux; rodar `@langdrift/ex` pelo npm exige Node.js, e compilar a partir do código-fonte exige Go 1.26 ou mais recente. Isso basta para planejar. O juiz do planejador lê `ANTHROPIC_API_KEY`. Rodar uma volta também exige Docker, kind, kubectl e Terraform (`ex doctor` verifica e não instala nada), o agente de código que você configurar, como o Claude Code, e `gh` para observar pull requests.
 
-### 1. Compile a CLI
+### 1. Execute ou compile a CLI
+
+Execute `@langdrift/ex` diretamente com `npx`:
+
+```sh
+npx @langdrift/ex version
+```
+
+Ou compile a partir do código-fonte:
 
 ```sh
 git clone https://github.com/jonatassales/lang-drift.git
@@ -110,7 +118,7 @@ GOTOOLCHAIN=local go build -o dist/ex ./src
 ./dist/ex version
 ```
 
-`version` imprime `ex 0.0.0-dev`. O seu sistema pode já ter um `ex`, o editor de linha do Vi, então chame este pelo caminho. Os passos abaixo escrevem `ex` no lugar de `packages/ex/dist/ex`; apenas neste shell, `alias ex="$PWD/dist/ex"` faz isso.
+`version` imprime `ex 0.1.0` (ou `ex 0.0.0-dev` em um build local sem versão). O seu sistema pode já ter um `ex`, o editor de linha do Vi, então chame este via `npx @langdrift/ex` ou pelo caminho. Os passos abaixo escrevem `ex` no lugar de `npx @langdrift/ex` ou `packages/ex/dist/ex`; apenas neste shell, `alias ex="npx @langdrift/ex"` (ou `alias ex="$PWD/dist/ex"`) faz isso.
 
 ### 2. Inicialize um projeto
 

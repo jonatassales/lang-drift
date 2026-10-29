@@ -1,0 +1,49 @@
+#!/bin/sh
+set -eu
+
+unsupported_platform() {
+  printf '%s\n' 'LangDrift CLI supports macOS and Linux (x64 and arm64).' >&2
+  exit 4
+}
+
+# Resolve symlinks so `ex` works through `npx` and `node_modules/.bin/ex`.
+_ex_source=$0
+while [ -L "$_ex_source" ]; do
+  _ex_dir=$(CDPATH='' cd -P -- "$(dirname -- "$_ex_source")" && pwd)
+  _ex_link=$(readlink "$_ex_source")
+  case "$_ex_link" in
+    /*) _ex_source=$_ex_link ;;
+    *) _ex_source=$_ex_dir/$_ex_link ;;
+  esac
+done
+
+_ex_bin_dir=$(CDPATH='' cd -P -- "$(dirname -- "$_ex_source")" && pwd)
+_ex_package_dir=$(dirname -- "$_ex_bin_dir")
+
+case "$(uname -s 2>/dev/null || true)" in
+  Darwin) _ex_os=darwin ;;
+  Linux) _ex_os=linux ;;
+  *) unsupported_platform ;;
+esac
+
+case "$(uname -m 2>/dev/null || true)" in
+  arm64 | aarch64) _ex_arch=arm64 ;;
+  x86_64 | amd64) _ex_arch=amd64 ;;
+  *) unsupported_platform ;;
+esac
+
+_ex_binary="$_ex_package_dir/dist/ex-$_ex_os-$_ex_arch"
+if [ ! -f "$_ex_binary" ]; then
+  _ex_binary="$_ex_package_dir/dist/ex"
+fi
+
+if [ -f "$_ex_binary" ] && [ ! -x "$_ex_binary" ]; then
+  chmod 755 "$_ex_binary" 2>/dev/null || true
+fi
+
+if [ ! -x "$_ex_binary" ]; then
+  printf '%s\n' "LangDrift CLI binary is missing for $_ex_os/$_ex_arch. Run build.sh or reinstall @langdrift/ex." >&2
+  exit 4
+fi
+
+exec "$_ex_binary" "$@"

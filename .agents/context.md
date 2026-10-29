@@ -34,7 +34,7 @@ Run from the repository root:
 | `pnpm turbo run test` | Runs each package's `test` script. |
 | `pnpm turbo run check` | Runs Biome format, lint and import checks on the whole repository. Read-only. |
 | `pnpm turbo run fix` | Same as `check`, writing safe fixes. Review the diff afterwards. |
-| `packages/ex/dist/ex …` | The Microruntimes session in a project: `ex init`, the `ex harness` and `ex finops` inputs, then `ex agent plan`, `ex agent run`, `ex agent confirm`, `ex agent status` and `ex agent reindex`. `packages/ex/README.md` has the command table. |
+| `packages/ex/dist/ex …` | The Microruntimes session in a project (`@langdrift/ex` ships a `bin/ex` launcher and prebuilt binaries on npm for `npx @langdrift/ex …` / `pnpm dlx @langdrift/ex …`): `ex init`, the `ex harness` and `ex finops` inputs, then `ex agent plan`, `ex agent run`, `ex agent confirm`, `ex agent status` and `ex agent reindex`. `packages/ex/README.md` has the command table. |
 
 The website needs `CRYPTO_SECRET` even locally; without it every page answers 500. The tracked `.env.development` carries a development-only key, so a fresh checkout runs; `apps/website/README.md` says how to generate one for a deployment.
 
