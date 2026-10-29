@@ -10,7 +10,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/fs"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -78,7 +80,11 @@ func (driver Driver) Run(ctx context.Context, config harness.Driver, call execut
 			return stageResult, fmt.Errorf("%s did not finish within %d seconds; see %s", config.Executable, config.TimeoutSeconds, logPath)
 		}
 
-		return stageResult, fmt.Errorf("%s did not run: %w", config.Executable, runErr)
+		if notStarted(runErr) {
+			return stageResult, fmt.Errorf("%w: %s did not run: %w", execution.ErrNotStarted, config.Executable, runErr)
+		}
+
+		return stageResult, fmt.Errorf("%s was interrupted; what it used is unknown: %w", config.Executable, runErr)
 	}
 
 	stageResult.InputTokens, stageResult.OutputTokens, stageResult.Summary = read(result.Stdout, config)
@@ -310,4 +316,10 @@ func lastLine(output string) string {
 	}
 
 	return ""
+}
+
+// notStarted reports whether a process failed before it ran: no such
+// executable, or no permission to run it.
+func notStarted(err error) bool {
+	return errors.Is(err, exec.ErrNotFound) || errors.Is(err, fs.ErrPermission)
 }

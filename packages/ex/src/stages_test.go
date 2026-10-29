@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"os"
 	"path/filepath"
 	"slices"
@@ -42,6 +43,7 @@ type scriptedDriver struct {
 	usage      map[string][2]int64
 	unmeasured map[string]bool
 	exits      map[string]int
+	cutOff     map[string]bool
 	hookExit   int
 	calls      []execution.StageCall
 	hooks      []execution.HookCall
@@ -53,13 +55,16 @@ func websiteDriver() *scriptedDriver {
 		usage[skill] = tokens
 	}
 
-	return &scriptedDriver{usage: usage, unmeasured: map[string]bool{}, exits: map[string]int{}}
+	return &scriptedDriver{usage: usage, unmeasured: map[string]bool{}, exits: map[string]int{}, cutOff: map[string]bool{}}
 }
 
 func (driver *scriptedDriver) Run(_ context.Context, _ harness.Driver, call execution.StageCall) (execution.StageResult, error) {
 	driver.calls = append(driver.calls, call)
 
 	result := execution.StageResult{ExitCode: driver.exits[call.Skill], Summary: websiteSummaries[call.Skill], LogPath: ".langdrift/agent/state/runs/" + call.Runtime + "/stages/" + call.Lap + "-" + call.Stage + "-" + call.Skill + ".log", ElapsedMs: 1200}
+	if driver.cutOff[call.Skill] {
+		return execution.StageResult{ExitCode: -1}, errors.New("claude was interrupted; what it used is unknown")
+	}
 	if driver.unmeasured[call.Skill] {
 		return result, nil
 	}

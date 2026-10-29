@@ -54,10 +54,38 @@ func (playing *playing) finish(ctx context.Context) (StartResult, error) {
 // bringUp materializes the runtime from its fence, builds and starts it,
 // and prints that it is ready, with what the plan proposed for it.
 func (playing *playing) bringUp(ctx context.Context) error {
-	if playing.lap.Execution != "" {
+	if playing.lap.Ready != nil {
 		return nil
 	}
 
+	if playing.lap.Execution == "" {
+		if err := playing.start(ctx); err != nil {
+			return err
+		}
+	}
+
+	// A lap that started but was not ready looks again before it goes on.
+	observation, err := playing.service.Lifecycle.Observe(ctx, playing.owner, playing.runtime)
+	if err != nil {
+		return playing.abort(fmt.Errorf("runtime %s could not be observed: %w", playing.runtime, err))
+	}
+	if !observation.Ready {
+		return playing.abort(fmt.Errorf("runtime %s started but is not ready: %d of %d containers ready", playing.runtime, observation.ReadyContainers, observation.Containers))
+	}
+
+	now := playing.now()
+	playing.lap.Ready = &now
+	playing.lap.Resources = &ResourceObservation{Proposed: playing.planned.Totals.Proposed, Executed: harness.Resources{CPUMillis: playing.config.CPUMillis, MemoryMiB: playing.config.MemoryMiB}}
+	playing.lap.Steps = append(playing.lap.Steps, Step{Name: "Ready", At: now, Note: fmt.Sprintf("%d of %d containers ready on %s", observation.ReadyContainers, observation.Containers, playing.readinessPaths())})
+	playing.sample(observation)
+
+	emit(playing.sink, session.RuntimeReady, session.Data{"runtime": playing.runtime.String(), "revision": playing.config.Revision, "deployments": observation.Deployments, "cpuMillis": playing.planned.Totals.Proposed.CPUMillis, "memoryMiB": playing.planned.Totals.Proposed.MemoryMiB})
+
+	return playing.persist()
+}
+
+// start materializes, builds and starts the runtime, and claims its execution.
+func (playing *playing) start(ctx context.Context) error {
 	markdown, err := playing.service.Records.ReadRuntime(playing.owner, playing.runtime)
 	if err != nil {
 		return err
@@ -76,23 +104,7 @@ func (playing *playing) bringUp(ctx context.Context) error {
 	playing.lap.Runtime = &run.RuntimeFence{ID: playing.runtime.String(), Revision: playing.config.Revision, MarkdownSHA256: collection.SHA256(markdown)}
 	playing.lap.Steps = append(playing.lap.Steps, Step{Name: "Claimed", At: playing.now(), Note: "execution `" + execution.ID + "`"})
 
-	observation, err := playing.service.Lifecycle.Observe(ctx, playing.owner, playing.runtime)
-	if err != nil {
-		return playing.abort(fmt.Errorf("runtime %s could not be observed: %w", playing.runtime, err))
-	}
-	if !observation.Ready {
-		return playing.abort(fmt.Errorf("runtime %s started but is not ready: %d of %d containers ready", playing.runtime, observation.ReadyContainers, observation.Containers))
-	}
-
-	now := playing.now()
-	playing.lap.Ready = &now
-	playing.lap.Resources = &ResourceObservation{Proposed: playing.planned.Totals.Proposed, Executed: harness.Resources{CPUMillis: playing.config.CPUMillis, MemoryMiB: playing.config.MemoryMiB}}
-	playing.lap.Steps = append(playing.lap.Steps, Step{Name: "Ready", At: now, Note: fmt.Sprintf("%d of %d containers ready on %s", observation.ReadyContainers, observation.Containers, playing.readinessPaths())})
-	playing.sample(observation)
-
-	emit(playing.sink, session.RuntimeReady, session.Data{"runtime": playing.runtime.String(), "revision": playing.config.Revision, "deployments": observation.Deployments, "cpuMillis": playing.planned.Totals.Proposed.CPUMillis, "memoryMiB": playing.planned.Totals.Proposed.MemoryMiB})
-
-	return playing.persist()
+	return nil
 }
 
 // readinessPaths names the paths the components answer readiness on.
@@ -162,6 +174,7 @@ func (playing *playing) observeDelivery(ctx context.Context) error {
 		playing.record.Delivery.Commit = text(branch.Commit)
 	}
 
+	playing.pushed = branch.Upstream
 	if branch.Upstream {
 		emit(playing.sink, session.Pushed, session.Data{"branch": branch.Name, "commit": branch.Commit})
 	} else {
@@ -388,7 +401,9 @@ func (playing *playing) release() (StartResult, error) {
 }
 
 // ending is how the run ends: for review when a person takes part in a
-// stage the run leaves to them, else to merge; unknown stays unknown.
+// stage the run leaves to them, or when delivery shows anything short of a
+// pushed branch with a pull request whose checks all passed; to merge only
+// then; unknown stays unknown.
 func (playing *playing) ending() (string, *run.ProposedTicketStatus) {
 	if playing.lap.Outcome == Unknown {
 		return Unknown, nil
@@ -408,7 +423,28 @@ func (playing *playing) ending() (string, *run.ProposedTicketStatus) {
 		return ReadyForReview, &run.ProposedTicketStatus{Status: "in-review", DecidedBy: inputs.DefaultBy, Decided: false}
 	}
 
+	if !playing.deliveredCleanly() {
+		return ReadyForReview, &run.ProposedTicketStatus{Status: "in-review", DecidedBy: inputs.DefaultBy, Decided: false}
+	}
+
 	return ReadyToMerge, &run.ProposedTicketStatus{Status: "ready-to-merge", DecidedBy: inputs.DefaultBy, Decided: false}
+}
+
+// deliveredCleanly reports whether delivery shows a pushed branch with a
+// pull request whose every check passed.
+func (playing *playing) deliveredCleanly() bool {
+	delivery := playing.record.Delivery
+	if !playing.pushed || delivery.PullRequest == nil || len(delivery.Checks) == 0 {
+		return false
+	}
+
+	for _, check := range delivery.Checks {
+		if check.Result != CheckPassed {
+			return false
+		}
+	}
+
+	return true
 }
 
 // observed is what the lap measured, for its fence and the memory.

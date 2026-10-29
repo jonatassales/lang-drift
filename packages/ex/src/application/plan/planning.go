@@ -53,6 +53,7 @@ type planning struct {
 	previous       *run.Run
 	previousLedger *finops.Ledger
 	spent          int
+	spendKept      bool
 }
 
 // analysis is what the judge said about the sources.
@@ -584,12 +585,7 @@ func (planning *planning) write() error {
 		return err
 	}
 
-	ledger := planning.ledger()
-	if err := planning.service.Records.WriteLedger(planning.owner, planning.runtime.String(), ledger); err != nil {
-		return err
-	}
-
-	return planning.service.Spend.SavePlanning(planning.owner, planning.runtime, planning.now, ledger.Planning)
+	return planning.keepSpend()
 }
 
 func (planning *planning) emit(id string, data session.Data) {

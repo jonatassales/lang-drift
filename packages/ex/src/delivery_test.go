@@ -22,6 +22,7 @@ type scriptedLifecycle struct {
 	execution    string
 	cleanup      execution.Cleanup
 	failUp       error
+	notReady     int
 	ups          int
 	downs        int
 	observations int
@@ -45,6 +46,11 @@ func (lifecycle *scriptedLifecycle) Up(_ context.Context, _ projectdomain.Projec
 
 func (lifecycle *scriptedLifecycle) Observe(context.Context, projectdomain.Project, microruntime.Identifier) (execution.Observation, error) {
 	lifecycle.observations++
+	if lifecycle.notReady > 0 {
+		lifecycle.notReady--
+
+		return execution.Observation{Containers: 1, Deployments: 1}, nil
+	}
 	cpu, memory := 410, 690
 	if lifecycle.observations == 1 {
 		cpu = 120

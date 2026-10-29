@@ -83,6 +83,9 @@ type StageState struct {
 	At          *harness.Timestamp `json:"at"`
 	Summary     *string            `json:"summary,omitempty"`
 	Usage       *StageUsage        `json:"usage,omitempty"`
+	// SkillsDone are the stage's skills that finished, so a stage a gate
+	// paused halfway plays on from the next skill.
+	SkillsDone []string `json:"skillsDone,omitempty"`
 }
 
 // StageUsage is what a stage's calls used, when the driver reported it.

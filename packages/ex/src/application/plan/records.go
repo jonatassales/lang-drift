@@ -179,9 +179,15 @@ func IsHuman(stage harness.Stage, defaults harness.Defaults) bool {
 	return false
 }
 
-// ledger opens the runtime's ledger with the planning line: what the
-// judge's calls cost, or nothing paid when no judge ran.
+// ledger is the runtime's ledger after this plan: what earlier plans and
+// runs cost, with this plan's planning line added in.
 func (planning *planning) ledger() finops.Ledger {
+	return planning.carryOver(planning.ownLedger())
+}
+
+// ownLedger opens a ledger with this plan's planning line alone: what the
+// judge's calls cost, or nothing paid when no judge ran.
+func (planning *planning) ownLedger() finops.Ledger {
 	budget := planning.guards.Budget
 	runtime := planning.runtime.String()
 
@@ -206,7 +212,7 @@ func (planning *planning) ledger() finops.Ledger {
 	}
 
 	if !planning.judge.paid() {
-		return planning.carryOver(ledger)
+		return ledger
 	}
 
 	judge := planning.judge
@@ -223,7 +229,7 @@ func (planning *planning) ledger() finops.Ledger {
 		PeriodLeftAfterCents: budget.Bounded.PeriodCents - observed,
 	}
 
-	return planning.carryOver(ledger)
+	return ledger
 }
 
 func (component resolved) record(by string, share harness.Resources) run.Component {
@@ -335,4 +341,40 @@ func addPlanning(earlier, latest finops.PlanningLine) finops.PlanningLine {
 	}
 
 	return sum
+}
+
+// keepSpend records what this plan's calls cost: the ledger's planning
+// line and the private entry the gates count. It runs once, when the plan
+// is written or when a step fails after the judge was paid, so a paid call
+// always leaves a money record.
+func (planning *planning) keepSpend() error {
+	if planning.spendKept {
+		return nil
+	}
+	planning.spendKept = true
+
+	if err := planning.service.Records.WriteLedger(planning.owner, planning.runtime.String(), planning.ledger()); err != nil {
+		return err
+	}
+
+	own := planning.ownLedger().Planning
+	if own.Cents.Reserved == 0 && own.Cents.Observed == 0 {
+		return nil
+	}
+
+	return planning.service.Spend.SavePlanning(planning.owner, planning.runtime, planning.now, own)
+}
+
+// keepSpendAfter is a step's failure, with the judge's spend recorded first
+// when the judge was paid.
+func (planning *planning) keepSpendAfter(cause error) error {
+	if !planning.judge.paid() {
+		return cause
+	}
+
+	if err := planning.keepSpend(); err != nil {
+		return errors.Join(cause, fmt.Errorf("and the planner's spend could not be recorded: %w", err))
+	}
+
+	return cause
 }

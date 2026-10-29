@@ -52,6 +52,12 @@ func TestBranchSaysWhetherTheCommitReachedTheUpstream(t *testing.T) {
 		t.Errorf("a branch ahead of its upstream = %+v", branch)
 	}
 
+	runner.failures["git rev-list --count @{upstream}..HEAD"] = errors.New("git failed: exit status 128")
+	if branch := (delivery.Observer{Runner: runner}).Branch(context.Background(), "/workspace"); branch.Upstream || branch.Reason != "the upstream could not be compared" {
+		t.Errorf("an upstream that cannot be compared = %+v", branch)
+	}
+	delete(runner.failures, "git rev-list --count @{upstream}..HEAD")
+
 	runner.failures["git rev-parse --abbrev-ref --symbolic-full-name @{upstream}"] = errors.New("git failed: exit status 128")
 	if branch := (delivery.Observer{Runner: runner}).Branch(context.Background(), "/workspace"); branch.Upstream || branch.Reason != "no upstream" || branch.Name == "" {
 		t.Errorf("a branch without an upstream = %+v", branch)

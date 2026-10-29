@@ -3,8 +3,10 @@ package stages_test
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"slices"
 	"strings"
@@ -116,9 +118,14 @@ func TestDriverReportsWhatItCannotRead(t *testing.T) {
 		t.Errorf("a failing skill gave %+v, %v; want its exit code and what it reported", result, err)
 	}
 
-	missing := stages.Driver{Runner: &recorder{result: process.Result{ExitCode: -1}, err: errors.New("exec: \"claude\": executable file not found in $PATH")}}
-	if _, err := missing.Run(context.Background(), claudeDriver(), call(root)); err == nil || !strings.Contains(err.Error(), "did not run") {
-		t.Errorf("a missing executable gave %v", err)
+	missing := stages.Driver{Runner: &recorder{result: process.Result{ExitCode: -1}, err: fmt.Errorf("claude failed: %w", &exec.Error{Name: "claude", Err: exec.ErrNotFound})}}
+	if _, err := missing.Run(context.Background(), claudeDriver(), call(root)); !errors.Is(err, execution.ErrNotStarted) || !strings.Contains(err.Error(), "did not run") {
+		t.Errorf("a missing executable gave %v, want ErrNotStarted", err)
+	}
+
+	killed := stages.Driver{Runner: &recorder{result: process.Result{ExitCode: -1}, err: errors.New("signal: killed")}}
+	if _, err := killed.Run(context.Background(), claudeDriver(), call(root)); err == nil || errors.Is(err, execution.ErrNotStarted) || !strings.Contains(err.Error(), "unknown") {
+		t.Errorf("a killed agent gave %v, want its use unknown", err)
 	}
 }
 

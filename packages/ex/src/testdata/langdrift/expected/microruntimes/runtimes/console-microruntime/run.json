@@ -74,7 +74,8 @@
 				"inputTokens": 300000,
 				"outputTokens": 20000,
 				"cents": 80
-			}
+			},
+			"skillsDone": ["grilling"]
 		},
 		{
 			"id": "spec",
@@ -86,7 +87,8 @@
 				"inputTokens": 400000,
 				"outputTokens": 30000,
 				"cents": 110
-			}
+			},
+			"skillsDone": ["to-spec"]
 		},
 		{
 			"id": "tickets",
@@ -98,7 +100,8 @@
 				"inputTokens": 300000,
 				"outputTokens": 20000,
 				"cents": 80
-			}
+			},
+			"skillsDone": ["to-tickets"]
 		},
 		{
 			"id": "implement",
@@ -110,7 +113,8 @@
 				"inputTokens": 2700000,
 				"outputTokens": 170000,
 				"cents": 710
-			}
+			},
+			"skillsDone": ["implement", "tdd", "code-review"]
 		},
 		{
 			"id": "review",

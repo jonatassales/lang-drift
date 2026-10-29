@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"slices"
 	"time"
 
 	"github.com/jonatassales/tao/packages/contracts/configuration"
@@ -37,6 +38,7 @@ type playing struct {
 	confirm    Confirmer
 	bounds     finops.Bounds
 	checksWait time.Duration
+	pushed     bool
 	now        func() harness.Timestamp
 }
 
@@ -127,13 +129,24 @@ func (playing *playing) perform(ctx context.Context, stage harness.Stage) error 
 		}
 	}
 
-	var summary string
+	summary := ""
+	if state := playing.stageState(stage.ID); state.Summary != nil {
+		summary = *state.Summary
+	}
 	for _, skill := range stage.Skills {
+		if slices.Contains(playing.stageState(stage.ID).SkillsDone, skill) {
+			continue
+		}
+
 		result, err := playing.skill(ctx, stage, skill)
 		if err != nil {
 			return err
 		}
 		summary = result.Summary
+		playing.setStage(stage.ID, func(state *run.StageState) {
+			state.SkillsDone = append(state.SkillsDone, skill)
+			state.Summary = text(summary)
+		})
 	}
 
 	at := playing.now()
@@ -179,6 +192,10 @@ func (playing *playing) skill(ctx context.Context, stage harness.Stage, skill st
 	call := StageCall{ProjectRoot: playing.owner.Root, Runtime: playing.runtime.String(), Lap: playing.lap.Number, Stage: stage.ID, Skill: skill, Ticket: playing.planned.Ticket.Path, Execution: playing.lap.Execution}
 
 	result, err := playing.service.Driver.Run(ctx, *playing.driver, call)
+	if err != nil && !errors.Is(err, ErrNotStarted) {
+		// The agent ran and was cut off: what it used is unknown, never zero.
+		playing.lap.Unmeasured = true
+	}
 	if err != nil {
 		return StageResult{}, playing.fail(stage, fmt.Errorf("skill %s of stage %s: %w", skill, stage.ID, err))
 	}
@@ -350,6 +367,10 @@ func (playing *playing) persist() error {
 // reservation.
 func (playing *playing) settleLine() {
 	lap := playing.lap
+	if !hasLine(playing.ledger, lap.Number) {
+		// An earlier write of the lap did not reach the ledger.
+		playing.ledger.Laps = append(playing.ledger.Laps, lineOf(lap))
+	}
 	for index := range playing.ledger.Laps {
 		line := &playing.ledger.Laps[index]
 		if line.Lap != lap.Number {
@@ -385,11 +406,27 @@ func thousands(tokens int64) int {
 	return int((tokens + 999) / 1000)
 }
 
-// syncLapSummary keeps the run record's entry for the lap current.
+// syncLapSummary keeps the run record's entry for the lap current, adding
+// it when an earlier write of the lap did not reach the record.
 func (playing *playing) syncLapSummary() {
 	for index := range playing.record.Laps {
 		if playing.record.Laps[index].Number == playing.lap.Number {
 			playing.record.Laps[index] = summaryOf(playing.lap)
+
+			return
 		}
 	}
+
+	playing.record.Laps = append(playing.record.Laps, summaryOf(playing.lap))
+}
+
+// hasLine reports whether the ledger has a line for the lap.
+func hasLine(ledger finops.Ledger, number string) bool {
+	for _, line := range ledger.Laps {
+		if line.Lap == number {
+			return true
+		}
+	}
+
+	return false
 }

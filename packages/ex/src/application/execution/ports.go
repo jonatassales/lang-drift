@@ -40,6 +40,9 @@ type Laps interface {
 	Open(owner project.Project, runtime microruntime.Identifier) (Lap, bool, error)
 	List(owner project.Project, runtime microruntime.Identifier) ([]Lap, error)
 	Period(owner project.Project, period string) (int, error)
+	// Lock takes the runtime's run lock, so one plan, run or confirmation
+	// changes the runtime's records at a time.
+	Lock(owner project.Project, runtime microruntime.Identifier) (func(), error)
 }
 
 // Lap is one attempt of the run, as the private state keeps it.
@@ -110,6 +113,10 @@ var ErrGate = errors.New("a money gate did not pass")
 
 // ErrRefused says the run cannot take the request as it stands.
 var ErrRefused = errors.New("the run refuses")
+
+// ErrNotStarted says a stage's process never started, so it used nothing;
+// any other failure of a call leaves what it used unknown.
+var ErrNotStarted = errors.New("the process did not start")
 
 // Confirmer answers whether the owner confirms a human stage now, as an
 // interactive run asks; without one the run waits for ex agent confirm.

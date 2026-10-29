@@ -82,6 +82,12 @@ func (service Service) Start(ctx context.Context, request StartRequest) (StartRe
 		return StartResult{}, fmt.Errorf("%w: %v", inputs.ErrInvalid, err)
 	}
 
+	unlock, err := service.Laps.Lock(owner, runtime)
+	if err != nil {
+		return StartResult{}, fmt.Errorf("%w: %s is busy: %v", ErrRefused, runtime, err)
+	}
+	defer unlock()
+
 	if !plainModel(request.Model) {
 		return StartResult{}, fmt.Errorf("%w: --model takes a model id without spaces", inputs.ErrInvalid)
 	}

@@ -254,24 +254,47 @@ func (store LapStore) List(owner project.Project, runtime microruntime.Identifie
 	return laps, nil
 }
 
-// planningSpend is the planner's spend as the private state keeps it,
-// beside the laps, so a gate can count it without reading the ledger mirror.
+// planningSpend is what one plan's calls cost, as the private state keeps
+// it beside the laps, so a gate can count it without reading the ledger
+// mirror. Each plan adds its own entry; the ledger's line is their sum.
 type planningSpend struct {
 	At   harness.Timestamp   `json:"at"`
 	Line finops.PlanningLine `json:"line"`
 }
 
-// SavePlanning keeps what the planner's calls cost.
-func (LapStore) SavePlanning(owner project.Project, runtime microruntime.Identifier, at harness.Timestamp, line finops.PlanningLine) error {
+// planningSpends is a runtime's planning spend, one entry per plan.
+type planningSpends struct {
+	Entries []planningSpend `json:"entries"`
+}
+
+// SavePlanning adds what one plan's calls cost to the runtime's entries.
+func (store LapStore) SavePlanning(owner project.Project, runtime microruntime.Identifier, at harness.Timestamp, line finops.PlanningLine) error {
 	path, err := planningPath(owner, runtime)
 	if err != nil {
 		return err
 	}
 
-	return files.WriteJSON(path, planningSpend{At: at, Line: line})
+	spends, err := store.planning(owner, runtime)
+	if err != nil {
+		return err
+	}
+	spends.Entries = append(spends.Entries, planningSpend{At: at, Line: line})
+
+	return files.WriteJSON(path, spends)
 }
 
-// Period sums what every runtime's laps and planning observed in a period,
+// Lock takes the runtime's run lock, so one plan, run or confirmation
+// changes the runtime's records at a time.
+func (LapStore) Lock(owner project.Project, runtime microruntime.Identifier) (func(), error) {
+	path, err := files.Within(owner.Root, filepath.Join(".langdrift", "agent", "state", "runs", runtime.String(), "run.lock"))
+	if err != nil {
+		return nil, err
+	}
+
+	return files.Lock(path)
+}
+
+// Period sums what every runtime's laps and plans observed in a period,
 // from the private state alone.
 func (store LapStore) Period(owner project.Project, period string) (int, error) {
 	directory, err := files.Within(owner.Root, filepath.Join(".langdrift", "agent", "state", "runs"))
@@ -304,36 +327,38 @@ func (store LapStore) Period(owner project.Project, period string) (int, error) 
 			}
 		}
 
-		spent, err := store.planning(owner, runtime)
+		spends, err := store.planning(owner, runtime)
 		if err != nil {
 			return 0, err
 		}
-		if spent != nil && inPeriod(spent.At, period) {
-			total += spent.Line.Cents.Observed
+		for _, spent := range spends.Entries {
+			if inPeriod(spent.At, period) {
+				total += spent.Line.Cents.Observed
+			}
 		}
 	}
 
 	return total, nil
 }
 
-// planning reads a runtime's planning spend, when a plan kept one.
-func (LapStore) planning(owner project.Project, runtime microruntime.Identifier) (*planningSpend, error) {
+// planning reads a runtime's planning spend; none is an empty list.
+func (LapStore) planning(owner project.Project, runtime microruntime.Identifier) (planningSpends, error) {
 	path, err := planningPath(owner, runtime)
 	if err != nil {
-		return nil, err
+		return planningSpends{}, err
 	}
 
-	var spent planningSpend
+	var spends planningSpends
 
-	err = files.ReadJSON(path, &spent)
+	err = files.ReadJSON(path, &spends)
 	if errors.Is(err, fs.ErrNotExist) {
-		return nil, nil
+		return planningSpends{Entries: []planningSpend{}}, nil
 	}
 	if err != nil {
-		return nil, err
+		return planningSpends{}, err
 	}
 
-	return &spent, nil
+	return spends, nil
 }
 
 func planningPath(owner project.Project, runtime microruntime.Identifier) (string, error) {

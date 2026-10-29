@@ -42,6 +42,12 @@ func (service Service) Confirm(_ context.Context, request ConfirmRequest) (Confi
 		return ConfirmResult{}, fmt.Errorf("%w: %v", inputs.ErrInvalid, err)
 	}
 
+	unlock, err := service.Laps.Lock(owner, runtime)
+	if err != nil {
+		return ConfirmResult{}, fmt.Errorf("%w: %s is busy: %v", ErrRefused, runtime, err)
+	}
+	defer unlock()
+
 	record, err := service.Records.ReadRun(owner, runtime)
 	if err != nil {
 		return ConfirmResult{}, err

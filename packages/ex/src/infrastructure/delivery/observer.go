@@ -46,7 +46,12 @@ func (observer Observer) Branch(ctx context.Context, root string) execution.Bran
 	}
 
 	ahead, err := observer.run(ctx, root, "git", "rev-list", "--count", "@{upstream}..HEAD")
-	if err != nil || ahead != "0" {
+	if err != nil {
+		branch.Reason = "the upstream could not be compared"
+
+		return branch
+	}
+	if ahead != "0" {
 		branch.Reason = ahead + " commits ahead of the upstream"
 
 		return branch

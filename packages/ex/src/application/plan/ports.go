@@ -61,6 +61,8 @@ var ErrRunning = errors.New("the runtime is running")
 type Spend interface {
 	SavePlanning(owner project.Project, runtime microruntime.Identifier, at harness.Timestamp, line finops.PlanningLine) error
 	Period(owner project.Project, period string) (int, error)
+	// Lock takes the runtime's run lock, which a run and a confirmation take too.
+	Lock(owner project.Project, runtime microruntime.Identifier) (func(), error)
 }
 
 // Inspector reads a component's manifests.

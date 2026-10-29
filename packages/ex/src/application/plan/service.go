@@ -112,6 +112,12 @@ func (service Service) Plan(ctx context.Context, request Request) (Result, error
 		return Result{}, err
 	}
 
+	unlock, err := service.Spend.Lock(owner, planning.runtime)
+	if err != nil {
+		return Result{}, fmt.Errorf("%w: %s is busy: %v", ErrRunning, planning.runtime, err)
+	}
+	defer unlock()
+
 	if err := planning.loadPrevious(); err != nil {
 		return Result{}, err
 	}
@@ -124,26 +130,8 @@ func (service Service) Plan(ctx context.Context, request Request) (Result, error
 		return Result{}, err
 	}
 
-	if err := planning.analyze(ctx); err != nil {
-		return Result{}, err
-	}
-
-	if err := planning.retrieve(ctx); err != nil {
-		return Result{}, err
-	}
-
-	planning.suggest(ctx)
-
-	if err := planning.resolve(); err != nil {
-		return Result{}, err
-	}
-
-	if err := planning.check(); err != nil {
-		return Result{}, err
-	}
-
-	if err := planning.write(); err != nil {
-		return Result{}, err
+	if err := planning.judgedSteps(ctx); err != nil {
+		return Result{}, planning.keepSpendAfter(err)
 	}
 
 	if planning.state == Blocked {
@@ -199,4 +187,28 @@ func overridesEnvelopeHalfway(request Request) bool {
 	}
 
 	return (request.CPUMillis > 0) != (request.MemoryMiB > 0)
+}
+
+// judgedSteps are the plan's acts from the first paid call to the written
+// files; a failure among them must still leave the judge's spend recorded.
+func (planning *planning) judgedSteps(ctx context.Context) error {
+	if err := planning.analyze(ctx); err != nil {
+		return err
+	}
+
+	if err := planning.retrieve(ctx); err != nil {
+		return err
+	}
+
+	planning.suggest(ctx)
+
+	if err := planning.resolve(); err != nil {
+		return err
+	}
+
+	if err := planning.check(); err != nil {
+		return err
+	}
+
+	return planning.write()
 }
