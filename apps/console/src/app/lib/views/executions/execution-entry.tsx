@@ -20,11 +20,11 @@ export function ExecutionEntry(props: ExecutionEntryProps) {
 	const { execution } = item
 
 	return (
-		<article className="grid gap-3 text-xs">
+		<article className="grid grid-cols-1 gap-3 rounded-xl border border-border bg-card p-4 text-xs">
 			<header className="flex flex-wrap items-center justify-between gap-3">
 				<Link
 					prefetch={false}
-					className="font-medium hover:underline"
+					className="max-w-full break-words font-medium hover:underline"
 					href={`/runtimes/${execution.runtimeId}`}
 				>
 					{item.runtimeName}

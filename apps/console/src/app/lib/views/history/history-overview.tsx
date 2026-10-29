@@ -3,11 +3,11 @@
 import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
-import { ActivityRowSkeleton } from '@components/route-state/activity-row-skeleton'
+import { ActivityEntrySkeleton } from '@components/route-state/activity-entry-skeleton'
 import { usePagedResource } from '@data/paged-resource.hook'
 import type { Page, ProductEvent } from '@data/types'
 import { Button } from '@ui/button'
-import { VirtualList } from '@ui/virtual-list'
+import { ListEnd } from '@ui/list-end'
 
 import { HistoryEntry } from './history-entry'
 
@@ -16,6 +16,9 @@ interface HistoryOverviewProps {
 	initial: Promise<Page<ProductEvent>>
 }
 
+// Every lifecycle event in the project, newest first, in the page's flow,
+// each in an item of its own, loading older ones as the list's end comes
+// into view.
 export function HistoryOverview(props: HistoryOverviewProps) {
 	const { productId, initial } = props
 
@@ -33,28 +36,40 @@ export function HistoryOverview(props: HistoryOverviewProps) {
 				</Button>
 			</div>
 			{resource.items.length ? (
-				<VirtualList
-					items={resource.items}
-					itemKey={(item) => item.event.id}
-					renderItem={(item) => <HistoryEntry item={item} />}
-					onEnd={resource.next}
-					label={t('history')}
-				/>
+				<ol
+					aria-label={t('history')}
+					className="m-0 grid list-none grid-cols-1 gap-3 p-0"
+				>
+					{resource.items.map((item) => (
+						<li key={item.event.id}>
+							<HistoryEntry item={item} />
+						</li>
+					))}
+				</ol>
 			) : null}
-			{resource.loading ? <ActivityRowSkeleton /> : null}
+			{resource.loading ? (
+				<div
+					aria-busy="true"
+					aria-label={t('loading')}
+					className="mt-3"
+					role="status"
+				>
+					<ActivityEntrySkeleton />
+				</div>
+			) : null}
 			{resource.error ? (
 				<ErrorNotice error={resource.error} retry={resource.retry} />
 			) : null}
 			{!resource.loading && !resource.error && !resource.items.length ? (
 				<p className="text-sm text-muted-foreground">{t('empty')}</p>
 			) : null}
-			{resource.hasMore ? (
-				<div className="mt-4">
-					<Button disabled={resource.loading} onClick={resource.next}>
-						{t('loadMore')}
-					</Button>
-				</div>
-			) : null}
+			<ListEnd
+				failed={Boolean(resource.error)}
+				hasMore={resource.hasMore}
+				label={t('loadMore')}
+				loading={resource.loading}
+				onEnd={resource.next}
+			/>
 		</>
 	)
 }

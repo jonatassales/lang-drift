@@ -4,7 +4,7 @@ import { Suspense } from 'react'
 
 import { projectTitle } from '@app/metadata/entity-title'
 import { PageHeading } from '@components/page-heading/page-heading'
-import { ActivityListSkeleton } from '@components/route-state/activity-list-skeleton'
+import { ActivityOverviewSkeleton } from '@components/route-state/activity-overview-skeleton'
 import { isEntityId } from '@data/entity-id'
 import { readConsole } from '@data/server'
 import { ExecutionOverview } from '@views/executions/execution-overview'
@@ -33,7 +33,7 @@ export default async function Page(props: PageProps) {
 	return (
 		<>
 			<PageHeading title={t('executions')} description={t('activityIntro')} />
-			<Suspense fallback={<ActivityListSkeleton />}>
+			<Suspense fallback={<ActivityOverviewSkeleton />}>
 				<ExecutionOverview
 					productId={id}
 					initial={readConsole(`products/${id}/executions`)}
