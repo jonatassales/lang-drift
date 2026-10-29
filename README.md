@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="/platform/docs/assets/images/langdrift-banner.png" alt="LangDrift, Agentic FinOps Platform: one team envelope, every paid call reserved before it runs. Beside it, a terminal running ex agent plan on a ticket." width="820">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="/platform/docs/assets/images/langdrift-banner-dark.png">
+    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: Agentic FinOps Platform. One team envelope. Every paid call reserved before it runs." width="820">
+  </picture>
 </p>
 
 <p align="center">

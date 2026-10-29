@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="/platform/docs/assets/images/langdrift-banner.png" alt="LangDrift，Agentic FinOps Platform：全隊共用一份預算額度，每次付費呼叫都先保留再執行。旁邊是一個對工單執行 ex agent plan 的終端機。" width="820">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="/platform/docs/assets/images/langdrift-banner-dark.png">
+    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift：Agentic FinOps Platform。全隊共用一份預算額度，每次付費呼叫都先保留再執行。" width="820">
+  </picture>
 </p>
 
 <p align="center">

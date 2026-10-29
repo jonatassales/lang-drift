@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title">
+	<title id="title">LangDrift: Agentic FinOps Platform. One team envelope. Every paid call reserved before it runs.</title>
+	<defs>
+		<radialGradient id="wash" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#262626" stop-opacity="0.45"/><stop offset="1" stop-color="#262626" stop-opacity="0"/></radialGradient>
+		<linearGradient id="rainbow" x1="624" y1="0" x2="925" y2="0" gradientUnits="userSpaceOnUse">
+			<stop offset="0" stop-color="#F43F5E"/>
+			<stop offset="0.22" stop-color="#F97316"/>
+			<stop offset="0.38" stop-color="#FACC15"/>
+			<stop offset="0.56" stop-color="#22C55E"/>
+			<stop offset="0.78" stop-color="#3B82F6"/>
+			<stop offset="1" stop-color="#8C3BEF"/>
+		</linearGradient>
+	</defs>
+
+	<rect width="1280" height="640" fill="#000000"/>
+	<ellipse cx="640" cy="330" rx="520" ry="250" fill="url(#wash)"/>
+
+	<g stroke="#1F1F1F" stroke-width="1" shape-rendering="crispEdges">
+		<path d="M0 104.5H1280M0 536.5H1280M152.5 0V640M1128.5 0V640"/>
+	</g>
+	<g stroke="#525252" stroke-width="1.25" stroke-linecap="square">
+		<path d="M143 104H161M152 95V113"/>
+		<path d="M143 536H161M152 527V545"/>
+		<path d="M1119 104H1137M1128 95V113"/>
+		<path d="M1119 536H1137M1128 527V545"/>
+	</g>
+
+	<g transform="translate(572 155) scale(0.47)" fill="none" stroke="#EDEDED" stroke-width="9" stroke-linecap="round">
+		<path d="M45.54 49.34A22 22 0 1 1 45.54 14.66"/>
+		<path d="M56.72 18.86A28 28 0 0 1 56.72 45.14"/>
+	</g>
+	<text x="612" y="179" fill="#EDEDED" font-family="SF Pro Display, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="25" font-weight="650" letter-spacing="-1.3">LangDrift</text>
+
+	<g font-family="SF Pro Display, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="88" font-weight="600" letter-spacing="-3.6" text-anchor="middle">
+		<text x="640" y="310" fill="#EDEDED">Agentic</text>
+		<text x="640" y="398"><tspan fill="#EDEDED">FinOps </tspan><tspan fill="url(#rainbow)">Platform</tspan></text>
+	</g>
+
+	<text x="640" y="468" fill="#A1A1A1" font-family="SF Pro Display, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="22" letter-spacing="-0.2" text-anchor="middle">One team envelope. Every paid call reserved before it runs.</text>
+</svg>

@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="/platform/docs/assets/images/langdrift-banner.png" alt="LangDrift, Agentic FinOps Platform: một hạn mức cho cả đội, mọi lần gọi trả phí đều được giữ chỗ trước khi chạy. Bên cạnh là một terminal đang chạy ex agent plan cho một ticket." width="820">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="/platform/docs/assets/images/langdrift-banner-dark.png">
+    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: Agentic FinOps Platform. Một hạn mức cho cả đội. Mọi lần gọi trả phí đều được giữ chỗ trước khi chạy." width="820">
+  </picture>
 </p>
 
 <p align="center">

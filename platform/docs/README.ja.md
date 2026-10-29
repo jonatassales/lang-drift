@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="/platform/docs/assets/images/langdrift-banner.png" alt="LangDrift、Agentic FinOps Platform：チームの予算枠はひとつ、有料呼び出しは実行前に必ず予約。その横に、チケットに対して ex agent plan を実行しているターミナル。" width="820">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="/platform/docs/assets/images/langdrift-banner-dark.png">
+    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift：Agentic FinOps Platform。チームの予算枠はひとつ。有料呼び出しは実行前に必ず予約。" width="820">
+  </picture>
 </p>
 
 <p align="center">
