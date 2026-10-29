@@ -111,19 +111,7 @@ npx @langdrift/ex init
 
 `npx @langdrift/ex init` 會在 `.langdrift/config.json` 建立專案識別，並在 `.langdrift/microruntimes/AGENTS.md` 寫入執行規則，既有檔案保持不變。請把 `/.langdrift/` 加進 `.gitignore`：那是 `ex` 寫入的本機狀態，團隊撰寫的內容都不會放在那裡。
 
-### 2. 記錄 harness
-
-把[範例輸入檔](#範例輸入檔)存到專案中，然後記錄交付 harness：硬體預算額度、工作流程階段、預設模型與推理強度，以及執行各階段的程式開發代理。
-
-```sh
-npx @langdrift/ex harness envelope set --per-execution-cpu-millis 4000 --per-execution-memory-mib 6144 \
-  --default-cpu-millis 2000 --default-memory-mib 3072 --not-runtime-field gpu
-npx @langdrift/ex harness workflow set --file workflow.json
-npx @langdrift/ex harness model set claude-sonnet-5-5 --effort medium
-npx @langdrift/ex harness driver set --file driver.json
-```
-
-### 3. 記錄金錢規則
+### 2. 記錄金錢規則
 
 這份預算給團隊 2026 年 10 月共 500.00 美元，每次執行上限 25.00 美元，在每次估算上保留 20% 的邊際，並分配 25.00 美元給工單 0070。金額以美分為單位。
 
@@ -137,14 +125,9 @@ npx @langdrift/ex finops forecasts set --file forecasts.json
 
 每個命令都會印出它寫入的紀錄，而每個輸入命令都接受 `--by`，用來記下設定者。
 
-### 4. 從工單規劃
+### 3. 從工單規劃
 
 指定 runtime 要建置並執行的元件，然後讓 `ex` 讀取工單。`--no-judge` 會在不呼叫模型的情況下規劃，所以不會產生任何費用；不加這個旗標並設定 `ANTHROPIC_API_KEY` 時，規劃器會在與一圈相同的閘門下透過模型評斷各個來源，費用記在帳本的規劃那一行。
-
-```sh
-npx @langdrift/ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-judge \
-  --component "path=apps/console,image=langdrift-console:local,port=3001,readiness=/icon.svg,build=docker,args=build -t langdrift-console:local ."
-```
 
 CLI 的輸出是英文：
 
@@ -177,7 +160,7 @@ CLI 的輸出是英文：
 
 這段摘錄省略了區塊的版本、名稱，以及由 `ex` 管理的 runtime 與專案識別。在 runtime 停止時再次規劃同一張工單，會提高修訂版本。
 
-### 5. 執行計畫
+### 4. 執行計畫
 
 執行 runtime 就代表授權它的計畫。一圈會建置映像檔、啟動專案的本機叢集，並透過你的程式開發代理進行付費呼叫，所以請先執行 `npx @langdrift/ex doctor`。
 
@@ -193,7 +176,7 @@ npx @langdrift/ex agent run console-microruntime
 
 每一項變更都會記錄在這一圈的檔案、`run.json` 與帳本中。
 
-### 6. 追蹤執行
+### 5. 追蹤執行
 
 ```sh
 npx @langdrift/ex agent status console-microruntime
@@ -299,12 +282,6 @@ npx @langdrift/ex doctor
 `planning` 涵蓋規劃器自己的呼叫。當工單先前的執行都沒有量測過 token 時，就會使用這些預測。
 
 </details>
-
-## LangDrift 背後的工作
-
-LangDrift 由 [Jonatas Sales](https://github.com/jonatassales) 打造，結合了 FinOps 實務、代理協助的交付與平台工程。它源自 Exphere 專案，以 pnpm 與 Turborepo 的 monorepo 建構：網站與主控台以 TypeScript 搭配 Next.js、React 與 Tailwind CSS 撰寫，`ex` 與 Microruntimes 契約則以 Go 撰寫，規劃器使用官方的 Anthropic Go SDK。
-
-這個儲存庫以 spec 先行的方式建構：每一項變更都從 [`.agents/workflow/`](/.agents/workflow) 下的 spec 與工單開始，也就是 `ex` 所規劃的同一種工單。歡迎透過 [GitHub issues](https://github.com/jonatassales/lang-drift/issues) 提供回饋。
 
 ## 參考資料
 
