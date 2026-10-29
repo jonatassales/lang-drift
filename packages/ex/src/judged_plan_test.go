@@ -3,14 +3,20 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"io"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 
+	"github.com/anthropics/anthropic-sdk-go/option"
+
 	"github.com/jonatassales/tao/packages/ex/src/application/plan"
 	"github.com/jonatassales/tao/packages/ex/src/domain/finops"
 	"github.com/jonatassales/tao/packages/ex/src/domain/run"
+	judgeinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/judge"
 )
 
 // scriptedJudge answers each kind of question with a prepared text and a
@@ -206,5 +212,39 @@ func TestPlanContinuesWhenTheJudgeIsUnavailable(t *testing.T) {
 	decodeStrict(t, []byte(fenceBody(t, runtimePath, "langdrift-plan")), &written)
 	if written.Sources[1].Verdict != nil || written.Suggestion.By != "input" || written.State != "proposed" {
 		t.Errorf("an unjudged plan recorded %+v, %+v", written.Sources[1], written.Suggestion)
+	}
+}
+
+// A provider failure reaches the session as its status and request id: the
+// provider's body and the URL that was called never reach the judge's stop
+// reason or the line that prints it.
+func TestPlanReportsAProviderFailureByItsStatusAndRequestID(t *testing.T) {
+	t.Parallel()
+
+	api := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
+		writer.Header().Set("Request-Id", "req_011plan")
+		writer.WriteHeader(http.StatusInternalServerError)
+		_, _ = io.WriteString(writer, `{"type":"error","error":{"type":"api_error","message":"provider body that echoes the ticket"}}`)
+	}))
+	defer api.Close()
+
+	p, deps := seedProject(t)
+	deps.Judge = judgeinfra.Anthropic{Options: []option.RequestOption{option.WithBaseURL(api.URL), option.WithAPIKey("test-key"), option.WithMaxRetries(0)}}
+
+	status, stdout, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
+	if status != 0 {
+		t.Fatalf("ex agent plan = %d\n%s%s", status, stdout, stderr)
+	}
+
+	warning := "judge      stopped · the sources call failed · ask claude-sonnet-5-5 about sources: the API answered HTTP 500 · request req_011plan\n"
+	if strings.Count(stdout, warning) != 1 {
+		t.Errorf("the session did not print %q once:\n%s", warning, stdout)
+	}
+
+	for _, leak := range []string{"provider body", "api_error", api.URL, "test-key"} {
+		if strings.Contains(stdout+stderr, leak) {
+			t.Errorf("the session carries %q:\n%s%s", leak, stdout, stderr)
+		}
 	}
 }
