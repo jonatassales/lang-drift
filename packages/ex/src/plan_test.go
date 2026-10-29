@@ -30,7 +30,10 @@ func seedProject(t *testing.T) (project, dependencies) {
 
 	workflow := bodyFile(t, p.root, "workflow.json", "harness/workflow.json", func(body *harness.Workflow) { withoutMirror(body) })
 	prices := bodyFile(t, p.root, "prices.json", "finops/prices/0001-illustrative.prices.json", func(body *finops.Prices) { withoutMirror(body) })
-	forecasts := bodyFile(t, p.root, "forecasts.json", "finops/forecasts.json", func(body *finops.Forecasts) { withoutMirror(body) })
+	forecasts := bodyFile(t, p.root, "forecasts.json", "finops/forecasts.json", func(body *finops.Forecasts) {
+		withoutMirror(body)
+		body.Planning = &finops.TokensThousands{Input: 35, Output: 5}
+	})
 
 	for _, arguments := range [][]string{
 		{"init"},
