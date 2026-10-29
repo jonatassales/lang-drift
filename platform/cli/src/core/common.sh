@@ -9,7 +9,6 @@
 # Tool configuration lives under platform/, grouped by concern.
 DRIFT_HOOKS_DIR=platform/versioning/.husky
 DRIFT_COMMITLINT_CONFIG=platform/versioning/commitlint.config.json
-DRIFT_LINT_STAGED_CONFIG=platform/quality/lint-staged.config.json
 
 drift_die() {
   drift_print_error "drift: $1"

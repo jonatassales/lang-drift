@@ -20,12 +20,7 @@ findings=$sandbox/findings
 # drift's own EXIT trap prints the queued results, so this one chains to it.
 trap 'rm -rf "$sandbox"; drift_flush_results' EXIT
 
-# biome.json names its plugins relative to itself, so they travel with the copy.
 cp biome.json "$sandbox/biome.json"
-for plugin in $(jq -r '.plugins[]? // empty' biome.json); do
-  mkdir -p "$sandbox/${plugin%/*}"
-  cp "$plugin" "$sandbox/$plugin"
-done
 
 # run_biome <command> [argument...]: Biome inside the sandbox. The sandbox is
 # not a Git checkout, so the VCS integration that biome.json enables is off.

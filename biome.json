@@ -9,7 +9,6 @@
 		"ignoreUnknown": true,
 		"includes": ["**", "!**/public", "!**/.claude/settings.local.json"]
 	},
-	"plugins": ["./platform/quality/multi-property-object.grit"],
 	"formatter": {
 		"indentStyle": "tab",
 		"indentWidth": 2,

@@ -1,14 +1,15 @@
-# Tailwind rules
+# Styling rules
 
-Rules for Tailwind CSS in every web app. Loaded in every session.
+Tailwind CSS and styling in every web app and in `packages/web`. Loaded in every session.
 
-1. **Layout stays native.** Spacing, sizing, grid, flex, breakpoints, border radius and the type scale use Tailwind's defaults. `@theme` never overrides them.
-
-2. **Only design tokens override the theme.** `@theme` overrides colors and the other values `@langdrift/tokens` defines, through the bridge that package ships. An app never declares a theme value of its own.
-
-3. **Role utilities only.** Colors and fonts come from the tokens' roles and fixed groups: `bg-background`, `text-muted-foreground`, `border-border`, `text-primary`, `text-status-danger`, `text-classification-review`, `text-drift-negative`, `font-sans`, `font-mono`. Never a palette literal; the native palette is reset, so `text-red-500` produces nothing. Arbitrary values stay for one-off measurements, not for colors.
-
-4. **No component classes.** No `.btn`, `.header-nav`, `.mobile-visible` or `.mobile-hidden` when a native utility expresses the behavior (`className="block sm:hidden"`). `@utility` exists only for a repeated single-purpose capability Tailwind lacks, and `@layer components` is not a styling strategy. Repeated multi-property UI becomes a React component.
-
-5. **`dark:` follows `.dark`.** The tokens stylesheet declares the variant; an app never redeclares it and never switches themes through a `data-theme` attribute.
-
+1. **Tailwind is the styling system** for components, features, layout and responsive behavior. Style UI with Tailwind utilities, shadcn/ui source in the repository, the `@langdrift/tokens` design tokens and the shared primitives of `packages/web`. Prefer semantic tokens over hard-coded values.
+2. **Layout stays native.** Spacing, sizing, grid, flex, breakpoints, border radius and the type scale use Tailwind's defaults. `@theme` never overrides them.
+3. **Only design tokens override the theme.** `@theme` overrides colors and the other values `@langdrift/tokens` defines, through the bridge that package ships. An app never declares a theme value of its own.
+4. **Role utilities only.** Colors and fonts come from the tokens' roles and fixed groups: `bg-background`, `text-muted-foreground`, `border-border`, `text-primary`, `text-status-danger`, `text-classification-review`, `text-drift-negative`, `font-sans`, `font-mono`. Never a palette literal: the native palette is reset, so `text-red-500`, `bg-blue-600` or `from-pink-500` produce nothing. Arbitrary values stay for one-off measurements, never for colors (`bg-[#0b0b0c]` is prohibited).
+5. **`dark:` follows `.dark`.** The tokens stylesheet declares the `dark:` variant on the `.dark` class. An app never redeclares it and never switches themes through a `data-theme` attribute.
+6. **`cn()` composes conditional classes.** `cn()` is `clsx` plus `tailwind-merge`, exported by `@langdrift/web/utilities`, and it is the only one: no app keeps its own copy. Use it when conditional classes, defaults or consumer overrides need conflict-aware composition. A static class string needs no wrapper.
+7. **No authored CSS.** No hand-written stylesheet, CSS Module (`*.module.css`) or CSS-in-JS (`styled-components`, `@emotion`). Do not add a `.css` file, a component class, a page class, an element rule, a descendant selector, a hover or focus rule, a media query or a layout rule written as CSS, and do not move styling into CSS because a Tailwind expression is awkward.
+8. **No exception exists.** No stylesheet is allowed because it was inherited from another repository. ADR 0003's temporary allowance for inherited CSS is withdrawn, and these rules outrank it (General, Precedence). Every hand-written stylesheet in the tree, including the vendored SmoothUI styles, is a violation recorded for remediation (General, Authority 5).
+9. **CSS files only configure Tailwind.** An app's CSS holds its Tailwind entry point (`@import 'tailwindcss';`), the import of its app's stylesheet from `@langdrift/tokens`, Tailwind directives that declare no theme value of their own and the approved `@utility` declarations in `template/tailwind/utilities.css`, nothing else. It holds no selector and no element rule.
+10. **No component classes.** No application CSS selectors as a parallel styling system: no `.btn`, `.card`, `.header-nav`, `.mobile-visible` or `.mobile-hidden` when a native utility already expresses the behavior (`className="block sm:hidden"`). `@utility` exists only for a repeated single-purpose capability Tailwind lacks. `@layer components` is not a styling strategy. Repeated multi-property UI becomes a React component.
+11. **shadcn and SmoothUI are owned source.** Their classes change directly in place; nothing wraps them in a CSS abstraction.

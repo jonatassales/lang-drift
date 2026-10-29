@@ -5,9 +5,10 @@
 #
 # Needs: jq.
 #
-# Marker convention: running .agents/prompts/llm-effort-analyzer.prompt.md
-# ends by creating .agents/workflow/.effort-log/<session_id>.md. This hook
-# checks that file exists before letting "implement" run.
+# Marker convention: the llm-effort-analyzer skill
+# (.claude/skills/llm-effort-analyzer/SKILL.md) ends by creating
+# .agents/workflow/.effort-log/<session_id>.md. This hook checks that file
+# exists before letting "implement" run.
 #
 # Unverified assumption, flagged on purpose: tool_input.name is the field
 # holding the invoked skill's name. This is inferred from the documented
@@ -44,6 +45,6 @@ if [ -f "$MARKER" ]; then
   exit 0
 fi
 
-REASON="No LLM-effort analysis is recorded for this session. Run .agents/prompts/llm-effort-analyzer.prompt.md and record the result at .agents/workflow/.effort-log/$SESSION_ID.md before running implement."
+REASON="No LLM-effort analysis is recorded for this session. Run the llm-effort-analyzer skill, which records its result at .agents/workflow/.effort-log/$SESSION_ID.md, before running implement."
 jq -n --arg reason "$REASON" '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$reason}}'
 exit 0
