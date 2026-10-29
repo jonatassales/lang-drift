@@ -161,6 +161,7 @@ extub answers like a hardened API. ex's API clients refuse redirects, insist on 
   - `Cross-Origin-Opener-Policy: same-origin`
   - The powered-by header is off.
 - Turnstile's origins enter the policy only when sign-up reopens. The README's reopen steps say so.
+- The headers are fixed at build time in the route manifest, so `VERCEL_ENV` is a build input: Turborepo's build task declares it, and a preview and a production build never share a cache entry.
 
 ### Book a demo
 
@@ -209,7 +210,7 @@ extub answers like a hardened API. ex's API clients refuse redirects, insist on 
   It takes the same development and preview variants as the website.
 - Styles keep `'unsafe-inline'`: React style props in shared primitives, and sinapsi's shadow-root style, cannot carry a nonce.
 - The proxy builds the policy and does two things with it:
-  - It hands the request to next-intl's middleware as a new request carrying the policy. next-intl copies the request headers into its rewrite and next responses, so Next stamps the nonce on its scripts.
+  - It sets the policy on the incoming request's own headers. next-intl copies the request headers into its rewrite and next responses, so Next stamps the nonce on its scripts. A new request built from the incoming one would recompute the URL without Next's configuration and drop what Next's adapter attached.
   - It sets the same policy on the response.
 - The proxy matcher covers every path except `/api`, `/_next`, and the root files (`favicon.ico`, `icon.svg`, `apple-icon.png`, `robots.txt`). A path with a dot under a locale, and the 404, therefore get the policy and `Cache-Control: private, no-store`.
 - Config headers, on every path:
@@ -224,8 +225,9 @@ extub answers like a hardened API. ex's API clients refuse redirects, insist on 
 - Server-rendered reads build their in-process request from the incoming host alone. They carry none of the browser's `Origin`, `Sec-Fetch-*` or cookie headers. The cross-site rule keeps guarding browser calls to the route handlers.
 - One predicate defines the entity id alphabet: letters, digits, hyphen and underscore, 1 to 128 characters.
   - A page whose route id falls outside it answers 404 without reading extub.
+  - The proxy rewrites any path with a segment outside the alphabet to the localized 404, so the 404 keeps its status: a page that streams inside its loading boundary would otherwise answer 200, and next-intl would decode `%25` into a rewrite that answers 500. Fixed route names keep to the same alphabet.
   - Every client call that interpolates an id checks it the same way.
-  - No id is encoded twice. Next already encodes route params.
+  - No path segment is encoded twice. Next already encodes route params, and a checked id needs no encoding. A query value is still encoded by the caller.
 - The extub bridge imports `server-only`.
 - The login and sign-up form declares `method="post"`.
 
@@ -266,6 +268,7 @@ extub answers like a hardened API. ex's API clients refuse redirects, insist on 
   - a readiness path starts with `/` and is at most 256 bytes.
 - The WebRTC setting engine disables multicast DNS, so peers open loopback sockets only.
 - The test script runs the race detector.
+- `golang.org/x/net` moves to v0.62.0 (with x/crypto v0.58.0 and x/sys v0.49.0), which removes GO-2026-5942, a DNS-parsing panic reachable through pion. `pion/ice` and `pion/transport` become direct dependencies for the mDNS setting and its socket test.
 
 ### ex
 
