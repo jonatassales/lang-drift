@@ -85,7 +85,7 @@ export function pageMetadata(
 			canonical,
 			languages: {
 				...languages,
-				'x-default': absolute('/'),
+				'x-default': absolute(pagePath(page, routing.defaultLocale)),
 			},
 		},
 		openGraph: {
