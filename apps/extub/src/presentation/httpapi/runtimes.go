@@ -43,7 +43,10 @@ func (handler Handler) runtimes(request *http.Request, parts []string) (any, err
 		action := parts[1]
 		if action == "load-test" && method == http.MethodPost {
 			var input map[string]any
-			if err := decode(request, &input); err != nil || len(input) != 0 {
+			if err := decode(request, &input); err != nil {
+				return nil, err
+			}
+			if len(input) != 0 {
 				return nil, domain.ErrInvalid
 			}
 			result, err := handler.Service.RunLoadTest(request.Context(), id)

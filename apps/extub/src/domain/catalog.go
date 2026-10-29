@@ -130,11 +130,32 @@ func ValidateRuntime(runtime Runtime) error {
 		if component.Path == "" || component.Name == "" || component.Kind == "" || len(component.Stacks) > 4 {
 			return ErrInvalid
 		}
+		if !validRunFields(component) {
+			return ErrInvalid
+		}
 		for _, stack := range component.Stacks {
 			if len(stack) == 0 || len(stack) > 32 {
 				return ErrInvalid
 			}
 		}
+	}
+	return nil
+}
+
+// validRunFields bounds what runs a component and probes it: an image of at
+// most 256 bytes, a port from 1 to 65535 when one is set, and a readiness
+// path that starts with "/" and is at most 256 bytes.
+func validRunFields(component Component) bool {
+	portInRange := component.Port >= 0 && component.Port <= 65535
+	readinessPathValid := strings.HasPrefix(component.ReadinessPath, "/") && len(component.ReadinessPath) <= 256
+	return len(component.Image) <= 256 && portInRange && readinessPathValid
+}
+
+// ValidateFolder holds a local folder to the product path contract:
+// absolute, at most 1024 bytes and without NUL.
+func ValidateFolder(folder string) error {
+	if !strings.HasPrefix(folder, "/") || len(folder) > 1024 || strings.ContainsRune(folder, 0) {
+		return ErrInvalid
 	}
 	return nil
 }

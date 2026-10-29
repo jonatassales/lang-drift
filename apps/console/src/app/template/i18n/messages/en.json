@@ -534,5 +534,15 @@
 				"done": "done"
 			}
 		}
+	},
+	"metadata": {
+		"siteName": "LangDrift Console",
+		"titleTemplate": "%s · {siteName}",
+		"entityTitle": "{section} · {entity}",
+		"ticketTitle": "{number} · {title}"
+	},
+	"notFound": {
+		"title": "Page not found",
+		"description": "This page does not exist, or its address is incomplete."
 	}
 }

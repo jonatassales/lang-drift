@@ -8,13 +8,28 @@ The local Go stub API the [console](/apps/console/README.md) reads. It serves on
 | --- | --- |
 | `pnpm console` | From the repository root: start extub on `127.0.0.1:3401` together with the console. |
 | `pnpm --filter @langdrift/extub dev` | Start extub alone with `go run`. |
-| `pnpm --filter @langdrift/extub test` | Run the Go tests. |
+| `pnpm --filter @langdrift/extub test` | Run the Go tests with the race detector (`go test -race ./...`), which needs cgo and a C compiler on Linux. |
 
-It needs a Go toolchain; `go.work` at the root ties it to the other Go modules. The entrypoint is `cmd/server`. `EXTUB_PORT` changes the port, 3401 by default, and extub listens on `127.0.0.1` only, refusing any other host or a foreign origin. The seed lives in `src/infrastructure/seed/console.json` and resets on every start.
+It needs a Go toolchain; `go.work` at the root ties it to the other Go modules. The entrypoint is `cmd/server`. `EXTUB_PORT` changes the port, 3401 by default, and extub listens on `127.0.0.1` only, refusing any other host or a foreign origin. The seed lives in `src/infrastructure/seed/console.json` and resets on every start. WebRTC peers keep their sockets on loopback, because multicast DNS is off. A browser's `.local` candidates are ignored, and the connection forms through peer-reflexive candidates. While a console runtime page streams, `lsof -nP -iUDP -a -p <extub pid>` shows only `127.0.0.1`.
+
+## Responses and limits
+
+- **Headers.** Every answer, in both modes, carries `Content-Type: application/json`, `Cache-Control: no-store` and `X-Content-Type-Options: nosniff`. It also carries:
+  - `Content-Security-Policy: default-src 'none'; frame-ancestors 'none'`
+  - `X-Frame-Options: DENY`
+  - `Referrer-Policy: no-referrer`
+  - `Cross-Origin-Resource-Policy: same-origin`
+- **Admission comes first:** `local_only` (403) locally, and `token_required` (401) or `read_only_preview` (403) when hosted.
+- **Body size.** A body over 64 KiB answers 413 `request_too_large`. A declared `Content-Length` is refused before routing; a chunked body is refused when a route reads past the limit.
+- **Bounds that answer 400 `invalid_input`:**
+  - the `console/local/folders` path is absolute, at most 1024 bytes and without NUL, as product paths are;
+  - a component's port is 1 to 65535 when set;
+  - its image is at most 256 bytes;
+  - its readiness path starts with `/` and is at most 256 bytes.
 
 ## Hosted preview
 
-Setting `EXTUB_TOKEN` switches extub to a read-only preview for Vercel's `langdrift-stubs` project (spec 0015). It listens on every interface at `PORT`, 3000 by default, as Vercel's Go preset requires. Every request but a `GET` of `/health` must carry `Authorization: Bearer <EXTUB_TOKEN>`, or it is answered `401 token_required`. A token shorter than 32 characters stops extub at start. Locally, leave `EXTUB_TOKEN` unset: with it, extub binds every interface on port 3000. Any method but `GET` is answered `403 read_only_preview`, so the seed never changes and no instance diverges from another. There is no live stream: `webrtc/offer` answers `503 stream_unavailable`, and the console keeps polling. Without the token, nothing above applies. `vercel.json` builds `./cmd/server` with Go itself, so Vercel's Turborepo detection never runs `turbo run build` for this project.
+Setting `EXTUB_TOKEN` switches extub to a read-only preview for Vercel's `langdrift-stubs` project (spec 0015). It listens on every interface at `PORT`, 3000 by default, as Vercel's Go preset requires. Every request but a `GET` of `/health` must carry `Authorization: Bearer <EXTUB_TOKEN>`, or it is answered `401 token_required` with `WWW-Authenticate: Bearer realm="extub"`. The scheme matches in any case, and the token is compared as SHA-256 digests in constant time, so neither its value nor its length leaks through timing. A token shorter than 32 characters stops extub at start. Locally, leave `EXTUB_TOKEN` unset: with it, extub binds every interface on port 3000. Any method but `GET` is answered `403 read_only_preview`, so the seed never changes and no instance diverges from another. There is no live stream: `webrtc/offer` answers `503 stream_unavailable`, and the console keeps polling. Without the token, nothing above applies. `vercel.json` builds `./cmd/server` with Go itself, so Vercel's Turborepo detection never runs `turbo run build` for this project.
 
 The owner's steps on Vercel, which no agent takes:
 

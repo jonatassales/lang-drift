@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 
+import { isEntityId } from '@data/entity-id'
 import { readConsole } from '@data/server'
 import type {
 	ProductNavigation,
@@ -22,6 +23,9 @@ export async function ProductBreadcrumb(props: ProductBreadcrumbProps) {
 	const [root, id, section, ticketId] = segments
 	if (!id || !['products', 'runtimes'].includes(root) || id === 'new')
 		return null
+	// An id outside the alphabet names nothing, and its page answers 404.
+	const ids = ticketId ? [id, ticketId] : [id]
+	if (!ids.every(isEntityId)) return null
 	const [t, navigation, detail, ticket] = await Promise.all([
 		getTranslations({
 			locale,
@@ -29,12 +33,10 @@ export async function ProductBreadcrumb(props: ProductBreadcrumbProps) {
 		}),
 		readConsole<ProductNavigation>('products'),
 		root === 'runtimes'
-			? readConsole<RuntimeDetailSnapshot>(`runtimes/${encodeURIComponent(id)}`)
+			? readConsole<RuntimeDetailSnapshot>(`runtimes/${id}`)
 			: null,
 		section === 'tickets' && ticketId
-			? readConsole<TicketDetailSnapshot>(
-					`tickets/${encodeURIComponent(ticketId)}`,
-				)
+			? readConsole<TicketDetailSnapshot>(`tickets/${ticketId}`)
 			: null,
 	])
 

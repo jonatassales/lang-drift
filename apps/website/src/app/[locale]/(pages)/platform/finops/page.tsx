@@ -16,6 +16,7 @@ import { ProductSection } from '@components/product-page/product-section'
 import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
+import { WebsiteStructuredData } from '@components/website-structured-data'
 import { finopsFaqIds, gateExample, gateFigures } from '@data/finops-content'
 import { finopsMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
@@ -48,6 +49,7 @@ export default async function FinopsPage(props: FinopsPageProps) {
 
 	return (
 		<>
+			<WebsiteStructuredData locale={locale} page="finops" />
 			<SkipLink href="#authorization">{copy.skip}</SkipLink>
 			<WebsiteHeader />
 			<main id="top">

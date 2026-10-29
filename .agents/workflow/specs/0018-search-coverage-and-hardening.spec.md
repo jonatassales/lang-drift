@@ -12,6 +12,11 @@ The website already carries most of what search engines read: localized titles a
 - Social images resolve against whatever origin the deployment environment reports, so the build cannot show they point at langdrift.md.
 - Only the home page describes itself in structured data.
 
+Two more surfaced while the first pull request was verified:
+
+- A local production server bound with `--hostname 127.0.0.1` loops every `pt-br` and `zh-hant` URL on 308. Ticket 0121 traced it to Next itself: NextURL renames a loopback host `localhost`, so next-intl's rewrite to `/pt-BR` names `localhost` while the router compares it with the `127.0.0.1` it received, treats it as external, and proxies the request back through routing, where the trailing-slash and case redirects send it round. The website's own `next start`, unbound, answers 200 on every sitemap URL, and Vercel routes rewrites itself, so production is unaffected.
+- next-intl also sends a `Link` header with its own hreflang alternates. They are built from the request host and carry a third x-default, the unprefixed path.
+
 Nothing pins any of it. A change to the page list, the sitemap or the metadata helper can drift without a failing test. The console is rightly kept out of search, but its tab titles collide or mislead, its brand strings live in TypeScript, and a missing page renders Next's English fallback.
 
 Neither app sets a Content-Security-Policy. The website sends no security headers at all and announces its framework. Both apps run Next.js releases with published critical advisories, including unauthenticated remote code execution, and the console pulls a zod release with a memory-exhaustion advisory through sinapsi. Nothing in continuous integration notices: the pinned govulncheck that spec 0002 promised never landed, and no job reads npm advisories.
@@ -115,6 +120,8 @@ extub answers like a hardened API. ex's API clients refuse redirects, insist on 
 47. As a team reading evidence, I want a provider failure recorded as its status and request id, never the provider's body, so that evidence stays token-free and small.
 48. As a CLI user, I want a malformed console URL reported without the URL itself, so that credentials pasted into it never reach the terminal or a log.
 49. As the owner, I want every contract above in the READMEs, together with a post-deploy checklist, so that what code cannot verify (domains, preload, Deployment Protection) is not forgotten.
+50. As a visitor reading in Portuguese or Traditional Chinese, I want every page to answer at its URL, so that the site works in my language and search engines can index it.
+51. As a crawler, I want hreflang from the HTML and the sitemap only, so that no response header contradicts them.
 
 ## Implementation Decisions
 
@@ -154,6 +161,7 @@ extub answers like a hardened API. ex's API clients refuse redirects, insist on 
   - `Cross-Origin-Opener-Policy: same-origin`
   - The powered-by header is off.
 - Turnstile's origins enter the policy only when sign-up reopens. The README's reopen steps say so.
+- The headers are fixed at build time in the route manifest, so `VERCEL_ENV` is a build input: Turborepo's build task declares it, and a preview and a production build never share a cache entry.
 
 ### Book a demo
 
@@ -167,6 +175,8 @@ extub answers like a hardened API. ex's API clients refuse redirects, insist on 
 ### Website crawler contract
 
 - The metadata helper gives each page an x-default equal to its own English URL, the URL the sitemap already lists.
+- The website's next-intl routing turns `alternateLinks` off, as the console's does. The HTML and the sitemap are the only hreflang sources.
+- Every sitemap URL answers 200 under `next start` as the website's script runs it. The loop under `--hostname 127.0.0.1` is Next's, not ours: no patch of Next is carried for a local-only artifact, and the README warns against binding the website's production server to `127.0.0.1` (ticket 0121).
 - The social image files move under the localized segment whose layout sets `metadataBase`, so their absolute URLs resolve on langdrift.md at build time. If the build shows that Next still resolves them elsewhere, they stay where they are and the post-deploy checklist keeps the origin check. Each image keeps its alt text file.
 - The localized 404 carries its title from the route-state catalog.
 - Structured data:
@@ -200,7 +210,7 @@ extub answers like a hardened API. ex's API clients refuse redirects, insist on 
   It takes the same development and preview variants as the website.
 - Styles keep `'unsafe-inline'`: React style props in shared primitives, and sinapsi's shadow-root style, cannot carry a nonce.
 - The proxy builds the policy and does two things with it:
-  - It hands the request to next-intl's middleware as a new request carrying the policy. next-intl copies the request headers into its rewrite and next responses, so Next stamps the nonce on its scripts.
+  - It sets the policy on the incoming request's own headers. next-intl copies the request headers into its rewrite and next responses, so Next stamps the nonce on its scripts. A new request built from the incoming one would recompute the URL without Next's configuration and drop what Next's adapter attached.
   - It sets the same policy on the response.
 - The proxy matcher covers every path except `/api`, `/_next`, and the root files (`favicon.ico`, `icon.svg`, `apple-icon.png`, `robots.txt`). A path with a dot under a locale, and the 404, therefore get the policy and `Cache-Control: private, no-store`.
 - Config headers, on every path:
@@ -215,8 +225,9 @@ extub answers like a hardened API. ex's API clients refuse redirects, insist on 
 - Server-rendered reads build their in-process request from the incoming host alone. They carry none of the browser's `Origin`, `Sec-Fetch-*` or cookie headers. The cross-site rule keeps guarding browser calls to the route handlers.
 - One predicate defines the entity id alphabet: letters, digits, hyphen and underscore, 1 to 128 characters.
   - A page whose route id falls outside it answers 404 without reading extub.
+  - The proxy rewrites any path with a segment outside the alphabet to the localized 404, so the 404 keeps its status: a page that streams inside its loading boundary would otherwise answer 200, and next-intl would decode `%25` into a rewrite that answers 500. Fixed route names keep to the same alphabet.
   - Every client call that interpolates an id checks it the same way.
-  - No id is encoded twice. Next already encodes route params.
+  - No path segment is encoded twice. Next already encodes route params, and a checked id needs no encoding. A query value is still encoded by the caller.
 - The extub bridge imports `server-only`.
 - The login and sign-up form declares `method="post"`.
 
@@ -257,6 +268,7 @@ extub answers like a hardened API. ex's API clients refuse redirects, insist on 
   - a readiness path starts with `/` and is at most 256 bytes.
 - The WebRTC setting engine disables multicast DNS, so peers open loopback sockets only.
 - The test script runs the race detector.
+- `golang.org/x/net` moves to v0.62.0 (with x/crypto v0.58.0 and x/sys v0.49.0), which removes GO-2026-5942, a DNS-parsing panic reachable through pion. `pion/ice` and `pion/transport` become direct dependencies for the mDNS setting and its socket test.
 
 ### ex
 

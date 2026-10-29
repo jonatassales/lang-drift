@@ -28,7 +28,10 @@ Rules for the Next.js apps under `apps/`. Loaded in every session.
 
 3. **Localization lives in `src/app/template/i18n/` only.** It owns routing, navigation, request configuration, messages and locale helpers; no second localization directory appears.
 
-4. **Metadata.** `src/app/metadata/` is the application's SEO source. The convention files (`favicon.ico`, `icon.png`, `apple-icon.png`, `opengraph-image.*`, `twitter-image.*`, `robots.txt`, `sitemap.xml`, `manifest.webmanifest`) sit directly under `src/app/` as static files, never as TypeScript generators.
+4. **Metadata.** `src/app/metadata/` is the application's SEO source. The convention files are static files, never TypeScript generators:
+
+   - **Directly under `src/app/`:** `favicon.ico`, `icon.png`, `apple-icon.png`, `robots.txt`, `sitemap.xml`, `manifest.webmanifest`.
+   - **In the segment whose layout sets `metadataBase`:** the social images, `opengraph-image.*` and `twitter-image.*` with their `.alt.txt`. When the document layout is localized, that segment is `src/app/[locale]/`. There Next resolves them against the public origin and serves each once, at `/-/opengraph-image.*` and `/-/twitter-image.*`. At the root they would resolve against the deployment environment's origin.
 
 5. **`Link` for internal navigation.** An anchor stays where its semantics are needed: external destinations, fragment links, downloads and deliberate full-document navigation.
 

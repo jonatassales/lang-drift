@@ -2,9 +2,26 @@ import { unstable_doesMiddlewareMatch } from 'next/experimental/testing/server'
 import { NextRequest } from 'next/server'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { pageMetadata } from '@app/metadata/page-metadata'
+import pages from '@app/metadata/pages.json'
+import { routing } from '@i18n/routing'
+
 import proxy, { config } from './proxy'
 
 vi.mock('server-only', () => ({}))
+
+const pageIds = Object.keys(pages) as Array<keyof typeof pages>
+
+const localizedPages = pageIds.flatMap((page) =>
+	routing.locales.map((locale) => {
+		const canonical = pageMetadata(page, locale).alternates?.canonical
+
+		return {
+			locale,
+			pathname: new URL(String(canonical)).pathname,
+		}
+	}),
+)
 
 beforeEach(() => {
 	vi.stubEnv('CRYPTO_SECRET', Buffer.alloc(32, 1).toString('base64'))
@@ -36,6 +53,20 @@ describe('Website locale routing', () => {
 		},
 	)
 
+	// Next serves an image file of the [locale] segment once, at /-/<file>.
+	it.each(['/-/opengraph-image.png', '/-/twitter-image.png'])(
+		'serves social image %s without a cookie or no-store',
+		(url) => {
+			expect(
+				unstable_doesMiddlewareMatch({
+					config,
+					nextConfig: {},
+					url,
+				}),
+			).toBe(false)
+		},
+	)
+
 	it.each(['/api/health', '/_next/static/app.js', '/favicon.ico'])(
 		'leaves infrastructure request %s outside locale negotiation',
 		(url) => {
@@ -46,6 +77,15 @@ describe('Website locale routing', () => {
 					url,
 				}),
 			).toBe(false)
+		},
+	)
+
+	it.each(localizedPages)(
+		'leaves hreflang for $pathname to the HTML and the sitemap',
+		({ pathname }) => {
+			const response = proxy(new NextRequest(`https://langdrift.md${pathname}`))
+
+			expect(response.headers.get('link')).toBeNull()
 		},
 	)
 

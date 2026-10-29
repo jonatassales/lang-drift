@@ -1,4 +1,6 @@
-import { consoleHostAllowed, extubBase } from './extub-link'
+import 'server-only'
+
+import { consoleHostAllowed, crossSite, extubBase } from './extub-link'
 
 /** Server-only bridge: stub mode never forwards browser credentials or invokes native workloads. */
 export async function extubRequest(
@@ -9,12 +11,8 @@ export async function extubRequest(
 		const url = new URL(request.url)
 		const host = request.headers.get('host') ?? url.host
 		const browser = new URL(`${url.protocol}//${host}`)
-		const origin = request.headers.get('origin')
 		const token = process.env.EXTUB_TOKEN?.trim()
-		const crossSite =
-			Boolean(origin && origin !== browser.origin) ||
-			request.headers.get('sec-fetch-site') === 'cross-site'
-		if (!consoleHostAllowed(browser.hostname, token) || crossSite)
+		if (!consoleHostAllowed(browser.hostname, token) || crossSite(request))
 			return Response.json({ error: { code: 'local_only' } }, { status: 403 })
 		const base = extubBase(process.env.EXTUB_URL, token)
 		if (!base)

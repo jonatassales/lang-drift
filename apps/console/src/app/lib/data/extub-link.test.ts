@@ -1,7 +1,22 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 
-import { consoleHostAllowed, extubBase } from './extub-link.ts'
+import {
+	consoleHostAllowed,
+	crossSite,
+	extubBase,
+	serverRead,
+} from './extub-link.ts'
+
+function browserCall(headers: Record<string, string>) {
+	return new Request('http://127.0.0.1:3130/api/console/products', {
+		method: 'POST',
+		headers: {
+			host: '127.0.0.1:3130',
+			...headers,
+		},
+	})
+}
 
 test('without a token the console serves loopback hosts only', () => {
 	assert.equal(consoleHostAllowed('localhost', undefined), true)
@@ -56,4 +71,34 @@ test('extub never carries credentials in its URL', () => {
 	)
 	assert.equal(extubBase('http://user@127.0.0.1:3401', undefined), null)
 	assert.throws(() => extubBase('not a url', 'shared-token'))
+})
+
+test('a browser call from another site is cross-site', () => {
+	assert.equal(crossSite(browserCall({ origin: 'https://example.com' })), true)
+	assert.equal(crossSite(browserCall({ 'sec-fetch-site': 'cross-site' })), true)
+	assert.equal(
+		crossSite(
+			browserCall({
+				origin: 'http://127.0.0.1:3130',
+				'sec-fetch-site': 'same-origin',
+			}),
+		),
+		false,
+	)
+})
+
+test('a server-rendered read carries the incoming host alone', () => {
+	const read = serverRead('127.0.0.1:3130', 'products/seed-microruntimes')
+
+	assert.equal(
+		read.url,
+		'http://127.0.0.1:3130/api/console/products/seed-microruntimes',
+	)
+	assert.equal(read.method, 'GET')
+	assert.deepEqual([...read.headers], [])
+	assert.equal(crossSite(read), false)
+	assert.equal(
+		crossSite(serverRead('langdrift-console.vercel.app', 'home')),
+		false,
+	)
 })

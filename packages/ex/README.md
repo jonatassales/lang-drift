@@ -89,7 +89,9 @@ Lines print with `agent ›` as the actor. With `--json`, each line is one NDJSO
 
 ### The judge
 
-The planner's model is the judge: it keeps or discards each source with its facts, weighs the episodes, and suggests a model and effort. Its calls go through the official Anthropic Go SDK, which reads `ANTHROPIC_API_KEY` from the environment at the call; the model is the one `ex harness model set --planner` names, or the default model. The calls are paid work under the same gates as a lap, against the forecasts' `planning` entry, and land on the ledger's planning line. Answers are structured JSON, checked and never retried. With `--no-judge`, or without a credential, the plan keeps the deterministic shell: the line says so once, and the judged fields stay `null`.
+The planner's model is the judge: it keeps or discards each source with its facts, weighs the episodes, and suggests a model and effort. Its calls go through the official Anthropic Go SDK, which resolves the credential each time the judge builds its client, from the first source that yields one: `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN`, the profile `ANTHROPIC_PROFILE` names, workload identity federation (`ANTHROPIC_FEDERATION_RULE_ID`, `ANTHROPIC_ORGANIZATION_ID` and `ANTHROPIC_IDENTITY_TOKEN_FILE`), then the active or `default` profile that `ant auth login` writes under `~/.config/anthropic` (`ANTHROPIC_CONFIG_DIR` or `XDG_CONFIG_HOME` moves it). The base URL is `ANTHROPIC_BASE_URL`, else the profile's `base_url`, else `https://api.anthropic.com`. The model is the one `ex harness model set --planner` names, or the default model. The calls are paid work under the same gates as a lap, against the forecasts' `planning` entry, and land on the ledger's planning line. Answers are structured JSON, checked and never asked again; only the SDK retries a call that failed on the way, at most twice. With `--no-judge`, or without a credential, the plan keeps the deterministic shell: the line says so once, and the judged fields stay `null`.
+
+The judge's HTTP client follows no redirect: the SDK sends an API key as `X-Api-Key`, a header Go carries to the host a redirect names. It sends nothing to a base URL that is not HTTPS, HTTP to a loopback host aside: an `ANTHROPIC_BASE_URL` that breaks the rule, or does not parse, stops the judge before the client is built, and a base URL from any other source is refused before the request leaves. It reads at most 4 MiB of a response, as the console client does. An error status reaches the session's warning and the judge's stop reason as its HTTP code and request id, never as the provider's body, and a call that fails on the way (a redirect, the bound, the connection) as a fixed phrase without the URL. A credential the API refuses (401 or 403) and a refused base URL both make the model unavailable.
 
 ### The driver
 
@@ -167,7 +169,7 @@ unset RUNTIME_SECRET
 ./dist/ex agent supervise
 ```
 
-Use the console's newly generated runtime credential. The agent writes it and the restricted environment recovery credential to `.langdrift/agent/state/credentials/<runtime-id>.env` with private permissions, inside the ignored private state. A preexisting credential file is preserved and reported as a conflict. Never pass credentials as command arguments.
+Use the console's newly generated runtime credential. The agent writes it and the restricted environment recovery credential to `.langdrift/agent/state/credentials/<runtime-id>.env` with private permissions, inside the ignored private state, and writes the connection record under `.langdrift/agent/state/connections/` only after that file. A credential file whose record exists belongs to a connected runtime: it is never replaced, and the connection is refused. A credential file without a record is what an interrupted connection left behind, and the next attempt replaces it. Never pass credentials as command arguments.
 
 Results use stdout; diagnostics use stderr.
 
@@ -193,7 +195,7 @@ module is private and unpublished, so only this repository builds it.
 
 ## Configuration and recovery
 
-Each runtime has a stable console UID, native runtime ID, environment identity and distinct execution identities. Binding preserves the existing local project identity. MCP uses HTTPS (HTTP only for explicit loopback development), bounded JSON-RPC Streamable HTTP responses, initialization and tool calls `langdrift.bind`, `langdrift.sync`, and `langdrift.claim`. Redirects are refused. The recovery credential can report cleanup after revocation; it cannot claim another start.
+Each runtime has a stable console UID, native runtime ID, environment identity and distinct execution identities. Binding preserves the existing local project identity. MCP uses HTTPS (HTTP only for explicit loopback development), bounded JSON-RPC Streamable HTTP responses, initialization and tool calls `langdrift.bind`, `langdrift.sync`, and `langdrift.claim`. Redirects are refused. A console URL that does not parse is refused without being quoted, so a credential pasted into it never reaches the terminal. The recovery credential can report cleanup after revocation; it cannot claim another start.
 
 Authored configuration is `.langdrift/microruntimes/runtimes/<id>/runtime.md`, containing exactly one `langdrift` JSON fence, and, when `ex agent plan` wrote it, one `langdrift-plan` fence. Free prose is retained but never executed; the planner's judge is the one paid model call this CLI makes, and the interpreter of the fence stays deterministic. The fence declares identity, revision, component paths, existing build recipes and images, ports/readiness, aggregate CPU/memory per execution, and the LangDrift agent model/effort. Between one and sixteen components, at most 64 CPU cores, and at most 1,048,576 MiB are accepted. Generated Deployments use one replica per component and explicit resource shares whose sum equals the envelope; resource quotas do not establish monetary limits or observed capacity.
 
@@ -216,7 +218,9 @@ rules; every use case through in-memory fakes of its ports, including a
 Kubernetes fake that imitates the controllers a runtime relies on; the file,
 storage, configuration, and scaffold adapters in disposable directories; the
 kubectl, kind, Terraform, toolchain, hook, stage driver and delivery adapters
-against recorded command invocations; the judge against a local HTTP server;
+against recorded command invocations; the judge against local HTTP servers,
+redirects, oversized answers, provider error bodies and plain HTTP base URLs
+included;
 and the composed CLI. The session's tests drive the composed CLI through a
 project seeded from the fixtures with a scripted model, a scripted driver, a
 scripted lifecycle and a scripted delivery observer, and reproduce the figures

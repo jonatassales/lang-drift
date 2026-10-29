@@ -1,0 +1,30 @@
+{
+	"en": {
+		"documentTitle": "Something went wrong · LangDrift Console",
+		"title": "Something went wrong",
+		"description": "The console could not load this screen. Try again, or go back home.",
+		"retry": "Try again",
+		"home": "Home"
+	},
+	"pt-br": {
+		"documentTitle": "Algo deu errado · Console LangDrift",
+		"title": "Algo deu errado",
+		"description": "O console não conseguiu carregar esta tela. Tente novamente ou volte ao início.",
+		"retry": "Tentar novamente",
+		"home": "Início"
+	},
+	"zh-hant": {
+		"documentTitle": "發生錯誤 · LangDrift 主控台",
+		"title": "發生錯誤",
+		"description": "主控台無法載入此畫面。請重試，或返回首頁。",
+		"retry": "重試",
+		"home": "首頁"
+	},
+	"ja": {
+		"documentTitle": "問題が発生しました · LangDrift コンソール",
+		"title": "問題が発生しました",
+		"description": "コンソールでこの画面を読み込めませんでした。再試行するか、ホームに戻ってください。",
+		"retry": "再試行",
+		"home": "ホーム"
+	}
+}

@@ -23,7 +23,7 @@ The checklist:
 - renew security.txt;
 - keep the security mailbox monitored.
 
-**Blocked by:** 0108, 0109, 0110, 0111, 0112, 0113, 0114, 0115, 0116, 0117, 0118.
+**Blocked by:** 0108, 0109, 0110, 0111, 0112, 0113, 0114, 0115, 0116, 0117, 0118, 0121.
 
 **Status:** ready-for-agent
 

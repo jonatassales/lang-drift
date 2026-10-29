@@ -178,6 +178,20 @@ it('enforces actual byte size and encoding before external calls', async () => {
 	).toBe(415)
 	expect(calls).toHaveLength(0)
 })
+it('refuses a non-JSON type and an oversized declared length before external calls', async () => {
+	expect(
+		(
+			await postEarlyAccess(
+				request(undefined, { 'content-type': 'text/plain' }),
+			)
+		).status,
+	).toBe(415)
+	expect(
+		(await postEarlyAccess(request(undefined, { 'content-length': '4097' })))
+			.status,
+	).toBe(413)
+	expect(calls).toHaveLength(0)
+})
 it('rejects alternate hostname and cross-site origin', async () => {
 	expect(
 		(

@@ -28,6 +28,27 @@ func TestMCP_RejectsUnsafeEndpointsBeforeSendingCredentials(t *testing.T) {
 		})
 	}
 }
+
+// Go's parse error quotes the URL, userinfo included; a malformed console URL
+// is refused with neither, before any request.
+func TestMCP_MalformedURLIsRefusedWithoutBeingQuoted(t *testing.T) {
+	for _, raw := range []string{"https://leaked-user:leaked-pass@console.example:port", "https://leaked-user:leaked-pass@console example", "https://leaked-user:leaked-pass@console.example/\x7f"} {
+		t.Run(raw, func(t *testing.T) {
+			calls := 0
+			client := &MCP{Client: &http.Client{Transport: roundTrip(func(r *http.Request) (*http.Response, error) { calls++; return nil, nil })}}
+
+			_, err := client.Bind(context.Background(), raw, "secret", "env")
+			if err == nil || calls != 0 {
+				t.Fatalf("a malformed console URL sent %d requests, error %v", calls, err)
+			}
+
+			if strings.Contains(err.Error(), "leaked") || strings.Contains(err.Error(), "console.example") {
+				t.Fatalf("the error quotes the console URL: %v", err)
+			}
+		})
+	}
+}
+
 func TestMCP_StructuredToolResultAndCredentialIsolation(t *testing.T) {
 	client := &MCP{Client: &http.Client{Transport: roundTrip(func(r *http.Request) (*http.Response, error) {
 		if r.URL.String() != "https://console.example/api/mcp" || r.Header.Get("Authorization") != "Bearer private" {
