@@ -84,7 +84,7 @@ Mọi đầu vào có thể chặn hoặc cho phép một lượt chạy đều 
 
 ## Trạng thái dự án
 
-**LangDrift đang được phát triển.** Trang web đã hoạt động tại [langdrift.md](https://langdrift.md/vi/) với năm ngôn ngữ. Bảng điều khiển đọc `extub`, một API giả lập khởi tạo sẵn một dự án là LangDrift Studio và ghi rõ các số liệu FinOps của nó là minh họa. CLI được phát hành trên npm dưới tên `@langdrift/ex` (`npx @langdrift/ex`), hoặc bạn có thể tự build từ mã nguồn.
+**LangDrift đang được phát triển.** Trang web đã hoạt động tại [langdrift.md](https://langdrift.md/vi/) với năm ngôn ngữ. Bảng điều khiển đọc `extub`, một API giả lập khởi tạo sẵn một dự án là LangDrift Studio và ghi rõ các số liệu FinOps của nó là minh họa. CLI được phát hành trên npm dưới tên `@langdrift/ex` (`npx @langdrift/ex`).
 
 `ex agent plan` và `ex agent run` hoạt động cục bộ trong một dự án, và các cổng kiểm soát chi tiêu chạy bên trong `ex` trên sổ cái riêng của dự án; một sổ cái chung của đội qua máy chủ vẫn chưa được xây dựng. Tác tử kết nối (`ex agent connect`, `project`, `supervise` và `migrate`) cần một máy chủ mà kho mã này chưa có. Các bộ kiểm thử điều khiển CLI bằng mô hình, tác tử lập trình và vòng đời được lập kịch bản; chúng không chứng minh việc khởi chạy cụm thật, chi tiêu thật hay sự sẵn sàng cho môi trường production. Việc đăng ký trên trang web đang tạm dừng.
 
@@ -99,71 +99,50 @@ Mọi đầu vào có thể chặn hoặc cho phép một lượt chạy đều 
 
 ## Bắt đầu với `ex`
 
-Bạn cần macOS hoặc Linux; chạy `@langdrift/ex` từ npm cần Node.js, còn build từ mã nguồn cần Go 1.26 trở lên. Như vậy là đủ để lập kế hoạch. Phần đánh giá bằng mô hình của bộ lập kế hoạch đọc `ANTHROPIC_API_KEY`. Để chạy một vòng, bạn còn cần Docker, kind, kubectl và Terraform (`ex doctor` kiểm tra chúng và không cài đặt gì), tác tử lập trình mà bạn cấu hình, chẳng hạn Claude Code, và `gh` để quan sát pull request.
+Bạn cần macOS hoặc Linux và Node.js để chạy `@langdrift/ex` bằng `npx`. Như vậy là đủ để lập kế hoạch. Phần đánh giá bằng mô hình của bộ lập kế hoạch đọc `ANTHROPIC_API_KEY`. Để chạy một vòng, bạn còn cần Docker, kind, kubectl và Terraform (`npx @langdrift/ex doctor` kiểm tra chúng và không cài đặt gì), tác tử lập trình mà bạn cấu hình, chẳng hạn Claude Code, và `gh` để quan sát pull request.
 
-### 1. Chạy hoặc build CLI
+### 1. Khởi tạo dự án
 
-Chạy `@langdrift/ex` trực tiếp bằng `npx`:
-
-```sh
-npx @langdrift/ex version
-```
-
-Hoặc build từ mã nguồn:
+Từ thư mục gốc của kho mã dự án của bạn:
 
 ```sh
-git clone https://github.com/jonatassales/lang-drift.git
-cd lang-drift/packages/ex
-GOTOOLCHAIN=local go build -o dist/ex ./src
-./dist/ex version
+npx @langdrift/ex init
 ```
 
-`version` in ra `ex 0.1.0` (hoặc `ex 0.0.0-dev` khi build cục bộ chưa gắn phiên bản). Hệ thống của bạn có thể đã có một `ex` khác, trình soạn thảo dòng của Vi, nên hãy gọi bản này qua `npx @langdrift/ex` hoặc bằng đường dẫn. Các bước dưới đây viết `ex` thay cho `npx @langdrift/ex` hoặc `packages/ex/dist/ex`; chỉ trong shell này, `alias ex="npx @langdrift/ex"` (hoặc `alias ex="$PWD/dist/ex"`) sẽ làm điều đó.
+`npx @langdrift/ex init` tạo định danh dự án trong `.langdrift/config.json` và các quy tắc thực thi trong `.langdrift/microruntimes/AGENTS.md`, đồng thời giữ nguyên các tệp đã có. Hãy thêm `/.langdrift/` vào `.gitignore`: đó là trạng thái cục bộ của máy do `ex` ghi, và không có gì do đội bạn soạn nằm trong đó.
 
-### 2. Khởi tạo dự án
-
-Để thử trên một dự án có sẵn, hãy sao chép dự án mà bộ kiểm thử lập kế hoạch: một ticket, bản spec, nghiên cứu, ADR và guardrail mà nó liên kết, cùng hai manifest ứng dụng.
-
-```sh
-cp -R src/testdata/langdrift/project /tmp/ex-demo
-cd /tmp/ex-demo
-ex init
-```
-
-`ex init` tạo định danh dự án trong `.langdrift/config.json` và các quy tắc thực thi trong `.langdrift/microruntimes/AGENTS.md`, đồng thời giữ nguyên các tệp đã có. Trong kho mã của bạn, hãy thêm `/.langdrift/` vào `.gitignore`: đó là trạng thái cục bộ của máy do `ex` ghi, và không có gì do đội bạn soạn nằm trong đó.
-
-### 3. Ghi lại harness
+### 2. Ghi lại harness
 
 Lưu các [tệp đầu vào mẫu](#tệp-đầu-vào-mẫu) vào dự án, rồi ghi lại harness bàn giao: hạn mức phần cứng, các giai đoạn của quy trình, mô hình và mức nỗ lực mặc định, và tác tử lập trình chạy các giai đoạn.
 
 ```sh
-ex harness envelope set --per-execution-cpu-millis 4000 --per-execution-memory-mib 6144 \
+npx @langdrift/ex harness envelope set --per-execution-cpu-millis 4000 --per-execution-memory-mib 6144 \
   --default-cpu-millis 2000 --default-memory-mib 3072 --not-runtime-field gpu
-ex harness workflow set --file workflow.json
-ex harness model set claude-sonnet-5-5 --effort medium
-ex harness driver set --file driver.json
+npx @langdrift/ex harness workflow set --file workflow.json
+npx @langdrift/ex harness model set claude-sonnet-5-5 --effort medium
+npx @langdrift/ex harness driver set --file driver.json
 ```
 
-### 4. Ghi lại quy tắc chi tiêu
+### 3. Ghi lại quy tắc chi tiêu
 
 Ngân sách này cấp cho đội 500,00 USD cho tháng 10 năm 2026, giới hạn mỗi lượt chạy ở 25,00 USD, giữ thêm biên độ 20% trên mỗi ước tính và phân bổ 25,00 USD cho ticket 0070. Số tiền tính bằng cent.
 
 ```sh
-ex finops budget set --period 2026-10 --period-cents 50000 --per-run-cents 2500 \
+npx @langdrift/ex finops budget set --period 2026-10 --period-cents 50000 --per-run-cents 2500 \
   --reserve-margin-percent 20 --allocate 0070-console-microruntime=2500
-ex finops gates set --default
-ex finops prices set --file prices.json --slug list
-ex finops forecasts set --file forecasts.json
+npx @langdrift/ex finops gates set --default
+npx @langdrift/ex finops prices set --file prices.json --slug list
+npx @langdrift/ex finops forecasts set --file forecasts.json
 ```
 
 Mỗi lệnh in ra bản ghi mà nó đã viết, và mọi lệnh đầu vào đều nhận `--by` để ghi tên người đặt.
 
-### 5. Lập kế hoạch từ một ticket
+### 4. Lập kế hoạch từ một ticket
 
 Khai báo các thành phần mà runtime cần build và chạy, rồi để `ex` đọc ticket. `--no-judge` lập kế hoạch mà không gọi mô hình, nên không phát sinh chi phí; nếu bỏ cờ này và đặt `ANTHROPIC_API_KEY`, bộ lập kế hoạch sẽ đánh giá các nguồn qua một mô hình dưới cùng các cổng kiểm soát như một vòng, và chi phí được ghi vào dòng lập kế hoạch của sổ cái.
 
 ```sh
-ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-judge \
+npx @langdrift/ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-judge \
   --component "path=apps/console,image=langdrift-console:local,port=3001,readiness=/icon.svg,build=docker,args=build -t langdrift-console:local ."
 ```
 
@@ -198,28 +177,28 @@ Kế hoạch được ghi vào `.langdrift/microruntimes/runtimes/console-micror
 
 Đoạn trích này lược bỏ phiên bản, tên và các định danh runtime và dự án của khối, những thứ do `ex` quản lý. Lập kế hoạch lại cùng ticket khi runtime đang dừng sẽ tăng số phiên bản sửa đổi.
 
-### 6. Chạy kế hoạch
+### 5. Chạy kế hoạch
 
-Chạy runtime chính là phê duyệt kế hoạch của nó. Một vòng sẽ build image, khởi động cụm cục bộ của dự án và thực hiện các lần gọi trả phí qua tác tử lập trình của bạn, vì vậy hãy chạy `ex doctor` trước.
+Chạy runtime chính là phê duyệt kế hoạch của nó. Một vòng sẽ build image, khởi động cụm cục bộ của dự án và thực hiện các lần gọi trả phí qua tác tử lập trình của bạn, vì vậy hãy chạy `npx @langdrift/ex doctor` trước.
 
 ```sh
-ex agent run console-microruntime
+npx @langdrift/ex agent run console-microruntime
 ```
 
 1. **Cổng kiểm soát.** Lượt chạy in ra ý định, ước tính theo giá niêm yết và ngân sách mỗi lượt chạy, rồi giữ chỗ. Một khoản giữ chỗ nằm trong mọi giới hạn sẽ mở vòng; khoản vượt giới hạn sẽ tạm dừng mà chưa trả gì.
-2. **Các giai đoạn.** Mỗi giai đoạn chạy lần lượt qua tác tử lập trình và in ra một dòng tóm tắt. Giai đoạn có con người tham gia sẽ chờ chủ sở hữu: trả lời ngay trên terminal hoặc bằng `--confirm`, hoặc sau đó bằng `ex agent confirm console-microruntime planning`. Giai đoạn `owner-only` không bao giờ chạy.
+2. **Các giai đoạn.** Mỗi giai đoạn chạy lần lượt qua tác tử lập trình và in ra một dòng tóm tắt. Giai đoạn có con người tham gia sẽ chờ chủ sở hữu: trả lời ngay trên terminal hoặc bằng `--confirm`, hoặc sau đó bằng `npx @langdrift/ex agent confirm console-microruntime planning`. Giai đoạn `owner-only` không bao giờ chạy.
 3. **Runtime.** Các thành phần khởi chạy từ khối trên cụm kind của dự án, và lượt chạy báo khi chúng sẵn sàng.
 4. **Bàn giao.** Lượt chạy quan sát nhánh, pull request và các bước kiểm tra của nó; `--checks-wait` giới hạn thời gian theo dõi.
 5. **Quyết toán.** Runtime dừng lại, phần giữ chỗ chưa dùng trả về ngân sách, bộ nhớ `run.md` được ghi và chỉ mục episode được dựng lại. Lượt chạy cho biết nó đã sẵn sàng để review hay để merge, và bước tiếp theo là gì.
 
 Mọi thay đổi đều được ghi vào tệp của vòng, `run.json` và sổ cái.
 
-### 7. Theo dõi lượt chạy
+### 6. Theo dõi lượt chạy
 
 ```sh
-ex agent status console-microruntime
-ex agent reindex
-ex doctor
+npx @langdrift/ex agent status console-microruntime
+npx @langdrift/ex agent reindex
+npx @langdrift/ex doctor
 ```
 
 `status` hiển thị bản ghi lượt chạy và vòng đang mở, `reindex` dựng lại chỉ mục episode từ bộ nhớ của mọi runtime, và `doctor` kiểm tra các công cụ gốc. Với `--json`, mỗi dòng của phiên là một sự kiện NDJSON, `{at, session, kind, id, text, card, field, data}`, để bảng điều khiển hoặc giao diện terminal có thể hiển thị cùng một phiên.
@@ -320,17 +299,6 @@ Các con số này chỉ mang tính minh họa để thể hiện định dạng
 `planning` bao gồm các lần gọi của chính bộ lập kế hoạch. Các dự báo được dùng khi chưa có lượt chạy trước nào của ticket đo số token của nó.
 
 </details>
-
-### Khám phá trang web và bảng điều khiển
-
-Với Node.js 24 và pnpm 12, từ thư mục gốc của kho mã:
-
-```sh
-pnpm install
-pnpm website
-```
-
-Trang web chạy tại `http://localhost:3000`. `pnpm console` khởi động bảng điều khiển tại `http://127.0.0.1:3001` cùng `extub` bên cạnh tại `127.0.0.1:3401`, vốn cần Go. Mọi con số mà bảng điều khiển hiển thị đều đến từ bản giả lập.
 
 ## Công việc đằng sau LangDrift
 
