@@ -84,7 +84,7 @@ Every input that can block or allow a run is recorded with who set it, when and 
 
 ## Project status
 
-**LangDrift is in development.** The website is live at [langdrift.md](https://langdrift.md) in five languages. The console reads `extub`, a stub API that seeds one project, LangDrift Studio, and labels its FinOps readings as illustrative. You build `ex` from source; no binary is published.
+**LangDrift is in development.** The website is live at [langdrift.md](https://langdrift.md) in five languages. The console reads `extub`, a stub API that seeds one project, LangDrift Studio, and labels its FinOps readings as illustrative. The CLI is published on npm as `@langdrift/ex` (`npx @langdrift/ex`), or you can build it from source.
 
 `ex agent plan` and `ex agent run` work locally inside a project, and the money gates run inside `ex` against the project's own ledger; a team ledger shared through a server is not built yet. The connected agent (`ex agent connect`, `project`, `supervise` and `migrate`) needs a server this repository does not have yet. The test suites drive the CLI with scripted models, coding agents and lifecycles; they do not establish a live cluster start, real spend or production readiness. Sign-up on the website is paused.
 
@@ -99,9 +99,17 @@ Every input that can block or allow a run is recorded with who set it, when and 
 
 ## Get started with `ex`
 
-You need macOS or Linux and Go 1.26 or newer; that is enough to plan. The planner's model judge reads `ANTHROPIC_API_KEY`. Running a lap also needs Docker, kind, kubectl and Terraform (`ex doctor` checks them and installs nothing), the coding agent you configure, such as Claude Code, and `gh` to observe pull requests.
+You need macOS or Linux; running `@langdrift/ex` from npm needs Node.js, and building from source needs Go 1.26 or newer. That is enough to plan. The planner's model judge reads `ANTHROPIC_API_KEY`. Running a lap also needs Docker, kind, kubectl and Terraform (`ex doctor` checks them and installs nothing), the coding agent you configure, such as Claude Code, and `gh` to observe pull requests.
 
-### 1. Build the CLI
+### 1. Run or build the CLI
+
+Run `@langdrift/ex` directly with `npx`:
+
+```sh
+npx @langdrift/ex version
+```
+
+Or build it from source:
 
 ```sh
 git clone https://github.com/jonatassales/lang-drift.git
@@ -110,7 +118,7 @@ GOTOOLCHAIN=local go build -o dist/ex ./src
 ./dist/ex version
 ```
 
-`version` prints `ex 0.0.0-dev`. Your system may already have an `ex`, the Vi line editor, so call this one by its path. The steps below write `ex` for `packages/ex/dist/ex`; for this shell only, `alias ex="$PWD/dist/ex"` does that.
+`version` prints `ex 0.1.0` (or `ex 0.0.0-dev` from an unversioned source build). Your system may already have an `ex`, the Vi line editor, so call this one through `npx @langdrift/ex` or by its path. The steps below write `ex` for `npx @langdrift/ex` or `packages/ex/dist/ex`; for this shell only, `alias ex="npx @langdrift/ex"` (or `alias ex="$PWD/dist/ex"`) does that.
 
 ### 2. Initialize a project
 

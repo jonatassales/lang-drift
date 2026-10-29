@@ -84,7 +84,7 @@ LangDrift が持つのは境界と仕組みです。アプリケーションと�
 
 ## プロジェクトの状況
 
-**LangDrift は開発中です。** ウェブサイトは [langdrift.md](https://langdrift.md/ja/) で五つの言語で公開されています。コンソールは `extub` を読み込みます。これは LangDrift Studio というひとつのプロジェクトを用意するスタブ API で、その FinOps の数値はイメージであると明示されています。`ex` はソースからビルドして使い、バイナリは公開されていません。
+**LangDrift は開発中です。** ウェブサイトは [langdrift.md](https://langdrift.md/ja/) で五つの言語で公開されています。コンソールは `extub` を読み込みます。これは LangDrift Studio というひとつのプロジェクトを用意するスタブ API で、その FinOps の数値はイメージであると明示されています。CLI は npm に `@langdrift/ex`（`npx @langdrift/ex`）として公開されており、ソースからビルドすることもできます。
 
 `ex agent plan` と `ex agent run` はプロジェクト内でローカルに動作し、お金のゲートは `ex` の中でプロジェクト自身の台帳に対して実行されます。サーバーで共有するチームの台帳はまだ作られていません。接続エージェント（`ex agent connect`、`project`、`supervise`、`migrate`）には、このリポジトリにまだないサーバーが必要です。テストスイートは、スクリプト化したモデル、コーディングエージェント、ライフサイクルで CLI を動かすもので、実際のクラスターの起動、実際の支出、本番環境での準備が整っていることを示すものではありません。ウェブサイトでの登録は一時停止中です。
 
@@ -99,9 +99,17 @@ LangDrift が持つのは境界と仕組みです。アプリケーションと�
 
 ## `ex` をはじめる
 
-macOS または Linux と、Go 1.26 以降が必要です。計画するだけならこれで十分です。プランナーのモデルによる判定は `ANTHROPIC_API_KEY` を読みます。ラップを実行するには、さらに Docker、kind、kubectl、Terraform（`ex doctor` が確認し、何もインストールしません）、Claude Code などあなたが設定するコーディングエージェント、そしてプルリクエストを観測するための `gh` が必要です。
+macOS または Linux が必要です。npm から `@langdrift/ex` を実行するには Node.js、ソースからビルドするには Go 1.26 以降が必要です。計画するだけならこれで十分です。プランナーのモデルによる判定は `ANTHROPIC_API_KEY` を読みます。ラップを実行するには、さらに Docker、kind、kubectl、Terraform（`ex doctor` が確認し、何もインストールしません）、Claude Code などあなたが設定するコーディングエージェント、そしてプルリクエストを観測するための `gh` が必要です。
 
-### 1. CLI をビルドする
+### 1. CLI を実行またはビルドする
+
+`npx` で `@langdrift/ex` を直接実行します。
+
+```sh
+npx @langdrift/ex version
+```
+
+またはソースからビルドします。
 
 ```sh
 git clone https://github.com/jonatassales/lang-drift.git
@@ -110,7 +118,7 @@ GOTOOLCHAIN=local go build -o dist/ex ./src
 ./dist/ex version
 ```
 
-`version` は `ex 0.0.0-dev` を表示します。システムにはすでに Vi の行エディターである `ex` があるかもしれないので、こちらはパスで呼び出してください。以下の手順では `packages/ex/dist/ex` を `ex` と書きます。このシェルの中だけなら、`alias ex="$PWD/dist/ex"` でそうできます。
+`version` は `ex 0.1.0`（バージョン未注入のローカルビルドでは `ex 0.0.0-dev`）を表示します。システムにはすでに Vi の行エディターである `ex` があるかもしれないので、こちらは `npx @langdrift/ex` またはパスで呼び出してください。以下の手順では `npx @langdrift/ex` または `packages/ex/dist/ex` を `ex` と書きます。このシェルの中だけなら、`alias ex="npx @langdrift/ex"`（または `alias ex="$PWD/dist/ex"`）でそうできます。
 
 ### 2. プロジェクトを初期化する
 

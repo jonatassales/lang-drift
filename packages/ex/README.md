@@ -13,30 +13,33 @@ GOTOOLCHAIN=local go test ./...
 GOTOOLCHAIN=local go vet ./...
 ```
 
-The module, `github.com/jonatassales/tao/packages/ex`, is the private package
+The module, `github.com/jonatassales/tao/packages/ex`, is published on npm as
 `@langdrift/ex`. It imports the [Microruntimes contracts](/packages/contracts/README.md),
 `github.com/jonatassales/tao/packages/contracts`, for the `runtime.md` fence,
 the lexical rules and the agent-server protocol, and the official Anthropic Go
 SDK for the planner's model calls. The root `go.work` ties the two modules and
 `apps/extub` together, so the CLI imports the contracts without a `replace`
-directive; building it outside this repository needs the contracts module
-published. This does not imply a published release. Native Go commands own the
-build and checks. Building does not install infrastructure tools, alter shell
-profiles, or change PATH. Use `./dist/ex` to avoid invoking the unrelated system
+directive; building it from source outside this repository needs the contracts
+module published. Native Go commands own the build and checks. Building does not
+install infrastructure tools, alter shell profiles, or change PATH. Use
+`npx @langdrift/ex` or `./dist/ex` to avoid invoking the unrelated system
 editor also named `ex`.
 
-## Workspace package
+## Package and `npx`
 
-The package holds only the Go module, its source, and `build.sh`. `build.sh`
-builds `dist/ex` with an existing Go toolchain, never installs Go or tools, and
-never changes shell profiles; `LANGDRIFT_SKIP_EX_BUILD=1` skips it. Installing
-the workspace does not run it. From the workspace root,
-`pnpm --filter @langdrift/ex build` rebuilds the executable.
+`@langdrift/ex` ships a POSIX shell launcher at `bin/ex` and prebuilt static
+`CGO_ENABLED=0` binaries for macOS and Linux (`darwin`/`linux` on `arm64`/`x64`).
+Run it directly with `npx @langdrift/ex <command>` (or `pnpm dlx @langdrift/ex <command>`),
+or `npx ex <command>` inside a project where `@langdrift/ex` is installed.
 
-This package declares no npm bin. Run `packages/ex/dist/ex` directly from this
-repository. The separate SDK package and its bridge were removed on October 21, 2026. The former shell-setup command,
-package bridge, historical schemas, and consumer-harness fixtures were removed
-on October 17, 2026; Git history retains them.
+In this repository, `build.sh` builds `dist/ex` for the host OS and architecture
+with an existing Go toolchain, injecting the version from `package.json` into
+`main.version`, never installs Go or tools, and never changes shell profiles;
+`LANGDRIFT_SKIP_EX_BUILD=1` skips it. Installing the workspace does not run it.
+From the workspace root, `pnpm --filter @langdrift/ex build` rebuilds the host
+executable, and `sh build.sh --release` (run automatically by `prepack`)
+cross-compiles all four target binaries (`dist/ex-darwin-arm64`,
+`dist/ex-darwin-amd64`, `dist/ex-linux-amd64` and `dist/ex-linux-arm64`).
 
 ## Boundary
 
@@ -113,7 +116,7 @@ The executable runs as a trusted process from the project root, never through a 
 
 ## Commands
 
-In the commands below, `ex` means this tree's compiled `./dist/ex` executable.
+In the commands below, `ex` means `npx @langdrift/ex` or this tree's compiled `./dist/ex` executable.
 
 | Command | Behavior |
 | --- | --- |

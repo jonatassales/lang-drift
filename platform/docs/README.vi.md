@@ -84,7 +84,7 @@ Mọi đầu vào có thể chặn hoặc cho phép một lượt chạy đều 
 
 ## Trạng thái dự án
 
-**LangDrift đang được phát triển.** Trang web đã hoạt động tại [langdrift.md](https://langdrift.md/vi/) với năm ngôn ngữ. Bảng điều khiển đọc `extub`, một API giả lập khởi tạo sẵn một dự án là LangDrift Studio và ghi rõ các số liệu FinOps của nó là minh họa. Bạn tự build `ex` từ mã nguồn; chưa có bản nhị phân nào được phát hành.
+**LangDrift đang được phát triển.** Trang web đã hoạt động tại [langdrift.md](https://langdrift.md/vi/) với năm ngôn ngữ. Bảng điều khiển đọc `extub`, một API giả lập khởi tạo sẵn một dự án là LangDrift Studio và ghi rõ các số liệu FinOps của nó là minh họa. CLI được phát hành trên npm dưới tên `@langdrift/ex` (`npx @langdrift/ex`), hoặc bạn có thể tự build từ mã nguồn.
 
 `ex agent plan` và `ex agent run` hoạt động cục bộ trong một dự án, và các cổng kiểm soát chi tiêu chạy bên trong `ex` trên sổ cái riêng của dự án; một sổ cái chung của đội qua máy chủ vẫn chưa được xây dựng. Tác tử kết nối (`ex agent connect`, `project`, `supervise` và `migrate`) cần một máy chủ mà kho mã này chưa có. Các bộ kiểm thử điều khiển CLI bằng mô hình, tác tử lập trình và vòng đời được lập kịch bản; chúng không chứng minh việc khởi chạy cụm thật, chi tiêu thật hay sự sẵn sàng cho môi trường production. Việc đăng ký trên trang web đang tạm dừng.
 
@@ -99,9 +99,17 @@ Mọi đầu vào có thể chặn hoặc cho phép một lượt chạy đều 
 
 ## Bắt đầu với `ex`
 
-Bạn cần macOS hoặc Linux và Go 1.26 trở lên; như vậy là đủ để lập kế hoạch. Phần đánh giá bằng mô hình của bộ lập kế hoạch đọc `ANTHROPIC_API_KEY`. Để chạy một vòng, bạn còn cần Docker, kind, kubectl và Terraform (`ex doctor` kiểm tra chúng và không cài đặt gì), tác tử lập trình mà bạn cấu hình, chẳng hạn Claude Code, và `gh` để quan sát pull request.
+Bạn cần macOS hoặc Linux; chạy `@langdrift/ex` từ npm cần Node.js, còn build từ mã nguồn cần Go 1.26 trở lên. Như vậy là đủ để lập kế hoạch. Phần đánh giá bằng mô hình của bộ lập kế hoạch đọc `ANTHROPIC_API_KEY`. Để chạy một vòng, bạn còn cần Docker, kind, kubectl và Terraform (`ex doctor` kiểm tra chúng và không cài đặt gì), tác tử lập trình mà bạn cấu hình, chẳng hạn Claude Code, và `gh` để quan sát pull request.
 
-### 1. Build CLI
+### 1. Chạy hoặc build CLI
+
+Chạy `@langdrift/ex` trực tiếp bằng `npx`:
+
+```sh
+npx @langdrift/ex version
+```
+
+Hoặc build từ mã nguồn:
 
 ```sh
 git clone https://github.com/jonatassales/lang-drift.git
@@ -110,7 +118,7 @@ GOTOOLCHAIN=local go build -o dist/ex ./src
 ./dist/ex version
 ```
 
-`version` in ra `ex 0.0.0-dev`. Hệ thống của bạn có thể đã có một `ex` khác, trình soạn thảo dòng của Vi, nên hãy gọi bản này bằng đường dẫn. Các bước dưới đây viết `ex` thay cho `packages/ex/dist/ex`; chỉ trong shell này, `alias ex="$PWD/dist/ex"` sẽ làm điều đó.
+`version` in ra `ex 0.1.0` (hoặc `ex 0.0.0-dev` khi build cục bộ chưa gắn phiên bản). Hệ thống của bạn có thể đã có một `ex` khác, trình soạn thảo dòng của Vi, nên hãy gọi bản này qua `npx @langdrift/ex` hoặc bằng đường dẫn. Các bước dưới đây viết `ex` thay cho `npx @langdrift/ex` hoặc `packages/ex/dist/ex`; chỉ trong shell này, `alias ex="npx @langdrift/ex"` (hoặc `alias ex="$PWD/dist/ex"`) sẽ làm điều đó.
 
 ### 2. Khởi tạo dự án
 

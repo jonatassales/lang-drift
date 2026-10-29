@@ -84,7 +84,7 @@ LangDrift 負責邊界與機制；你的團隊負責應用程式與其領域上�
 
 ## 專案狀態
 
-**LangDrift 仍在開發中。** 網站已在 [langdrift.md](https://langdrift.md/zh-hant/) 上線，提供五種語言。主控台讀取 `extub`，這是一個植入單一專案 LangDrift Studio 的 stub API，並把它的 FinOps 數據標示為示意。`ex` 需要從原始碼建置；目前沒有發佈任何二進位檔。
+**LangDrift 仍在開發中。** 網站已在 [langdrift.md](https://langdrift.md/zh-hant/) 上線，提供五種語言。主控台讀取 `extub`，這是一個植入單一專案 LangDrift Studio 的 stub API，並把它的 FinOps 數據標示為示意。CLI 已發佈於 npm 為 `@langdrift/ex`（`npx @langdrift/ex`），你也可以從原始碼建置。
 
 `ex agent plan` 與 `ex agent run` 可以在專案內於本機運作，金錢閘門在 `ex` 內針對專案自己的帳本執行；透過伺服器共享的團隊帳本尚未建置。連線代理（`ex agent connect`、`project`、`supervise` 與 `migrate`）需要一個本儲存庫還沒有的伺服器。測試套件以腳本化的模型、程式開發代理與生命週期驅動 CLI；它們並不證明真實叢集能啟動、真實的花費或已可用於正式環境。網站的註冊目前暫停。
 
@@ -99,9 +99,17 @@ LangDrift 負責邊界與機制；你的團隊負責應用程式與其領域上�
 
 ## 開始使用 `ex`
 
-你需要 macOS 或 Linux，以及 Go 1.26 或更新版本；這樣就足以規劃。規劃器的模型評審會讀取 `ANTHROPIC_API_KEY`。執行一圈還需要 Docker、kind、kubectl 與 Terraform（`ex doctor` 會檢查它們，且不安裝任何東西）、你設定的程式開發代理（例如 Claude Code），以及用來觀察 pull request 的 `gh`。
+你需要 macOS 或 Linux；透過 npm 執行 `@langdrift/ex` 需要 Node.js，從原始碼建置則需要 Go 1.26 或更新版本。這樣就足以規劃。規劃器的模型評審會讀取 `ANTHROPIC_API_KEY`。執行一圈還需要 Docker、kind、kubectl 與 Terraform（`ex doctor` 會檢查它們，且不安裝任何東西）、你設定的程式開發代理（例如 Claude Code），以及用來觀察 pull request 的 `gh`。
 
-### 1. 建置 CLI
+### 1. 執行或建置 CLI
+
+直接以 `npx` 執行 `@langdrift/ex`：
+
+```sh
+npx @langdrift/ex version
+```
+
+或從原始碼建置：
 
 ```sh
 git clone https://github.com/jonatassales/lang-drift.git
@@ -110,7 +118,7 @@ GOTOOLCHAIN=local go build -o dist/ex ./src
 ./dist/ex version
 ```
 
-`version` 會印出 `ex 0.0.0-dev`。你的系統可能已經有一個 `ex`，也就是 Vi 的行編輯器，所以請用路徑呼叫這一個。以下步驟以 `ex` 代表 `packages/ex/dist/ex`；只在這個 shell 中執行 `alias ex="$PWD/dist/ex"` 即可。
+`version` 會印出 `ex 0.1.0`（未注入版本的本機建置則印出 `ex 0.0.0-dev`）。你的系統可能已經有一個 `ex`，也就是 Vi 的行編輯器，所以請透過 `npx @langdrift/ex` 或路徑呼叫這一個。以下步驟以 `ex` 代表 `npx @langdrift/ex` 或 `packages/ex/dist/ex`；只在這個 shell 中執行 `alias ex="npx @langdrift/ex"`（或 `alias ex="$PWD/dist/ex"`）即可。
 
 ### 2. 初始化專案
 
