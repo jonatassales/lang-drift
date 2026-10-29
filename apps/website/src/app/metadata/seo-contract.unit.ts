@@ -227,7 +227,11 @@ describe('security.txt', () => {
 		readWebsiteFile('public/.well-known/security.txt')
 			.trim()
 			.split('\n')
-			.map((line) => line.split(/:\s(.*)/s).slice(0, 2)),
+			.map((line) => {
+				const separator = line.indexOf(': ')
+
+				return [line.slice(0, separator), line.slice(separator + 2)]
+			}),
 	)
 
 	it('names the security contact, the languages and its canonical URL', () => {
