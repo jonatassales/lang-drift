@@ -1,23 +1,19 @@
 #!/bin/sh
 set -eu
 
-_ex_mode=host
-if [ "$#" -gt 0 ]; then
-  case "$1" in
-    --release)
-      _ex_mode=release
-      shift
-      ;;
-    *)
-      printf '%s\n' 'Usage: sh build.sh [--release]' >&2
-      exit 2
-      ;;
-  esac
-fi
-if [ "$#" -gt 0 ]; then
+if [ "$#" -gt 1 ]; then
   printf '%s\n' 'Usage: sh build.sh [--release]' >&2
   exit 2
 fi
+
+case "${1:-}" in
+  '') _ex_mode=host ;;
+  --release) _ex_mode=release ;;
+  *)
+    printf '%s\n' 'Usage: sh build.sh [--release]' >&2
+    exit 2
+    ;;
+esac
 
 # Frontend-only deployments may install the workspace without using the CLI.
 # Keep this explicit: an ordinary source installation still requires Go.
@@ -35,7 +31,8 @@ fi
 
 _ex_version=$(sed -n 's/.*"version":[[:space:]]*"\([^"]*\)".*/\1/p' "$_ex_package/package.json" | head -n 1)
 if [ -z "$_ex_version" ]; then
-  _ex_version=0.0.0-dev
+  printf '%s\n' 'Failed to read version from package.json.' >&2
+  exit 1
 fi
 
 mkdir -p "$_ex_package/dist"
@@ -49,14 +46,18 @@ trap 'rm -f "$_ex_output"; rmdir "$_ex_lock"' EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM HUP
 
+install_output() {
+  chmod 755 "$_ex_output"
+  mv -f "$_ex_output" "$1"
+}
+
 build_target() {
   _target_os=$1
   _target_arch=$2
   _target_dest=$3
   GOTOOLCHAIN=local CGO_ENABLED=0 GOOS="$_target_os" GOARCH="$_target_arch" \
     go -C "$_ex_package" build -ldflags="-s -w -X main.version=$_ex_version" -o "$_ex_output" ./src
-  chmod 755 "$_ex_output"
-  mv -f "$_ex_output" "$_target_dest"
+  install_output "$_target_dest"
 }
 
 # GOTOOLCHAIN=local forbids automatic toolchain installation. Go module fetching
@@ -71,8 +72,7 @@ if [ "$_ex_mode" = "release" ]; then
   build_target linux amd64 "$_ex_package/dist/ex-linux-amd64"
   build_target linux arm64 "$_ex_package/dist/ex-linux-arm64"
   cp -f "$_ex_package/dist/ex-$_ex_os-$_ex_arch" "$_ex_output"
-  chmod 755 "$_ex_output"
-  mv -f "$_ex_output" "$_ex_package/dist/ex"
+  install_output "$_ex_package/dist/ex"
   exit 0
 fi
 

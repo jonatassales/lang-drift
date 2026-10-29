@@ -120,13 +120,15 @@ func TestLauncherDispatchAndFallback(t *testing.T) {
 		t.Fatalf("read bin/ex: %v", err)
 	}
 
-	writeFakeUname := func(t *testing.T, directory, kernel, machine string) {
+	writeFakeUname := func(t *testing.T, kernel, machine string) string {
 		t.Helper()
+		directory := t.TempDir()
 		script := fmt.Sprintf("#!/bin/sh\nif [ \"${1:-}\" = \"-s\" ]; then printf '%%s\\n' %q; else printf '%%s\\n' %q; fi\n", kernel, machine)
 		unamePath := filepath.Join(directory, "uname")
 		if err := os.WriteFile(unamePath, []byte(script), 0o755); err != nil {
 			t.Fatalf("write fake uname: %v", err)
 		}
+		return directory
 	}
 
 	setupFixture := func(t *testing.T) (string, string) {
@@ -154,113 +156,121 @@ func TestLauncherDispatchAndFallback(t *testing.T) {
 		return pkg, symlinkPath
 	}
 
+	runLauncher := func(symlinkPath, fakeBin string, args ...string) (int, string, string) {
+		command := exec.Command(symlinkPath, args...)
+		command.Env = []string{"PATH=" + fakeBin + ":/usr/bin:/bin"}
+		var stdout, stderr bytes.Buffer
+		command.Stdout = &stdout
+		command.Stderr = &stderr
+		runErr := command.Run()
+		if runErr == nil {
+			return 0, stdout.String(), stderr.String()
+		}
+		var exitErr *exec.ExitError
+		if errors.As(runErr, &exitErr) {
+			return exitErr.ExitCode(), stdout.String(), stderr.String()
+		}
+		return -1, stdout.String(), stderr.String()
+	}
+
 	platforms := []struct {
 		kernel  string
 		machine string
 		target  string
+		status  int
 	}{
-		{kernel: "Darwin", machine: "arm64", target: "ex-darwin-arm64"},
-		{kernel: "Darwin", machine: "x86_64", target: "ex-darwin-amd64"},
-		{kernel: "Linux", machine: "x86_64", target: "ex-linux-amd64"},
-		{kernel: "Linux", machine: "aarch64", target: "ex-linux-arm64"},
-		{kernel: "Linux", machine: "arm64", target: "ex-linux-arm64"},
+		{kernel: "Darwin", machine: "arm64", target: "ex-darwin-arm64", status: 0},
+		{kernel: "Darwin", machine: "x86_64", target: "ex-darwin-amd64", status: 0},
+		{kernel: "Linux", machine: "x86_64", target: "ex-linux-amd64", status: 0},
+		{kernel: "Linux", machine: "aarch64", target: "ex-linux-arm64", status: 0},
+		{kernel: "Linux", machine: "arm64", target: "ex-linux-arm64", status: 3},
 	}
 
 	for _, platform := range platforms {
 		t.Run(platform.kernel+"-"+platform.machine, func(t *testing.T) {
 			pkg, symlinkPath := setupFixture(t)
-			fakeBin := t.TempDir()
-			writeFakeUname(t, fakeBin, platform.kernel, platform.machine)
+			fakeBin := writeFakeUname(t, platform.kernel, platform.machine)
 
 			targetBinary := filepath.Join(pkg, "dist", platform.target)
-			stub := fmt.Sprintf("#!/bin/sh\nprintf 'target=%s args=%%s\\n' \"$*\"\nexit 0\n", platform.target)
+			stub := fmt.Sprintf("#!/bin/sh\nprintf 'target=%s args=%%s\\n' \"$*\"\nexit %d\n", platform.target, platform.status)
 			if err := os.WriteFile(targetBinary, []byte(stub), 0o644); err != nil {
 				t.Fatalf("write target binary: %v", err)
 			}
 
-			command := exec.Command(symlinkPath, "agent", "plan", "0001")
-			command.Env = []string{"PATH=" + fakeBin + ":/usr/bin:/bin"}
-			output, err := command.CombinedOutput()
-			if err != nil {
-				t.Fatalf("run launcher: %v\n%s", err, output)
-			}
+			status, stdout, stderr := runLauncher(symlinkPath, fakeBin, "agent", "plan", "0001")
 			expected := fmt.Sprintf("target=%s args=agent plan 0001\n", platform.target)
-			if string(output) != expected {
-				t.Fatalf("output = %q, want %q", string(output), expected)
+			if status != platform.status || stdout != expected || stderr != "" {
+				t.Fatalf("runLauncher = (%d, %q, %q), want (%d, %q, \"\")", status, stdout, stderr, platform.status, expected)
 			}
 		})
 	}
 
 	t.Run("falls back to host dist/ex when platform binary is absent", func(t *testing.T) {
 		pkg, symlinkPath := setupFixture(t)
-		fakeBin := t.TempDir()
-		writeFakeUname(t, fakeBin, "Darwin", "arm64")
+		fakeBin := writeFakeUname(t, "Darwin", "arm64")
 
 		hostBinary := filepath.Join(pkg, "dist", "ex")
 		if err := os.WriteFile(hostBinary, []byte("#!/bin/sh\nprintf 'host-fallback %s\\n' \"$*\"\n"), 0o755); err != nil {
 			t.Fatalf("write host binary: %v", err)
 		}
 
-		command := exec.Command(symlinkPath, "version")
-		command.Env = []string{"PATH=" + fakeBin + ":/usr/bin:/bin"}
-		output, err := command.CombinedOutput()
-		if err != nil {
-			t.Fatalf("run fallback: %v\n%s", err, output)
-		}
-		if string(output) != "host-fallback version\n" {
-			t.Fatalf("output = %q, want %q", string(output), "host-fallback version\n")
+		status, stdout, stderr := runLauncher(symlinkPath, fakeBin, "version")
+		if status != 0 || stdout != "host-fallback version\n" || stderr != "" {
+			t.Fatalf("runLauncher = (%d, %q, %q), want (0, %q, \"\")", status, stdout, stderr, "host-fallback version\n")
 		}
 	})
 
-	t.Run("exits 4 on unsupported platform", func(t *testing.T) {
-		_, symlinkPath := setupFixture(t)
-		fakeBin := t.TempDir()
-		writeFakeUname(t, fakeBin, "FreeBSD", "riscv64")
+	for _, unsupported := range []struct {
+		name    string
+		kernel  string
+		machine string
+	}{
+		{name: "exits 4 on unsupported kernel", kernel: "FreeBSD", machine: "arm64"},
+		{name: "exits 4 on unsupported cpu architecture", kernel: "Linux", machine: "ppc64le"},
+	} {
+		t.Run(unsupported.name, func(t *testing.T) {
+			_, symlinkPath := setupFixture(t)
+			fakeBin := writeFakeUname(t, unsupported.kernel, unsupported.machine)
 
-		command := exec.Command(symlinkPath, "version")
-		command.Env = []string{"PATH=" + fakeBin + ":/usr/bin:/bin"}
-		var stderr bytes.Buffer
-		command.Stderr = &stderr
-		err := command.Run()
-		var exitErr *exec.ExitError
-		if !errors.As(err, &exitErr) || exitErr.ExitCode() != 4 {
-			t.Fatalf("err = %v, want exit code 4 (stderr: %s)", err, stderr.String())
-		}
-		if !strings.Contains(stderr.String(), "macOS and Linux") {
-			t.Fatalf("stderr = %q, want platform diagnostic", stderr.String())
-		}
-	})
+			status, _, stderr := runLauncher(symlinkPath, fakeBin, "version")
+			if status != 4 || !strings.Contains(stderr, "macOS and Linux") {
+				t.Fatalf("runLauncher = (%d, stderr=%q), want status 4 and platform diagnostic", status, stderr)
+			}
+		})
+	}
 
 	t.Run("exits 4 when binary is missing", func(t *testing.T) {
 		_, symlinkPath := setupFixture(t)
-		fakeBin := t.TempDir()
-		writeFakeUname(t, fakeBin, "Darwin", "arm64")
+		fakeBin := writeFakeUname(t, "Darwin", "arm64")
 
-		command := exec.Command(symlinkPath, "version")
-		command.Env = []string{"PATH=" + fakeBin + ":/usr/bin:/bin"}
-		var stderr bytes.Buffer
-		command.Stderr = &stderr
-		err := command.Run()
-		var exitErr *exec.ExitError
-		if !errors.As(err, &exitErr) || exitErr.ExitCode() != 4 {
-			t.Fatalf("err = %v, want exit code 4 (stderr: %s)", err, stderr.String())
-		}
-		if !strings.Contains(stderr.String(), "binary") {
-			t.Fatalf("stderr = %q, want missing binary diagnostic", stderr.String())
+		status, _, stderr := runLauncher(symlinkPath, fakeBin, "version")
+		if status != 4 || !strings.Contains(stderr, "binary") {
+			t.Fatalf("runLauncher = (%d, stderr=%q), want status 4 and missing binary diagnostic", status, stderr)
 		}
 	})
 
-	t.Run("build.sh rejects unknown flags with exit code 2", func(t *testing.T) {
+	t.Run("build.sh injects package.json version and rejects unknown flags", func(t *testing.T) {
 		command := exec.Command("sh", filepath.Join(packageDir, "build.sh"), "--unknown")
 		var stderr bytes.Buffer
 		command.Stderr = &stderr
 		err := command.Run()
 		var exitErr *exec.ExitError
-		if !errors.As(err, &exitErr) || exitErr.ExitCode() != 2 {
-			t.Fatalf("err = %v, want exit code 2 (stderr: %s)", err, stderr.String())
+		if !errors.As(err, &exitErr) || exitErr.ExitCode() != 2 || !strings.Contains(stderr.String(), "Usage: sh build.sh [--release]") {
+			t.Fatalf("unknown flag = %v (stderr=%q), want exit code 2 and usage diagnostic", err, stderr.String())
 		}
-		if !strings.Contains(stderr.String(), "Usage: sh build.sh [--release]") {
-			t.Fatalf("stderr = %q, want usage diagnostic", stderr.String())
+
+		if _, lookErr := exec.LookPath("go"); lookErr != nil {
+			t.Skip("go is not on PATH")
+		}
+		if output, buildErr := exec.Command("sh", filepath.Join(packageDir, "build.sh")).CombinedOutput(); buildErr != nil {
+			t.Fatalf("build.sh: %v\n%s", buildErr, output)
+		}
+		versionOut, runErr := exec.Command(filepath.Join(packageDir, "bin", "ex"), "version").CombinedOutput()
+		if runErr != nil {
+			t.Fatalf("bin/ex version: %v\n%s", runErr, versionOut)
+		}
+		if strings.TrimSpace(string(versionOut)) != "ex 0.1.0" {
+			t.Fatalf("bin/ex version = %q, want %q", strings.TrimSpace(string(versionOut)), "ex 0.1.0")
 		}
 	})
 }
