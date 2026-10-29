@@ -51,3 +51,5 @@ A good test observes what the console shows or what a route returns, never the c
 ## Further Notes
 
 Spec 0016 fixed the records' fields and their names; this spec names which of them each card reads. The fixtures under `packages/ex/src/testdata/langdrift/` are the contract between the two sides: a change to a field changes a fixture, and the mapping test tells.
+
+Spec 0019 moved the four panels of spec 0014 from the listings to the ticket page: a listing entry now shows the ticket and its phase's summary line, and the ticket page shows the panels' bodies. The mapping to `Ticket` this spec describes is unchanged.

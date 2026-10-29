@@ -1,1 +1,1 @@
-export { ActivityListSkeleton as default } from '@components/route-state/activity-list-skeleton'
+export { TicketListSkeleton as default } from '@components/route-state/ticket-list-skeleton'

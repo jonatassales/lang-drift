@@ -3,13 +3,14 @@
 import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
-import { ActivityRowSkeleton } from '@components/route-state/activity-row-skeleton'
+import { TicketEntrySkeleton } from '@components/route-state/ticket-entry-skeleton'
 import { usePagedResource } from '@data/paged-resource.hook'
 import type { Page, Ticket, TicketPhase } from '@data/types'
 import { Button } from '@ui/button'
-import { VirtualList } from '@ui/virtual-list'
+import { ListEnd } from '@ui/list-end'
 
-import { PhaseWidget } from './phase-widget'
+import { TicketCard } from './ticket-card'
+import { TicketRow } from './ticket-row'
 
 interface TicketListingProps {
 	initial: Promise<Page<Ticket>>
@@ -26,8 +27,8 @@ const listLabels: Record<TicketPhase, string> = {
 }
 
 // One phase's listing: every ticket that has reached the phase, newest
-// first, each as that phase's widget, loading older tickets as the list
-// scrolls to its end.
+// first, in the page's flow, each as a card below lg and a row from lg,
+// loading older tickets as the list's end comes into view.
 export function TicketListing(props: TicketListingProps) {
 	const { initial, phase, productId } = props
 
@@ -45,30 +46,41 @@ export function TicketListing(props: TicketListingProps) {
 				</Button>
 			</div>
 			{resource.items.length ? (
-				<VirtualList
-					items={resource.items}
-					itemKey={(ticket) => ticket.id}
-					renderItem={(ticket) => (
-						<PhaseWidget listed phase={phase} ticket={ticket} />
-					)}
-					onEnd={resource.next}
-					label={t(listLabels[phase])}
-				/>
+				<ol
+					aria-label={t(listLabels[phase])}
+					className="m-0 grid list-none grid-cols-1 gap-3 p-0 lg:gap-2"
+				>
+					{resource.items.map((ticket) => (
+						<li key={ticket.id}>
+							<TicketCard listing={phase} ticket={ticket} />
+							<TicketRow listing={phase} ticket={ticket} />
+						</li>
+					))}
+				</ol>
 			) : null}
-			{resource.loading ? <ActivityRowSkeleton /> : null}
+			{resource.loading ? (
+				<div
+					aria-busy="true"
+					aria-label={t('loading')}
+					className="mt-3 lg:mt-2"
+					role="status"
+				>
+					<TicketEntrySkeleton />
+				</div>
+			) : null}
 			{resource.error ? (
 				<ErrorNotice error={resource.error} retry={resource.retry} />
 			) : null}
 			{!resource.loading && !resource.error && !resource.items.length ? (
 				<p className="text-sm text-muted-foreground">{t('empty')}</p>
 			) : null}
-			{resource.hasMore ? (
-				<div className="mt-4">
-					<Button disabled={resource.loading} onClick={resource.next}>
-						{t('loadMore')}
-					</Button>
-				</div>
-			) : null}
+			<ListEnd
+				failed={Boolean(resource.error)}
+				hasMore={resource.hasMore}
+				label={t('loadMore')}
+				loading={resource.loading}
+				onEnd={resource.next}
+			/>
 		</>
 	)
 }

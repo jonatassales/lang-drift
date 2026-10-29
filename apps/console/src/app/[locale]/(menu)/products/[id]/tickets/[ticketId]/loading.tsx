@@ -1,1 +1,1 @@
-export { RuntimeDetailSkeleton as default } from '@components/route-state/runtime-detail-skeleton'
+export { TicketDetailSkeleton as default } from '@components/route-state/ticket-detail-skeleton'
