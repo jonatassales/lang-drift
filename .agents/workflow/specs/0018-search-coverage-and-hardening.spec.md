@@ -14,7 +14,7 @@ The website already carries most of what search engines read: localized titles a
 
 Two more surfaced while the first pull request was verified:
 
-- Under the production server, every `pt-br` and `zh-hant` URL loops on 308 and never renders. The proxy hands next-intl the lowercase prefix, next-intl rewrites to the locale route `/pt-BR` without the trailing slash Next is configured for, Next redirects that path, and the proxy lowercases it again. 16.3.5 and 16.4.3 behave the same.
+- A local production server bound with `--hostname 127.0.0.1` loops every `pt-br` and `zh-hant` URL on 308. Ticket 0121 traced it to Next itself: NextURL renames a loopback host `localhost`, so next-intl's rewrite to `/pt-BR` names `localhost` while the router compares it with the `127.0.0.1` it received, treats it as external, and proxies the request back through routing, where the trailing-slash and case redirects send it round. The website's own `next start`, unbound, answers 200 on every sitemap URL, and Vercel routes rewrites itself, so production is unaffected.
 - next-intl also sends a `Link` header with its own hreflang alternates. They are built from the request host and carry a third x-default, the unprefixed path.
 
 Nothing pins any of it. A change to the page list, the sitemap or the metadata helper can drift without a failing test. The console is rightly kept out of search, but its tab titles collide or mislead, its brand strings live in TypeScript, and a missing page renders Next's English fallback.
@@ -175,7 +175,7 @@ extub answers like a hardened API. ex's API clients refuse redirects, insist on 
 
 - The metadata helper gives each page an x-default equal to its own English URL, the URL the sitemap already lists.
 - The website's next-intl routing turns `alternateLinks` off, as the console's does. The HTML and the sitemap are the only hreflang sources.
-- Every sitemap URL answers 200 under the production server. The locale rewrite targets a path Next serves without redirecting; the root cause and the fix are recorded with ticket 0121. The case-canonicalizing 308, the zh-CN fallback and the negotiating redirect at `/` keep working.
+- Every sitemap URL answers 200 under `next start` as the website's script runs it. The loop under `--hostname 127.0.0.1` is Next's, not ours: no patch of Next is carried for a local-only artifact, and the README warns against binding the website's production server to `127.0.0.1` (ticket 0121).
 - The social image files move under the localized segment whose layout sets `metadataBase`, so their absolute URLs resolve on langdrift.md at build time. If the build shows that Next still resolves them elsewhere, they stay where they are and the post-deploy checklist keeps the origin check. Each image keeps its alt text file.
 - The localized 404 carries its title from the route-state catalog.
 - Structured data:
