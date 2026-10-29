@@ -111,19 +111,7 @@ npx @langdrift/ex init
 
 `npx @langdrift/ex init` tạo định danh dự án trong `.langdrift/config.json` và các quy tắc thực thi trong `.langdrift/microruntimes/AGENTS.md`, đồng thời giữ nguyên các tệp đã có. Hãy thêm `/.langdrift/` vào `.gitignore`: đó là trạng thái cục bộ của máy do `ex` ghi, và không có gì do đội bạn soạn nằm trong đó.
 
-### 2. Ghi lại harness
-
-Lưu các [tệp đầu vào mẫu](#tệp-đầu-vào-mẫu) vào dự án, rồi ghi lại harness bàn giao: hạn mức phần cứng, các giai đoạn của quy trình, mô hình và mức nỗ lực mặc định, và tác tử lập trình chạy các giai đoạn.
-
-```sh
-npx @langdrift/ex harness envelope set --per-execution-cpu-millis 4000 --per-execution-memory-mib 6144 \
-  --default-cpu-millis 2000 --default-memory-mib 3072 --not-runtime-field gpu
-npx @langdrift/ex harness workflow set --file workflow.json
-npx @langdrift/ex harness model set claude-sonnet-5-5 --effort medium
-npx @langdrift/ex harness driver set --file driver.json
-```
-
-### 3. Ghi lại quy tắc chi tiêu
+### 2. Ghi lại quy tắc chi tiêu
 
 Ngân sách này cấp cho đội 500,00 USD cho tháng 10 năm 2026, giới hạn mỗi lượt chạy ở 25,00 USD, giữ thêm biên độ 20% trên mỗi ước tính và phân bổ 25,00 USD cho ticket 0070. Số tiền tính bằng cent.
 
@@ -137,14 +125,9 @@ npx @langdrift/ex finops forecasts set --file forecasts.json
 
 Mỗi lệnh in ra bản ghi mà nó đã viết, và mọi lệnh đầu vào đều nhận `--by` để ghi tên người đặt.
 
-### 4. Lập kế hoạch từ một ticket
+### 3. Lập kế hoạch từ một ticket
 
 Khai báo các thành phần mà runtime cần build và chạy, rồi để `ex` đọc ticket. `--no-judge` lập kế hoạch mà không gọi mô hình, nên không phát sinh chi phí; nếu bỏ cờ này và đặt `ANTHROPIC_API_KEY`, bộ lập kế hoạch sẽ đánh giá các nguồn qua một mô hình dưới cùng các cổng kiểm soát như một vòng, và chi phí được ghi vào dòng lập kế hoạch của sổ cái.
-
-```sh
-npx @langdrift/ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-judge \
-  --component "path=apps/console,image=langdrift-console:local,port=3001,readiness=/icon.svg,build=docker,args=build -t langdrift-console:local ."
-```
 
 Đầu ra của CLI bằng tiếng Anh:
 
@@ -177,7 +160,7 @@ Kế hoạch được ghi vào `.langdrift/microruntimes/runtimes/console-micror
 
 Đoạn trích này lược bỏ phiên bản, tên và các định danh runtime và dự án của khối, những thứ do `ex` quản lý. Lập kế hoạch lại cùng ticket khi runtime đang dừng sẽ tăng số phiên bản sửa đổi.
 
-### 5. Chạy kế hoạch
+### 4. Chạy kế hoạch
 
 Chạy runtime chính là phê duyệt kế hoạch của nó. Một vòng sẽ build image, khởi động cụm cục bộ của dự án và thực hiện các lần gọi trả phí qua tác tử lập trình của bạn, vì vậy hãy chạy `npx @langdrift/ex doctor` trước.
 
@@ -193,7 +176,7 @@ npx @langdrift/ex agent run console-microruntime
 
 Mọi thay đổi đều được ghi vào tệp của vòng, `run.json` và sổ cái.
 
-### 6. Theo dõi lượt chạy
+### 5. Theo dõi lượt chạy
 
 ```sh
 npx @langdrift/ex agent status console-microruntime
@@ -299,12 +282,6 @@ Các con số này chỉ mang tính minh họa để thể hiện định dạng
 `planning` bao gồm các lần gọi của chính bộ lập kế hoạch. Các dự báo được dùng khi chưa có lượt chạy trước nào của ticket đo số token của nó.
 
 </details>
-
-## Công việc đằng sau LangDrift
-
-Được tạo bởi [Jonatas Sales](https://github.com/jonatassales), LangDrift kết hợp thực hành FinOps, bàn giao có tác tử hỗ trợ và kỹ thuật nền tảng. Nó ra đời từ dự án Exphere và được xây dựng như một monorepo với pnpm và Turborepo: trang web và bảng điều khiển viết bằng TypeScript với Next.js, React và Tailwind CSS, còn `ex` và các hợp đồng của Microruntimes viết bằng Go, với SDK Go chính thức của Anthropic cho bộ lập kế hoạch.
-
-Kho mã được xây dựng theo hướng spec trước: mọi thay đổi bắt đầu từ một spec và các ticket của nó trong [`.agents/workflow/`](/.agents/workflow), cũng chính là loại ticket mà `ex` lập kế hoạch. Mọi góp ý xin gửi qua [GitHub issues](https://github.com/jonatassales/lang-drift/issues).
 
 ## Tài liệu tham khảo
 

@@ -111,19 +111,7 @@ npx @langdrift/ex init
 
 `npx @langdrift/ex init` cria a identidade do projeto em `.langdrift/config.json` e as regras de execução em `.langdrift/microruntimes/AGENTS.md`, e não altera arquivos existentes. Adicione `/.langdrift/` ao `.gitignore`: é estado local da máquina que o `ex` escreve, e nada que o seu time escreve fica ali.
 
-### 2. Registre o harness
-
-Salve os [arquivos de entrada de exemplo](#arquivos-de-entrada-de-exemplo) no projeto e registre o harness de entrega: o envelope de hardware, os estágios do workflow, o modelo e o esforço padrão, e o agente de código que executa os estágios.
-
-```sh
-npx @langdrift/ex harness envelope set --per-execution-cpu-millis 4000 --per-execution-memory-mib 6144 \
-  --default-cpu-millis 2000 --default-memory-mib 3072 --not-runtime-field gpu
-npx @langdrift/ex harness workflow set --file workflow.json
-npx @langdrift/ex harness model set claude-sonnet-5-5 --effort medium
-npx @langdrift/ex harness driver set --file driver.json
-```
-
-### 3. Registre as regras de dinheiro
+### 2. Registre as regras de dinheiro
 
 Este orçamento dá ao time US$ 500,00 para outubro de 2026, limita cada execução a US$ 25,00, reserva uma margem de 20% sobre cada estimativa e aloca US$ 25,00 ao ticket 0070. Os valores são em centavos.
 
@@ -137,14 +125,9 @@ npx @langdrift/ex finops forecasts set --file forecasts.json
 
 Cada comando imprime o registro que escreveu, e todo comando de entrada aceita `--by` para dizer quem definiu o valor.
 
-### 4. Planeje a partir de um ticket
+### 3. Planeje a partir de um ticket
 
 Informe os componentes que o runtime deve compilar e rodar e deixe o `ex` ler o ticket. `--no-judge` planeja sem chamada a modelo, então nada é pago; sem ele, e com `ANTHROPIC_API_KEY` definida, o planejador julga as fontes por um modelo sob os mesmos gates de uma volta, e o custo entra na linha de planejamento do livro-razão.
-
-```sh
-npx @langdrift/ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-judge \
-  --component "path=apps/console,image=langdrift-console:local,port=3001,readiness=/icon.svg,build=docker,args=build -t langdrift-console:local ."
-```
 
 A saída da CLI é em inglês:
 
@@ -177,7 +160,7 @@ O plano fica em `.langdrift/microruntimes/runtimes/console-microruntime/runtime.
 
 Este trecho omite a versão, o nome e as identidades do runtime e do projeto, que o `ex` gerencia. Planejar o mesmo ticket de novo, com o runtime parado, aumenta a revisão.
 
-### 5. Rode o plano
+### 4. Rode o plano
 
 Rodar o runtime autoriza o seu plano. Uma volta compila imagens, inicia o cluster local do projeto e faz chamadas pagas pelo seu agente de código, então rode `npx @langdrift/ex doctor` antes.
 
@@ -193,7 +176,7 @@ npx @langdrift/ex agent run console-microruntime
 
 Toda mudança fica registrada no arquivo da volta, no `run.json` e no livro-razão.
 
-### 6. Acompanhe a execução
+### 5. Acompanhe a execução
 
 ```sh
 npx @langdrift/ex agent status console-microruntime
@@ -299,12 +282,6 @@ Estes valores são ilustrativos e servem para exercitar o formato; não são uma
 `planning` cobre as chamadas do próprio planejador. As previsões são usadas quando nenhuma execução anterior do ticket mediu os seus tokens.
 
 </details>
-
-## O trabalho por trás do LangDrift
-
-Criado por [Jonatas Sales](https://github.com/jonatassales), o LangDrift reúne a prática de FinOps, a entrega com agentes e a engenharia de plataforma. Ele nasceu do projeto Exphere e é construído como um monorepo com pnpm e Turborepo: o site e o console em TypeScript com Next.js, React e Tailwind CSS, e o `ex` e os contratos do Microruntimes em Go, com o SDK oficial da Anthropic para Go no planejador.
-
-O repositório é construído a partir de specs: toda mudança começa por uma spec e pelos seus tickets em [`.agents/workflow/`](/.agents/workflow), o mesmo tipo de ticket que o `ex` planeja. Feedback é bem-vindo pelas [issues do GitHub](https://github.com/jonatassales/lang-drift/issues).
 
 ## Referências
 

@@ -111,19 +111,7 @@ npx @langdrift/ex init
 
 `npx @langdrift/ex init` creates the project identity in `.langdrift/config.json` and the execution rules in `.langdrift/microruntimes/AGENTS.md`, and leaves existing files unchanged. Add `/.langdrift/` to `.gitignore`: it is machine-local state that `ex` writes, and nothing your team authors lives in it.
 
-### 2. Record the harness
-
-Save the [example input files](#example-input-files) in the project, then record the delivery harness: the hardware envelope, the workflow stages, the default model and effort, and the coding agent that plays the stages.
-
-```sh
-npx @langdrift/ex harness envelope set --per-execution-cpu-millis 4000 --per-execution-memory-mib 6144 \
-  --default-cpu-millis 2000 --default-memory-mib 3072 --not-runtime-field gpu
-npx @langdrift/ex harness workflow set --file workflow.json
-npx @langdrift/ex harness model set claude-sonnet-5-5 --effort medium
-npx @langdrift/ex harness driver set --file driver.json
-```
-
-### 3. Record the money rules
+### 2. Record the money rules
 
 This budget gives the team $500.00 for October 2026, caps each run at $25.00, reserves a 20% margin over every estimate and allocates $25.00 to ticket 0070. Amounts are in cents.
 
@@ -137,14 +125,9 @@ npx @langdrift/ex finops forecasts set --file forecasts.json
 
 Each command prints the record it wrote, and every input command takes `--by` to name who set it.
 
-### 4. Plan from a ticket
+### 3. Plan from a ticket
 
 Name the components the runtime should build and run, then let `ex` read the ticket. `--no-judge` plans without a model call, so nothing is paid; without it, and with `ANTHROPIC_API_KEY` set, the planner judges the sources through a model under the same gates as a lap, and its cost lands on the ledger's planning line.
-
-```sh
-npx @langdrift/ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-judge \
-  --component "path=apps/console,image=langdrift-console:local,port=3001,readiness=/icon.svg,build=docker,args=build -t langdrift-console:local ."
-```
 
 <p align="center">
   <img src="/platform/docs/assets/images/ex-agent-plan.webp" alt="Terminal running ex agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
@@ -175,7 +158,7 @@ The plan lands in `.langdrift/microruntimes/runtimes/console-microruntime/runtim
 
 This excerpt leaves out the fence's version, name and runtime and project identities, which `ex` manages. Planning the same ticket again, while the runtime is stopped, raises the revision.
 
-### 5. Run the plan
+### 4. Run the plan
 
 Running the runtime authorizes its plan. A lap builds images, starts the project's local cluster and makes paid calls through your coding agent, so run `npx @langdrift/ex doctor` first.
 
@@ -191,7 +174,7 @@ npx @langdrift/ex agent run console-microruntime
 
 Every change lands in the lap file, `run.json` and the ledger.
 
-### 6. Follow the run
+### 5. Follow the run
 
 ```sh
 npx @langdrift/ex agent status console-microruntime
@@ -297,12 +280,6 @@ These figures are illustrative and exercise the format; they are not a verified 
 `planning` covers the planner's own calls. Forecasts are used when no earlier run of the ticket measured its tokens.
 
 </details>
-
-## The work behind LangDrift
-
-Created by [Jonatas Sales](https://github.com/jonatassales), LangDrift brings together FinOps practice, agentic delivery and platform engineering. It grew out of the Exphere project and is built as a pnpm and Turborepo monorepo: the website and the console in TypeScript with Next.js, React and Tailwind CSS, and `ex` and the Microruntimes contracts in Go, with the official Anthropic Go SDK for the planner.
-
-The repository is built spec-first: every change starts from a spec and its tickets under [`.agents/workflow/`](/.agents/workflow), the same kind of ticket `ex` plans. Feedback is welcome through [GitHub issues](https://github.com/jonatassales/lang-drift/issues).
 
 ## References
 

@@ -111,19 +111,7 @@ npx @langdrift/ex init
 
 `npx @langdrift/ex init` は `.langdrift/config.json` にプロジェクトの識別情報を、`.langdrift/microruntimes/AGENTS.md` に実行ルールを作成し、既存のファイルには手を加えません。`/.langdrift/` を `.gitignore` に追加してください。そこは `ex` が書き込むマシンローカルの状態であり、チームが書くものは何も置かれません。
 
-### 2. ハーネスを記録する
-
-[入力ファイルの例](#入力ファイルの例)をプロジェクトに保存し、デリバリーのハーネスを記録します。ハードウェアの予算枠、ワークフローのステージ、既定のモデルと推論強度、そしてステージを実行するコーディングエージェントです。
-
-```sh
-npx @langdrift/ex harness envelope set --per-execution-cpu-millis 4000 --per-execution-memory-mib 6144 \
-  --default-cpu-millis 2000 --default-memory-mib 3072 --not-runtime-field gpu
-npx @langdrift/ex harness workflow set --file workflow.json
-npx @langdrift/ex harness model set claude-sonnet-5-5 --effort medium
-npx @langdrift/ex harness driver set --file driver.json
-```
-
-### 3. お金のルールを記録する
+### 2. お金のルールを記録する
 
 この予算は、2026 年 10 月分としてチームに 500.00 ドルを与え、実行ごとの上限を 25.00 ドルとし、すべての見積もりに 20% のマージンを予約し、チケット 0070 に 25.00 ドルを配分します。金額の単位はセントです。
 
@@ -137,14 +125,9 @@ npx @langdrift/ex finops forecasts set --file forecasts.json
 
 各コマンドは書き込んだ記録を表示し、入力系のコマンドはすべて、設定した人を記録する `--by` を受け付けます。
 
-### 4. チケットから計画する
+### 3. チケットから計画する
 
 runtime がビルドして実行するコンポーネントを指定し、`ex` にチケットを読ませます。`--no-judge` はモデルを呼び出さずに計画するので、何も支払いは発生しません。これを付けずに `ANTHROPIC_API_KEY` を設定すると、プランナーはラップと同じゲートのもとでモデルを通して情報源を判定し、その費用は台帳の計画の行に記録されます。
-
-```sh
-npx @langdrift/ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-judge \
-  --component "path=apps/console,image=langdrift-console:local,port=3001,readiness=/icon.svg,build=docker,args=build -t langdrift-console:local ."
-```
 
 CLI の出力は英語です。
 
@@ -177,7 +160,7 @@ CLI の出力は英語です。
 
 この抜粋では、ブロックのバージョン、名前、そして `ex` が管理する runtime とプロジェクトの識別情報を省いています。runtime が停止している間に同じチケットを再び計画すると、リビジョンが上がります。
 
-### 5. 計画を実行する
+### 4. 計画を実行する
 
 runtime を実行することが、その計画の承認になります。ラップはイメージをビルドし、プロジェクトのローカルクラスターを起動し、コーディングエージェントを通して有料呼び出しを行うので、先に `npx @langdrift/ex doctor` を実行してください。
 
@@ -193,7 +176,7 @@ npx @langdrift/ex agent run console-microruntime
 
 すべての変更は、ラップのファイル、`run.json`、台帳に記録されます。
 
-### 6. 実行を追う
+### 5. 実行を追う
 
 ```sh
 npx @langdrift/ex agent status console-microruntime
@@ -299,12 +282,6 @@ npx @langdrift/ex doctor
 `planning` はプランナー自身の呼び出しを対象とします。チケットの過去の実行でトークンが計測されていないときに、この予測が使われます。
 
 </details>
-
-## LangDrift を支える仕事
-
-LangDrift は [Jonatas Sales](https://github.com/jonatassales) が手がけ、FinOps の実践、エージェントによるデリバリー、プラットフォームエンジニアリングを組み合わせています。Exphere プロジェクトから生まれ、pnpm と Turborepo のモノレポとして作られています。ウェブサイトとコンソールは TypeScript と Next.js、React、Tailwind CSS で、`ex` と Microruntimes の契約は Go で書かれ、プランナーには公式の Anthropic Go SDK を使っています。
-
-このリポジトリはスペックを起点に作られています。すべての変更は [`.agents/workflow/`](/.agents/workflow) にあるスペックとそのチケットから始まり、それは `ex` が計画するのと同じ種類のチケットです。フィードバックは [GitHub の issue](https://github.com/jonatassales/lang-drift/issues) からお寄せください。
 
 ## 参考文献
 
