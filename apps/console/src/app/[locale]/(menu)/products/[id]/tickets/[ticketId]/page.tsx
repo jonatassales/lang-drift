@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
-import { getTranslations } from 'next-intl/server'
 import { Suspense } from 'react'
 
+import { ticketTitle } from '@app/metadata/entity-title'
 import { RuntimeDetailSkeleton } from '@components/route-state/runtime-detail-skeleton'
 import { isEntityId } from '@data/entity-id'
 import { readConsole } from '@data/server'
@@ -15,12 +15,14 @@ interface PageProps {
 	}>
 }
 
-export async function generateMetadata() {
-	const t = await getTranslations('ui')
+export async function generateMetadata(props: PageProps) {
+	const { params } = props
 
-	return {
-		title: t('tickets'),
-	}
+	const { ticketId } = await params
+
+	const title = await ticketTitle(ticketId)
+
+	return { title }
 }
 
 export default async function Page(props: PageProps) {

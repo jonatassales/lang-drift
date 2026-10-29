@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import { Suspense } from 'react'
 
+import { projectTitle } from '@app/metadata/entity-title'
 import { PageHeading } from '@components/page-heading/page-heading'
 import { ActivityListSkeleton } from '@components/route-state/activity-list-skeleton'
 import { isEntityId } from '@data/entity-id'
@@ -12,12 +13,14 @@ interface PageProps {
 	params: Promise<{ id: string }>
 }
 
-export async function generateMetadata() {
-	const t = await getTranslations('ui')
+export async function generateMetadata(props: PageProps) {
+	const { params } = props
 
-	return {
-		title: t('analysis'),
-	}
+	const { id } = await params
+
+	const title = await projectTitle(id, 'analysis')
+
+	return { title }
 }
 
 export default async function Page(props: PageProps) {

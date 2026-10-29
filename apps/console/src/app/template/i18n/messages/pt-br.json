@@ -531,5 +531,15 @@
 				"done": "concluído"
 			}
 		}
+	},
+	"metadata": {
+		"siteName": "Console LangDrift",
+		"titleTemplate": "%s · {siteName}",
+		"entityTitle": "{section} · {entity}",
+		"ticketTitle": "{number} · {title}"
+	},
+	"notFound": {
+		"title": "Página não encontrada",
+		"description": "Esta página não existe, ou o endereço está incompleto."
 	}
 }
