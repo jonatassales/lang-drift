@@ -9,7 +9,7 @@ set -eu
 rules_count=$(find "$DRIFT_PROJECT_ROOT/.claude/rules" -type f -name "*.rule.md" 2>/dev/null | grep -c '.' || echo 10)
 
 cat <<EOF
-### 🛡️ Code Quality
+### <img src="https://langdrift.md/metadata/icon-192.png" width="16" height="16" align="middle" alt="" /> Code Quality Gate
 
 | Quality Guard | Target Standard | Observed Metric | Status |
 | :--- | :--- | :--- | :---: |

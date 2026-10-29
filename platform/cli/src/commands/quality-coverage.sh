@@ -1,5 +1,7 @@
 #!/bin/sh
 set -eu
+# Test patterns travel to the runners as text; the shell never expands them.
+set -f
 . "$DRIFT_CLI_DIR/core/common.sh"
 drift_need jq
 cd "$DRIFT_PROJECT_ROOT"
@@ -15,8 +17,19 @@ workdir=$(mktemp -d)
 # drift's own EXIT trap prints the queued results, so this one chains to it.
 trap 'rm -rf "$workdir"; drift_flush_results' EXIT
 
+tracked=$workdir/tracked
+git ls-files >"$tracked"
+
 packages=$*
-[ -n "$packages" ] || packages=$(find apps packages -mindepth 2 -maxdepth 2 -name package.json -exec dirname {} \; | sort)
+
+if [ -z "$packages" ]; then
+  find apps packages -mindepth 2 -maxdepth 2 -name package.json >"$workdir/manifests"
+  packages=$(sed 's#/package\.json$##' "$workdir/manifests" | sort)
+fi
+
+for package in $packages; do
+  [ -f "$package/package.json" ] || drift_die "$package has no package.json." 2
+done
 
 status=0
 
@@ -24,10 +37,7 @@ printf '| Package | Runner | Lines | Branches | Files measured |\n'
 printf '| --- | --- | --- | --- | --- |\n'
 
 for package in $packages; do
-  manifest=$package/package.json
-  [ -f "$manifest" ] || drift_die "$package has no package.json." 2
-
-  test_script=$(jq -r '.scripts.test // empty' "$manifest")
+  test_script=$(jq -r '.scripts.test // empty' "$package/package.json")
   [ -n "$test_script" ] || continue
 
   case "$test_script" in
@@ -35,57 +45,87 @@ for package in $packages; do
     'node --test'*) runner=node ;;
     'go test'*) runner=go ;;
     *)
-      printf '| %s | unknown | | | no coverage for `%s` |\n' "$package" "$test_script"
+      printf '| %s | unsupported | | | no coverage for `%s` |\n' "$package" "$test_script"
       continue
       ;;
   esac
 
-  report=$workdir/${package##*/}
+  # The files each runner can measure: Vitest is told to count src/, Go counts
+  # its module, and node --test can only meet the files its tests load.
+  sources=$(awk -v prefix="$package/" -v runner="$runner" '
+    index($0, prefix) != 1 || /\/testdata\// || /(_test\.go|\.(unit|test)\.[a-z]+)$/ { next }
+    runner == "vitest" && index($0, prefix "src/") == 1 && /\.(ts|tsx)$/ { count++ }
+    runner == "node" && /\.(ts|tsx|js|mjs|cjs)$/ { count++ }
+    runner == "go" && /\.go$/ { count++ }
+    END { print count + 0 }' "$tracked")
+
+  report=$workdir/$(printf '%s' "$package" | tr '/' '-')
+  log=$report.log
+  lcov=
   tests_passed=yes
 
   case "$runner" in
     vitest)
       drift_need pnpm
+      lcov=$report/lcov.info
       (cd "$package" && pnpm exec vitest run --coverage.enabled --coverage.provider=v8 \
         --coverage.reporter=lcov --coverage.reportsDirectory="$report" \
         --coverage.include='src/**/*.{ts,tsx}' --coverage.exclude='**/*.{unit,test}.{ts,tsx}') \
-        >"$report.log" 2>&1 || tests_passed=no
+        >"$log" 2>&1 || tests_passed=no
       ;;
     node)
+      lcov=$report.lcov
+      patterns=${test_script#node --test}
+
+      case "$patterns" in
+        *[\;\&\|\$\`\<\>]*)
+          printf '| %s | node | | | unsupported test script `%s` |\n' "$package" "$test_script"
+          continue
+          ;;
+      esac
+
       # node --test reads every flag before its patterns, so the patterns come
-      # from the package's test script, the same command pnpm test runs.
-      eval "set -- ${test_script#node --test}"
+      # from the package's test script, split as the shell would split them.
+      : >"$report.patterns"
+      [ -z "$patterns" ] || printf '%s\n' "$patterns" | xargs -n 1 printf '%s\n' >"$report.patterns"
+
+      set --
+      while IFS= read -r pattern; do
+        set -- "$@" "$pattern"
+      done <"$report.patterns"
+
       (cd "$package" && node --test --experimental-test-coverage --test-reporter=lcov \
-        --test-reporter-destination="$report.lcov" "$@") >"$report.log" 2>&1 || tests_passed=no
+        --test-reporter-destination="$lcov" "$@") >"$log" 2>&1 || tests_passed=no
       ;;
     go)
       drift_need go
+      # Without the test script's -race, which coverage does not need.
       (cd "$package" && go test -coverpkg=./... -coverprofile="$report.out" ./...) \
-        >"$report.log" 2>&1 || tests_passed=no
+        >"$log" 2>&1 || tests_passed=no
       ;;
   esac
 
   if [ "$tests_passed" = no ]; then
     printf '| %s | %s | tests failed | | |\n' "$package" "$runner"
-    drift_print_error "$package: the tests failed; the end of their output follows."
-    tail -n 20 "$report.log" >&2
+    printf 'drift: %s: the tests failed; the end of their output follows.\n' "$package" >&2
+    tail -n 20 "$log" >&2
     status=1
     continue
   fi
 
-  if [ "$runner" = go ]; then
-    sources=$(git ls-files "$package" | grep '\.go$' | grep -v '_test\.go$' | grep -cv '/testdata/' || true)
-    measured=$(awk -F: 'NR > 1 { print $1 }' "$report.out" | sort -u | wc -l | tr -d ' ')
-    statements=$(go tool cover -func="$report.out" | awk '/^total:/ { print $NF }')
+  if [ -z "$lcov" ]; then
+    go tool cover -func="$report.out" >"$report.func"
+    statements=$(awk '/^total:/ { print $NF }' "$report.func")
+    measured=$(awk -F: 'NR > 1 && !seen[$1]++ { count++ } END { print count + 0 }' "$report.out")
     printf '| %s | go | %s of statements | n/a | %s of %s |\n' "$package" "$statements" "$measured" "$sources"
     continue
   fi
 
-  lcov=$report.lcov
-  [ "$runner" = node ] || lcov=$report/lcov.info
-  [ -f "$lcov" ] || : >"$lcov"
+  if [ ! -s "$lcov" ]; then
+    printf '| %s | %s | no coverage report | n/a | 0 of %s |\n' "$package" "$runner" "$sources"
+    continue
+  fi
 
-  sources=$(git ls-files "$package/src" | grep -E '\.(ts|tsx)$' | grep -cvE '\.(unit|test)\.(ts|tsx)$' || true)
   awk -F: -v package="$package" -v runner="$runner" -v sources="$sources" '
     /^SF:/ { files++ }
     /^LF:/ { found_lines += $2 }
@@ -98,5 +138,7 @@ for package in $packages; do
       printf "| %s | %s | %s | %s | %d of %d |\n", package, runner, lines, branches, files, sources
     }' "$lcov"
 done
+
+printf '\nVitest counts every source file under src/, node --test only the files its tests load and Go every package of its module, so percentages from different runners are not comparable.\n'
 
 exit "$status"
