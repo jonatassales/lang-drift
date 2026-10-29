@@ -20,18 +20,18 @@ export function HistoryEntry(props: HistoryEntryProps) {
 	const { event } = item
 
 	return (
-		<article className="grid gap-3 text-xs">
+		<article className="grid grid-cols-1 gap-3 rounded-xl border border-border bg-card p-4 text-xs">
 			<header className="flex flex-wrap items-center justify-between gap-3">
 				<Link
 					prefetch={false}
-					className="font-medium hover:underline"
+					className="max-w-full break-words font-medium hover:underline"
 					href={`/runtimes/${event.runtimeId}/history`}
 				>
 					{item.runtimeName}
 				</Link>
 				<span>{kinds.has(event.kind) ? kinds(event.kind) : event.kind}</span>
 			</header>
-			<p className="text-muted-foreground">
+			<p className="break-words text-muted-foreground">
 				{causes.has(event.cause) ? causes(event.cause) : event.cause} ·{' '}
 				{event.actor}
 			</p>
