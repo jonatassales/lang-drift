@@ -364,7 +364,10 @@
 		"ticket_contains_credentials": "請先移除任務單中的憑證再請求建議。",
 		"extub_unavailable": "無法連線至 extub。請在連接埠 3401 啟動本機 API。",
 		"invalid_data_source": "CONSOLE_DATA_SOURCE 必須為 stub 或 local。",
-		"load_test_busy": "突發請求正在執行或冷卻中。請等候 10 秒後再試。"
+		"load_test_busy": "突發請求正在執行或冷卻中。請等候 10 秒後再試。",
+		"read_only_preview": "這是唯讀預覽：此處無法進行變更。",
+		"token_required": "預覽無法向資料服務驗證身分。",
+		"stream_unavailable": "此預覽已關閉即時更新；頁面會自動重新整理。"
 	},
 	"event": {
 		"configured": "設定已儲存",

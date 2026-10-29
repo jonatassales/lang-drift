@@ -1,3 +1,5 @@
+import { consoleHostAllowed, extubBase } from './extub-link'
+
 /** Server-only bridge: stub mode never forwards browser credentials or invokes native workloads. */
 export async function extubRequest(
 	request: Request,
@@ -8,19 +10,14 @@ export async function extubRequest(
 		const host = request.headers.get('host') ?? url.host
 		const browser = new URL(`${url.protocol}//${host}`)
 		const origin = request.headers.get('origin')
-		if (
-			!['localhost', '127.0.0.1', '[::1]'].includes(browser.hostname) ||
-			(origin && origin !== browser.origin) ||
+		const token = process.env.EXTUB_TOKEN?.trim()
+		const crossSite =
+			Boolean(origin && origin !== browser.origin) ||
 			request.headers.get('sec-fetch-site') === 'cross-site'
-		)
+		if (!consoleHostAllowed(browser.hostname, token) || crossSite)
 			return Response.json({ error: { code: 'local_only' } }, { status: 403 })
-		const base = new URL(process.env.EXTUB_URL ?? 'http://127.0.0.1:3401')
-		if (
-			base.protocol !== 'http:' ||
-			!['localhost', '127.0.0.1', '[::1]'].includes(base.hostname) ||
-			base.username ||
-			base.password
-		)
+		const base = extubBase(process.env.EXTUB_URL, token)
+		if (!base)
 			return Response.json({ error: { code: 'local_only' } }, { status: 503 })
 		let body: Uint8Array | undefined
 		if (!['GET', 'HEAD'].includes(request.method) && request.body) {
@@ -51,9 +48,14 @@ export async function extubRequest(
 		}
 		const target = new URL(`/${path}`, base)
 		target.search = url.search
+		const headers: Record<string, string> = body
+			? { 'content-type': 'application/json' }
+			: {}
+		if (token) headers.authorization = `Bearer ${token}`
+
 		const response = await fetch(target, {
 			method: request.method,
-			headers: body ? { 'content-type': 'application/json' } : {},
+			headers,
 			body: body as BodyInit | undefined,
 			cache: 'no-store',
 			redirect: 'error',

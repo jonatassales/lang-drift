@@ -4,6 +4,7 @@ import { cache } from 'react'
 
 import { ConsoleError } from './api'
 import { consoleHandler } from './console-handler'
+import { consoleHostAllowed } from './extub-link'
 
 /** React cache deduplicates reads only within this server render, never across users. */
 export const readConsole = cache(async <T>(path: string): Promise<T> => {
@@ -11,7 +12,7 @@ export const readConsole = cache(async <T>(path: string): Promise<T> => {
 
 	const host = incoming.get('host') ?? ''
 	const origin = new URL(`http://${host}`)
-	if (!['localhost', '127.0.0.1', '[::1]'].includes(origin.hostname))
+	if (!consoleHostAllowed(origin.hostname, process.env.EXTUB_TOKEN))
 		throw new ConsoleError('local_only', 403)
 	const response = await consoleHandler(
 		new Request(new URL(`/api/console/${path}`, origin), { headers: incoming }),
