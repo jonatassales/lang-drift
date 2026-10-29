@@ -2,11 +2,11 @@ import { useId } from 'react'
 
 import { StatusLabel } from '@components/status-label/status-label'
 import type { Ticket, TicketPhase } from '@data/types'
-import { Link } from '@i18n/navigation'
 
 import { PhaseSummary } from './phase-summary'
 import { TicketCreated } from './ticket-created'
-import { listedPhase, ticketPath } from './ticket-phases'
+import { TicketEntryLink } from './ticket-entry-link'
+import { listedPhase } from './ticket-phases'
 
 interface TicketCardProps {
 	/** The listing the card sits in, which picks the summary it shows. */
@@ -52,11 +52,10 @@ export function TicketCard(props: TicketCardProps) {
 					<PhaseSummary phase={phase} ticket={ticket} />
 				</p>
 			) : null}
-			<Link
-				aria-labelledby={`${numberId} ${titleId}`}
-				className="absolute inset-0 rounded-xl"
-				href={ticketPath(ticket, listing)}
-				prefetch={false}
+			<TicketEntryLink
+				labelledBy={`${numberId} ${titleId}`}
+				listing={listing}
+				ticket={ticket}
 			/>
 		</article>
 	)
