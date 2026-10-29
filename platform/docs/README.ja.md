@@ -6,7 +6,8 @@
 </p>
 
 <p align="center">
-  <strong>エージェントによるデリバリーを、チームの予算に対して説明できるものに。</strong>
+  <strong>エージェントによるデリバリーを、チームの予算に対して説明できるものに。</strong><br>
+  人間と AI エージェントのために作られています。
 </p>
 
 <p align="center">
@@ -160,43 +161,9 @@ ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-
 
 CLI の出力は英語です。
 
-```text
-ex agent plan 0070-console-microruntime.ticket.md
-# plan only · nothing is built or started · the planner's calls are paid and gated
-agent › tool call: read 0070-console-microruntime.ticket.md
-agent › needs-triage · links 0010-exphere-and-the-langdrift-folder.spec.md · ex-microruntimes-capability.research.md · 0002-console-input-is-untrusted.adr.md · 0001-finops.gr.md · package.json · go.mod
-judge      unavailable · --no-judge; verdicts, facts and the suggestion are the inputs' own
-# analysis · reading the linked documents, then the project's episodes
-agent › tool call: read 0010-exphere-and-the-langdrift-folder.spec.md · read
-agent › tool call: read ex-microruntimes-capability.research.md · read
-agent › tool call: read 0002-console-input-is-untrusted.adr.md · read
-agent › tool call: read 0001-finops.gr.md · read
-agent › tool call: read package.json · read
-agent › tool call: read go.mod · read
-✓ read       7 documents · nothing outside the ticket's links
-reads      .langdrift/harness/guardrails/0001-finops.gr.md · FIN-01 · FIN-02 · FIN-03 · FIN-04 · FIN-05 · FIN-06 · FIN-07 · FIN-08
-bounded    cpuMillis 2000 · memoryMiB 3072 · set by owner in the CLI · record envelope-b228
-budget     $25.00 per run for model calls · set by owner in the CLI
-agent › RAG over project episodes · a model and effort for this ticket
-agent › embedding the ticket intent · 1 query vector
-agent › vector search · project episodes · top 6 by cosine similarity
-agent › 0 candidates · no episode indexed yet
-agent › dropped 0 below 0.55 · kept 0
-agent › 0 episodes cited · none with measured resources
-agent › reasoning · no cited episode measured cpu or memory · sizing follows the inputs, not history
-✓ suggests   claude-sonnet-5-5 · effort medium
-# plan · resolving the components, then sizing them inside the envelope
-agent › resolving 1 components named in the CLI · paths, images, ports
-agent › tool call: inspect apps/console · package.json · :3001
-✓ apps/console          Node.js+Next.js · web 500m · 1024 MiB
-agent › cross-checking · 1 ports distinct · 1 images resolved · no collisions
-✓ size       500m of 2000m · 1024 of 3072 MiB · 1 one-replica Deployments · proposed shares
-limits     gpu and disk are not runtime.md fields · none requested
-estimate   runtime has no price source · cpu and memory stay in millicores and MiB
-agent › tool call: validate runtime.md draft against the schema · 0 errors
-✓ plan       runtime.md draft, revision 1 · proposed · authorize with ex agent run
-# next: once the team authorizes, ex agent run applies the recorded intent
-```
+<p align="center">
+  <img src="/platform/docs/assets/images/ex-agent-plan.webp" alt="チケット 0070 に対して ex agent plan を実行しているターミナル。リンクされた 7 つのドキュメントを読み、チームの 2000 ミリコア・3072 MiB の予算枠と実行ごとの 25.00 ドルの予算を適用し、claude-sonnet-5-5 を中程度の推論強度で提案し、apps/console を 500m と 1024 MiB で見積もって、提案済みの計画（リビジョン 1）で終わります。" width="820">
+</p>
 
 計画は `.langdrift/microruntimes/runtimes/console-microruntime/runtime.md` に書き出されます。`langdrift` ブロックが runtime の実行する内容で、二つ目の `langdrift-plan` ブロックに分析が入ります。ファイル内の文章は文脈として残るだけで、実行されることはありません。
 

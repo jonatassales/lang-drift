@@ -6,7 +6,8 @@
 </p>
 
 <p align="center">
-  <strong>Agent-assisted delivery, accountable to your team's budget.</strong>
+  <strong>Agent-assisted delivery, accountable to your team's budget.</strong><br>
+  Built for humans and AI Agents.
 </p>
 
 <p align="center">
@@ -158,43 +159,9 @@ ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-
   --component "path=apps/console,image=langdrift-console:local,port=3001,readiness=/icon.svg,build=docker,args=build -t langdrift-console:local ."
 ```
 
-```text
-ex agent plan 0070-console-microruntime.ticket.md
-# plan only · nothing is built or started · the planner's calls are paid and gated
-agent › tool call: read 0070-console-microruntime.ticket.md
-agent › needs-triage · links 0010-exphere-and-the-langdrift-folder.spec.md · ex-microruntimes-capability.research.md · 0002-console-input-is-untrusted.adr.md · 0001-finops.gr.md · package.json · go.mod
-judge      unavailable · --no-judge; verdicts, facts and the suggestion are the inputs' own
-# analysis · reading the linked documents, then the project's episodes
-agent › tool call: read 0010-exphere-and-the-langdrift-folder.spec.md · read
-agent › tool call: read ex-microruntimes-capability.research.md · read
-agent › tool call: read 0002-console-input-is-untrusted.adr.md · read
-agent › tool call: read 0001-finops.gr.md · read
-agent › tool call: read package.json · read
-agent › tool call: read go.mod · read
-✓ read       7 documents · nothing outside the ticket's links
-reads      .langdrift/harness/guardrails/0001-finops.gr.md · FIN-01 · FIN-02 · FIN-03 · FIN-04 · FIN-05 · FIN-06 · FIN-07 · FIN-08
-bounded    cpuMillis 2000 · memoryMiB 3072 · set by owner in the CLI · record envelope-b228
-budget     $25.00 per run for model calls · set by owner in the CLI
-agent › RAG over project episodes · a model and effort for this ticket
-agent › embedding the ticket intent · 1 query vector
-agent › vector search · project episodes · top 6 by cosine similarity
-agent › 0 candidates · no episode indexed yet
-agent › dropped 0 below 0.55 · kept 0
-agent › 0 episodes cited · none with measured resources
-agent › reasoning · no cited episode measured cpu or memory · sizing follows the inputs, not history
-✓ suggests   claude-sonnet-5-5 · effort medium
-# plan · resolving the components, then sizing them inside the envelope
-agent › resolving 1 components named in the CLI · paths, images, ports
-agent › tool call: inspect apps/console · package.json · :3001
-✓ apps/console          Node.js+Next.js · web 500m · 1024 MiB
-agent › cross-checking · 1 ports distinct · 1 images resolved · no collisions
-✓ size       500m of 2000m · 1024 of 3072 MiB · 1 one-replica Deployments · proposed shares
-limits     gpu and disk are not runtime.md fields · none requested
-estimate   runtime has no price source · cpu and memory stay in millicores and MiB
-agent › tool call: validate runtime.md draft against the schema · 0 errors
-✓ plan       runtime.md draft, revision 1 · proposed · authorize with ex agent run
-# next: once the team authorizes, ex agent run applies the recorded intent
-```
+<p align="center">
+  <img src="/platform/docs/assets/images/ex-agent-plan.webp" alt="Terminal running ex agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
+</p>
 
 The plan lands in `.langdrift/microruntimes/runtimes/console-microruntime/runtime.md`. Its `langdrift` fence is what the runtime executes; a second fence, `langdrift-plan`, holds the analysis. Prose in the file is kept as context and never executed.
 
