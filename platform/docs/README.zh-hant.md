@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="/platform/docs/assets/images/langdrift-banner-dark.png">
-    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift：Agentic FinOps Platform。全隊共用一份預算額度，每次付費呼叫都先保留再執行。" width="820">
+    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: Agentic FinOps Platform" width="820">
   </picture>
 </p>
 
@@ -18,13 +18,11 @@
 </p>
 
 <p align="center">
-  <a href="#專案狀態"><img alt="狀態：開發中的候選版本" src="https://img.shields.io/badge/status-development%20candidate-FBBF24?labelColor=18181B" height="20"></a>
   <a href="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml"><img alt="Pull request 檢查" src="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml/badge.svg?event=pull_request" height="20"></a>
   <a href="/packages/ex/README.md"><img alt="Go 1.26 或更新版本" src="https://img.shields.io/badge/Go-1.26%2B-00ADD8?logo=go&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/package.json"><img alt="Node.js 24" src="https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/apps/website/README.md"><img alt="Next.js 16" src="https://img.shields.io/badge/Next.js-16-F5F5F5?logo=nextdotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/.agents/context.md"><img alt="pnpm 12" src="https://img.shields.io/badge/pnpm-12-F69220?logo=pnpm&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
-  <a href="https://langdrift.md/zh-hant/"><img alt="語言：en、pt-BR、zh-Hant、ja、vi" src="https://img.shields.io/badge/locales-en%20%C2%B7%20pt--BR%20%C2%B7%20zh--Hant%20%C2%B7%20ja%20%C2%B7%20vi-6D0AD6?labelColor=18181B" height="20"></a>
 </p>
 
 <p align="center">
@@ -85,7 +83,7 @@ LangDrift 負責邊界與機制；你的團隊負責應用程式與其領域上�
 
 ## 專案狀態
 
-**LangDrift 仍在開發中。** 網站已在 [langdrift.md](https://langdrift.md/zh-hant/) 上線，提供五種語言。主控台讀取 `extub`，這是一個植入單一專案 LangDrift Studio 的 stub API，並把它的 FinOps 數據標示為示意。`ex` 是本機開發的候選版本，需要從原始碼建置；目前沒有發佈任何二進位檔。
+**LangDrift 仍在開發中。** 網站已在 [langdrift.md](https://langdrift.md/zh-hant/) 上線，提供五種語言。主控台讀取 `extub`，這是一個植入單一專案 LangDrift Studio 的 stub API，並把它的 FinOps 數據標示為示意。`ex` 需要從原始碼建置；目前沒有發佈任何二進位檔。
 
 `ex agent plan` 與 `ex agent run` 可以在專案內於本機運作，金錢閘門在 `ex` 內針對專案自己的帳本執行；透過伺服器共享的團隊帳本尚未建置。連線代理（`ex agent connect`、`project`、`supervise` 與 `migrate`）需要一個本儲存庫還沒有的伺服器。測試套件以腳本化的模型、程式開發代理與生命週期驅動 CLI；它們並不證明真實叢集能啟動、真實的花費或已可用於正式環境。網站的註冊目前暫停。
 
