@@ -271,10 +271,10 @@
 		"analysis": "Analysis",
 		"plans": "Plans",
 		"workflows": "Workflows",
-		"ticketsIntro": "Every ticket in this project, newest first, with the artifacts it links. Scroll for older tickets.",
-		"analysisIntro": "Every ticket the agent has analyzed: the documents it read, the episodes it cited, and the model and effort it suggests.",
-		"plansIntro": "Every ticket with a plan: the components it would run and the envelope that bounds them, pending the team's authorization.",
-		"workflowsIntro": "Every ticket with a workflow: its stages, the spend it reserves against the budget, and where its pull request stands."
+		"ticketsIntro": "Every ticket in this project, newest first, with its status and the latest figure of its current phase. Scroll for older tickets.",
+		"analysisIntro": "Every ticket the agent has analyzed, newest first, with the latest thing its analysis settled. Open one for the documents, episodes and suggestion.",
+		"plansIntro": "Every ticket with a plan, newest first, with its proposed totals and whether the team authorized them. Open one for the components and envelope.",
+		"workflowsIntro": "Every ticket with a workflow, newest first, with its estimate against the budget or how it ended. Open one for the stages and pull request."
 	},
 	"status": {
 		"running": "Running",
@@ -405,12 +405,15 @@
 		"readMark": "Read",
 		"notSet": "Not set yet",
 		"notReached": "{phase} not reached yet",
-		"openTicket": "Open ticket {number}",
 		"figures": "{cpu}m · {memory} MiB",
 		"cpuValue": "{value}m",
 		"memoryValue": "{value} MiB",
 		"ticket": {
 			"links": "Linked artifacts",
+			"status": "Status",
+			"phase": "Phase",
+			"created": "Created",
+			"phaseProgress": "{phase} · {reached} of {total}",
 			"artifacts": {
 				"prd": "PRD",
 				"designDoc": "Design doc",

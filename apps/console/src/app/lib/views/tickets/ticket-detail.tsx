@@ -3,22 +3,24 @@
 import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
-import { PageHeading } from '@components/page-heading/page-heading'
-import { StatusLabel } from '@components/status-label/status-label'
 import { useResource } from '@data/resource.hook'
 import type { TicketDetailSnapshot } from '@data/types'
-import { Card } from '@ui/card'
 
+import { useFragmentLanding } from './fragment-landing.hook'
 import { PhaseWidget } from './phase-widget'
-import { phaseReached, ticketPhases } from './ticket-phases'
+import { TicketArtifacts } from './ticket-artifacts'
+import { TicketDescription } from './ticket-description'
+import { phaseReached, summaryPhases, ticketSummary } from './ticket-phases'
 
 interface TicketDetailProps {
 	id: string
 	initial: Promise<TicketDetailSnapshot>
 }
 
-// One ticket with every phase it has reached, in order, as the website's
-// panels all open; a phase it has not reached is one muted line.
+// One ticket as one document: its title under its number and slug, where
+// it stands, the artifacts it links, then each phase it has reached as a
+// section with the website panel's body; a phase it has not reached yet is
+// one muted line.
 export function TicketDetail(props: TicketDetailProps) {
 	const { id, initial } = props
 
@@ -29,6 +31,7 @@ export function TicketDetail(props: TicketDetailProps) {
 		initial,
 	)
 	const ticket = resource.data?.ticket
+	useFragmentLanding(Boolean(ticket))
 
 	if (!ticket) {
 		return resource.error ? (
@@ -38,17 +41,25 @@ export function TicketDetail(props: TicketDetailProps) {
 
 	return (
 		<>
-			<PageHeading title={`${ticket.number} · ${ticket.title}`}>
-				<StatusLabel value={ticket.status} />
-			</PageHeading>
-			<div className="grid gap-4">
-				{ticketPhases.map((phase) =>
+			<header className="mb-6 grid gap-2">
+				<p className="m-0 font-mono text-[12px] text-muted-foreground tabular-nums">
+					{ticketSummary(ticket)}
+				</p>
+				<h1 className="m-0 text-[24px] font-medium tracking-tight text-balance">
+					{ticket.title}
+				</h1>
+			</header>
+			<TicketDescription ticket={ticket} />
+			<div className="mt-8 grid gap-10">
+				<TicketArtifacts ticket={ticket} />
+				{summaryPhases.map((phase) =>
 					phaseReached(ticket, phase) ? (
-						<Card className="p-5 sm:p-6" key={phase}>
-							<PhaseWidget phase={phase} ticket={ticket} />
-						</Card>
+						<PhaseWidget key={phase} phase={phase} ticket={ticket} />
 					) : (
-						<p className="m-0 px-1 text-sm text-muted-foreground" key={phase}>
+						<p
+							className="m-0 border-t border-border pt-6 text-sm text-muted-foreground"
+							key={phase}
+						>
 							{t('notReached', { phase: t(`labels.${phase}`) })}
 						</p>
 					),

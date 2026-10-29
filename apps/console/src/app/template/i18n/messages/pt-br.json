@@ -271,10 +271,10 @@
 		"analysis": "Análise",
 		"plans": "Planos",
 		"workflows": "Workflows",
-		"ticketsIntro": "Todos os tickets deste projeto, do mais recente ao mais antigo, com os artefatos que vinculam. Role para ver tickets mais antigos.",
-		"analysisIntro": "Todos os tickets que o agente analisou: os documentos que leu, os episódios que citou e o modelo e o effort que sugere.",
-		"plansIntro": "Todos os tickets com plano: os componentes que rodariam e o envelope que os limita, aguardando a autorização do time.",
-		"workflowsIntro": "Todos os tickets com workflow: suas etapas, o gasto que reservam contra o orçamento e onde está o pull request."
+		"ticketsIntro": "Todos os tickets deste projeto, do mais recente ao mais antigo, com o status e o valor mais recente da fase atual. Role para ver tickets mais antigos.",
+		"analysisIntro": "Todos os tickets que o agente analisou, do mais recente ao mais antigo, com o último resultado da análise. Abra um para ver os documentos, os episódios e a sugestão.",
+		"plansIntro": "Todos os tickets com plano, do mais recente ao mais antigo, com os totais propostos e se o time os autorizou. Abra um para ver os componentes e o envelope.",
+		"workflowsIntro": "Todos os tickets com workflow, do mais recente ao mais antigo, com a estimativa contra o orçamento ou como terminou. Abra um para ver as etapas e o pull request."
 	},
 	"status": {
 		"running": "Em execução",
@@ -405,12 +405,15 @@
 		"readMark": "Lido",
 		"notSet": "Ainda não definido",
 		"notReached": "{phase}: ainda não alcançado",
-		"openTicket": "Abrir ticket {number}",
 		"figures": "{cpu}m · {memory} MiB",
 		"cpuValue": "{value}m",
 		"memoryValue": "{value} MiB",
 		"ticket": {
 			"links": "Artefatos vinculados",
+			"status": "Status",
+			"phase": "Fase",
+			"created": "Criado em",
+			"phaseProgress": "{phase} · {reached} de {total}",
 			"artifacts": {
 				"prd": "PRD",
 				"designDoc": "Design doc",

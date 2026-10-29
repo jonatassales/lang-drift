@@ -1,11 +1,12 @@
 import { useLocale, useTranslations } from 'next-intl'
 
-import type { Resources } from '@data/types'
+import type { Resources, TicketPlan } from '@data/types'
 
 import { compactTokens, dollars } from './ticket-format'
 
 // The ticket widgets' copy and figures in the viewer's locale: millicores,
-// MiB, the pair of them, dollars from cents and compact token counts.
+// MiB, the pair of them, dollars from cents, compact token counts and
+// whether the team has authorized a plan.
 export function useTicketFormat() {
 	const t = useTranslations('tickets')
 	const locale = useLocale()
@@ -28,8 +29,13 @@ export function useTicketFormat() {
 			timeZone: 'UTC',
 			year: 'numeric',
 		}).format(new Date(`${date}T00:00:00Z`))
+	const authorization = (plan: Pick<TicketPlan, 'authorization'>) =>
+		plan.authorization === 'authorized'
+			? t('plan.authorized')
+			: t('plan.pendingAuthorization')
 
 	return {
+		authorization,
 		cpu,
 		figures,
 		memory,

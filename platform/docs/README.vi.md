@@ -1,12 +1,13 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="/platform/docs/assets/images/langdrift-banner-dark.png">
-    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: Agentic FinOps Platform. Một hạn mức cho cả đội. Mọi lần gọi trả phí đều được giữ chỗ trước khi chạy." width="820">
+    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: Agentic FinOps Platform" width="820">
   </picture>
 </p>
 
 <p align="center">
-  <strong>Bàn giao có tác tử hỗ trợ, chịu trách nhiệm trước ngân sách của đội.</strong>
+  <strong>Bàn giao có tác tử hỗ trợ, chịu trách nhiệm trước ngân sách của đội.</strong><br>
+  Được xây dựng cho con người và tác tử AI.
 </p>
 
 <p align="center">
@@ -18,13 +19,11 @@
 </p>
 
 <p align="center">
-  <a href="#trạng-thái-dự-án"><img alt="Trạng thái: bản ứng viên đang phát triển" src="https://img.shields.io/badge/status-development%20candidate-FBBF24?labelColor=18181B" height="20"></a>
   <a href="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml"><img alt="Kiểm tra pull request" src="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml/badge.svg?event=pull_request" height="20"></a>
   <a href="/packages/ex/README.md"><img alt="Go 1.26 trở lên" src="https://img.shields.io/badge/Go-1.26%2B-00ADD8?logo=go&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/package.json"><img alt="Node.js 24" src="https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/apps/website/README.md"><img alt="Next.js 16" src="https://img.shields.io/badge/Next.js-16-F5F5F5?logo=nextdotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/.agents/context.md"><img alt="pnpm 12" src="https://img.shields.io/badge/pnpm-12-F69220?logo=pnpm&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
-  <a href="https://langdrift.md/vi/"><img alt="Ngôn ngữ: en, pt-BR, zh-Hant, ja, vi" src="https://img.shields.io/badge/locales-en%20%C2%B7%20pt--BR%20%C2%B7%20zh--Hant%20%C2%B7%20ja%20%C2%B7%20vi-6D0AD6?labelColor=18181B" height="20"></a>
 </p>
 
 <p align="center">
@@ -85,7 +84,7 @@ Mọi đầu vào có thể chặn hoặc cho phép một lượt chạy đều 
 
 ## Trạng thái dự án
 
-**LangDrift đang được phát triển.** Trang web đã hoạt động tại [langdrift.md](https://langdrift.md/vi/) với năm ngôn ngữ. Bảng điều khiển đọc `extub`, một API giả lập khởi tạo sẵn một dự án là LangDrift Studio và ghi rõ các số liệu FinOps của nó là minh họa. `ex` là bản ứng viên phát triển cục bộ mà bạn tự build từ mã nguồn; chưa có bản nhị phân nào được phát hành.
+**LangDrift đang được phát triển.** Trang web đã hoạt động tại [langdrift.md](https://langdrift.md/vi/) với năm ngôn ngữ. Bảng điều khiển đọc `extub`, một API giả lập khởi tạo sẵn một dự án là LangDrift Studio và ghi rõ các số liệu FinOps của nó là minh họa. Bạn tự build `ex` từ mã nguồn; chưa có bản nhị phân nào được phát hành.
 
 `ex agent plan` và `ex agent run` hoạt động cục bộ trong một dự án, và các cổng kiểm soát chi tiêu chạy bên trong `ex` trên sổ cái riêng của dự án; một sổ cái chung của đội qua máy chủ vẫn chưa được xây dựng. Tác tử kết nối (`ex agent connect`, `project`, `supervise` và `migrate`) cần một máy chủ mà kho mã này chưa có. Các bộ kiểm thử điều khiển CLI bằng mô hình, tác tử lập trình và vòng đời được lập kịch bản; chúng không chứng minh việc khởi chạy cụm thật, chi tiêu thật hay sự sẵn sàng cho môi trường production. Việc đăng ký trên trang web đang tạm dừng.
 
@@ -162,43 +161,9 @@ ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-
 
 Đầu ra của CLI bằng tiếng Anh:
 
-```text
-ex agent plan 0070-console-microruntime.ticket.md
-# plan only · nothing is built or started · the planner's calls are paid and gated
-agent › tool call: read 0070-console-microruntime.ticket.md
-agent › needs-triage · links 0010-exphere-and-the-langdrift-folder.spec.md · ex-microruntimes-capability.research.md · 0002-console-input-is-untrusted.adr.md · 0001-finops.gr.md · package.json · go.mod
-judge      unavailable · --no-judge; verdicts, facts and the suggestion are the inputs' own
-# analysis · reading the linked documents, then the project's episodes
-agent › tool call: read 0010-exphere-and-the-langdrift-folder.spec.md · read
-agent › tool call: read ex-microruntimes-capability.research.md · read
-agent › tool call: read 0002-console-input-is-untrusted.adr.md · read
-agent › tool call: read 0001-finops.gr.md · read
-agent › tool call: read package.json · read
-agent › tool call: read go.mod · read
-✓ read       7 documents · nothing outside the ticket's links
-reads      .langdrift/harness/guardrails/0001-finops.gr.md · FIN-01 · FIN-02 · FIN-03 · FIN-04 · FIN-05 · FIN-06 · FIN-07 · FIN-08
-bounded    cpuMillis 2000 · memoryMiB 3072 · set by owner in the CLI · record envelope-b228
-budget     $25.00 per run for model calls · set by owner in the CLI
-agent › RAG over project episodes · a model and effort for this ticket
-agent › embedding the ticket intent · 1 query vector
-agent › vector search · project episodes · top 6 by cosine similarity
-agent › 0 candidates · no episode indexed yet
-agent › dropped 0 below 0.55 · kept 0
-agent › 0 episodes cited · none with measured resources
-agent › reasoning · no cited episode measured cpu or memory · sizing follows the inputs, not history
-✓ suggests   claude-sonnet-5-5 · effort medium
-# plan · resolving the components, then sizing them inside the envelope
-agent › resolving 1 components named in the CLI · paths, images, ports
-agent › tool call: inspect apps/console · package.json · :3001
-✓ apps/console          Node.js+Next.js · web 500m · 1024 MiB
-agent › cross-checking · 1 ports distinct · 1 images resolved · no collisions
-✓ size       500m of 2000m · 1024 of 3072 MiB · 1 one-replica Deployments · proposed shares
-limits     gpu and disk are not runtime.md fields · none requested
-estimate   runtime has no price source · cpu and memory stay in millicores and MiB
-agent › tool call: validate runtime.md draft against the schema · 0 errors
-✓ plan       runtime.md draft, revision 1 · proposed · authorize with ex agent run
-# next: once the team authorizes, ex agent run applies the recorded intent
-```
+<p align="center">
+  <img src="/platform/docs/assets/images/ex-agent-plan.webp" alt="Terminal chạy ex agent plan cho ticket 0070. Nó đọc bảy tài liệu được liên kết, áp dụng hạn mức 2000 millicore và 3072 MiB của đội cùng ngân sách 25,00 USD mỗi lượt chạy, đề xuất claude-sonnet-5-5 với mức nỗ lực trung bình, định cỡ apps/console ở 500m và 1024 MiB, rồi kết thúc bằng một kế hoạch được đề xuất, bản sửa đổi 1." width="820">
+</p>
 
 Kế hoạch được ghi vào `.langdrift/microruntimes/runtimes/console-microruntime/runtime.md`. Khối `langdrift` là thứ runtime sẽ thực thi; khối thứ hai, `langdrift-plan`, chứa phần phân tích. Văn bản trong tệp chỉ được giữ làm ngữ cảnh và không bao giờ được thực thi.
 

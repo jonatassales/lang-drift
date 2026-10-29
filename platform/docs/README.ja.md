@@ -1,12 +1,13 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="/platform/docs/assets/images/langdrift-banner-dark.png">
-    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift：Agentic FinOps Platform。チームの予算枠はひとつ。有料呼び出しは実行前に必ず予約。" width="820">
+    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: Agentic FinOps Platform" width="820">
   </picture>
 </p>
 
 <p align="center">
-  <strong>エージェントによるデリバリーを、チームの予算に対して説明できるものに。</strong>
+  <strong>エージェントによるデリバリーを、チームの予算に対して説明できるものに。</strong><br>
+  人間と AI エージェントのために作られています。
 </p>
 
 <p align="center">
@@ -18,13 +19,11 @@
 </p>
 
 <p align="center">
-  <a href="#プロジェクトの状況"><img alt="ステータス：開発中の候補版" src="https://img.shields.io/badge/status-development%20candidate-FBBF24?labelColor=18181B" height="20"></a>
   <a href="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml"><img alt="プルリクエストのチェック" src="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml/badge.svg?event=pull_request" height="20"></a>
   <a href="/packages/ex/README.md"><img alt="Go 1.26 以降" src="https://img.shields.io/badge/Go-1.26%2B-00ADD8?logo=go&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/package.json"><img alt="Node.js 24" src="https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/apps/website/README.md"><img alt="Next.js 16" src="https://img.shields.io/badge/Next.js-16-F5F5F5?logo=nextdotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/.agents/context.md"><img alt="pnpm 12" src="https://img.shields.io/badge/pnpm-12-F69220?logo=pnpm&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
-  <a href="https://langdrift.md/ja/"><img alt="言語：en、pt-BR、zh-Hant、ja、vi" src="https://img.shields.io/badge/locales-en%20%C2%B7%20pt--BR%20%C2%B7%20zh--Hant%20%C2%B7%20ja%20%C2%B7%20vi-6D0AD6?labelColor=18181B" height="20"></a>
 </p>
 
 <p align="center">
@@ -85,7 +84,7 @@ LangDrift が持つのは境界と仕組みです。アプリケーションと�
 
 ## プロジェクトの状況
 
-**LangDrift は開発中です。** ウェブサイトは [langdrift.md](https://langdrift.md/ja/) で五つの言語で公開されています。コンソールは `extub` を読み込みます。これは LangDrift Studio というひとつのプロジェクトを用意するスタブ API で、その FinOps の数値はイメージであると明示されています。`ex` はソースからビルドするローカル開発用の候補版で、バイナリは公開されていません。
+**LangDrift は開発中です。** ウェブサイトは [langdrift.md](https://langdrift.md/ja/) で五つの言語で公開されています。コンソールは `extub` を読み込みます。これは LangDrift Studio というひとつのプロジェクトを用意するスタブ API で、その FinOps の数値はイメージであると明示されています。`ex` はソースからビルドして使い、バイナリは公開されていません。
 
 `ex agent plan` と `ex agent run` はプロジェクト内でローカルに動作し、お金のゲートは `ex` の中でプロジェクト自身の台帳に対して実行されます。サーバーで共有するチームの台帳はまだ作られていません。接続エージェント（`ex agent connect`、`project`、`supervise`、`migrate`）には、このリポジトリにまだないサーバーが必要です。テストスイートは、スクリプト化したモデル、コーディングエージェント、ライフサイクルで CLI を動かすもので、実際のクラスターの起動、実際の支出、本番環境での準備が整っていることを示すものではありません。ウェブサイトでの登録は一時停止中です。
 
@@ -162,43 +161,9 @@ ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-
 
 CLI の出力は英語です。
 
-```text
-ex agent plan 0070-console-microruntime.ticket.md
-# plan only · nothing is built or started · the planner's calls are paid and gated
-agent › tool call: read 0070-console-microruntime.ticket.md
-agent › needs-triage · links 0010-exphere-and-the-langdrift-folder.spec.md · ex-microruntimes-capability.research.md · 0002-console-input-is-untrusted.adr.md · 0001-finops.gr.md · package.json · go.mod
-judge      unavailable · --no-judge; verdicts, facts and the suggestion are the inputs' own
-# analysis · reading the linked documents, then the project's episodes
-agent › tool call: read 0010-exphere-and-the-langdrift-folder.spec.md · read
-agent › tool call: read ex-microruntimes-capability.research.md · read
-agent › tool call: read 0002-console-input-is-untrusted.adr.md · read
-agent › tool call: read 0001-finops.gr.md · read
-agent › tool call: read package.json · read
-agent › tool call: read go.mod · read
-✓ read       7 documents · nothing outside the ticket's links
-reads      .langdrift/harness/guardrails/0001-finops.gr.md · FIN-01 · FIN-02 · FIN-03 · FIN-04 · FIN-05 · FIN-06 · FIN-07 · FIN-08
-bounded    cpuMillis 2000 · memoryMiB 3072 · set by owner in the CLI · record envelope-b228
-budget     $25.00 per run for model calls · set by owner in the CLI
-agent › RAG over project episodes · a model and effort for this ticket
-agent › embedding the ticket intent · 1 query vector
-agent › vector search · project episodes · top 6 by cosine similarity
-agent › 0 candidates · no episode indexed yet
-agent › dropped 0 below 0.55 · kept 0
-agent › 0 episodes cited · none with measured resources
-agent › reasoning · no cited episode measured cpu or memory · sizing follows the inputs, not history
-✓ suggests   claude-sonnet-5-5 · effort medium
-# plan · resolving the components, then sizing them inside the envelope
-agent › resolving 1 components named in the CLI · paths, images, ports
-agent › tool call: inspect apps/console · package.json · :3001
-✓ apps/console          Node.js+Next.js · web 500m · 1024 MiB
-agent › cross-checking · 1 ports distinct · 1 images resolved · no collisions
-✓ size       500m of 2000m · 1024 of 3072 MiB · 1 one-replica Deployments · proposed shares
-limits     gpu and disk are not runtime.md fields · none requested
-estimate   runtime has no price source · cpu and memory stay in millicores and MiB
-agent › tool call: validate runtime.md draft against the schema · 0 errors
-✓ plan       runtime.md draft, revision 1 · proposed · authorize with ex agent run
-# next: once the team authorizes, ex agent run applies the recorded intent
-```
+<p align="center">
+  <img src="/platform/docs/assets/images/ex-agent-plan.webp" alt="チケット 0070 に対して ex agent plan を実行しているターミナル。リンクされた 7 つのドキュメントを読み、チームの 2000 ミリコア・3072 MiB の予算枠と実行ごとの 25.00 ドルの予算を適用し、claude-sonnet-5-5 を中程度の推論強度で提案し、apps/console を 500m と 1024 MiB で見積もって、提案済みの計画（リビジョン 1）で終わります。" width="820">
+</p>
 
 計画は `.langdrift/microruntimes/runtimes/console-microruntime/runtime.md` に書き出されます。`langdrift` ブロックが runtime の実行する内容で、二つ目の `langdrift-plan` ブロックに分析が入ります。ファイル内の文章は文脈として残るだけで、実行されることはありません。
 

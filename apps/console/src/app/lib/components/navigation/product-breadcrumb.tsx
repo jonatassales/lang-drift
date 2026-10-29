@@ -8,6 +8,7 @@ import type {
 	TicketDetailSnapshot,
 } from '@data/types'
 import { Link } from '@i18n/navigation'
+import { ticketSummary } from '@views/tickets/ticket-phases'
 
 const ticketSections = ['tickets', 'analysis', 'plans', 'workflows']
 
@@ -97,7 +98,7 @@ export async function ProductBreadcrumb(props: ProductBreadcrumbProps) {
 		if (ticket)
 			items.push({
 				key: 'ticket',
-				label: `${ticket.ticket.number} · ${ticket.ticket.slug}`,
+				label: ticketSummary(ticket.ticket),
 				href: `${base}/tickets/${ticket.ticket.id}`,
 			})
 	} else {

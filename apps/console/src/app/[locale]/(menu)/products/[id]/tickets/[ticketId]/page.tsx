@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 
 import { ticketTitle } from '@app/metadata/entity-title'
-import { RuntimeDetailSkeleton } from '@components/route-state/runtime-detail-skeleton'
+import { TicketDetailSkeleton } from '@components/route-state/ticket-detail-skeleton'
 import { isEntityId } from '@data/entity-id'
 import { readConsole } from '@data/server'
 import type { TicketDetailSnapshot } from '@data/types'
@@ -33,7 +33,7 @@ export default async function Page(props: PageProps) {
 	if (![id, ticketId].every(isEntityId)) notFound()
 
 	return (
-		<Suspense fallback={<RuntimeDetailSkeleton />}>
+		<Suspense fallback={<TicketDetailSkeleton />}>
 			<TicketDetail
 				id={ticketId}
 				initial={readConsole<TicketDetailSnapshot>(`tickets/${ticketId}`)}

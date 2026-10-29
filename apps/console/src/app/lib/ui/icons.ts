@@ -1,5 +1,6 @@
 export {
 	CaretDown,
+	CaretRight,
 	ChartLineUp,
 	CheckCircle,
 	ClipboardText,

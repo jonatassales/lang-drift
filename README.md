@@ -1,12 +1,13 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="/platform/docs/assets/images/langdrift-banner-dark.png">
-    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: Agentic FinOps Platform. One team envelope. Every paid call reserved before it runs." width="820">
+    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: Agentic FinOps Platform" width="820">
   </picture>
 </p>
 
 <p align="center">
-  <strong>Agent-assisted delivery, accountable to your team's budget.</strong>
+  <strong>Agent-assisted delivery, accountable to your team's budget.</strong><br>
+  Built for humans and AI Agents.
 </p>
 
 <p align="center">
@@ -18,13 +19,11 @@
 </p>
 
 <p align="center">
-  <a href="#project-status"><img alt="Status: development candidate" src="https://img.shields.io/badge/status-development%20candidate-FBBF24?labelColor=18181B" height="20"></a>
   <a href="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml"><img alt="Pull request checks" src="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml/badge.svg?event=pull_request" height="20"></a>
   <a href="/packages/ex/README.md"><img alt="Go 1.26 or newer" src="https://img.shields.io/badge/Go-1.26%2B-00ADD8?logo=go&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/package.json"><img alt="Node.js 24" src="https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/apps/website/README.md"><img alt="Next.js 16" src="https://img.shields.io/badge/Next.js-16-F5F5F5?logo=nextdotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/.agents/context.md"><img alt="pnpm 12" src="https://img.shields.io/badge/pnpm-12-F69220?logo=pnpm&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
-  <a href="https://langdrift.md"><img alt="Locales: en, pt-BR, zh-Hant, ja, vi" src="https://img.shields.io/badge/locales-en%20%C2%B7%20pt--BR%20%C2%B7%20zh--Hant%20%C2%B7%20ja%20%C2%B7%20vi-6D0AD6?labelColor=18181B" height="20"></a>
 </p>
 
 <p align="center">
@@ -85,7 +84,7 @@ Every input that can block or allow a run is recorded with who set it, when and 
 
 ## Project status
 
-**LangDrift is in development.** The website is live at [langdrift.md](https://langdrift.md) in five languages. The console reads `extub`, a stub API that seeds one project, LangDrift Studio, and labels its FinOps readings as illustrative. `ex` is a local development candidate that you build from source; no binary is published.
+**LangDrift is in development.** The website is live at [langdrift.md](https://langdrift.md) in five languages. The console reads `extub`, a stub API that seeds one project, LangDrift Studio, and labels its FinOps readings as illustrative. You build `ex` from source; no binary is published.
 
 `ex agent plan` and `ex agent run` work locally inside a project, and the money gates run inside `ex` against the project's own ledger; a team ledger shared through a server is not built yet. The connected agent (`ex agent connect`, `project`, `supervise` and `migrate`) needs a server this repository does not have yet. The test suites drive the CLI with scripted models, coding agents and lifecycles; they do not establish a live cluster start, real spend or production readiness. Sign-up on the website is paused.
 
@@ -160,43 +159,9 @@ ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-
   --component "path=apps/console,image=langdrift-console:local,port=3001,readiness=/icon.svg,build=docker,args=build -t langdrift-console:local ."
 ```
 
-```text
-ex agent plan 0070-console-microruntime.ticket.md
-# plan only · nothing is built or started · the planner's calls are paid and gated
-agent › tool call: read 0070-console-microruntime.ticket.md
-agent › needs-triage · links 0010-exphere-and-the-langdrift-folder.spec.md · ex-microruntimes-capability.research.md · 0002-console-input-is-untrusted.adr.md · 0001-finops.gr.md · package.json · go.mod
-judge      unavailable · --no-judge; verdicts, facts and the suggestion are the inputs' own
-# analysis · reading the linked documents, then the project's episodes
-agent › tool call: read 0010-exphere-and-the-langdrift-folder.spec.md · read
-agent › tool call: read ex-microruntimes-capability.research.md · read
-agent › tool call: read 0002-console-input-is-untrusted.adr.md · read
-agent › tool call: read 0001-finops.gr.md · read
-agent › tool call: read package.json · read
-agent › tool call: read go.mod · read
-✓ read       7 documents · nothing outside the ticket's links
-reads      .langdrift/harness/guardrails/0001-finops.gr.md · FIN-01 · FIN-02 · FIN-03 · FIN-04 · FIN-05 · FIN-06 · FIN-07 · FIN-08
-bounded    cpuMillis 2000 · memoryMiB 3072 · set by owner in the CLI · record envelope-b228
-budget     $25.00 per run for model calls · set by owner in the CLI
-agent › RAG over project episodes · a model and effort for this ticket
-agent › embedding the ticket intent · 1 query vector
-agent › vector search · project episodes · top 6 by cosine similarity
-agent › 0 candidates · no episode indexed yet
-agent › dropped 0 below 0.55 · kept 0
-agent › 0 episodes cited · none with measured resources
-agent › reasoning · no cited episode measured cpu or memory · sizing follows the inputs, not history
-✓ suggests   claude-sonnet-5-5 · effort medium
-# plan · resolving the components, then sizing them inside the envelope
-agent › resolving 1 components named in the CLI · paths, images, ports
-agent › tool call: inspect apps/console · package.json · :3001
-✓ apps/console          Node.js+Next.js · web 500m · 1024 MiB
-agent › cross-checking · 1 ports distinct · 1 images resolved · no collisions
-✓ size       500m of 2000m · 1024 of 3072 MiB · 1 one-replica Deployments · proposed shares
-limits     gpu and disk are not runtime.md fields · none requested
-estimate   runtime has no price source · cpu and memory stay in millicores and MiB
-agent › tool call: validate runtime.md draft against the schema · 0 errors
-✓ plan       runtime.md draft, revision 1 · proposed · authorize with ex agent run
-# next: once the team authorizes, ex agent run applies the recorded intent
-```
+<p align="center">
+  <img src="/platform/docs/assets/images/ex-agent-plan.webp" alt="Terminal running ex agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
+</p>
 
 The plan lands in `.langdrift/microruntimes/runtimes/console-microruntime/runtime.md`. Its `langdrift` fence is what the runtime executes; a second fence, `langdrift-plan`, holds the analysis. Prose in the file is kept as context and never executed.
 

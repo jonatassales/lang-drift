@@ -6,15 +6,14 @@ import type { ReactNode } from 'react'
 import type { Ticket, TicketPlan } from '@data/types'
 
 import { ComponentRow } from './component-row'
+import { PhaseSummary } from './phase-summary'
 import { type TicketFormat, useTicketFormat } from './ticket-format.hook'
 import { componentShare, planFigures } from './ticket-phases'
-import { TicketWidgetFrame } from './ticket-widget-frame'
+import { TicketSection } from './ticket-section'
 import { UnknownValue } from './unknown-value'
 import { WidgetSection } from './widget-section'
 
 interface PlanWidgetProps {
-	/** Set in a listing, so the card names and links its ticket. */
-	listed?: boolean
 	plan: TicketPlan
 	ticket: Ticket
 }
@@ -27,25 +26,6 @@ interface ReportCell {
 }
 
 const figure = 'font-mono tabular-nums'
-
-// Whether the team has authorized the plan, in the viewer's locale.
-function authorizationLabel(plan: TicketPlan, format: TicketFormat) {
-	const { t } = format
-	if (plan.authorization === 'authorized') return t('plan.authorized')
-
-	return t('plan.pendingAuthorization')
-}
-
-// The plan's header line: a dash until it is drafted with totals, then the
-// totals and whether the team has authorized them.
-function summaryLine(plan: TicketPlan, format: TicketFormat): ReactNode {
-	if (!plan.suggested) return <UnknownValue />
-
-	return format.t('plan.summary', {
-		figures: format.figures(plan.suggested),
-		pending: authorizationLabel(plan, format),
-	})
-}
 
 // The line under the components: how many have resolved of the spec's
 // count while the plan sizes, then the count and the totals.
@@ -90,7 +70,7 @@ function componentsLine(
 // would create, what runtime.md cannot bound, the price it cannot give and
 // the validation, closed by the evidence it leaves.
 export function PlanWidget(props: PlanWidgetProps) {
-	const { listed = false, plan, ticket } = props
+	const { plan, ticket } = props
 
 	const format = useTicketFormat()
 	const { t } = format
@@ -154,10 +134,10 @@ export function PlanWidget(props: PlanWidgetProps) {
 	]
 
 	return (
-		<TicketWidgetFrame
-			phase="plan"
-			summary={summaryLine(plan, format)}
-			ticket={listed ? ticket : undefined}
+		<TicketSection
+			id="plan"
+			summary={<PhaseSummary phase="plan" ticket={ticket} />}
+			title={t('labels.plan')}
 		>
 			<div className="grid gap-1.5">
 				<Eyebrow>{t('plan.proposed')}</Eyebrow>
@@ -182,7 +162,7 @@ export function PlanWidget(props: PlanWidgetProps) {
 									: 'text-status-warning',
 							)}
 						>
-							{authorizationLabel(plan, format)}
+							{format.authorization(plan)}
 						</span>
 					)}
 				</p>
@@ -276,6 +256,6 @@ export function PlanWidget(props: PlanWidgetProps) {
 					</p>
 				)}
 			</WidgetSection>
-		</TicketWidgetFrame>
+		</TicketSection>
 	)
 }

@@ -271,10 +271,10 @@
 		"analysis": "分析",
 		"plans": "計畫",
 		"workflows": "工作流程",
-		"ticketsIntro": "此專案的所有工單，由新到舊，附上其連結的成品。捲動以查看較舊的工單。",
-		"analysisIntro": "代理已分析的所有工單：讀取的文件、引用的過往案例，以及建議的模型與 effort。",
-		"plansIntro": "已有計畫的所有工單：將執行的元件與限制它們的額度，等待團隊授權。",
-		"workflowsIntro": "已有工作流程的所有工單：其階段、對預算保留的花費，以及拉取請求的狀態。"
+		"ticketsIntro": "此專案的所有工單，由新到舊，附上其狀態與目前階段的最新數據。捲動以查看較舊的工單。",
+		"analysisIntro": "代理已分析的所有工單，由新到舊，附上分析最近確定的結果。開啟工單以查看文件、過往案例與建議。",
+		"plansIntro": "已有計畫的所有工單，由新到舊，附上提議的總量與團隊是否已授權。開啟工單以查看元件與額度。",
+		"workflowsIntro": "已有工作流程的所有工單，由新到舊，附上相對於預算的估算或其結束方式。開啟工單以查看階段與拉取請求。"
 	},
 	"status": {
 		"running": "執行中",
@@ -405,12 +405,15 @@
 		"readMark": "已讀",
 		"notSet": "尚未設定",
 		"notReached": "{phase}：尚未到達",
-		"openTicket": "開啟工單 {number}",
 		"figures": "{cpu}m · {memory} MiB",
 		"cpuValue": "{value}m",
 		"memoryValue": "{value} MiB",
 		"ticket": {
 			"links": "連結的 artifacts",
+			"status": "狀態",
+			"phase": "階段",
+			"created": "建立時間",
+			"phaseProgress": "{phase} · {reached} / {total}",
 			"artifacts": {
 				"prd": "PRD",
 				"designDoc": "Design doc",

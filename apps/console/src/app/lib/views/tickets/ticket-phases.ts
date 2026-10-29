@@ -34,6 +34,48 @@ export function phaseReached(ticket: Ticket, phase: TicketPhase) {
 	return ticketPhases.indexOf(ticket.phase) >= ticketPhases.indexOf(phase)
 }
 
+// The phases with a one-line summary of their own.
+export type SummaryPhase = Exclude<TicketPhase, 'ticket'>
+
+export const summaryPhases: readonly SummaryPhase[] = [
+	'analysis',
+	'plan',
+	'workflow',
+]
+
+// How far the ticket has come: the phases it has reached out of all four.
+export function phaseProgress(ticket: Pick<Ticket, 'phase'>) {
+	return {
+		reached: ticketPhases.indexOf(ticket.phase) + 1,
+		total: ticketPhases.length,
+	}
+}
+
+// Where a listing entry opens: the ticket's page, scrolled to the phase's
+// section when the entry belongs to that phase's listing.
+export function ticketPath(
+	ticket: Pick<Ticket, 'id' | 'productId'>,
+	listing: TicketPhase,
+) {
+	const page = `/products/${ticket.productId}/tickets/${ticket.id}`
+	if (listing === 'ticket') return page
+
+	return `${page}#${listing}`
+}
+
+// The phase whose summary a listing entry shows: the listing's own phase,
+// or, in the Tickets listing, the phase the ticket is in, which has none
+// while the ticket is still in its Ticket phase.
+export function listedPhase(
+	ticket: Pick<Ticket, 'phase'>,
+	listing: TicketPhase,
+): SummaryPhase | null {
+	const phase = listing === 'ticket' ? ticket.phase : listing
+	if (phase === 'ticket') return null
+
+	return phase
+}
+
 export type AnalysisSummary =
 	| { kind: 'suggestion'; model: string; effort: string }
 	| { kind: 'episodes'; kept: number; total: number }
