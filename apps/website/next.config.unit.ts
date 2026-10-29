@@ -41,6 +41,7 @@ async function headersAt(route: string) {
 
 async function policyAt(route: string) {
 	const headers = await headersAt(route)
+
 	const policy = headers.get('Content-Security-Policy') ?? ''
 
 	return Object.fromEntries(
