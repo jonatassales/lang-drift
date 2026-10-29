@@ -10,8 +10,7 @@ allowBuilds:
   "@parcel/watcher": false
   "@swc/core": false
 
-# orbo-voice is the owner's own package, and 1.1.2 is a day-old release the
-# policy would otherwise reject. Remove this entry once it is older than
-# minimumReleaseAge (after 2026-10-26 17:10 UTC).
-minimumReleaseAgeExclude:
-  - orbo-voice@1.1.2
+# sinapsi 0.4.0 pins zod 4.6.5, which carries GHSA-mrhx-c7xc-m3w5. Remove this
+# override once sinapsi depends on a patched zod itself.
+overrides:
+  "sinapsi>zod": 4.6.7
