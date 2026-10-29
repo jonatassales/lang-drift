@@ -4,7 +4,7 @@
 
 **What to build:** The console's proxy builds a per-request nonce policy, using a pure builder, and does two things with it:
 
-- It hands the policy to next-intl's middleware on a new request, so Next stamps the nonce on its scripts.
+- It sets the policy on the incoming request's own headers, which next-intl forwards, so Next stamps the nonce on its scripts.
 - It sets the policy on the response.
 
 The matcher covers every path except `/api`, `/_next` and the root convention files, so a path with a dot under a locale, and the 404, carry the policy and `no-store`.

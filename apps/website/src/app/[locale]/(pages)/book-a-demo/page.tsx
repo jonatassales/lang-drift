@@ -8,6 +8,7 @@ import { BookDemoForm } from '@components/book-a-demo/form'
 import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
+import { WebsiteStructuredData } from '@components/website-structured-data'
 import { bookDemoMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
 
@@ -39,6 +40,7 @@ export default async function BookDemoPage(props: BookDemoPageProps) {
 
 	return (
 		<>
+			<WebsiteStructuredData locale={locale} page="book-a-demo" />
 			<SkipLink href="#book-a-demo-form">{copy.skip}</SkipLink>
 			<WebsiteHeader />
 			<main id="top">

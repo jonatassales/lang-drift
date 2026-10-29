@@ -12,7 +12,7 @@ Monorepo with four packages, `@langdrift/tokens`, `@langdrift/web`, the `ex` CLI
 - A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package. Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. `workflows/pull-request.yml` validates pull requests; publishing gets its own workflow file. `actions/setup-workspace/` installs pnpm, Node.js and the dependencies.
 - `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, `quality/` the lint-staged config, the Biome plugin and `dead-code.allow`, `versioning/` the commitlint config and the Git hooks (`.husky/`), `docs/` the README's translations and, under `assets/images/`, its light and dark banners with the SVG sources the PNGs are rendered from. The English `README.md` sits at the root; each README links every language right after the banner and the headline.
-- `turbo.json` declares the environment each task may see: Turborepo runs in strict mode, so a variable reaches a task only through `globalEnv`, a task's `env` or the pass-through lists. `apps/website/README.md` holds the website's variable contract and its tracked `.env.development` the shared development defaults, including a development-only `CRYPTO_SECRET`; deployed environments set their own value, and `CRYPTO_SECRET` stays pass-through only in Turborepo.
+- `turbo.json` declares the environment each task may see: Turborepo runs in strict mode, so a variable reaches a task only through `globalEnv`, a task's `env` or the pass-through lists. `apps/website/README.md` holds the website's variable contract and its tracked `.env.development` the shared development defaults, including a development-only `CRYPTO_SECRET`; deployed environments set their own value, and `CRYPTO_SECRET` stays pass-through only in Turborepo. The `build` task declares `VERCEL_ENV` in its `env`: the website's header policy differs on preview builds, so a preview and a production build must never share a cache entry.
 
 ## Toolchain and commands
 
@@ -113,6 +113,7 @@ Single context. The glossary is the `## Glossary` section of this file, and ADRs
 | Check | `pnpm turbo run check`, `pnpm turbo run typecheck`, then `drift check dead-code` |
 | Test | `pnpm turbo run test` |
 | Guardrails | `drift git lint-history` over the pull request's commits |
+| Security | `pnpm audit --prod --audit-level=high`, then govulncheck, pinned, in each Go module; it fails on a high or critical npm advisory or on a Go vulnerability our code reaches |
 
 Actions, container images and downloaded tools are pinned to full commit SHAs, digests or checksums, with the version in a comment. The workflow tokens are read-only.
 

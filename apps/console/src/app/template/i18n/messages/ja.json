@@ -534,5 +534,15 @@
 				"done": "完了"
 			}
 		}
+	},
+	"metadata": {
+		"siteName": "LangDrift コンソール",
+		"titleTemplate": "%s · {siteName}",
+		"entityTitle": "{section} · {entity}",
+		"ticketTitle": "{number} · {title}"
+	},
+	"notFound": {
+		"title": "ページが見つかりません",
+		"description": "このページは存在しないか、アドレスが不完全です。"
 	}
 }

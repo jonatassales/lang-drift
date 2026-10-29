@@ -12,6 +12,7 @@ export const routing = defineRouting({
 	},
 	localeDetection: false,
 	localeCookie: false,
+	alternateLinks: false,
 })
 
 export type WebsiteLocale = (typeof routing.locales)[number]

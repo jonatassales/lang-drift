@@ -10,6 +10,7 @@ import (
 
 	"github.com/jonatassales/tao/apps/extub/src/application"
 	"github.com/jonatassales/tao/apps/extub/src/domain"
+	"github.com/pion/ice/v4"
 	"github.com/pion/webrtc/v4"
 )
 
@@ -28,13 +29,21 @@ type Hub struct {
 }
 
 func New() *Hub {
+	return &Hub{peers: make(map[*peer]struct{}), api: webrtc.NewAPI(webrtc.WithSettingEngine(loopbackSettings()))}
+}
+
+// loopbackSettings keeps every peer's sockets on loopback: ICE gathers
+// loopback candidates only, and multicast DNS, whose sockets listen on every
+// interface, stays off.
+func loopbackSettings() webrtc.SettingEngine {
 	settings := webrtc.SettingEngine{}
 	settings.SetIncludeLoopbackCandidate(true)
 	settings.SetIPFilter(func(address net.IP) bool { return address.IsLoopback() })
+	settings.SetICEMulticastDNSMode(ice.MulticastDNSModeDisabled)
 	settings.SetICETimeouts(5*time.Second, 10*time.Second, time.Second)
 	settings.SetSCTPMaxReceiveBufferSize(65536)
 	settings.SetSCTPMaxMessageSize(262144)
-	return &Hub{peers: make(map[*peer]struct{}), api: webrtc.NewAPI(webrtc.WithSettingEngine(settings))}
+	return settings
 }
 
 // Offer admits at most eight peers including negotiations. Failure or cancellation

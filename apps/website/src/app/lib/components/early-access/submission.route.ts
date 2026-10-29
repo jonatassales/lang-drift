@@ -5,7 +5,11 @@ import { z } from 'zod'
 
 import { earlyAccessSubmissionSchema, getEmailError } from './form.validation'
 import { BodyError, readBoundedBody } from './request.body'
-import { parseSubmissionJSON } from './request.validation'
+import {
+	declaresOversizedBody,
+	isPlainJSON,
+	parseSubmissionJSON,
+} from './request.validation'
 import { verifyEarlyAccessChallenge } from './turnstile.validation'
 
 function reply(
@@ -114,16 +118,8 @@ export async function postEarlyAccess(request: Request): Promise<Response> {
 		) {
 			return reply(403, 'INVALID_ORIGIN')
 		}
-		if (
-			request.headers.has('content-encoding') ||
-			!/^application\/json(?:\s*;\s*charset=utf-8)?$/i.test(
-				request.headers.get('content-type') ?? '',
-			)
-		) {
-			return reply(415, 'INVALID_REQUEST')
-		}
-		const declared = request.headers.get('content-length')
-		if (declared && (!/^\d+$/.test(declared) || Number(declared) > 4096))
+		if (!isPlainJSON(request)) return reply(415, 'INVALID_REQUEST')
+		if (declaresOversizedBody(request, 4096))
 			return reply(413, 'INVALID_REQUEST')
 		const origin = trustedOrigin(env.mode)
 		if (!origin) return reply(503, 'UNAVAILABLE', 30)

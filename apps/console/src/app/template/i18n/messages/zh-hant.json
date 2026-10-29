@@ -58,7 +58,7 @@
 		"createRuntime": "建立 microruntime",
 		"runtimesIntro": "組合、設定並追蹤每個已連線的執行作業。",
 		"runtimeEmpty": "從專案建立一個 microruntime。",
-		"configuration": "設定",
+		"configuration": "組態",
 		"configure": "設定",
 		"configurationIntro": "資源限制分別套用於每次執行，代理設定與應用程式相依性無關。",
 		"cpu": "CPU 上限（核心）",
@@ -302,7 +302,7 @@
 		"revoked": "憑證撤銷",
 		"user_start": "使用者要求啟動",
 		"user_stop": "使用者要求停止",
-		"configuration": "設定",
+		"configuration": "組態",
 		"connection_loss": "連線中斷",
 		"agent_shutdown": "代理關閉",
 		"execution_failure": "執行失敗",
@@ -534,5 +534,15 @@
 				"done": "已完成"
 			}
 		}
+	},
+	"metadata": {
+		"siteName": "LangDrift 主控台",
+		"titleTemplate": "%s · {siteName}",
+		"entityTitle": "{section} · {entity}",
+		"ticketTitle": "{number} · {title}"
+	},
+	"notFound": {
+		"title": "找不到頁面",
+		"description": "此頁面不存在，或網址不完整。"
 	}
 }

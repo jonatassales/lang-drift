@@ -27,7 +27,7 @@ func (service Service) Widgets(sequence uint64) []domain.Widget {
 	return service.Snapshot().Widgets(service.Now(), sequence)
 }
 func (service Service) CreateProduct(folder, name string) (domain.Product, error) {
-	if !strings.HasPrefix(folder, "/") || len(folder) > 1024 || strings.ContainsRune(folder, 0) || len(name) > 100 {
+	if domain.ValidateFolder(folder) != nil || len(name) > 100 {
 		return domain.Product{}, domain.ErrInvalid
 	}
 	folder = path.Clean(folder)

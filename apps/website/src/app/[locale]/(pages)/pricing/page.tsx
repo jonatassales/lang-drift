@@ -9,6 +9,7 @@ import { PlansSection } from '@components/plans-section'
 import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
+import { WebsiteStructuredData } from '@components/website-structured-data'
 import { conversionMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
 
@@ -35,6 +36,7 @@ export default async function PricingPage(props: PricingPageProps) {
 
 	return (
 		<>
+			<WebsiteStructuredData locale={locale} page="pricing" />
 			<SkipLink href="#plans-main">
 				{conversionMessages[locale].plans.skip}
 			</SkipLink>

@@ -3,6 +3,7 @@ package httpapi
 
 import (
 	"context"
+	"crypto/sha256"
 	"crypto/subtle"
 	"encoding/json"
 	"errors"
@@ -29,10 +30,17 @@ func (handler Handler) hosted() bool {
 	return handler.Token != ""
 }
 
-// carriesToken compares the bearer token in constant time.
+// carriesToken reads a Bearer token (RFC 6750), its scheme in any case as
+// RFC 9110 has it, and compares SHA-256 digests in constant time, so the
+// comparison reveals neither the token nor its length.
 func (handler Handler) carriesToken(request *http.Request) bool {
-	presented, found := strings.CutPrefix(request.Header.Get("Authorization"), "Bearer ")
-	return found && subtle.ConstantTimeCompare([]byte(presented), []byte(handler.Token)) == 1
+	scheme, token, found := strings.Cut(request.Header.Get("Authorization"), " ")
+	if !found || !strings.EqualFold(scheme, "Bearer") {
+		return false
+	}
+	presented := sha256.Sum256([]byte(strings.TrimLeft(token, " ")))
+	expected := sha256.Sum256([]byte(handler.Token))
+	return subtle.ConstantTimeCompare(presented[:], expected[:]) == 1
 }
 
 // admit applies the hosted preview's rules: reading the health check needs
@@ -46,6 +54,7 @@ func (handler Handler) admit(writer http.ResponseWriter, request *http.Request) 
 		return true
 	}
 	if !handler.carriesToken(request) {
+		writer.Header().Set("WWW-Authenticate", `Bearer realm="extub"`)
 		respondError(writer, http.StatusUnauthorized, "token_required")
 		return false
 	}
@@ -57,11 +66,8 @@ func (handler Handler) admit(writer http.ResponseWriter, request *http.Request) 
 }
 
 func (handler Handler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set("Content-Type", "application/json")
-	writer.Header().Set("Cache-Control", "no-store")
-	writer.Header().Set("X-Content-Type-Options", "nosniff")
+	setAPIHeaders(writer.Header())
 	if handler.hosted() {
-		request.Body = http.MaxBytesReader(writer, request.Body, 65536)
 		if handler.admit(writer, request) {
 			handler.respond(writer, request)
 		}
@@ -76,7 +82,6 @@ func (handler Handler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 		respondError(writer, http.StatusForbidden, "local_only")
 		return
 	}
-	request.Body = http.MaxBytesReader(writer, request.Body, 65536)
 	if request.URL.Path == "/probe" && request.Method == http.MethodGet {
 		writer.WriteHeader(http.StatusNoContent)
 		return
@@ -84,8 +89,25 @@ func (handler Handler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 	handler.respond(writer, request)
 }
 
+// setAPIHeaders keeps every answer data for the console alone: JSON that is
+// never stored, sniffed, rendered, framed, sent as a referrer or read by
+// another origin.
+func setAPIHeaders(header http.Header) {
+	header.Set("Content-Type", "application/json")
+	header.Set("Cache-Control", "no-store")
+	header.Set("X-Content-Type-Options", "nosniff")
+	header.Set("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'")
+	header.Set("X-Frame-Options", "DENY")
+	header.Set("Referrer-Policy", "no-referrer")
+	header.Set("Cross-Origin-Resource-Policy", "same-origin")
+}
+
+// bodyLimit bounds a request body at 64 KiB.
+const bodyLimit = 64 << 10
+
 // respond routes an admitted request and writes its result or its error.
 func (handler Handler) respond(writer http.ResponseWriter, request *http.Request) {
+	request.Body = http.MaxBytesReader(writer, request.Body, bodyLimit)
 	result, err := handler.route(request)
 	if err != nil {
 		status := http.StatusInternalServerError
@@ -97,6 +119,9 @@ func (handler Handler) respond(writer http.ResponseWriter, request *http.Request
 		case errors.Is(err, domain.ErrInvalid):
 			status = http.StatusBadRequest
 			code = "invalid_input"
+		case errors.Is(err, errTooLarge):
+			status = http.StatusRequestEntityTooLarge
+			code = "request_too_large"
 		case errors.Is(err, domain.ErrConflict):
 			status = http.StatusConflict
 			code = "executions_not_stopped"
@@ -128,24 +153,44 @@ var errMethod = errors.New("method_not_allowed")
 // Vercel's functions receive no UDP, so the console keeps polling instead.
 var errStreamUnavailable = errors.New("stream_unavailable")
 
+// errTooLarge answers a body over bodyLimit: refused before routing when its
+// length is declared, and when a route reads past the limit otherwise.
+var errTooLarge = errors.New("request_too_large")
+
 func respondError(writer http.ResponseWriter, status int, code string) {
 	writer.WriteHeader(status)
 	_ = json.NewEncoder(writer).Encode(map[string]any{"source": "stub", "error": map[string]string{"code": code}})
 }
+
+// decode reads exactly one JSON value from the body.
 func decode(request *http.Request, target any) error {
 	decoder := json.NewDecoder(request.Body)
 	if err := decoder.Decode(target); err != nil {
-		return domain.ErrInvalid
+		return decodeFailure(err)
 	}
 	if err := decoder.Decode(new(any)); err != io.EOF {
-		return domain.ErrInvalid
+		return decodeFailure(err)
 	}
 	return nil
 }
+
+// decodeFailure tells a body that read past the limit from one that is not
+// exactly one JSON value.
+func decodeFailure(err error) error {
+	var tooLarge *http.MaxBytesError
+	if errors.As(err, &tooLarge) {
+		return errTooLarge
+	}
+	return domain.ErrInvalid
+}
+
 func envelope(key string, value any) map[string]any {
 	return map[string]any{"source": "stub", key: value}
 }
 func (handler Handler) route(request *http.Request) (any, error) {
+	if request.ContentLength > bodyLimit {
+		return nil, errTooLarge
+	}
 	path := strings.Trim(request.URL.Path, "/")
 	method := request.Method
 	if method == http.MethodGet && path == "health" {
@@ -181,6 +226,9 @@ func (handler Handler) route(request *http.Request) (any, error) {
 		folder := request.URL.Query().Get("path")
 		if folder == "" {
 			folder = "/seeds"
+		}
+		if err := domain.ValidateFolder(folder); err != nil {
+			return nil, err
 		}
 		return map[string]any{"source": "stub", "path": folder, "parent": nil, "folders": []map[string]string{{"name": "microruntimes", "path": "/seeds/microruntimes"}}}, nil
 	}

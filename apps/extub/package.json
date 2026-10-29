@@ -5,7 +5,7 @@
 		"dev": "go run ./cmd/server",
 		"start": "./dist/extub",
 		"build": "go build -o dist/extub ./cmd/server",
-		"test": "go test ./...",
+		"test": "go test -race ./...",
 		"typecheck": "go vet ./..."
 	}
 }

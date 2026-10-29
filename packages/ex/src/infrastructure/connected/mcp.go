@@ -31,7 +31,8 @@ type MCP struct {
 func endpoint(raw string) (string, error) {
 	u, err := url.Parse(raw)
 	if err != nil {
-		return "", err
+		// The parse error quotes the URL, userinfo included.
+		return "", errors.New("console URL is malformed")
 	}
 	ip := net.ParseIP(u.Hostname())
 	loopback := u.Hostname() == "localhost" || (ip != nil && ip.IsLoopback())

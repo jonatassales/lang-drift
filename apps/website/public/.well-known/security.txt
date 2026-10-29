@@ -1,0 +1,4 @@
+Contact: mailto:security@langdrift.md
+Expires: 2027-10-29T00:00:00.000Z
+Preferred-Languages: en, pt
+Canonical: https://langdrift.md/.well-known/security.txt

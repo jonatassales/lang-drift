@@ -21,6 +21,7 @@ import { SectionOutro } from '@components/product-page/section-outro'
 import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
+import { WebsiteStructuredData } from '@components/website-structured-data'
 import {
 	executionLedger,
 	lifecyclePhaseIds,
@@ -82,6 +83,7 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 
 	return (
 		<>
+			<WebsiteStructuredData locale={locale} page="microruntimes" />
 			<SkipLink href="#lifecycle">{copy.skip}</SkipLink>
 			<WebsiteHeader />
 			<main id="top">
