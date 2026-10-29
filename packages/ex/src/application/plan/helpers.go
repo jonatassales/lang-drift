@@ -11,6 +11,7 @@ import (
 	"github.com/jonatassales/tao/packages/contracts/configuration"
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	"github.com/jonatassales/tao/packages/ex/src/domain/collection"
+	"github.com/jonatassales/tao/packages/ex/src/domain/finops"
 	"github.com/jonatassales/tao/packages/ex/src/domain/harness"
 	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
@@ -77,13 +78,13 @@ func runtimeIDOf(override, slug string) (microruntime.Identifier, error) {
 // crossChecks are the checks of the draft beyond the schema.
 func crossChecks(components []resolved, bounded, ceiling harness.Resources) []run.Check {
 	ports := make([]string, 0, len(components))
-	distinctPorts := map[int]bool{}
+	seen := map[int]bool{}
 	for _, component := range components {
 		ports = append(ports, strconv.Itoa(component.input.Port))
-		distinctPorts[component.input.Port] = true
+		seen[component.input.Port] = true
 	}
 	portsCheck := run.Check{ID: "ports-distinct", Result: passed, Detail: text(strings.Join(ports, " · "))}
-	if len(distinctPorts) != len(components) {
+	if len(seen) != len(components) {
 		portsCheck.Result = failed
 		portsCheck.Detail = text("ports repeat: " + strings.Join(ports, " · "))
 	}
@@ -111,7 +112,7 @@ func crossChecks(components []resolved, bounded, ceiling harness.Resources) []ru
 	}
 	recipeCheck.Detail = text(strings.Join(recipes, " · "))
 
-	ceilingCheck := run.Check{ID: "within-ceiling", Result: passed, Detail: text(fmt.Sprintf("%sm of %sm · %s MiB of %s MiB", grouped(bounded.CPUMillis), grouped(ceiling.CPUMillis), grouped(bounded.MemoryMiB), grouped(ceiling.MemoryMiB)))}
+	ceilingCheck := run.Check{ID: "within-ceiling", Result: passed, Detail: text(fmt.Sprintf("%sm of %sm · %s MiB of %s MiB", finops.Grouped(bounded.CPUMillis), finops.Grouped(ceiling.CPUMillis), finops.Grouped(bounded.MemoryMiB), finops.Grouped(ceiling.MemoryMiB)))}
 	if bounded.CPUMillis > ceiling.CPUMillis || bounded.MemoryMiB > ceiling.MemoryMiB {
 		ceilingCheck.Result = failed
 	}
@@ -213,19 +214,6 @@ func componentName(componentPath string) string {
 
 func runtimePath(runtime microruntime.Identifier) string {
 	return microruntime.ConfigurationDirectory(runtime).String() + "/runtime.md"
-}
-
-// grouped prints a figure with thousands separators.
-func grouped(value int) string {
-	digits := strconv.Itoa(value)
-
-	var parts []string
-	for len(digits) > 3 {
-		parts = append([]string{digits[len(digits)-3:]}, parts...)
-		digits = digits[:len(digits)-3]
-	}
-
-	return strings.Join(append([]string{digits}, parts...), ",")
 }
 
 func distinct(items []string) []string {

@@ -13,15 +13,15 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/domain/run"
 )
 
-// scriptedModel answers each kind of question with a prepared text and a
+// scriptedJudge answers each kind of question with a prepared text and a
 // fixed usage, or fails as told.
-type scriptedModel struct {
+type scriptedJudge struct {
 	answers map[string]string
 	fail    error
 	asked   []plan.Question
 }
 
-func (model *scriptedModel) Ask(_ context.Context, question plan.Question) (plan.Answer, error) {
+func (model *scriptedJudge) Ask(_ context.Context, question plan.Question) (plan.Answer, error) {
 	model.asked = append(model.asked, question)
 	if model.fail != nil {
 		return plan.Answer{}, model.fail
@@ -89,8 +89,8 @@ func TestPlanJudgesTheSourcesAndSuggests(t *testing.T) {
 	t.Parallel()
 
 	p, deps := seedProject(t)
-	model := &scriptedModel{answers: sampleAnswers(t)}
-	deps.Model = model
+	model := &scriptedJudge{answers: sampleAnswers(t)}
+	deps.Judge = model
 
 	status, stdout, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
 	if status != 0 {
@@ -163,8 +163,8 @@ func TestPlanPausesAtTheGateBeforeTheJudgeRuns(t *testing.T) {
 	t.Parallel()
 
 	p, deps := seedProject(t)
-	model := &scriptedModel{answers: sampleAnswers(t)}
-	deps.Model = model
+	model := &scriptedJudge{answers: sampleAnswers(t)}
+	deps.Judge = model
 
 	if status, _, stderr := p.exWith(deps, "finops", "budget", "set", "--period", "2026-10", "--period-cents", "50000", "--per-run-cents", "10", "--allocate", "0070-console-microruntime=10"); status != 0 {
 		t.Fatal(stderr)
@@ -190,7 +190,7 @@ func TestPlanContinuesWhenTheJudgeIsUnavailable(t *testing.T) {
 	t.Parallel()
 
 	p, deps := seedProject(t)
-	deps.Model = &scriptedModel{fail: plan.ErrModelUnavailable}
+	deps.Judge = &scriptedJudge{fail: plan.ErrModelUnavailable}
 
 	status, stdout, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
 	if status != 0 {

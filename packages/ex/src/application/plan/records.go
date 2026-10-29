@@ -42,7 +42,7 @@ func (planning *planning) plan() run.Plan {
 		},
 		Collection: run.Collection{
 			Agent:   planning.collectionAgent(),
-			Limits:  run.Limits{MaxDepth: planning.request.Limits.MaxDepth, MaxFiles: planning.request.Limits.MaxFiles, MaxBytes: planning.request.Limits.MaxBytes, Secrets: collection.RefusedWord, OutsideProject: collection.RefusedWord, Symlinks: collection.RefusedWord},
+			Limits:  run.Limits{MaxDepth: planning.request.Limits.MaxDepth, MaxFiles: planning.request.Limits.MaxFiles, MaxBytes: planning.request.Limits.MaxBytes, Secrets: collection.Refused, OutsideProject: collection.Refused, Symlinks: collection.Refused},
 			Reached: run.Reached{Files: planning.collected.Files, Depth: planning.collected.Depth, Bytes: planning.collected.Bytes},
 			Context: run.Context{SHA256: planning.collected.ContextSHA256, Rule: collection.ContextRule},
 		},
@@ -132,7 +132,7 @@ func (planning *planning) runRecord() run.Run {
 		Kind:           "ticket",
 		Ticket:         text(planning.ticket.Path),
 		Runtime:        runtime,
-		State:          "planned",
+		State:          run.StatePlanned,
 		Files:          run.Files{Plan: text("runtime.md"), Memory: "run.md", Ledger: ".langdrift/finops/ledger/" + runtime + ".ledger.json", Evidence: "evidence/"},
 		HumanInTheLoop: run.HumanInTheLoop{Chosen: []string{}},
 		Laps:           []run.LapSummary{},
@@ -151,7 +151,7 @@ func (planning *planning) runRecord() run.Run {
 
 	record.HumanInTheLoop = run.HumanInTheLoop{Record: text(workflow.Mirror.Record), Mirror: text(".langdrift/" + planning.guards.WorkflowAt), Chosen: nonNil(workflow.Defaults.HumanAt)}
 	for _, stage := range workflow.Stages {
-		record.Stages = append(record.Stages, run.StageState{ID: stage.ID, State: "pending", Human: IsHuman(stage, workflow.Defaults)})
+		record.Stages = append(record.Stages, run.StageState{ID: stage.ID, State: run.StagePending, Human: IsHuman(stage, workflow.Defaults)})
 	}
 
 	return record
@@ -159,7 +159,7 @@ func (planning *planning) runRecord() run.Run {
 
 // IsHuman reports whether a person takes part in a stage.
 func IsHuman(stage harness.Stage, defaults harness.Defaults) bool {
-	if stage.Human == "required" || stage.Human == "owner-only" {
+	if stage.Human == harness.HumanRequired || stage.Human == harness.OwnerOnly {
 		return true
 	}
 

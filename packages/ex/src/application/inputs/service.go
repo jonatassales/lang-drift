@@ -27,11 +27,13 @@ type Service struct {
 	Clock application.Clock
 }
 
+// DefaultBy is who sets an input, and who a run acts for, unless named.
+const DefaultBy = "owner"
+
 // Defaults every record takes when the request leaves them empty.
 const (
 	defaultOwner  = "team"
 	defaultStatus = "draft"
-	defaultBy     = "owner"
 	recordVersion = 1
 )
 
@@ -63,7 +65,7 @@ func (service Service) SetEnvelope(_ context.Context, request EnvelopeRequest) (
 		return Result{}, err
 	}
 
-	stamp, err := service.stamp(KindEnvelope, orDefault(request.By, defaultBy))
+	stamp, err := service.stamp(KindEnvelope, orDefault(request.By, DefaultBy))
 	if err != nil {
 		return Result{}, err
 	}
@@ -123,7 +125,7 @@ func (service Service) SetWorkflow(_ context.Context, request WorkflowRequest) (
 		return Result{}, err
 	}
 
-	stamp, err := service.stamp(KindWorkflow, orDefault(request.By, defaultBy))
+	stamp, err := service.stamp(KindWorkflow, orDefault(request.By, DefaultBy))
 	if err != nil {
 		return Result{}, err
 	}
@@ -167,7 +169,7 @@ func validateWorkflow(workflow harness.Workflow) error {
 }
 
 func validHuman(text string) bool {
-	return text == "required" || text == "optional" || text == "owner-only"
+	return text == harness.HumanRequired || text == harness.HumanOptional || text == harness.OwnerOnly
 }
 
 // ModelRequest sets the default model and effort, and the planner's model.
@@ -194,7 +196,7 @@ func (service Service) SetModel(_ context.Context, request ModelRequest) (Result
 		return Result{}, err
 	}
 
-	stamp, err := service.stamp(KindChoice, orDefault(request.By, defaultBy))
+	stamp, err := service.stamp(KindChoice, orDefault(request.By, DefaultBy))
 	if err != nil {
 		return Result{}, err
 	}
@@ -236,7 +238,7 @@ func (service Service) SetDriver(_ context.Context, request DriverRequest) (Resu
 		return Result{}, err
 	}
 
-	stamp, err := service.stamp(KindDriver, orDefault(request.By, defaultBy))
+	stamp, err := service.stamp(KindDriver, orDefault(request.By, DefaultBy))
 	if err != nil {
 		return Result{}, err
 	}
@@ -290,7 +292,7 @@ func (service Service) SetBudget(_ context.Context, request BudgetRequest) (Resu
 		return Result{}, err
 	}
 
-	stamp, err := service.stamp(KindBudget+"-"+request.Period, orDefault(request.By, defaultBy))
+	stamp, err := service.stamp(KindBudget+"-"+request.Period, orDefault(request.By, DefaultBy))
 	if err != nil {
 		return Result{}, err
 	}
@@ -366,7 +368,7 @@ func (service Service) SetGates(_ context.Context, request GatesRequest) (Result
 		return Result{}, err
 	}
 
-	stamp, err := service.stamp(KindGates, orDefault(request.By, defaultBy))
+	stamp, err := service.stamp(KindGates, orDefault(request.By, DefaultBy))
 	if err != nil {
 		return Result{}, err
 	}
@@ -433,7 +435,7 @@ func (service Service) SetPrices(_ context.Context, request PricesRequest) (Resu
 		return Result{}, err
 	}
 
-	stamp, err := service.stamp(KindPrices, orDefault(request.By, defaultBy))
+	stamp, err := service.stamp(KindPrices, orDefault(request.By, DefaultBy))
 	if err != nil {
 		return Result{}, err
 	}
@@ -501,7 +503,7 @@ func (service Service) SetForecasts(_ context.Context, request ForecastsRequest)
 		return Result{}, err
 	}
 
-	stamp, err := service.stamp("forecast", orDefault(request.By, defaultBy))
+	stamp, err := service.stamp("forecast", orDefault(request.By, DefaultBy))
 	if err != nil {
 		return Result{}, err
 	}

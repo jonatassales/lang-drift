@@ -63,9 +63,5 @@ func classify(question plan.Question, err error) error {
 		return fmt.Errorf("%w: the API refused the credential for %s", plan.ErrModelUnavailable, question.Model)
 	}
 
-	if strings.Contains(err.Error(), "API key") || strings.Contains(err.Error(), "auth") {
-		return fmt.Errorf("%w: no credential for the Anthropic API", plan.ErrModelUnavailable)
-	}
-
 	return fmt.Errorf("ask %s about %s: %w", question.Model, question.Kind, err)
 }

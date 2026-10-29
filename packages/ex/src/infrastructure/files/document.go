@@ -27,10 +27,12 @@ func WriteDocument(path string, data []byte, mode fs.FileMode) error {
 		return err
 	}
 
-	if info, err := os.Lstat(path); err == nil && !info.Mode().IsRegular() {
-		return fmt.Errorf("refusing to replace non-regular file %s", path)
-	} else if err != nil && !errors.Is(err, fs.ErrNotExist) {
+	info, err := os.Lstat(path)
+	if err != nil && !errors.Is(err, fs.ErrNotExist) {
 		return err
+	}
+	if err == nil && !info.Mode().IsRegular() {
+		return fmt.Errorf("refusing to replace non-regular file %s", path)
 	}
 
 	temporary, err := writeTemporary(directory, data, mode)

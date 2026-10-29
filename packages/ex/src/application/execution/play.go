@@ -16,18 +16,6 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/domain/run"
 )
 
-// The states a stage may be in.
-const (
-	StagePending = "pending"
-	StageActive  = "active"
-	StageWaiting = "waiting"
-	StageDone    = "done"
-	StageFailed  = "failed"
-)
-
-// ownerOnly marks the stage the run never plays: the owner's.
-const ownerOnly = "owner-only"
-
 // allowUnmeasured is the driver setting that lets a call without usage pass FG-04.
 const allowUnmeasured = "allow"
 
@@ -60,10 +48,10 @@ func (playing *playing) play(ctx context.Context) (StartResult, error) {
 
 	workflow := playing.guards.Workflow
 	for _, stage := range workflow.Stages {
-		if stage.Human == ownerOnly {
+		if stage.Human == harness.OwnerOnly {
 			break
 		}
-		if !plays(stage) || playing.stageState(stage.ID).State == StageDone {
+		if !plays(stage) || playing.stageState(stage.ID).State == run.StageDone {
 			continue
 		}
 
@@ -91,8 +79,8 @@ func plays(stage harness.Stage) bool {
 // the run has one; without a yes the run stays waiting.
 func (playing *playing) wait(ctx context.Context, stage harness.Stage) (bool, error) {
 	emit(playing.sink, session.Waiting, session.Data{"stage": stage.ID})
-	playing.setStage(stage.ID, func(state *run.StageState) { state.State = StageWaiting })
-	playing.record.State, playing.record.Outcome = Waiting, text(Running)
+	playing.setStage(stage.ID, func(state *run.StageState) { state.State = run.StageWaiting })
+	playing.record.State, playing.record.Outcome = run.StateWaiting, text(run.StateRunning)
 
 	if playing.confirm == nil {
 		return false, playing.persist()
@@ -120,7 +108,7 @@ func confirmStage(record *run.Run, lap *Lap, stageID, by string, at harness.Time
 		}
 		confirmer := by
 		record.Stages[index].ConfirmedBy = &confirmer
-		record.Stages[index].State = StageActive
+		record.Stages[index].State = run.StageActive
 	}
 
 	lap.Steps = append(lap.Steps, Step{Name: "Confirmed", At: at, Note: stageID + " · by " + by})
@@ -129,8 +117,8 @@ func confirmStage(record *run.Run, lap *Lap, stageID, by string, at harness.Time
 // perform runs a stage: its hooks first, then its skills, each paid call
 // under FG-04.
 func (playing *playing) perform(ctx context.Context, stage harness.Stage) error {
-	playing.setStage(stage.ID, func(state *run.StageState) { state.State = StageActive })
-	playing.record.State, playing.record.Outcome = Running, text(Running)
+	playing.setStage(stage.ID, func(state *run.StageState) { state.State = run.StageActive })
+	playing.record.State, playing.record.Outcome = run.StateRunning, text(run.StateRunning)
 
 	for _, script := range stage.Hooks {
 		if err := playing.hook(ctx, stage, script); err != nil {
@@ -149,7 +137,7 @@ func (playing *playing) perform(ctx context.Context, stage harness.Stage) error 
 
 	at := playing.now()
 	playing.setStage(stage.ID, func(state *run.StageState) {
-		state.State = StageDone
+		state.State = run.StageDone
 		state.At = &at
 		if summary != "" {
 			state.Summary = text(summary)
@@ -236,8 +224,8 @@ func (playing *playing) gate(stage harness.Stage) error {
 	now := playing.now()
 	playing.lap.Steps = append(playing.lap.Steps, Step{Name: "Paused", At: now, Note: "FG-04: " + detail})
 	playing.lap.Gate, playing.lap.Outcome, playing.lap.Ended = duringRunGate, PausedAtGate, &now
-	playing.setStage(stage.ID, func(state *run.StageState) { state.State = StagePending })
-	playing.record.State, playing.record.Outcome = Paused, text(Paused)
+	playing.setStage(stage.ID, func(state *run.StageState) { state.State = run.StagePending })
+	playing.record.State, playing.record.Outcome = run.StatePaused, text(run.StatePaused)
 
 	if err := playing.persist(); err != nil {
 		return err
@@ -287,8 +275,8 @@ func (playing *playing) account(stageID string, result StageResult) {
 
 // fail records a stage the run could not finish; the next run plays it again.
 func (playing *playing) fail(stage harness.Stage, cause error) error {
-	playing.setStage(stage.ID, func(state *run.StageState) { state.State = StageFailed })
-	playing.record.State, playing.record.Outcome = Failed, text(Failed)
+	playing.setStage(stage.ID, func(state *run.StageState) { state.State = run.StageFailed })
+	playing.record.State, playing.record.Outcome = run.StateFailed, text(run.StateFailed)
 
 	if err := playing.persist(); err != nil {
 		return errors.Join(cause, err)
@@ -312,7 +300,7 @@ func (playing *playing) seedStages() {
 	workflow := playing.guards.Workflow
 	playing.record.HumanInTheLoop = run.HumanInTheLoop{Record: text(workflow.Mirror.Record), Mirror: text(".langdrift/" + playing.guards.WorkflowAt), Chosen: append([]string{}, workflow.Defaults.HumanAt...)}
 	for _, stage := range workflow.Stages {
-		playing.record.Stages = append(playing.record.Stages, run.StageState{ID: stage.ID, State: StagePending, Human: plan.IsHuman(stage, workflow.Defaults)})
+		playing.record.Stages = append(playing.record.Stages, run.StageState{ID: stage.ID, State: run.StagePending, Human: plan.IsHuman(stage, workflow.Defaults)})
 	}
 }
 
@@ -340,7 +328,7 @@ func stageOf(record run.Run, id string) (run.StageState, bool) {
 		}
 	}
 
-	return run.StageState{ID: id, State: StagePending}, false
+	return run.StageState{ID: id, State: run.StagePending}, false
 }
 
 // persist keeps the lap's ledger line and the run's lap summary current,

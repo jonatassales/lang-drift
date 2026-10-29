@@ -75,8 +75,8 @@ func TestRuntimeIDDerivesFromTheSlug(t *testing.T) {
 	t.Parallel()
 
 	tests := map[string]string{
-		"console-microruntime":            "console-microruntime",
-		"TICKET-early-access-runtime":     "early-access-runtime",
+		"console-microruntime":             "console-microruntime",
+		"TICKET-early-access-runtime":      "early-access-runtime",
 		"0031-TICKET-early-access-runtime": "early-access-runtime",
 		"Fix Login_Bug":                    "fix-login-bug",
 	}
@@ -122,13 +122,13 @@ func TestContextHashFollowsTheRecordedRule(t *testing.T) {
 
 	// The sample's seven sources and its recorded context hash.
 	hashes := map[string]string{
-		".agents/workflow/tickets/0070-console-microruntime.ticket.md":             "6d7935ac7e4eb3b4036b5a9d6ec8fe1d22fd1d0ec05fc0a000d30305ac8faae7",
-		".agents/workflow/specs/0010-exphere-and-the-langdrift-folder.spec.md":    "3dde504fc77f063715c765dae8d51fce6535de5631068ad4b215545b8981c98a",
-		".agents/workflow/research/ex-microruntimes-capability.research.md":       "7f187a177ccf87f94bae151a50b6692503b61875c98dbbb504047e55058e5e25",
-		".agents/workflow/adrs/0002-console-input-is-untrusted.adr.md":            "94cd83fdbd581c5be2d2b6068f498631a074ea0d236995b0b206a9502bae90f4",
-		".langdrift/harness/guardrails/0001-finops.gr.md":                         "52dec7dc62975afb1a8b46734a6297e0593a77109aff98c37a224f5c1baea446",
-		"apps/console/package.json":                                               "c53acfb6db82dbb7e60a2ca80181137343109de285b96136e9b080cf978437f7",
-		"apps/extub/go.mod":                                                       "aafa98e9c16d359d76ab8fce921f64232162e7808132050b02ab0da8e5fc1f3f",
+		".agents/workflow/tickets/0070-console-microruntime.ticket.md":         "6d7935ac7e4eb3b4036b5a9d6ec8fe1d22fd1d0ec05fc0a000d30305ac8faae7",
+		".agents/workflow/specs/0010-exphere-and-the-langdrift-folder.spec.md": "3dde504fc77f063715c765dae8d51fce6535de5631068ad4b215545b8981c98a",
+		".agents/workflow/research/ex-microruntimes-capability.research.md":    "7f187a177ccf87f94bae151a50b6692503b61875c98dbbb504047e55058e5e25",
+		".agents/workflow/adrs/0002-console-input-is-untrusted.adr.md":         "94cd83fdbd581c5be2d2b6068f498631a074ea0d236995b0b206a9502bae90f4",
+		".langdrift/harness/guardrails/0001-finops.gr.md":                      "52dec7dc62975afb1a8b46734a6297e0593a77109aff98c37a224f5c1baea446",
+		"apps/console/package.json":                                            "c53acfb6db82dbb7e60a2ca80181137343109de285b96136e9b080cf978437f7",
+		"apps/extub/go.mod":                                                    "aafa98e9c16d359d76ab8fce921f64232162e7808132050b02ab0da8e5fc1f3f",
 	}
 
 	if got := collection.ContextHash(hashes); got != "0d8ce74c47569bfd35cc820e302898ecde272d93715728f8de68e77ffe8f0dc7" {

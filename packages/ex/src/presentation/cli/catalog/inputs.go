@@ -32,7 +32,7 @@ type Inputs interface {
 
 // byFlag names who sets an input; every set command carries it.
 func byFlag(command *cobra.Command, by *string) {
-	command.Flags().StringVar(by, "by", "owner", "who sets the input")
+	command.Flags().StringVar(by, "by", inputs.DefaultBy, "who sets the input")
 }
 
 // readInputFile decodes one input body from a JSON file the owner wrote;

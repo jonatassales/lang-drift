@@ -44,29 +44,29 @@ func LoadGuardrails(store inputs.Store, owner project.Project) (Guardrails, erro
 	}
 
 	var prices finops.Prices
-	mirror, err := loadOptional(store, owner, inputs.KindPrices, &prices)
+	found, mirror, err := loadOptional(store, owner, inputs.KindPrices, &prices)
 	if err != nil {
 		return guards, err
 	}
-	if mirror != "" {
+	if found {
 		guards.Prices, guards.PricesAt = &prices, mirror
 	}
 
 	var forecasts finops.Forecasts
-	mirror, err = loadOptional(store, owner, inputs.KindForecasts, &forecasts)
+	found, _, err = loadOptional(store, owner, inputs.KindForecasts, &forecasts)
 	if err != nil {
 		return guards, err
 	}
-	if mirror != "" {
+	if found {
 		guards.Forecasts = &forecasts
 	}
 
 	var workflow harness.Workflow
-	mirror, err = loadOptional(store, owner, inputs.KindWorkflow, &workflow)
+	found, mirror, err = loadOptional(store, owner, inputs.KindWorkflow, &workflow)
 	if err != nil {
 		return guards, err
 	}
-	if mirror != "" {
+	if found {
 		guards.Workflow, guards.WorkflowAt = &workflow, mirror
 	}
 
@@ -141,20 +141,20 @@ func load(store inputs.Store, owner project.Project, kind string, value any) err
 	return nil
 }
 
-// loadOptional reads an input nobody may have set, and says where its mirror
-// is; an unset input leaves the value untouched and no mirror.
-func loadOptional(store inputs.Store, owner project.Project, kind string, value any) (string, error) {
+// loadOptional reads an input nobody may have set: whether it was set, and
+// where its mirror is; an unset input leaves the value untouched.
+func loadOptional(store inputs.Store, owner project.Project, kind string, value any) (bool, string, error) {
 	record, err := store.Load(owner, kind)
 	if errors.Is(err, application.ErrNotFound) {
-		return "", nil
+		return false, "", nil
 	}
 	if err != nil {
-		return "", err
+		return false, "", err
 	}
 
 	if err := json.Unmarshal(record.Value, value); err != nil {
-		return "", fmt.Errorf("the %s input is unreadable: %w", kind, err)
+		return false, "", fmt.Errorf("the %s input is unreadable: %w", kind, err)
 	}
 
-	return orDefault(record.Mirror, "-"), nil
+	return true, record.Mirror, nil
 }

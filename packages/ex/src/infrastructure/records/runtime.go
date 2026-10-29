@@ -35,18 +35,6 @@ func ConfigurationFence(config configuration.Configuration) ([]byte, error) {
 	return json.MarshalIndent(config, "", "  ")
 }
 
-// FenceSHA256 is the hash of the configuration the engine executes, as the
-// plan records it: the fence's body, since the plan itself lives in the
-// same file.
-func FenceSHA256(config configuration.Configuration) (string, error) {
-	body, err := ConfigurationFence(config)
-	if err != nil {
-		return "", err
-	}
-
-	return collection.SHA256(body), nil
-}
-
 // RenderRuntime renders runtime.md: the prose, the langdrift fence the
 // engine executes and the langdrift-plan fence that holds the analysis and
 // the plan.

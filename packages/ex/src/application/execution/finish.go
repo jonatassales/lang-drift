@@ -2,15 +2,15 @@ package execution
 
 import (
 	"context"
-	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
 	"strconv"
 	"strings"
 	"time"
 
+	"github.com/jonatassales/tao/packages/ex/src/application/inputs"
 	"github.com/jonatassales/tao/packages/ex/src/application/plan"
 	"github.com/jonatassales/tao/packages/ex/src/application/session"
+	"github.com/jonatassales/tao/packages/ex/src/domain/collection"
 	"github.com/jonatassales/tao/packages/ex/src/domain/finops"
 	"github.com/jonatassales/tao/packages/ex/src/domain/harness"
 	"github.com/jonatassales/tao/packages/ex/src/domain/run"
@@ -73,7 +73,7 @@ func (playing *playing) bringUp(ctx context.Context) error {
 	}
 
 	playing.lap.Execution = execution.ID
-	playing.lap.Runtime = &run.RuntimeFence{ID: playing.runtime.String(), Revision: playing.config.Revision, MarkdownSHA256: sha256Hex(markdown)}
+	playing.lap.Runtime = &run.RuntimeFence{ID: playing.runtime.String(), Revision: playing.config.Revision, MarkdownSHA256: collection.SHA256(markdown)}
 	playing.lap.Steps = append(playing.lap.Steps, Step{Name: "Claimed", At: playing.now(), Note: "execution `" + execution.ID + "`"})
 
 	observation, err := playing.service.Lifecycle.Observe(ctx, playing.owner, playing.runtime)
@@ -192,6 +192,7 @@ func (playing *playing) observeDelivery(ctx context.Context) error {
 // checks follows the pull request's checks until they end or the wait is
 // over; a check still running when the wait ends stays pending.
 func (playing *playing) checks(ctx context.Context, number int) {
+	// The wait is real time, not the records' clock: the checks run elsewhere.
 	deadline := time.Now().Add(playing.checksWait)
 	announced := false
 
@@ -353,7 +354,7 @@ func (playing *playing) release() (StartResult, error) {
 	}
 
 	outcome, proposed := playing.ending()
-	playing.record.State, playing.record.Outcome = Finished, text(outcome)
+	playing.record.State, playing.record.Outcome = run.StateFinished, text(outcome)
 	playing.record.Window.Finished = &now
 	playing.record.ProposedTicketStatus = proposed
 
@@ -395,19 +396,19 @@ func (playing *playing) ending() (string, *run.ProposedTicketStatus) {
 
 	workflow := playing.guards.Workflow
 	for _, stage := range workflow.Stages {
-		if stage.Human == ownerOnly {
+		if stage.Human == harness.OwnerOnly {
 			break
 		}
 		if plays(stage) || !plan.IsHuman(stage, workflow.Defaults) {
 			continue
 		}
 
-		playing.setStage(stage.ID, func(state *run.StageState) { state.State = StageWaiting })
+		playing.setStage(stage.ID, func(state *run.StageState) { state.State = run.StageWaiting })
 
-		return ReadyForReview, &run.ProposedTicketStatus{Status: "in-review", DecidedBy: "owner", Decided: false}
+		return ReadyForReview, &run.ProposedTicketStatus{Status: "in-review", DecidedBy: inputs.DefaultBy, Decided: false}
 	}
 
-	return ReadyToMerge, &run.ProposedTicketStatus{Status: "ready-to-merge", DecidedBy: "owner", Decided: false}
+	return ReadyToMerge, &run.ProposedTicketStatus{Status: "ready-to-merge", DecidedBy: inputs.DefaultBy, Decided: false}
 }
 
 // observed is what the lap measured, for its fence and the memory.
@@ -426,18 +427,12 @@ func (playing *playing) observed() *run.Observed {
 // abort records a run that stopped in the runtime's lifecycle; the lap stays
 // open and the next run plays on from the same point.
 func (playing *playing) abort(cause error) error {
-	playing.record.State, playing.record.Outcome = Failed, text(Failed)
+	playing.record.State, playing.record.Outcome = run.StateFailed, text(run.StateFailed)
 	if err := playing.persist(); err != nil {
 		return fmt.Errorf("%w; and the record could not be written: %v", cause, err)
 	}
 
 	return cause
-}
-
-func sha256Hex(content []byte) string {
-	digest := sha256.Sum256(content)
-
-	return hex.EncodeToString(digest[:])
 }
 
 func valueOf(value *int) int {

@@ -9,20 +9,10 @@ import (
 	"unicode/utf8"
 
 	"github.com/jonatassales/tao/packages/ex/src/application/session"
-	"github.com/jonatassales/tao/packages/ex/src/domain/finops"
 )
 
 // Actor is who the lines say acted.
 const Actor = "agent › "
-
-// Dollars prints cents as dollars with cents, grouped by thousands.
-func Dollars(cents int) string { return finops.Dollars(cents) }
-
-// Tokens prints thousands of tokens compactly: 3.5M, 250K, 6M.
-func Tokens(thousands int) string { return finops.Tokens(thousands) }
-
-// Number prints an integer grouped by thousands.
-func Number(value int) string { return finops.Grouped(value) }
 
 // pad right-pads text with spaces to width, as the website aligns its columns.
 func pad(text string, width int) string {

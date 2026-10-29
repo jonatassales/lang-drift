@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"github.com/jonatassales/tao/packages/ex/src/application/session"
+	"github.com/jonatassales/tao/packages/ex/src/domain/finops"
 )
 
 // line is one entry of the catalog: the kind the website gives the line and
@@ -57,7 +58,7 @@ var catalog = map[string]line{
 		return "discrepancy " + text(data, "source") + " says " + text(data, "fact") + " · the input holds"
 	}},
 	key(session.PlanSession, session.Budget): {session.Output, func(data session.Data) string {
-		return "budget     " + Dollars(number(data, "perRunCents")) + " per run for model calls · set by " + text(data, "by") + " in the CLI"
+		return "budget     " + finops.Dollars(number(data, "perRunCents")) + " per run for model calls · set by " + text(data, "by") + " in the CLI"
 	}},
 	key(session.PlanSession, session.Memory): {session.Output, func(session.Data) string {
 		return Actor + "RAG over project episodes · a model and effort for this ticket"
@@ -151,16 +152,16 @@ var catalog = map[string]line{
 		return Actor + "intent     " + text(data, "model") + " · effort " + text(data, "effort") + " · runtime.md revision " + strconv.Itoa(number(data, "revision"))
 	}},
 	key(session.RunSession, session.Estimate): {session.Output, func(data session.Data) string {
-		return Actor + "estimate   " + Dollars(number(data, "estimateCents")) + " · " + Tokens(number(data, "inputThousands")) + " input · " + Tokens(number(data, "outputThousands")) + " output · list prices · FIN-02"
+		return Actor + "estimate   " + finops.Dollars(number(data, "estimateCents")) + " · " + finops.Tokens(number(data, "inputThousands")) + " input · " + finops.Tokens(number(data, "outputThousands")) + " output · list prices · FIN-02"
 	}},
 	key(session.RunSession, session.RunBudget): {session.Output, func(data session.Data) string {
-		return Actor + "budget     " + Dollars(number(data, "perRunCents")) + " per run · set by " + text(data, "by") + " · FIN-03"
+		return Actor + "budget     " + finops.Dollars(number(data, "perRunCents")) + " per run · set by " + text(data, "by") + " · FIN-03"
 	}},
 	key(session.RunSession, session.GateOpened): {session.Success, func(data session.Data) string {
-		return Actor + "gate       reserved " + Dollars(number(data, "reservedCents")) + " of " + Dollars(number(data, "perRunCents")) + " · opened"
+		return Actor + "gate       reserved " + finops.Dollars(number(data, "reservedCents")) + " of " + finops.Dollars(number(data, "perRunCents")) + " · opened"
 	}},
 	key(session.RunSession, session.GatePaused): {session.Warning, func(data session.Data) string {
-		return Actor + "gate       reservation " + Dollars(number(data, "reservedCents")) + " exceeds the " + Dollars(number(data, "perRunCents")) + " budget · paused"
+		return Actor + "gate       reservation " + finops.Dollars(number(data, "reservedCents")) + " exceeds the " + finops.Dollars(number(data, "perRunCents")) + " budget · paused"
 	}},
 	key(session.RunSession, session.GateBlocked): {session.Error, func(data session.Data) string {
 		return Actor + "gate       blocked · " + text(data, "gate") + " · " + text(data, "detail")
@@ -169,7 +170,7 @@ var catalog = map[string]line{
 		return Actor + "gate       paused · FG-04 · " + text(data, "detail")
 	}},
 	key(session.RunSession, session.LapResumed): {session.Output, func(data session.Data) string {
-		return Actor + "lap        " + text(data, "lap") + " open · " + Dollars(number(data, "reservedCents")) + " reserved · resumed"
+		return Actor + "lap        " + text(data, "lap") + " open · " + finops.Dollars(number(data, "reservedCents")) + " reserved · resumed"
 	}},
 	key(session.RunSession, session.Paused): {session.Comment, func(session.Data) string {
 		return "# needs a decision: raise the budget or lower the effort · nothing was paid for"
@@ -190,7 +191,7 @@ var catalog = map[string]line{
 		return "runtime    " + text(data, "runtime") + " · revision " + strconv.Itoa(number(data, "revision")) + " · " + strconv.Itoa(number(data, "deployments")) + " Deployments ready · " + strconv.Itoa(number(data, "cpuMillis")) + "m · " + strconv.Itoa(number(data, "memoryMiB")) + " MiB"
 	}},
 	key(session.RunSession, session.Completed): {session.Success, func(data session.Data) string {
-		return "✓ completed  implementation · " + Dollars(number(data, "observedCents")) + " observed of " + Dollars(number(data, "reservedCents")) + " reserved · usage record"
+		return "✓ completed  implementation · " + finops.Dollars(number(data, "observedCents")) + " observed of " + finops.Dollars(number(data, "reservedCents")) + " reserved · usage record"
 	}},
 	key(session.RunSession, session.Pushed): {session.Success, func(data session.Data) string {
 		return "✓ pushed     " + text(data, "branch") + " · " + text(data, "commit")
@@ -217,10 +218,10 @@ var catalog = map[string]line{
 		return "runtime    stopped · " + strconv.Itoa(number(data, "removed")) + " Deployments removed · " + text(data, "left")
 	}},
 	key(session.RunSession, session.ReadyForReview): {session.Success, func(data session.Data) string {
-		return "✓ ready      " + pullRequest(data, "the branch") + " for review · " + Dollars(number(data, "releasedCents")) + " released to the envelope"
+		return "✓ ready      " + pullRequest(data, "the branch") + " for review · " + finops.Dollars(number(data, "releasedCents")) + " released to the envelope"
 	}},
 	key(session.RunSession, session.ReadyToMerge): {session.Success, func(data session.Data) string {
-		return "✓ ready      " + pullRequest(data, "the branch") + " to merge · " + Dollars(number(data, "releasedCents")) + " released to the envelope"
+		return "✓ ready      " + pullRequest(data, "the branch") + " to merge · " + finops.Dollars(number(data, "releasedCents")) + " released to the envelope"
 	}},
 	key(session.RunSession, session.NextReview): {session.Comment, func(data session.Data) string {
 		return "# next: the owner reviews " + pullRequest(data, "the branch") + " and decides whether to merge"

@@ -131,7 +131,7 @@ func (planning *planning) openJudge() error {
 		return fmt.Errorf("%w: %s; nothing was paid; raise the budget or plan with --no-judge", ErrPaused, gateDetail(gates))
 	}
 
-	planning.judge = &judge{model: planning.service.Model, planner: planner, price: price, estimate: estimate, reserved: reservation}
+	planning.judge = &judge{client: planning.service.Judge, planner: planner, price: price, estimate: estimate, reserved: reservation}
 
 	return nil
 }
@@ -141,7 +141,7 @@ func (planning *planning) judgeUnavailable() string {
 	switch {
 	case planning.request.NoJudge:
 		return "--no-judge; verdicts, facts and the suggestion are the inputs' own"
-	case planning.service.Model == nil:
+	case planning.service.Judge == nil:
 		return "no model is configured; verdicts, facts and the suggestion are the inputs' own"
 	case planning.guards.Forecasts == nil || planning.guards.Forecasts.Planning == nil:
 		return "no planning forecast is recorded; set planning with ex finops forecasts set"
@@ -287,12 +287,12 @@ func checkSources(answer sourcesAnswer, known map[string]bool) error {
 
 // stopIfJudgeStopped prints, once, why the judge stopped.
 func (planning *planning) stopIfJudgeStopped() {
-	if planning.judge == nil || planning.judge.stopped == "" || planning.judge.stopped == "printed" {
+	if planning.judge == nil || planning.judge.stopped == "" || planning.judge.printed {
 		return
 	}
 
 	planning.emit(session.JudgeStopped, session.Data{"reason": planning.judge.stopped})
-	planning.judge.stopped = "printed"
+	planning.judge.printed = true
 }
 
 // envelope is the envelope the run takes: the owner's override, recorded as
@@ -330,7 +330,7 @@ func (planning *planning) compare() []figure {
 }
 
 func figureText(cpuMillis, memoryMiB int) string {
-	return grouped(cpuMillis) + " millicores and " + grouped(memoryMiB) + " MiB"
+	return finops.Grouped(cpuMillis) + " millicores and " + finops.Grouped(memoryMiB) + " MiB"
 }
 
 func figureKey(cpuMillis, memoryMiB int) string {

@@ -8,6 +8,7 @@ import (
 	"time"
 
 	app "github.com/jonatassales/tao/packages/ex/src/application/session"
+	"github.com/jonatassales/tao/packages/ex/src/domain/finops"
 	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/session"
 )
 
@@ -64,19 +65,19 @@ func TestFormatsMoneyAndTokensAsTheWebsiteDoes(t *testing.T) {
 
 	money := map[int]string{950: "$9.50", 1140: "$11.40", 4080: "$40.80", 160: "$1.60", 2500: "$25.00", 123456: "$1,234.56", 5: "$0.05"}
 	for cents, want := range money {
-		if got := session.Dollars(cents); got != want {
+		if got := finops.Dollars(cents); got != want {
 			t.Errorf("Dollars(%d) = %q, want %q", cents, got, want)
 		}
 	}
 
 	tokens := map[int]string{3500: "3.5M", 250: "250K", 6000: "6M", 500: "500K", 2000: "2M", 120: "120K", 2100: "2.1M", 6300: "6.3M"}
 	for thousands, want := range tokens {
-		if got := session.Tokens(thousands); got != want {
+		if got := finops.Tokens(thousands); got != want {
 			t.Errorf("Tokens(%d) = %q, want %q", thousands, got, want)
 		}
 	}
 
-	if got := session.Number(2000); got != "2,000" {
+	if got := finops.Grouped(2000); got != "2,000" {
 		t.Errorf("Number(2000) = %q", got)
 	}
 }

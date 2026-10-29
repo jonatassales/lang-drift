@@ -36,7 +36,7 @@ type dependencies struct {
 	IDs       application.IDSource
 	Clock     application.Clock
 	Embedder  rag.Embedder
-	Model     plan.Model
+	Judge     plan.Judge
 	Driver    execution.StageDriver
 	Lifecycle execution.Lifecycle
 	Delivery  execution.DeliveryObserver
@@ -150,7 +150,7 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 			Records:   records.Runtimes{},
 			Index:     raginfra.Index{},
 			Embedder:  deps.Embedder,
-			Model:     modelOf(deps),
+			Judge:     judgeOf(deps),
 			IDs:       deps.IDs,
 			Clock:     deps.Clock,
 		},
@@ -230,10 +230,10 @@ type lifecycles struct {
 	Hook     application.RunRuntimeHook
 }
 
-// modelOf is the planner's model client: the scripted one, or Claude.
-func modelOf(deps dependencies) plan.Model {
-	if deps.Model != nil {
-		return deps.Model
+// judgeOf is the planner's judge: the scripted one, or Claude.
+func judgeOf(deps dependencies) plan.Judge {
+	if deps.Judge != nil {
+		return deps.Judge
 	}
 
 	return judgeinfra.Anthropic{}

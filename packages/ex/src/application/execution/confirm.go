@@ -9,6 +9,7 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/application/session"
 	"github.com/jonatassales/tao/packages/ex/src/domain/harness"
 	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
+	"github.com/jonatassales/tao/packages/ex/src/domain/run"
 )
 
 // ConfirmRequest records the owner's confirmation of a stage that waits.
@@ -58,11 +59,11 @@ func (service Service) Confirm(_ context.Context, request ConfirmRequest) (Confi
 	if !known {
 		return ConfirmResult{}, fmt.Errorf("%w: %s has no stage %q", inputs.ErrInvalid, runtime, request.Stage)
 	}
-	if state.State != StageWaiting {
+	if state.State != run.StageWaiting {
 		return ConfirmResult{}, fmt.Errorf("%w: stage %s is %s, not waiting", ErrRefused, request.Stage, state.State)
 	}
 
-	by := orDefault(request.By, "owner")
+	by := orDefault(request.By, inputs.DefaultBy)
 	confirmStage(&record, &lap, request.Stage, by, harness.At(service.Clock.Now()))
 
 	if err := service.Laps.Save(owner, runtime, lap); err != nil {

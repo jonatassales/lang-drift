@@ -107,13 +107,13 @@ func (playing *playing) lapSentence(lap run.LapSummary) string {
 // indexes.
 func (playing *playing) lessons() ([]string, []string) {
 	var lessons, facts []string
-	cap := playing.guards.Budget.Bounded.PerRunCents
+	perRunCap := playing.guards.Budget.Bounded.PerRunCents
 
 	for _, lap := range playing.record.Laps {
 		if lap.Outcome != PausedAtGate || !lap.NothingPaid {
 			continue
 		}
-		lessons = append(lessons, "At this ticket's size, "+playing.modelName(lap.Choice.Model)+" at "+lap.Choice.Effort+" effort needs a reservation above the "+finops.Dollars(cap)+" cap: "+finops.Dollars(lap.ReservedCents)+" was asked for.")
+		lessons = append(lessons, "At this ticket's size, "+playing.modelName(lap.Choice.Model)+" at "+lap.Choice.Effort+" effort needs a reservation above the "+finops.Dollars(perRunCap)+" cap: "+finops.Dollars(lap.ReservedCents)+" was asked for.")
 		facts = append(facts, slug(lap.Choice.Model)+"-"+lap.Choice.Effort+"-exceeds-per-run-cap")
 	}
 

@@ -112,3 +112,22 @@ type CheckResult struct {
 	Name   string `json:"name"`
 	Result string `json:"result"`
 }
+
+// The states a run may be in.
+const (
+	StatePlanned  = "planned"
+	StateRunning  = "running"
+	StatePaused   = "paused"
+	StateWaiting  = "waiting"
+	StateFailed   = "failed"
+	StateFinished = "finished"
+)
+
+// The states a stage may be in.
+const (
+	StagePending = "pending"
+	StageActive  = "active"
+	StageWaiting = "waiting"
+	StageDone    = "done"
+	StageFailed  = "failed"
+)

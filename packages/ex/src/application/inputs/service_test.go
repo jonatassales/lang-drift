@@ -54,7 +54,9 @@ func (mirrors *fakeMirrors) WriteMirror(_ project.Project, relative string, valu
 	return nil
 }
 
-func (mirrors *fakeMirrors) NextPriceNumber(project.Project) (string, error) { return mirrors.next, nil }
+func (mirrors *fakeMirrors) NextPriceNumber(project.Project) (string, error) {
+	return mirrors.next, nil
+}
 
 var moment = time.Date(2026, 10, 27, 18, 4, 0, 0, time.UTC)
 

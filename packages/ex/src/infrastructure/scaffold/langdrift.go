@@ -31,9 +31,11 @@ func (LangDrift) Prepare(owner project.Project) error {
 		return err
 	}
 
-	if _, err := os.Lstat(target); err == nil {
+	_, err = os.Lstat(target)
+	if err == nil {
 		return nil
-	} else if !errors.Is(err, fs.ErrNotExist) {
+	}
+	if !errors.Is(err, fs.ErrNotExist) {
 		return err
 	}
 

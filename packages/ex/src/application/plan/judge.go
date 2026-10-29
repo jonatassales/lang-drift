@@ -13,7 +13,7 @@ import (
 
 // Model answers one question of the planner. A credential the provider
 // refuses is ErrModelUnavailable; any other failure is the call's own.
-type Model interface {
+type Judge interface {
 	Ask(ctx context.Context, question Question) (Answer, error)
 }
 
@@ -59,15 +59,16 @@ const judgeMaxTokens = 8000
 // judge is the planner's paid side: its model, price and reservation, what
 // its calls used, and why it stopped, if it did.
 type judge struct {
-	model       Model
-	planner     string
-	price       finops.ModelPrice
-	estimate    int
-	reserved    int
+	client       Judge
+	planner      string
+	price        finops.ModelPrice
+	estimate     int
+	reserved     int
 	inputTokens  int64
 	outputTokens int64
-	calls       int
-	stopped     string
+	calls        int
+	stopped      string
+	printed      bool
 }
 
 // observed is what the calls cost so far, at the planner's list price.
@@ -96,10 +97,12 @@ func (judge *judge) ask(ctx context.Context, question Question, into any, check 
 	question.Model = judge.planner
 	question.MaxTokens = judgeMaxTokens
 
-	answer, err := judge.model.Ask(ctx, question)
-	judge.calls++
-	judge.inputTokens += answer.InputTokens
-	judge.outputTokens += answer.OutputTokens
+	answer, err := judge.client.Ask(ctx, question)
+	if answered(answer, err) {
+		judge.calls++
+		judge.inputTokens += answer.InputTokens
+		judge.outputTokens += answer.OutputTokens
+	}
 
 	switch {
 	case errors.Is(err, ErrModelUnavailable):
@@ -230,4 +233,10 @@ func material(label, content string, limit int) string {
 	}
 
 	return "<<<" + label + "\n" + content + "\n>>>"
+}
+
+// answered reports whether a call reached the model: it answered, or it
+// failed after using tokens. A refused credential uses none and is not paid.
+func answered(answer Answer, err error) bool {
+	return err == nil || answer.InputTokens > 0 || answer.OutputTokens > 0
 }

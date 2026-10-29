@@ -24,8 +24,8 @@ type Service struct {
 	Records   Records
 	Index     Index
 	Embedder  rag.Embedder
-	// Model answers the planner's questions; nil plans without a judge.
-	Model Model
+	// Judge answers the planner's questions; nil plans without one.
+	Judge Judge
 
 	// Injectable for tests; nil uses the real sources.
 	IDs   application.IDSource
@@ -103,7 +103,7 @@ func (service Service) Plan(ctx context.Context, request Request) (Result, error
 		owner:   owner,
 		sink:    sinkOf(request.Session),
 		guards:  guards,
-		by:      orDefault(request.By, "owner"),
+		by:      orDefault(request.By, inputs.DefaultBy),
 		now:     harness.At(service.Clock.Now()),
 	}
 
@@ -154,8 +154,8 @@ func validate(request Request) error {
 	}
 
 	for _, component := range request.Components {
-		if component.Path == "" || component.Image == "" || component.Port == 0 || component.ReadinessPath == "" || component.Build.Executable == "" {
-			return invalid("component %q needs path, image, port, readiness and build", component.Path)
+		if component.Path == "" {
+			return invalid("every --component needs a path")
 		}
 	}
 
@@ -163,7 +163,7 @@ func validate(request Request) error {
 		return invalid("the collection limits must be positive")
 	}
 
-	if (request.CPUMillis < 0) || (request.MemoryMiB < 0) || (request.CPUMillis > 0) != (request.MemoryMiB > 0) {
+	if overridesEnvelopeHalfway(request) {
 		return invalid("override the envelope with both --cpu-millis and --memory-mib, or neither")
 	}
 
@@ -180,4 +180,14 @@ func sinkOf(sink session.Sink) session.Sink {
 	}
 
 	return sink
+}
+
+// overridesEnvelopeHalfway reports an envelope override that names only one
+// of its two figures, or a negative one.
+func overridesEnvelopeHalfway(request Request) bool {
+	if request.CPUMillis < 0 || request.MemoryMiB < 0 {
+		return true
+	}
+
+	return (request.CPUMillis > 0) != (request.MemoryMiB > 0)
 }

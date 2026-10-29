@@ -28,3 +28,10 @@ type Stage struct {
 type Defaults struct {
 	HumanAt []string `json:"humanAt"`
 }
+
+// How a person takes part in a stage.
+const (
+	HumanRequired = "required"
+	HumanOptional = "optional"
+	OwnerOnly     = "owner-only"
+)

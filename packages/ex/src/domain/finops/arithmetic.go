@@ -25,12 +25,9 @@ func RequestedReservation(estimateCents, reserveMarginPercent int) int {
 	return int(math.Ceil(float64(estimateCents) * float64(100+reserveMarginPercent) / 100))
 }
 
-// Bounds are the caps a reservation is checked against.
-type Bounds struct {
-	PerRunCents           int
-	TicketAllocationCents int
-	PeriodLeftCents       int
-}
+// Bounds are the caps a reservation is checked against: the ones the ledger
+// records.
+type Bounds = LedgerBounds
 
 // The gate results.
 const (

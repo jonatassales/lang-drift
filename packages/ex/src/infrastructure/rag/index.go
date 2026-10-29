@@ -5,6 +5,7 @@ package rag
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -138,9 +139,13 @@ func episodeOf(owner project.Project, runtime microruntime.Identifier) (rag.Epis
 		return rag.Episode{}, false, err
 	}
 
+	if !strings.Contains(string(memory), "```langdrift-run\n") {
+		return rag.Episode{}, false, nil
+	}
+
 	var fence run.RunFence
 	if err := decodeFence(string(memory), "langdrift-run", &fence); err != nil {
-		return rag.Episode{}, false, nil
+		return rag.Episode{}, false, fmt.Errorf("the memory of %s has an unreadable langdrift-run fence: %w", runtime, err)
 	}
 
 	episode := rag.Episode{

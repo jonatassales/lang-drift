@@ -74,6 +74,8 @@ type sampleLapFence struct {
 }
 
 func TestSampleFixtureHoldsTheWholeSample(t *testing.T) {
+	t.Parallel()
+
 	var found []string
 
 	err := filepath.WalkDir(sampleFixture, func(path string, entry fs.DirEntry, walkErr error) error {
@@ -102,6 +104,8 @@ func TestSampleFixtureHoldsTheWholeSample(t *testing.T) {
 }
 
 func TestFrozenSourcesMatchTheSamplePlan(t *testing.T) {
+	t.Parallel()
+
 	plan := readSamplePlan(t)
 
 	var contextLines []string
@@ -137,6 +141,8 @@ func TestFrozenSourcesMatchTheSamplePlan(t *testing.T) {
 }
 
 func TestSampleRuntimeIsTheOneTheRunRecorded(t *testing.T) {
+	t.Parallel()
+
 	plan := readSamplePlan(t)
 
 	markdown, err := os.ReadFile(sampleRuntime)

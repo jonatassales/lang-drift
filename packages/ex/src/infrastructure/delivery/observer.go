@@ -28,24 +28,24 @@ type Observer struct{ Runner Runner }
 // Branch is the checked-out branch, its short commit and whether the upstream
 // has it.
 func (observer Observer) Branch(ctx context.Context, root string) execution.Branch {
-	name, err := observer.git(ctx, root, "rev-parse", "--abbrev-ref", "HEAD")
+	name, err := observer.run(ctx, root, "git", "rev-parse", "--abbrev-ref", "HEAD")
 	if err != nil {
 		return execution.Branch{Reason: "not a git repository"}
 	}
 
-	commit, err := observer.git(ctx, root, "rev-parse", "--short", "HEAD")
+	commit, err := observer.run(ctx, root, "git", "rev-parse", "--short", "HEAD")
 	if err != nil {
 		return execution.Branch{Name: name, Reason: "no commit"}
 	}
 
 	branch := execution.Branch{Name: name, Commit: commit}
-	if _, err := observer.git(ctx, root, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"); err != nil {
+	if _, err := observer.run(ctx, root, "git", "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"); err != nil {
 		branch.Reason = "no upstream"
 
 		return branch
 	}
 
-	ahead, err := observer.git(ctx, root, "rev-list", "--count", "@{upstream}..HEAD")
+	ahead, err := observer.run(ctx, root, "git", "rev-list", "--count", "@{upstream}..HEAD")
 	if err != nil || ahead != "0" {
 		branch.Reason = ahead + " commits ahead of the upstream"
 
@@ -59,7 +59,7 @@ func (observer Observer) Branch(ctx context.Context, root string) execution.Bran
 
 // PullRequest is the pull request of a branch, as gh sees it.
 func (observer Observer) PullRequest(ctx context.Context, root, branch string) (*run.PullRequest, string) {
-	output, err := observer.gh(ctx, root, "pr", "view", branch, "--json", "number,title,state")
+	output, err := observer.run(ctx, root, "gh", "pr", "view", branch, "--json", "number,title,state")
 	if errors.Is(err, exec.ErrNotFound) {
 		return nil, "gh is not installed"
 	}
@@ -128,17 +128,9 @@ func resultOf(bucket string) string {
 	return bucket
 }
 
-func (observer Observer) git(ctx context.Context, root string, args ...string) (string, error) {
-	result, err := observer.Runner.Run(ctx, process.Command{Name: "git", Args: args, Dir: root})
-	if err != nil {
-		return "", err
-	}
-
-	return strings.TrimSpace(result.Stdout), nil
-}
-
-func (observer Observer) gh(ctx context.Context, root string, args ...string) (string, error) {
-	result, err := observer.Runner.Run(ctx, process.Command{Name: "gh", Args: args, Dir: root})
+// run runs one tool inside the project and returns what it printed, trimmed.
+func (observer Observer) run(ctx context.Context, root, tool string, args ...string) (string, error) {
+	result, err := observer.Runner.Run(ctx, process.Command{Name: tool, Args: args, Dir: root})
 	if err != nil {
 		return "", err
 	}

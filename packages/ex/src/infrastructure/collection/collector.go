@@ -6,10 +6,8 @@ package collection
 
 import (
 	"errors"
-	"io/fs"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/jonatassales/tao/packages/ex/src/domain/collection"
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
@@ -106,12 +104,12 @@ func resolve(owner project.Project, next pending) (collection.Source, []byte, bo
 		}
 
 		absolute, err := files.Existing(owner.Root, filepath.FromSlash(candidate))
-		if err != nil && strings.Contains(err.Error(), "symlink") {
+		if errors.Is(err, files.ErrSymlink) {
 			source.State = collection.Refused
 
 			return source, nil, false
 		}
-		if errors.Is(err, fs.ErrNotExist) || err != nil {
+		if err != nil {
 			continue
 		}
 

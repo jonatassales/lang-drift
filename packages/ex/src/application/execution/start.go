@@ -68,16 +68,7 @@ type StartResult struct {
 	ObservedCents int    `json:"observedCents"`
 }
 
-// The states a run may be in.
-const (
-	Planned  = "planned"
-	Running  = "running"
-	Paused   = "paused"
-	Waiting  = "waiting"
-	Finished = "finished"
-)
-
-// Start opens a lap, or plays on with the open one. Running the runtime
+// Start opens a lap, or plays on with the open one. run.StateRunning the runtime
 // authorizes its plan; the intent, the estimate and the budget print; the
 // money gate reserves or pauses; then the stages play.
 func (service Service) Start(ctx context.Context, request StartRequest) (StartResult, error) {
@@ -91,7 +82,10 @@ func (service Service) Start(ctx context.Context, request StartRequest) (StartRe
 		return StartResult{}, fmt.Errorf("%w: %v", inputs.ErrInvalid, err)
 	}
 
-	if request.Model != "" && request.Model != strings.TrimSpace(request.Model) || request.Effort != "" && !harness.ValidEffort(request.Effort) {
+	if !plainModel(request.Model) {
+		return StartResult{}, fmt.Errorf("%w: --model takes a model id without spaces", inputs.ErrInvalid)
+	}
+	if !knownEffort(request.Effort) {
 		return StartResult{}, fmt.Errorf("%w: --effort must be low, medium or high", inputs.ErrInvalid)
 	}
 
@@ -151,7 +145,7 @@ func (service Service) Start(ctx context.Context, request StartRequest) (StartRe
 		record:     record,
 		ledger:     ledger,
 		sink:       sink,
-		by:         orDefault(request.By, "owner"),
+		by:         orDefault(request.By, inputs.DefaultBy),
 		confirm:    request.Confirm,
 		checksWait: request.ChecksWait,
 		now:        func() harness.Timestamp { return harness.At(service.Clock.Now()) },
@@ -221,7 +215,9 @@ func (service Service) Start(ctx context.Context, request StartRequest) (StartRe
 	lap.Steps = append(lap.Steps, Step{Name: "Estimated", At: now, Note: finops.Dollars(lap.EstimateCents) + " for " + finops.Tokens(forecast.Input) + " input and " + finops.Tokens(forecast.Output) + " output tokens"})
 
 	if !finops.Allowed(lap.Gates) {
-		return service.pause(owner, runtime, &lap, &record, &ledger, sink, now, budget.Bounded)
+		playing.lap, playing.record, playing.ledger = lap, record, ledger
+
+		return playing.pause(now)
 	}
 
 	lap.Reserved = lap.Requested
@@ -232,7 +228,7 @@ func (service Service) Start(ctx context.Context, request StartRequest) (StartRe
 	if record.Window.Started == nil {
 		record.Window.Started = &now
 	}
-	record.State, record.Outcome = Running, text(Running)
+	record.State, record.Outcome = run.StateRunning, text(run.StateRunning)
 	record.Laps = append(record.Laps, summaryOf(lap))
 	ledger.Laps = append(ledger.Laps, lineOf(lap))
 
@@ -246,7 +242,9 @@ func (service Service) Start(ctx context.Context, request StartRequest) (StartRe
 
 // pause records a lap that a gate stopped: nothing paid, the decision the
 // owner must take printed.
-func (service Service) pause(owner project.Project, runtime microruntime.Identifier, lap *Lap, record *run.Run, ledger *finops.Ledger, sink session.Sink, now harness.Timestamp, bounded finops.BudgetBounds) (StartResult, error) {
+func (playing *playing) pause(now harness.Timestamp) (StartResult, error) {
+	lap, record, ledger, sink := &playing.lap, &playing.record, &playing.ledger, playing.sink
+	bounded := playing.guards.Budget.Bounded
 	gate := failing(lap.Gates)
 	lap.Gate = gate.ID
 	lap.Outcome = BlockedAt
@@ -266,12 +264,12 @@ func (service Service) pause(owner project.Project, runtime microruntime.Identif
 		emit(sink, session.GateBlocked, session.Data{"gate": gate.ID, "detail": detail})
 	}
 
-	record.State, record.Outcome = Paused, text(Paused)
+	record.State, record.Outcome = run.StatePaused, text(run.StatePaused)
 	record.Laps = append(record.Laps, summaryOf(*lap))
 	ledger.Laps = append(ledger.Laps, lineOf(*lap))
 	settleTotals(ledger, bounded.PeriodCents)
 
-	if err := service.persist(owner, runtime, *lap, *record, *ledger); err != nil {
+	if err := playing.service.persist(playing.owner, playing.runtime, *lap, *record, *ledger); err != nil {
 		return StartResult{}, err
 	}
 
@@ -336,7 +334,7 @@ func driverOf(store inputs.Store, owner project.Project) (*harness.Driver, error
 // needsDriver reports whether a stage the run plays has skills to run.
 func needsDriver(workflow harness.Workflow) bool {
 	for _, stage := range workflow.Stages {
-		if stage.Human == ownerOnly {
+		if stage.Human == harness.OwnerOnly {
 			return false
 		}
 		if len(stage.Skills) > 0 {
@@ -460,7 +458,7 @@ func orDefault(value, fallback string) string {
 // finished reports whether the run ended with a known outcome; a run whose
 // outcome is unknown may play another lap.
 func finished(record run.Run) bool {
-	return record.State == Finished && record.Outcome != nil && *record.Outcome != Unknown
+	return record.State == run.StateFinished && record.Outcome != nil && *record.Outcome != Unknown
 }
 
 // embedder is the embedder the index is rebuilt with: the injected one, or
@@ -471,4 +469,14 @@ func (service Service) embedder() rag.Embedder {
 	}
 
 	return rag.Local{}
+}
+
+// plainModel reports whether a model flag is empty or a bare model id.
+func plainModel(model string) bool {
+	return model == strings.TrimSpace(model)
+}
+
+// knownEffort reports whether an effort flag is empty or one of the three efforts.
+func knownEffort(effort string) bool {
+	return effort == "" || harness.ValidEffort(effort)
 }

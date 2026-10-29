@@ -30,8 +30,6 @@ const (
 )
 
 // What the limits say about what they refuse.
-const RefusedWord = "refused"
-
 // Media types the records name.
 const (
 	MarkdownType = "text/markdown"
