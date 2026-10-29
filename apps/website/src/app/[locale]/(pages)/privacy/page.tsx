@@ -7,6 +7,7 @@ import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
 import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
+import { WebsiteStructuredData } from '@components/website-structured-data'
 import { privacyMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
 
@@ -40,6 +41,7 @@ export default async function PrivacyPage(props: PrivacyPageProps) {
 
 	return (
 		<>
+			<WebsiteStructuredData locale={locale} page="privacy" />
 			<SkipLink href="#privacy-main">{copy.skip}</SkipLink>
 			<WebsiteHeader />
 			<main

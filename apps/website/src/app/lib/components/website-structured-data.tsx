@@ -1,31 +1,19 @@
-import organization from '@app/metadata/organization.json'
-import site from '@app/metadata/site.json'
+import type { PageId } from '@app/metadata/page-metadata'
+import {
+	pageStructuredData,
+	serializeJsonLd,
+} from '@app/metadata/structured-data'
+import type { WebsiteLocale } from '@i18n/routing'
 
-const organizationId = `${site.url}/#organization`
-
-const structuredData = {
-	'@context': 'https://schema.org',
-	'@graph': [
-		{
-			'@id': organizationId,
-			'@type': 'Organization',
-			name: organization.name,
-			url: organization.url,
-			logo: organization.logo,
-			sameAs: organization.sameAs,
-		},
-		{
-			'@id': `${site.url}/#website`,
-			'@type': 'WebSite',
-			name: site.name,
-			publisher: { '@id': organizationId },
-			url: `${site.url}/`,
-		},
-	],
+interface WebsiteStructuredDataProps {
+	page: PageId
+	locale: WebsiteLocale
 }
 
-export function WebsiteStructuredData() {
-	const json = JSON.stringify(structuredData).replaceAll('<', '\\u003c')
+export function WebsiteStructuredData(props: WebsiteStructuredDataProps) {
+	const { page, locale } = props
+
+	const json = serializeJsonLd(pageStructuredData(page, locale))
 
 	return <script type="application/ld+json">{json}</script>
 }

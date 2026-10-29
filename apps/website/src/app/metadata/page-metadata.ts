@@ -6,7 +6,7 @@ import locales from './locales.json'
 import pages from './pages.json'
 import site from './site.json'
 
-type PageId = keyof typeof pages
+export type PageId = keyof typeof pages
 
 const indexRobots: Metadata['robots'] = {
 	index: true,
@@ -32,8 +32,8 @@ function pagePath(page: PageId, locale: WebsiteLocale) {
 	return `${localePath[locale]}${nestedPagePath[page] ?? `${page}/`}`
 }
 
-function absolute(pathname: string) {
-	return new URL(pathname, site.url).toString()
+export function pageUrl(page: PageId, locale: WebsiteLocale) {
+	return new URL(pagePath(page, locale), site.url).toString()
 }
 
 interface InheritedSocialImages {
@@ -65,12 +65,9 @@ export function pageMetadata(
 	images?: InheritedSocialImages,
 ): Metadata {
 	const copy = pages[page][locale]
-	const canonical = absolute(pagePath(page, locale))
+	const canonical = pageUrl(page, locale)
 	const languages = Object.fromEntries(
-		routing.locales.map((language) => [
-			language,
-			absolute(pagePath(page, language)),
-		]),
+		routing.locales.map((language) => [language, pageUrl(page, language)]),
 	)
 	const alternateLocale = routing.locales
 		.filter((language) => language !== locale)
@@ -85,7 +82,7 @@ export function pageMetadata(
 			canonical,
 			languages: {
 				...languages,
-				'x-default': absolute(pagePath(page, routing.defaultLocale)),
+				'x-default': pageUrl(page, routing.defaultLocale),
 			},
 		},
 		openGraph: {

@@ -39,7 +39,7 @@ export default async function WebsitePage(props: WebsitePageProps) {
 
 	return (
 		<>
-			<WebsiteStructuredData />
+			<WebsiteStructuredData locale={locale} page="home" />
 			<SkipLink href="#top">{copy.skip}</SkipLink>
 			<WebsiteHeader />
 			<main id="top">
