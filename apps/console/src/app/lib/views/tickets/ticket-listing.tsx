@@ -3,13 +3,14 @@
 import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
-import { ActivityRowSkeleton } from '@components/route-state/activity-row-skeleton'
+import { TicketEntrySkeleton } from '@components/route-state/ticket-entry-skeleton'
 import { usePagedResource } from '@data/paged-resource.hook'
 import type { Page, Ticket, TicketPhase } from '@data/types'
 import { Button } from '@ui/button'
 import { ListEnd } from '@ui/list-end'
 
-import { PhaseWidget } from './phase-widget'
+import { TicketCard } from './ticket-card'
+import { TicketRow } from './ticket-row'
 
 interface TicketListingProps {
 	initial: Promise<Page<Ticket>>
@@ -26,8 +27,8 @@ const listLabels: Record<TicketPhase, string> = {
 }
 
 // One phase's listing: every ticket that has reached the phase, newest
-// first, in the page's flow, loading older tickets as the list's end comes
-// into view.
+// first, in the page's flow, each as a card below lg and a row from lg,
+// loading older tickets as the list's end comes into view.
 export function TicketListing(props: TicketListingProps) {
 	const { initial, phase, productId } = props
 
@@ -47,19 +48,26 @@ export function TicketListing(props: TicketListingProps) {
 			{resource.items.length ? (
 				<ol
 					aria-label={t(listLabels[phase])}
-					className="m-0 grid list-none gap-3 p-0"
+					className="m-0 grid list-none grid-cols-1 gap-3 p-0 lg:gap-2"
 				>
 					{resource.items.map((ticket) => (
-						<li
-							className="rounded-xl border border-border bg-card p-4"
-							key={ticket.id}
-						>
-							<PhaseWidget listed phase={phase} ticket={ticket} />
+						<li key={ticket.id}>
+							<TicketCard listing={phase} ticket={ticket} />
+							<TicketRow listing={phase} ticket={ticket} />
 						</li>
 					))}
 				</ol>
 			) : null}
-			{resource.loading ? <ActivityRowSkeleton /> : null}
+			{resource.loading ? (
+				<div
+					aria-busy="true"
+					aria-label={t('loading')}
+					className="mt-3 lg:mt-2"
+					role="status"
+				>
+					<TicketEntrySkeleton />
+				</div>
+			) : null}
 			{resource.error ? (
 				<ErrorNotice error={resource.error} retry={resource.retry} />
 			) : null}

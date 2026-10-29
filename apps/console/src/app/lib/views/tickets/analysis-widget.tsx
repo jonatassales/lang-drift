@@ -10,16 +10,15 @@ import type {
 
 import { DocumentRow } from './document-row'
 import { EpisodeRow } from './episode-row'
+import { PhaseSummary } from './phase-summary'
 import { type TicketFormat, useTicketFormat } from './ticket-format.hook'
-import { analysisSummary, ticketDocumentIds } from './ticket-phases'
+import { ticketDocumentIds } from './ticket-phases'
 import { TicketWidgetFrame } from './ticket-widget-frame'
 import { UnknownValue } from './unknown-value'
 import { WidgetSection } from './widget-section'
 
 interface AnalysisWidgetProps {
 	analysis: TicketAnalysis
-	/** Set in a listing, so the card names and links its ticket. */
-	listed?: boolean
 	ticket: Ticket
 }
 
@@ -78,7 +77,7 @@ function verdictLabel(episode: TicketEpisode, format: TicketFormat) {
 // and judged against the threshold, the resources they measured, and the
 // model and effort the agent suggests, which the team authorizes.
 export function AnalysisWidget(props: AnalysisWidgetProps) {
-	const { analysis, listed = false, ticket } = props
+	const { analysis, ticket } = props
 
 	const format = useTicketFormat()
 	const { number, t } = format
@@ -87,8 +86,7 @@ export function AnalysisWidget(props: AnalysisWidgetProps) {
 	return (
 		<TicketWidgetFrame
 			phase="analysis"
-			summary={summaryLine(analysis, format)}
-			ticket={listed ? ticket : undefined}
+			summary={<PhaseSummary phase="analysis" ticket={ticket} />}
 		>
 			<div className="flex items-baseline justify-between gap-3">
 				<Eyebrow>{t('analysis.documents')}</Eyebrow>
@@ -176,31 +174,6 @@ export function AnalysisWidget(props: AnalysisWidgetProps) {
 			</WidgetSection>
 		</TicketWidgetFrame>
 	)
-}
-
-// The analysis's header line: the latest thing it has settled.
-function summaryLine(
-	analysis: TicketAnalysis,
-	format: TicketFormat,
-): ReactNode {
-	const { t } = format
-	const summary = analysisSummary(analysis)
-	switch (summary.kind) {
-		case 'suggestion':
-			return t('analysis.suggestionSummary', {
-				effort: t(`analysis.efforts.${summary.effort}`),
-				model: summary.model,
-			})
-		case 'episodes':
-			return t('analysis.episodesSummary', {
-				kept: summary.kept,
-				total: summary.total,
-			})
-		case 'documents':
-			return t('analysis.documentsSummary', { count: summary.count })
-		case 'unknown':
-			return <UnknownValue />
-	}
 }
 
 // What the episodes measured: the resources, none cited once the episodes

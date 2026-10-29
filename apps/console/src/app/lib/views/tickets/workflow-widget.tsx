@@ -2,52 +2,22 @@ import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { GitPullRequest } from '@langdrift/web/ui/icons/server'
 import { ShareBar } from '@langdrift/web/ui/share-bar'
 import { cn } from '@langdrift/web/utilities'
-import type { ReactNode } from 'react'
 
 import type { Ticket, TicketWorkflow } from '@data/types'
 
+import { PhaseSummary } from './phase-summary'
 import { type TicketFormat, useTicketFormat } from './ticket-format.hook'
-import { workflowSummary } from './ticket-phases'
 import { TicketWidgetFrame } from './ticket-widget-frame'
 import { UnknownValue } from './unknown-value'
 import { WidgetSection } from './widget-section'
 import { WorkflowStageList } from './workflow-stage-list'
 
 interface WorkflowWidgetProps {
-	/** Set in a listing, so the card names and links its ticket. */
-	listed?: boolean
 	ticket: Ticket
 	workflow: TicketWorkflow
 }
 
 const figure = 'font-mono text-[13px] tabular-nums'
-
-// The workflow's header line: the model, effort and estimate against the
-// budget while it runs, or how it ended.
-function summaryLine(
-	workflow: TicketWorkflow,
-	format: TicketFormat,
-): ReactNode {
-	const { t } = format
-	const summary = workflowSummary(workflow)
-	switch (summary.kind) {
-		case 'paused':
-			return t('workflow.summaryPaused')
-		case 'done':
-			return t('workflow.summaryDone', {
-				number: summary.number,
-				observed: format.money(summary.observedCents),
-				state: t(`workflow.${summary.state}`),
-			})
-		case 'estimate':
-			return t('workflow.summaryChoice', {
-				budget: format.money(workflow.budgetCents),
-				effort: t(`analysis.efforts.${workflow.effort}`),
-				estimate: format.money(workflow.estimateCents),
-				model: workflow.model.shortName,
-			})
-	}
-}
 
 // Where the pull request stands: ready for the owner's review or to merge.
 function pullRequestState(workflow: TicketWorkflow, format: TicketFormat) {
@@ -63,7 +33,7 @@ function pullRequestState(workflow: TicketWorkflow, format: TicketFormat) {
 // observed and released amounts and the pull request. A run the gate
 // paused shows the decision it needs and that nothing was paid.
 export function WorkflowWidget(props: WorkflowWidgetProps) {
-	const { listed = false, ticket, workflow } = props
+	const { ticket, workflow } = props
 
 	const format = useTicketFormat()
 	const { t } = format
@@ -90,8 +60,7 @@ export function WorkflowWidget(props: WorkflowWidgetProps) {
 	return (
 		<TicketWidgetFrame
 			phase="workflow"
-			summary={summaryLine(workflow, format)}
-			ticket={listed ? ticket : undefined}
+			summary={<PhaseSummary phase="workflow" ticket={ticket} />}
 		>
 			<WorkflowStageList stages={workflow.stages} />
 

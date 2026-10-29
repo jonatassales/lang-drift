@@ -8,6 +8,7 @@ import {
 	analysisSummary,
 	componentShare,
 	keptEpisodes,
+	listedPhase,
 	phaseReached,
 	planFigures,
 	ticketSummary,
@@ -48,6 +49,18 @@ test('a ticket has reached its own phase and every phase before it', () => {
 	assert.equal(phaseReached(planned, 'analysis'), true)
 	assert.equal(phaseReached(planned, 'plan'), true)
 	assert.equal(phaseReached(planned, 'workflow'), false)
+})
+
+test('an entry summarizes its listing phase, or the current one in Tickets', () => {
+	const triaged = ticket({ phase: 'ticket' })
+	const analyzed = ticket({ phase: 'analysis' })
+	const running = ticket({ phase: 'workflow' })
+	assert.equal(listedPhase(triaged, 'ticket'), null)
+	assert.equal(listedPhase(analyzed, 'ticket'), 'analysis')
+	assert.equal(listedPhase(running, 'ticket'), 'workflow')
+	assert.equal(listedPhase(running, 'analysis'), 'analysis')
+	assert.equal(listedPhase(running, 'plan'), 'plan')
+	assert.equal(listedPhase(running, 'workflow'), 'workflow')
 })
 
 test('the analysis summary names its latest settled step, or nothing yet', () => {
