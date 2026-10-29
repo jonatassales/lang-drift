@@ -14,6 +14,28 @@ The sidebar opens with an area switcher, after the old LangDrift dashboard's pro
 
 The console listens on loopback only and answers only loopback hosts and same-origin requests. `EXTUB_URL` points it at another extub; it must stay plain `http` on loopback, and without it the console uses `http://127.0.0.1:3401`. When extub is down, data requests answer `extub_unavailable` and the screens say so.
 
+## Security and search
+
+- **A nonce policy on every document.**
+  - The proxy builds a `Content-Security-Policy` per request around a fresh nonce: `script-src 'self' 'nonce-…' 'strict-dynamic'`, with no inline grant.
+  - It sets the policy on the request, which next-intl forwards, so Next stamps the nonce on its scripts. It also sets the policy on the response, with `Cache-Control: private, no-store`.
+  - Styles keep `'unsafe-inline'` for React `style` props and sinapsi's shadow root.
+  - Development adds `'unsafe-eval'` and the development websocket, and preview builds allow `https://vercel.live`.
+  - Do not enable Partial Prerendering or cache components: their static shell cannot carry a nonce.
+- **The matcher.** The proxy runs on every path except `/api`, `/_next` and the root files `favicon.ico`, `icon.svg`, `apple-icon.png` and `robots.txt`. A new root static file joins that exclusion list.
+- **The config's headers.**
+  - Every response: HSTS (`max-age=63072000; includeSubDomains; preload`), `nosniff`, `Referrer-Policy: same-origin`, `X-Frame-Options: DENY`, the Permissions-Policy, `Cross-Origin-Opener-Policy` and `Cross-Origin-Resource-Policy: same-origin`, and `X-Robots-Tag: noindex, nofollow`.
+  - API responses add `Content-Security-Policy: default-src 'none'; frame-ancestors 'none'`.
+
+  No response carries two policies.
+- **Server reads.** They build their request from the incoming host alone, so a page reached from another site, or rendered over HTTPS, reads normally. Browser calls to the route handlers keep the cross-site rule.
+- **Entity ids.** Every id that reaches an extub path keeps to letters, digits, hyphen and underscore, 1 to 128 characters. A route id outside that alphabet answers 404 with no extub call, and no id is encoded twice. The extub bridge is `server-only`.
+- **The login form** posts, so a submit before hydration never puts the password in the URL.
+- **Out of search.**
+  - Every page says `noindex`, and `robots.txt` disallows everything. Crawlers that obey robots.txt therefore never fetch a page or see its noindex. A linked URL could still be listed bare, but Deployment Protection is the real gate.
+  - Titles come from the catalogs: the site name, the template, and each screen after its project, runtime or ticket.
+  - The 404 and the global error are localized.
+
 ## Hosted preview
 
 On Vercel's `langdrift-console` project the console reads extub's hosted preview (spec 0015). Setting `EXTUB_TOKEN` lets the console serve its own host, accept an `https` `EXTUB_URL` on any host, and send the token to extub as `Authorization: Bearer`. The preview is read-only: a change answers `read_only_preview`, and without a live stream the screens keep polling. Without the token, the loopback contract above holds. It needs two variables on Vercel:
