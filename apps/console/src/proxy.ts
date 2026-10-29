@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 import createMiddleware from 'next-intl/middleware'
 
 import { isEntityId } from '@data/entity-id'
@@ -25,26 +25,26 @@ function namesNoScreen(pathname: string) {
 // Such a path is rewritten to one no route serves, so it renders the localized
 // 404 with its status before a page can stream, next-intl never decodes it,
 // and no extub read is built from its segments.
-function missingScreen(request: NextRequest, headers: Headers) {
+function missingScreen(request: NextRequest) {
 	const [prefix] = request.nextUrl.pathname.split('/').filter(Boolean)
 	const locale = isLocale(prefix) ? prefix : routing.defaultLocale
 
 	return NextResponse.rewrite(new URL(`/${locale}/404`, request.url), {
-		request: { headers },
+		request: { headers: request.headers },
 	})
 }
 
-// Every document carries one policy with a nonce of its own. next-intl copies
-// the headers of the request it receives into its response, so the policy
-// reaches Next, which stamps the nonce on its scripts.
+// Every document carries one policy with a nonce of its own. The policy is
+// set on the request itself, which keeps Next's routing context; next-intl
+// copies the request's headers into its response, so the policy reaches
+// Next, which stamps the nonce on its scripts.
 export default function proxy(request: NextRequest) {
 	const policy = documentPolicy(createNonce(), policyEnvironment())
-	const headers = new Headers(request.headers)
-	headers.set('Content-Security-Policy', policy)
+	request.headers.set('Content-Security-Policy', policy)
 
 	const response = namesNoScreen(request.nextUrl.pathname)
-		? missingScreen(request, headers)
-		: handleLocale(new NextRequest(request, { headers }))
+		? missingScreen(request)
+		: handleLocale(request)
 	const preference = response.cookies.get(localeCookie)
 	if (preference)
 		response.cookies.set({
