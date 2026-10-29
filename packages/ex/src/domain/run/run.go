@@ -52,13 +52,15 @@ type HumanInTheLoop struct {
 
 // LapSummary is one lap as the run lists it.
 type LapSummary struct {
-	Number      string  `json:"number"`
-	File        string  `json:"file"`
-	Choice      Choice  `json:"choice"`
-	Outcome     string  `json:"outcome"`
-	Gate        *string `json:"gate,omitempty"`
-	Execution   *string `json:"execution,omitempty"`
-	NothingPaid bool    `json:"nothingPaid"`
+	Number        string  `json:"number"`
+	File          string  `json:"file"`
+	Choice        Choice  `json:"choice"`
+	Outcome       string  `json:"outcome"`
+	Gate          *string `json:"gate,omitempty"`
+	Execution     *string `json:"execution,omitempty"`
+	NothingPaid   bool    `json:"nothingPaid"`
+	EstimateCents int     `json:"estimateCents,omitempty"`
+	ReservedCents int     `json:"reservedCents,omitempty"`
 }
 
 // Choice is the model and effort a lap ran with, and who chose them.

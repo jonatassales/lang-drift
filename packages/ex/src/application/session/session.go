@@ -122,3 +122,7 @@ const PlanBlocked = "blocked"
 // JudgeStopped is the plan's own line when the judge stops mid-plan: a gate
 // paused its calls, a call failed, or an answer was refused.
 const JudgeStopped = "judgeStopped"
+
+// GateBlocked is the run's own line when FG-01, FG-02 or FG-05 blocks a lap
+// before anything is paid; the website's session never meets one.
+const GateBlocked = "gateBlocked"

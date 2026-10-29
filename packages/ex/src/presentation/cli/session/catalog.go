@@ -162,6 +162,9 @@ var catalog = map[string]line{
 	key(session.RunSession, session.GatePaused): {session.Warning, func(data session.Data) string {
 		return Actor + "gate       reservation " + Dollars(number(data, "reservedCents")) + " exceeds the " + Dollars(number(data, "perRunCents")) + " budget · paused"
 	}},
+	key(session.RunSession, session.GateBlocked): {session.Error, func(data session.Data) string {
+		return Actor + "gate       blocked · " + text(data, "gate") + " · " + text(data, "detail")
+	}},
 	key(session.RunSession, session.Paused): {session.Comment, func(session.Data) string {
 		return "# needs a decision: raise the budget or lower the effort · nothing was paid for"
 	}},

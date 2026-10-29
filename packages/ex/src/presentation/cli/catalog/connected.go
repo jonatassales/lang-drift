@@ -26,8 +26,8 @@ func NewAgentConnectCommand(agent ProjectAgent, globals *support.Globals) *cobra
 		})
 	}}
 }
-func NewAgentRunCommand(agent ProjectAgent, globals *support.Globals) *cobra.Command {
-	return &cobra.Command{Use: "run", Short: "Synchronize connected runtimes until interrupted", Args: validateNoArguments, RunE: func(command *cobra.Command, _ []string) error {
+func NewAgentSuperviseCommand(agent ProjectAgent, globals *support.Globals) *cobra.Command {
+	return &cobra.Command{Use: "supervise", Short: "Supervise the connected runtimes from console intent until interrupted", Args: validateNoArguments, RunE: func(command *cobra.Command, _ []string) error {
 		selection, err := globals.Selection()
 		if err != nil {
 			return err

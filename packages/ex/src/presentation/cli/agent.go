@@ -26,11 +26,18 @@ func (cliApplication *application) agentCommand() *cobra.Command {
 		)
 	}
 
+	if cliApplication.useCases.Execution != nil {
+		agentRoot.AddCommand(
+			catalog.NewAgentRunCommand(cliApplication.useCases.Execution, &cliApplication.globals),
+			catalog.NewAgentStatusCommand(cliApplication.useCases.Execution, &cliApplication.globals),
+		)
+	}
+
 	if cliApplication.useCases.ProjectAgent != nil {
 		agentRoot.AddCommand(
 			catalog.NewAgentConnectCommand(cliApplication.useCases.ProjectAgent, &cliApplication.globals),
 			catalog.NewAgentProjectCommand(cliApplication.useCases.ProjectAgent, &cliApplication.globals),
-			catalog.NewAgentRunCommand(cliApplication.useCases.ProjectAgent, &cliApplication.globals),
+			catalog.NewAgentSuperviseCommand(cliApplication.useCases.ProjectAgent, &cliApplication.globals),
 			catalog.NewAgentMigrateCommand(cliApplication.useCases.ProjectAgent, &cliApplication.globals),
 		)
 	}

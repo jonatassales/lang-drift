@@ -13,70 +13,73 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
-// guardrails are the inputs a plan needs, as recorded.
-type guardrails struct {
-	envelope   harness.Envelope
-	budget     finops.Budget
-	choice     harness.Choice
-	prices     *finops.Prices
-	pricesAt   string
-	forecasts  *finops.Forecasts
-	workflow   *harness.Workflow
-	workflowAt string
+// Guardrails are the inputs a plan and a run need, as recorded: the
+// required ones, and the optional ones with where their mirror is.
+type Guardrails struct {
+	Envelope   harness.Envelope
+	Budget     finops.Budget
+	Choice     harness.Choice
+	Prices     *finops.Prices
+	PricesAt   string
+	Forecasts  *finops.Forecasts
+	Workflow   *harness.Workflow
+	WorkflowAt string
 }
 
-func (service Service) guardrails(owner project.Project) (guardrails, error) {
-	var guards guardrails
+// LoadGuardrails reads the inputs; a missing required one is a missing
+// prerequisite that names itself.
+func LoadGuardrails(store inputs.Store, owner project.Project) (Guardrails, error) {
+	var guards Guardrails
 
-	if err := load(service.Inputs, owner, inputs.KindEnvelope, &guards.envelope); err != nil {
+	if err := load(store, owner, inputs.KindEnvelope, &guards.Envelope); err != nil {
 		return guards, err
 	}
 
-	if err := load(service.Inputs, owner, inputs.KindBudget, &guards.budget); err != nil {
+	if err := load(store, owner, inputs.KindBudget, &guards.Budget); err != nil {
 		return guards, err
 	}
 
-	if err := load(service.Inputs, owner, inputs.KindChoice, &guards.choice); err != nil {
+	if err := load(store, owner, inputs.KindChoice, &guards.Choice); err != nil {
 		return guards, err
 	}
 
 	var prices finops.Prices
-	mirror, err := loadOptional(service.Inputs, owner, inputs.KindPrices, &prices)
+	mirror, err := loadOptional(store, owner, inputs.KindPrices, &prices)
 	if err != nil {
 		return guards, err
 	}
 	if mirror != "" {
-		guards.prices, guards.pricesAt = &prices, mirror
+		guards.Prices, guards.PricesAt = &prices, mirror
 	}
 
 	var forecasts finops.Forecasts
-	mirror, err = loadOptional(service.Inputs, owner, inputs.KindForecasts, &forecasts)
+	mirror, err = loadOptional(store, owner, inputs.KindForecasts, &forecasts)
 	if err != nil {
 		return guards, err
 	}
 	if mirror != "" {
-		guards.forecasts = &forecasts
+		guards.Forecasts = &forecasts
 	}
 
 	var workflow harness.Workflow
-	mirror, err = loadOptional(service.Inputs, owner, inputs.KindWorkflow, &workflow)
+	mirror, err = loadOptional(store, owner, inputs.KindWorkflow, &workflow)
 	if err != nil {
 		return guards, err
 	}
 	if mirror != "" {
-		guards.workflow, guards.workflowAt = &workflow, mirror
+		guards.Workflow, guards.WorkflowAt = &workflow, mirror
 	}
 
 	return guards, nil
 }
 
-// price is a model's list price, when the current price list covers it.
-func (guards guardrails) price(model string) (finops.ModelPrice, bool) {
-	if guards.prices == nil {
+// Price is a model's list price, when the current price list covers it.
+func (guards Guardrails) Price(model string) (finops.ModelPrice, bool) {
+	if guards.Prices == nil {
 		return finops.ModelPrice{}, false
 	}
 
-	for _, entry := range guards.prices.Models {
+	for _, entry := range guards.Prices.Models {
 		if entry.ID == model {
 			return entry, true
 		}
@@ -85,10 +88,15 @@ func (guards guardrails) price(model string) (finops.ModelPrice, bool) {
 	return finops.ModelPrice{}, false
 }
 
-// allocation is the ticket's share of the period, or zero.
-func (guards guardrails) allocation(ticket collection.Ticket) int {
-	for _, entry := range guards.budget.Allocations {
-		if entry.Ticket == ticket.Reference() {
+// Allocation is the ticket's share of the period, or zero.
+func (guards Guardrails) Allocation(ticket collection.Ticket) int {
+	return guards.AllocationOf(ticket.Reference())
+}
+
+// AllocationOf is a ticket reference's share of the period, or zero.
+func (guards Guardrails) AllocationOf(reference string) int {
+	for _, entry := range guards.Budget.Allocations {
+		if entry.Ticket == reference {
 			return entry.Cents
 		}
 	}
@@ -96,9 +104,27 @@ func (guards guardrails) allocation(ticket collection.Ticket) int {
 	return 0
 }
 
-// planner is the model the planner's own calls use.
-func (guards guardrails) planner() string {
-	return orDefault(guards.choice.Planner, guards.choice.Model)
+// Planner is the model the planner's own calls use.
+func (guards Guardrails) Planner() string {
+	return orDefault(guards.Choice.Planner, guards.Choice.Model)
+}
+
+// Forecast is the tokens an effort is expected to use, when forecasts exist.
+func (guards Guardrails) Forecast(effort string) (finops.TokensThousands, bool) {
+	if guards.Forecasts == nil {
+		return finops.TokensThousands{}, false
+	}
+
+	switch effort {
+	case "low":
+		return guards.Forecasts.ByEffort.Low, true
+	case "medium":
+		return guards.Forecasts.ByEffort.Medium, true
+	case "high":
+		return guards.Forecasts.ByEffort.High, true
+	}
+
+	return finops.TokensThousands{}, false
 }
 
 // load reads a required input; a missing one is a missing prerequisite.

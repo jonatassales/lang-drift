@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	connectedapp "github.com/jonatassales/tao/packages/ex/src/application/connected"
+	"github.com/jonatassales/tao/packages/ex/src/application/execution"
 	"github.com/jonatassales/tao/packages/ex/src/application/inputs"
 	"github.com/jonatassales/tao/packages/ex/src/application/plan"
 	"github.com/jonatassales/tao/packages/ex/src/domain/rag"
@@ -128,6 +129,14 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 			Projects: projects,
 			Store:    inputsinfra.Store{},
 			Mirrors:  records.Mirrors{},
+			IDs:      deps.IDs,
+			Clock:    deps.Clock,
+		},
+		Execution: execution.Service{
+			Projects: projects,
+			Inputs:   inputsinfra.Store{},
+			Records:  records.Runtimes{},
+			Laps:     records.LapStore{},
 			IDs:      deps.IDs,
 			Clock:    deps.Clock,
 		},

@@ -87,7 +87,7 @@ func (service Service) Plan(ctx context.Context, request Request) (Result, error
 		return Result{}, err
 	}
 
-	guards, err := service.guardrails(owner)
+	guards, err := LoadGuardrails(service.Inputs, owner)
 	if err != nil {
 		return Result{}, err
 	}

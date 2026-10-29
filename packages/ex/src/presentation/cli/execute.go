@@ -27,6 +27,7 @@ type UseCases struct {
 	AgentInit        catalog.AgentInitializer
 	Inputs           catalog.Inputs
 	Plan             catalog.PlanOperations
+	Execution        catalog.Executor
 }
 
 // Execute runs the CLI and returns the appropriate exit code.

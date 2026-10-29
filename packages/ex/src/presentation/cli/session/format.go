@@ -5,66 +5,24 @@ package session
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 	"unicode/utf8"
 
 	"github.com/jonatassales/tao/packages/ex/src/application/session"
+	"github.com/jonatassales/tao/packages/ex/src/domain/finops"
 )
 
 // Actor is who the lines say acted.
 const Actor = "agent › "
 
 // Dollars prints cents as dollars with cents, grouped by thousands.
-func Dollars(cents int) string {
-	sign := ""
-	if cents < 0 {
-		sign, cents = "-", -cents
-	}
-
-	return fmt.Sprintf("%s$%s.%02d", sign, group(cents/100), cents%100)
-}
+func Dollars(cents int) string { return finops.Dollars(cents) }
 
 // Tokens prints thousands of tokens compactly: 3.5M, 250K, 6M.
-func Tokens(thousands int) string {
-	if thousands < 1000 {
-		return strconv.Itoa(thousands) + "K"
-	}
-
-	millions := float64(thousands) / 1000
-
-	return strings.TrimSuffix(strings.TrimSuffix(fmt.Sprintf("%.1f", millions), "0"), ".") + "M"
-}
+func Tokens(thousands int) string { return finops.Tokens(thousands) }
 
 // Number prints an integer grouped by thousands.
-func Number(value int) string {
-	if value < 0 {
-		return "-" + group(-value)
-	}
-
-	return group(value)
-}
-
-func group(value int) string {
-	digits := strconv.Itoa(value)
-	if len(digits) <= 3 {
-		return digits
-	}
-
-	var out strings.Builder
-	head := len(digits) % 3
-	if head > 0 {
-		out.WriteString(digits[:head])
-	}
-	for index := head; index < len(digits); index += 3 {
-		if out.Len() > 0 {
-			out.WriteString(",")
-		}
-		out.WriteString(digits[index : index+3])
-	}
-
-	return out.String()
-}
+func Number(value int) string { return finops.Grouped(value) }
 
 // pad right-pads text with spaces to width, as the website aligns its columns.
 func pad(text string, width int) string {

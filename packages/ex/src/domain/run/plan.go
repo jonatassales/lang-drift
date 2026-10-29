@@ -30,6 +30,15 @@ type Plan struct {
 	Checks          []Check         `json:"checks"`
 	Runtime         RuntimeRef      `json:"runtime"`
 	ContractGaps    []string        `json:"contractGaps"`
+	Authorization   *Authorization  `json:"authorization,omitempty"`
+}
+
+// Authorization is who authorized the plan, and when: running it is the
+// authorization.
+type Authorization struct {
+	By  string            `json:"by"`
+	Via string            `json:"via"`
+	At  harness.Timestamp `json:"at"`
 }
 
 // Ticket is the ticket the person named, read by the tracker's convention.

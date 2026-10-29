@@ -24,8 +24,8 @@ func (planning *planning) plan() run.Plan {
 		sources = append(sources, planning.sourceRecord(source))
 	}
 
-	envelope := planning.guards.envelope
-	budget := planning.guards.budget.Mirror
+	envelope := planning.guards.Envelope
+	budget := planning.guards.Budget.Mirror
 	input := planning.input
 
 	return run.Plan{
@@ -51,7 +51,7 @@ func (planning *planning) plan() run.Plan {
 		Inputs: run.Inputs{
 			CPUMillis:        run.InputValue{Value: planning.resources.CPUMillis, Record: input.Record, SetBy: input.SetBy, Via: input.Via, SetAt: input.SetAt},
 			MemoryMiB:        run.InputValue{Value: planning.resources.MemoryMiB, Record: input.Record, SetBy: input.SetBy, Via: input.Via, SetAt: input.SetAt},
-			ModelBudgetCents: run.InputValue{Value: planning.guards.allocation(planning.ticket), Record: budget.Record, SetBy: budget.SetBy, Via: budget.Via, SetAt: budget.SetAt},
+			ModelBudgetCents: run.InputValue{Value: planning.guards.Allocation(planning.ticket), Record: budget.Record, SetBy: budget.SetBy, Via: budget.Via, SetAt: budget.SetAt},
 			Ceiling:          run.Ceiling{CPUMillis: envelope.PerExecution.CPUMillis, MemoryMiB: envelope.PerExecution.MemoryMiB, Record: envelope.Mirror.Record, SetBy: envelope.Mirror.SetBy, Via: envelope.Mirror.Via, SetAt: envelope.Mirror.SetAt},
 			NotRuntimeFields: nonNil(envelope.NotRuntimeFields),
 		},
@@ -79,12 +79,12 @@ func (planning *planning) collectionAgent() *run.CollectionAgent {
 
 func (planning *planning) price() run.Price {
 	price := run.Price{RuntimePriced: false, Note: "the runtime has no price source; cpu and memory stay in units"}
-	if planning.guards.prices == nil {
+	if planning.guards.Prices == nil {
 		return price
 	}
 
-	prices := planning.guards.prices
-	price.Record, price.Mirror, price.ReadOn = text(prices.Mirror.Record), text(".langdrift/"+planning.guards.pricesAt), text(prices.ReadOn)
+	prices := planning.guards.Prices
+	price.Record, price.Mirror, price.ReadOn = text(prices.Mirror.Record), text(".langdrift/"+planning.guards.PricesAt), text(prices.ReadOn)
 
 	return price
 }
@@ -144,12 +144,12 @@ func (planning *planning) runRecord() run.Run {
 		record.State = Blocked
 	}
 
-	workflow := planning.guards.workflow
+	workflow := planning.guards.Workflow
 	if workflow == nil {
 		return record
 	}
 
-	record.HumanInTheLoop = run.HumanInTheLoop{Record: text(workflow.Mirror.Record), Mirror: text(".langdrift/" + planning.guards.workflowAt), Chosen: nonNil(workflow.Defaults.HumanAt)}
+	record.HumanInTheLoop = run.HumanInTheLoop{Record: text(workflow.Mirror.Record), Mirror: text(".langdrift/" + planning.guards.WorkflowAt), Chosen: nonNil(workflow.Defaults.HumanAt)}
 	for _, stage := range workflow.Stages {
 		record.Stages = append(record.Stages, run.StageState{ID: stage.ID, State: "pending", Human: IsHuman(stage, workflow.Defaults)})
 	}
@@ -175,7 +175,7 @@ func IsHuman(stage harness.Stage, defaults harness.Defaults) bool {
 // ledger opens the runtime's ledger with the planning line: what the
 // judge's calls cost, or nothing paid when no judge ran.
 func (planning *planning) ledger() finops.Ledger {
-	budget := planning.guards.budget
+	budget := planning.guards.Budget
 	runtime := planning.runtime.String()
 
 	ledger := finops.Ledger{
@@ -185,16 +185,16 @@ func (planning *planning) ledger() finops.Ledger {
 		Ticket:   text(planning.ticket.Reference()),
 		State:    "provisional",
 		Currency: budget.Currency,
-		Bounded:  finops.LedgerBounds{PerRunCents: budget.Bounded.PerRunCents, TicketAllocationCents: planning.guards.allocation(planning.ticket), PeriodLeftCents: budget.Bounded.PeriodCents},
+		Bounded:  finops.LedgerBounds{PerRunCents: budget.Bounded.PerRunCents, TicketAllocationCents: planning.guards.Allocation(planning.ticket), PeriodLeftCents: budget.Bounded.PeriodCents},
 		Planning: finops.PlanningLine{Model: nil, Note: "no collection agent ran; the plan was built by the deterministic shell, nothing paid", Cents: finops.PlanningCents{Billed: number(0)}},
 		Laps:     []finops.LapLine{},
 		Totals:   finops.LedgerTotals{Cents: finops.TotalCents{Billed: number(0)}, PeriodLeftAfterCents: budget.Bounded.PeriodCents},
 	}
 
-	if planning.guards.prices != nil {
-		ledger.PriceSource = text(".langdrift/" + planning.guards.pricesAt)
+	if planning.guards.Prices != nil {
+		ledger.PriceSource = text(".langdrift/" + planning.guards.PricesAt)
 	}
-	if planning.guards.forecasts != nil {
+	if planning.guards.Forecasts != nil {
 		ledger.ForecastSource = text(".langdrift/" + inputs.ForecastsMirror)
 	}
 

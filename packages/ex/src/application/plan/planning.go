@@ -27,7 +27,7 @@ type planning struct {
 	request Request
 	owner   project.Project
 	sink    session.Sink
-	guards  guardrails
+	guards  Guardrails
 	by      string
 	now     harness.Timestamp
 
@@ -117,15 +117,15 @@ func (planning *planning) openJudge() error {
 		return nil
 	}
 
-	planner := planning.guards.planner()
-	price, priced := planning.guards.price(planner)
+	planner := planning.guards.Planner()
+	price, priced := planning.guards.Price(planner)
 	estimate := 0
 	if priced {
-		estimate = finops.EstimateCents(*planning.guards.forecasts.Planning, price)
+		estimate = finops.EstimateCents(*planning.guards.Forecasts.Planning, price)
 	}
-	reservation := finops.RequestedReservation(estimate, planning.guards.budget.Bounded.ReserveMarginPercent)
+	reservation := finops.RequestedReservation(estimate, planning.guards.Budget.Bounded.ReserveMarginPercent)
 
-	allocation := planning.guards.allocation(planning.ticket)
+	allocation := planning.guards.Allocation(planning.ticket)
 	gates := finops.BeforeAuthorization(finops.Authorization{Priced: priced, Allocated: allocation > 0}, reservation, planning.bounds())
 	if !finops.Allowed(gates) {
 		return fmt.Errorf("%w: %s; nothing was paid; raise the budget or plan with --no-judge", ErrPaused, gateDetail(gates))
@@ -143,7 +143,7 @@ func (planning *planning) judgeUnavailable() string {
 		return "--no-judge; verdicts, facts and the suggestion are the inputs' own"
 	case planning.service.Model == nil:
 		return "no model is configured; verdicts, facts and the suggestion are the inputs' own"
-	case planning.guards.forecasts == nil || planning.guards.forecasts.Planning == nil:
+	case planning.guards.Forecasts == nil || planning.guards.Forecasts.Planning == nil:
 		return "no planning forecast is recorded; set planning with ex finops forecasts set"
 	}
 
@@ -151,9 +151,9 @@ func (planning *planning) judgeUnavailable() string {
 }
 
 func (planning *planning) bounds() finops.Bounds {
-	budget := planning.guards.budget.Bounded
+	budget := planning.guards.Budget.Bounded
 
-	return finops.Bounds{PerRunCents: budget.PerRunCents, TicketAllocationCents: planning.guards.allocation(planning.ticket), PeriodLeftCents: budget.PeriodCents}
+	return finops.Bounds{PerRunCents: budget.PerRunCents, TicketAllocationCents: planning.guards.Allocation(planning.ticket), PeriodLeftCents: budget.PeriodCents}
 }
 
 func gateDetail(gates []finops.GateResult) string {
@@ -208,7 +208,7 @@ func (planning *planning) analyze(ctx context.Context) error {
 		planning.emit(session.Discrepancy, session.Data{"source": differing.source, "fact": differing.fact})
 	}
 
-	planning.emit(session.Budget, session.Data{"perRunCents": planning.guards.budget.Bounded.PerRunCents, "by": planning.guards.budget.Mirror.SetBy})
+	planning.emit(session.Budget, session.Data{"perRunCents": planning.guards.Budget.Bounded.PerRunCents, "by": planning.guards.Budget.Mirror.SetBy})
 
 	return nil
 }
@@ -304,9 +304,9 @@ func (planning *planning) envelope() (harness.Resources, run.InputValue) {
 		return resources, run.InputValue{Record: "runtime-" + planning.runtime.String() + "-input", SetBy: planning.by, Via: "cli", SetAt: planning.now}
 	}
 
-	mirror := planning.guards.envelope.Mirror
+	mirror := planning.guards.Envelope.Mirror
 
-	return planning.guards.envelope.Default, run.InputValue{Record: mirror.Record, SetBy: mirror.SetBy, Via: mirror.Via, SetAt: mirror.SetAt}
+	return planning.guards.Envelope.Default, run.InputValue{Record: mirror.Record, SetBy: mirror.SetBy, Via: mirror.Via, SetAt: mirror.SetAt}
 }
 
 // compare sets each figure the material gave against the input; the input
@@ -340,7 +340,7 @@ func figureKey(cpuMillis, memoryMiB int) string {
 // suggest weighs the effort and the model and prints the suggestion: lines
 // 22 to 24. Without a judge, the suggestion is the recorded choice.
 func (planning *planning) suggest(ctx context.Context) {
-	planning.suggestion = run.Suggestion{By: "input", Model: planning.guards.choice.Model, Effort: planning.guards.choice.Effort, Reasons: []string{}, AuthorizedBy: "pending"}
+	planning.suggestion = run.Suggestion{By: "input", Model: planning.guards.Choice.Model, Effort: planning.guards.Choice.Effort, Reasons: []string{}, AuthorizedBy: "pending"}
 
 	if answer, accepted := planning.askSuggestion(ctx); accepted {
 		planning.emit(session.WeighEffort, session.Data{"reason": answer.EffortReason})
@@ -351,7 +351,7 @@ func (planning *planning) suggest(ctx context.Context) {
 		planning.suggestion.Reasons = nonNil(answer.Reasons)
 	}
 
-	if price, found := planning.guards.price(planning.suggestion.Model); found {
+	if price, found := planning.guards.Price(planning.suggestion.Model); found {
 		planning.suggestion.ModelName = text(price.Name)
 	}
 
@@ -360,7 +360,7 @@ func (planning *planning) suggest(ctx context.Context) {
 
 func (planning *planning) askSuggestion(ctx context.Context) (suggestionAnswer, bool) {
 	var answer suggestionAnswer
-	if planning.judge == nil || planning.guards.prices == nil {
+	if planning.judge == nil || planning.guards.Prices == nil {
 		return answer, false
 	}
 
@@ -371,11 +371,11 @@ func (planning *planning) askSuggestion(ctx context.Context) (suggestionAnswer, 
 		prompt.WriteString("- " + fact.Topic + ": " + fact.Text + "\n")
 	}
 	prompt.WriteString("\nComponents: " + strconv.Itoa(len(planning.request.Components)) + "\nEpisodes cited: " + strconv.Itoa(len(planning.retrieval.cited)) + "\n\nPrice list, cents per million tokens:\n")
-	for _, model := range planning.guards.prices.Models {
+	for _, model := range planning.guards.Prices.Models {
 		models[model.ID] = true
 		prompt.WriteString("- " + model.ID + ": input " + strconv.Itoa(model.InputCents) + ", output " + strconv.Itoa(model.OutputCents) + "\n")
 	}
-	prompt.WriteString("\nEfforts: " + strings.Join(harness.Efforts, ", ") + "\nPer-run budget: " + strconv.Itoa(planning.guards.budget.Bounded.PerRunCents) + " cents\n\n" + suggestionPrompt)
+	prompt.WriteString("\nEfforts: " + strings.Join(harness.Efforts, ", ") + "\nPer-run budget: " + strconv.Itoa(planning.guards.Budget.Bounded.PerRunCents) + " cents\n\n" + suggestionPrompt)
 
 	accepted := planning.judge.ask(ctx, Question{Kind: SuggestionQuestion, System: judgeSystem, Prompt: prompt.String()}, &answer, func() error {
 		if !models[answer.Model] {
@@ -407,7 +407,7 @@ func (planning *planning) resolve() error {
 	}
 
 	planning.components = components
-	planning.checks = crossChecks(components, planning.resources, planning.guards.envelope.PerExecution)
+	planning.checks = crossChecks(components, planning.resources, planning.guards.Envelope.PerExecution)
 	planning.emit(session.CrossCheck, session.Data{"ports": distinctPorts(components), "images": len(components), "collisions": collisionsOf(planning.checks)})
 
 	planning.totals = totalsOf(components, planning.resources)
@@ -528,12 +528,12 @@ func (planning *planning) configuration(uid string, revision int) configuration.
 		Name:       orDefault(planning.request.Name, orDefault(planning.ticket.Title, planning.runtime.String())),
 		CPUMillis:  planning.resources.CPUMillis,
 		MemoryMiB:  planning.resources.MemoryMiB,
-		Model:      planning.guards.choice.Model,
-		Effort:     planning.guards.choice.Effort,
+		Model:      planning.guards.Choice.Model,
+		Effort:     planning.guards.Choice.Effort,
 	}
 
-	if planning.guards.budget.Bounded.PerRunCents > 0 {
-		budget := float64(planning.guards.budget.Bounded.PerRunCents) / 100
+	if planning.guards.Budget.Bounded.PerRunCents > 0 {
+		budget := float64(planning.guards.Budget.Bounded.PerRunCents) / 100
 		config.LLMBudgetUSD = &budget
 	}
 
