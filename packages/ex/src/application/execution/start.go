@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"path"
 	"strings"
+	"time"
 
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	"github.com/jonatassales/tao/packages/ex/src/application/inputs"
@@ -16,16 +17,24 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/domain/harness"
 	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/rag"
 	"github.com/jonatassales/tao/packages/ex/src/domain/run"
 )
 
 // Service runs planned runtimes.
 type Service struct {
-	Projects application.ProjectOpener
-	Inputs   inputs.Store
-	Records  Records
-	Laps     Laps
-	Driver   StageDriver
+	Projects  application.ProjectOpener
+	Inputs    inputs.Store
+	Records   Records
+	Laps      Laps
+	Driver    StageDriver
+	Lifecycle Lifecycle
+	Delivery  DeliveryObserver
+	Index     plan.Index
+	Embedder  rag.Embedder
+	// ChecksPoll is how often the pull request's checks are looked at while
+	// they run.
+	ChecksPoll time.Duration
 
 	// Injectable for tests; nil uses the real sources.
 	IDs   application.IDSource
@@ -45,6 +54,8 @@ type StartRequest struct {
 	// Confirm answers a human stage's confirmation on the spot; nil leaves
 	// the run waiting for ex agent confirm.
 	Confirm Confirmer
+	// ChecksWait bounds how long the run follows the pull request's checks.
+	ChecksWait time.Duration
 }
 
 // StartResult says where the lap stands.
@@ -103,6 +114,10 @@ func (service Service) Start(ctx context.Context, request StartRequest) (StartRe
 		return StartResult{}, fmt.Errorf("%w: the plan of %s is blocked; replan it first", ErrRefused, runtime)
 	}
 
+	if finished(record) {
+		return StartResult{}, fmt.Errorf("%w: the run of %s finished, %s; plan it again for another run", ErrRefused, runtime, *record.Outcome)
+	}
+
 	ledger, err := service.Records.ReadLedger(owner, runtime.String())
 	if err != nil {
 		return StartResult{}, err
@@ -126,18 +141,20 @@ func (service Service) Start(ctx context.Context, request StartRequest) (StartRe
 	}
 
 	playing := &playing{
-		service: service,
-		owner:   owner,
-		runtime: runtime,
-		guards:  guards,
-		driver:  driver,
-		planned: planned,
-		record:  record,
-		ledger:  ledger,
-		sink:    sink,
-		by:      orDefault(request.By, "owner"),
-		confirm: request.Confirm,
-		now:     func() harness.Timestamp { return harness.At(service.Clock.Now()) },
+		service:    service,
+		owner:      owner,
+		runtime:    runtime,
+		guards:     guards,
+		driver:     driver,
+		config:     config,
+		planned:    planned,
+		record:     record,
+		ledger:     ledger,
+		sink:       sink,
+		by:         orDefault(request.By, "owner"),
+		confirm:    request.Confirm,
+		checksWait: request.ChecksWait,
+		now:        func() harness.Timestamp { return harness.At(service.Clock.Now()) },
 	}
 
 	open, found, err := service.Laps.Open(owner, runtime)
@@ -438,4 +455,20 @@ func orDefault(value, fallback string) string {
 	}
 
 	return value
+}
+
+// finished reports whether the run ended with a known outcome; a run whose
+// outcome is unknown may play another lap.
+func finished(record run.Run) bool {
+	return record.State == Finished && record.Outcome != nil && *record.Outcome != Unknown
+}
+
+// embedder is the embedder the index is rebuilt with: the injected one, or
+// the local one.
+func (service Service) embedder() rag.Embedder {
+	if service.Embedder != nil {
+		return service.Embedder
+	}
+
+	return rag.Local{}
 }

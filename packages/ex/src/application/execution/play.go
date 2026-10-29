@@ -4,7 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
+	"github.com/jonatassales/tao/packages/contracts/configuration"
 	"github.com/jonatassales/tao/packages/ex/src/application/plan"
 	"github.com/jonatassales/tao/packages/ex/src/application/session"
 	"github.com/jonatassales/tao/packages/ex/src/domain/finops"
@@ -32,19 +34,21 @@ const allowUnmeasured = "allow"
 // playing is one play of the stages: the run's records and the lap as they
 // stand, written at every change.
 type playing struct {
-	service Service
-	owner   project.Project
-	runtime microruntime.Identifier
-	guards  plan.Guardrails
-	driver  *harness.Driver
-	planned run.Plan
-	record  run.Run
-	ledger  finops.Ledger
-	lap     Lap
-	sink    session.Sink
-	by      string
-	confirm Confirmer
-	now     func() harness.Timestamp
+	service    Service
+	owner      project.Project
+	runtime    microruntime.Identifier
+	guards     plan.Guardrails
+	driver     *harness.Driver
+	config     configuration.Configuration
+	planned    run.Plan
+	record     run.Run
+	ledger     finops.Ledger
+	lap        Lap
+	sink       session.Sink
+	by         string
+	confirm    Confirmer
+	checksWait time.Duration
+	now        func() harness.Timestamp
 }
 
 // play runs the stages the run plays, in order, from the first not done: a
@@ -75,7 +79,7 @@ func (playing *playing) play(ctx context.Context) (StartResult, error) {
 		}
 	}
 
-	return playing.complete()
+	return playing.finish(ctx)
 }
 
 // plays reports whether the run has anything to do in a stage.
@@ -293,21 +297,6 @@ func (playing *playing) fail(stage harness.Stage, cause error) error {
 	return cause
 }
 
-// complete prints that the implementation is complete: every stage the run
-// plays is done, with what the lap observed against its reservation.
-func (playing *playing) complete() (StartResult, error) {
-	if playing.lap.StagesCompleted == nil {
-		now := playing.now()
-		playing.lap.StagesCompleted = &now
-		playing.lap.Steps = append(playing.lap.Steps, Step{Name: "Completed", At: now, Note: finops.Dollars(playing.lap.ObservedCents) + " observed of " + finops.Dollars(playing.lap.Reserved) + " reserved"})
-	}
-
-	emit(playing.sink, session.Completed, session.Data{"observedCents": playing.lap.ObservedCents, "reservedCents": playing.lap.Reserved})
-	playing.record.State, playing.record.Outcome = Running, text(Running)
-
-	return playing.result(), playing.persist()
-}
-
 // result says where the lap stands.
 func (playing *playing) result() StartResult {
 	return StartResult{Runtime: playing.runtime.String(), Lap: playing.lap.Number, Outcome: playing.lap.Outcome, State: playing.record.State, ReservedCents: playing.lap.Reserved, ObservedCents: playing.lap.ObservedCents}
@@ -360,11 +349,7 @@ func (playing *playing) persist() error {
 	playing.settleLine()
 	settleTotals(&playing.ledger, playing.guards.Budget.Bounded.PeriodCents)
 
-	for index := range playing.record.Laps {
-		if playing.record.Laps[index].Number == playing.lap.Number {
-			playing.record.Laps[index] = summaryOf(playing.lap)
-		}
-	}
+	playing.syncLapSummary()
 
 	return playing.service.persist(playing.owner, playing.runtime, playing.lap, playing.record, playing.ledger)
 }
@@ -372,7 +357,8 @@ func (playing *playing) persist() error {
 // settleLine writes on the lap's ledger line what its calls used so far and,
 // once the lap ended, what the reservation did not spend. A lap in which a
 // call reported no usage settles nothing: its tokens, its variance and what
-// it recovered stay unknown.
+// it recovered stay unknown. A lap whose outcome is unknown holds its
+// reservation.
 func (playing *playing) settleLine() {
 	lap := playing.lap
 	for index := range playing.ledger.Laps {
@@ -396,6 +382,10 @@ func (playing *playing) settleLine() {
 		settlement := finops.Settle(lap.EstimateCents, lap.Reserved, lap.ObservedCents)
 		line.Cents.Recovered, line.Cents.Overspend = settlement.Recovered, settlement.Overspend
 		line.Cents.Variance = number(settlement.Variance)
+		if lap.Outcome == Unknown {
+			// The reservation is held until the outcome is known.
+			line.Cents.Recovered = 0
+		}
 
 		return
 	}
@@ -404,4 +394,13 @@ func (playing *playing) settleLine() {
 // thousands rounds raw tokens up to the thousands the ledger counts in.
 func thousands(tokens int64) int {
 	return int((tokens + 999) / 1000)
+}
+
+// syncLapSummary keeps the run record's entry for the lap current.
+func (playing *playing) syncLapSummary() {
+	for index := range playing.record.Laps {
+		if playing.record.Laps[index].Number == playing.lap.Number {
+			playing.record.Laps[index] = summaryOf(playing.lap)
+		}
+	}
 }

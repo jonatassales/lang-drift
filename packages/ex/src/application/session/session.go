@@ -134,3 +134,11 @@ const GateExhausted = "gateExhausted"
 // LapResumed is the run's own line when ex agent run finds a lap open and
 // plays on from where it stood.
 const LapResumed = "lapResumed"
+
+// RuntimeUnknown is the run's own line when the runtime's cleanup was not
+// confirmed: the outcome is unknown and the reservation is held.
+const RuntimeUnknown = "runtimeUnknown"
+
+// ChecksFailed is the run's own line when the pull request's checks ended
+// with a failure.
+const ChecksFailed = "checksFailed"

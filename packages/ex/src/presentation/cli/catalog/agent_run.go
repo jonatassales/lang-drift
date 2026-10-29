@@ -2,6 +2,7 @@ package catalog
 
 import (
 	"context"
+	"time"
 
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	"github.com/jonatassales/tao/packages/ex/src/application/execution"
@@ -51,6 +52,7 @@ func NewAgentRunCommand(executor Executor, globals *support.Globals) *cobra.Comm
 	flags.StringVar(&request.Effort, "effort", "", "the effort to run with, over the suggestion")
 	flags.BoolVar(&request.AcknowledgeOverspend, "acknowledge-overspend", false, "acknowledge an earlier lap's overspend, as the owner")
 	flags.BoolVar(&confirm, "confirm", false, "answer each human stage's confirmation on the terminal; the default when stdin is one")
+	flags.DurationVar(&request.ChecksWait, "checks-wait", 10*time.Minute, "how long to follow the pull request's checks before leaving them unknown")
 	byFlag(command, &request.By)
 
 	return command

@@ -7,6 +7,7 @@ import (
 	"slices"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/jonatassales/tao/packages/ex/src/application/execution"
 	"github.com/jonatassales/tao/packages/ex/src/domain/finops"
@@ -139,7 +140,7 @@ func TestRunWaitsForTheOwnerThenPlaysTheStages(t *testing.T) {
 
 	p, deps := plannedProject(t)
 	driver := websiteDriver()
-	deps.Driver = driver
+	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, websiteLifecycle(), websiteDelivery(), time.Millisecond
 
 	status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime")
 	if status != 0 {
@@ -205,7 +206,7 @@ func TestRunWaitsForTheOwnerThenPlaysTheStages(t *testing.T) {
 	}
 
 	record = runRecord(t, p)
-	if record.State != "running" || len(record.Laps) != 1 || record.Laps[0].Outcome != "open" || record.Laps[0].ObservedCents != 980 {
+	if record.State != "finished" || len(record.Laps) != 1 || record.Laps[0].Outcome != "completed" || record.Laps[0].ObservedCents != 980 {
 		t.Errorf("run record after the stages = %+v", record)
 	}
 	for _, id := range []string{"planning", "spec", "tickets", "implement"} {
@@ -213,10 +214,8 @@ func TestRunWaitsForTheOwnerThenPlaysTheStages(t *testing.T) {
 			t.Errorf("stage %s = %+v, want done with its summary", id, state)
 		}
 	}
-	for _, id := range []string{"review", "merge"} {
-		if state := stageState(record, id); state.State != "pending" {
-			t.Errorf("stage %s = %+v, want pending: the run never plays it", id, state)
-		}
+	if stageState(record, "review").State != "waiting" || stageState(record, "merge").State != "pending" {
+		t.Errorf("the stages the run never plays = %+v, want review waiting and merge pending", record.Stages)
 	}
 	implement := stageState(record, "implement")
 	if *implement.Summary != "2 findings · fixed" || implement.Usage == nil || implement.Usage.InputTokens != 2_700_000 || implement.Usage.OutputTokens != 170_000 || implement.Usage.Cents != 710 {
@@ -225,14 +224,14 @@ func TestRunWaitsForTheOwnerThenPlaysTheStages(t *testing.T) {
 
 	ledger := ledgerOf(t, p)
 	line := ledger.Laps[0]
-	if line.Cents.Observed != 980 || line.Cents.Reserved != 1140 || line.Cents.Billed != nil || line.Cents.Recovered != 0 || line.Cents.Variance != nil || line.NothingPaid {
+	if line.Cents.Observed != 980 || line.Cents.Reserved != 1140 || line.Cents.Billed != nil || line.Cents.Recovered != 160 || line.Cents.Variance == nil || *line.Cents.Variance != 30 || line.NothingPaid {
 		t.Errorf("lap 0001 line = %+v", line)
 	}
 	if line.TokensThousands.Observed == nil || *line.TokensThousands.Observed != (finops.TokensThousands{Input: 3700, Output: 240}) {
 		t.Errorf("lap 0001 observed tokens = %+v", line.TokensThousands.Observed)
 	}
-	if gate := line.Gates[len(line.Gates)-1]; gate.ID != "FG-04" || gate.Result != "not-reached" {
-		t.Errorf("the last gate = %+v, want FG-04 not reached", gate)
+	if gate := line.Gates[len(line.Gates)-2]; gate.ID != "FG-04" || gate.Result != "not-reached" {
+		t.Errorf("the gate before the last = %+v, want FG-04 not reached", gate)
 	}
 	if ledger.Totals.Cents.Observed != 980 || ledger.Totals.PeriodLeftAfterCents != 49020 || ledger.Totals.Cents.Billed != nil {
 		t.Errorf("totals = %+v", ledger.Totals)
@@ -240,7 +239,7 @@ func TestRunWaitsForTheOwnerThenPlaysTheStages(t *testing.T) {
 
 	lap := string(mustRead(t, filepath.Join(runtimeFolder(p), "laps", "0001.lap.md")))
 	for _, want := range []string{
-		"**Outcome:** open, the stages done, $9.80 observed of $11.40 reserved",
+		"**Outcome:** completed, $9.80 observed of $11.40 reserved, $1.60 released",
 		"| Confirmed | 13:46:50 | planning · by owner |",
 		"| Stage | 13:46:50 | planning · grilling · 3 open questions settled |",
 		"| Stage | 13:46:50 | implement · code-review · 2 findings · fixed |",
@@ -260,11 +259,9 @@ func TestRunWaitsForTheOwnerThenPlaysTheStages(t *testing.T) {
 		t.Errorf("stage evidence = %d files, %v; want one per call", len(entries), err)
 	}
 
-	status, stdout, _ = p.exWith(deps, "agent", "run", "console-microruntime")
-	if status != 0 || len(driver.calls) != 6 {
-		t.Errorf("a run after the stages gave %d and %d calls:\n%s", status, len(driver.calls), stdout)
+	if status, _, stderr := p.exWith(deps, "agent", "run", "console-microruntime"); status != 3 || !strings.Contains(stderr, "finished") || len(driver.calls) != 6 {
+		t.Errorf("a run after the run finished gave %d with %d calls: %s", status, len(driver.calls), stderr)
 	}
-	expectLines(t, stdout, "✓ completed  implementation · $9.80 observed of $11.40 reserved · usage record")
 
 	if status, stdout, _ := p.exWith(deps, "agent", "status", "console-microruntime"); status != 0 || !strings.Contains(stdout, `"observedCents": 980`) {
 		t.Errorf("ex agent status = %d:\n%s", status, stdout)
@@ -276,7 +273,7 @@ func TestRunConfirmsOnTheTerminal(t *testing.T) {
 	t.Parallel()
 
 	p, deps := plannedProject(t)
-	deps.Driver = websiteDriver()
+	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = websiteDriver(), websiteLifecycle(), websiteDelivery(), time.Millisecond
 
 	status, stdout, stderr := p.exInput(deps, "n\n", "agent", "run", "console-microruntime", "--confirm")
 	if status != 0 || !strings.Contains(stderr, "Confirm planning? [y/N]: ") || strings.Contains(stdout, "confirmed") {
@@ -305,7 +302,7 @@ func TestRunPausesThePaidCallsAtTheReservation(t *testing.T) {
 	p, deps := plannedProject(t)
 	driver := websiteDriver()
 	driver.usage["grilling"] = [2]int64{5_000_000, 400_000}
-	deps.Driver = driver
+	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, websiteLifecycle(), websiteDelivery(), time.Millisecond
 
 	if status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime"); status != 0 {
 		t.Fatalf("ex agent run = %d: %s\n%s", status, stderr, stdout)
@@ -367,7 +364,7 @@ func TestRunPausesThePaidCallsAtTheReservation(t *testing.T) {
 	}
 
 	record = runRecord(t, p)
-	if len(record.Laps) != 3 || record.Laps[1].Outcome != "blocked" || record.Laps[2].Outcome != "open" || record.Laps[2].ObservedCents != 900 {
+	if len(record.Laps) != 3 || record.Laps[1].Outcome != "blocked" || record.Laps[2].Outcome != "completed" || record.Laps[2].ObservedCents != 900 {
 		t.Errorf("laps = %+v", record.Laps)
 	}
 	if ledger := ledgerOf(t, p); ledger.Totals.Cents.Observed != 2300 || ledger.Totals.Cents.Reserved != 2280 || ledger.Totals.PeriodLeftAfterCents != 47700 {
@@ -384,7 +381,7 @@ func TestRunPausesWhenACallReportsNoUsage(t *testing.T) {
 	p, deps := plannedProject(t)
 	driver := websiteDriver()
 	driver.unmeasured["grilling"] = true
-	deps.Driver = driver
+	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, websiteLifecycle(), websiteDelivery(), time.Millisecond
 
 	if status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime"); status != 0 {
 		t.Fatalf("ex agent run = %d: %s\n%s", status, stderr, stdout)
@@ -448,7 +445,7 @@ func TestRunRunsTheHooksAndReplaysAFailedStage(t *testing.T) {
 
 	driver := websiteDriver()
 	driver.exits["to-spec"] = 1
-	deps.Driver = driver
+	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, websiteLifecycle(), websiteDelivery(), time.Millisecond
 
 	if status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 1 || !strings.Contains(stderr, "to-spec of stage spec exited 1") {
 		t.Fatalf("a failing skill gave %d: %s\n%s", status, stderr, stdout)

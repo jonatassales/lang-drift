@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	connectedapp "github.com/jonatassales/tao/packages/ex/src/application/connected"
 	"github.com/jonatassales/tao/packages/ex/src/application/execution"
@@ -10,11 +12,13 @@ import (
 	collectioninfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/collection"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/configuration"
 	connectedinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/connected"
+	deliveryinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/delivery"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/hooks"
 	inputsinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/inputs"
 	judgeinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/judge"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kind"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kubectl"
+	lifecycleinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/lifecycle"
 	manifestinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/manifest"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 	raginfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/rag"
@@ -29,11 +33,15 @@ import (
 
 // dependencies are the sources a test scripts; nil means the real ones.
 type dependencies struct {
-	IDs      application.IDSource
-	Clock    application.Clock
-	Embedder rag.Embedder
-	Model    plan.Model
-	Driver   execution.StageDriver
+	IDs       application.IDSource
+	Clock     application.Clock
+	Embedder  rag.Embedder
+	Model     plan.Model
+	Driver    execution.StageDriver
+	Lifecycle execution.Lifecycle
+	Delivery  execution.DeliveryObserver
+	// Poll is how often the checks are looked at; zero takes the default.
+	Poll time.Duration
 }
 
 // useCases is the production composition.
@@ -134,15 +142,6 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 			IDs:      deps.IDs,
 			Clock:    deps.Clock,
 		},
-		Execution: execution.Service{
-			Projects: projects,
-			Inputs:   inputsinfra.Store{},
-			Records:  records.Runtimes{},
-			Laps:     records.LapStore{},
-			Driver:   driverOf(deps, runner),
-			IDs:      deps.IDs,
-			Clock:    deps.Clock,
-		},
 		Plan: plan.Service{
 			Projects:  projects,
 			Collector: collectioninfra.Collector{},
@@ -195,10 +194,25 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 			Agents:   agents,
 		},
 	}
-	projectConsole := &connectedinfra.MCP{}
-	cases.ProjectAgent = connectedapp.Service{Projects: projects, Store: connectedinfra.Store{Runner: runner}, Console: projectConsole, ProjectConsole: projectConsole, Native: connectedinfra.Native{
+	engine := connectedinfra.Native{
 		Create: cases.ClusterCreate, Load: cases.ClusterLoadImage, StartRuntime: native.Up, StopRuntime: native.Down, Inspect: native.Inspect, Executions: executions, Runner: runner,
-	}}
+	}
+	projectConsole := &connectedinfra.MCP{}
+	cases.ProjectAgent = connectedapp.Service{Projects: projects, Store: connectedinfra.Store{Runner: runner}, Console: projectConsole, ProjectConsole: projectConsole, Native: engine}
+	cases.Execution = execution.Service{
+		Projects:   projects,
+		Inputs:     inputsinfra.Store{},
+		Records:    records.Runtimes{},
+		Laps:       records.LapStore{},
+		Driver:     driverOf(deps, runner),
+		Lifecycle:  lifecycleOf(deps, engine, native, executions),
+		Delivery:   deliveryOf(deps, runner),
+		Index:      raginfra.Index{},
+		Embedder:   deps.Embedder,
+		ChecksPoll: pollOf(deps),
+		IDs:        deps.IDs,
+		Clock:      deps.Clock,
+	}
 
 	return cases, native
 }
@@ -233,4 +247,34 @@ func driverOf(deps dependencies, runner process.Local) execution.StageDriver {
 	}
 
 	return stagesinfra.Driver{Runner: runner}
+}
+
+// lifecycleOf is the run's lifecycle: the scripted one, or the native engine
+// with a local operator record.
+func lifecycleOf(deps dependencies, engine connectedinfra.Native, native lifecycles, executions storage.Executions) execution.Lifecycle {
+	if deps.Lifecycle != nil {
+		return deps.Lifecycle
+	}
+
+	return lifecycleinfra.Native{Engine: engine, Stop: native.Down, Inspect: native.Inspect, Executions: executions}
+}
+
+// deliveryOf is the delivery observer: the scripted one, or git and gh.
+func deliveryOf(deps dependencies, runner process.Local) execution.DeliveryObserver {
+	if deps.Delivery != nil {
+		return deps.Delivery
+	}
+
+	return deliveryinfra.Observer{Runner: runner}
+}
+
+// defaultChecksPoll is how often the pull request's checks are looked at.
+const defaultChecksPoll = 15 * time.Second
+
+func pollOf(deps dependencies) time.Duration {
+	if deps.Poll > 0 {
+		return deps.Poll
+	}
+
+	return defaultChecksPoll
 }

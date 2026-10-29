@@ -217,13 +217,19 @@ var catalog = map[string]line{
 		return "runtime    stopped · " + strconv.Itoa(number(data, "removed")) + " Deployments removed · " + text(data, "left")
 	}},
 	key(session.RunSession, session.ReadyForReview): {session.Success, func(data session.Data) string {
-		return "✓ ready      #" + strconv.Itoa(number(data, "number")) + " for review · " + Dollars(number(data, "releasedCents")) + " released to the envelope"
+		return "✓ ready      " + pullRequest(data, "the branch") + " for review · " + Dollars(number(data, "releasedCents")) + " released to the envelope"
 	}},
 	key(session.RunSession, session.ReadyToMerge): {session.Success, func(data session.Data) string {
-		return "✓ ready      #" + strconv.Itoa(number(data, "number")) + " to merge · " + Dollars(number(data, "releasedCents")) + " released to the envelope"
+		return "✓ ready      " + pullRequest(data, "the branch") + " to merge · " + Dollars(number(data, "releasedCents")) + " released to the envelope"
 	}},
 	key(session.RunSession, session.NextReview): {session.Comment, func(data session.Data) string {
-		return "# next: the owner reviews #" + strconv.Itoa(number(data, "number")) + " and decides whether to merge"
+		return "# next: the owner reviews " + pullRequest(data, "the branch") + " and decides whether to merge"
+	}},
+	key(session.RunSession, session.RuntimeUnknown): {session.Warning, func(data session.Data) string {
+		return "runtime    unknown · " + text(data, "reason") + " · the reservation is held"
+	}},
+	key(session.RunSession, session.ChecksFailed): {session.Error, func(data session.Data) string {
+		return "✗ checks     " + strconv.Itoa(number(data, "passed")) + " of " + strconv.Itoa(number(data, "total")) + " passed · " + joined(data, "failed") + " failed"
 	}},
 	key(session.RunSession, session.NextMerge): {session.Comment, func(session.Data) string {
 		return "# next: the merge stays the owner's"
@@ -286,4 +292,14 @@ func Covers(sessionName, id string) bool {
 	_, aliased := websiteAliases[key(sessionName, id)]
 
 	return aliased
+}
+
+// pullRequest names a pull request by its number, or says what stands in
+// for it when the run observed none.
+func pullRequest(data session.Data, fallback string) string {
+	if number(data, "number") == 0 {
+		return fallback
+	}
+
+	return "#" + strconv.Itoa(number(data, "number"))
 }

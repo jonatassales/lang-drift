@@ -132,6 +132,10 @@ func RenderLap(lap execution.Lap) ([]byte, error) {
 		out.WriteString("| " + step.Name + " | " + step.At.UTC().Format("15:04:05") + " | " + step.Note + " |\n")
 	}
 
+	if lap.Resources != nil {
+		out.WriteString(resourcesTable(lap))
+	}
+
 	if lap.NothingPaid() {
 		out.WriteString("\nNo runtime revision was materialized and no execution was claimed, so nothing was observed.\n")
 	}
@@ -201,6 +205,10 @@ func outcomeWords(lap execution.Lap) string {
 		return "open, " + finops.Dollars(lap.ObservedCents) + " observed so far of " + finops.Dollars(lap.Reserved) + " reserved"
 	case lap.Outcome == execution.Open:
 		return "open, " + finops.Dollars(lap.Reserved) + " reserved"
+	case lap.Outcome == execution.Completed:
+		return "completed, " + finops.Dollars(lap.ObservedCents) + " observed of " + finops.Dollars(lap.Reserved) + " reserved, " + finops.Dollars(max(0, lap.Reserved-lap.ObservedCents)) + " released"
+	case lap.Outcome == execution.Unknown:
+		return "unknown, the cleanup was not confirmed, " + finops.Dollars(lap.Reserved) + " reserved and held"
 	}
 
 	return lap.Outcome
@@ -212,4 +220,32 @@ func orDefault(value, fallback string) string {
 	}
 
 	return value
+}
+
+// resourcesTable is what the lap proposed, executed and measured.
+func resourcesTable(lap execution.Lap) string {
+	resources := lap.Resources
+	measured := "no usage metrics"
+	if resources.OldestSample != nil {
+		measured = orDefault(resources.Window, "unknown") + " windows, oldest sample " + resources.OldestSample.UTC().Format("15:04:05")
+	}
+
+	cpu, memory := "not measured", "not measured"
+	if resources.CPUPeak != nil {
+		cpu = fmt.Sprintf("%dm peak", *resources.CPUPeak)
+		if resources.CPUSteady != nil {
+			cpu += fmt.Sprintf(", %dm steady", *resources.CPUSteady)
+		}
+	}
+	if resources.MemoryPeak != nil {
+		memory = fmt.Sprintf("%d MiB peak", *resources.MemoryPeak)
+	}
+
+	var out strings.Builder
+	out.WriteString("\n| Resource | Proposed | Executed | Observed | Measured |\n| --- | --- | --- | --- | --- |\n")
+	out.WriteString(fmt.Sprintf("| CPU | %dm | %dm | %s | %s |\n", resources.Proposed.CPUMillis, resources.Executed.CPUMillis, cpu, measured))
+	out.WriteString(fmt.Sprintf("| Memory | %d MiB | %d MiB | %s | %s |\n", resources.Proposed.MemoryMiB, resources.Executed.MemoryMiB, memory, measured))
+	out.WriteString("| Model spend | | " + finops.Dollars(lap.Reserved) + " reserved | " + finops.Dollars(lap.ObservedCents) + ", billing pending | Ledger, lap " + lap.Number + " |\n")
+
+	return out.String()
 }
