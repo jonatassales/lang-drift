@@ -113,6 +113,7 @@ Single context. The glossary is the `## Glossary` section of this file, and ADRs
 | Check | `pnpm turbo run check`, `pnpm turbo run typecheck`, then `drift check dead-code` |
 | Test | `pnpm turbo run test` |
 | Guardrails | `drift git lint-history` over the pull request's commits |
+| Security | `pnpm audit --prod --audit-level=high`, then govulncheck, pinned, in each Go module; it fails on a high or critical npm advisory or on a Go vulnerability our code reaches |
 
 Actions, container images and downloaded tools are pinned to full commit SHAs, digests or checksums, with the version in a comment. The workflow tokens are read-only.
 
