@@ -149,7 +149,7 @@ func TestScaffolder_Generate(t *testing.T) {
 
 	owner, location := generatedRuntime(t)
 
-	if location != filepath.Join(owner.Root, ".langdrift", "runtimes", "demo") {
+	if location != filepath.Join(owner.Root, ".langdrift", "microruntimes", "runtimes", "demo") {
 		t.Fatalf("Generate() location = %q", location)
 	}
 
@@ -204,7 +204,7 @@ func TestScaffolder_GenerateRefuses(t *testing.T) {
 			t.Fatal("Generate() referenced a missing component")
 		}
 
-		if _, err := os.Stat(filepath.Join(owner.Root, ".langdrift", "runtimes", "demo")); !os.IsNotExist(err) {
+		if _, err := os.Stat(filepath.Join(owner.Root, ".langdrift", "microruntimes", "runtimes", "demo")); !os.IsNotExist(err) {
 			t.Fatalf("a refused generation wrote configuration: %v", err)
 		}
 	})

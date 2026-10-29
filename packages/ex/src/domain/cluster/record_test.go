@@ -8,7 +8,7 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
 
-const kubeconfig = "/workspace/.langdrift/state/cluster.kubeconfig"
+const kubeconfig = "/workspace/.langdrift/agent/state/cluster.kubeconfig"
 
 func testProject(t *testing.T, text string) project.Project {
 	t.Helper()

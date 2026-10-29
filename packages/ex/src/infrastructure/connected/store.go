@@ -19,17 +19,31 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 )
 
-// Store persists operational state separately from the runtime's ignored .env.
+// The private state of the connected agent, under .langdrift/agent/state:
+// connection records and locks, and the runtime credentials, which never
+// enter a JSON record.
+const (
+	connectionsDirectory = ".langdrift/agent/state/connections"
+	credentialsDirectory = ".langdrift/agent/state/credentials"
+)
+
+// Store persists operational state separately from the runtime's credentials.
 type Store struct{ Runner runner }
 
 func statePath(owner project.Project, id string) (string, error) {
 	if _, err := microruntime.ParseIdentifier(id); err != nil {
 		return "", err
 	}
-	return files.Within(owner.Root, ".langdrift/state/connections/"+id+".json")
+	return files.Within(owner.Root, connectionsDirectory+"/"+id+".json")
 }
+
+// credentialPath is the runtime's private credential file, relative to the project.
+func credentialPath(runtimeID string) string {
+	return credentialsDirectory + "/" + runtimeID + ".env"
+}
+
 func (Store) List(owner project.Project) ([]app.Connection, error) {
-	directory, err := files.Within(owner.Root, ".langdrift/state/connections")
+	directory, err := files.Within(owner.Root, connectionsDirectory)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +70,7 @@ func (Store) List(owner project.Project) ([]app.Connection, error) {
 		if entry.Name() != record.RuntimeID+".json" {
 			return nil, errors.New("connection identity differs from filename")
 		}
-		envPath, err := files.Existing(owner.Root, ".langdrift/runtimes/"+record.RuntimeID+"/.env")
+		envPath, err := files.Existing(owner.Root, credentialPath(record.RuntimeID))
 		if err != nil {
 			return nil, err
 		}
@@ -101,7 +115,7 @@ func (store Store) Bind(ctx context.Context, owner project.Project, record app.C
 	if strings.ContainsAny(record.Credential+record.Secret, "\n\r\x00") {
 		return errors.New("credential contains unsupported control characters")
 	}
-	privatePath := ".langdrift/runtimes/" + record.RuntimeID + "/.env"
+	privatePath := credentialPath(record.RuntimeID)
 	if _, err := files.Within(owner.Root, privatePath); err != nil {
 		return err
 	}
@@ -118,41 +132,31 @@ func (store Store) Bind(ctx context.Context, owner project.Project, record app.C
 			return errors.New("cannot verify the private credential path against the Git index")
 		}
 		if tracked.Stdout != "" {
-			return errors.New("runtime .env is tracked by Git; remove it from the index before connecting (existing index and files were preserved)")
+			return errors.New("the runtime credential file is tracked by Git; remove it from the index before connecting (existing index and files were preserved)")
 		}
 	}
-	directory, err := files.Within(owner.Root, ".langdrift/runtimes/"+record.RuntimeID)
+	directory, err := files.Within(owner.Root, credentialsDirectory)
 	if err != nil {
 		return err
 	}
-	if err = os.MkdirAll(directory, 0o755); err != nil {
+	if err = os.MkdirAll(directory, 0o700); err != nil {
 		return err
 	}
-	env := filepath.Join(directory, ".env")
+	env := filepath.Join(directory, record.RuntimeID+".env")
 	if _, err = os.Lstat(env); err == nil {
-		// A .env with a saved record is a connected runtime; one without is the
-		// orphan of an interrupted bind, and the retry replaces it.
+		// A credential file with a saved record is a connected runtime; one
+		// without is the orphan of an interrupted bind, and the retry replaces it.
 		recordPath, err := statePath(owner, record.RuntimeID)
 		if err != nil {
 			return err
 		}
 		if _, err := os.Lstat(recordPath); !errors.Is(err, fs.ErrNotExist) {
-			return errors.New("runtime .env already exists; refusing to replace private settings")
+			return errors.New("the runtime credential file already exists; refusing to replace private settings")
 		}
 	} else if !errors.Is(err, fs.ErrNotExist) {
 		return err
 	}
-	ignore := filepath.Join(directory, ".gitignore")
-	existing, err := files.ReadBounded(ignore, 1<<20)
-	if err != nil && !errors.Is(err, fs.ErrNotExist) {
-		return err
-	}
-	if !strings.Contains("\n"+string(existing)+"\n", "\n.env\n") {
-		existing = append(existing, []byte("\n.env\n")...)
-		if err = atomicWrite(ignore, existing, 0o644); err != nil {
-			return err
-		}
-	}
+	// The state directory's own ignore file keeps the credentials out of Git.
 	if err = atomicWrite(env, []byte("RUNTIME_SECRET="+record.Secret+"\nAGENT_CREDENTIAL="+record.Credential+"\n"), 0o600); err != nil {
 		return err
 	}
@@ -162,7 +166,7 @@ func (Store) Lock(owner project.Project, id string) (func(), error) {
 	if strings.ContainsAny(id, "/\\.") {
 		return nil, errors.New("invalid runtime UID")
 	}
-	path, err := files.Within(owner.Root, ".langdrift/state/connections/"+id+".lock")
+	path, err := files.Within(owner.Root, connectionsDirectory+"/"+id+".lock")
 	if err != nil {
 		return nil, err
 	}

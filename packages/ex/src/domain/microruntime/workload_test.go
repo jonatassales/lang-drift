@@ -42,7 +42,7 @@ func TestWorkload_Validate(t *testing.T) {
 	t.Parallel()
 
 	otherComponent := relativePath(t, "services/api")
-	insideConfiguration := relativePath(t, ".langdrift/runtimes/web")
+	insideConfiguration := relativePath(t, ".langdrift/microruntimes/runtimes/web")
 
 	tests := []struct {
 		name    string

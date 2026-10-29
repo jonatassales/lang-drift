@@ -20,7 +20,7 @@ func TestStore_BindRepairsAnOrphanedEnv(t *testing.T) {
 	store := Store{Runner: untrackedRunner{}}
 	record := app.Connection{RuntimeUID: "runtime-uid", RuntimeID: "runtime", State: connection.StateStopped, Secret: "second-secret", Credential: "second-credential"}
 
-	orphan := filepath.Join(owner.Root, ".langdrift/runtimes/runtime/.env")
+	orphan := filepath.Join(owner.Root, ".langdrift/agent/state/credentials/runtime.env")
 	if err := os.MkdirAll(filepath.Dir(orphan), 0o755); err != nil {
 		t.Fatal(err)
 	}
@@ -78,7 +78,7 @@ func TestNative_MaterializeStillRefusesForeignFiles(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	foreign := filepath.Join(owner.Root, ".langdrift/runtimes/runtime/runtime.md")
+	foreign := filepath.Join(owner.Root, ".langdrift/microruntimes/runtimes/runtime/runtime.md")
 	if err := os.WriteFile(foreign, []byte("hand edited\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}

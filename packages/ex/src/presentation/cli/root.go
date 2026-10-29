@@ -97,6 +97,10 @@ func (cliApplication *application) registerCommands(rootCommand *cobra.Command) 
 		cliApplication.clusterCommand(),
 		cliApplication.agentCommand(),
 	)
+
+	if cliApplication.useCases.Inputs != nil {
+		rootCommand.AddCommand(cliApplication.harnessCommand(), cliApplication.finopsCommand())
+	}
 }
 
 // requireSubcommand provides a consistent error for command groups.

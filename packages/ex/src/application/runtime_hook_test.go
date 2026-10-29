@@ -40,7 +40,7 @@ func TestRunRuntimeHook_RunsTheDeclaredScript(t *testing.T) {
 	t.Parallel()
 
 	w := newWorld(t)
-	w.configuration.hook = application.HookScript{Path: "/workspace/.langdrift/runtimes/demo/hooks/seed.sh", Directory: "/workspace/.langdrift/runtimes/demo"}
+	w.configuration.hook = application.HookScript{Path: "/workspace/.langdrift/microruntimes/runtimes/demo/hooks/seed.sh", Directory: "/workspace/.langdrift/microruntimes/runtimes/demo"}
 	executor := &fakeHookExecutor{result: application.HookResult{Stdout: "seeded", ExitCode: 0}}
 
 	result, err := w.runHook(executor).Execute(context.Background(), w.hookRequest("seed"))

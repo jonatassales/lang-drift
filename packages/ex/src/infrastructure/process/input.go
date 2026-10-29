@@ -49,3 +49,8 @@ func (input Input) Read(buffer []byte) (int, error) {
 		return input.File.Read(buffer)
 	}
 }
+
+// Stat describes the file, so a prompt can tell a terminal from a pipe.
+func (input Input) Stat() (os.FileInfo, error) {
+	return input.File.Stat()
+}

@@ -1,0 +1,57 @@
+{
+	"mirror": {
+		"of": "cli",
+		"record": "workflow-3f81",
+		"setBy": "owner",
+		"via": "cli",
+		"setAt": "2026-10-28T13:46:50Z",
+		"readOnly": true,
+		"note": "Written by ex from its own record. No gate reads this file; an edit here is shown as an unauthorized change."
+	},
+	"version": 1,
+	"status": "draft",
+	"owner": "team",
+	"note": "The team's delivery stages and where a person takes part, as set in the console. LangDrift reads them; it does not prescribe them.",
+	"stages": [
+		{
+			"id": "planning",
+			"label": "Planning",
+			"skills": ["grilling"],
+			"human": "required"
+		},
+		{
+			"id": "spec",
+			"label": "Spec",
+			"skills": ["to-spec"],
+			"human": "optional"
+		},
+		{
+			"id": "tickets",
+			"label": "Tickets",
+			"skills": ["to-tickets"],
+			"human": "optional"
+		},
+		{
+			"id": "implement",
+			"label": "Implement",
+			"skills": ["implement", "tdd", "code-review"],
+			"human": "optional"
+		},
+		{
+			"id": "review",
+			"label": "Review",
+			"skills": [],
+			"human": "optional"
+		},
+		{
+			"id": "merge",
+			"label": "Merge",
+			"skills": [],
+			"human": "owner-only"
+		}
+	],
+	"defaults": {
+		"humanAt": ["planning", "review", "merge"]
+	},
+	"efforts": ["low", "medium", "high"]
+}

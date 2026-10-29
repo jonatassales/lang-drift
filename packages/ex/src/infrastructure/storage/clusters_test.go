@@ -14,7 +14,7 @@ import (
 )
 
 func kubeconfigOf(owner project.Project) string {
-	return filepath.Join(owner.Root, ".langdrift", "state", "cluster.kubeconfig")
+	return filepath.Join(owner.Root, ".langdrift", "agent", "state", "cluster.kubeconfig")
 }
 
 func readyCluster(t *testing.T, owner project.Project) cluster.Record {
@@ -78,7 +78,7 @@ func TestClusters_LoadReportsAMissingRecord(t *testing.T) {
 func recordAt(t *testing.T, owner project.Project, document string) {
 	t.Helper()
 
-	writeFile(t, filepath.Join(owner.Root, ".langdrift", "state", "cluster.json"), document)
+	writeFile(t, filepath.Join(owner.Root, ".langdrift", "agent", "state", "cluster.json"), document)
 }
 
 func TestClusters_LoadEarlierFormats(t *testing.T) {

@@ -100,7 +100,8 @@ func (Executions) Save(owner project.Project, execution *microruntime.Execution)
 	return files.WriteJSON(LayoutOf(owner).executionRecord(execution.Runtime), executionFileOf(execution))
 }
 
-// List reads every runtime's ledger. Anything unexpected in the private
+// List reads every runtime's ledger. A runtime directory without a ledger is
+// one materialized but never started; anything else unexpected in the private
 // runtime directory is an error, never silently skipped.
 func (store Executions) List(owner project.Project) ([]*microruntime.Execution, error) {
 	entries, err := os.ReadDir(LayoutOf(owner).runtimes())
@@ -121,6 +122,11 @@ func (store Executions) List(owner project.Project) ([]*microruntime.Execution, 
 		}
 
 		execution, err := store.Load(owner, runtime)
+		if errors.Is(err, application.ErrNotFound) {
+			// A materialized runtime that never started owns nothing yet.
+			continue
+		}
+
 		if err != nil {
 			return nil, fmt.Errorf("runtime %s has incomplete state: %w", runtime, err)
 		}

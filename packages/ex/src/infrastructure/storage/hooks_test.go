@@ -25,7 +25,7 @@ func TestEvidence_RecordHook(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	hook := readEvidence(t, filepath.Join(owner.Root, ".audits", "evidence", "runs", "run-2", "hook.json"))
+	hook := readEvidence(t, filepath.Join(runtimeFolder(owner.Root, "demo"), "evidence", "hooks", "run-2.json"))
 	if hook["status"] != "failed" || hook["exitCode"] != 3.0 || hook["hook"] != "seed" {
 		t.Errorf("hook evidence = %v, want the outcome replacing the recorded intent", hook)
 	}

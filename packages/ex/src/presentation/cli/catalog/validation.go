@@ -15,3 +15,8 @@ func validateNoArguments(command *cobra.Command, arguments []string) error {
 func validateSingleArgument(command *cobra.Command, arguments []string) error {
 	return support.ExactArguments(1)(command, arguments)
 }
+
+// validateTwoArguments requires exactly two positional arguments.
+func validateTwoArguments(command *cobra.Command, arguments []string) error {
+	return support.ExactArguments(2)(command, arguments)
+}

@@ -4,7 +4,6 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 
 	"github.com/jonatassales/tao/packages/ex/src/application"
@@ -77,16 +76,20 @@ func TestProjects_Create(t *testing.T) {
 	}
 
 	metadata, err := os.ReadFile(filepath.Join(root, ".langdrift", "config.json"))
-	if err != nil || !strings.Contains(string(metadata), `"version": 1`) || !strings.Contains(string(metadata), projectIDText) {
-		t.Errorf("metadata = %s, %v; want version 1 and the ID", metadata, err)
+	if err != nil || string(metadata) != "{\n\t\"version\": 1,\n\t\"id\": \""+projectIDText+"\"\n}\n" {
+		t.Errorf("metadata = %s, %v; want version 1 and the ID in the tab layout", metadata, err)
 	}
 
-	ignore, err := os.ReadFile(filepath.Join(root, ".langdrift", "state", ".gitignore"))
+	if info, err := os.Stat(filepath.Join(root, ".langdrift", "config.json")); err != nil || info.Mode().Perm() != 0o644 {
+		t.Errorf("metadata mode = %v, %v; want 0644, the consumer reads it", info.Mode().Perm(), err)
+	}
+
+	ignore, err := os.ReadFile(filepath.Join(root, ".langdrift", "agent", "state", ".gitignore"))
 	if err != nil || string(ignore) != "*\n" {
 		t.Errorf("state ignore = %q, %v; want every private file ignored", ignore, err)
 	}
 
-	info, err := os.Stat(filepath.Join(root, ".langdrift", "state"))
+	info, err := os.Stat(filepath.Join(root, ".langdrift", "agent", "state"))
 	if err != nil || info.Mode().Perm() != 0o700 {
 		t.Errorf("state directory mode = %v, %v; want 0700", info.Mode().Perm(), err)
 	}
@@ -100,14 +103,14 @@ func TestProjects_CreateKeepsAnExistingStateIgnore(t *testing.T) {
 	t.Parallel()
 
 	root := tempDir(t)
-	writeFile(t, filepath.Join(root, ".langdrift", "state", ".gitignore"), "*\n")
+	writeFile(t, filepath.Join(root, ".langdrift", "agent", "state", ".gitignore"), "*\n")
 
 	if _, err := (storage.Projects{}).Create(root, projectID(t)); err != nil {
 		t.Fatalf("Create() with a matching state ignore = %v", err)
 	}
 
 	other := tempDir(t)
-	writeFile(t, filepath.Join(other, ".langdrift", "state", ".gitignore"), "*.log\n")
+	writeFile(t, filepath.Join(other, ".langdrift", "agent", "state", ".gitignore"), "*.log\n")
 
 	if _, err := (storage.Projects{}).Create(other, projectID(t)); err == nil {
 		t.Fatal("Create() accepted a state ignore file that does not ignore every private file")

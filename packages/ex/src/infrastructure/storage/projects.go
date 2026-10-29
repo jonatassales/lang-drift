@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io/fs"
@@ -16,9 +17,10 @@ import (
 // projectMetadataVersion is the only project metadata format EX reads.
 const projectMetadataVersion = 1
 
-// Directory permissions: metadata is shared with the consumer; state is private.
+// Permissions: the identity is the consumer's to read; the state is private.
 const (
 	metadataDirectoryMode = 0o755
+	metadataFileMode      = 0o644
 	stateDirectoryMode    = 0o700
 	stateIgnoreMode       = 0o600
 )
@@ -55,7 +57,7 @@ func (Projects) Create(directory string, id project.ID) (project.Project, error)
 
 	layout := layoutAt(root)
 
-	if _, err := files.Within(root, filepath.Join(".langdrift", "state")); err != nil {
+	if _, err := files.Within(root, filepath.Join(".langdrift", "agent", "state")); err != nil {
 		return project.Project{}, err
 	}
 
@@ -83,8 +85,12 @@ func (Projects) Create(directory string, id project.ID) (project.Project, error)
 		return project.Project{}, err
 	}
 
-	metadata := projectMetadata{Version: projectMetadataVersion, ID: id.String()}
-	if err := files.WriteJSON(layout.metadata(), metadata); err != nil {
+	metadata, err := json.MarshalIndent(projectMetadata{Version: projectMetadataVersion, ID: id.String()}, "", "\t")
+	if err != nil {
+		return project.Project{}, err
+	}
+
+	if err := files.WriteDocument(layout.metadata(), append(metadata, '\n'), metadataFileMode); err != nil {
 		return project.Project{}, err
 	}
 
@@ -136,7 +142,7 @@ func openAt(root string) (project.Project, error) {
 		return project.Project{}, err
 	}
 
-	if _, err := files.Within(root, filepath.Join(".langdrift", "state")); err != nil {
+	if _, err := files.Within(root, filepath.Join(".langdrift", "agent", "state")); err != nil {
 		return project.Project{}, err
 	}
 

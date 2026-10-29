@@ -77,7 +77,7 @@ func resolve(base, relative string, mustExist bool) (string, error) {
 
 		switch {
 		case err == nil && info.Mode()&os.ModeSymlink != 0:
-			return "", fmt.Errorf("symlink path is not allowed: %s", current)
+			return "", fmt.Errorf("%w: %s", ErrSymlink, current)
 
 		case errors.Is(err, fs.ErrNotExist) && !mustExist:
 			continue
@@ -102,7 +102,7 @@ func RequireNoSymlinks(path string) error {
 
 		switch {
 		case err == nil && info.Mode()&os.ModeSymlink != 0:
-			return fmt.Errorf("symlink path is not allowed: %s", current)
+			return fmt.Errorf("%w: %s", ErrSymlink, current)
 
 		case err != nil && !errors.Is(err, fs.ErrNotExist):
 			return err
@@ -113,3 +113,6 @@ func RequireNoSymlinks(path string) error {
 		}
 	}
 }
+
+// ErrSymlink says a path reached a symbolic link, which the resolvers refuse.
+var ErrSymlink = errors.New("symlink path is not allowed")

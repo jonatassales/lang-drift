@@ -25,3 +25,6 @@ coverage/
 .agents/workflow/.effort-log/*
 !.agents/workflow/.effort-log/.gitkeep
 
+
+# The LangDrift folder is machine-local; ex regenerates it (spec 0016)
+/.langdrift/

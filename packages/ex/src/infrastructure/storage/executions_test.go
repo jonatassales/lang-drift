@@ -309,11 +309,6 @@ func TestExecutions_ListRefusesUnexpectedState(t *testing.T) {
 				t.Fatal(err)
 			}
 		}},
-		{name: "runtime directory without a ledger", arrange: func(t *testing.T, runtimes string) {
-			if err := os.MkdirAll(filepath.Join(runtimes, "partial"), 0o700); err != nil {
-				t.Fatal(err)
-			}
-		}},
 		{name: "ledger in another runtime's directory", arrange: func(t *testing.T, runtimes string) {
 			data, err := os.ReadFile(filepath.Join(runtimes, "demo", "state.json"))
 			if err != nil {
@@ -339,5 +334,34 @@ func TestExecutions_ListRefusesUnexpectedState(t *testing.T) {
 				t.Fatal("List() accepted unexpected runtime state")
 			}
 		})
+	}
+}
+
+func TestExecutions_ListSkipsARuntimeThatNeverStarted(t *testing.T) {
+	t.Parallel()
+
+	owner := newProject(t)
+	store := storage.Executions{}
+
+	if err := store.Save(owner, runningExecution(t, owner, "demo")); err != nil {
+		t.Fatal(err)
+	}
+
+	// Materialization leaves its intent in the private runtime directory before any start.
+	materialized := storage.LayoutOf(owner).RuntimeState(runtimeID(t, "drafted"))
+	if err := os.MkdirAll(materialized, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(materialized, "materialize-intent.json"), []byte("{}\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+
+	executions, err := store.List(owner)
+	if err != nil {
+		t.Fatalf("List() refused a materialized runtime: %v", err)
+	}
+
+	if len(executions) != 1 || executions[0].Runtime.String() != "demo" {
+		t.Fatalf("List() = %d executions, want only the started runtime", len(executions))
 	}
 }

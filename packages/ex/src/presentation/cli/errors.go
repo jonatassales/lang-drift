@@ -10,6 +10,9 @@ import (
 
 	app "github.com/jonatassales/tao/packages/ex/src/application"
 	connected "github.com/jonatassales/tao/packages/ex/src/application/connected"
+	"github.com/jonatassales/tao/packages/ex/src/application/execution"
+	"github.com/jonatassales/tao/packages/ex/src/application/inputs"
+	"github.com/jonatassales/tao/packages/ex/src/application/plan"
 	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
 	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
@@ -29,7 +32,8 @@ func exitCode(
 		errors.Is(executionError, context.Canceled):
 		return 130
 
-	case errors.As(executionError, &invalidUsage):
+	case errors.As(executionError, &invalidUsage) ||
+		errors.Is(executionError, inputs.ErrInvalid):
 		return 2
 
 	case errors.Is(executionError, app.ErrAdoptionRefused) ||
@@ -37,6 +41,11 @@ func exitCode(
 		errors.Is(executionError, app.ErrConfigurationChanged) ||
 		errors.Is(executionError, app.ErrAlreadyExists) ||
 		errors.Is(executionError, connection.ErrRecipeRefused) ||
+		errors.Is(executionError, plan.ErrBlocked) ||
+		errors.Is(executionError, plan.ErrPaused) ||
+		errors.Is(executionError, plan.ErrRunning) ||
+		errors.Is(executionError, execution.ErrGate) ||
+		errors.Is(executionError, execution.ErrRefused) ||
 		errors.Is(executionError, connected.ErrAccessRevoked):
 		return 3
 

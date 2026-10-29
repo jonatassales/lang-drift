@@ -1,0 +1,12 @@
+{
+	"lap": "0002",
+	"stage": "tickets",
+	"skill": "to-tickets",
+	"at": "2026-10-28T13:46:50Z",
+	"exitCode": 0,
+	"inputTokens": 300000,
+	"outputTokens": 20000,
+	"summary": "3 tickets · blocking edges recorded",
+	"log": ".langdrift/agent/state/runs/console-microruntime/stages/0002-tickets-to-tickets.log",
+	"elapsedMs": 1200
+}

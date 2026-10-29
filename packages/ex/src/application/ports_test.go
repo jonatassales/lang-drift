@@ -24,7 +24,7 @@ import (
 
 const (
 	projectRoot    = "/workspace"
-	kubeconfigPath = "/workspace/.langdrift/state/cluster.kubeconfig"
+	kubeconfigPath = "/workspace/.langdrift/agent/state/cluster.kubeconfig"
 	namespaceName  = "demo-local"
 	kubeSystemUID  = "uid-kube-system"
 )
@@ -287,7 +287,7 @@ func (configuration *fakeConfiguration) Snapshot(project.Project, microruntime.D
 
 	return application.Snapshot{
 		Manifests:            configuration.manifests(),
-		PreparationDirectory: projectRoot + "/.langdrift/runtimes/demo/terraform",
+		PreparationDirectory: projectRoot + "/.langdrift/microruntimes/runtimes/demo/terraform",
 		Hash:                 configuration.hash,
 		CompatibleHashes:     slices.Clone(configuration.compatible),
 	}, nil

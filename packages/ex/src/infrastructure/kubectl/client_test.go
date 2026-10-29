@@ -82,7 +82,7 @@ func answer(stdout string) func([]string) (process.Result, error) {
 }
 
 var target = application.Target{
-	ClusterAccess: application.ClusterAccess{Kubeconfig: "/workspace/.langdrift/state/cluster.kubeconfig", Context: "kind-ex-0123456789ab"},
+	ClusterAccess: application.ClusterAccess{Kubeconfig: "/workspace/.langdrift/agent/state/cluster.kubeconfig", Context: "kind-ex-0123456789ab"},
 	Namespace:     "demo-local",
 }
 

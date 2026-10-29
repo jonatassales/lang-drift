@@ -19,8 +19,10 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	app "github.com/jonatassales/tao/packages/ex/src/application/connected"
 	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
+	"github.com/jonatassales/tao/packages/ex/src/domain/harness"
 	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/run"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/configuration"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/files"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
@@ -106,22 +108,16 @@ func blueprint(owner project.Project, config connection.Configuration) (microrun
 	cpu, _ := microruntime.ParseQuantity(strconv.Itoa(config.CPUMillis) + "m")
 	memory, _ := microruntime.ParseQuantity(strconv.Itoa(config.MemoryMiB) + "Mi")
 	plan := microruntime.Blueprint{Owner: config.ProjectID, Target: microruntime.KubernetesTarget{Context: "kind-" + owner.ClusterName(), Namespace: runtime}, Quotas: microruntime.ResourceQuotas{microruntime.QuotaRequestsCPU: cpu, microruntime.QuotaLimitsCPU: cpu, microruntime.QuotaRequestsMemory: memory, microruntime.QuotaLimitsMemory: memory}}
+	// The shares are the plan's own rule: an equal split of the envelope.
+	shares := run.SplitEnvelope(harness.Resources{CPUMillis: config.CPUMillis, MemoryMiB: config.MemoryMiB}, len(config.Components))
 	for i, component := range config.Components {
 		name, _ := microruntime.ParseIdentifier("c-" + digest([]byte(component.Path))[:12])
 		relative, err := microruntime.ParseComponentPath(component.Path)
 		if err != nil {
 			return plan, err
 		}
-		cpuShare := config.CPUMillis / len(config.Components)
-		memoryShare := config.MemoryMiB / len(config.Components)
-		if i < config.CPUMillis%len(config.Components) {
-			cpuShare++
-		}
-		if i < config.MemoryMiB%len(config.Components) {
-			memoryShare++
-		}
-		cpu, _ := microruntime.ParseQuantity(strconv.Itoa(cpuShare) + "m")
-		memory, _ := microruntime.ParseQuantity(strconv.Itoa(memoryShare) + "Mi")
+		cpu, _ := microruntime.ParseQuantity(strconv.Itoa(shares[i].CPUMillis) + "m")
+		memory, _ := microruntime.ParseQuantity(strconv.Itoa(shares[i].MemoryMiB) + "Mi")
 		plan.Workloads = append(plan.Workloads, microruntime.Workload{Name: name, Component: relative, Image: component.Image, Kind: microruntime.DeploymentWorkload, Resources: microruntime.Resources{CPURequest: cpu, CPULimit: cpu, MemoryRequest: memory, MemoryLimit: memory}, Service: microruntime.ServiceSpec{Port: component.Port, ReadinessPath: component.ReadinessPath, Replicas: 1}})
 	}
 	return plan, plan.Validate()
@@ -617,7 +613,7 @@ func (native Native) Migrate(ctx context.Context, owner project.Project, id stri
 // references. Existing native files, source paths and evidence remain intact.
 func (native Native) migrationSource(owner project.Project, runtime microruntime.Identifier) (microruntime.Descriptor, bool, error) {
 	source := configuration.Files{}
-	target, err := files.Within(owner.Root, ".langdrift/state/migrations/"+runtime.String()+"/schema.json")
+	target, err := files.Within(owner.Root, ".langdrift/agent/state/migrations/"+runtime.String()+"/schema.json")
 	if err != nil {
 		return microruntime.Descriptor{}, false, err
 	}
@@ -666,7 +662,7 @@ func (native Native) migrationSource(owner project.Project, runtime microruntime
 
 // readIntent loads the digests an earlier materialization intended to write.
 func (native Native) readIntent(owner project.Project, runtime string) (map[string]string, error) {
-	path, err := files.Within(owner.Root, ".langdrift/state/runtimes/"+runtime+"/materialize-intent.json")
+	path, err := files.Within(owner.Root, ".langdrift/agent/state/runtimes/"+runtime+"/materialize-intent.json")
 	if err != nil {
 		return nil, err
 	}
@@ -686,7 +682,7 @@ func (native Native) readIntent(owner project.Project, runtime string) (map[stri
 
 // writeIntent records what the current materialization is about to write.
 func (native Native) writeIntent(owner project.Project, runtime string, managed map[string]string) error {
-	path, err := files.Within(owner.Root, ".langdrift/state/runtimes/"+runtime+"/materialize-intent.json")
+	path, err := files.Within(owner.Root, ".langdrift/agent/state/runtimes/"+runtime+"/materialize-intent.json")
 	if err != nil {
 		return err
 	}
@@ -702,7 +698,7 @@ func (native Native) writeIntent(owner project.Project, runtime string, managed 
 
 // buildLog opens the runtime's private build log for one start.
 func (native Native) buildLog(owner project.Project, runtime string) (*os.File, string, error) {
-	directory, err := files.Within(owner.Root, ".langdrift/state/runtimes/"+runtime)
+	directory, err := files.Within(owner.Root, ".langdrift/agent/state/runtimes/"+runtime)
 	if err != nil {
 		return nil, "", err
 	}
@@ -833,7 +829,7 @@ func (native Native) buildTree(ctx context.Context, owner project.Project) (stri
 }
 
 func copyBuildTree(ctx context.Context, owner project.Project, names []string) (string, func(), error) {
-	parent, err := files.Within(owner.Root, ".langdrift/state/builds")
+	parent, err := files.Within(owner.Root, ".langdrift/agent/state/builds")
 	if err != nil {
 		return "", nil, err
 	}
@@ -892,7 +888,11 @@ func copyBuildTree(ctx context.Context, owner project.Project, names []string) (
 }
 
 func verifyManaged(owner project.Project, record app.Connection) error {
-	root, err := files.Existing(owner.Root, ".langdrift/runtimes/"+record.RuntimeID)
+	runtime, err := microruntime.ParseIdentifier(record.RuntimeID)
+	if err != nil {
+		return err
+	}
+	root, err := files.Existing(owner.Root, microruntime.ConfigurationDirectory(runtime).String())
 	if err != nil {
 		return err
 	}

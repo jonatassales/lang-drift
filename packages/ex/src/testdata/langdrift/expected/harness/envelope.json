@@ -1,0 +1,23 @@
+{
+	"mirror": {
+		"of": "cli",
+		"record": "envelope-7c2a",
+		"setBy": "owner",
+		"via": "cli",
+		"setAt": "2026-10-28T13:46:50Z",
+		"readOnly": true,
+		"note": "Written by ex from its own record. No gate reads this file; an edit here is shown as an unauthorized change."
+	},
+	"version": 1,
+	"status": "draft",
+	"owner": "team",
+	"perExecution": {
+		"cpuMillis": 4000,
+		"memoryMiB": 6144
+	},
+	"default": {
+		"cpuMillis": 2000,
+		"memoryMiB": 3072
+	},
+	"notRuntimeFields": ["gpu", "disk"]
+}

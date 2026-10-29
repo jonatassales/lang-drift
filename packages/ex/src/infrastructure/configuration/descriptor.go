@@ -1,5 +1,5 @@
 // Package configuration reads and writes the runtime configuration consumers
-// author under .langdrift/runtimes: the schema.json descriptor, native
+// author under .langdrift/microruntimes/runtimes: the schema.json descriptor, native
 // Kubernetes manifests, and the native Terraform preparation root.
 package configuration
 
