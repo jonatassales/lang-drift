@@ -1,0 +1,59 @@
+# Validates main after every merge, then builds the ex CLI for each platform
+# with a signed build provenance attestation. Building is not releasing: the
+# binaries stay a workflow artifact until the owner decides on a release.
+name: Main
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate
+    uses: ./.github/workflows/validate.yml
+
+  ex:
+    name: ex binaries
+    needs: validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      # The OIDC token signs the attestation, which is then stored on GitHub.
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.work
+          cache-dependency-path: |
+            packages/ex/go.sum
+            go.work.sum
+      # ex uses no cgo, so one runner builds every platform.
+      - name: Build
+        working-directory: packages/ex
+        env:
+          CGO_ENABLED: '0'
+        run: |
+          mkdir -p dist/platforms
+          for platform in linux/amd64 linux/arm64 darwin/amd64 darwin/arm64; do
+            os=${platform%/*}
+            arch=${platform#*/}
+            GOOS=$os GOARCH=$arch go build -trimpath -ldflags='-s -w' -o "dist/platforms/ex-$os-$arch" ./src
+          done
+          cd dist/platforms && sha256sum ex-* >SHA256SUMS
+      - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-checksums: packages/ex/dist/platforms/SHA256SUMS
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ex-${{ github.sha }}
+          path: packages/ex/dist/platforms/
+          retention-days: 30
+          if-no-files-found: error

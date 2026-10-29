@@ -1,4 +1,5 @@
-# Validates a pull request into main. Publishing lives in its own workflow.
+# Validates a pull request into main: validate.yml, then the guardrails that
+# only a pull request has, its commit range and the workflows it may change.
 name: Pull request
 
 on:
@@ -17,43 +18,9 @@ env:
   HUSKY: '0'
 
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-24.04
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: ./.github/actions/setup-workspace
-      - run: pnpm turbo run build
-
-  check:
-    name: Check
-    runs-on: ubuntu-24.04
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: ./.github/actions/setup-workspace
-      - name: Format, lint and imports (Biome)
-        run: pnpm turbo run check
-      - name: Types
-        run: pnpm turbo run typecheck
-      - name: Dead code
-        run: platform/cli/drift check dead-code
-
-  test:
-    name: Test
-    runs-on: ubuntu-24.04
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: ./.github/actions/setup-workspace
-      - run: pnpm turbo run test
+  validate:
+    name: Validate
+    uses: ./.github/workflows/validate.yml
 
   guardrails:
     name: Guardrails
@@ -71,23 +38,5 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: platform/cli/drift git lint-history "$BASE_SHA" "$HEAD_SHA"
-
-  security:
-    name: Security
-    runs-on: ubuntu-24.04
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: ./.github/actions/setup-workspace
-      # Fails on a known high or critical advisory in a production dependency.
-      - name: npm advisories
-        run: pnpm audit --prod --audit-level=high
-      # Fails when our code reaches a known vulnerable function, through a
-      # module or the standard library of the toolchain go.work pins.
-      - name: Go vulnerabilities
-        run: |
-          for module in apps/extub packages/ex packages/contracts; do
-            (cd "$module" && go run golang.org/x/vuln/cmd/govulncheck@e672cbe8fbc8c76e28fcb6db0efd9ce354e0dac5 ./...) # v1.9.0
-          done
+      - name: Workflows
+        run: platform/cli/drift check workflows
