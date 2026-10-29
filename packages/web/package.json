@@ -59,11 +59,11 @@
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
 		"jsdom": "26.1.0",
-		"next": "16.3.5",
+		"next": "16.4.3",
 		"react": "19.2.4",
 		"react-dom": "19.2.4",
 		"tailwindcss": "^4.3.3",
 		"typescript": "^5",
-		"vitest": "5.0.1"
+		"vitest": "5.0.5"
 	}
 }
