@@ -84,7 +84,7 @@ LangDrift 負責邊界與機制；你的團隊負責應用程式與其領域上�
 
 ## 專案狀態
 
-**LangDrift 仍在開發中。** 網站已在 [langdrift.md](https://langdrift.md/zh-hant/) 上線，提供五種語言。主控台讀取 `extub`，這是一個植入單一專案 LangDrift Studio 的 stub API，並把它的 FinOps 數據標示為示意。CLI 已發佈於 npm 為 `@langdrift/ex`（`npx @langdrift/ex`），你也可以從原始碼建置。
+**LangDrift 仍在開發中。** 網站已在 [langdrift.md](https://langdrift.md/zh-hant/) 上線，提供五種語言。主控台讀取 `extub`，這是一個植入單一專案 LangDrift Studio 的 stub API，並把它的 FinOps 數據標示為示意。CLI 已發佈於 npm 為 `@langdrift/ex`（`npx @langdrift/ex`）。
 
 `ex agent plan` 與 `ex agent run` 可以在專案內於本機運作，金錢閘門在 `ex` 內針對專案自己的帳本執行；透過伺服器共享的團隊帳本尚未建置。連線代理（`ex agent connect`、`project`、`supervise` 與 `migrate`）需要一個本儲存庫還沒有的伺服器。測試套件以腳本化的模型、程式開發代理與生命週期驅動 CLI；它們並不證明真實叢集能啟動、真實的花費或已可用於正式環境。網站的註冊目前暫停。
 
@@ -99,71 +99,50 @@ LangDrift 負責邊界與機制；你的團隊負責應用程式與其領域上�
 
 ## 開始使用 `ex`
 
-你需要 macOS 或 Linux；透過 npm 執行 `@langdrift/ex` 需要 Node.js，從原始碼建置則需要 Go 1.26 或更新版本。這樣就足以規劃。規劃器的模型評審會讀取 `ANTHROPIC_API_KEY`。執行一圈還需要 Docker、kind、kubectl 與 Terraform（`ex doctor` 會檢查它們，且不安裝任何東西）、你設定的程式開發代理（例如 Claude Code），以及用來觀察 pull request 的 `gh`。
+你需要 macOS 或 Linux 與 Node.js 來透過 `npx` 執行 `@langdrift/ex`。這樣就足以規劃。規劃器的模型評審會讀取 `ANTHROPIC_API_KEY`。執行一圈還需要 Docker、kind、kubectl 與 Terraform（`npx @langdrift/ex doctor` 會檢查它們，且不安裝任何東西）、你設定的程式開發代理（例如 Claude Code），以及用來觀察 pull request 的 `gh`。
 
-### 1. 執行或建置 CLI
+### 1. 初始化專案
 
-直接以 `npx` 執行 `@langdrift/ex`：
-
-```sh
-npx @langdrift/ex version
-```
-
-或從原始碼建置：
+在你的專案儲存庫根目錄執行：
 
 ```sh
-git clone https://github.com/jonatassales/lang-drift.git
-cd lang-drift/packages/ex
-GOTOOLCHAIN=local go build -o dist/ex ./src
-./dist/ex version
+npx @langdrift/ex init
 ```
 
-`version` 會印出 `ex 0.1.0`（未注入版本的本機建置則印出 `ex 0.0.0-dev`）。你的系統可能已經有一個 `ex`，也就是 Vi 的行編輯器，所以請透過 `npx @langdrift/ex` 或路徑呼叫這一個。以下步驟以 `ex` 代表 `npx @langdrift/ex` 或 `packages/ex/dist/ex`；只在這個 shell 中執行 `alias ex="npx @langdrift/ex"`（或 `alias ex="$PWD/dist/ex"`）即可。
+`npx @langdrift/ex init` 會在 `.langdrift/config.json` 建立專案識別，並在 `.langdrift/microruntimes/AGENTS.md` 寫入執行規則，既有檔案保持不變。請把 `/.langdrift/` 加進 `.gitignore`：那是 `ex` 寫入的本機狀態，團隊撰寫的內容都不會放在那裡。
 
-### 2. 初始化專案
-
-想在現成的專案上試用，就複製測試套件所規劃的那個專案：一張工單、它連結的 spec、研究、ADR 與 guardrail，以及兩個應用程式的 manifest。
-
-```sh
-cp -R src/testdata/langdrift/project /tmp/ex-demo
-cd /tmp/ex-demo
-ex init
-```
-
-`ex init` 會在 `.langdrift/config.json` 建立專案識別，並在 `.langdrift/microruntimes/AGENTS.md` 寫入執行規則，既有檔案保持不變。在你自己的儲存庫裡，請把 `/.langdrift/` 加進 `.gitignore`：那是 `ex` 寫入的本機狀態，團隊撰寫的內容都不會放在那裡。
-
-### 3. 記錄 harness
+### 2. 記錄 harness
 
 把[範例輸入檔](#範例輸入檔)存到專案中，然後記錄交付 harness：硬體預算額度、工作流程階段、預設模型與推理強度，以及執行各階段的程式開發代理。
 
 ```sh
-ex harness envelope set --per-execution-cpu-millis 4000 --per-execution-memory-mib 6144 \
+npx @langdrift/ex harness envelope set --per-execution-cpu-millis 4000 --per-execution-memory-mib 6144 \
   --default-cpu-millis 2000 --default-memory-mib 3072 --not-runtime-field gpu
-ex harness workflow set --file workflow.json
-ex harness model set claude-sonnet-5-5 --effort medium
-ex harness driver set --file driver.json
+npx @langdrift/ex harness workflow set --file workflow.json
+npx @langdrift/ex harness model set claude-sonnet-5-5 --effort medium
+npx @langdrift/ex harness driver set --file driver.json
 ```
 
-### 4. 記錄金錢規則
+### 3. 記錄金錢規則
 
 這份預算給團隊 2026 年 10 月共 500.00 美元，每次執行上限 25.00 美元，在每次估算上保留 20% 的邊際，並分配 25.00 美元給工單 0070。金額以美分為單位。
 
 ```sh
-ex finops budget set --period 2026-10 --period-cents 50000 --per-run-cents 2500 \
+npx @langdrift/ex finops budget set --period 2026-10 --period-cents 50000 --per-run-cents 2500 \
   --reserve-margin-percent 20 --allocate 0070-console-microruntime=2500
-ex finops gates set --default
-ex finops prices set --file prices.json --slug list
-ex finops forecasts set --file forecasts.json
+npx @langdrift/ex finops gates set --default
+npx @langdrift/ex finops prices set --file prices.json --slug list
+npx @langdrift/ex finops forecasts set --file forecasts.json
 ```
 
 每個命令都會印出它寫入的紀錄，而每個輸入命令都接受 `--by`，用來記下設定者。
 
-### 5. 從工單規劃
+### 4. 從工單規劃
 
 指定 runtime 要建置並執行的元件，然後讓 `ex` 讀取工單。`--no-judge` 會在不呼叫模型的情況下規劃，所以不會產生任何費用；不加這個旗標並設定 `ANTHROPIC_API_KEY` 時，規劃器會在與一圈相同的閘門下透過模型評斷各個來源，費用記在帳本的規劃那一行。
 
 ```sh
-ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-judge \
+npx @langdrift/ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-judge \
   --component "path=apps/console,image=langdrift-console:local,port=3001,readiness=/icon.svg,build=docker,args=build -t langdrift-console:local ."
 ```
 
@@ -198,28 +177,28 @@ CLI 的輸出是英文：
 
 這段摘錄省略了區塊的版本、名稱，以及由 `ex` 管理的 runtime 與專案識別。在 runtime 停止時再次規劃同一張工單，會提高修訂版本。
 
-### 6. 執行計畫
+### 5. 執行計畫
 
-執行 runtime 就代表授權它的計畫。一圈會建置映像檔、啟動專案的本機叢集，並透過你的程式開發代理進行付費呼叫，所以請先執行 `ex doctor`。
+執行 runtime 就代表授權它的計畫。一圈會建置映像檔、啟動專案的本機叢集，並透過你的程式開發代理進行付費呼叫，所以請先執行 `npx @langdrift/ex doctor`。
 
 ```sh
-ex agent run console-microruntime
+npx @langdrift/ex agent run console-microruntime
 ```
 
 1. **閘門。** 執行會印出意圖、以牌價計算的估算與單次執行預算，然後進行保留。落在所有界限之內的保留會開啟這一圈；超出的則暫停，什麼都還沒付。
-2. **階段。** 各階段依序透過程式開發代理執行，並各印出一行摘要。需要人員參與的階段會等待負責人：在終端機回答、使用 `--confirm`，或之後執行 `ex agent confirm console-microruntime planning`。`owner-only` 階段永遠不會執行。
+2. **階段。** 各階段依序透過程式開發代理執行，並各印出一行摘要。需要人員參與的階段會等待負責人：在終端機回答、使用 `--confirm`，或之後執行 `npx @langdrift/ex agent confirm console-microruntime planning`。`owner-only` 階段永遠不會執行。
 3. **Runtime。** 元件依區塊在專案的 kind 叢集上啟動，就緒時執行會告訴你。
 4. **交付。** 執行會觀察分支、pull request 與它的檢查；`--checks-wait` 限制追蹤的時間。
 5. **結算。** runtime 關閉，未用到的保留退回預算，寫入記憶 `run.md`，並重建 episode 索引。執行會說明它是否已可審查或合併，以及接下來要做什麼。
 
 每一項變更都會記錄在這一圈的檔案、`run.json` 與帳本中。
 
-### 7. 追蹤執行
+### 6. 追蹤執行
 
 ```sh
-ex agent status console-microruntime
-ex agent reindex
-ex doctor
+npx @langdrift/ex agent status console-microruntime
+npx @langdrift/ex agent reindex
+npx @langdrift/ex doctor
 ```
 
 `status` 顯示執行紀錄與進行中的那一圈，`reindex` 從每個 runtime 的記憶重建 episode 索引，`doctor` 檢查原生工具。加上 `--json` 時，每一行工作階段輸出都是一個 NDJSON 事件 `{at, session, kind, id, text, card, field, data}`，讓主控台或終端機介面能呈現同一個工作階段。
@@ -320,17 +299,6 @@ ex doctor
 `planning` 涵蓋規劃器自己的呼叫。當工單先前的執行都沒有量測過 token 時，就會使用這些預測。
 
 </details>
-
-### 探索網站與主控台
-
-使用 Node.js 24 與 pnpm 12，在儲存庫根目錄執行：
-
-```sh
-pnpm install
-pnpm website
-```
-
-網站在 `http://localhost:3000` 執行。`pnpm console` 會在 `http://127.0.0.1:3001` 啟動主控台，並在旁邊的 `127.0.0.1:3401` 啟動 `extub`，這需要 Go。主控台顯示的每個數字都來自 stub。
 
 ## LangDrift 背後的工作
 

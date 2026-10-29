@@ -84,7 +84,7 @@ LangDrift が持つのは境界と仕組みです。アプリケーションと�
 
 ## プロジェクトの状況
 
-**LangDrift は開発中です。** ウェブサイトは [langdrift.md](https://langdrift.md/ja/) で五つの言語で公開されています。コンソールは `extub` を読み込みます。これは LangDrift Studio というひとつのプロジェクトを用意するスタブ API で、その FinOps の数値はイメージであると明示されています。CLI は npm に `@langdrift/ex`（`npx @langdrift/ex`）として公開されており、ソースからビルドすることもできます。
+**LangDrift は開発中です。** ウェブサイトは [langdrift.md](https://langdrift.md/ja/) で五つの言語で公開されています。コンソールは `extub` を読み込みます。これは LangDrift Studio というひとつのプロジェクトを用意するスタブ API で、その FinOps の数値はイメージであると明示されています。CLI は npm に `@langdrift/ex`（`npx @langdrift/ex`）として公開されています。
 
 `ex agent plan` と `ex agent run` はプロジェクト内でローカルに動作し、お金のゲートは `ex` の中でプロジェクト自身の台帳に対して実行されます。サーバーで共有するチームの台帳はまだ作られていません。接続エージェント（`ex agent connect`、`project`、`supervise`、`migrate`）には、このリポジトリにまだないサーバーが必要です。テストスイートは、スクリプト化したモデル、コーディングエージェント、ライフサイクルで CLI を動かすもので、実際のクラスターの起動、実際の支出、本番環境での準備が整っていることを示すものではありません。ウェブサイトでの登録は一時停止中です。
 
@@ -99,71 +99,50 @@ LangDrift が持つのは境界と仕組みです。アプリケーションと�
 
 ## `ex` をはじめる
 
-macOS または Linux が必要です。npm から `@langdrift/ex` を実行するには Node.js、ソースからビルドするには Go 1.26 以降が必要です。計画するだけならこれで十分です。プランナーのモデルによる判定は `ANTHROPIC_API_KEY` を読みます。ラップを実行するには、さらに Docker、kind、kubectl、Terraform（`ex doctor` が確認し、何もインストールしません）、Claude Code などあなたが設定するコーディングエージェント、そしてプルリクエストを観測するための `gh` が必要です。
+macOS または Linux と、`npx` で `@langdrift/ex` を実行するための Node.js が必要です。計画するだけならこれで十分です。プランナーのモデルによる判定は `ANTHROPIC_API_KEY` を読みます。ラップを実行するには、さらに Docker、kind、kubectl、Terraform（`npx @langdrift/ex doctor` が確認し、何もインストールしません）、Claude Code などあなたが設定するコーディングエージェント、そしてプルリクエストを観測するための `gh` が必要です。
 
-### 1. CLI を実行またはビルドする
+### 1. プロジェクトを初期化する
 
-`npx` で `@langdrift/ex` を直接実行します。
-
-```sh
-npx @langdrift/ex version
-```
-
-またはソースからビルドします。
+プロジェクトのリポジトリのルートで次を実行します。
 
 ```sh
-git clone https://github.com/jonatassales/lang-drift.git
-cd lang-drift/packages/ex
-GOTOOLCHAIN=local go build -o dist/ex ./src
-./dist/ex version
+npx @langdrift/ex init
 ```
 
-`version` は `ex 0.1.0`（バージョン未注入のローカルビルドでは `ex 0.0.0-dev`）を表示します。システムにはすでに Vi の行エディターである `ex` があるかもしれないので、こちらは `npx @langdrift/ex` またはパスで呼び出してください。以下の手順では `npx @langdrift/ex` または `packages/ex/dist/ex` を `ex` と書きます。このシェルの中だけなら、`alias ex="npx @langdrift/ex"`（または `alias ex="$PWD/dist/ex"`）でそうできます。
+`npx @langdrift/ex init` は `.langdrift/config.json` にプロジェクトの識別情報を、`.langdrift/microruntimes/AGENTS.md` に実行ルールを作成し、既存のファイルには手を加えません。`/.langdrift/` を `.gitignore` に追加してください。そこは `ex` が書き込むマシンローカルの状態であり、チームが書くものは何も置かれません。
 
-### 2. プロジェクトを初期化する
-
-すぐに試せるプロジェクトとして、テストスイートが計画するプロジェクトをコピーします。チケットが一つ、そこからリンクされたスペック、リサーチ、ADR、ガードレール、そして二つのアプリのマニフェストが入っています。
-
-```sh
-cp -R src/testdata/langdrift/project /tmp/ex-demo
-cd /tmp/ex-demo
-ex init
-```
-
-`ex init` は `.langdrift/config.json` にプロジェクトの識別情報を、`.langdrift/microruntimes/AGENTS.md` に実行ルールを作成し、既存のファイルには手を加えません。自分のリポジトリでは `/.langdrift/` を `.gitignore` に追加してください。そこは `ex` が書き込むマシンローカルの状態であり、チームが書くものは何も置かれません。
-
-### 3. ハーネスを記録する
+### 2. ハーネスを記録する
 
 [入力ファイルの例](#入力ファイルの例)をプロジェクトに保存し、デリバリーのハーネスを記録します。ハードウェアの予算枠、ワークフローのステージ、既定のモデルと推論強度、そしてステージを実行するコーディングエージェントです。
 
 ```sh
-ex harness envelope set --per-execution-cpu-millis 4000 --per-execution-memory-mib 6144 \
+npx @langdrift/ex harness envelope set --per-execution-cpu-millis 4000 --per-execution-memory-mib 6144 \
   --default-cpu-millis 2000 --default-memory-mib 3072 --not-runtime-field gpu
-ex harness workflow set --file workflow.json
-ex harness model set claude-sonnet-5-5 --effort medium
-ex harness driver set --file driver.json
+npx @langdrift/ex harness workflow set --file workflow.json
+npx @langdrift/ex harness model set claude-sonnet-5-5 --effort medium
+npx @langdrift/ex harness driver set --file driver.json
 ```
 
-### 4. お金のルールを記録する
+### 3. お金のルールを記録する
 
 この予算は、2026 年 10 月分としてチームに 500.00 ドルを与え、実行ごとの上限を 25.00 ドルとし、すべての見積もりに 20% のマージンを予約し、チケット 0070 に 25.00 ドルを配分します。金額の単位はセントです。
 
 ```sh
-ex finops budget set --period 2026-10 --period-cents 50000 --per-run-cents 2500 \
+npx @langdrift/ex finops budget set --period 2026-10 --period-cents 50000 --per-run-cents 2500 \
   --reserve-margin-percent 20 --allocate 0070-console-microruntime=2500
-ex finops gates set --default
-ex finops prices set --file prices.json --slug list
-ex finops forecasts set --file forecasts.json
+npx @langdrift/ex finops gates set --default
+npx @langdrift/ex finops prices set --file prices.json --slug list
+npx @langdrift/ex finops forecasts set --file forecasts.json
 ```
 
 各コマンドは書き込んだ記録を表示し、入力系のコマンドはすべて、設定した人を記録する `--by` を受け付けます。
 
-### 5. チケットから計画する
+### 4. チケットから計画する
 
 runtime がビルドして実行するコンポーネントを指定し、`ex` にチケットを読ませます。`--no-judge` はモデルを呼び出さずに計画するので、何も支払いは発生しません。これを付けずに `ANTHROPIC_API_KEY` を設定すると、プランナーはラップと同じゲートのもとでモデルを通して情報源を判定し、その費用は台帳の計画の行に記録されます。
 
 ```sh
-ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-judge \
+npx @langdrift/ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-judge \
   --component "path=apps/console,image=langdrift-console:local,port=3001,readiness=/icon.svg,build=docker,args=build -t langdrift-console:local ."
 ```
 
@@ -198,28 +177,28 @@ CLI の出力は英語です。
 
 この抜粋では、ブロックのバージョン、名前、そして `ex` が管理する runtime とプロジェクトの識別情報を省いています。runtime が停止している間に同じチケットを再び計画すると、リビジョンが上がります。
 
-### 6. 計画を実行する
+### 5. 計画を実行する
 
-runtime を実行することが、その計画の承認になります。ラップはイメージをビルドし、プロジェクトのローカルクラスターを起動し、コーディングエージェントを通して有料呼び出しを行うので、先に `ex doctor` を実行してください。
+runtime を実行することが、その計画の承認になります。ラップはイメージをビルドし、プロジェクトのローカルクラスターを起動し、コーディングエージェントを通して有料呼び出しを行うので、先に `npx @langdrift/ex doctor` を実行してください。
 
 ```sh
-ex agent run console-microruntime
+npx @langdrift/ex agent run console-microruntime
 ```
 
 1. **ゲート。** 実行は意図、定価での見積もり、実行ごとの予算を表示してから予約します。すべての上限に収まる予約ならラップが始まり、超えていれば何も支払わずに一時停止します。
-2. **ステージ。** 各ステージはコーディングエージェントを通して順に実行され、一行の要約を表示します。人が関わるステージはオーナーを待ちます。ターミナルで答えるか、`--confirm` を使うか、あとで `ex agent confirm console-microruntime planning` を実行します。`owner-only` のステージは決して実行されません。
+2. **ステージ。** 各ステージはコーディングエージェントを通して順に実行され、一行の要約を表示します。人が関わるステージはオーナーを待ちます。ターミナルで答えるか、`--confirm` を使うか、あとで `npx @langdrift/ex agent confirm console-microruntime planning` を実行します。`owner-only` のステージは決して実行されません。
 3. **runtime。** コンポーネントはブロックに従ってプロジェクトの kind クラスター上で起動し、準備が整うと実行がそれを知らせます。
 4. **デリバリー。** 実行はブランチ、プルリクエスト、そのチェックを観測します。`--checks-wait` で追いかける時間を制限できます。
 5. **精算。** runtime が停止し、使われなかった予約が予算に戻り、記憶 `run.md` が書き込まれ、エピソードのインデックスが再構築されます。実行は、レビューやマージの準備ができているかどうかと、次に何をすべきかを伝えます。
 
 すべての変更は、ラップのファイル、`run.json`、台帳に記録されます。
 
-### 7. 実行を追う
+### 6. 実行を追う
 
 ```sh
-ex agent status console-microruntime
-ex agent reindex
-ex doctor
+npx @langdrift/ex agent status console-microruntime
+npx @langdrift/ex agent reindex
+npx @langdrift/ex doctor
 ```
 
 `status` は実行の記録と進行中のラップを、`reindex` はすべての runtime の記憶からエピソードのインデックスを再構築し、`doctor` はネイティブツールを確認します。`--json` を付けると、セッションの各行が NDJSON のイベント `{at, session, kind, id, text, card, field, data}` になるので、コンソールやターミナル UI で同じセッションを表示できます。
@@ -320,17 +299,6 @@ ex doctor
 `planning` はプランナー自身の呼び出しを対象とします。チケットの過去の実行でトークンが計測されていないときに、この予測が使われます。
 
 </details>
-
-### ウェブサイトとコンソールを試す
-
-Node.js 24 と pnpm 12 を使い、リポジトリのルートで次を実行します。
-
-```sh
-pnpm install
-pnpm website
-```
-
-サイトは `http://localhost:3000` で動きます。`pnpm console` は `http://127.0.0.1:3001` でコンソールを、その隣の `127.0.0.1:3401` で `extub` を起動します。`extub` には Go が必要です。コンソールに表示される数字はすべてスタブから来ています。
 
 ## LangDrift を支える仕事
 
