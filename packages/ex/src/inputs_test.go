@@ -16,8 +16,16 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
 
-// exWith is ex with scripted sources: the ids and the clock of the records.
+// exWith is ex with scripted sources: the ids and the clock of the records,
+// and the driver that plays the stages.
 func (p project) exWith(deps dependencies, arguments ...string) (int, string, string) {
+	p.t.Helper()
+
+	return p.exInput(deps, "", arguments...)
+}
+
+// exInput is exWith with what the person types.
+func (p project) exInput(deps dependencies, input string, arguments ...string) (int, string, string) {
 	p.t.Helper()
 
 	var stdout, stderr bytes.Buffer
@@ -25,7 +33,7 @@ func (p project) exWith(deps dependencies, arguments ...string) (int, string, st
 	status := executeNativeCatalogs(context.Background(), arguments, support.Options{
 		Version:     version,
 		Directory:   p.root,
-		Input:       strings.NewReader(""),
+		Input:       strings.NewReader(input),
 		Output:      &stdout,
 		Diagnostics: &stderr,
 	}, cases, native)

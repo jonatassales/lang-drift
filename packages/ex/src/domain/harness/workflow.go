@@ -20,6 +20,8 @@ type Stage struct {
 	Label  string   `json:"label"`
 	Skills []string `json:"skills"`
 	Human  string   `json:"human"`
+	// Hooks are committed scripts the stage runs first, allowlisted like recipes.
+	Hooks []string `json:"hooks,omitempty"`
 }
 
 // Defaults names the stages a person takes part in unless a run says otherwise.

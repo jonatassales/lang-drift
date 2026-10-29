@@ -24,7 +24,7 @@ func seedProject(t *testing.T) (project, dependencies) {
 	copyTree(t, projectFixture, p.root)
 
 	deps := dependencies{
-		IDs:   scriptedIDs("a759267ef752f98d6c25c4114ad65d0c", "7c2a0000000000000000000000000000", "3f810000000000000000000000000000", "c0de0000000000000000000000000000", "9d4e0000000000000000000000000000", "51b00000000000000000000000000000", "0000000000000000000000000000ffff", "a6130000000000000000000000000000", "701706be7e70d681d608826d3ad548b9", "e1e10000000000000000000000000000"),
+		IDs:   scriptedIDs("a759267ef752f98d6c25c4114ad65d0c", "7c2a0000000000000000000000000000", "3f810000000000000000000000000000", "c0de0000000000000000000000000000", "9d4e0000000000000000000000000000", "51b00000000000000000000000000000", "0000000000000000000000000000ffff", "a6130000000000000000000000000000", "d21f0000000000000000000000000000", "701706be7e70d681d608826d3ad548b9", "e1e10000000000000000000000000000", "e2e20000000000000000000000000000", "e3e30000000000000000000000000000"),
 		Clock: func() time.Time { return time.Date(2026, 10, 28, 13, 46, 50, 0, time.UTC) },
 	}
 
@@ -34,6 +34,7 @@ func seedProject(t *testing.T) (project, dependencies) {
 		withoutMirror(body)
 		body.Planning = &finops.TokensThousands{Input: 35, Output: 5}
 	})
+	driver := driverFile(t, p.root, "pause")
 
 	for _, arguments := range [][]string{
 		{"init"},
@@ -44,6 +45,7 @@ func seedProject(t *testing.T) (project, dependencies) {
 		{"finops", "gates", "set", "--default"},
 		{"finops", "prices", "set", "--file", prices, "--slug", "illustrative"},
 		{"finops", "forecasts", "set", "--file", forecasts},
+		{"harness", "driver", "set", "--file", driver},
 	} {
 		if status, stdout, stderr := p.exWith(deps, arguments...); status != 0 {
 			t.Fatalf("ex %v = %d\n%s%s", arguments, status, stdout, stderr)

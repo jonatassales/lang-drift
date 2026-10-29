@@ -110,7 +110,7 @@ func TestRunPausesAtTheGateThenOpensALap(t *testing.T) {
 	}
 
 	decodeStrict(t, mustRead(t, filepath.Join(folder, "run.json")), &record)
-	if record.State != "running" || len(record.Laps) != 2 || record.Laps[1].Outcome != "open" || record.Laps[1].ReservedCents != 1140 || record.Laps[1].Choice.Overrode != nil || record.Window.Started == nil {
+	if record.State != "waiting" || len(record.Laps) != 2 || record.Laps[1].Outcome != "open" || record.Laps[1].ReservedCents != 1140 || record.Laps[1].Choice.Overrode != nil || record.Window.Started == nil {
 		t.Errorf("run record after the second lap = %+v", record)
 	}
 
@@ -124,12 +124,18 @@ func TestRunPausesAtTheGateThenOpensALap(t *testing.T) {
 		t.Errorf("lap 0002:\n%s", second)
 	}
 
-	if status, stdout, stderr := p.exWith(deps, "agent", "status", "console-microruntime"); status != 0 || !strings.Contains(stdout, `"number": "0002"`) || !strings.Contains(stdout, `"state": "running"`) {
+	if status, stdout, stderr := p.exWith(deps, "agent", "status", "console-microruntime"); status != 0 || !strings.Contains(stdout, `"number": "0002"`) || !strings.Contains(stdout, `"state": "waiting"`) {
 		t.Errorf("ex agent status = %d\n%s%s", status, stdout, stderr)
 	}
 
-	if status, _, stderr := p.exWith(deps, "agent", "run", "console-microruntime"); status != 3 || !strings.Contains(stderr, "is open") {
-		t.Errorf("a third lap over an open one gave %d: %s", status, stderr)
+	// With a lap open, a run plays on with it: the first stage waits for the owner.
+	status, stdout, stderr = p.exWith(deps, "agent", "run", "console-microruntime")
+	if status != 0 || !strings.Contains(stdout, "agent › lap        0002 open · $11.40 reserved · resumed\n") || !strings.Contains(stdout, "agent › waiting    planning · the owner confirms\n") {
+		t.Errorf("a run over the open lap gave %d: %s\n%s", status, stderr, stdout)
+	}
+
+	if status, _, stderr := p.exWith(deps, "agent", "run", "console-microruntime", "--model", "claude-opus-5-5"); status != 3 || !strings.Contains(stderr, "is open") {
+		t.Errorf("a new choice over the open lap gave %d: %s", status, stderr)
 	}
 }
 

@@ -29,6 +29,7 @@ func (cliApplication *application) agentCommand() *cobra.Command {
 	if cliApplication.useCases.Execution != nil {
 		agentRoot.AddCommand(
 			catalog.NewAgentRunCommand(cliApplication.useCases.Execution, &cliApplication.globals),
+			catalog.NewAgentConfirmCommand(cliApplication.useCases.Execution, &cliApplication.globals),
 			catalog.NewAgentStatusCommand(cliApplication.useCases.Execution, &cliApplication.globals),
 		)
 	}

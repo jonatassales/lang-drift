@@ -85,3 +85,24 @@ func (prompter *Prompter) List(ctx context.Context, label string) ([]string, err
 
 	return items, nil
 }
+
+// Confirm asks a yes-or-no question; anything but yes, including no answer
+// at all, is no.
+func (prompter *Prompter) Confirm(ctx context.Context, label string) (bool, error) {
+	if err := ctx.Err(); err != nil {
+		return false, err
+	}
+
+	if _, err := fmt.Fprintf(prompter.questions, "%s: ", label); err != nil {
+		return false, err
+	}
+
+	line, err := prompter.answers.ReadString('\n')
+	if err != nil && !errors.Is(err, io.EOF) {
+		return false, err
+	}
+
+	answer := strings.ToLower(strings.TrimSpace(line))
+
+	return answer == "y" || answer == "yes", nil
+}

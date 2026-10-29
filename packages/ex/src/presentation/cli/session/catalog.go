@@ -165,6 +165,12 @@ var catalog = map[string]line{
 	key(session.RunSession, session.GateBlocked): {session.Error, func(data session.Data) string {
 		return Actor + "gate       blocked · " + text(data, "gate") + " · " + text(data, "detail")
 	}},
+	key(session.RunSession, session.GateExhausted): {session.Warning, func(data session.Data) string {
+		return Actor + "gate       paused · FG-04 · " + text(data, "detail")
+	}},
+	key(session.RunSession, session.LapResumed): {session.Output, func(data session.Data) string {
+		return Actor + "lap        " + text(data, "lap") + " open · " + Dollars(number(data, "reservedCents")) + " reserved · resumed"
+	}},
 	key(session.RunSession, session.Paused): {session.Comment, func(session.Data) string {
 		return "# needs a decision: raise the budget or lower the effort · nothing was paid for"
 	}},

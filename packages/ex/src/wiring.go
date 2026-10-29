@@ -7,19 +7,20 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/application/inputs"
 	"github.com/jonatassales/tao/packages/ex/src/application/plan"
 	"github.com/jonatassales/tao/packages/ex/src/domain/rag"
-	"github.com/jonatassales/tao/packages/ex/src/infrastructure/configuration"
 	collectioninfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/collection"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/configuration"
 	connectedinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/connected"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/hooks"
 	inputsinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/inputs"
+	judgeinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/judge"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kind"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/kubectl"
 	manifestinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/manifest"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
 	raginfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/rag"
-	judgeinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/judge"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/records"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/scaffold"
+	stagesinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/stages"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/storage"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/terraform"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/toolchain"
@@ -32,6 +33,7 @@ type dependencies struct {
 	Clock    application.Clock
 	Embedder rag.Embedder
 	Model    plan.Model
+	Driver   execution.StageDriver
 }
 
 // useCases is the production composition.
@@ -137,6 +139,7 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 			Inputs:   inputsinfra.Store{},
 			Records:  records.Runtimes{},
 			Laps:     records.LapStore{},
+			Driver:   driverOf(deps, runner),
 			IDs:      deps.IDs,
 			Clock:    deps.Clock,
 		},
@@ -220,4 +223,14 @@ func modelOf(deps dependencies) plan.Model {
 	}
 
 	return judgeinfra.Anthropic{}
+}
+
+// driverOf is the stages' driver: the scripted one, or the owner's coding
+// agent run as a process.
+func driverOf(deps dependencies, runner process.Local) execution.StageDriver {
+	if deps.Driver != nil {
+		return deps.Driver
+	}
+
+	return stagesinfra.Driver{Runner: runner}
 }

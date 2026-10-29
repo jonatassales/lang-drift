@@ -126,3 +126,11 @@ const JudgeStopped = "judgeStopped"
 // GateBlocked is the run's own line when FG-01, FG-02 or FG-05 blocks a lap
 // before anything is paid; the website's session never meets one.
 const GateBlocked = "gateBlocked"
+
+// GateExhausted is the run's own line when FG-04 pauses the paid calls of
+// an open lap: the reservation is reached, or a call reported no usage.
+const GateExhausted = "gateExhausted"
+
+// LapResumed is the run's own line when ex agent run finds a lap open and
+// plays on from where it stood.
+const LapResumed = "lapResumed"

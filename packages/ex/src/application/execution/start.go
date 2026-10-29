@@ -2,6 +2,8 @@ package execution
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"path"
 	"strings"
@@ -23,13 +25,15 @@ type Service struct {
 	Inputs   inputs.Store
 	Records  Records
 	Laps     Laps
+	Driver   StageDriver
 
 	// Injectable for tests; nil uses the real sources.
 	IDs   application.IDSource
 	Clock application.Clock
 }
 
-// StartRequest starts a lap of a planned runtime.
+// StartRequest starts a lap of a planned runtime, or plays on with the lap
+// that is open.
 type StartRequest struct {
 	Project              application.ProjectSelection
 	Runtime              string
@@ -38,6 +42,9 @@ type StartRequest struct {
 	AcknowledgeOverspend bool
 	By                   string
 	Session              session.Sink
+	// Confirm answers a human stage's confirmation on the spot; nil leaves
+	// the run waiting for ex agent confirm.
+	Confirm Confirmer
 }
 
 // StartResult says where the lap stands.
@@ -47,20 +54,22 @@ type StartResult struct {
 	Outcome       string `json:"outcome"`
 	State         string `json:"state"`
 	ReservedCents int    `json:"reservedCents"`
+	ObservedCents int    `json:"observedCents"`
 }
 
 // The states a run may be in.
 const (
-	Planned = "planned"
-	Running = "running"
-	Paused  = "paused"
-	Waiting = "waiting"
+	Planned  = "planned"
+	Running  = "running"
+	Paused   = "paused"
+	Waiting  = "waiting"
 	Finished = "finished"
 )
 
-// Start opens a lap: running the runtime authorizes its plan; the intent,
-// the estimate and the budget print; the money gate reserves or pauses.
-func (service Service) Start(_ context.Context, request StartRequest) (StartResult, error) {
+// Start opens a lap, or plays on with the open one. Running the runtime
+// authorizes its plan; the intent, the estimate and the budget print; the
+// money gate reserves or pauses; then the stages play.
+func (service Service) Start(ctx context.Context, request StartRequest) (StartResult, error) {
 	owner, err := service.Projects.Open(request.Project)
 	if err != nil {
 		return StartResult{}, err
@@ -94,23 +103,63 @@ func (service Service) Start(_ context.Context, request StartRequest) (StartResu
 		return StartResult{}, fmt.Errorf("%w: the plan of %s is blocked; replan it first", ErrRefused, runtime)
 	}
 
-	if open, found, err := service.Laps.Open(owner, runtime); err != nil {
-		return StartResult{}, err
-	} else if found {
-		return StartResult{}, fmt.Errorf("%w: lap %s of %s is open; stop it before another", ErrRefused, open.Number, runtime)
-	}
-
 	ledger, err := service.Records.ReadLedger(owner, runtime.String())
 	if err != nil {
 		return StartResult{}, err
+	}
+
+	if guards.Workflow == nil {
+		return StartResult{}, application.NotFound("no workflow is recorded; set it with ex harness workflow set")
+	}
+
+	driver, err := driverOf(service.Inputs, owner)
+	if err != nil {
+		return StartResult{}, err
+	}
+	if driver == nil && needsDriver(*guards.Workflow) {
+		return StartResult{}, application.NotFound("no driver is recorded for the stages; set it with ex harness driver set")
 	}
 
 	sink := request.Session
 	if sink == nil {
 		sink = session.Discard{}
 	}
-	by := orDefault(request.By, "owner")
-	now := harness.At(service.Clock.Now())
+
+	playing := &playing{
+		service: service,
+		owner:   owner,
+		runtime: runtime,
+		guards:  guards,
+		driver:  driver,
+		planned: planned,
+		record:  record,
+		ledger:  ledger,
+		sink:    sink,
+		by:      orDefault(request.By, "owner"),
+		confirm: request.Confirm,
+		now:     func() harness.Timestamp { return harness.At(service.Clock.Now()) },
+	}
+
+	open, found, err := service.Laps.Open(owner, runtime)
+	if err != nil {
+		return StartResult{}, err
+	}
+	if found {
+		if request.Model != "" || request.Effort != "" {
+			return StartResult{}, fmt.Errorf("%w: lap %s of %s is open with %s at %s effort; a model or effort chooses a new lap once it ended", ErrRefused, open.Number, runtime, open.Choice.Model, open.Choice.Effort)
+		}
+
+		playing.lap = open
+		emit(sink, session.RunCommand, session.Data{"runtime": runtime.String()})
+		emit(sink, session.RunScope, session.Data{"ticket": ticketReference(planned), "by": planned.Suggestion.AuthorizedBy})
+		emit(sink, session.Intent, session.Data{"model": open.Choice.Model, "effort": open.Choice.Effort, "revision": config.Revision})
+		emit(sink, session.LapResumed, session.Data{"lap": open.Number, "reservedCents": open.Reserved})
+
+		return playing.play(ctx)
+	}
+
+	now := playing.now()
+	by := playing.by
 
 	if planned.State == plan.Proposed {
 		planned.State, planned.Runtime.State = "authorized", "authorized"
@@ -119,6 +168,7 @@ func (service Service) Start(_ context.Context, request StartRequest) (StartResu
 		if err := service.Records.WritePlan(owner, runtime, config, planned); err != nil {
 			return StartResult{}, err
 		}
+		playing.planned = planned
 	}
 
 	lap := Lap{Number: fmt.Sprintf("%04d", len(record.Laps)+1), Run: runtime.String(), Started: now, Steps: []Step{}}
@@ -154,7 +204,7 @@ func (service Service) Start(_ context.Context, request StartRequest) (StartResu
 	lap.Steps = append(lap.Steps, Step{Name: "Estimated", At: now, Note: finops.Dollars(lap.EstimateCents) + " for " + finops.Tokens(forecast.Input) + " input and " + finops.Tokens(forecast.Output) + " output tokens"})
 
 	if !finops.Allowed(lap.Gates) {
-		return service.pause(owner, runtime, &lap, &record, &ledger, sink, now, budget.Bounded.PerRunCents)
+		return service.pause(owner, runtime, &lap, &record, &ledger, sink, now, budget.Bounded)
 	}
 
 	lap.Reserved = lap.Requested
@@ -165,21 +215,21 @@ func (service Service) Start(_ context.Context, request StartRequest) (StartResu
 	if record.Window.Started == nil {
 		record.Window.Started = &now
 	}
-	record.State, record.Outcome = Running, text("running")
+	record.State, record.Outcome = Running, text(Running)
 	record.Laps = append(record.Laps, summaryOf(lap))
 	ledger.Laps = append(ledger.Laps, lineOf(lap))
-	settleTotals(&ledger, budget.Bounded.PeriodCents)
 
-	if err := service.persist(owner, runtime, lap, record, ledger); err != nil {
+	playing.lap, playing.record, playing.ledger = lap, record, ledger
+	if err := playing.persist(); err != nil {
 		return StartResult{}, err
 	}
 
-	return StartResult{Runtime: runtime.String(), Lap: lap.Number, Outcome: Open, State: record.State, ReservedCents: lap.Reserved}, nil
+	return playing.play(ctx)
 }
 
 // pause records a lap that a gate stopped: nothing paid, the decision the
 // owner must take printed.
-func (service Service) pause(owner project.Project, runtime microruntime.Identifier, lap *Lap, record *run.Run, ledger *finops.Ledger, sink session.Sink, now harness.Timestamp, perRunCents int) (StartResult, error) {
+func (service Service) pause(owner project.Project, runtime microruntime.Identifier, lap *Lap, record *run.Run, ledger *finops.Ledger, sink session.Sink, now harness.Timestamp, bounded finops.BudgetBounds) (StartResult, error) {
 	gate := failing(lap.Gates)
 	lap.Gate = gate.ID
 	lap.Outcome = BlockedAt
@@ -191,8 +241,8 @@ func (service Service) pause(owner project.Project, runtime microruntime.Identif
 
 	if gate.ID == "FG-03" {
 		lap.Outcome = PausedAtGate
-		lap.Steps = append(lap.Steps, Step{Name: "Paused", At: now, Note: "FG-03: a " + finops.Dollars(lap.Requested) + " reservation exceeds the " + finops.Dollars(perRunCents) + " per-run cap"})
-		emit(sink, session.GatePaused, session.Data{"reservedCents": lap.Requested, "perRunCents": perRunCents})
+		lap.Steps = append(lap.Steps, Step{Name: "Paused", At: now, Note: "FG-03: a " + finops.Dollars(lap.Requested) + " reservation exceeds the " + finops.Dollars(bounded.PerRunCents) + " per-run cap"})
+		emit(sink, session.GatePaused, session.Data{"reservedCents": lap.Requested, "perRunCents": bounded.PerRunCents})
 		emit(sink, session.Paused, nil)
 	} else {
 		lap.Steps = append(lap.Steps, Step{Name: "Blocked", At: now, Note: gate.ID + ": " + detail})
@@ -202,7 +252,7 @@ func (service Service) pause(owner project.Project, runtime microruntime.Identif
 	record.State, record.Outcome = Paused, text(Paused)
 	record.Laps = append(record.Laps, summaryOf(*lap))
 	ledger.Laps = append(ledger.Laps, lineOf(*lap))
-	settleTotals(ledger, ledger.Bounded.PeriodLeftCents)
+	settleTotals(ledger, bounded.PeriodCents)
 
 	if err := service.persist(owner, runtime, *lap, *record, *ledger); err != nil {
 		return StartResult{}, err
@@ -248,6 +298,38 @@ func choiceOf(request StartRequest, planned run.Plan, by, number string) run.Cho
 	return choice
 }
 
+// driverOf reads the recorded driver, when the owner set one.
+func driverOf(store inputs.Store, owner project.Project) (*harness.Driver, error) {
+	record, err := store.Load(owner, inputs.KindDriver)
+	if errors.Is(err, application.ErrNotFound) {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	var driver harness.Driver
+	if err := json.Unmarshal(record.Value, &driver); err != nil {
+		return nil, fmt.Errorf("the driver input is unreadable: %w", err)
+	}
+
+	return &driver, nil
+}
+
+// needsDriver reports whether a stage the run plays has skills to run.
+func needsDriver(workflow harness.Workflow) bool {
+	for _, stage := range workflow.Stages {
+		if stage.Human == ownerOnly {
+			return false
+		}
+		if len(stage.Skills) > 0 {
+			return true
+		}
+	}
+
+	return false
+}
+
 // ticketReference is the ticket as the ledger and the lines name it.
 func ticketReference(planned run.Plan) string {
 	if planned.Ticket.Number != nil {
@@ -280,7 +362,7 @@ func failing(gates []finops.GateResult) finops.GateResult {
 
 // summaryOf is the lap as the run record lists it.
 func summaryOf(lap Lap) run.LapSummary {
-	summary := run.LapSummary{Number: lap.Number, File: "laps/" + lap.Number + ".lap.md", Choice: lap.Choice, Outcome: lap.Outcome, NothingPaid: lap.NothingPaid(), EstimateCents: lap.EstimateCents, ReservedCents: lap.Reserved}
+	summary := run.LapSummary{Number: lap.Number, File: "laps/" + lap.Number + ".lap.md", Choice: lap.Choice, Outcome: lap.Outcome, NothingPaid: lap.NothingPaid(), EstimateCents: lap.EstimateCents, ReservedCents: lap.Reserved, ObservedCents: lap.ObservedCents}
 	if lap.Gate != "" {
 		summary.Gate = text(lap.Gate)
 	}

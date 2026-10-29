@@ -61,6 +61,7 @@ type LapSummary struct {
 	NothingPaid   bool    `json:"nothingPaid"`
 	EstimateCents int     `json:"estimateCents,omitempty"`
 	ReservedCents int     `json:"reservedCents,omitempty"`
+	ObservedCents int     `json:"observedCents,omitempty"`
 }
 
 // Choice is the model and effort a lap ran with, and who chose them.
@@ -80,6 +81,15 @@ type StageState struct {
 	Human       bool               `json:"human"`
 	ConfirmedBy *string            `json:"confirmedBy,omitempty"`
 	At          *harness.Timestamp `json:"at"`
+	Summary     *string            `json:"summary,omitempty"`
+	Usage       *StageUsage        `json:"usage,omitempty"`
+}
+
+// StageUsage is what a stage's calls used, when the driver reported it.
+type StageUsage struct {
+	InputTokens  int64 `json:"inputTokens"`
+	OutputTokens int64 `json:"outputTokens"`
+	Cents        int   `json:"cents"`
 }
 
 // Delivery is what the run delivered, as observed.

@@ -135,6 +135,9 @@ func RenderLap(lap execution.Lap) ([]byte, error) {
 	if lap.NothingPaid() {
 		out.WriteString("\nNo runtime revision was materialized and no execution was claimed, so nothing was observed.\n")
 	}
+	if lap.Unmeasured {
+		out.WriteString("\nA call reported no usage, so the observed spend is a floor, not a measurement.\n")
+	}
 
 	fence, err := Format(fenceOf(lap), FenceProfile)
 	if err != nil {
@@ -185,12 +188,18 @@ func chosen(lap execution.Lap) string {
 }
 
 func outcomeWords(lap execution.Lap) string {
-	switch lap.Outcome {
-	case execution.PausedAtGate:
+	switch {
+	case lap.NothingPaid() && lap.Outcome == execution.PausedAtGate:
 		return "paused at gate " + lap.Gate + ", nothing paid"
-	case execution.BlockedAt:
+	case lap.NothingPaid():
 		return "blocked at gate " + lap.Gate + ", nothing paid"
-	case execution.Open:
+	case lap.Outcome == execution.PausedAtGate:
+		return "paused at gate " + lap.Gate + ", " + finops.Dollars(lap.ObservedCents) + " observed of " + finops.Dollars(lap.Reserved) + " reserved"
+	case lap.Outcome == execution.Open && lap.StagesCompleted != nil:
+		return "open, the stages done, " + finops.Dollars(lap.ObservedCents) + " observed of " + finops.Dollars(lap.Reserved) + " reserved"
+	case lap.Outcome == execution.Open && (lap.ObservedCents > 0 || lap.Unmeasured):
+		return "open, " + finops.Dollars(lap.ObservedCents) + " observed so far of " + finops.Dollars(lap.Reserved) + " reserved"
+	case lap.Outcome == execution.Open:
 		return "open, " + finops.Dollars(lap.Reserved) + " reserved"
 	}
 
