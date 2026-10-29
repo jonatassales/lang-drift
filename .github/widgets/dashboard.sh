@@ -16,37 +16,39 @@ fi
 dashboard_tmp=$(mktemp)
 trap 'rm -f "$dashboard_tmp"' EXIT
 
-{
-  cat <<'EOF'
-## 🧭 LangDrift Delivery Intelligence
+logo_icon="https://langdrift.md/metadata/icon-192.png"
 
-| Dimension | Headline Metric | Status |
+{
+  cat <<EOF
+## <a href="https://langdrift.md"><img src="${logo_icon}" width="24" height="24" align="middle" alt="LangDrift" /></a> LangDrift CI Gates
+
+| CI Gate | Headline Metric | Status |
 | :--- | :--- | :---: |
-| **Workflow** | Autonomous stages complete · Ticket verified | 🟢 Complete |
-| **FinOps** | **$0.24** expended / $0.50 authorized ceiling | 🟢 In Envelope |
-| **Microruntimes** | `@langdrift/ex@0.1.0` · Contracts in sync | 🟢 Stable |
-| **Code Quality** | 100% rules verified · 0 dead code · Sound types | 🟢 Passing |
-| **Agentic** | **96 / 100** Harness Score · Supervised delivery | 🟢 L4 Maturity |
+| <img src="${logo_icon}" width="14" height="14" align="middle" alt="" /> **Workflow** | Autonomous stages complete · Ticket verified | 🟢 Complete |
+| <img src="${logo_icon}" width="14" height="14" align="middle" alt="" /> **FinOps** | **\$0.24** expended / \$0.50 authorized ceiling | 🟢 In Envelope |
+| <img src="${logo_icon}" width="14" height="14" align="middle" alt="" /> **Microruntimes** | \`@langdrift/ex@0.1.0\` · Contracts in sync | 🟢 Stable |
+| <img src="${logo_icon}" width="14" height="14" align="middle" alt="" /> **Code Quality** | 100% rules verified · 0 dead code · Sound types | 🟢 Passing |
+| <img src="${logo_icon}" width="14" height="14" align="middle" alt="" /> **Agentic** | **96 / 100** Harness Score · Supervised delivery | 🟢 L4 Maturity |
 
 EOF
 
-  printf '<details open>\n<summary><b>1. Workflow Breakdown</b></summary>\n\n'
+  printf '<details open>\n<summary><b>1. Workflow Gate</b></summary>\n\n'
   sh "$widgets_dir/workflow.sh" "$@"
   printf '\n</details>\n\n'
 
-  printf '<details open>\n<summary><b>2. FinOps Ledger & Envelope</b></summary>\n\n'
+  printf '<details open>\n<summary><b>2. FinOps Gate & Envelope</b></summary>\n\n'
   sh "$widgets_dir/finops.sh" "$@"
   printf '\n</details>\n\n'
 
-  printf '<details open>\n<summary><b>3. Microruntimes Engine & Updates</b></summary>\n\n'
+  printf '<details open>\n<summary><b>3. Microruntimes Gate & Updates</b></summary>\n\n'
   sh "$widgets_dir/microruntimes.sh" "$@"
   printf '\n</details>\n\n'
 
-  printf '<details open>\n<summary><b>4. Code Quality & Guardrails</b></summary>\n\n'
+  printf '<details open>\n<summary><b>4. Code Quality Gate</b></summary>\n\n'
   sh "$widgets_dir/code-quality.sh" "$@"
   printf '\n</details>\n\n'
 
-  printf '<details open>\n<summary><b>5. Agentic Harness Supervision</b></summary>\n\n'
+  printf '<details open>\n<summary><b>5. Agentic Harness Gate</b></summary>\n\n'
   sh "$widgets_dir/agentic.sh" "$@"
   printf '\n</details>\n'
 } >"$dashboard_tmp"

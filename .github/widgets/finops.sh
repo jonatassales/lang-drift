@@ -30,7 +30,7 @@ cache_rate="76%"
 drift_amount="\$0.00"
 
 cat <<EOF
-### 💰 FinOps
+### <img src="https://langdrift.md/metadata/icon-192.png" width="16" height="16" align="middle" alt="" /> FinOps Gate
 
 | Ledger Item | Allocation / Ceiling | Observed Spend | Variance / Status |
 | :--- | :---: | :---: | :---: |

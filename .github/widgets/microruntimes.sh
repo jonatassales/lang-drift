@@ -41,7 +41,7 @@ if [ -n "$base_sha" ]; then
 fi
 
 cat <<EOF
-### ⚙️ Microruntimes
+### <img src="https://langdrift.md/metadata/icon-192.png" width="16" height="16" align="middle" alt="" /> Microruntimes Gate
 
 | Component | Property | Current Value | PR Status |
 | :--- | :--- | :--- | :---: |

@@ -1,0 +1,54 @@
+# The detectors of drift quality rules, one per line, fields separated by a tab:
+# rule, violation, scope, mode, roots, globs, pattern. A dash fills an unused field.
+# scope: code skips tests and testdata, tests looks only at tests, all looks everywhere.
+# mode: lines (each matching line), multiline (each match across lines), per-file
+# (each file with more than one match), files (each file with a match), tracked
+# (each tracked path the pattern matches), names (each tracked path not in
+# kebab-case), markdown (each Markdown file without a type suffix) and
+# unmeasured (a rule file no detector covers; the violation says what does).
+00-general	More than one function in a TypeScript file	code	per-file	apps,packages	*.ts,*.tsx	^(export (default )?)?(async )?function [A-Za-z_$]|^(export )?const [A-Za-z_$][\w$]* = (async )?(\([^)]*\)|[A-Za-z_$][\w$]*) =>
+00-general	More than one function in a Go file	code	per-file	apps,packages	*.go	^func [A-Za-z_]
+00-general	One-letter name in TypeScript, other than the translator t	code	lines	apps,packages	*.ts,*.tsx	\b(const|let|var)\s+[a-su-z]\b\s*[=:]|\(\s*[a-z](\s*,\s*[a-z])*\s*\)\s*=>|(^|[^\w$.])[a-z]\s*=>
+00-general	One-letter name in Go	code	lines	apps,packages	*.go	\b[a-z]\s*:=|\bfor\s+[a-z]\s*(,|:=)|^func \([a-z] |\bvar [a-z]\b
+00-general	One-line literal with several fields in TypeScript	code	lines	apps,packages	*.ts,*.tsx	\{\s*[A-Za-z_$][\w$]*\s*:\s*[^,{}\n]+,\s*[A-Za-z_$][\w$]*\s*:[^\n]*\}
+00-general	One-line literal with several fields in Go	code	lines	apps,packages	*.go	\b[A-Za-z_]\w*\{[A-Za-z_]\w*:\s*[^{}\n]*,\s*[A-Za-z_]\w*:|\bmap\[[^\]\n]+\][^{\n]*\{[^}\n]*:[^}\n]*,[^}\n]*:
+00-general	else after an exit	code	multiline	apps,packages	*.ts,*.tsx,*.go	\b(return|throw|continue|break)\b[^\n]*\n\s*\}\s*else\b
+00-general	else after an exit in shell	code	multiline	platform,.github	*.sh	\b(exit|return)\b[^\n]*\n\s*else\b
+00-general	Fallback for an environment variable	code	lines	apps,packages	*.ts,*.tsx	process\.env\.[A-Z_][A-Z0-9_]*\s*(\?\?|\|\|)
+00-general	Empty catch	code	multiline	apps,packages	*.ts,*.tsx	catch\s*(\([^)]*\))?\s*\{\s*\}
+00-general	Value discarded with _ in Go (check it is not an error)	code	lines	apps,packages	*.go	\b_\s*=\s*[A-Za-z_]|,\s*_\s*:?=
+01-filesystem	../ in a TypeScript or JavaScript import	code	lines	apps,packages	*.ts,*.tsx,*.js,*.mjs	(\bfrom\s+|\bimport\(|\brequire\()['"]\.\./
+01-filesystem	../ in a CSS import	code	lines	apps,packages	*.css	@import\s+['"]\.\./
+01-filesystem	../ in a shell path	code	lines	platform,.github	*.sh,!**/check-biome.sh	^[^#\n]*["'/]\.\./
+01-filesystem	Name not in kebab-case	code	names	-	-	-
+01-filesystem	Markdown without a type suffix	code	markdown	-	-	-
+01-filesystem	File in a bucket directory	all	tracked	-	-	(^|/)(utils|helpers|common|misc)/
+02-tooling	Automation script that is not shell	all	tracked	-	-	^platform/.*\.(js|mjs|cjs|ts|mts)$
+02-tooling	npm, npx, yarn, bun or corepack in tooling	code	lines	.github,platform,package.json	*.yml,*.yaml,*.sh,package.json	(^|[\s;&|(])(npx|yarn|bun|bunx|corepack)\s+[^\s]|\bnpm\s+(run|install|i|ci|exec)\b
+02-tooling	actions/setup-node in a workflow	code	lines	.github	*.yml,*.yaml	uses:\s*actions/setup-node
+03-tailwind	Stylesheet with hand-written rules	code	files	apps,packages	*.css	^\s*[^@/\s}][^{]*\{
+03-tailwind	Palette color class	code	lines	apps,packages	*.ts,*.tsx,*.css	\b(text|bg|border|ring|fill|stroke|from|to|via|outline|decoration|divide|accent|caret|shadow|placeholder)-(red|blue|green|gray|grey|slate|zinc|neutral|stone|amber|yellow|orange|lime|emerald|teal|cyan|sky|indigo|violet|purple|fuchsia|pink|rose)-[0-9]{2,3}\b
+03-tailwind	Arbitrary color value	code	lines	apps,packages	*.ts,*.tsx	-\[(#|rgb|hsl|oklch|oklab|color:)
+03-tailwind	Theme switched through data-theme	code	lines	apps,packages	*.ts,*.tsx,*.css	data-theme
+03-tailwind	@layer components, CSS Module or CSS-in-JS	code	lines	apps,packages	*.ts,*.tsx,*.css	@layer components|\.module\.css|from ['"](styled-components|@emotion/)
+03-tailwind	App copy of cn()	code	lines	apps	*.ts,*.tsx	^export (function|const) cn\b
+04-typescript	Translator named t	code	lines	apps,packages	*.ts,*.tsx	\bconst t = (await )?(use|get)Translations\b
+04-typescript	export * in a barrel	code	lines	apps,packages	*.ts,*.tsx	^export \* from
+04-typescript	await and ?. in one statement	code	lines	apps,packages	*.ts,*.tsx	\bawait\b[^;\n]*\?\.
+04-typescript	Dynamic process.env access	code	lines	apps,packages	*.ts,*.tsx	process\.env\[
+04-typescript	type alias for an object shape	code	lines	apps,packages	*.ts,*.tsx	^(export )?type [A-Za-z_$][\w$]*(<[^>]*>)?\s*=\s*\{
+05-react	Arrow-function component	code	lines	apps,packages	*.tsx	^(export )?const [A-Z][A-Za-z0-9]* = (async )?(\(|memo\(|forwardRef\()
+05-react	Destructured props parameter	code	lines	apps,packages	*.tsx	^(export )?(default )?function [A-Z][A-Za-z0-9]*\(\{
+05-react	Inline event handler	code	lines	apps,packages	*.tsx	\bon[A-Z][A-Za-z]*=\{\s*(async\s*)?\(?[\w\s,]*\)?\s*=>
+05-react	Loading flag in useState	code	lines	apps,packages	*.ts,*.tsx	const \[(is)?([Ll]oading|[Pp]ending|[Ss]ubmitting|[Ss]aving)\b[^\]]*\]\s*=\s*useState\b
+05-react	React Context for shared state	code	lines	apps,packages	*.ts,*.tsx	\bcreateContext\(
+06-nextjs	Internal link written as <a>	code	lines	apps	*.tsx	<a\s[^>]*href=["']/
+06-nextjs	Metadata generated by TypeScript	all	tracked	-	-	^apps/[^/]+/src/app/(.*/)?((sitemap|robots|manifest)\.ts|(opengraph-image|twitter-image|icon|apple-icon)\.tsx)$
+07-jotai	'use client' in an atom module	code	lines	apps	*.atom.ts	^['"]use client['"]
+08-localization	Not measured here: drift check localization and the catalog tests check it	-	unmeasured	-	-	-
+09-seo	Not measured here: the website's SEO contract tests check it	-	unmeasured	-	-	-
+10-testing	Test description without the file path	tests	lines	apps,packages	*.unit.ts,*.unit.tsx,*.test.ts,*.test.tsx	\bdescribe\(\s*['"][^'"/]*['"]
+10-testing	Browser runner dependency	code	lines	package.json,apps,packages	package.json	"(playwright|@playwright/test|puppeteer|axe-core|@axe-core/[^"]+)"\s*:
+10-testing	test:e2e script	code	lines	package.json,apps,packages	package.json	"test:e2e"\s*:
+10-testing	End-to-end test under apps/	all	tracked	-	-	^apps/.*(/e2e/|\.e2e\.)
+10-testing	Tracked local evidence in .audits/	all	tracked	-	-	^\.audits/

@@ -18,7 +18,7 @@ if [ -n "$latest_effort" ] && [ -f "$latest_effort" ]; then
 fi
 
 cat <<EOF
-### 🤖 Agentic
+### <img src="https://langdrift.md/metadata/icon-192.png" width="16" height="16" align="middle" alt="" /> Agentic Harness Gate
 
 | Harness Dimension | Policy / Contract | Observed Execution | Status |
 | :--- | :--- | :--- | :---: |

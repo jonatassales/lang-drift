@@ -45,7 +45,7 @@ fi
 ticket_label="${ticket:-N/A}"
 
 cat <<EOF
-### 🔄 Workflow
+### <img src="https://langdrift.md/metadata/icon-192.png" width="16" height="16" align="middle" alt="" /> Workflow Gate
 
 | Stage | Owner / Mechanism | Status | Notes |
 | :--- | :--- | :---: | :--- |

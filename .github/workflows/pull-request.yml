@@ -51,10 +51,9 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Harness score audit
-        uses: paladini/harness-score@b8c3941ba49edcf69f973e26c1940dae487f7c7a # v1.8.3
-        with:
-          min-level: '0'
+      - uses: ./.github/actions/setup-workspace
+      - name: Harness rules audit
+        run: platform/cli/drift quality rules >>"$GITHUB_STEP_SUMMARY"
 
   delivery-intelligence:
     name: Delivery - Dashboard
