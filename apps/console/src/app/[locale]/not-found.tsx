@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 
+import { RouteStateNotice } from '@components/route-state/route-state-notice'
 import { Link } from '@i18n/navigation'
 
 export async function generateMetadata() {
@@ -15,15 +16,13 @@ export default async function NotFound() {
 	])
 
 	return (
-		<main className="mx-auto flex min-h-screen max-w-xl flex-col justify-center gap-5 px-6">
-			<h1 className="text-3xl font-semibold">{t('title')}</h1>
-			<p className="text-muted-foreground">{t('description')}</p>
+		<RouteStateNotice title={t('title')} description={t('description')}>
 			<Link
 				className="w-fit text-primary underline underline-offset-4"
 				href="/home"
 			>
 				{ui('home')}
 			</Link>
-		</main>
+		</RouteStateNotice>
 	)
 }
