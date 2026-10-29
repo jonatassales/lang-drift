@@ -4,7 +4,7 @@
 
 ## Problem Statement
 
-The console's Tickets, Analysis, Plans and Workflows listings (spec 0014) show what `ex` does with a ticket, but they read a deterministic stub, extub, and the stub's figures. Since spec 0015, `ex` writes the real thing inside each project: `runtime.md` with the `langdrift-plan` fence, `run.json`, the laps, the ledger and the memory. A team that plans and runs tickets with `ex` sees none of it in the console, and the console's four cards and the CLI's records describe one ticket in two shapes that nothing keeps aligned.
+The console's Tickets, Analysis, Plans and Workflows listings (spec 0014) show what `ex` does with a ticket, but they read a deterministic stub, extub, and the stub's figures. Since spec 0016, `ex` writes the real thing inside each project: `runtime.md` with the `langdrift-plan` fence, `run.json`, the laps, the ledger and the memory. A team that plans and runs tickets with `ex` sees none of it in the console, and the console's four cards and the CLI's records describe one ticket in two shapes that nothing keeps aligned.
 
 ## Solution
 
@@ -21,7 +21,7 @@ A connector reads a project's `.langdrift/` records and serves them to the conso
 7. As a team member, I want the console to say where the records come from, so that a stub ticket and a real one are never confused.
 8. As a frontend developer, I want one mapping from the records to the console's `Ticket`, tested against the fixtures `ex` pins, so that a change to either side fails a test.
 9. As a platform developer, I want the connector to read only, so that the console never writes into a project's folder.
-10. As a platform developer, I want the records' field names to stay the ones spec 0015 fixed, so that the connector never needs the CLI's code.
+10. As a platform developer, I want the records' field names to stay the ones spec 0016 fixed, so that the connector never needs the CLI's code.
 
 ## Implementation Decisions
 
@@ -50,4 +50,4 @@ A good test observes what the console shows or what a route returns, never the c
 
 ## Further Notes
 
-Spec 0015 fixed the records' fields and their names; this spec names which of them each card reads. The fixtures under `packages/ex/src/testdata/langdrift/` are the contract between the two sides: a change to a field changes a fixture, and the mapping test tells.
+Spec 0016 fixed the records' fields and their names; this spec names which of them each card reads. The fixtures under `packages/ex/src/testdata/langdrift/` are the contract between the two sides: a change to a field changes a fixture, and the mapping test tells.

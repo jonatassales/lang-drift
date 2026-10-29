@@ -46,7 +46,7 @@ The connected agent (`ex agent connect`, `ex agent project`, `ex agent supervise
 
 ## The `.langdrift` folder
 
-The folder is machine-local and gitignored: `ex` regenerates it, and nothing a team authors lives inside it. Spec 0015 defines the layout below; the reference copy is the sample under `src/testdata/langdrift/sample`, which the test suite pins, beside a frozen copy of the ticket its run planned and the sources that ticket links.
+The folder is machine-local and gitignored: `ex` regenerates it, and nothing a team authors lives inside it. Spec 0016 defines the layout below; the reference copy is the sample under `src/testdata/langdrift/sample`, which the test suite pins, beside a frozen copy of the ticket its run planned and the sources that ticket links.
 
 | Path | Scope | Written by |
 | --- | --- | --- |

@@ -1,10 +1,10 @@
-# 0102: The run drives the workflow stages and waits for a person
+# 0104: The run drives the workflow stages and waits for a person
 
-**Spec:** .agents/workflow/specs/0015-ex-performs-the-microruntimes-session.spec.md
+**Spec:** .agents/workflow/specs/0016-ex-performs-the-microruntimes-session.spec.md
 
 **What to build:** after the gate opens, the run plays the workflow's stages in order: a stage marked human prints the waiting line and pauses, with a prompt on a terminal and otherwise an exit that `ex agent confirm <runtime> <stage>` resolves and a second `ex agent run` resumes; each stage's skills run through the coding-agent driver the owner configured, as a trusted process with placeholders substituted per argument, a minimal environment and a bounded log, and print their one-line summary; a stage's declared hooks run first as committed scripts; the money gate runs before every paid call, pausing when observed spend reaches the reservation or usage is unknown; usage reaches the ledger as observed tokens and cents; the owner-only merge never runs; the completed line prints observed against reserved. Stage states, confirmations and summaries land in the run record, and a token-free evidence file per call in the runtime's evidence.
 
-**Blocked by:** 0101.
+**Blocked by:** 0103.
 
 **Status:** ready-for-agent
 

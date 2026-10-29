@@ -1,10 +1,10 @@
-# 0094: The records of a runtime and the formatter that writes them
+# 0096: The records of a runtime and the formatter that writes them
 
-**Spec:** .agents/workflow/specs/0015-ex-performs-the-microruntimes-session.spec.md
+**Spec:** .agents/workflow/specs/0016-ex-performs-the-microruntimes-session.spec.md
 
 **What to build:** the CLI gains the types of every record the sample shows, in the sample's field order and names: the harness mirrors (envelope, workflow), the FinOps mirrors and ledger (budgets, gates, prices, forecasts with a planning entry, one ledger per runtime with a planning line, a line per lap and totals), the plan fence, the run record, the lap and run fences, and the private input record. A value not measured is `null`, arrays are never `null`, the illustrative flag round-trips but is never written by the CLI, and timestamps are RFC 3339 UTC to the second. A formatter writes files with tabs and short scalar arrays on one line, matching Biome's layout exactly, and fences with two spaces and small scalar objects on one line, so every sample file decodes into its type and re-encodes byte-equal.
 
-**Blocked by:** 0091 (the fixtures).
+**Blocked by:** 0093 (the fixtures).
 
 **Status:** ready-for-agent
 

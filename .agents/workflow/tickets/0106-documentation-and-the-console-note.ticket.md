@@ -1,10 +1,10 @@
-# 0104: The folder, the commands and the vocabulary are documented
+# 0106: The folder, the commands and the vocabulary are documented
 
-**Spec:** .agents/workflow/specs/0015-ex-performs-the-microruntimes-session.spec.md
+**Spec:** .agents/workflow/specs/0016-ex-performs-the-microruntimes-session.spec.md
 
 **What to build:** the CLI README describes the `.langdrift/` folder it writes (the table the sample's README carried), the commands with their exit codes, the inputs and mirrors, the session's lines and the JSON events, the judge's credential and the driver configuration, and the upgrade note about old private state; the context file's glossary gains episode, judge, stage driver, mirror and input record, and its commands table names the new commands; the dead-code allow list drops anything the removed scaffold kept; and a follow-up spec is drafted for the console to read real records through a connector, mapping the plan fence and the run record to the console's ticket phases.
 
-**Blocked by:** 0091 to 0103.
+**Blocked by:** 0093 to 0105.
 
 **Status:** ready-for-agent
 

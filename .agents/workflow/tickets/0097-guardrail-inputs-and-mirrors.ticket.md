@@ -1,10 +1,10 @@
-# 0095: Guardrail inputs are CLI input, held privately and mirrored
+# 0097: Guardrail inputs are CLI input, held privately and mirrored
 
-**Spec:** .agents/workflow/specs/0015-ex-performs-the-microruntimes-session.spec.md
+**Spec:** .agents/workflow/specs/0016-ex-performs-the-microruntimes-session.spec.md
 
 **What to build:** the owner records every value that can block or allow a run through the CLI: `ex harness envelope set`, `ex harness workflow set`, `ex harness model set` (the default model and effort, and the planner's model) and `ex harness driver set` (the coding-agent command), and `ex finops budget set`, `ex finops gates set` (the sample's six gates by default, or a file), `ex finops prices set` and `ex finops forecasts set`. Each input lands in a private store under `agent/state/` with who set it, when and the previous value, locked against concurrent writes, and is mirrored to `harness/` or `finops/` in the sample's shape, naming the CLI as its source and the record that set it. Invalid input is refused as usage; a mirror is never read back by the CLI.
 
-**Blocked by:** 0092, 0094.
+**Blocked by:** 0094, 0096.
 
 **Status:** ready-for-agent
 

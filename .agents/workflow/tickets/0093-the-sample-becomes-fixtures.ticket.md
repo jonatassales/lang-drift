@@ -1,6 +1,6 @@
-# 0091: The `.langdrift` sample becomes the CLI's fixtures and the folder is ignored
+# 0093: The `.langdrift` sample becomes the CLI's fixtures and the folder is ignored
 
-**Spec:** .agents/workflow/specs/0015-ex-performs-the-microruntimes-session.spec.md
+**Spec:** .agents/workflow/specs/0016-ex-performs-the-microruntimes-session.spec.md
 
 **What to build:** the repository stops versioning `.langdrift/`: an anchored ignore rule at the root keeps the folder out of Git while the CLI package's fixtures stay tracked, and the committed sample moves, byte for byte and from the tree's history, into the CLI package's test fixtures: the sample itself, plus a frozen copy of ticket 0070 and every source its links reach, so later tests can reproduce the sample's run with stable hashes. The working tree's leftover `ex init` output under `.langdrift/` goes, since the CLI regenerates the folder. The CLI package's own ignore file drops the rules the move makes pointless, and the sample's README table moves into the CLI README.
 

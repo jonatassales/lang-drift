@@ -1,10 +1,10 @@
-# 0099: The plan retrieves the project's episodes
+# 0101: The plan retrieves the project's episodes
 
-**Spec:** .agents/workflow/specs/0015-ex-performs-the-microruntimes-session.spec.md
+**Spec:** .agents/workflow/specs/0016-ex-performs-the-microruntimes-session.spec.md
 
 **What to build:** the plan's second act prints for real: the ticket's intent is embedded with a deterministic local embedder, the project's episodes under `agent/state/rag/` are searched by cosine similarity, the top six candidates print with their scores, each is kept or dropped against the threshold with its structured criteria (same component path, same stack, measured resources, measured tokens), the cited episodes and whether any measured resources print, and the sizing basis follows the cited measured runs or the input. `ex agent reindex` rebuilds the index from every runtime's memory and plan fences, recording the embedder's id; a plan rebuilds it when the id changed. The judge's reason per candidate stays `null` in this ticket.
 
-**Blocked by:** 0097.
+**Blocked by:** 0099.
 
 **Status:** ready-for-agent
 

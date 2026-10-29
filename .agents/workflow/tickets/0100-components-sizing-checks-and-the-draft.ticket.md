@@ -1,10 +1,10 @@
-# 0098: The plan resolves the components, sizes them and checks the draft
+# 0100: The plan resolves the components, sizes them and checks the draft
 
-**Spec:** .agents/workflow/specs/0015-ex-performs-the-microruntimes-session.spec.md
+**Spec:** .agents/workflow/specs/0016-ex-performs-the-microruntimes-session.spec.md
 
 **What to build:** the plan's third act prints for real: the components named by the facts or given as input are inspected by their manifests (a Go module, a Node.js or Next.js package, a NATS or Redis configuration, a Python project, a Dockerfile) for their technology, kind and port, each gets a proposed share from a sizing table by kind unless a fact states figures, the totals and the headroom are printed against the envelope, the executed shares are the equal split the connected agent applies, the cross-checks run (distinct ports, resolved images, allowed recipes), gpu and disk requests and the absence of a runtime price source are reported, the fence is validated against the schema, and the draft is written with its revision and proposed for authorization. Images, readiness paths and build recipes come from facts or input; a missing one blocks the plan with the field named.
 
-**Blocked by:** 0097.
+**Blocked by:** 0099.
 
 **Status:** ready-for-agent
 
