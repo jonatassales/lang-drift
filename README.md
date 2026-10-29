@@ -18,7 +18,6 @@
 </p>
 
 <p align="center">
-  <a href="#project-status"><img alt="Status: development candidate" src="https://img.shields.io/badge/status-development%20candidate-FBBF24?labelColor=18181B" height="20"></a>
   <a href="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml"><img alt="Pull request checks" src="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml/badge.svg?event=pull_request" height="20"></a>
   <a href="/packages/ex/README.md"><img alt="Go 1.26 or newer" src="https://img.shields.io/badge/Go-1.26%2B-00ADD8?logo=go&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/package.json"><img alt="Node.js 24" src="https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
@@ -85,7 +84,7 @@ Every input that can block or allow a run is recorded with who set it, when and 
 
 ## Project status
 
-**LangDrift is in development.** The website is live at [langdrift.md](https://langdrift.md) in five languages. The console reads `extub`, a stub API that seeds one project, LangDrift Studio, and labels its FinOps readings as illustrative. `ex` is a local development candidate that you build from source; no binary is published.
+**LangDrift is in development.** The website is live at [langdrift.md](https://langdrift.md) in five languages. The console reads `extub`, a stub API that seeds one project, LangDrift Studio, and labels its FinOps readings as illustrative. You build `ex` from source; no binary is published.
 
 `ex agent plan` and `ex agent run` work locally inside a project, and the money gates run inside `ex` against the project's own ledger; a team ledger shared through a server is not built yet. The connected agent (`ex agent connect`, `project`, `supervise` and `migrate`) needs a server this repository does not have yet. The test suites drive the CLI with scripted models, coding agents and lifecycles; they do not establish a live cluster start, real spend or production readiness. Sign-up on the website is paused.
 

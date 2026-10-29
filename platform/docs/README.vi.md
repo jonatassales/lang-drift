@@ -18,7 +18,6 @@
 </p>
 
 <p align="center">
-  <a href="#trạng-thái-dự-án"><img alt="Trạng thái: bản ứng viên đang phát triển" src="https://img.shields.io/badge/status-development%20candidate-FBBF24?labelColor=18181B" height="20"></a>
   <a href="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml"><img alt="Kiểm tra pull request" src="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml/badge.svg?event=pull_request" height="20"></a>
   <a href="/packages/ex/README.md"><img alt="Go 1.26 trở lên" src="https://img.shields.io/badge/Go-1.26%2B-00ADD8?logo=go&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/package.json"><img alt="Node.js 24" src="https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
@@ -85,7 +84,7 @@ Mọi đầu vào có thể chặn hoặc cho phép một lượt chạy đều 
 
 ## Trạng thái dự án
 
-**LangDrift đang được phát triển.** Trang web đã hoạt động tại [langdrift.md](https://langdrift.md/vi/) với năm ngôn ngữ. Bảng điều khiển đọc `extub`, một API giả lập khởi tạo sẵn một dự án là LangDrift Studio và ghi rõ các số liệu FinOps của nó là minh họa. `ex` là bản ứng viên phát triển cục bộ mà bạn tự build từ mã nguồn; chưa có bản nhị phân nào được phát hành.
+**LangDrift đang được phát triển.** Trang web đã hoạt động tại [langdrift.md](https://langdrift.md/vi/) với năm ngôn ngữ. Bảng điều khiển đọc `extub`, một API giả lập khởi tạo sẵn một dự án là LangDrift Studio và ghi rõ các số liệu FinOps của nó là minh họa. Bạn tự build `ex` từ mã nguồn; chưa có bản nhị phân nào được phát hành.
 
 `ex agent plan` và `ex agent run` hoạt động cục bộ trong một dự án, và các cổng kiểm soát chi tiêu chạy bên trong `ex` trên sổ cái riêng của dự án; một sổ cái chung của đội qua máy chủ vẫn chưa được xây dựng. Tác tử kết nối (`ex agent connect`, `project`, `supervise` và `migrate`) cần một máy chủ mà kho mã này chưa có. Các bộ kiểm thử điều khiển CLI bằng mô hình, tác tử lập trình và vòng đời được lập kịch bản; chúng không chứng minh việc khởi chạy cụm thật, chi tiêu thật hay sự sẵn sàng cho môi trường production. Việc đăng ký trên trang web đang tạm dừng.
 

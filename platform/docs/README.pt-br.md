@@ -18,7 +18,6 @@
 </p>
 
 <p align="center">
-  <a href="#status-do-projeto"><img alt="Status: candidato em desenvolvimento" src="https://img.shields.io/badge/status-development%20candidate-FBBF24?labelColor=18181B" height="20"></a>
   <a href="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml"><img alt="Verificações de pull request" src="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml/badge.svg?event=pull_request" height="20"></a>
   <a href="/packages/ex/README.md"><img alt="Go 1.26 ou mais recente" src="https://img.shields.io/badge/Go-1.26%2B-00ADD8?logo=go&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/package.json"><img alt="Node.js 24" src="https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
@@ -85,7 +84,7 @@ Toda entrada que pode bloquear ou liberar uma execução é registrada com quem 
 
 ## Status do projeto
 
-**O LangDrift está em desenvolvimento.** O site está no ar em [langdrift.md](https://langdrift.md/pt-br/), em cinco idiomas. O console lê o `extub`, uma API stub que semeia um projeto, o LangDrift Studio, e marca as suas leituras de FinOps como ilustrativas. O `ex` é um candidato de desenvolvimento local que você compila a partir do código-fonte; nenhum binário é publicado.
+**O LangDrift está em desenvolvimento.** O site está no ar em [langdrift.md](https://langdrift.md/pt-br/), em cinco idiomas. O console lê o `extub`, uma API stub que semeia um projeto, o LangDrift Studio, e marca as suas leituras de FinOps como ilustrativas. Você compila o `ex` a partir do código-fonte; nenhum binário é publicado.
 
 `ex agent plan` e `ex agent run` funcionam localmente dentro de um projeto, e os gates de dinheiro rodam dentro do `ex` contra o livro-razão do próprio projeto; um livro-razão do time compartilhado por um servidor ainda não foi construído. O agente conectado (`ex agent connect`, `project`, `supervise` e `migrate`) precisa de um servidor que este repositório ainda não tem. As suítes de teste conduzem a CLI com modelos, agentes de código e ciclos de vida roteirizados; elas não comprovam o início de um cluster real, gasto real nem prontidão para produção. O cadastro no site está pausado.
 

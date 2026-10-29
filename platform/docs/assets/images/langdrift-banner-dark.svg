@@ -2,14 +2,6 @@
 	<title id="title">LangDrift: Agentic FinOps Platform. One team envelope. Every paid call reserved before it runs.</title>
 	<defs>
 		<radialGradient id="wash" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#262626" stop-opacity="0.45"/><stop offset="1" stop-color="#262626" stop-opacity="0"/></radialGradient>
-		<linearGradient id="rainbow" x1="624" y1="0" x2="925" y2="0" gradientUnits="userSpaceOnUse">
-			<stop offset="0" stop-color="#F43F5E"/>
-			<stop offset="0.22" stop-color="#F97316"/>
-			<stop offset="0.38" stop-color="#FACC15"/>
-			<stop offset="0.56" stop-color="#22C55E"/>
-			<stop offset="0.78" stop-color="#3B82F6"/>
-			<stop offset="1" stop-color="#8C3BEF"/>
-		</linearGradient>
 	</defs>
 
 	<rect width="1280" height="640" fill="#000000"/>
@@ -33,7 +25,7 @@
 
 	<g font-family="SF Pro Display, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="88" font-weight="600" letter-spacing="-3.6" text-anchor="middle">
 		<text x="640" y="310" fill="#EDEDED">Agentic</text>
-		<text x="640" y="398"><tspan fill="#EDEDED">FinOps </tspan><tspan fill="url(#rainbow)">Platform</tspan></text>
+		<text x="640" y="398" fill="#EDEDED">FinOps Platform</text>
 	</g>
 
 	<text x="640" y="468" fill="#A1A1A1" font-family="SF Pro Display, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="22" letter-spacing="-0.2" text-anchor="middle">One team envelope. Every paid call reserved before it runs.</text>

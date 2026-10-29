@@ -18,7 +18,6 @@
 </p>
 
 <p align="center">
-  <a href="#プロジェクトの状況"><img alt="ステータス：開発中の候補版" src="https://img.shields.io/badge/status-development%20candidate-FBBF24?labelColor=18181B" height="20"></a>
   <a href="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml"><img alt="プルリクエストのチェック" src="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml/badge.svg?event=pull_request" height="20"></a>
   <a href="/packages/ex/README.md"><img alt="Go 1.26 以降" src="https://img.shields.io/badge/Go-1.26%2B-00ADD8?logo=go&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/package.json"><img alt="Node.js 24" src="https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
@@ -85,7 +84,7 @@ LangDrift が持つのは境界と仕組みです。アプリケーションと�
 
 ## プロジェクトの状況
 
-**LangDrift は開発中です。** ウェブサイトは [langdrift.md](https://langdrift.md/ja/) で五つの言語で公開されています。コンソールは `extub` を読み込みます。これは LangDrift Studio というひとつのプロジェクトを用意するスタブ API で、その FinOps の数値はイメージであると明示されています。`ex` はソースからビルドするローカル開発用の候補版で、バイナリは公開されていません。
+**LangDrift は開発中です。** ウェブサイトは [langdrift.md](https://langdrift.md/ja/) で五つの言語で公開されています。コンソールは `extub` を読み込みます。これは LangDrift Studio というひとつのプロジェクトを用意するスタブ API で、その FinOps の数値はイメージであると明示されています。`ex` はソースからビルドして使い、バイナリは公開されていません。
 
 `ex agent plan` と `ex agent run` はプロジェクト内でローカルに動作し、お金のゲートは `ex` の中でプロジェクト自身の台帳に対して実行されます。サーバーで共有するチームの台帳はまだ作られていません。接続エージェント（`ex agent connect`、`project`、`supervise`、`migrate`）には、このリポジトリにまだないサーバーが必要です。テストスイートは、スクリプト化したモデル、コーディングエージェント、ライフサイクルで CLI を動かすもので、実際のクラスターの起動、実際の支出、本番環境での準備が整っていることを示すものではありません。ウェブサイトでの登録は一時停止中です。
 
