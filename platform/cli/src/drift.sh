@@ -42,7 +42,18 @@ case "$command" in
     case "$subcommand" in
       dead-code) exec "$commands/check-dead-code.sh" "$@" ;;
       localization) exec "$commands/check-localization.sh" "$@" ;;
-      *) drift_usage_error "Usage: drift check <dead-code|localization>" ;;
+      workflows) exec "$commands/check-workflows.sh" "$@" ;;
+      *) drift_usage_error "Usage: drift check <dead-code|localization|workflows>" ;;
+    esac
+    ;;
+  ci)
+    subcommand=${1:-}
+    [ "$#" -eq 0 ] || shift
+    case "$subcommand" in
+      summary) exec "$commands/ci-summary.sh" "$@" ;;
+      record) exec "$commands/ci-record.sh" "$@" ;;
+      ship) exec "$commands/ci-ship.sh" "$@" ;;
+      *) drift_usage_error "Usage: drift ci <summary|record|ship>" ;;
     esac
     ;;
   env)
