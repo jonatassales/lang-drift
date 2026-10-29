@@ -1,6 +1,6 @@
 import { Skeleton } from '@ui/skeleton'
 
-const figures = ['first', 'second', 'third', 'fourth']
+const columns = ['first', 'second', 'third', 'fourth']
 
 // An Executions or History entry while it loads: its runtime and state over
 // the line of ids and the labelled figures.
@@ -13,7 +13,7 @@ export function ActivityEntrySkeleton() {
 			</div>
 			<Skeleton className="h-3 w-3/5" />
 			<div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-				{figures.map((key) => (
+				{columns.map((key) => (
 					<Skeleton key={key} className="h-8 w-full" />
 				))}
 			</div>
