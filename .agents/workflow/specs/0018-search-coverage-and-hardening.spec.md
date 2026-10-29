@@ -12,6 +12,11 @@ The website already carries most of what search engines read: localized titles a
 - Social images resolve against whatever origin the deployment environment reports, so the build cannot show they point at langdrift.md.
 - Only the home page describes itself in structured data.
 
+Two more surfaced while the first pull request was verified:
+
+- Under the production server, every `pt-br` and `zh-hant` URL loops on 308 and never renders. The proxy hands next-intl the lowercase prefix, next-intl rewrites to the locale route `/pt-BR` without the trailing slash Next is configured for, Next redirects that path, and the proxy lowercases it again. 16.3.5 and 16.4.3 behave the same.
+- next-intl also sends a `Link` header with its own hreflang alternates. They are built from the request host and carry a third x-default, the unprefixed path.
+
 Nothing pins any of it. A change to the page list, the sitemap or the metadata helper can drift without a failing test. The console is rightly kept out of search, but its tab titles collide or mislead, its brand strings live in TypeScript, and a missing page renders Next's English fallback.
 
 Neither app sets a Content-Security-Policy. The website sends no security headers at all and announces its framework. Both apps run Next.js releases with published critical advisories, including unauthenticated remote code execution, and the console pulls a zod release with a memory-exhaustion advisory through sinapsi. Nothing in continuous integration notices: the pinned govulncheck that spec 0002 promised never landed, and no job reads npm advisories.
@@ -115,6 +120,8 @@ extub answers like a hardened API. ex's API clients refuse redirects, insist on 
 47. As a team reading evidence, I want a provider failure recorded as its status and request id, never the provider's body, so that evidence stays token-free and small.
 48. As a CLI user, I want a malformed console URL reported without the URL itself, so that credentials pasted into it never reach the terminal or a log.
 49. As the owner, I want every contract above in the READMEs, together with a post-deploy checklist, so that what code cannot verify (domains, preload, Deployment Protection) is not forgotten.
+50. As a visitor reading in Portuguese or Traditional Chinese, I want every page to answer at its URL, so that the site works in my language and search engines can index it.
+51. As a crawler, I want hreflang from the HTML and the sitemap only, so that no response header contradicts them.
 
 ## Implementation Decisions
 
@@ -167,6 +174,8 @@ extub answers like a hardened API. ex's API clients refuse redirects, insist on 
 ### Website crawler contract
 
 - The metadata helper gives each page an x-default equal to its own English URL, the URL the sitemap already lists.
+- The website's next-intl routing turns `alternateLinks` off, as the console's does. The HTML and the sitemap are the only hreflang sources.
+- Every sitemap URL answers 200 under the production server. The locale rewrite targets a path Next serves without redirecting; the root cause and the fix are recorded with ticket 0121. The case-canonicalizing 308, the zh-CN fallback and the negotiating redirect at `/` keep working.
 - The social image files move under the localized segment whose layout sets `metadataBase`, so their absolute URLs resolve on langdrift.md at build time. If the build shows that Next still resolves them elsewhere, they stay where they are and the post-deploy checklist keeps the origin check. Each image keeps its alt text file.
 - The localized 404 carries its title from the route-state catalog.
 - Structured data:
