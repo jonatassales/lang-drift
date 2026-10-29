@@ -1,0 +1,12 @@
+{
+	"lap": "0002",
+	"stage": "planning",
+	"skill": "grilling",
+	"at": "2026-10-28T13:46:50Z",
+	"exitCode": 0,
+	"inputTokens": 300000,
+	"outputTokens": 20000,
+	"summary": "3 open questions settled",
+	"log": ".langdrift/agent/state/runs/console-microruntime/stages/0002-planning-grilling.log",
+	"elapsedMs": 1200
+}

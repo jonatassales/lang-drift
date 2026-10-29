@@ -10,6 +10,7 @@ import (
 	"github.com/jonatassales/tao/packages/contracts/configuration"
 	"github.com/jonatassales/tao/packages/ex/src/domain/collection"
 	"github.com/jonatassales/tao/packages/ex/src/domain/finops"
+	"github.com/jonatassales/tao/packages/ex/src/domain/harness"
 	"github.com/jonatassales/tao/packages/ex/src/domain/manifest"
 	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
@@ -42,12 +43,25 @@ type Records interface {
 	WriteRuntime(owner project.Project, runtime microruntime.Identifier, markdown []byte) error
 	WriteRun(owner project.Project, runtime microruntime.Identifier, record run.Run) error
 	WriteLedger(owner project.Project, runtimeID string, ledger finops.Ledger) error
+	ReadRun(owner project.Project, runtime microruntime.Identifier) (run.Run, error)
+	ReadLedger(owner project.Project, runtimeID string) (finops.Ledger, error)
 	Render(document Document) ([]byte, error)
 	Fence(config configuration.Configuration) (body []byte, sha256 string, err error)
 }
 
 // ErrBlocked says a check failed and the plan was not written.
 var ErrBlocked = errors.New("the plan is blocked")
+
+// ErrRunning says the runtime has a lap open, so it cannot be planned again
+// until that lap ended.
+var ErrRunning = errors.New("the runtime is running")
+
+// Spend keeps the planner's spend privately beside the laps, and sums what a
+// period spent from the private state alone: no gate reads the ledger mirror.
+type Spend interface {
+	SavePlanning(owner project.Project, runtime microruntime.Identifier, at harness.Timestamp, line finops.PlanningLine) error
+	Period(owner project.Project, period string) (int, error)
+}
 
 // Inspector reads a component's manifests.
 type Inspector interface {

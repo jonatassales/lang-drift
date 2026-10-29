@@ -1,0 +1,28 @@
+{
+	"mirror": {
+		"of": "cli",
+		"record": "budget-2026-10-9d4e",
+		"setBy": "owner",
+		"via": "cli",
+		"setAt": "2026-10-28T13:46:50Z",
+		"readOnly": true,
+		"note": "Written by ex from its own record. No gate reads this file; an edit here is shown as an unauthorized change."
+	},
+	"version": 1,
+	"status": "draft",
+	"owner": "team",
+	"currency": "USD",
+	"period": "2026-10",
+	"bounded": {
+		"periodCents": 50000,
+		"perRunCents": 2500,
+		"reserveMarginPercent": 20
+	},
+	"allocations": [
+		{
+			"ticket": "0070-console-microruntime",
+			"cents": 2500
+		}
+	],
+	"unallocatedCents": 47500
+}

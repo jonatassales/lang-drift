@@ -1,0 +1,12 @@
+{
+	"lap": "0002",
+	"stage": "implement",
+	"skill": "code-review",
+	"at": "2026-10-28T13:46:50Z",
+	"exitCode": 0,
+	"inputTokens": 400000,
+	"outputTokens": 20000,
+	"summary": "2 findings · fixed",
+	"log": ".langdrift/agent/state/runs/console-microruntime/stages/0002-implement-code-review.log",
+	"elapsedMs": 1200
+}

@@ -1,8 +1,11 @@
 package plan
 
 import (
+	"errors"
+	"fmt"
 	"path"
 
+	"github.com/jonatassales/tao/packages/ex/src/application"
 	"github.com/jonatassales/tao/packages/ex/src/application/inputs"
 	"github.com/jonatassales/tao/packages/ex/src/domain/collection"
 	"github.com/jonatassales/tao/packages/ex/src/domain/finops"
@@ -144,6 +147,10 @@ func (planning *planning) runRecord() run.Run {
 		record.State = Blocked
 	}
 
+	if previous := planning.previous; previous != nil {
+		record.Laps, record.Delivery, record.Window = previous.Laps, previous.Delivery, run.Window{Started: previous.Window.Started}
+	}
+
 	workflow := planning.guards.Workflow
 	if workflow == nil {
 		return record
@@ -185,7 +192,7 @@ func (planning *planning) ledger() finops.Ledger {
 		Ticket:   text(planning.ticket.Reference()),
 		State:    "provisional",
 		Currency: budget.Currency,
-		Bounded:  finops.LedgerBounds{PerRunCents: budget.Bounded.PerRunCents, TicketAllocationCents: planning.guards.Allocation(planning.ticket), PeriodLeftCents: budget.Bounded.PeriodCents},
+		Bounded:  finops.LedgerBounds{PerRunCents: budget.Bounded.PerRunCents, TicketAllocationCents: planning.guards.Allocation(planning.ticket), PeriodLeftCents: budget.Bounded.PeriodCents - planning.spent},
 		Planning: finops.PlanningLine{Model: nil, Note: "no collection agent ran; the plan was built by the deterministic shell, nothing paid", Cents: finops.PlanningCents{Billed: number(0)}},
 		Laps:     []finops.LapLine{},
 		Totals:   finops.LedgerTotals{Cents: finops.TotalCents{Billed: number(0)}, PeriodLeftAfterCents: budget.Bounded.PeriodCents},
@@ -199,7 +206,7 @@ func (planning *planning) ledger() finops.Ledger {
 	}
 
 	if !planning.judge.paid() {
-		return ledger
+		return planning.carryOver(ledger)
 	}
 
 	judge := planning.judge
@@ -216,7 +223,7 @@ func (planning *planning) ledger() finops.Ledger {
 		PeriodLeftAfterCents: budget.Bounded.PeriodCents - observed,
 	}
 
-	return ledger
+	return planning.carryOver(ledger)
 }
 
 func (component resolved) record(by string, share harness.Resources) run.Component {
@@ -240,4 +247,92 @@ func (component resolved) record(by string, share harness.Resources) run.Compone
 		Proposed:      component.proposed,
 		Executed:      run.Executed{CPUMillis: share.CPUMillis, MemoryMiB: share.MemoryMiB, Rule: run.EqualSplitRule},
 	}
+}
+
+// loadPrevious reads the records an earlier plan of this runtime left, and
+// refuses to plan over a run that is going on: a lap is open while the run
+// is running, waiting or failed.
+func (planning *planning) loadPrevious() error {
+	record, err := planning.service.Records.ReadRun(planning.owner, planning.runtime)
+	if errors.Is(err, application.ErrNotFound) {
+		return nil
+	}
+	if err != nil {
+		return err
+	}
+	if runIsOpen(record) {
+		return fmt.Errorf("%w: %s is %s with a lap open; let it end before planning again", ErrRunning, planning.runtime, record.State)
+	}
+	planning.previous = &record
+
+	ledger, err := planning.service.Records.ReadLedger(planning.owner, planning.runtime.String())
+	if errors.Is(err, application.ErrNotFound) {
+		return nil
+	}
+	if err != nil {
+		return err
+	}
+	planning.previousLedger = &ledger
+
+	return nil
+}
+
+// runIsOpen reports whether a lap of the run is open.
+func runIsOpen(record run.Run) bool {
+	switch record.State {
+	case run.StateRunning, run.StateWaiting, run.StateFailed:
+		return true
+	}
+
+	return false
+}
+
+// loadSpent reads what the budget's period has spent so far, from the laps'
+// and the plans' own state.
+func (planning *planning) loadSpent() error {
+	spent, err := planning.service.Spend.Period(planning.owner, planning.guards.Budget.Period)
+	if err != nil {
+		return err
+	}
+	planning.spent = spent
+
+	return nil
+}
+
+// carryOver keeps what the earlier plans and runs of the runtime cost: the
+// lap lines stay, and the planning line adds up.
+func (planning *planning) carryOver(ledger finops.Ledger) finops.Ledger {
+	previous := planning.previousLedger
+	if previous == nil {
+		return ledger
+	}
+
+	ledger.Laps = append([]finops.LapLine{}, previous.Laps...)
+	ledger.Planning = addPlanning(previous.Planning, ledger.Planning)
+	finops.SettleTotals(&ledger, planning.guards.Budget.Bounded.PeriodCents)
+
+	return ledger
+}
+
+// addPlanning adds an earlier planning line to the latest.
+func addPlanning(earlier, latest finops.PlanningLine) finops.PlanningLine {
+	sum := latest
+	sum.Cents.Estimate += earlier.Cents.Estimate
+	sum.Cents.Reserved += earlier.Cents.Reserved
+	sum.Cents.Observed += earlier.Cents.Observed
+	sum.Cents.Recovered += earlier.Cents.Recovered
+	sum.Cents.Overspend += earlier.Cents.Overspend
+	sum.Cents.Billed = nil
+	if earlier.Cents.Billed != nil && latest.Cents.Billed != nil {
+		billed := *earlier.Cents.Billed + *latest.Cents.Billed
+		sum.Cents.Billed = &billed
+	}
+	if latest.Model == nil {
+		sum.Model = earlier.Model
+	}
+	if earlier.Cents.Reserved > 0 || earlier.Cents.Observed > 0 {
+		sum.Note = latest.Note + "; the earlier plans of this runtime are added in"
+	}
+
+	return sum
 }

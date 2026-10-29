@@ -1,0 +1,34 @@
+{
+	"mirror": {
+		"of": "cli",
+		"record": "forecast-a613",
+		"setBy": "owner",
+		"via": "cli",
+		"setAt": "2026-10-28T13:46:50Z",
+		"readOnly": true,
+		"note": "Written by ex from its own record. No gate reads this file; an edit here is shown as an unauthorized change."
+	},
+	"version": 1,
+	"status": "draft",
+	"illustrative": true,
+	"note": "Tokens expected per effort, used when no earlier run measured tokens for the ticket.",
+	"unit": "thousands-of-tokens",
+	"byEffort": {
+		"low": {
+			"input": 2000,
+			"output": 120
+		},
+		"medium": {
+			"input": 3500,
+			"output": 250
+		},
+		"high": {
+			"input": 6000,
+			"output": 500
+		}
+	},
+	"planning": {
+		"input": 35,
+		"output": 5
+	}
+}

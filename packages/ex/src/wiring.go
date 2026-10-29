@@ -149,6 +149,7 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 			Inputs:    inputsinfra.Store{},
 			Records:   records.Runtimes{},
 			Index:     raginfra.Index{},
+			Spend:     records.LapStore{},
 			Embedder:  deps.Embedder,
 			Judge:     judgeOf(deps),
 			IDs:       deps.IDs,

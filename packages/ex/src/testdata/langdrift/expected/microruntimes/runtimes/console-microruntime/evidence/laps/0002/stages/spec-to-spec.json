@@ -1,0 +1,12 @@
+{
+	"lap": "0002",
+	"stage": "spec",
+	"skill": "to-spec",
+	"at": "2026-10-28T13:46:50Z",
+	"exitCode": 0,
+	"inputTokens": 400000,
+	"outputTokens": 30000,
+	"summary": "0011-SPEC revised · 3 acceptance criteria",
+	"log": ".langdrift/agent/state/runs/console-microruntime/stages/0002-spec-to-spec.log",
+	"elapsedMs": 1200
+}

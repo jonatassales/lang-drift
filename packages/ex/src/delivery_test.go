@@ -202,7 +202,7 @@ func TestRunBringsTheRuntimeUpObservesDeliveryAndRemembers(t *testing.T) {
 		"Lap 0001 followed the suggestion, Claude Sonnet 5.5 at medium effort and finished with $9.80 observed of $11.40 reserved.",
 		"## Worth remembering",
 		"- Claude Sonnet 5.5 at medium effort used 3.7M input and 240K output tokens; the next estimate for this ticket can start from these instead of the effort table.",
-		"- `/icon.svg` passed readiness for .",
+		"- `/icon.svg` passed readiness for `.`.",
 	} {
 		if !strings.Contains(memory, want) {
 			t.Errorf("run.md lacks %q:\n%s", want, memory)

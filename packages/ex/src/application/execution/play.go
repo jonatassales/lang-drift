@@ -35,6 +35,7 @@ type playing struct {
 	sink       session.Sink
 	by         string
 	confirm    Confirmer
+	bounds     finops.Bounds
 	checksWait time.Duration
 	now        func() harness.Timestamp
 }
@@ -335,7 +336,7 @@ func stageOf(record run.Run, id string) (run.StageState, bool) {
 // then writes the lap, the run record and the ledger.
 func (playing *playing) persist() error {
 	playing.settleLine()
-	settleTotals(&playing.ledger, playing.guards.Budget.Bounded.PeriodCents)
+	finops.SettleTotals(&playing.ledger, playing.guards.Budget.Bounded.PeriodCents)
 
 	playing.syncLapSummary()
 

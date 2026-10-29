@@ -13,6 +13,7 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	"github.com/jonatassales/tao/packages/ex/src/application/execution"
 	"github.com/jonatassales/tao/packages/ex/src/domain/finops"
+	"github.com/jonatassales/tao/packages/ex/src/domain/harness"
 	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 	"github.com/jonatassales/tao/packages/ex/src/domain/run"
@@ -62,26 +63,10 @@ func (LapStore) Save(owner project.Project, runtime microruntime.Identifier, lap
 
 // Open finds the lap that has not ended, if any.
 func (store LapStore) Open(owner project.Project, runtime microruntime.Identifier) (execution.Lap, bool, error) {
-	directory, err := files.Within(owner.Root, filepath.Join(".langdrift", "agent", "state", "runs", runtime.String(), "laps"))
+	names, err := lapNames(owner, runtime)
 	if err != nil {
 		return execution.Lap{}, false, err
 	}
-
-	entries, err := os.ReadDir(directory)
-	if errors.Is(err, fs.ErrNotExist) {
-		return execution.Lap{}, false, nil
-	}
-	if err != nil {
-		return execution.Lap{}, false, err
-	}
-
-	names := make([]string, 0, len(entries))
-	for _, entry := range entries {
-		if lapNumber.MatchString(entry.Name()) {
-			names = append(names, strings.TrimSuffix(entry.Name(), ".json"))
-		}
-	}
-	sort.Strings(names)
 
 	for index := len(names) - 1; index >= 0; index-- {
 		lap, err := store.Load(owner, runtime, names[index])
@@ -248,4 +233,140 @@ func resourcesTable(lap execution.Lap) string {
 	out.WriteString("| Model spend | | " + finops.Dollars(lap.Reserved) + " reserved | " + finops.Dollars(lap.ObservedCents) + ", billing pending | Ledger, lap " + lap.Number + " |\n")
 
 	return out.String()
+}
+
+// List reads every lap of a runtime, in order.
+func (store LapStore) List(owner project.Project, runtime microruntime.Identifier) ([]execution.Lap, error) {
+	names, err := lapNames(owner, runtime)
+	if err != nil {
+		return nil, err
+	}
+
+	laps := make([]execution.Lap, 0, len(names))
+	for _, name := range names {
+		lap, err := store.Load(owner, runtime, name)
+		if err != nil {
+			return nil, err
+		}
+		laps = append(laps, lap)
+	}
+
+	return laps, nil
+}
+
+// planningSpend is the planner's spend as the private state keeps it,
+// beside the laps, so a gate can count it without reading the ledger mirror.
+type planningSpend struct {
+	At   harness.Timestamp   `json:"at"`
+	Line finops.PlanningLine `json:"line"`
+}
+
+// SavePlanning keeps what the planner's calls cost.
+func (LapStore) SavePlanning(owner project.Project, runtime microruntime.Identifier, at harness.Timestamp, line finops.PlanningLine) error {
+	path, err := planningPath(owner, runtime)
+	if err != nil {
+		return err
+	}
+
+	return files.WriteJSON(path, planningSpend{At: at, Line: line})
+}
+
+// Period sums what every runtime's laps and planning observed in a period,
+// from the private state alone.
+func (store LapStore) Period(owner project.Project, period string) (int, error) {
+	directory, err := files.Within(owner.Root, filepath.Join(".langdrift", "agent", "state", "runs"))
+	if err != nil {
+		return 0, err
+	}
+
+	entries, err := os.ReadDir(directory)
+	if errors.Is(err, fs.ErrNotExist) {
+		return 0, nil
+	}
+	if err != nil {
+		return 0, err
+	}
+
+	total := 0
+	for _, entry := range entries {
+		runtime, err := microruntime.ParseIdentifier(entry.Name())
+		if !entry.IsDir() || err != nil {
+			continue
+		}
+
+		laps, err := store.List(owner, runtime)
+		if err != nil {
+			return 0, err
+		}
+		for _, lap := range laps {
+			if inPeriod(lap.Started, period) {
+				total += lap.ObservedCents
+			}
+		}
+
+		spent, err := store.planning(owner, runtime)
+		if err != nil {
+			return 0, err
+		}
+		if spent != nil && inPeriod(spent.At, period) {
+			total += spent.Line.Cents.Observed
+		}
+	}
+
+	return total, nil
+}
+
+// planning reads a runtime's planning spend, when a plan kept one.
+func (LapStore) planning(owner project.Project, runtime microruntime.Identifier) (*planningSpend, error) {
+	path, err := planningPath(owner, runtime)
+	if err != nil {
+		return nil, err
+	}
+
+	var spent planningSpend
+
+	err = files.ReadJSON(path, &spent)
+	if errors.Is(err, fs.ErrNotExist) {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	return &spent, nil
+}
+
+func planningPath(owner project.Project, runtime microruntime.Identifier) (string, error) {
+	return files.Within(owner.Root, filepath.Join(".langdrift", "agent", "state", "runs", runtime.String(), "planning.json"))
+}
+
+// inPeriod reports whether a moment falls in a budget period, YYYY-MM.
+func inPeriod(moment harness.Timestamp, period string) bool {
+	return moment.UTC().Format("2006-01") == period
+}
+
+// lapNames lists a runtime's laps by number, in order.
+func lapNames(owner project.Project, runtime microruntime.Identifier) ([]string, error) {
+	directory, err := files.Within(owner.Root, filepath.Join(".langdrift", "agent", "state", "runs", runtime.String(), "laps"))
+	if err != nil {
+		return nil, err
+	}
+
+	entries, err := os.ReadDir(directory)
+	if errors.Is(err, fs.ErrNotExist) {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	names := make([]string, 0, len(entries))
+	for _, entry := range entries {
+		if lapNumber.MatchString(entry.Name()) {
+			names = append(names, strings.TrimSuffix(entry.Name(), ".json"))
+		}
+	}
+	sort.Strings(names)
+
+	return names, nil
 }

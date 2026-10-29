@@ -32,11 +32,14 @@ type Records interface {
 }
 
 // Laps keeps the private state of each lap, from which the lap file is
-// rendered at every change.
+// rendered at every change, and sums what a period spent from that state
+// alone: no gate reads the ledger mirror.
 type Laps interface {
 	Load(owner project.Project, runtime microruntime.Identifier, number string) (Lap, error)
 	Save(owner project.Project, runtime microruntime.Identifier, lap Lap) error
 	Open(owner project.Project, runtime microruntime.Identifier) (Lap, bool, error)
+	List(owner project.Project, runtime microruntime.Identifier) ([]Lap, error)
+	Period(owner project.Project, period string) (int, error)
 }
 
 // Lap is one attempt of the run, as the private state keeps it.

@@ -19,8 +19,10 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	app "github.com/jonatassales/tao/packages/ex/src/application/connected"
 	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
+	"github.com/jonatassales/tao/packages/ex/src/domain/harness"
 	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
+	"github.com/jonatassales/tao/packages/ex/src/domain/run"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/configuration"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/files"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/process"
@@ -106,22 +108,16 @@ func blueprint(owner project.Project, config connection.Configuration) (microrun
 	cpu, _ := microruntime.ParseQuantity(strconv.Itoa(config.CPUMillis) + "m")
 	memory, _ := microruntime.ParseQuantity(strconv.Itoa(config.MemoryMiB) + "Mi")
 	plan := microruntime.Blueprint{Owner: config.ProjectID, Target: microruntime.KubernetesTarget{Context: "kind-" + owner.ClusterName(), Namespace: runtime}, Quotas: microruntime.ResourceQuotas{microruntime.QuotaRequestsCPU: cpu, microruntime.QuotaLimitsCPU: cpu, microruntime.QuotaRequestsMemory: memory, microruntime.QuotaLimitsMemory: memory}}
+	// The shares are the plan's own rule: an equal split of the envelope.
+	shares := run.SplitEnvelope(harness.Resources{CPUMillis: config.CPUMillis, MemoryMiB: config.MemoryMiB}, len(config.Components))
 	for i, component := range config.Components {
 		name, _ := microruntime.ParseIdentifier("c-" + digest([]byte(component.Path))[:12])
 		relative, err := microruntime.ParseComponentPath(component.Path)
 		if err != nil {
 			return plan, err
 		}
-		cpuShare := config.CPUMillis / len(config.Components)
-		memoryShare := config.MemoryMiB / len(config.Components)
-		if i < config.CPUMillis%len(config.Components) {
-			cpuShare++
-		}
-		if i < config.MemoryMiB%len(config.Components) {
-			memoryShare++
-		}
-		cpu, _ := microruntime.ParseQuantity(strconv.Itoa(cpuShare) + "m")
-		memory, _ := microruntime.ParseQuantity(strconv.Itoa(memoryShare) + "Mi")
+		cpu, _ := microruntime.ParseQuantity(strconv.Itoa(shares[i].CPUMillis) + "m")
+		memory, _ := microruntime.ParseQuantity(strconv.Itoa(shares[i].MemoryMiB) + "Mi")
 		plan.Workloads = append(plan.Workloads, microruntime.Workload{Name: name, Component: relative, Image: component.Image, Kind: microruntime.DeploymentWorkload, Resources: microruntime.Resources{CPURequest: cpu, CPULimit: cpu, MemoryRequest: memory, MemoryLimit: memory}, Service: microruntime.ServiceSpec{Port: component.Port, ReadinessPath: component.ReadinessPath, Replicas: 1}})
 	}
 	return plan, plan.Validate()

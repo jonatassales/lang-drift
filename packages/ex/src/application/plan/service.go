@@ -23,6 +23,7 @@ type Service struct {
 	Inputs    inputs.Store
 	Records   Records
 	Index     Index
+	Spend     Spend
 	Embedder  rag.Embedder
 	// Judge answers the planner's questions; nil plans without one.
 	Judge Judge
@@ -108,6 +109,14 @@ func (service Service) Plan(ctx context.Context, request Request) (Result, error
 	}
 
 	if err := planning.collect(ticketPath); err != nil {
+		return Result{}, err
+	}
+
+	if err := planning.loadPrevious(); err != nil {
+		return Result{}, err
+	}
+
+	if err := planning.loadSpent(); err != nil {
 		return Result{}, err
 	}
 

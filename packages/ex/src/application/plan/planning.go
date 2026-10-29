@@ -48,6 +48,11 @@ type planning struct {
 	state      string
 	config     configuration.Configuration
 	fenceSHA   string
+
+	// What earlier plans and runs of the runtime left, and what the period spent.
+	previous       *run.Run
+	previousLedger *finops.Ledger
+	spent          int
 }
 
 // analysis is what the judge said about the sources.
@@ -153,7 +158,7 @@ func (planning *planning) judgeUnavailable() string {
 func (planning *planning) bounds() finops.Bounds {
 	budget := planning.guards.Budget.Bounded
 
-	return finops.Bounds{PerRunCents: budget.PerRunCents, TicketAllocationCents: planning.guards.Allocation(planning.ticket), PeriodLeftCents: budget.PeriodCents}
+	return finops.Bounds{PerRunCents: budget.PerRunCents, TicketAllocationCents: planning.guards.Allocation(planning.ticket), PeriodLeftCents: budget.PeriodCents - planning.spent}
 }
 
 func gateDetail(gates []finops.GateResult) string {
@@ -407,7 +412,7 @@ func (planning *planning) resolve() error {
 	}
 
 	planning.components = components
-	planning.checks = crossChecks(components, planning.resources, planning.guards.Envelope.PerExecution)
+	planning.checks = append(crossChecks(components, planning.resources, planning.guards.Envelope.PerExecution), completeness(components))
 	planning.emit(session.CrossCheck, session.Data{"ports": distinctPorts(components), "images": len(components), "collisions": collisionsOf(planning.checks)})
 
 	planning.totals = totalsOf(components, planning.resources)
@@ -424,6 +429,9 @@ func (planning *planning) inspect(input ComponentInput) (resolved, error) {
 	inspection, err := planning.service.Inspector.Inspect(planning.owner, input.Path)
 	if err != nil {
 		return resolved{}, fmt.Errorf("component %s: %w", input.Path, err)
+	}
+	if input.Port == 0 {
+		input.Port = inspection.Port
 	}
 
 	component := resolved{input: input, manifestName: orDefault(inspection.Manifest, noManifest), kind: orDefault(input.Kind, orDefault(inspection.Kind, manifest.Web))}
@@ -537,12 +545,13 @@ func (planning *planning) configuration(uid string, revision int) configuration.
 		config.LLMBudgetUSD = &budget
 	}
 
-	for _, component := range planning.request.Components {
-		build := component.Build
+	for _, component := range planning.components {
+		input := component.input
+		build := input.Build
 		if build.Args == nil {
 			build.Args = []string{}
 		}
-		config.Components = append(config.Components, configuration.Component{Path: component.Path, Image: component.Image, Port: component.Port, ReadinessPath: component.ReadinessPath, Build: &build})
+		config.Components = append(config.Components, configuration.Component{Path: input.Path, Image: input.Image, Port: input.Port, ReadinessPath: input.ReadinessPath, Build: &build})
 	}
 
 	return config
@@ -575,7 +584,12 @@ func (planning *planning) write() error {
 		return err
 	}
 
-	return planning.service.Records.WriteLedger(planning.owner, planning.runtime.String(), planning.ledger())
+	ledger := planning.ledger()
+	if err := planning.service.Records.WriteLedger(planning.owner, planning.runtime.String(), ledger); err != nil {
+		return err
+	}
+
+	return planning.service.Spend.SavePlanning(planning.owner, planning.runtime, planning.now, ledger.Planning)
 }
 
 func (planning *planning) emit(id string, data session.Data) {

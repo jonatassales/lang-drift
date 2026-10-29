@@ -259,3 +259,39 @@ func nonNil[Item any](items []Item) []Item {
 
 	return items
 }
+
+// completeness is the check that every component names what the fence
+// needs: an image, a port, a readiness path and a build recipe. A missing
+// one blocks the plan with the field named.
+func completeness(components []resolved) run.Check {
+	var missing []string
+	for _, component := range components {
+		if fields := missingFields(component.input); len(fields) > 0 {
+			missing = append(missing, component.input.Path+": "+strings.Join(fields, ", "))
+		}
+	}
+
+	if len(missing) == 0 {
+		return run.Check{ID: "components-complete", Result: passed, Detail: text("image, port, readiness and build named for every component")}
+	}
+
+	return run.Check{ID: "components-complete", Result: failed, Detail: text("missing " + strings.Join(missing, " · "))}
+}
+
+func missingFields(input ComponentInput) []string {
+	var fields []string
+	if input.Image == "" {
+		fields = append(fields, "image")
+	}
+	if input.Port == 0 {
+		fields = append(fields, "port")
+	}
+	if input.ReadinessPath == "" {
+		fields = append(fields, "readiness")
+	}
+	if input.Build.Executable == "" {
+		fields = append(fields, "build")
+	}
+
+	return fields
+}

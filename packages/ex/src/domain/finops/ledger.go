@@ -95,3 +95,32 @@ type TotalCents struct {
 	Recovered int  `json:"recovered"`
 	Overspend int  `json:"overspend"`
 }
+
+// SettleTotals sums the ledger's lines and says what the period has left
+// after them. Billed stays unknown while any line's is.
+func SettleTotals(ledger *Ledger, periodCents int) {
+	totals := TotalCents{Reserved: ledger.Planning.Cents.Reserved, Observed: ledger.Planning.Cents.Observed, Recovered: ledger.Planning.Cents.Recovered, Overspend: ledger.Planning.Cents.Overspend}
+	billed, known := 0, ledger.Planning.Cents.Billed != nil
+	if known {
+		billed = *ledger.Planning.Cents.Billed
+	}
+
+	for _, line := range ledger.Laps {
+		totals.Reserved += line.Cents.Reserved
+		totals.Observed += line.Cents.Observed
+		totals.Recovered += line.Cents.Recovered
+		totals.Overspend += line.Cents.Overspend
+		if line.Cents.Billed == nil {
+			known = false
+
+			continue
+		}
+		billed += *line.Cents.Billed
+	}
+
+	if known {
+		totals.Billed = &billed
+	}
+
+	ledger.Totals = LedgerTotals{Cents: totals, PeriodLeftAfterCents: periodCents - totals.Observed}
+}

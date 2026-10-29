@@ -208,8 +208,17 @@ func (service Service) Start(ctx context.Context, request StartRequest) (StartRe
 
 	lap.Requested = finops.RequestedReservation(lap.EstimateCents, budget.Bounded.ReserveMarginPercent)
 	allocation := guards.AllocationOf(ticketReference(planned))
-	bounds := finops.Bounds{PerRunCents: budget.Bounded.PerRunCents, TicketAllocationCents: allocation, PeriodLeftCents: budget.Bounded.PeriodCents - ledger.Totals.Cents.Observed}
-	authorization := finops.Authorization{Priced: priced, Allocated: allocation > 0, Overspend: overspent(ledger), Acknowledged: request.AcknowledgeOverspend}
+	spent, err := service.Laps.Period(owner, budget.Period)
+	if err != nil {
+		return StartResult{}, err
+	}
+	overspent, err := service.overspent(owner, runtime)
+	if err != nil {
+		return StartResult{}, err
+	}
+	bounds := finops.Bounds{PerRunCents: budget.Bounded.PerRunCents, TicketAllocationCents: allocation, PeriodLeftCents: budget.Bounded.PeriodCents - spent}
+	playing.bounds = bounds
+	authorization := finops.Authorization{Priced: priced, Allocated: allocation > 0, Overspend: overspent, Acknowledged: request.AcknowledgeOverspend}
 	lap.Gates = finops.BeforeAuthorization(authorization, lap.Requested, bounds)
 
 	lap.Steps = append(lap.Steps, Step{Name: "Estimated", At: now, Note: finops.Dollars(lap.EstimateCents) + " for " + finops.Tokens(forecast.Input) + " input and " + finops.Tokens(forecast.Output) + " output tokens"})
@@ -255,9 +264,10 @@ func (playing *playing) pause(now harness.Timestamp) (StartResult, error) {
 	}
 
 	if gate.ID == "FG-03" {
+		bound, boundCents := exceededBound(lap.Requested, playing.bounds)
 		lap.Outcome = PausedAtGate
-		lap.Steps = append(lap.Steps, Step{Name: "Paused", At: now, Note: "FG-03: a " + finops.Dollars(lap.Requested) + " reservation exceeds the " + finops.Dollars(bounded.PerRunCents) + " per-run cap"})
-		emit(sink, session.GatePaused, session.Data{"reservedCents": lap.Requested, "perRunCents": bounded.PerRunCents})
+		lap.Steps = append(lap.Steps, Step{Name: "Paused", At: now, Note: "FG-03: a " + finops.Dollars(lap.Requested) + " reservation exceeds the " + finops.Dollars(boundCents) + " " + bound})
+		emit(sink, session.GatePaused, session.Data{"reservedCents": lap.Requested, "perRunCents": bounded.PerRunCents, "bound": bound, "boundCents": boundCents})
 		emit(sink, session.Paused, nil)
 	} else {
 		lap.Steps = append(lap.Steps, Step{Name: "Blocked", At: now, Note: gate.ID + ": " + detail})
@@ -267,7 +277,7 @@ func (playing *playing) pause(now harness.Timestamp) (StartResult, error) {
 	record.State, record.Outcome = run.StatePaused, text(run.StatePaused)
 	record.Laps = append(record.Laps, summaryOf(*lap))
 	ledger.Laps = append(ledger.Laps, lineOf(*lap))
-	settleTotals(ledger, bounded.PeriodCents)
+	finops.SettleTotals(ledger, bounded.PeriodCents)
 
 	if err := playing.service.persist(playing.owner, playing.runtime, *lap, *record, *ledger); err != nil {
 		return StartResult{}, err
@@ -354,15 +364,21 @@ func ticketReference(planned run.Plan) string {
 	return orDefault(planned.Ticket.Slug, path.Base(planned.Ticket.Path))
 }
 
-// overspent reports whether an earlier lap of the run overspent.
-func overspent(ledger finops.Ledger) bool {
-	for _, line := range ledger.Laps {
-		if line.Cents.Overspend > 0 {
-			return true
+// overspent reports whether an earlier lap of the run spent more than it
+// reserved, from the laps' own state: no gate reads the ledger mirror.
+func (service Service) overspent(owner project.Project, runtime microruntime.Identifier) (bool, error) {
+	laps, err := service.Laps.List(owner, runtime)
+	if err != nil {
+		return false, err
+	}
+
+	for _, lap := range laps {
+		if lap.Over() && lap.ObservedCents > lap.Reserved {
+			return true, nil
 		}
 	}
 
-	return false
+	return false, nil
 }
 
 func failing(gates []finops.GateResult) finops.GateResult {
@@ -411,34 +427,6 @@ func lineOf(lap Lap) finops.LapLine {
 	return line
 }
 
-// settleTotals sums the ledger's lines. Billed stays unknown while any line's is.
-func settleTotals(ledger *finops.Ledger, periodCents int) {
-	totals := finops.TotalCents{Reserved: ledger.Planning.Cents.Reserved, Observed: ledger.Planning.Cents.Observed, Recovered: ledger.Planning.Cents.Recovered, Overspend: ledger.Planning.Cents.Overspend}
-	billed, known := 0, ledger.Planning.Cents.Billed != nil
-	if known {
-		billed = *ledger.Planning.Cents.Billed
-	}
-
-	for _, line := range ledger.Laps {
-		totals.Reserved += line.Cents.Reserved
-		totals.Observed += line.Cents.Observed
-		totals.Recovered += line.Cents.Recovered
-		totals.Overspend += line.Cents.Overspend
-		if line.Cents.Billed == nil {
-			known = false
-
-			continue
-		}
-		billed += *line.Cents.Billed
-	}
-
-	if known {
-		totals.Billed = number(billed)
-	}
-
-	ledger.Totals = finops.LedgerTotals{Cents: totals, PeriodLeftAfterCents: periodCents - totals.Observed}
-}
-
 func emit(sink session.Sink, id string, data session.Data) {
 	sink.Emit(session.Event{Session: session.RunSession, ID: id, Data: data})
 }
@@ -479,4 +467,18 @@ func plainModel(model string) bool {
 // knownEffort reports whether an effort flag is empty or one of the three efforts.
 func knownEffort(effort string) bool {
 	return effort == "" || harness.ValidEffort(effort)
+}
+
+// exceededBound names the first bound a reservation went past, in the order
+// FG-03 checks them: the per-run cap, which the website calls the budget,
+// the ticket's allocation, then what is left of the period.
+func exceededBound(requested int, bounds finops.Bounds) (string, int) {
+	switch {
+	case requested > bounds.PerRunCents:
+		return "budget", bounds.PerRunCents
+	case requested > bounds.TicketAllocationCents:
+		return "allocation", bounds.TicketAllocationCents
+	}
+
+	return "left of the period", bounds.PeriodLeftCents
 }

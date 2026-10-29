@@ -161,7 +161,12 @@ var catalog = map[string]line{
 		return Actor + "gate       reserved " + finops.Dollars(number(data, "reservedCents")) + " of " + finops.Dollars(number(data, "perRunCents")) + " · opened"
 	}},
 	key(session.RunSession, session.GatePaused): {session.Warning, func(data session.Data) string {
-		return Actor + "gate       reservation " + finops.Dollars(number(data, "reservedCents")) + " exceeds the " + finops.Dollars(number(data, "perRunCents")) + " budget · paused"
+		bound, boundCents := text(data, "bound"), number(data, "boundCents")
+		if bound == "" {
+			bound, boundCents = "budget", number(data, "perRunCents")
+		}
+
+		return Actor + "gate       reservation " + finops.Dollars(number(data, "reservedCents")) + " exceeds the " + finops.Dollars(boundCents) + " " + bound + " · paused"
 	}},
 	key(session.RunSession, session.GateBlocked): {session.Error, func(data session.Data) string {
 		return Actor + "gate       blocked · " + text(data, "gate") + " · " + text(data, "detail")

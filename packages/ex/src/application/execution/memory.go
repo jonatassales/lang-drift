@@ -113,7 +113,7 @@ func (playing *playing) lessons() ([]string, []string) {
 		if lap.Outcome != PausedAtGate || !lap.NothingPaid {
 			continue
 		}
-		lessons = append(lessons, "At this ticket's size, "+playing.modelName(lap.Choice.Model)+" at "+lap.Choice.Effort+" effort needs a reservation above the "+finops.Dollars(perRunCap)+" cap: "+finops.Dollars(lap.ReservedCents)+" was asked for.")
+		lessons = append(lessons, "At this ticket's size, "+playing.modelName(lap.Choice.Model)+" at "+lap.Choice.Effort+" effort needs a reservation above the "+finops.Dollars(perRunCap)+" cap: "+finops.Dollars(playing.requestedOf(lap.Number))+" was asked for.")
 		facts = append(facts, slug(lap.Choice.Model)+"-"+lap.Choice.Effort+"-exceeds-per-run-cap")
 	}
 
@@ -130,7 +130,7 @@ func (playing *playing) lessons() ([]string, []string) {
 
 	if playing.lap.Ready != nil {
 		for _, component := range playing.config.Components {
-			lessons = append(lessons, "`"+component.ReadinessPath+"` passed readiness for "+component.Path+".")
+			lessons = append(lessons, "`"+component.ReadinessPath+"` passed readiness for `"+component.Path+"`.")
 			facts = append(facts, "readiness-"+slug(component.ReadinessPath))
 		}
 	}
@@ -205,4 +205,15 @@ func slug(value string) string {
 	}
 
 	return strings.TrimSuffix(out.String(), "-")
+}
+
+// requestedOf is the reservation a lap asked for, from its ledger line.
+func (playing *playing) requestedOf(number string) int {
+	for _, line := range playing.ledger.Laps {
+		if line.Lap == number {
+			return line.Cents.RequestedReservation
+		}
+	}
+
+	return 0
 }

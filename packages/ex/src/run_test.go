@@ -55,7 +55,7 @@ func TestRunPausesAtTheGateThenOpensALap(t *testing.T) {
 		"**Choice:** Claude Opus 5.5 at high effort, chosen by owner over the suggestion",
 		"**Outcome:** paused at gate FG-03, nothing paid",
 		"| Estimated | 13:46:50 | $34.00 for 6M input and 500K output tokens |",
-		"| Paused | 13:46:50 | FG-03: a $40.80 reservation exceeds the $25.00 per-run cap |",
+		"| Paused | 13:46:50 | FG-03: a $40.80 reservation exceeds the $25.00 budget |",
 		"No runtime revision was materialized and no execution was claimed, so nothing was observed.",
 	} {
 		if !strings.Contains(first, want) {
