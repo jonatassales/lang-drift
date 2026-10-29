@@ -9,10 +9,10 @@ cd "$DRIFT_PROJECT_ROOT"
 # through, a module or export nothing uses, a dependency nothing imports, a
 # turbo.json variable nothing reads, a CSS class no markup carries. A reference
 # in a comment counts, so code parked in comments keeps what it needs. Folders
-# held by a .gitkeep are never examined. platform/quality/dead-code.allow lists
-# what the owner keeps on purpose.
+# held by a .gitkeep are never examined. The allowlist below lists what the
+# owner keeps on purpose.
 
-allowlist=platform/quality/dead-code.allow
+allowlist=platform/cli/src/exceptions/dead-code.allow
 findings=$(mktemp)
 sources=$(mktemp)
 # drift's own EXIT trap prints the queued results, so this one chains to it.

@@ -10,8 +10,8 @@ Monorepo with four packages, `@langdrift/tokens`, `@langdrift/web`, the `ex` CLI
 - `packages/<capability>/`: shared across apps, never inside one. `tokens`, `web`, `ex` and `contracts` exist; `shell`, `account` and `runtime` are planned.
 - `packages/ex`, `packages/contracts` and `apps/extub` are Go modules tied together by the root `go.work`: Turborepo runs their `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds them (no Go toolchain required for frontend work).
 - A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package. Package scope: `@langdrift/*`.
-- `.github/`: GitHub Actions. Entry workflows are named after their event (`pull-request.yml`, `main.yml`), `validate.yml` is the validation they share, and `telemetry.yml` ships each run to Better Stack; composite actions sit in `actions/<name>/`. Publishing gets its own workflow file. See Continuous integration.
-- `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, `quality/` the lint-staged config, the Biome plugin and `dead-code.allow`, `versioning/` the commitlint config and the Git hooks (`.husky/`), `observability/` the jq programs that turn CI runs into Better Stack events and job summary tables, `docs/` the README's translations and, under `assets/images/`, its light and dark banners with the SVG sources the PNGs are rendered from. The English `README.md` sits at the root; each README links every language right after the banner and the headline.
+- `.github/`: GitHub Actions. Entry workflows are named after their event (`pull-request.yml`, `main.yml`), `validate.yml` is the validation they share, and `telemetry.yml` ships each run to Better Stack; composite actions sit in `actions/<name>/` and the pull request widgets in `widgets/`. Publishing gets its own workflow file. See Continuous integration.
+- `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI and its `src/exceptions/dead-code.allow`, `versioning/` the commitlint config and the Git hooks (`.husky/`), `observability/` the jq programs that turn CI runs into Better Stack events and job summary tables, `docs/` the README's translations and, under `assets/images/`, its light and dark banners with the SVG sources the PNGs are rendered from. The English `README.md` sits at the root; each README links every language right after the banner and the headline.
 - `turbo.json` declares the environment each task may see: Turborepo runs in strict mode, so a variable reaches a task only through `globalEnv`, a task's `env` or the pass-through lists. `apps/website/README.md` holds the website's variable contract and its tracked `.env.development` the shared development defaults, including a development-only `CRYPTO_SECRET`; deployed environments set their own value, and `CRYPTO_SECRET` stays pass-through only in Turborepo. The `build` task declares `VERCEL_ENV` in its `env`: the website's header policy differs on preview builds, so a preview and a production build must never share a cache entry.
 
 ## Toolchain and commands
@@ -38,15 +38,15 @@ Run from the repository root:
 
 The website needs `CRYPTO_SECRET` even locally; without it every page answers 500. The tracked `.env.development` carries a development-only key, so a fresh checkout runs; `apps/website/README.md` says how to generate one for a deployment.
 
-`biome.json` owns formatting and import order: tabs, lines up to 80 columns, single quotes (double in JSX attributes), no semicolons, and imports grouped as packages, then aliases (`@/`, `#`, `~` and the website's `@app/*`, `@components/*`, `@i18n/*`, `@state`, …), then relative paths, separated by blank lines. An object literal with more than one property puts each property on its own line; `platform/quality/multi-property-object.grit` reports violations.
+`biome.json` owns formatting and import order: tabs, lines up to 80 columns, single quotes (double in JSX attributes), no semicolons, and imports grouped as packages, then aliases (`@/`, `#`, `~` and the website's `@app/*`, `@components/*`, `@i18n/*`, `@state`, …), then relative paths, separated by blank lines.
 
 `check` and `fix` are root tasks with caching off on purpose: their inputs span every package, which a root task's cache key does not reliably cover, and Biome is fast enough without it.
 
 ## Platform CLI
 
-`platform/cli/drift` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `reset`, `check dead-code|localization|workflows`, `ci summary|record|ship`, `env setup|validate` and `git setup|doctor|pre-commit|commit-msg|lint-history`. The `ci` commands serve the workflows (see Continuous integration) and need `gh`, `jq` and `curl`.
+`platform/cli/drift` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `reset`, `check biome|dead-code|localization|rules|workflows`, `ci summary|record|ship`, `env setup|validate`, `git setup|doctor|pre-commit|commit-msg|lint-history` and `widget check-run|sticky-comment`. The `ci` and `widget` commands serve the workflows (see Continuous integration): the `ci` commands need `gh`, `jq` and `curl`, the `widget` commands `gh` and `jq`.
 
-`drift check dead-code` finds code that only served something a refactor removed: a tsconfig alias nothing imports through, a module or export nothing uses, a dependency nothing imports, a `turbo.json` variable nothing reads, a CSS class no markup carries. A reference in a comment counts, so code parked in comments keeps what it needs, and folders held by a `.gitkeep` are never examined. Run it after a refactor; CI runs it in the Check job. `platform/quality/dead-code.allow` lists what the owner keeps on purpose.
+`drift check dead-code` finds code that only served something a refactor removed: a tsconfig alias nothing imports through, a module or export nothing uses, a dependency nothing imports, a `turbo.json` variable nothing reads, a CSS class no markup carries. A reference in a comment counts, so code parked in comments keeps what it needs, and folders held by a `.gitkeep` are never examined. Run it after a refactor; CI runs it in the Check job. `platform/cli/src/exceptions/dead-code.allow` lists what the owner keeps on purpose.
 
 When the shell resolves `drift` to another program (a link from an older checkout, say), `drift setup` says which one and how to fix `PATH`.
 
@@ -73,12 +73,12 @@ Workflow: `research` when a question needs primary sources, then `grill-with-doc
 
 - `.agents/policies/human-in-the-loop.policy.md` sets where the owner takes part, which stages run on their own and what gates them. It belongs to this project and team; the skills read it instead of assuming.
 - A direct request to build or change application code enters the workflow: start with the `grilling` skill, plus `domain-modeling` when terms or decisions settle, instead of writing code.
-- `.claude/hooks/guard-implement-effort.sh` blocks `implement` for the current session until `.agents/prompts/llm-effort-analyzer.prompt.md` has recorded its result at `.agents/workflow/.effort-log/<session_id>.md`.
+- `.claude/hooks/guard-implement-effort.sh` blocks `implement` for the current session until the `llm-effort-analyzer` skill (`.claude/skills/llm-effort-analyzer/SKILL.md`) has recorded its result at `.agents/workflow/.effort-log/<session_id>.md`.
 - The commit-msg hook rejects a commit that changes `apps/` or `packages/` without a `Ticket: <NNNN>` trailer naming an existing ticket.
 
 ### Agent skills
 
-The skills in `.claude/skills/` are adapted from mattpocock/skills (MIT, see `.claude/skills/LICENSE`). Each `SKILL.md` records its source in its frontmatter.
+The skills in `.claude/skills/` are adapted from mattpocock/skills (MIT, see `.claude/skills/LICENSE`), except `llm-effort-analyzer`, which is this project's own. Each `SKILL.md` records its source in its frontmatter.
 
 ### Issue tracker
 
@@ -105,7 +105,7 @@ Single context. The glossary is the `## Glossary` section of this file, and ADRs
 
 ## Continuous integration
 
-GitHub reads workflows only from the top of `.github/workflows/`, so file names carry the structure. An entry workflow is named after the event that starts it, a reusable one after the work it does, and it declares only `workflow_call`. Each composite action is `.github/actions/<name>/action.yml` and nothing else; scripts belong to `drift`. All names are kebab-case.
+GitHub reads workflows only from the top of `.github/workflows/`, so file names carry the structure. An entry workflow is named after the event that starts it, a reusable one after the work it does, and it declares only `workflow_call`. Each composite action is `.github/actions/<name>/action.yml` and nothing else; scripts belong to `drift`, except the pull request widgets, which live in `.github/widgets/` and run through `drift widget`. All names are kebab-case.
 
 | File | Runs on | Does |
 | --- | --- | --- |
@@ -115,6 +115,7 @@ GitHub reads workflows only from the top of `.github/workflows/`, so file names 
 | `workflows/telemetry.yml` | a completed Pull request or Main run, or a manual replay | the run record, shipped to Better Stack |
 | `actions/setup-workspace/` | a step | installs pnpm, Node.js, Go and the dependencies |
 | `actions/turbo-summary/` | a step | the job's Turborepo run summaries as a job summary table and an artifact |
+| `widgets/` | a step, through `drift widget` | the pull request widgets: a check run and a sticky comment (see Widgets) |
 
 Sign-up is paused in the website's code, so CI builds it without any service values and never reaches a live service. A reusable workflow's checks read `Validate / Build`:
 
@@ -130,6 +131,45 @@ Sign-up is paused in the website's code, so CI builds it without any service val
 Actions, container images and downloaded tools are pinned to full commit SHAs, digests or checksums, with the version in a comment. The workflow tokens are read-only; a job that needs more, such as the attestation's `id-token` and `attestations`, asks for it itself.
 
 `drift check workflows` enforces these conventions: actionlint, pinned, then the layout, a top-level `permissions:` in every workflow, a SHA pin with its version for every action outside the repository, no `${{ }}` inside a `run:` script (values reach scripts through `env:`) and `retention-days` on every uploaded artifact.
+
+### Widgets
+
+A widget is what a workflow shows on a pull request instead of plain job output. `.github/widgets/` holds one `drift widget` command per kind. Each reads its Markdown on stdin, so a job renders the content and pipes it in.
+
+| Command | Shows | Needs |
+| --- | --- | --- |
+| `drift widget check-run <name> <conclusion> <title>` | a completed check run on commit `WIDGET_SHA`, with the title and the Markdown summary | `checks: write`, `GH_TOKEN`, `WIDGET_SHA` |
+| `drift widget sticky-comment <key>` | one comment per key on pull request `WIDGET_PULL_REQUEST`, edited in place on every run | `pull-requests: write`, `GH_TOKEN`, `WIDGET_PULL_REQUEST` |
+
+- The conclusion is one GitHub accepts: `success`, `failure`, `neutral`, `cancelled`, `skipped`, `timed_out` or `action_required`. On a pull request, `WIDGET_SHA` is `github.event.pull_request.head.sha`, the commit the pull request shows, not the merge commit in `GITHUB_SHA`.
+- A sticky comment starts with the hidden marker `<!-- drift-widget:<key> -->`, and its key is kebab-case. Only a comment a bot wrote with that marker is edited, so a person quoting the marker is never overwritten. Publish it with a bot token, `github.token` or a GitHub App's: a personal token posts as a user, so its comments would never be found again and new ones would pile up. It belongs to `pull_request` runs; a `push` to `main` has no pull request to comment on.
+- Content past GitHub's limit, 65,535 characters for a summary and 65,536 for a comment, is cut with a note.
+- Values reach the commands through `env:` (Actions sets `GITHUB_REPOSITORY`), and only the job that publishes a widget asks for its write permission. A pull request from a fork runs with a read-only token, so its widgets cannot be published.
+
+A job in `pull-request.yml`, whose top-level `permissions:` stays `contents: read`:
+
+```yaml
+  report:
+    name: Report
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Report
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WIDGET_SHA: ${{ github.event.pull_request.head.sha }}
+          WIDGET_PULL_REQUEST: ${{ github.event.pull_request.number }}
+        run: |
+          platform/cli/drift widget check-run 'Validate report' success 'All checks passed' <report.md
+          platform/cli/drift widget sticky-comment validate-report <report.md
+```
 
 ### Artifacts
 
@@ -170,7 +210,7 @@ Starting queries for a Better Stack dashboard, to adapt to the source's table:
 
 - No commit, pull request or contribution carries an AI-generated signature, trailer or footer. This includes `Co-Authored-By` and "Generated with".
 - Inside the spec-driven workflow, commit, push and pull request follow `.agents/policies/human-in-the-loop.policy.md`. Outside it, each needs explicit authorization every time. Merge and release always need it.
-- The hooks in `platform/versioning/.husky/` call `drift`. `drift git pre-commit` runs Biome on the staged files through lint-staged. `drift git commit-msg` rejects AI signatures, enforces the ticket trailer above and requires Conventional Commits through commitlint; its checks live in `platform/cli/src/core/commit-rules.sh`, which `drift git lint-history` also applies to every commit in a range. Husky installs the hooks on `pnpm install` once the folder is a Git repository. Neither lint-staged nor commitlint finds its config by itself: `drift` passes `--config`, so run them through `drift` rather than `pnpm exec`.
+- The hooks in `platform/versioning/.husky/` call `drift`. `drift git pre-commit` runs Biome on the staged files through lint-staged. `drift git commit-msg` rejects AI signatures, enforces the ticket trailer above and requires Conventional Commits through commitlint; its checks live in `platform/cli/src/core/commit-rules.sh`, which `drift git lint-history` also applies to every commit in a range. Husky installs the hooks on `pnpm install` once the folder is a Git repository. Commitlint reads its config via `--config`, while lint-staged is configured directly in `package.json`.
 
 ## Boundaries
 

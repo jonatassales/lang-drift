@@ -19,10 +19,14 @@
 		"check": "biome check .",
 		"fix": "biome check --write ."
 	},
+	"lint-staged": {
+		"*.{js,cjs,mjs,jsx,ts,cts,mts,tsx,json,jsonc,css}": "biome check --no-errors-on-unmatched"
+	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.15",
 		"@commitlint/cli": "21.2.3",
 		"@commitlint/config-conventional": "21.2.3",
+		"@vitest/coverage-v8": "5.0.5",
 		"husky": "9.1.7",
 		"lint-staged": "17.6.0",
 		"turbo": "2.11.7"
