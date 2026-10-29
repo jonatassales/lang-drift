@@ -29,9 +29,7 @@
 <p align="center">
   <a href="https://langdrift.md">Website</a> ·
   <a href="#the-product">The product</a> ·
-  <a href="#the-envelope">The envelope</a> ·
-  <a href="#get-started-with-ex">Get started with <code>ex</code></a> ·
-  <a href="#project-status">Project status</a>
+  <a href="#license">License</a>
 </p>
 
 ## The product
@@ -54,285 +52,26 @@ A model call that times out, a retry that costs more than planned, a pull reques
 
 LangDrift has its own word for a pass of a run: a microruntime is the car, a run is the race, and a **lap** is one pass of it, either an attempt paused at a gate or the execution that finished.
 
-## The envelope
-
-The authorized budget belongs to the team, not to a developer or a ticket. Tickets receive allocations inside it, and each run has a cap.
-
-Before a lap opens, `ex` estimates the run at list prices and adds the team's reserve margin. A reservation that fits the per-run cap, the ticket's allocation and the period's remainder opens the lap; one that does not pauses it with nothing paid. While the lap plays, a gate runs before every paid call. When it ends, the unused reservation returns to the budget.
-
-| Gate | What it checks | When it does not pass |
-| --- | --- | --- |
-| **FG-01** | A dated price source covers the paid work. | Blocks the lap. |
-| **FG-02** | The ticket has an allocation. | Blocks the lap. |
-| **FG-03** | The estimate plus margin fits the per-run cap, the allocation and the period's remainder. | Pauses before anything is paid. |
-| **FG-04** | The lap's observed spend has not reached its reservation. | Pauses the paid calls. |
-| **FG-05** | The owner acknowledged an earlier lap's overspend. | Requires the owner, with `--acknowledge-overspend`. |
-| **FG-06** | The provider has billed the run. | Keeps the figures provisional. |
-
-**Unknown is never zero.** A call that reports no usage, a cleanup nobody could confirm or a bill that has not arrived stays unknown, with its reason, and keeps its reservation held until it is reconciled.
-
-## Your stack, your decisions
-
-LangDrift owns boundaries and mechanisms; your team owns the application and its domain choices.
-
-- **A small footprint.** In your project, `ex` writes only `.langdrift/`. It reads the artifacts a ticket links, never outside the project, and refuses secrets and symlinks.
-- **Your delivery, observed.** `ex` never pushes, opens a pull request or merges. Delivery belongs to your harness; `ex` observes the branch, the pull request and its checks through `git` and `gh`.
-- **Recommendation is not authorization.** The planner suggests a model and an effort; running the runtime is what authorizes the plan. A model's suggestion never widens scope, funding or access.
-- **Credentials stay in the environment.** The planner reads `ANTHROPIC_API_KEY` at the call, and the coding agent receives a minimal environment plus only the variables you list. `ex` never takes a credential as a command argument.
-
-Every input that can block or allow a run is recorded with who set it, when and through what. The JSON files under `.langdrift/` mirror those records for reading; editing a mirror changes nothing a gate reads.
-
-## Project status
-
-**LangDrift is in development.** The website is live at [langdrift.md](https://langdrift.md) in five languages. The console reads `extub`, a stub API that seeds one project, LangDrift Studio, and labels its FinOps readings as illustrative. You build `ex` from source; no binary is published.
-
-`ex agent plan` and `ex agent run` work locally inside a project, and the money gates run inside `ex` against the project's own ledger; a team ledger shared through a server is not built yet. The connected agent (`ex agent connect`, `project`, `supervise` and `migrate`) needs a server this repository does not have yet. The test suites drive the CLI with scripted models, coding agents and lifecycles; they do not establish a live cluster start, real spend or production readiness. Sign-up on the website is paused.
-
-| Path | What it holds |
-| --- | --- |
-| [`apps/website`](/apps/website/README.md) | The platform site at langdrift.md: home, FinOps, Microruntimes, pricing and early access. |
-| [`apps/console`](/apps/console/README.md) | The console where a team manages FinOps and its microruntimes. |
-| [`apps/extub`](/apps/extub/README.md) | The local Go stub API the console reads. |
-| [`packages/ex`](/packages/ex/README.md) | The `ex` CLI, in Go. |
-| [`packages/contracts`](/packages/contracts/README.md) | The Microruntimes contracts: the `runtime.md` fence and the agent protocol. |
-| [`packages/tokens`](/packages/tokens) · [`packages/web`](/packages/web) | Design tokens and the shared UI. |
-
-## Get started with `ex`
-
-You need macOS or Linux and Go 1.26 or newer; that is enough to plan. The planner's model judge reads `ANTHROPIC_API_KEY`. Running a lap also needs Docker, kind, kubectl and Terraform (`ex doctor` checks them and installs nothing), the coding agent you configure, such as Claude Code, and `gh` to observe pull requests.
-
-### 1. Build the CLI
-
-```sh
-git clone https://github.com/jonatassales/lang-drift.git
-cd lang-drift/packages/ex
-GOTOOLCHAIN=local go build -o dist/ex ./src
-./dist/ex version
-```
-
-`version` prints `ex 0.0.0-dev`. Your system may already have an `ex`, the Vi line editor, so call this one by its path. The steps below write `ex` for `packages/ex/dist/ex`; for this shell only, `alias ex="$PWD/dist/ex"` does that.
-
-### 2. Initialize a project
-
-To try it on a ready-made project, copy the one the test suite plans: a ticket, the spec, research, ADR and guardrail it links, and two app manifests.
-
-```sh
-cp -R src/testdata/langdrift/project /tmp/ex-demo
-cd /tmp/ex-demo
-ex init
-```
-
-`ex init` creates the project identity in `.langdrift/config.json` and the execution rules in `.langdrift/microruntimes/AGENTS.md`, and leaves existing files unchanged. In your own repository, add `/.langdrift/` to `.gitignore`: it is machine-local state that `ex` writes, and nothing your team authors lives in it.
-
-### 3. Record the harness
-
-Save the [example input files](#example-input-files) in the project, then record the delivery harness: the hardware envelope, the workflow stages, the default model and effort, and the coding agent that plays the stages.
-
-```sh
-ex harness envelope set --per-execution-cpu-millis 4000 --per-execution-memory-mib 6144 \
-  --default-cpu-millis 2000 --default-memory-mib 3072 --not-runtime-field gpu
-ex harness workflow set --file workflow.json
-ex harness model set claude-sonnet-5-5 --effort medium
-ex harness driver set --file driver.json
-```
-
-### 4. Record the money rules
-
-This budget gives the team $500.00 for October 2026, caps each run at $25.00, reserves a 20% margin over every estimate and allocates $25.00 to ticket 0070. Amounts are in cents.
-
-```sh
-ex finops budget set --period 2026-10 --period-cents 50000 --per-run-cents 2500 \
-  --reserve-margin-percent 20 --allocate 0070-console-microruntime=2500
-ex finops gates set --default
-ex finops prices set --file prices.json --slug list
-ex finops forecasts set --file forecasts.json
-```
-
-Each command prints the record it wrote, and every input command takes `--by` to name who set it.
-
-### 5. Plan from a ticket
-
-Name the components the runtime should build and run, then let `ex` read the ticket. `--no-judge` plans without a model call, so nothing is paid; without it, and with `ANTHROPIC_API_KEY` set, the planner judges the sources through a model under the same gates as a lap, and its cost lands on the ledger's planning line.
-
-```sh
-ex agent plan .agents/workflow/tickets/0070-console-microruntime.ticket.md --no-judge \
-  --component "path=apps/console,image=langdrift-console:local,port=3001,readiness=/icon.svg,build=docker,args=build -t langdrift-console:local ."
-```
-
-<p align="center">
-  <img src="/platform/docs/assets/images/ex-agent-plan.webp" alt="Terminal running ex agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
-</p>
-
-The plan lands in `.langdrift/microruntimes/runtimes/console-microruntime/runtime.md`. Its `langdrift` fence is what the runtime executes; a second fence, `langdrift-plan`, holds the analysis. Prose in the file is kept as context and never executed.
-
-```json
-{
-  "llmBudgetUsd": 25,
-  "runtimeId": "console-microruntime",
-  "revision": 1,
-  "cpuMillis": 2000,
-  "memoryMiB": 3072,
-  "model": "claude-sonnet-5-5",
-  "effort": "medium",
-  "components": [
-    {
-      "path": "apps/console",
-      "image": "langdrift-console:local",
-      "port": 3001,
-      "readinessPath": "/icon.svg",
-      "build": { "executable": "docker", "args": ["build", "-t", "langdrift-console:local", "."] }
-    }
-  ]
-}
-```
-
-This excerpt leaves out the fence's version, name and runtime and project identities, which `ex` manages. Planning the same ticket again, while the runtime is stopped, raises the revision.
-
-### 6. Run the plan
-
-Running the runtime authorizes its plan. A lap builds images, starts the project's local cluster and makes paid calls through your coding agent, so run `ex doctor` first.
-
-```sh
-ex agent run console-microruntime
-```
-
-1. **The gate.** The run prints the intent, the estimate at list prices and the per-run budget, then reserves. A reservation inside every bound opens the lap; one above them pauses with nothing paid.
-2. **The stages.** Each stage plays in order through the coding agent and prints a one-line summary. A stage where a person takes part waits for the owner: answer at the terminal or with `--confirm`, or later with `ex agent confirm console-microruntime planning`. The `owner-only` stage never runs.
-3. **The runtime.** The components come up from the fence on the project's kind cluster, and the run prints when they are ready.
-4. **The delivery.** The run observes the branch, the pull request and its checks; `--checks-wait` bounds how long it follows them.
-5. **The settlement.** The runtime goes down, the unused reservation returns to the budget, the memory `run.md` is written and the episode index is rebuilt. The run says whether it is ready for review or to merge, and what comes next.
-
-Every change lands in the lap file, `run.json` and the ledger.
-
-### 7. Follow the run
-
-```sh
-ex agent status console-microruntime
-ex agent reindex
-ex doctor
-```
-
-`status` shows the run record and the open lap, `reindex` rebuilds the episode index from every runtime's memory, and `doctor` checks the native tools. With `--json`, each session line is one NDJSON event, `{at, session, kind, id, text, card, field, data}`, so a console or a terminal UI can render the same session.
-
-| Exit code | Meaning |
-| --- | --- |
-| `0` | Success, or a run waiting for a person. |
-| `1` | The operation failed: a skill, a hook, a build or a start. |
-| `2` | Invalid usage. |
-| `3` | Refused by a guard or policy, such as a money gate. |
-| `4` | A prerequisite is missing: a tool, an input, a cluster or a runtime record. |
-| `130` | Interrupted. |
-
-The full command reference, the `.langdrift/` layout and the recovery rules are in the [`ex` README](/packages/ex/README.md).
-
-### Example input files
-
-<details>
-<summary><code>workflow.json</code>: the stages, their skills and where a person takes part</summary>
-
-```json
-{
-  "version": 1,
-  "stages": [
-    { "id": "planning", "label": "Planning", "skills": ["grilling"], "human": "required" },
-    { "id": "spec", "label": "Spec", "skills": ["to-spec"], "human": "optional" },
-    { "id": "implement", "label": "Implement", "skills": ["implement", "tdd", "code-review"], "human": "optional" },
-    { "id": "review", "label": "Review", "skills": [], "human": "optional" },
-    { "id": "merge", "label": "Merge", "skills": [], "human": "owner-only" }
-  ],
-  "defaults": { "humanAt": ["planning", "review", "merge"] },
-  "efforts": ["low", "medium", "high"]
-}
-```
-
-A stage may also list `hooks`: committed scripts it runs first, through `sh`, inside the project.
-
-</details>
-
-<details>
-<summary><code>driver.json</code>: the coding agent that plays the stages</summary>
-
-```json
-{
-  "executable": "claude",
-  "args": ["-p", "{{prompt}}", "--output-format", "json"],
-  "passEnv": ["ANTHROPIC_API_KEY"],
-  "timeoutSeconds": 1800,
-  "usage": { "inputTokens": "usage.input_tokens", "outputTokens": "usage.output_tokens" },
-  "summary": "result",
-  "unmeasured": "pause"
-}
-```
-
-The executable runs from the project root, never through a shell. `usage` names where the output reports tokens; a call that reports none leaves its spend unknown, and `"unmeasured": "pause"` makes FG-04 pause the next paid call.
-
-</details>
-
-<details>
-<summary><code>prices.json</code>: the dated list prices behind every estimate</summary>
-
-```json
-{
-  "version": 1,
-  "illustrative": true,
-  "note": "Replace with your provider's current list prices.",
-  "readOn": "2026-10-06",
-  "currency": "USD",
-  "unit": "cents-per-million-tokens",
-  "cache": "uncached",
-  "models": [
-    { "id": "claude-sonnet-5-5", "name": "Claude Sonnet 5.5", "inputCents": 200, "outputCents": 1000 }
-  ]
-}
-```
-
-These figures are illustrative and exercise the format; they are not a verified price list.
-
-</details>
-
-<details>
-<summary><code>forecasts.json</code>: the tokens each effort is expected to use</summary>
-
-```json
-{
-  "version": 1,
-  "illustrative": true,
-  "unit": "thousands-of-tokens",
-  "byEffort": {
-    "low": { "input": 2000, "output": 120 },
-    "medium": { "input": 3500, "output": 250 },
-    "high": { "input": 6000, "output": 500 }
-  },
-  "planning": { "input": 35, "output": 5 }
-}
-```
-
-`planning` covers the planner's own calls. Forecasts are used when no earlier run of the ticket measured its tokens.
-
-</details>
-
-### Explore the website and the console
-
-With Node.js 24 and pnpm 12, from the repository root:
-
-```sh
-pnpm install
-pnpm website
-```
-
-The site runs on `http://localhost:3000`. `pnpm console` starts the console on `http://127.0.0.1:3001` with `extub` beside it on `127.0.0.1:3401`, which needs Go. Every number the console shows comes from the stub.
-
-## The work behind LangDrift
-
-Created by [Jonatas Sales](https://github.com/jonatassales), LangDrift brings together FinOps practice, agentic delivery and platform engineering. It grew out of the Exphere project and is built as a pnpm and Turborepo monorepo: the website and the console in TypeScript with Next.js, React and Tailwind CSS, and `ex` and the Microruntimes contracts in Go, with the official Anthropic Go SDK for the planner.
-
-The repository is built spec-first: every change starts from a spec and its tickets under [`.agents/workflow/`](/.agents/workflow), the same kind of ticket `ex` plans. Feedback is welcome through [GitHub issues](https://github.com/jonatassales/lang-drift/issues).
-
-## References
-
-- [AI for FinOps: Agentic Use Cases in FinOps](https://www.finops.org/insights/ai-for-finops-agentic-use-cases/), Jonathan Morley, FinOps Foundation, March 27, 2026. Practitioners describe agents that reconcile spend against budgets, find waste and enforce cost policy earlier in the development lifecycle; that last theme, shifting FinOps left into delivery, is where LangDrift works.
-- [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html), Birgitta Böckeler, martinfowler.com, April 2, 2026. It describes the outer harness a team builds around a coding agent: guides that steer the agent before it acts and sensors that let it correct itself. `ex harness` records that harness for a project, and the FinOps gates bound what it may spend.
-
-## Acknowledgements
-
-Thanks to [Matt Pocock](https://x.com/mattpocockuk). The agent skills this repository works with, from grilling to to-spec, to-tickets, implement, tdd and code-review, are adapted from [mattpocock/skills](https://github.com/mattpocock/skills) under the MIT License, and the example workflow above runs several of them.
+## License
+
+MIT License
+
+Copyright (c) 2026 Jonatas Sales
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
