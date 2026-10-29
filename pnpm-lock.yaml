@@ -318,7 +318,7 @@ importers:
   packages/contracts: {}
 
   packages/ex:
-    dependencies:
+    devDependencies:
       '@langdrift/contracts':
         specifier: workspace:*
         version: link:../contracts
