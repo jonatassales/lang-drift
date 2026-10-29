@@ -8,12 +8,12 @@
 
 **Status:** ready-for-agent
 
-- [ ] `packages/ex/package.json` is version `0.1.0`, not private, with `"publishConfig": { "access": "public" }`, `"license": "MIT"`, `"bin": { "ex": "./bin/ex" }`, `"os": ["darwin", "linux"]`, `"cpu": ["x64", "arm64"]`, `"homepage"`, `"repository"`, `"prepack": "sh build.sh --release"`, `"@langdrift/contracts": "workspace:*"` in `"devDependencies"`, and `"files"` limited to `bin/ex`, the four `dist/ex-*` binaries, `LICENSE`, and `README.md`.
-- [ ] `LICENSE` and `packages/ex/LICENSE` carry the MIT license (`Copyright (c) 2026 LangDrift`).
-- [ ] `packages/ex/build.sh` injects `package.json` version into `main.version` via `-ldflags="-s -w -X main.version=..."` with `CGO_ENABLED=0`, builds host `dist/ex` by default, and builds all four `dist/ex-<os>-<arch>` binaries when passed `--release`.
-- [ ] `packages/ex/bin/ex` resolves symlinks, maps `uname -s` and `uname -m` to `darwin`/`linux` and `arm64`/`amd64`, `exec`s the matching binary, falls back to `dist/ex` in a host build, and exits `4` with a diagnostic on stderr when the platform is unsupported or no binary exists.
-- [ ] Automated tests in `packages/ex/src` verify `bin/ex` symlink resolution, platform dispatch, exit code `4` on unsupported platforms, and version injection.
-- [ ] `pnpm pack` in `packages/ex` produces a tarball containing only the declared files, and running it via `npx` in a clean directory outside the workspace executes `ex version`, `ex --help`, and `ex init`.
+- [x] `packages/ex/package.json` is version `0.1.0`, not private, with `"publishConfig": { "access": "public" }`, `"license": "MIT"`, `"bin": { "ex": "./bin/ex" }`, `"os": ["darwin", "linux"]`, `"cpu": ["x64", "arm64"]`, `"homepage"`, `"repository"`, `"prepack": "sh build.sh --release"`, `"@langdrift/contracts": "workspace:*"` in `"devDependencies"`, and `"files"` limited to `bin/ex`, the four `dist/ex-*` binaries, `LICENSE`, and `README.md`.
+- [x] `LICENSE` and `packages/ex/LICENSE` carry the MIT license (`Copyright (c) 2026 LangDrift`).
+- [x] `packages/ex/build.sh` injects `package.json` version into `main.version` via `-ldflags="-s -w -X main.version=..."` with `CGO_ENABLED=0`, builds host `dist/ex` by default, and builds all four `dist/ex-<os>-<arch>` binaries when passed `--release`.
+- [x] `packages/ex/bin/ex` resolves symlinks, maps `uname -s` and `uname -m` to `darwin`/`linux` and `arm64`/`amd64`, `exec`s the matching binary, falls back to `dist/ex` in a host build, and exits `4` with a diagnostic on stderr when the platform is unsupported or no binary exists.
+- [x] Automated tests in `packages/ex/src` verify `bin/ex` symlink resolution, platform dispatch, exit code `4` on unsupported platforms, and version injection.
+- [x] `pnpm pack` in `packages/ex` produces a tarball containing only the declared files, and running it via `npx` in a clean directory outside the workspace executes `ex version`, `ex --help`, and `ex init`.
 
 ### Verification
 

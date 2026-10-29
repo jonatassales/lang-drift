@@ -8,9 +8,9 @@
 
 **Status:** ready-for-agent
 
-- [ ] `packages/ex/README.md` documents running `@langdrift/ex` via `npx @langdrift/ex`, the `bin/ex` launcher and prebuilt `darwin`/`linux` (`arm64`/`amd64`) binaries, and `sh build.sh --release` alongside local source builds.
-- [ ] `README.md` and `platform/docs/README.{pt-br,zh-hant,ja,vi}.md` update Project status and Get started with `ex` so readers can run `npx @langdrift/ex` directly or build from source.
-- [ ] `.agents/context.md` reflects that `@langdrift/ex` ships a `"bin"` launcher for `npx @langdrift/ex`.
+- [x] `packages/ex/README.md` documents running `@langdrift/ex` via `npx @langdrift/ex`, the `bin/ex` launcher and prebuilt `darwin`/`linux` (`arm64`/`amd64`) binaries, and `sh build.sh --release` alongside local source builds.
+- [x] `README.md` and `platform/docs/README.{pt-br,zh-hant,ja,vi}.md` update Project status and Get started with `ex` so readers can run `npx @langdrift/ex` directly or build from source.
+- [x] `.agents/context.md` reflects that `@langdrift/ex` ships a `"bin"` launcher for `npx @langdrift/ex`.
 
 ### Verification
 
