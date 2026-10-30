@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+	<defs>
+		<linearGradient id="fur" x1="90" y1="40" x2="330" y2="360" gradientUnits="userSpaceOnUse">
+			<stop offset="0" stop-color="#2a2a2f" />
+			<stop offset="0.55" stop-color="#131315" />
+			<stop offset="1" stop-color="#08080a" />
+		</linearGradient>
+		<linearGradient id="uniform" x1="110" y1="130" x2="310" y2="320" gradientUnits="userSpaceOnUse">
+			<stop offset="0" stop-color="#e6d4b3" />
+			<stop offset="0.6" stop-color="#cdb48b" />
+			<stop offset="1" stop-color="#a88b62" />
+		</linearGradient>
+		<radialGradient id="iris" cx="0.5" cy="0.5" r="0.6">
+			<stop offset="0" stop-color="#ffe98c" />
+			<stop offset="0.6" stop-color="#f4bb23" />
+			<stop offset="1" stop-color="#c47f0a" />
+		</radialGradient>
+		<filter id="rim" x="-25%" y="-25%" width="150%" height="150%">
+			<feOffset in="SourceAlpha" dx="3" dy="2" result="shifted" />
+			<feComposite in="SourceAlpha" in2="shifted" operator="out" result="edge" />
+			<feGaussianBlur in="edge" stdDeviation="0.8" result="edge-soft" />
+			<feFlood flood-color="#ecebf0" />
+			<feComposite in2="edge-soft" operator="in" result="rim-light" />
+			<feOffset in="SourceAlpha" dx="-3" dy="-2" result="lifted" />
+			<feGaussianBlur in="lifted" stdDeviation="8" result="halo-blur" />
+			<feFlood flood-color="#c9c9d6" flood-opacity="0.32" />
+			<feComposite in2="halo-blur" operator="in" result="halo" />
+			<feMerge>
+				<feMergeNode in="halo" />
+				<feMergeNode in="SourceGraphic" />
+				<feMergeNode in="rim-light" />
+			</feMerge>
+		</filter>
+		<filter id="eye-glow" x="-50%" y="-80%" width="200%" height="260%">
+			<feGaussianBlur stdDeviation="3" />
+		</filter>
+		<g id="envelope">
+			<rect x="-18" y="-12" width="36" height="24" rx="2.5" fill="#f3ece2" />
+			<path d="M-16 -10 L0 2 L16 -10" fill="none" stroke="#cdbba3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+			<rect x="8" y="-9" width="7" height="8" rx="1" fill="#e2504c" />
+		</g>
+	</defs>
+
+	<ellipse cx="220" cy="362" rx="168" ry="11" fill="#2c2c33" opacity="0.6" />
+
+	<g filter="url(#rim)">
+		<g fill="url(#fur)">
+			<path d="M230 116 C270 124 296 150 300 172 C304 180 308 186 302 192 C310 198 310 204 304 210 C310 216 308 222 304 228 C302 252 298 290 290 356 L120 358 C96 356 86 330 92 304 C94 262 120 212 166 178 C194 158 214 138 230 116 Z" />
+			<path d="M104 340 C120 378 210 384 262 376 C300 370 330 360 346 344 C354 336 352 324 342 328 C330 342 298 356 256 360 C198 366 132 362 118 334 Z" />
+		</g>
+
+		<path d="M232 128 C214 146 194 162 166 180 C122 212 96 258 94 296 C140 318 236 320 298 304 C300 278 304 252 304 228 C302 206 298 188 290 172 C272 152 252 138 232 128 Z" fill="url(#uniform)" />
+		<path d="M94 296 C140 318 236 320 298 304 L298 296 C236 312 140 310 95 288 Z" fill="#9c7f57" />
+		<path d="M232 128 C254 140 276 154 292 172 L286 192 C270 174 252 160 230 148 Z" fill="#c4a87e" />
+		<path d="M204 160 C232 204 268 252 298 300 C306 310 318 316 334 318" fill="none" stroke="#5c3318" stroke-width="9" stroke-linecap="round" />
+		<path d="M196 238 L230 238 L230 262 C230 264 228 266 226 266 L200 266 C198 266 196 264 196 262 Z" fill="none" stroke="#a88b62" stroke-width="2" stroke-linejoin="round" />
+		<path d="M196 246 L230 246" fill="none" stroke="#a88b62" stroke-width="2" />
+
+		<path d="M276 236 C296 240 308 258 306 284 C305 300 304 312 304 324 L276 326 C276 300 274 268 270 246 Z" fill="url(#uniform)" />
+		<path d="M276 318 L305 316 L305 330 L276 332 Z" fill="#9c7f57" />
+		<path d="M276 330 C274 340 276 352 280 358 L298 358 C306 356 308 348 304 330 Z" fill="url(#fur)" />
+
+		<g transform="rotate(4 250 150) translate(262 150) scale(1.18) translate(-262 -150)" fill="url(#fur)">
+			<path d="M304 40 C310 58 312 78 308 96 C312 106 318 116 318 124 C318 130 314 136 308 140 C304 146 298 150 292 152 C288 160 280 166 270 168 C256 170 242 166 232 156 L222 160 L226 150 L216 150 L222 140 C216 126 218 110 220 100 C220 78 222 58 230 38 C240 54 252 70 262 80 C272 76 282 76 290 80 C294 66 298 52 304 40 Z" />
+		</g>
+	</g>
+
+	<g fill="none" stroke="#34343b" stroke-linecap="round">
+		<path d="M118 340 C140 364 206 368 252 362 C290 358 318 348 336 334" stroke-width="2" />
+		<path d="M150 314 C170 326 196 340 214 356" stroke-width="2" opacity="0.8" />
+	</g>
+	<g fill="#e8a33d" stroke="#a8711c" stroke-width="1.2">
+		<circle cx="300" cy="214" r="3.5" />
+		<circle cx="301" cy="246" r="3.5" />
+	</g>
+
+	<g transform="rotate(4 250 150) translate(262 150) scale(1.18) translate(-262 -150)">
+		<path d="M300 54 C296 66 294 76 292 86 C298 87 302 90 305 93 C307 80 305 66 300 54 Z" fill="#c08a84" />
+		<path d="M232 52 C229 66 228 80 228 94 C236 88 245 84 254 81 C247 71 240 61 232 52 Z" fill="#94635e" />
+
+		<g filter="url(#eye-glow)" fill="#f4bb23" opacity="0.5">
+			<path d="M243 115 C250 112 262 111 267 112 C263 119 250 121 243 115 Z" />
+			<path d="M279 110 C286 108 298 107 303 108 C299 117 286 118 279 110 Z" />
+		</g>
+		<path d="M243 115 C250 112 262 111 267 112 C263 119 250 121 243 115 Z" fill="url(#iris)" />
+		<path d="M279 110 C286 108 298 107 303 108 C299 117 286 118 279 110 Z" fill="url(#iris)" />
+		<ellipse cx="262" cy="115.5" rx="1.6" ry="3.4" fill="#07050c" />
+		<ellipse cx="298" cy="111.5" rx="1.7" ry="3.6" fill="#07050c" />
+		<g fill="none" stroke="#07050c" stroke-width="3" stroke-linecap="round">
+			<path d="M241 115 C249 111 262 110 268 112" />
+			<path d="M277 110 C285 107 298 106 304 108" />
+		</g>
+
+		<path d="M309 123 L317 122 L313 128 Z" fill="#1c1a1c" stroke="#1c1a1c" stroke-width="1.5" stroke-linejoin="round" />
+		<path d="M313 128 L312 133 C309 136 307 132 304 135 C302 137 300 135 298 136" fill="none" stroke="#3a3639" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+
+		<g fill="none" stroke="#f2f2f4" stroke-width="1.2" stroke-linecap="round" opacity="0.55">
+			<path d="M308 131 C326 128 342 128 360 130" />
+			<path d="M308 134 C328 136 344 140 358 146" />
+			<path d="M284 132 C264 128 244 126 222 126" />
+			<path d="M284 136 C262 136 244 138 226 142" />
+		</g>
+
+		<g transform="rotate(-10 272 80)">
+			<path d="M240 92 L243 64 C258 55 290 55 305 63 L308 88 Z" fill="url(#uniform)" />
+			<path d="M243 64 C258 55 290 55 305 63 C292 68 258 69 243 64 Z" fill="#efe2c8" />
+			<path d="M240 84 L308 80 L308 91 L240 95 Z" fill="#8a6a42" />
+			<path d="M294 90 C310 87 326 90 334 98 C322 103 306 101 292 97 Z" fill="#6f5232" />
+			<circle cx="296" cy="72" r="6" fill="#e8a33d" stroke="#a8711c" stroke-width="1" />
+			<path d="M292.5 70 L299.5 70 L299.5 74.5 L292.5 74.5 Z M292.8 70.3 L296 72.6 L299.2 70.3" fill="#f3ece2" stroke="#a8711c" stroke-width="0.7" stroke-linejoin="round" />
+		</g>
+	</g>
+
+	<path d="M196 64 C190 76 188 84 192 89 C196 94 204 91 204 84 C204 78 200 72 196 64 Z" fill="#a5e3ff" />
+	<path d="M194 81 C194 84 195 86 197 87" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" />
+
+	<g filter="url(#rim)">
+		<g transform="translate(12 2) rotate(-12 344 330)">
+			<path d="M308 314 L380 314 C384 314 386 316 386 320 L386 348 C386 352 384 354 380 354 L308 354 C304 354 302 352 302 348 L302 320 C302 316 304 314 308 314 Z" fill="#7a4320" />
+			<path d="M302 320 C302 316 304 314 308 314 L380 314 C384 314 386 316 386 320 L386 330 L302 330 Z" fill="#93552a" />
+			<rect x="338" y="326" width="12" height="10" rx="2" fill="#e8a33d" />
+		</g>
+	</g>
+
+	<use href="#envelope" transform="translate(372 300) rotate(-28)" />
+	<use href="#envelope" transform="translate(352 230) rotate(18)" />
+	<use href="#envelope" transform="translate(70 352) rotate(-8) scale(0.9)" />
+	<use href="#envelope" transform="translate(384 362) rotate(8) scale(0.8)" />
+
+	<g fill="none" stroke="#c9c9d1" stroke-width="2" stroke-linecap="round" opacity="0.8">
+		<path d="M332 244 C326 250 322 254 316 256" />
+		<path d="M370 214 C374 206 376 200 376 192" />
+		<path d="M364 276 C358 282 352 286 346 288" opacity="0.7" />
+	</g>
+	<g fill="#fde68a">
+		<path d="M326 178 L328 184 L334 186 L328 188 L326 194 L324 188 L318 186 L324 184 Z" opacity="0.8" />
+		<path d="M40 300 L41.6 304.4 L46 306 L41.6 307.6 L40 312 L38.4 307.6 L34 306 L38.4 304.4 Z" opacity="0.7" />
+	</g>
+</svg>

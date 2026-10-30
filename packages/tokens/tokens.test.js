@@ -95,9 +95,11 @@ const classificationTexts = ['intentional', 'review', 'unexplained']
 const brandRolesOf = (themePrefix) => [
 	`--${themePrefix}-color-primary`,
 	`--${themePrefix}-color-primary-hover`,
+	`--${themePrefix}-color-primary-text`,
 	...[
 		'primary',
 		'primary-hover',
+		'primary-text',
 		'ring',
 		'sidebar-primary',
 		'sidebar-ring',
@@ -407,15 +409,17 @@ describe('shared tokens', () => {
 describe('website theme', () => {
 	test('binds the shared primary roles to the Exphere purple', () => {
 		const css = themeStylesheet()
-		for (const [selector, primary, hover] of [
-			[':root', '#6D0AD6', '#5408A5'],
-			['.dark', '#6D0AD6', '#8C3BEF'],
+		for (const [selector, primary, hover, text] of [
+			[':root', '#6D0AD6', '#5408A5', '#6D0AD6'],
+			['.dark', '#6D0AD6', '#8C3BEF', '#A970FF'],
 		]) {
 			assert.deepEqual(pick(declarations(css, selector), brandRoles), {
 				[`--${prefix}-color-primary`]: primary,
 				[`--${prefix}-color-primary-hover`]: hover,
+				[`--${prefix}-color-primary-text`]: text,
 				'--lg-color-primary': `var(--${prefix}-color-primary)`,
 				'--lg-color-primary-hover': `var(--${prefix}-color-primary-hover)`,
+				'--lg-color-primary-text': `var(--${prefix}-color-primary-text)`,
 				'--lg-color-ring': 'var(--lg-color-primary)',
 				'--lg-color-sidebar-primary': 'var(--lg-color-primary)',
 				'--lg-color-sidebar-ring': 'var(--lg-color-primary)',
@@ -459,6 +463,7 @@ describe('Tailwind theme', () => {
 			assert.equal(colors[`--color-${variable}`], `var(--${variable})`)
 		}
 		assert.equal(colors['--color-primary-hover'], 'var(--primary-hover)')
+		assert.equal(colors['--color-primary-text'], 'var(--primary-text)')
 		for (const status of statuses) {
 			assert.equal(
 				colors[`--color-status-${status}`],
