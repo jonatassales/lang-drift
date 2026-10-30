@@ -17,6 +17,7 @@ import (
 
 	app "github.com/jonatassales/tao/packages/ex/src/application"
 	connectedapp "github.com/jonatassales/tao/packages/ex/src/application/connected"
+	"github.com/jonatassales/tao/packages/ex/src/application/setup"
 	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
 	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
 )
@@ -63,7 +64,7 @@ func remaining(ctx context.Context) time.Duration {
 }
 
 type harness struct {
-	projectInit      operation[app.InitializeProjectRequest, app.ProjectResult]
+	projectInit      operation[setup.Request, setup.Result]
 	doctor           operation[app.DiagnoseRequest, app.Diagnosis]
 	clusterCreate    operation[app.ClusterRequest, app.ClusterResult]
 	clusterDelete    operation[app.ClusterRequest, app.ClusterResult]
@@ -111,7 +112,10 @@ func TestExecute_MapsEveryCommandToItsRequest(t *testing.T) {
 		request   func(*harness) any
 		want      any
 	}{
-		{[]string{"init"}, func(h *harness) any { return h.projectInit.requests }, []app.InitializeProjectRequest{{Directory: workingDirectory}}},
+		{[]string{"init"}, func(h *harness) any { return h.projectInit.requests }, []setup.Request{{
+			Directory: workingDirectory,
+			By:        "owner",
+		}}},
 		{[]string{"doctor"}, func(h *harness) any { return h.doctor.requests }, []app.DiagnoseRequest{{Project: discovered}}},
 		{[]string{"cluster", "create"}, func(h *harness) any { return h.clusterCreate.requests }, []app.ClusterRequest{{Project: discovered}}},
 		{[]string{"cluster", "delete"}, func(h *harness) any { return h.clusterDelete.requests }, []app.ClusterRequest{{Project: discovered}}},

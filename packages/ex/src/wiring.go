@@ -9,6 +9,7 @@ import (
 	gatesapp "github.com/jonatassales/tao/packages/ex/src/application/gates"
 	"github.com/jonatassales/tao/packages/ex/src/application/inputs"
 	"github.com/jonatassales/tao/packages/ex/src/application/plan"
+	"github.com/jonatassales/tao/packages/ex/src/application/setup"
 	"github.com/jonatassales/tao/packages/ex/src/domain/rag"
 	collectioninfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/collection"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/configuration"
@@ -130,20 +131,28 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 		},
 	}
 
+	inputsService := inputs.Service{
+		Projects: projects,
+		Store:    inputsinfra.Store{},
+		Mirrors:  records.Mirrors{},
+		IDs:      deps.IDs,
+		Clock:    deps.Clock,
+	}
+
 	cases := cli.UseCases{
-		ProjectInit: application.InitializeProject{
-			Projects:  projects,
-			Creator:   projects,
-			Bootstrap: scaffold.LangDrift{},
-			IDs:       deps.IDs,
-		},
-		Inputs: inputs.Service{
+		ProjectInit: setup.SetUpProject{
+			Initialize: application.InitializeProject{
+				Projects:  projects,
+				Creator:   projects,
+				Bootstrap: scaffold.LangDrift{},
+				IDs:       deps.IDs,
+			},
 			Projects: projects,
+			Inputs:   inputsService,
 			Store:    inputsinfra.Store{},
-			Mirrors:  records.Mirrors{},
-			IDs:      deps.IDs,
 			Clock:    deps.Clock,
 		},
+		Inputs: inputsService,
 		Plan: plan.Service{
 			Projects:  projects,
 			Collector: collectioninfra.Collector{},

@@ -80,6 +80,19 @@ Each input is recorded with who set it, when, through what, its value and the re
 
 The workflow names the stages, their skills, where a person takes part and the committed scripts a stage runs first (`hooks`). The forecasts carry the tokens each effort is expected to use and a `planning` entry for the planner's own calls. Every command takes `--by` for who sets the input.
 
+## The first inputs
+
+`ex init` records the inputs a first run needs that a team gives on the way in, through the same use cases as their own commands, under one `--by`:
+
+| Question | Flag | Recorded as |
+| --- | --- | --- |
+| The monthly budget for the current month, in dollars (`1500` or `1500.50`); an empty answer skips the budget | `--budget` | `ex finops budget set --period <this month> --period-cents …` |
+| The per-run cap, in dollars | `--per-run` | `--per-run-cents` |
+| The reserve margin, in percent, with no default | `--reserve-margin` | `--reserve-margin-percent` |
+| Whether to apply the default gates, `[y/N]` | `--default-gates` | `ex finops gates set --default` |
+
+The three budget flags go together. A person at a terminal is asked for what the flags leave unanswered; `--ask` asks on any input, `--ask=false` never asks, and `--json` never asks. Without a terminal and without flags, `ex init` records the identity alone, as it always has. An input already recorded, a budget for this month or the gates, is never asked for or replaced: changing it stays with its own command, and a flag that would have changed it is listed as kept. The result adds `recorded`, `kept` and `next`, the commands of the inputs a first run still needs (`ex harness envelope set`, `ex harness model set`, `ex harness driver set`); each is left out when empty, and `next` only appears when the questions ran or a flag answered one.
+
 ## The session
 
 `ex agent plan <ticket>` prints the plan session: the ticket and its links, each document read, the guardrail criteria judged, the bounds and the budget, the retrieval over the project's episodes with the candidates kept and dropped at the 0.55 threshold, the model and effort suggested, each component inspected and sized, the cross-checks, the schema validation and the draft. It writes `runtime.md` with the executable `langdrift` fence and a `langdrift-plan` fence that holds the analysis and the plan, a `run.json` with the stages pending, and the runtime's ledger with the planner's own line. Planning the same ticket again, while the runtime is stopped, raises the fence's revision.
@@ -121,7 +134,7 @@ In the commands below, `ex` means `npx @langdrift/ex` or this tree's compiled `.
 | Command | Behavior |
 | --- | --- |
 | `ex version` | Print the version; `--version` and `-V` are equivalent. |
-| `ex init` | Create or reuse the project identity in `.langdrift/config.json` and add the Microruntimes execution rules at `.langdrift/microruntimes/AGENTS.md`. Existing files remain unchanged; no template, skill or policy text is written. |
+| `ex init [--budget <dollars> --per-run <dollars> --reserve-margin <percent>] [--default-gates] [--ask] [--by …]` | Create or reuse the project identity in `.langdrift/config.json` and add the Microruntimes execution rules at `.langdrift/microruntimes/AGENTS.md`. Existing files remain unchanged; no template, skill or policy text is written. Then it records the inputs given on the way in, see [The first inputs](#the-first-inputs). |
 | `ex harness envelope\|workflow\|model\|driver set …` | Record one input of the delivery harness and write its mirror. |
 | `ex finops budget\|gates\|prices\|forecasts set …` | Record one money rule and write its mirror. |
 | `ex gates report` | Report a pull request's commit range for CI Gates, with no project: `BASE_SHA` and `HEAD_SHA` name the range, read through `git log`. Every FinOps reading stays unknown, because `.langdrift/` never reaches CI. The Markdown report is appended to the file `GITHUB_STEP_SUMMARY` names, else printed; `--json` prints the result. It posts no comment or check run and fails only when git cannot read the range or the summary cannot be written. |

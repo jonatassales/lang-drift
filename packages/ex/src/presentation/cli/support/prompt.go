@@ -32,6 +32,21 @@ func (prompter *Prompter) Say(line string) error {
 
 // Text asks for a required answer.
 func (prompter *Prompter) Text(ctx context.Context, label string) (string, error) {
+	answer, err := prompter.Optional(ctx, label)
+	if err != nil {
+		return "", err
+	}
+
+	if answer == "" {
+		return "", UsageError{Cause: fmt.Errorf("%s is required; guidance canceled without writing files", label)}
+	}
+
+	return answer, nil
+}
+
+// Optional asks a question a person may skip: an empty answer is no answer,
+// never a cancellation.
+func (prompter *Prompter) Optional(ctx context.Context, label string) (string, error) {
 	if err := ctx.Err(); err != nil {
 		return "", err
 	}
@@ -45,12 +60,7 @@ func (prompter *Prompter) Text(ctx context.Context, label string) (string, error
 		return "", err
 	}
 
-	answer := strings.TrimSpace(line)
-	if answer == "" {
-		return "", UsageError{Cause: fmt.Errorf("%s is required; guidance canceled without writing files", label)}
-	}
-
-	return answer, nil
+	return strings.TrimSpace(line), nil
 }
 
 // Integer asks for a required whole number.

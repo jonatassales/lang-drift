@@ -13,11 +13,11 @@
 
 **Status:** ready-for-agent
 
-- [ ] Piped answers with `--ask` record a budget whose mirror holds the current month, the amounts in cents and the `--by` value, and the default gates.
-- [ ] An amount with more than two decimals, a negative amount or text is refused before anything is recorded. A table test covers the dollars-to-cents conversion.
-- [ ] An empty first budget answer skips the per-run and reserve-margin questions and records no budget.
-- [ ] The budget flags without `--ask` and without a terminal record the budget without a prompt. One budget flag without the other two is a usage error.
-- [ ] A second `init` asks nothing for a budget or gates already recorded, and changes neither.
-- [ ] The existing identity-only init test passes unchanged, and `init --json` asks nothing.
-- [ ] The result carries `recorded` and `next` (`ex harness envelope set`, `ex harness model set`, `ex harness driver set`). Both are omitted when empty.
-- [ ] The README documents the questions and the flags.
+- [x] Piped answers with `--ask` record a budget whose mirror holds the current month, the amounts in cents and the `--by` value, and the default gates.
+- [x] An amount with more than two decimals, a negative amount or text is refused before anything is recorded. A table test covers the dollars-to-cents conversion.
+- [x] An empty first budget answer skips the per-run and reserve-margin questions and records no budget.
+- [x] The budget flags without `--ask` and without a terminal record the budget without a prompt. One budget flag without the other two is a usage error.
+- [x] A second `init` asks nothing for a budget or gates already recorded, and changes neither.
+- [x] The existing identity-only init test passes unchanged, and `init --json` asks nothing.
+- [x] The result carries `recorded` and `next` (`ex harness envelope set`, `ex harness model set`, `ex harness driver set`). Both are omitted when empty.
+- [x] The README documents the questions and the flags.

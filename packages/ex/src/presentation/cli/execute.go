@@ -17,7 +17,7 @@ import (
 // field is the narrow contract its command consumes; the composition root
 // supplies the implementations.
 type UseCases struct {
-	ProjectInit      catalog.ProjectInitializer
+	ProjectInit      catalog.ProjectSetup
 	ProjectAgent     catalog.ProjectAgent
 	Doctor           catalog.Diagnoser
 	ClusterCreate    catalog.ClusterCreator
