@@ -1,13 +1,13 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="/platform/docs/assets/images/langdrift-banner-dark.png">
-    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: Agentic FinOps Platform" width="820">
+    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: 代理型 FinOps 平台" width="820">
   </picture>
 </p>
 
 <p align="center">
-  <strong>代理協助的交付，對團隊預算負責。</strong><br>
-  為人類與 AI 代理打造。
+  <strong>代理協助交付，對團隊預算負責。</strong><br>
+  在執行前落實成本治理，為 AI 程式開發代理提供邊界 runtime。為人類與代理打造。
 </p>
 
 <p align="center">
@@ -19,8 +19,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml"><img alt="Pull request 檢查" src="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml/badge.svg?event=pull_request" height="20"></a>
+  <a href="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml"><img alt="Pull request checks" src="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml/badge.svg?event=pull_request" height="20"></a>
   <a href="https://www.npmjs.com/package/@langdrift/ex"><img alt="npm @langdrift/ex" src="https://img.shields.io/npm/v/@langdrift/ex?logo=npm&amp;logoColor=white&amp;label=%40langdrift%2Fex&amp;color=CB3837&amp;labelColor=18181B" height="20"></a>
+  <a href="/LICENSE"><img alt="授權條款: MIT" src="https://img.shields.io/badge/%E6%8E%88%E6%AC%8A%E6%A2%9D%E6%AC%BE-MIT-blue.svg?labelColor=18181B" height="20"></a>
   <a href="/packages/ex/README.md"><img alt="Go 1.26 或更新版本" src="https://img.shields.io/badge/Go-1.26%2B-00ADD8?logo=go&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/package.json"><img alt="Node.js 24" src="https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/apps/website/README.md"><img alt="Next.js 16" src="https://img.shields.io/badge/Next.js-16-F5F5F5?logo=nextdotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
@@ -29,100 +30,53 @@
 
 <p align="center">
   <a href="https://langdrift.md/zh-hant/">網站</a> ·
-  <a href="#產品">產品</a> ·
-  <a href="#預算額度">預算額度</a> ·
-  <a href="#開始使用-ex">開始使用 <code>ex</code></a> ·
-  <a href="#專案狀態">專案狀態</a>
+  <a href="#功能特色">功能特色</a> ·
+  <a href="#如何使用">如何使用</a> ·
+  <a href="#設定檔">設定檔</a> ·
+  <a href="#授權條款">授權條款</a>
 </p>
 
-## 產品
+## 功能特色
 
-**LangDrift FinOps** 讓代理協助的交付對團隊預算負責。它把工單要求的事、代理所做的工作、那份工作留下的證據，以及它花了多少錢，串成一條團隊可以檢視的鏈。
+- **執行前預算保留：** 每次模型呼叫與雲端資源都會依具日期的標價預估，並在執行開始前自團隊預算額度中保留。若預估超出上限，執行會在產生任何花費前暫停。
+- **具邊界的微執行環境 (Microruntimes)：** 為你既有的軟體規劃並執行隔離的本機環境 (Docker、kind、Terraform、Kubernetes)，無需在應用程式程式碼中引入專屬廠商 SDK。
+- **自選程式開發代理：** 透過你偏好的代理驅動器 (如 Claude Code) 進行交付，涵蓋結構化的工作流程階段 (規劃、實作、檢視)，並具備確定性的人工作業確認點。
+- **確定性稽核紀錄：** 留下不含 token 的證據鏈、可驗證的執行帳本，以及作為後續規劃依據的記憶紀錄。
 
-**Microruntimes** 是它的引擎。它的 CLI `ex` 會讀取一張工單與它連結的文件，在你既有的軟體周圍規劃一個有界的本機 runtime，並透過你自己的程式開發代理推動交付；每一次付費呼叫在執行前，都會先對團隊的預算額度保留。
+## 如何使用
 
-模型呼叫逾時、重試的花費超出計畫、pull request 的檢查遲遲沒有回報：交付偏離計畫的方式都很平常。LangDrift 的目標，是讓這些情況都不會變成沒有人核准的支出，或沒有人說得清楚的數字。
+### 先決條件
 
-### 團隊得到什麼
-
-| 能力 | 對團隊的價值 |
-| --- | --- |
-| **從工單產生計畫** | `ex agent plan` 只讀取工單與它連結的文件，取回可比較的過往執行，並寫出一份在團隊預算額度內配置好資源的 runtime 計畫。 |
-| **花費前先保留** | 每一次付費呼叫，無論來自規劃器或程式開發代理，都會以有日期的牌價估算，並對單次執行上限、工單的分配與本期剩餘額度先行保留。 |
-| **透過你的 harness 交付** | 你的工作流程階段與 skills 透過你設定的程式開發代理執行。人員在團隊指定參與的地方確認，而合併永遠由負責人決定。 |
-| **圍繞既有軟體的 runtime** | 你的元件在有界的本機 kind、Terraform 與 Kubernetes 生命週期上啟動，你的程式碼不需要任何 LangDrift 相依套件。 |
-| **有證據的記憶** | 每次執行都會留下不含 token 的證據、一本帳本，以及下一次規劃會取回的記憶。 |
-
-LangDrift 為一次執行中的每一輪取了自己的名字：microruntime 是賽車，一次執行（run）是一場比賽，而一**圈**（lap）是其中的一輪，可能是在閘門前暫停的一次嘗試，也可能是跑完的那次執行。
-
-## 預算額度
-
-授權的預算屬於團隊，不屬於某位開發者或某張工單。工單在其中得到分配，而每次執行都有上限。
-
-在一圈開始之前，`ex` 會以牌價估算這次執行，並加上團隊設定的保留邊際。落在單次執行上限、工單分配與本期剩餘額度之內的保留會開啟這一圈；超出的則會暫停，而且什麼都還沒付。這一圈進行時，每一次付費呼叫前都會經過閘門。結束時，未用到的保留會退回預算。
-
-| 閘門 | 檢查什麼 | 未通過時 |
-| --- | --- | --- |
-| **FG-01** | 有一份有日期的價格來源涵蓋付費工作。 | 阻擋這一圈。 |
-| **FG-02** | 工單有一筆分配。 | 阻擋這一圈。 |
-| **FG-03** | 估算加上邊際，落在單次執行上限、分配與本期剩餘額度之內。 | 在付任何錢之前暫停。 |
-| **FG-04** | 這一圈觀測到的花費尚未達到它的保留。 | 暫停付費呼叫。 |
-| **FG-05** | 負責人已確認先前某一圈的超支。 | 需要負責人以 `--acknowledge-overspend` 確認。 |
-| **FG-06** | 供應商已為這次執行開立帳單。 | 數字維持為暫定。 |
-
-**未知永遠不是零。** 沒有回報用量的呼叫、沒有人能確認的清理、尚未送達的帳單，都會維持未知並附上原因，它的保留也會持續保留，直到對帳完成。
-
-## 你的技術棧，你的決定
-
-LangDrift 負責邊界與機制；你的團隊負責應用程式與其領域上的選擇。
-
-- **很小的足跡。** 在你的專案中，`ex` 只寫入 `.langdrift/`。它讀取工單連結的產出物，絕不讀取專案之外的內容，並拒絕秘密與符號連結。
-- **你的交付，由它觀察。** `ex` 從不 push、不開 pull request、也不合併。交付屬於你的 harness；`ex` 透過 `git` 與 `gh` 觀察分支、pull request 與它的檢查。
-- **建議不等於授權。** 規劃器會建議一個模型與推理強度；真正授權計畫的，是執行這個 runtime。模型的建議永遠不會擴大範圍、資金或存取權。
-- **憑證留在環境裡。** 規劃器在呼叫當下讀取 `ANTHROPIC_API_KEY`，程式開發代理只拿到最小的環境，加上你列出的變數。`ex` 從不以命令列引數接收憑證。
-
-每一項可能阻擋或放行一次執行的輸入，都會連同設定者、時間與途徑一起記錄。`.langdrift/` 下的 JSON 檔是這些紀錄的唯讀鏡像；編輯鏡像不會改變任何閘門讀取的內容。
-
-## 專案狀態
-
-**LangDrift 仍在開發中。** 網站已在 [langdrift.md](https://langdrift.md/zh-hant/) 上線，提供五種語言。主控台讀取 `extub`，這是一個植入單一專案 LangDrift Studio 的 stub API，並把它的 FinOps 數據標示為示意。CLI 已發佈於 npm 為 `@langdrift/ex`（`npx @langdrift/ex`）。
-
-`ex agent plan` 與 `ex agent run` 可以在專案內於本機運作，金錢閘門在 `ex` 內針對專案自己的帳本執行；透過伺服器共享的團隊帳本尚未建置。連線代理（`ex agent connect`、`project`、`supervise` 與 `migrate`）需要一個本儲存庫還沒有的伺服器。測試套件以腳本化的模型、程式開發代理與生命週期驅動 CLI；它們並不證明真實叢集能啟動、真實的花費或已可用於正式環境。網站的註冊目前暫停。
-
-| 路徑 | 內容 |
-| --- | --- |
-| [`apps/website`](/apps/website/README.md) | langdrift.md 上的平台網站：首頁、FinOps、Microruntimes、價格與搶先體驗。 |
-| [`apps/console`](/apps/console/README.md) | 團隊管理 FinOps 與其 microruntimes 的主控台。 |
-| [`apps/extub`](/apps/extub/README.md) | 主控台讀取的本機 Go stub API。 |
-| [`packages/ex`](/packages/ex/README.md) | 以 Go 撰寫的 `ex` CLI。 |
-| [`packages/contracts`](/packages/contracts/README.md) | Microruntimes 的契約：`runtime.md` 區塊與代理協定。 |
-| [`packages/tokens`](/packages/tokens) · [`packages/web`](/packages/web) | 設計 token 與共用 UI。 |
-
-## 開始使用 `ex`
-
-你需要 macOS 或 Linux 與 Node.js 來透過 `npx` 執行 `@langdrift/ex`。這樣就足以規劃。規劃器的模型評審會讀取 `ANTHROPIC_API_KEY`。執行一圈還需要 Docker、kind、kubectl 與 Terraform（`npx @langdrift/ex doctor` 會檢查它們，且不安裝任何東西）、你設定的程式開發代理（例如 Claude Code），以及用來觀察 pull request 的 `gh`。
+- **macOS** 或 **Linux**
+- **Node.js 24+** (透過 `npx` 執行 `@langdrift/ex`)
+- **Docker**、**kind**、**kubectl** 與 **Terraform** (用於執行本機邊界 runtime；隨時使用 `npx @langdrift/ex doctor` 檢查環境)
+- 在環境中設定 `ANTHROPIC_API_KEY` (供模型規劃器與評判使用)
 
 ### 1. 初始化專案
 
-在你的專案儲存庫根目錄執行：
+在儲存庫根目錄執行初始化指令：
 
 ```sh
 npx @langdrift/ex init
 ```
 
-`npx @langdrift/ex init` 會在 `.langdrift/config.json` 建立專案識別，並在 `.langdrift/microruntimes/AGENTS.md` 寫入執行規則，既有檔案保持不變。請把 `/.langdrift/` 加進 `.gitignore`：那是 `ex` 寫入的本機狀態，團隊撰寫的內容都不會放在那裡。
+這會在 `.langdrift/config.json` 建立專案識別設定，並在 `.langdrift/microruntimes/AGENTS.md` 建立本機執行規則。既有檔案保持不變。請將 `/.langdrift/` 加入 `.gitignore`：這是 `ex` 所產生的本機狀態。
 
-### 2. 從工單規劃
+### 2. 從工單進行規劃
 
-指定 runtime 要建置並執行的元件，然後讓 `ex` 讀取工單。`--no-judge` 會在不呼叫模型的情況下規劃，所以不會產生任何費用；不加這個旗標並設定 `ANTHROPIC_API_KEY` 時，規劃器會在與一圈相同的閘門下透過模型評斷各個來源，費用記在帳本的規劃那一行。
+將 `ex` 指向工單或規格文件。它會讀取關聯文件、計算預算額度內的 CPU 與記憶體邊界、建議最佳模型與推理強度，並寫入邊界執行計畫：
 
-CLI 的輸出是英文：
+```sh
+npx @langdrift/ex agent plan <path-to-ticket.md>
+```
+
+> **提示：** 使用 `--no-judge` 可純粹透過啟發式規則產生計畫，無需呼叫 LLM，零成本。
 
 <p align="center">
-  <img src="/platform/docs/assets/images/ex-agent-plan.webp" alt="終端機對工單 0070 執行 ex agent plan。它讀取七份連結的文件，套用團隊 2000 毫核心、3072 MiB 的預算額度與每次執行 25.00 美元的預算，建議使用 claude-sonnet-5-5 與中等推理強度，將 apps/console 配置為 500m 與 1024 MiB，最後產生一份已提議的計畫，修訂版本 1。" width="820">
+  <img src="/platform/docs/assets/images/ex-agent-plan.webp" alt="Terminal running ex agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
 </p>
 
-計畫會寫入 `.langdrift/microruntimes/runtimes/console-microruntime/runtime.md`。其中的 `langdrift` 區塊是 runtime 會執行的內容；第二個區塊 `langdrift-plan` 保存分析。檔案中的文字只作為脈絡保留，永遠不會被執行。
+計畫會儲存於 `.langdrift/microruntimes/runtimes/<runtime-id>/runtime.md`。其中 `langdrift` 區塊包含可執行的設定：
 
 ```json
 {
@@ -145,49 +99,45 @@ CLI 的輸出是英文：
 }
 ```
 
-這段摘錄省略了區塊的版本、名稱，以及由 `ex` 管理的 runtime 與專案識別。在 runtime 停止時再次規劃同一張工單，會提高修訂版本。
-
 ### 3. 執行計畫
 
-執行 runtime 就代表授權它的計畫。一圈會建置映像檔、啟動專案的本機叢集，並透過你的程式開發代理進行付費呼叫，所以請先執行 `npx @langdrift/ex doctor`。
+執行 runtime 即代表授權該計畫並啟動交付週期：
 
 ```sh
-npx @langdrift/ex agent run console-microruntime
+npx @langdrift/ex agent run <runtime-id>
 ```
 
-1. **閘門。** 執行會印出意圖、以牌價計算的估算與單次執行預算，然後進行保留。落在所有界限之內的保留會開啟這一圈；超出的則暫停，什麼都還沒付。
-2. **階段。** 各階段依序透過程式開發代理執行，並各印出一行摘要。需要人員參與的階段會等待負責人：在終端機回答、使用 `--confirm`，或之後執行 `npx @langdrift/ex agent confirm console-microruntime planning`。`owner-only` 階段永遠不會執行。
-3. **Runtime。** 元件依區塊在專案的 kind 叢集上啟動，就緒時執行會告訴你。
-4. **交付。** 執行會觀察分支、pull request 與它的檢查；`--checks-wait` 限制追蹤的時間。
-5. **結算。** runtime 關閉，未用到的保留退回預算，寫入記憶 `run.md`，並重建 episode 索引。執行會說明它是否已可審查或合併，以及接下來要做什麼。
+執行期間，`ex` 會協調整個交付生命週期：
 
-每一項變更都會記錄在這一圈的檔案、`run.json` 與帳本中。
+1. **閘門檢查：** 確認標價涵蓋執行內容，並針對工單配額與期間預算保留預估成本。
+2. **工作流程階段：** 驅動程式開發代理執行工作流程中所定義的階段。若需要人工確認，執行會暫停並等待終端機輸入或 `npx @langdrift/ex agent confirm <runtime-id> <stage>`。
+3. **本機 runtime：** 建置映像檔並在本機 kind 叢集中啟動元件，持續輪詢就緒檢查端點直到狀況正常。
+4. **交付觀察：** 以唯讀方式觀察 Git 提交、分支與 PR 檢查。
+5. **結算清算：** 銷毀本機 runtime 資源、釋出未使用的預算保留額，並將執行紀錄寫入帳本。
 
-### 4. 追蹤執行
+### 4. 檢查狀態與診斷
+
+監控作用中的執行、檢視工作階段事件，並驗證本機工具鏈：
 
 ```sh
-npx @langdrift/ex agent status console-microruntime
+# 顯示目前執行狀態與圈次進度
+npx @langdrift/ex agent status <runtime-id>
+
+# 從歷次執行重新建構情節記憶索引
 npx @langdrift/ex agent reindex
+
+# 檢查先決條件與工具鏈健全狀況
 npx @langdrift/ex doctor
 ```
 
-`status` 顯示執行紀錄與進行中的那一圈，`reindex` 從每個 runtime 的記憶重建 episode 索引，`doctor` 檢查原生工具。加上 `--json` 時，每一行工作階段輸出都是一個 NDJSON 事件 `{at, session, kind, id, text, card, field, data}`，讓主控台或終端機介面能呈現同一個工作階段。
+在 `status` 後加上 `--json` 可輸出適合主控台與儀表板整合的 NDJSON 事件串流。
 
-| 結束代碼 | 意義 |
-| --- | --- |
-| `0` | 成功，或執行正在等待人員。 |
-| `1` | 操作失敗：某個 skill、hook、建置或啟動。 |
-| `2` | 用法無效。 |
-| `3` | 被防護或政策拒絕，例如金錢閘門。 |
-| `4` | 缺少先決條件：工具、輸入、叢集或 runtime 紀錄。 |
-| `130` | 已中斷。 |
+## 設定檔
 
-完整的命令參考、`.langdrift/` 的結構與復原規則，請見英文的 [`ex` README](/packages/ex/README.md)。
-
-### 範例輸入檔
+你可以透過儲存庫中的 JSON 設定檔自訂工作流程階段、代理驅動器與成本參數：
 
 <details>
-<summary><code>workflow.json</code>：各階段、它們的 skills，以及人員參與的位置</summary>
+<summary><code>workflow.json</code>：交付階段與人工確認點</summary>
 
 ```json
 {
@@ -204,12 +154,10 @@ npx @langdrift/ex doctor
 }
 ```
 
-階段也可以列出 `hooks`：它會先在專案內透過 `sh` 執行的、已提交的腳本。
-
 </details>
 
 <details>
-<summary><code>driver.json</code>：執行各階段的程式開發代理</summary>
+<summary><code>driver.json</code>：程式開發代理驅動器定義</summary>
 
 ```json
 {
@@ -223,12 +171,10 @@ npx @langdrift/ex doctor
 }
 ```
 
-執行檔從專案根目錄執行，絕不經過 shell。`usage` 指出輸出在哪裡回報 token；沒有回報的呼叫會讓花費維持未知，而 `"unmeasured": "pause"` 會讓 FG-04 暫停下一次付費呼叫。
-
 </details>
 
 <details>
-<summary><code>prices.json</code>：每次估算所依據的有日期牌價</summary>
+<summary><code>prices.json</code>：Token 標價清單</summary>
 
 ```json
 {
@@ -245,12 +191,10 @@ npx @langdrift/ex doctor
 }
 ```
 
-這些數字僅為示意，用來演示格式，並不是經過驗證的價目表。
-
 </details>
 
 <details>
-<summary><code>forecasts.json</code>：每種推理強度預期使用的 token</summary>
+<summary><code>forecasts.json</code>：依推理強度劃分的 Token 預估量</summary>
 
 ```json
 {
@@ -266,15 +210,8 @@ npx @langdrift/ex doctor
 }
 ```
 
-`planning` 涵蓋規劃器自己的呼叫。當工單先前的執行都沒有量測過 token 時，就會使用這些預測。
-
 </details>
 
-## 參考資料
+## 授權條款
 
-- [AI for FinOps: Agentic Use Cases in FinOps](https://www.finops.org/insights/ai-for-finops-agentic-use-cases/)，Jonathan Morley，FinOps Foundation，2026 年 3 月 27 日。實務工作者描述了代理如何將支出與預算對帳、找出浪費，並在開發生命週期更早的階段落實成本政策；最後這個把 FinOps 帶進交付的主題，正是 LangDrift 投入的地方。
-- [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)，Birgitta Böckeler，martinfowler.com，2026 年 4 月 2 日。文章描述團隊圍繞程式開發代理所打造的外層 harness：在代理行動前引導它的指引，以及讓它自我修正的感測器。`ex harness` 為專案記錄這套 harness，而 FinOps 閘門則限制它能花多少錢。
-
-## 致謝
-
-感謝 [Matt Pocock](https://x.com/mattpocockuk)。本儲存庫所使用的代理 skills，從 grilling 到 to-spec、to-tickets、implement、tdd 與 code-review，都改編自以 MIT 授權釋出的 [mattpocock/skills](https://github.com/mattpocock/skills)，上方的範例工作流程也使用了其中幾個。
+LangDrift 為依據 [MIT 授權條款](/LICENSE) 發布的開源軟體。

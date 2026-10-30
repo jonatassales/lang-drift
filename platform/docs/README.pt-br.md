@@ -1,13 +1,13 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="/platform/docs/assets/images/langdrift-banner-dark.png">
-    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: Agentic FinOps Platform" width="820">
+    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: Plataforma FinOps Agêntica" width="820">
   </picture>
 </p>
 
 <p align="center">
   <strong>Entrega assistida por agentes, prestando contas ao orçamento do seu time.</strong><br>
-  Feito para pessoas e agentes de IA.
+  Governança de custos pré-execução e microruntimes delimitados para agentes de IA. Feito para pessoas e agentes.
 </p>
 
 <p align="center">
@@ -21,6 +21,7 @@
 <p align="center">
   <a href="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml"><img alt="Verificações de pull request" src="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml/badge.svg?event=pull_request" height="20"></a>
   <a href="https://www.npmjs.com/package/@langdrift/ex"><img alt="npm @langdrift/ex" src="https://img.shields.io/npm/v/@langdrift/ex?logo=npm&amp;logoColor=white&amp;label=%40langdrift%2Fex&amp;color=CB3837&amp;labelColor=18181B" height="20"></a>
+  <a href="/LICENSE"><img alt="Licença: MIT" src="https://img.shields.io/badge/Licen%C3%A7a-MIT-blue.svg?labelColor=18181B" height="20"></a>
   <a href="/packages/ex/README.md"><img alt="Go 1.26 ou mais recente" src="https://img.shields.io/badge/Go-1.26%2B-00ADD8?logo=go&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/package.json"><img alt="Node.js 24" src="https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/apps/website/README.md"><img alt="Next.js 16" src="https://img.shields.io/badge/Next.js-16-F5F5F5?logo=nextdotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
@@ -29,100 +30,53 @@
 
 <p align="center">
   <a href="https://langdrift.md/pt-br/">Site</a> ·
-  <a href="#o-produto">O produto</a> ·
-  <a href="#o-envelope">O envelope</a> ·
-  <a href="#comece-com-ex">Comece com <code>ex</code></a> ·
-  <a href="#status-do-projeto">Status do projeto</a>
+  <a href="#recursos">Recursos</a> ·
+  <a href="#como-usar">Como usar</a> ·
+  <a href="#configuracao">Configuração</a> ·
+  <a href="#licenca">Licença</a>
 </p>
 
-## O produto
+## Recursos
 
-O **LangDrift FinOps** faz a entrega assistida por agentes prestar contas ao orçamento do time. Ele conecta o que um ticket pede, o trabalho que um agente faz, as evidências que esse trabalho deixa e quanto ele custou, em uma única cadeia que o time pode inspecionar.
+- **Reserva de orçamento antes da execução:** Cada chamada de modelo e recurso de nuvem é estimada a preços de tabela datados e reservada contra o envelope do time antes de qualquer execução. Se uma estimativa ultrapassar o teto, a execução pausa antes que qualquer custo ocorra.
+- **Microruntimes delimitados:** Planeje e execute ambientes locais isolados (Docker, kind, Terraform, Kubernetes) adaptados ao software que você já possui, sem introduzir dependências ou SDKs proprietários no seu código.
+- **Traga seu próprio agente de código:** Conduza a entrega pelo driver de agente de sua preferência (como Claude Code) através de estágios estruturados de workflow (planejamento, implementação, revisão), com pontos claros de confirmação humana.
+- **Trilhas de auditoria determinísticas:** Deixe evidências sem tokens, livros-razão verificáveis e memórias de execuções anteriores que refinam os próximos planos.
 
-**Microruntimes** é o seu motor. A CLI dele, `ex`, lê um ticket e os documentos que ele referencia, planeja um runtime local e delimitado em volta do software que você já tem e conduz a entrega pelo seu próprio agente de código, com cada chamada paga reservada contra o envelope do time antes de rodar.
+## Como usar
 
-Uma chamada ao modelo que estoura o tempo, uma retentativa que custa mais que o planejado, um pull request cujas verificações nunca respondem: a entrega sai do plano de jeitos comuns. O objetivo do LangDrift é que nenhum deles vire um gasto que ninguém aprovou ou um número que ninguém consegue explicar.
+### Pré-requisitos
 
-### O que o time ganha
+- **macOS** ou **Linux**
+- **Node.js 24+** (para executar `@langdrift/ex` via `npx`)
+- **Docker**, **kind**, **kubectl** e **Terraform** (para executar microruntimes locais delimitados; verifique seu ambiente a qualquer momento com `npx @langdrift/ex doctor`)
+- `ANTHROPIC_API_KEY` configurada no ambiente (para o planejador de modelos)
 
-| Capacidade | Valor para o time |
-| --- | --- |
-| **Planos a partir de tickets** | `ex agent plan` lê o ticket e apenas os documentos que ele referencia, recupera execuções anteriores comparáveis e escreve um plano de runtime dimensionado dentro do envelope do time. |
-| **Reserva antes do gasto** | Toda chamada paga, do planejador e do agente de código, é estimada a preços de tabela datados e reservada contra o teto por execução, a alocação do ticket e o que resta do período. |
-| **Entrega pelo seu harness** | Os estágios e as skills do seu workflow rodam pelo agente de código que você configurar. As pessoas confirmam onde o time definiu que elas participam, e o merge continua sempre com o owner. |
-| **Runtimes em volta do software existente** | Seus componentes sobem em um ciclo de vida local e delimitado com kind, Terraform e Kubernetes, sem nenhuma dependência do LangDrift no seu código. |
-| **Memória com evidências** | Cada execução deixa evidências sem tokens, um livro-razão e uma memória que o próximo plano recupera. |
+### 1. Inicializar o projeto
 
-O LangDrift tem uma palavra própria para cada passagem de uma execução: o microruntime é o carro, a execução (run) é a corrida, e uma **volta** (lap) é uma passagem dela, seja uma tentativa pausada em um gate, seja a execução que terminou.
-
-## O envelope
-
-O orçamento autorizado pertence ao time, não a um desenvolvedor nem a um ticket. Os tickets recebem alocações dentro dele, e cada execução tem um teto.
-
-Antes de abrir uma volta, o `ex` estima a execução a preços de tabela e soma a margem de reserva do time. Uma reserva que cabe no teto por execução, na alocação do ticket e no saldo do período abre a volta; uma que não cabe a pausa sem nada pago. Enquanto a volta roda, um gate é verificado antes de cada chamada paga. Quando ela termina, a reserva não usada volta ao orçamento.
-
-| Gate | O que verifica | Quando não passa |
-| --- | --- | --- |
-| **FG-01** | Uma fonte de preços datada cobre o trabalho pago. | Bloqueia a volta. |
-| **FG-02** | O ticket tem uma alocação. | Bloqueia a volta. |
-| **FG-03** | A estimativa mais a margem cabe no teto por execução, na alocação e no saldo do período. | Pausa antes de qualquer pagamento. |
-| **FG-04** | O gasto observado da volta não atingiu a sua reserva. | Pausa as chamadas pagas. |
-| **FG-05** | O owner reconheceu o gasto excedente de uma volta anterior. | Exige o owner, com `--acknowledge-overspend`. |
-| **FG-06** | O provedor já faturou a execução. | Mantém os valores como provisórios. |
-
-**Desconhecido nunca é zero.** Uma chamada que não informa uso, uma limpeza que ninguém conseguiu confirmar ou uma fatura que ainda não chegou continua desconhecida, com o motivo, e mantém a sua reserva retida até a reconciliação.
-
-## Sua stack, suas decisões
-
-O LangDrift é dono das fronteiras e dos mecanismos; o seu time é dono da aplicação e das escolhas do seu domínio.
-
-- **Uma pegada pequena.** No seu projeto, o `ex` escreve apenas em `.langdrift/`. Ele lê os artefatos que um ticket referencia, nunca fora do projeto, e recusa segredos e links simbólicos.
-- **Sua entrega, observada.** O `ex` nunca faz push, nunca abre pull request e nunca faz merge. A entrega pertence ao seu harness; o `ex` observa a branch, o pull request e as verificações por meio de `git` e `gh`.
-- **Recomendação não é autorização.** O planejador sugere um modelo e um esforço; é rodar o runtime que autoriza o plano. A sugestão de um modelo nunca amplia escopo, verba ou acesso.
-- **Credenciais ficam no ambiente.** O planejador lê `ANTHROPIC_API_KEY` no momento da chamada, e o agente de código recebe um ambiente mínimo mais apenas as variáveis que você listar. O `ex` nunca recebe uma credencial como argumento de comando.
-
-Toda entrada que pode bloquear ou liberar uma execução é registrada com quem a definiu, quando e por qual meio. Os arquivos JSON em `.langdrift/` espelham esses registros para leitura; editar um espelho não muda nada do que um gate lê.
-
-## Status do projeto
-
-**O LangDrift está em desenvolvimento.** O site está no ar em [langdrift.md](https://langdrift.md/pt-br/), em cinco idiomas. O console lê o `extub`, uma API stub que semeia um projeto, o LangDrift Studio, e marca as suas leituras de FinOps como ilustrativas. A CLI está publicada no npm como `@langdrift/ex` (`npx @langdrift/ex`).
-
-`ex agent plan` e `ex agent run` funcionam localmente dentro de um projeto, e os gates de dinheiro rodam dentro do `ex` contra o livro-razão do próprio projeto; um livro-razão do time compartilhado por um servidor ainda não foi construído. O agente conectado (`ex agent connect`, `project`, `supervise` e `migrate`) precisa de um servidor que este repositório ainda não tem. As suítes de teste conduzem a CLI com modelos, agentes de código e ciclos de vida roteirizados; elas não comprovam o início de um cluster real, gasto real nem prontidão para produção. O cadastro no site está pausado.
-
-| Caminho | O que contém |
-| --- | --- |
-| [`apps/website`](/apps/website/README.md) | O site da plataforma em langdrift.md: início, FinOps, Microruntimes, preços e acesso antecipado. |
-| [`apps/console`](/apps/console/README.md) | O console em que um time gerencia o FinOps e os seus microruntimes. |
-| [`apps/extub`](/apps/extub/README.md) | A API stub local em Go que o console lê. |
-| [`packages/ex`](/packages/ex/README.md) | A CLI `ex`, em Go. |
-| [`packages/contracts`](/packages/contracts/README.md) | Os contratos do Microruntimes: o bloco do `runtime.md` e o protocolo do agente. |
-| [`packages/tokens`](/packages/tokens) · [`packages/web`](/packages/web) | Os design tokens e a UI compartilhada. |
-
-## Comece com `ex`
-
-Você precisa de macOS ou Linux e Node.js para rodar `@langdrift/ex` com `npx`. Isso basta para planejar. O juiz do planejador lê `ANTHROPIC_API_KEY`. Rodar uma volta também exige Docker, kind, kubectl e Terraform (`npx @langdrift/ex doctor` verifica e não instala nada), o agente de código que você configurar, como o Claude Code, e `gh` para observar pull requests.
-
-### 1. Inicialize um projeto
-
-A partir da raiz do repositório do seu projeto:
+Execute o inicializador na raiz do seu repositório:
 
 ```sh
 npx @langdrift/ex init
 ```
 
-`npx @langdrift/ex init` cria a identidade do projeto em `.langdrift/config.json` e as regras de execução em `.langdrift/microruntimes/AGENTS.md`, e não altera arquivos existentes. Adicione `/.langdrift/` ao `.gitignore`: é estado local da máquina que o `ex` escreve, e nada que o seu time escreve fica ali.
+Isso cria a configuração de identidade do projeto em `.langdrift/config.json` e as regras locais de execução em `.langdrift/microruntimes/AGENTS.md`. Os arquivos existentes permanecem inalterados. Adicione `/.langdrift/` ao seu `.gitignore`: essa pasta armazena o estado gerado pelo `ex`.
 
-### 2. Planeje a partir de um ticket
+### 2. Planejar a partir de uma issue ou ticket
 
-Informe os componentes que o runtime deve compilar e rodar e deixe o `ex` ler o ticket. `--no-judge` planeja sem chamada a modelo, então nada é pago; sem ele, e com `ANTHROPIC_API_KEY` definida, o planejador julga as fontes por um modelo sob os mesmos gates de uma volta, e o custo entra na linha de planejamento do livro-razão.
+Aponte o `ex` para um ticket ou especificação. Ele lê os documentos vinculados, dimensiona limites de CPU e memória dentro do envelope do seu time, escolhe o modelo ideal e escreve um plano de execução delimitado:
 
-A saída da CLI é em inglês:
+```sh
+npx @langdrift/ex agent plan <caminho-do-ticket.md>
+```
+
+> **Dica:** Use `--no-judge` para gerar o plano por heurística sem realizar chamadas de LLM, sem nenhum custo.
 
 <p align="center">
-  <img src="/platform/docs/assets/images/ex-agent-plan.webp" alt="Terminal executando ex agent plan no ticket 0070. Ele lê sete documentos referenciados, aplica o envelope de 2000 millicores e 3072 MiB do time e o orçamento de US$ 25,00 por execução, sugere claude-sonnet-5-5 com esforço médio, dimensiona apps/console em 500m e 1024 MiB e termina com um plano proposto, revisão 1." width="820">
+  <img src="/platform/docs/assets/images/ex-agent-plan.webp" alt="Terminal executando ex agent plan no ticket 0070. Ele lê sete documentos vinculados, aplica o envelope de 2000 milicores e 3072 MiB do time e o orçamento de $25.00 por execução, sugere claude-sonnet-5-5 com esforço médio, dimensiona apps/console para 500m e 1024 MiB e encerra com uma proposta de plano, revisão 1." width="820">
 </p>
 
-O plano fica em `.langdrift/microruntimes/runtimes/console-microruntime/runtime.md`. O bloco `langdrift` é o que o runtime executa; um segundo bloco, `langdrift-plan`, guarda a análise. A prosa do arquivo é mantida como contexto e nunca é executada.
+O plano é salvo em `.langdrift/microruntimes/runtimes/<runtime-id>/runtime.md`. O bloco `langdrift` contém a configuração executável:
 
 ```json
 {
@@ -145,49 +99,45 @@ O plano fica em `.langdrift/microruntimes/runtimes/console-microruntime/runtime.
 }
 ```
 
-Este trecho omite a versão, o nome e as identidades do runtime e do projeto, que o `ex` gerencia. Planejar o mesmo ticket de novo, com o runtime parado, aumenta a revisão.
+### 3. Executar o plano
 
-### 3. Rode o plano
-
-Rodar o runtime autoriza o seu plano. Uma volta compila imagens, inicia o cluster local do projeto e faz chamadas pagas pelo seu agente de código, então rode `npx @langdrift/ex doctor` antes.
+Executar o runtime autoriza o plano e inicia o ciclo de entrega:
 
 ```sh
-npx @langdrift/ex agent run console-microruntime
+npx @langdrift/ex agent run <runtime-id>
 ```
 
-1. **O gate.** A execução imprime a intenção, a estimativa a preços de tabela e o orçamento por execução, e então reserva. Uma reserva dentro de todos os limites abre a volta; uma acima deles pausa sem nada pago.
-2. **Os estágios.** Cada estágio roda em ordem pelo agente de código e imprime um resumo de uma linha. Um estágio em que uma pessoa participa espera pelo owner: responda no terminal ou com `--confirm`, ou depois com `npx @langdrift/ex agent confirm console-microruntime planning`. O estágio `owner-only` nunca roda.
-3. **O runtime.** Os componentes sobem a partir do bloco no cluster kind do projeto, e a execução avisa quando estão prontos.
-4. **A entrega.** A execução observa a branch, o pull request e as suas verificações; `--checks-wait` limita por quanto tempo ela os acompanha.
-5. **O acerto.** O runtime desce, a reserva não usada volta ao orçamento, a memória `run.md` é escrita e o índice de episódios é reconstruído. A execução diz se está pronta para revisão ou para merge, e o que vem a seguir.
+Durante a execução, o `ex` coordena todo o ciclo de entrega:
 
-Toda mudança fica registrada no arquivo da volta, no `run.json` e no livro-razão.
+1. **Checagem de portão:** Valida se os preços cobrem a execução e reserva o custo estimado contra a alocação do ticket e o envelope do período.
+2. **Estágios do workflow:** Guia o agente de código pelos estágios definidos no workflow. Quando a aprovação humana é exigida, a execução pausa até ser confirmada no terminal ou com `npx @langdrift/ex agent confirm <runtime-id> <estagio>`.
+3. **Runtime local:** Constrói imagens e inicia os componentes em um cluster kind local, verificando os endpoints de prontidão.
+4. **Observação da entrega:** Monitora commits, branches e verificações de PR em modo somente leitura.
+5. **Liquidação:** Desativa recursos do runtime local, devolve reservas de orçamento não utilizadas e registra a execução no livro-razão.
 
-### 4. Acompanhe a execução
+### 4. Inspecionar status e diagnósticos
+
+Acompanhe execuções ativas, inspecione eventos de sessão e verifique ferramentas locais:
 
 ```sh
-npx @langdrift/ex agent status console-microruntime
+# Exibir status da execução atual e estado da volta
+npx @langdrift/ex agent status <runtime-id>
+
+# Reconstruir o índice de memória a partir de execuções anteriores
 npx @langdrift/ex agent reindex
+
+# Verificar pré-requisitos e integridade das ferramentas
 npx @langdrift/ex doctor
 ```
 
-`status` mostra o registro da execução e a volta aberta, `reindex` reconstrói o índice de episódios a partir da memória de cada runtime, e `doctor` verifica as ferramentas nativas. Com `--json`, cada linha da sessão é um evento NDJSON, `{at, session, kind, id, text, card, field, data}`, para que um console ou uma interface de terminal renderize a mesma sessão.
+Adicione `--json` ao `status` para receber eventos NDJSON compatíveis com consoles e dashboards.
 
-| Código de saída | Significado |
-| --- | --- |
-| `0` | Sucesso, ou uma execução esperando por uma pessoa. |
-| `1` | A operação falhou: uma skill, um hook, uma compilação ou um início. |
-| `2` | Uso inválido. |
-| `3` | Recusado por uma proteção ou política, como um gate de dinheiro. |
-| `4` | Falta um pré-requisito: uma ferramenta, uma entrada, um cluster ou o registro de um runtime. |
-| `130` | Interrompido. |
+## Configuração
 
-A referência completa de comandos, o layout de `.langdrift/` e as regras de recuperação estão no [README do `ex`](/packages/ex/README.md), em inglês.
-
-### Arquivos de entrada de exemplo
+Você pode personalizar estágios de workflow, drivers de agentes e parâmetros de custos usando arquivos de configuração JSON no seu repositório:
 
 <details>
-<summary><code>workflow.json</code>: os estágios, as suas skills e onde uma pessoa participa</summary>
+<summary><code>workflow.json</code>: estágios de entrega e pontos de aprovação humana</summary>
 
 ```json
 {
@@ -204,12 +154,10 @@ A referência completa de comandos, o layout de `.langdrift/` e as regras de rec
 }
 ```
 
-Um estágio também pode listar `hooks`: scripts versionados que ele roda primeiro, via `sh`, dentro do projeto.
-
 </details>
 
 <details>
-<summary><code>driver.json</code>: o agente de código que executa os estágios</summary>
+<summary><code>driver.json</code>: definição do driver do agente de código</summary>
 
 ```json
 {
@@ -223,12 +171,10 @@ Um estágio também pode listar `hooks`: scripts versionados que ele roda primei
 }
 ```
 
-O executável roda a partir da raiz do projeto, nunca por um shell. `usage` indica onde a saída informa os tokens; uma chamada que não informa nenhum deixa o seu gasto desconhecido, e `"unmeasured": "pause"` faz o FG-04 pausar a próxima chamada paga.
-
 </details>
 
 <details>
-<summary><code>prices.json</code>: os preços de tabela datados por trás de cada estimativa</summary>
+<summary><code>prices.json</code>: tabela de preços de tokens</summary>
 
 ```json
 {
@@ -245,12 +191,10 @@ O executável roda a partir da raiz do projeto, nunca por um shell. `usage` indi
 }
 ```
 
-Estes valores são ilustrativos e servem para exercitar o formato; não são uma tabela de preços verificada.
-
 </details>
 
 <details>
-<summary><code>forecasts.json</code>: os tokens que cada esforço deve consumir</summary>
+<summary><code>forecasts.json</code>: estimativas de tokens por nível de esforço</summary>
 
 ```json
 {
@@ -266,15 +210,8 @@ Estes valores são ilustrativos e servem para exercitar o formato; não são uma
 }
 ```
 
-`planning` cobre as chamadas do próprio planejador. As previsões são usadas quando nenhuma execução anterior do ticket mediu os seus tokens.
-
 </details>
 
-## Referências
+## Licença
 
-- [AI for FinOps: Agentic Use Cases in FinOps](https://www.finops.org/insights/ai-for-finops-agentic-use-cases/), Jonathan Morley, FinOps Foundation, 27 de março de 2026. Praticantes descrevem agentes que reconciliam gastos com orçamentos, encontram desperdício e aplicam políticas de custo mais cedo no ciclo de desenvolvimento; esse último tema, levar o FinOps para dentro da entrega, é onde o LangDrift trabalha.
-- [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html), Birgitta Böckeler, martinfowler.com, 2 de abril de 2026. O artigo descreve o harness externo que um time constrói em volta de um agente de código: guias que orientam o agente antes de ele agir e sensores que permitem que ele se corrija. O `ex harness` registra esse harness para um projeto, e os gates de FinOps limitam o que ele pode gastar.
-
-## Agradecimentos
-
-Obrigado a [Matt Pocock](https://x.com/mattpocockuk). As skills de agente com que este repositório trabalha, de grilling a to-spec, to-tickets, implement, tdd e code-review, são adaptadas de [mattpocock/skills](https://github.com/mattpocock/skills), sob a licença MIT, e o workflow de exemplo acima usa várias delas.
+O LangDrift é um software de código aberto licenciado sob a [Licença MIT](/LICENSE).
