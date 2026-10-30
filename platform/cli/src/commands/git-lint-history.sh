@@ -25,5 +25,5 @@ for commit in $(git rev-list --reverse "$1..$2"); do
   fi
 done
 
-pnpm exec commitlint --config "$DRIFT_COMMITLINT_CONFIG" --from "$1" --to "$2" || status=1
+pnpm exec commitlint --from "$1" --to "$2" || status=1
 exit "$status"

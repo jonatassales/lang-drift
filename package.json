@@ -13,11 +13,16 @@
 	},
 	"scripts": {
 		"postinstall": "sh platform/cli/drift setup",
-		"prepare": "husky platform/versioning/.husky",
+		"prepare": "husky platform/cli/.husky",
 		"website": "turbo run dev --filter=website",
 		"console": "turbo run dev --filter=console",
 		"check": "biome check .",
 		"fix": "biome check --write ."
+	},
+	"commitlint": {
+		"extends": [
+			"@commitlint/config-conventional"
+		]
 	},
 	"lint-staged": {
 		"*.{js,cjs,mjs,jsx,ts,cts,mts,tsx,json,jsonc,css}": "biome check --no-errors-on-unmatched"
