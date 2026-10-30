@@ -17,8 +17,10 @@ Run from the repository root:
 | `pnpm turbo run typecheck --filter=website` | Type-checks the app. |
 | `pnpm turbo run build --filter=website` | Builds the app and the packages it depends on. |
 | `drift check localization` | Checks the translation catalogs after a catalog or loader change. |
+| `drift env setup` | Creates the local `.env` file from `.env.development`. |
+| `drift env validate` | Checks that `.env.development` has its local `.env`. |
 
-`.env.development` holds the shared development defaults and is tracked, so a fresh checkout runs without setup. Its `CRYPTO_SECRET` is a development-only key: it protects nothing, and no deployed environment may reuse it. Git ignores every other `.env*` file. Put real and local values in `apps/website/.env.local`, which Next.js loads and which takes precedence over `.env.development`. Never put a production secret in a tracked file or in a `NEXT_PUBLIC_` variable.
+`.env.development` holds the shared development defaults and is tracked, so a fresh checkout runs without setup. Its `CRYPTO_SECRET` is a development-only key: it protects nothing, and no deployed environment may reuse it. Git ignores `.env`. Put real and local values in `apps/website/.env` (run `drift env setup` to create it), which Next.js loads. Never put a production secret in a tracked file or in a `NEXT_PUBLIC_` variable.
 
 | Variable | Requirement |
 | --- | --- |
