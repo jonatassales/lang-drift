@@ -11,9 +11,6 @@ permissions:
 env:
   # The Git hooks are for local commits; CI runs the same guardrails.
   HUSKY: '0'
-  # Every turbo run writes a summary to .turbo/runs, which the turbo-summary
-  # action turns into the job summary and an artifact for telemetry.yml.
-  TURBO_RUN_SUMMARY: 'true'
 
 jobs:
   build:
@@ -26,10 +23,6 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/setup-workspace
       - run: pnpm turbo run build
-      - uses: ./.github/actions/turbo-summary
-        if: ${{ !cancelled() }}
-        with:
-          name: build
 
   check:
     name: Check
@@ -52,10 +45,6 @@ jobs:
         run: platform/cli/drift quality dead-code
       - name: Repository rules
         run: platform/cli/drift quality check
-      - uses: ./.github/actions/turbo-summary
-        if: ${{ !cancelled() }}
-        with:
-          name: check
 
   test:
     name: Test
@@ -67,10 +56,6 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/setup-workspace
       - run: pnpm turbo run test
-      - uses: ./.github/actions/turbo-summary
-        if: ${{ !cancelled() }}
-        with:
-          name: test
 
   security:
     name: Security

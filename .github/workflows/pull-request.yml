@@ -52,8 +52,6 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup-workspace
-      - name: Install ripgrep
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq ripgrep
       - name: Harness rules audit
         run: platform/cli/drift quality coverage >>"$GITHUB_STEP_SUMMARY"
 

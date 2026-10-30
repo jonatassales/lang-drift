@@ -46,16 +46,6 @@ case "$command" in
       *) drift_usage_error "Usage: drift check <biome|localization|workflows>" ;;
     esac
     ;;
-  ci)
-    subcommand=${1:-}
-    [ "$#" -eq 0 ] || shift
-    case "$subcommand" in
-      summary) exec "$commands/ci-summary.sh" "$@" ;;
-      record) exec "$commands/ci-record.sh" "$@" ;;
-      ship) exec "$commands/ci-ship.sh" "$@" ;;
-      *) drift_usage_error "Usage: drift ci <summary|record|ship>" ;;
-    esac
-    ;;
   env)
     subcommand=${1:-}
     [ "$#" -eq 0 ] || shift
