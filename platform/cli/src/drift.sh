@@ -87,6 +87,22 @@ case "$command" in
       *) drift_usage_error "Usage: drift quality <check|coverage>" ;;
     esac
     ;;
+  widget)
+    subcommand=${1:-}
+    [ "$#" -eq 0 ] || shift
+    widgets="$DRIFT_PROJECT_ROOT/.github/widgets"
+    case "$subcommand" in
+      check-run) exec "$widgets/check-run.sh" "$@" ;;
+      sticky-comment) exec "$widgets/sticky-comment.sh" "$@" ;;
+      workflow) exec "$widgets/workflow.sh" "$@" ;;
+      finops) exec "$widgets/finops.sh" "$@" ;;
+      microruntimes) exec "$widgets/microruntimes.sh" "$@" ;;
+      code-quality) exec "$widgets/code-quality.sh" "$@" ;;
+      agentic) exec "$widgets/agentic.sh" "$@" ;;
+      dashboard) exec "$widgets/dashboard.sh" "$@" ;;
+      *) drift_usage_error "Usage: drift widget <check-run|sticky-comment|workflow|finops|microruntimes|code-quality|agentic|dashboard>" ;;
+    esac
+    ;;
   --*) drift_usage_error "Unknown option: $command" ;;
   *) drift_usage_error "Unknown command: $command" ;;
 esac
