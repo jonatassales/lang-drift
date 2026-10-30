@@ -98,6 +98,10 @@ func (cliApplication *application) registerCommands(rootCommand *cobra.Command) 
 		cliApplication.agentCommand(),
 	)
 
+	if cliApplication.useCases.Gates != nil {
+		rootCommand.AddCommand(cliApplication.gatesCommand())
+	}
+
 	if cliApplication.useCases.Inputs != nil {
 		rootCommand.AddCommand(cliApplication.harnessCommand(), cliApplication.finopsCommand())
 	}

@@ -6,6 +6,7 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	connectedapp "github.com/jonatassales/tao/packages/ex/src/application/connected"
 	"github.com/jonatassales/tao/packages/ex/src/application/execution"
+	gatesapp "github.com/jonatassales/tao/packages/ex/src/application/gates"
 	"github.com/jonatassales/tao/packages/ex/src/application/inputs"
 	"github.com/jonatassales/tao/packages/ex/src/application/plan"
 	"github.com/jonatassales/tao/packages/ex/src/domain/rag"
@@ -13,6 +14,7 @@ import (
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/configuration"
 	connectedinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/connected"
 	deliveryinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/delivery"
+	"github.com/jonatassales/tao/packages/ex/src/infrastructure/history"
 	"github.com/jonatassales/tao/packages/ex/src/infrastructure/hooks"
 	inputsinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/inputs"
 	judgeinfra "github.com/jonatassales/tao/packages/ex/src/infrastructure/judge"
@@ -193,6 +195,11 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 		AgentInit: application.InitializeAgent{
 			Projects: projects,
 			Agents:   agents,
+		},
+		Gates: gatesapp.Report{
+			History: history.Log{
+				Runner: runner,
+			},
 		},
 	}
 	engine := connectedinfra.Native{

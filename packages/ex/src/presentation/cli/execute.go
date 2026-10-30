@@ -28,6 +28,7 @@ type UseCases struct {
 	Inputs           catalog.Inputs
 	Plan             catalog.PlanOperations
 	Execution        catalog.Executor
+	Gates            catalog.GatesReporter
 }
 
 // Execute runs the CLI and returns the appropriate exit code.
