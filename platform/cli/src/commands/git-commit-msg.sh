@@ -20,4 +20,4 @@ fi
 
 # 3. Conventional Commits.
 [ -x node_modules/.bin/commitlint ] || drift_die "commitlint is missing. Run pnpm install."
-exec pnpm exec commitlint --config "$DRIFT_COMMITLINT_CONFIG" --edit "$message"
+exec pnpm exec commitlint --edit "$message"

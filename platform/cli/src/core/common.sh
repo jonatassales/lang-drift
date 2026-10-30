@@ -6,9 +6,8 @@
 
 . "$DRIFT_CLI_DIR/core/output.sh"
 
-# Tool configuration lives under platform/, grouped by concern.
-DRIFT_HOOKS_DIR=platform/versioning/.husky
-DRIFT_COMMITLINT_CONFIG=platform/versioning/commitlint.config.json
+# Git hooks live under platform/cli/.husky.
+DRIFT_HOOKS_DIR=platform/cli/.husky
 
 drift_die() {
   drift_print_error "drift: $1"
