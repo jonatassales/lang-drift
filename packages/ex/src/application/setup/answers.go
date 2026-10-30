@@ -10,4 +10,7 @@ import "github.com/jonatassales/tao/packages/ex/src/domain/finops"
 type Answers struct {
 	Budget       *finops.BudgetBounds
 	DefaultGates bool
+	// Artifacts is the folder of the team's tickets and specs, relative to
+	// the project root.
+	Artifacts string
 }

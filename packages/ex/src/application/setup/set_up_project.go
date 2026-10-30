@@ -22,6 +22,13 @@ type Recorder interface {
 	SetGates(context.Context, inputs.GatesRequest) (inputs.Result, error)
 }
 
+// ArtifactsFolder keeps the folder of the team's tickets and specs.
+type ArtifactsFolder interface {
+	Folder(owner project.Project) (string, error)
+	Check(owner project.Project, relative string) (string, error)
+	Record(owner project.Project, relative string) (string, error)
+}
+
 // Request names the project directory, who sets the inputs, the flags'
 // answers and, when a person is there, the guide that asks for the rest.
 type Request struct {
@@ -39,6 +46,11 @@ type Result struct {
 	Kept     []string `json:"kept,omitempty"`
 	Next     []string `json:"next,omitempty"`
 }
+
+// The names the result gives the inputs that are not money rules.
+const (
+	inputArtifacts = "artifacts"
+)
 
 // The inputs a first run still needs after the setup, with their commands.
 var nextInputs = []struct {
@@ -66,6 +78,7 @@ type SetUpProject struct {
 	Projects   application.ProjectOpener
 	Inputs     Recorder
 	Store      inputs.Store
+	Artifacts  ArtifactsFolder
 	Clock      application.Clock
 }
 
@@ -103,7 +116,15 @@ func (useCase SetUpProject) Execute(ctx context.Context, request Request) (Resul
 
 	result := Result{ProjectResult: initialized}
 
+	if err := useCase.checkArtifacts(owner, pending, answers); err != nil {
+		return Result{}, err
+	}
+
 	if err := useCase.recordFinOps(ctx, selection, request.By, pending, answers, &result); err != nil {
+		return Result{}, err
+	}
+
+	if err := useCase.recordArtifacts(owner, pending, answers, &result); err != nil {
 		return Result{}, err
 	}
 
@@ -150,7 +171,48 @@ func (useCase SetUpProject) pending(owner project.Project) (Pending, error) {
 		return Pending{}, err
 	}
 
+	folder, err := useCase.Artifacts.Folder(owner)
+	if err != nil {
+		return Pending{}, err
+	}
+
+	pending.Artifacts = folder == ""
+
 	return pending, nil
+}
+
+// checkArtifacts refuses a pending artifacts folder the project does not
+// have, before any input is recorded.
+func (useCase SetUpProject) checkArtifacts(owner project.Project, pending Pending, answers Answers) error {
+	if answers.Artifacts == "" || !pending.Artifacts {
+		return nil
+	}
+
+	_, err := useCase.Artifacts.Check(owner, answers.Artifacts)
+
+	return err
+}
+
+// recordArtifacts stores the artifacts folder, once the budget and the gates
+// the service validates are recorded.
+func (useCase SetUpProject) recordArtifacts(owner project.Project, pending Pending, answers Answers, result *Result) error {
+	if answers.Artifacts == "" {
+		return nil
+	}
+
+	if !pending.Artifacts {
+		result.Kept = append(result.Kept, inputArtifacts)
+
+		return nil
+	}
+
+	if _, err := useCase.Artifacts.Record(owner, answers.Artifacts); err != nil {
+		return err
+	}
+
+	result.Recorded = append(result.Recorded, inputArtifacts)
+
+	return nil
 }
 
 // recordFinOps sets the budget and the gates when they are pending, and keeps

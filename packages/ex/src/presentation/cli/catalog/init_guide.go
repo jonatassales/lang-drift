@@ -17,7 +17,7 @@ type initGuide struct {
 }
 
 // Ask asks for the month's budget, which an empty answer skips, then for the
-// default gates.
+// default gates and the artifacts folder.
 func (guide initGuide) Ask(ctx context.Context, pending setup.Pending, answers setup.Answers) (setup.Answers, error) {
 	if pending.Budget && answers.Budget == nil {
 		budget, err := guide.budget(ctx, pending.Period)
@@ -35,6 +35,15 @@ func (guide initGuide) Ask(ctx context.Context, pending setup.Pending, answers s
 		}
 
 		answers.DefaultGates = apply
+	}
+
+	if pending.Artifacts && answers.Artifacts == "" {
+		folder, err := guide.prompter.Optional(ctx, "Artifacts folder, where the tickets and specs live, relative to the project (empty skips it)")
+		if err != nil {
+			return setup.Answers{}, err
+		}
+
+		answers.Artifacts = folder
 	}
 
 	return answers, nil

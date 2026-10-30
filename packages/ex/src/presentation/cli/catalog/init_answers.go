@@ -16,12 +16,16 @@ type initFlags struct {
 	perRun        string
 	reserveMargin int
 	defaultGates  bool
+	artifacts     string
 }
 
 // initAnswers reads the flags' answers. The three budget flags go together,
 // and an amount that is not dollars is refused before anything is recorded.
 func initAnswers(flags *pflag.FlagSet, values initFlags) (setup.Answers, error) {
-	answers := setup.Answers{DefaultGates: values.defaultGates}
+	answers := setup.Answers{
+		DefaultGates: values.defaultGates,
+		Artifacts:    values.artifacts,
+	}
 
 	given := 0
 

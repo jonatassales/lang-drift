@@ -66,6 +66,7 @@ func NewProjectInitCommand(setUpProject ProjectSetup, globals *support.Globals) 
 	flags.StringVar(&values.perRun, "per-run", "", "the most one run may reserve, in dollars")
 	flags.IntVar(&values.reserveMargin, "reserve-margin", 0, "the margin a reservation adds to an estimate, in percent")
 	flags.BoolVar(&values.defaultGates, "default-gates", false, "apply the reference gates, FG-01 to FG-06")
+	flags.StringVar(&values.artifacts, "artifacts", "", "the folder of the team's tickets and specs, relative to the project")
 	flags.StringVar(&by, "by", inputs.DefaultBy, "who sets the inputs")
 
 	return command

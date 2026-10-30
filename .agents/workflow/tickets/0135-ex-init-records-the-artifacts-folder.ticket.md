@@ -8,8 +8,8 @@
 
 **Status:** ready-for-agent
 
-- [ ] An existing relative folder is stored as `artifacts` in `config.json`, and the result lists `artifacts` as recorded.
-- [ ] An absolute path, a path that climbs with `..` or a missing folder is refused with the reason, and nothing is recorded.
-- [ ] Without an artifacts folder, `config.json` keeps today's exact layout.
-- [ ] A second `init` does not ask for the folder once one is stored.
-- [ ] The README's `.langdrift` table describes the new field.
+- [x] An existing relative folder is stored as `artifacts` in `config.json`, and the result lists `artifacts` as recorded.
+- [x] An absolute path, a path that climbs with `..` or a missing folder is refused with the reason, and nothing is recorded.
+- [x] Without an artifacts folder, `config.json` keeps today's exact layout.
+- [x] A second `init` does not ask for the folder once one is stored.
+- [x] The README's `.langdrift` table describes the new field.

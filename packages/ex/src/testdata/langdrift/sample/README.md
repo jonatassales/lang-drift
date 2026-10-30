@@ -6,7 +6,7 @@ The LangDrift folder of this project, versioned with it except `agent/state/`. I
 
 | Path | Scope | Written by |
 | --- | --- | --- |
-| `config.json` | general | `ex init`: the project identity |
+| `config.json` | general | `ex init`: the project identity, and `artifacts`, the folder of the team's tickets and specs, when one was given |
 | `agent/state/` | general, ignored | the connected agent: locks, cluster record, build copies, outbox, the derived RAG index |
 | `harness/` | general | the server, as mirrors of console input: the hardware envelope, the delivery stages; `guardrails/` holds the team's policy text |
 | `microruntimes/` | Microruntimes | The engine: execution rules, one `runtime.md` per microruntime, one folder per run |

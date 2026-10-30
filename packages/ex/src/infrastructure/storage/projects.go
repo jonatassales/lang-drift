@@ -28,6 +28,9 @@ const (
 type projectMetadata struct {
 	Version int    `json:"version"`
 	ID      string `json:"id"`
+	// Artifacts is the folder of the team's tickets and specs, slash-separated
+	// and relative to the project root, when ex init recorded one.
+	Artifacts string `json:"artifacts,omitempty"`
 }
 
 // Projects keeps project identity in .langdrift/config.json.
