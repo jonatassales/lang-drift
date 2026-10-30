@@ -16,7 +16,7 @@ command_line cleanup 'Remove generated workspace state'
 command_line reset 'Remove generated state, local config and the lockfile, then install'
 
 printf '\n'
-command_line 'check [biome|dead-code|localization|workflows]' 'Check imports, dead code, catalogs and workflows'
+command_line 'check [biome|localization|workflows]' 'Check imports, catalogs and workflows'
 
 printf '\n'
 command_line 'ci [summary|record|ship]' 'Print run summaries and ship telemetry to Better Stack'
@@ -28,7 +28,7 @@ printf '\n'
 command_line 'git [setup|doctor|pre-commit|commit-msg|lint-history]' 'Install, check and run Git hooks and guardrails'
 
 printf '\n'
-command_line 'quality [check|coverage]' 'Enforce repository rules and rule detector coverage'
+command_line 'quality [check|coverage|dead-code]' 'Enforce repository rules, rule detector coverage and dead code'
 
 printf '\n'
 command_line 'widget [<name>|check-run|sticky-comment]' 'Print PR widgets and update check runs or comments'
