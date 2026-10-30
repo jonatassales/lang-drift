@@ -10,8 +10,8 @@ Monorepo with four packages, `@langdrift/tokens`, `@langdrift/web`, the `ex` CLI
 - `packages/<capability>/`: shared across apps, never inside one. `tokens`, `web`, `ex` and `contracts` exist; `shell`, `account` and `runtime` are planned.
 - `packages/ex`, `packages/contracts` and `apps/extub` are Go modules tied together by the root `go.work`: Turborepo runs their `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds them (no Go toolchain required for frontend work).
 - A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package. Package scope: `@langdrift/*`.
-- `.github/`: GitHub Actions. Entry workflows are named after their event (`pull-request.yml`, `main.yml`), `validate.yml` is the validation they share, and `telemetry.yml` ships each run to Better Stack; composite actions sit in `actions/<name>/` and the pull request widgets in `widgets/`. Publishing gets its own workflow file. See Continuous integration.
-- `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, its Git hooks (`.husky/`), its `src/exceptions/dead-code.allow` and the `drift quality coverage` detectors (`src/quality/`), `observability/` the jq programs that turn CI runs into Better Stack events and job summary tables, `docs/` the README's translations and, under `assets/images/`, its light and dark banners with the SVG sources the PNGs are rendered from. The English `README.md` sits at the root; each README links every language right after the banner and the headline.
+- `.github/`: GitHub Actions. Entry workflows are named after their event (`pull-request.yml`, `main.yml`), `validate.yml` is the validation they share; composite actions sit in `actions/<name>/` and the pull request widgets in `widgets/`. Publishing gets its own workflow file. See Continuous integration.
+- `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, its Git hooks (`.husky/`), its `src/exceptions/dead-code.allow` and the `drift quality coverage` detectors (`src/quality/`), `docs/` the README's translations and, under `assets/images/`, its light and dark banners with the SVG sources the PNGs are rendered from. The English `README.md` sits at the root; each README links every language right after the banner and the headline.
 - `turbo.json` declares the environment each task may see: Turborepo runs in strict mode, so a variable reaches a task only through `globalEnv`, a task's `env` or the pass-through lists. `apps/website/README.md` holds the website's variable contract and its tracked `.env.development` the shared development defaults, including a development-only `CRYPTO_SECRET`; deployed environments set their own value, and `CRYPTO_SECRET` stays pass-through only in Turborepo. The `build` task declares `VERCEL_ENV` in its `env`: the website's header policy differs on preview builds, so a preview and a production build must never share a cache entry.
 
 ## Toolchain and commands
@@ -44,7 +44,7 @@ The website needs `CRYPTO_SECRET` even locally; without it every page answers 50
 
 ## Platform CLI
 
-`platform/cli/drift` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `reset`, `check biome|localization|workflows`, `ci summary|record|ship`, `env setup|validate`, `git setup|doctor|pre-commit|commit-msg|lint-history`, `quality check|coverage|dead-code` and `widget check-run|sticky-comment`. The `ci` and `widget` commands serve the workflows (see Continuous integration): the `ci` commands need `gh`, `jq` and `curl`, the `widget` commands `gh` and `jq`.
+`platform/cli/drift` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `reset`, `check biome|localization|workflows`, `env setup|validate`, `git setup|doctor|pre-commit|commit-msg|lint-history`, `quality check|coverage|dead-code` and `widget check-run|sticky-comment`. The `widget` commands serve the workflows (see Continuous integration) and need `gh` and `jq`.
 
 `drift env setup` creates each `.env` from its tracked `.env.development`, and `drift env validate` checks that each `.env.development` has its `.env`.
 
@@ -119,9 +119,7 @@ GitHub reads workflows only from the top of `.github/workflows/`, so file names 
 | `workflows/pull-request.yml` | a pull request into `main` | `validate.yml`, then Guardrails |
 | `workflows/main.yml` | a push to `main` | `validate.yml`, then the `ex` binaries |
 | `workflows/validate.yml` | a call from the two above | Build, Check, Test and Security |
-| `workflows/telemetry.yml` | a completed Pull request or Main run, or a manual replay | the run record, shipped to Better Stack |
 | `actions/setup-workspace/` | a step | installs pnpm, Node.js, Go and the dependencies |
-| `actions/turbo-summary/` | a step | the job's Turborepo run summaries as a job summary table and an artifact |
 | `widgets/` | a step, through `drift widget` | the pull request widgets: a check run and a sticky comment (see Widgets) |
 
 Sign-up is paused in the website's code, so CI builds it without any service values and never reaches a live service. A reusable workflow's checks read `Validate / Build`:
@@ -182,36 +180,7 @@ A job in `pull-request.yml`, whose top-level `permissions:` stays `contents: rea
 
 | Artifact | From | Kept | Holds |
 | --- | --- | --- | --- |
-| `turbo-summary-<job>` | Build, Check and Test | 14 days | the job's Turborepo run summaries: each task's duration, cache status and exit code |
 | `ex-<sha>` | ex binaries | 30 days | the four `ex` binaries and `SHA256SUMS`; `gh attestation verify <binary> -R jonatassales/lang-drift` checks one. A build, not a release |
-| `ci-run-<run id>-<attempt>` | Telemetry | 90 days | the run record, the same events Better Stack receives |
-
-### Telemetry
-
-`telemetry.yml` turns every Pull request and Main run into NDJSON events (`drift ci record`) and sends them to a Better Stack HTTP source (`drift ci ship`). A `workflow_run` workflow runs `main`'s copy of the file with `main`'s code, so the Better Stack token never meets a pull request's code. The run and its jobs come from the GitHub API, and the turbo summaries come from the run's own artifacts. Because a fork's pull request runs its own workflow file, every string is capped and every summary field coerced (`platform/observability/ci-events.jq`); nothing from the triggering run is executed. The token travels to curl on stdin, never in argv, and only to a bare hostname.
-
-Every event carries `dt`, `message`, `kind`, `repository`, `workflow`, `event`, `run_id`, `run_attempt`, `run_url`, `sha`, `branch`, `pull_request` (null for a fork, or once the pull request is closed), `fork` and `actor`:
-
-| `kind` | Adds |
-| --- | --- |
-| `run` | `conclusion`, `duration_seconds` |
-| `job` | `job`, `conclusion`, `queued_seconds`, `duration_seconds`, `runner` |
-| `step` | `job`, `step`, `conclusion`, `duration_seconds` |
-| `task` | `task_id` (`website#build`), `task`, `package`, `cache` (`HIT`, `MISS` or `UNKNOWN`), `exit_code`, `duration_ms` |
-
-The owner sets it up once; an agent does not handle the token:
-
-1. In Better Stack, Telemetry, Sources, connect an HTTP source and keep its token and ingesting host.
-2. In the repository settings, create the environment `telemetry` with its deployment branches limited to `main`. Then set `BETTERSTACK_SOURCE_TOKEN` as an environment secret and `BETTERSTACK_INGESTING_HOST`, the bare hostname, as an environment variable, for example with `gh secret set BETTERSTACK_SOURCE_TOKEN --env telemetry -R jonatassales/lang-drift`.
-
-Until then the Telemetry run fails and names the missing value, and the run record is still kept as an artifact. Each telemetry run appears as a deployment to `telemetry`, the cost of limiting the secret to `main`. A manual run (`workflow_dispatch` with a run id and attempt) ships a past run again.
-
-Starting queries for a Better Stack dashboard, to adapt to the source's table:
-
-- the failure rate per job: share of `kind = 'job'` events whose `conclusion` is not `success`, grouped by `job`, excluding `fork`;
-- the duration per job: p50 and p95 of `duration_seconds` for `kind = 'job'` over 30 days, grouped by `job` and `workflow`;
-- the Turborepo cache hit ratio per task: share of `kind = 'task'` events whose `cache` is `HIT`, grouped by `task_id`;
-- the slowest tasks: p95 of `duration_ms` for `kind = 'task'` and `cache = 'MISS'`, grouped by `task_id`.
 
 ## Git
 
