@@ -1,25 +1,44 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { hasLocale, useLocale, useTranslations } from 'next-intl'
 
-import { Link } from '@i18n/navigation'
+import { RouteState } from '@components/route-state'
+import { routing } from '@i18n/routing'
 
-export default function ErrorPage({ reset }: { reset: () => void }) {
-	const t = useTranslations('routeState')
+interface ErrorPageProps {
+	retry: () => void
+}
+
+export default function ErrorPage(props: ErrorPageProps) {
+	const { retry } = props
+
+	const locale = useLocale()
+	const translate = useTranslations('routeState')
+
+	function handleRetry() {
+		retry()
+	}
+
+	if (!hasLocale(routing.locales, locale)) {
+		throw new Error(`Unsupported request locale: ${locale}`)
+	}
+
 	return (
-		<main className="mx-auto flex min-h-screen max-w-xl flex-col justify-center gap-5 px-6 text-foreground">
-			<h1 className="text-3xl font-semibold">{t('error')}</h1>
-			<p className="text-muted-foreground">{t('errorDescription')}</p>
+		<RouteState
+			description={translate('errorDescription')}
+			homeLabel={translate('home')}
+			imageSrc="/route-state/error.svg"
+			imageAlt={translate('errorImage')}
+			locale={locale}
+			title={translate('error')}
+		>
 			<button
-				className="min-h-11 w-fit rounded-md border border-current px-4"
-				onClick={reset}
+				className="inline-flex min-h-10 items-center rounded-full border border-border px-5 text-sm font-semibold text-foreground transition hover:bg-muted"
+				onClick={handleRetry}
 				type="button"
 			>
-				{t('retry')}
+				{translate('retry')}
 			</button>
-			<Link className="w-fit underline underline-offset-4" href="/">
-				{t('home')}
-			</Link>
-		</main>
+		</RouteState>
 	)
 }

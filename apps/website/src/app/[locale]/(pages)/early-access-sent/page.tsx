@@ -11,20 +11,24 @@ import { earlyAccessSentMessages } from '@i18n/messages/index'
 import { Link } from '@i18n/navigation'
 import { routing } from '@i18n/routing'
 
-import './early-access-sent.css'
-
 interface PageProps {
 	params: Promise<{ locale: string }>
 }
 
 export async function generateMetadata(
-	{ params }: PageProps,
+	props: PageProps,
 	parent: ResolvingMetadata,
 ): Promise<Metadata> {
+	const { params } = props
+
 	const { locale } = await params
+
 	if (!hasLocale(routing.locales, locale)) notFound()
+
 	const title = earlyAccessSentMessages[locale].title
+
 	const images = await socialImages(parent)
+
 	const openGraphImages = images.openGraph
 	const twitterImages = images.twitter
 
@@ -46,27 +50,39 @@ export async function generateMetadata(
 	}
 }
 
-export default async function EarlyAccessSentPage({ params }: PageProps) {
+export default async function EarlyAccessSentPage(props: PageProps) {
+	const { params } = props
+
 	const { locale } = await params
+
 	if (!hasLocale(routing.locales, locale)) notFound()
+
 	setRequestLocale(locale)
+
 	const copy = earlyAccessSentMessages[locale]
 
 	return (
 		<>
 			<WebsiteHeader />
-			<main className="early-access-sent">
-				<div className="early-access-sent-content">
-					<h1>{copy.title}</h1>
-					<p>{copy.description}</p>
+			<main className="flex min-h-[calc(100svh-170px)] items-center justify-center px-5 pt-12 pb-16 text-center">
+				<div className="max-w-2xl">
+					<h1 className="text-4xl leading-tight tracking-tighter text-balance text-foreground sm:text-5xl">
+						{copy.title}
+					</h1>
+					<p className="mx-auto mt-4 max-w-sm text-sm text-pretty text-primary-text">
+						{copy.description}
+					</p>
 					<Image
 						alt={copy.image}
+						className="mx-auto my-7 block h-auto max-w-full"
 						height={280}
-						priority
+						preload
 						src="/early-access/early-bird.png"
 						width={360}
 					/>
-					<Link href="/">{copy.home}</Link>
+					<Link className="inline-block p-2.5 text-foreground" href="/">
+						{copy.home}
+					</Link>
 				</div>
 			</main>
 			<WebsiteFooter locale={locale} />
