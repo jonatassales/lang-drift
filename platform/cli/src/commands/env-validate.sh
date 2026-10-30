@@ -7,7 +7,7 @@ drift_queue_scene "$DRIFT_ICON_ENV" "$DRIFT_ENV_PHRASE"
 
 status=0
 for template in $(drift_find_env_templates); do
-  target=${template%.example}
+  target=${template%.development}
   if [ -e "$target" ]; then
     drift_print_success "${target#"$DRIFT_PROJECT_ROOT"/}"
   else

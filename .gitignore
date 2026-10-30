@@ -12,18 +12,14 @@ next-env.d.ts
 .turbo/
 coverage/
 
-# Environment: only the examples and the shared development defaults are tracked
+# Environment: shared development defaults are tracked; only .env is ignored
 .env
-.env.*
-!.env.example
-!.env.development
 
 # Operating system
 .DS_Store
 
 # Per-session markers written by the LLM effort analyzer
 .agents/workflow/.effort-log/*
-!.agents/workflow/.effort-log/.gitkeep
 
 
 # The LangDrift folder is machine-local; ex regenerates it (spec 0016)

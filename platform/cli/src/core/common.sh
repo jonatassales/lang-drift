@@ -23,13 +23,13 @@ drift_git_checkout() {
   git -C "$DRIFT_PROJECT_ROOT" rev-parse --is-inside-work-tree >/dev/null 2>&1
 }
 
-# Every .env.example that Git tracks or would track describes one .env file.
+# Every .env.development that Git tracks or would track describes one .env file.
 drift_find_env_templates() {
   git -C "$DRIFT_PROJECT_ROOT" ls-files --cached --others --exclude-standard |
     while IFS= read -r path; do
       case "$path" in
         .agents/* | .claude/*) continue ;;
-        */.env.example | .env.example) printf '%s/%s\n' "$DRIFT_PROJECT_ROOT" "$path" ;;
+        */.env.development | .env.development) printf '%s/%s\n' "$DRIFT_PROJECT_ROOT" "$path" ;;
       esac
     done
 }

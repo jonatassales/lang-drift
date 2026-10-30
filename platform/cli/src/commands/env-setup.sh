@@ -7,7 +7,7 @@ drift_queue_scene "$DRIFT_ICON_ENV" "$DRIFT_ENV_PHRASE"
 
 # Create each missing .env empty and private; values are filled in by hand.
 drift_find_env_templates | while IFS= read -r template; do
-  target=${template%.example}
+  target=${template%.development}
   if [ ! -e "$target" ]; then
     (umask 077 && : > "$target")
     drift_print_success "Created ${target#"$DRIFT_PROJECT_ROOT"/}"
