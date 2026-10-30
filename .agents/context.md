@@ -10,8 +10,8 @@ Monorepo with four packages, `@langdrift/tokens`, `@langdrift/web`, the `ex` CLI
 - `packages/<capability>/`: shared across apps, never inside one. `tokens`, `web`, `ex` and `contracts` exist; `shell`, `account` and `runtime` are planned.
 - `packages/ex`, `packages/contracts` and `apps/extub` are Go modules tied together by the root `go.work`: Turborepo runs their `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds them (no Go toolchain required for frontend work).
 - A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package. Package scope: `@langdrift/*`.
-- `.github/`: GitHub Actions. Entry workflows are named after their event (`pull-request.yml`, `main.yml`), `validate.yml` is the validation they share, and `telemetry.yml` ships each run to Better Stack; composite actions sit in `actions/<name>/` and the pull request widgets in `widgets/`. Publishing gets its own workflow file. See Continuous integration.
-- `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, its `src/exceptions/dead-code.allow` and the `drift quality rules` detectors (`src/quality/`), `versioning/` the commitlint config and the Git hooks (`.husky/`), `observability/` the jq programs that turn CI runs into Better Stack events and job summary tables, `docs/` the README's translations and, under `assets/images/`, its light and dark banners with the SVG sources the PNGs are rendered from. The English `README.md` sits at the root; each README links every language right after the banner and the headline.
+- `.github/`: GitHub Actions. Entry workflows are named after their event (`pull-request.yml`, `main.yml`), `validate.yml` is the validation they share, and `telemetry.yml` ships each run to Better Stack; composite actions sit in `actions/<name>/`. Publishing gets its own workflow file. See Continuous integration.
+- `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, its `src/exceptions/dead-code.allow` and the `drift quality coverage` detectors (`src/quality/`), `versioning/` the commitlint config and the Git hooks (`.husky/`), `observability/` the jq programs that turn CI runs into Better Stack events and job summary tables, `docs/` the README's translations and, under `assets/images/`, its light and dark banners with the SVG sources the PNGs are rendered from. The English `README.md` sits at the root; each README links every language right after the banner and the headline.
 - `turbo.json` declares the environment each task may see: Turborepo runs in strict mode, so a variable reaches a task only through `globalEnv`, a task's `env` or the pass-through lists. `apps/website/README.md` holds the website's variable contract and its tracked `.env.development` the shared development defaults, including a development-only `CRYPTO_SECRET`; deployed environments set their own value, and `CRYPTO_SECRET` stays pass-through only in Turborepo. The `build` task declares `VERCEL_ENV` in its `env`: the website's header policy differs on preview builds, so a preview and a production build must never share a cache entry.
 
 ## Toolchain and commands
@@ -44,14 +44,14 @@ The website needs `CRYPTO_SECRET` even locally; without it every page answers 50
 
 ## Platform CLI
 
-`platform/cli/drift` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `reset`, `check biome|dead-code|localization|rules|workflows`, `ci summary|record|ship`, `env setup|validate`, `git setup|doctor|pre-commit|commit-msg|lint-history`, `quality coverage|rules` and `widget check-run|sticky-comment`. The `ci` and `widget` commands serve the workflows (see Continuous integration): the `ci` commands need `gh`, `jq` and `curl`, the `widget` commands `gh` and `jq`.
+`platform/cli/drift` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `reset`, `check biome|dead-code|localization|workflows`, `ci summary|record|ship`, `env setup|validate`, `git setup|doctor|pre-commit|commit-msg|lint-history` and `quality check|coverage`. The `ci` commands serve the workflows (see Continuous integration) and need `gh`, `jq` and `curl`.
 
 `drift check dead-code` finds code that only served something a refactor removed: a tsconfig alias nothing imports through, a module or export nothing uses, a dependency nothing imports, a `turbo.json` variable nothing reads, a CSS class no markup carries. A reference in a comment counts, so code parked in comments keeps what it needs, and folders held by a `.gitkeep` are never examined. Run it after a refactor; CI runs it in the Check job. `platform/cli/src/exceptions/dead-code.allow` lists what the owner keeps on purpose.
 
-The `check` commands are gates: they fail when something breaks a rule. The `quality` commands measure and print Markdown, and they never fail on what they find:
+The `quality` commands hold the rules in `.claude/rules`:
 
-- `drift quality coverage [package...]` runs every workspace package's tests with coverage and prints lines, branches and the files measured per package. Each runner counts differently: Vitest every source file under `src/`, `node --test` only the files its tests load, Go every package of the module through `-coverpkg`, so percentages from different runners are not comparable. A test script that does more than run its runner gets an unsupported row instead of being run. It needs `jq`, plus `pnpm` for Vitest and `go` for the Go modules, and fails only when a package's tests fail.
-- `drift quality rules` prints what the tree does against `.claude/rules`: one row per kind of violation with its count, then the first ten places of each. Its detectors are the rows of `platform/cli/src/quality/rule-detectors.tsv`, `rg` patterns and checks on the tracked paths, so the report is a list to review, not a verdict; a rule file no detector covers shows as not measured. Test files and testdata are skipped, except by the testing rules. It needs `rg` and `jq`.
+- `drift quality check` enforces them and fails on a breach; the pre-commit hook and CI run it.
+- `drift quality coverage` prints, per rule file, the share of the files its detectors look at with no finding. The detectors are the rows of `platform/cli/src/quality/rule-detectors.tsv`, `rg` patterns and checks on the tracked paths, so the percentage is an estimate; a rule file no detector covers shows as not measured. Test files and testdata are skipped, except by the testing rules. It needs `rg` and never fails on what it finds.
 
 When the shell resolves `drift` to another program (a link from an older checkout, say), `drift setup` says which one and how to fix `PATH`.
 
@@ -110,7 +110,7 @@ Single context. The glossary is the `## Glossary` section of this file, and ADRs
 
 ## Continuous integration
 
-GitHub reads workflows only from the top of `.github/workflows/`, so file names carry the structure. An entry workflow is named after the event that starts it, a reusable one after the work it does, and it declares only `workflow_call`. Each composite action is `.github/actions/<name>/action.yml` and nothing else; scripts belong to `drift`, except the pull request widgets, which live in `.github/widgets/` and run through `drift widget`. All names are kebab-case.
+GitHub reads workflows only from the top of `.github/workflows/`, so file names carry the structure. An entry workflow is named after the event that starts it, a reusable one after the work it does, and it declares only `workflow_call`. Each composite action is `.github/actions/<name>/action.yml` and nothing else; scripts belong to `drift`. All names are kebab-case.
 
 | File | Runs on | Does |
 | --- | --- | --- |
@@ -120,7 +120,6 @@ GitHub reads workflows only from the top of `.github/workflows/`, so file names 
 | `workflows/telemetry.yml` | a completed Pull request or Main run, or a manual replay | the run record, shipped to Better Stack |
 | `actions/setup-workspace/` | a step | installs pnpm, Node.js, Go and the dependencies |
 | `actions/turbo-summary/` | a step | the job's Turborepo run summaries as a job summary table and an artifact |
-| `widgets/` | a step, through `drift widget` | the pull request widgets: a check run and a sticky comment (see Widgets) |
 
 Sign-up is paused in the website's code, so CI builds it without any service values and never reaches a live service. A reusable workflow's checks read `Validate / Build`:
 
@@ -136,45 +135,6 @@ Sign-up is paused in the website's code, so CI builds it without any service val
 Actions, container images and downloaded tools are pinned to full commit SHAs, digests or checksums, with the version in a comment. The workflow tokens are read-only; a job that needs more, such as the attestation's `id-token` and `attestations`, asks for it itself.
 
 `drift check workflows` enforces these conventions: actionlint, pinned, then the layout, a top-level `permissions:` in every workflow, a SHA pin with its version for every action outside the repository, no `${{ }}` inside a `run:` script (values reach scripts through `env:`) and `retention-days` on every uploaded artifact.
-
-### Widgets
-
-A widget is what a workflow shows on a pull request instead of plain job output. `.github/widgets/` holds one `drift widget` command per kind. Each reads its Markdown on stdin, so a job renders the content and pipes it in.
-
-| Command | Shows | Needs |
-| --- | --- | --- |
-| `drift widget check-run <name> <conclusion> <title>` | a completed check run on commit `WIDGET_SHA`, with the title and the Markdown summary | `checks: write`, `GH_TOKEN`, `WIDGET_SHA` |
-| `drift widget sticky-comment <key>` | one comment per key on pull request `WIDGET_PULL_REQUEST`, edited in place on every run | `pull-requests: write`, `GH_TOKEN`, `WIDGET_PULL_REQUEST` |
-
-- The conclusion is one GitHub accepts: `success`, `failure`, `neutral`, `cancelled`, `skipped`, `timed_out` or `action_required`. On a pull request, `WIDGET_SHA` is `github.event.pull_request.head.sha`, the commit the pull request shows, not the merge commit in `GITHUB_SHA`.
-- A sticky comment starts with the hidden marker `<!-- drift-widget:<key> -->`, and its key is kebab-case. Only a comment a bot wrote with that marker is edited, so a person quoting the marker is never overwritten. Publish it with a bot token, `github.token` or a GitHub App's: a personal token posts as a user, so its comments would never be found again and new ones would pile up. It belongs to `pull_request` runs; a `push` to `main` has no pull request to comment on.
-- Content past GitHub's limit, 65,535 characters for a summary and 65,536 for a comment, is cut with a note.
-- Values reach the commands through `env:` (Actions sets `GITHUB_REPOSITORY`), and only the job that publishes a widget asks for its write permission. A pull request from a fork runs with a read-only token, so its widgets cannot be published.
-
-A job in `pull-request.yml`, whose top-level `permissions:` stays `contents: read`:
-
-```yaml
-  report:
-    name: Report
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    permissions:
-      contents: read
-      checks: write
-      pull-requests: write
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - name: Report
-        env:
-          GH_TOKEN: ${{ github.token }}
-          WIDGET_SHA: ${{ github.event.pull_request.head.sha }}
-          WIDGET_PULL_REQUEST: ${{ github.event.pull_request.number }}
-        run: |
-          platform/cli/drift widget check-run 'Validate report' success 'All checks passed' <report.md
-          platform/cli/drift widget sticky-comment validate-report <report.md
-```
 
 ### Artifacts
 

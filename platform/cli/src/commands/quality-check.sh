@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 . "$DRIFT_CLI_DIR/core/common.sh"
-[ "$#" -eq 0 ] || drift_die "Usage: drift check rules" 2
+[ "$#" -eq 0 ] || drift_die "Usage: drift quality check" 2
 drift_need jq
 cd "$DRIFT_PROJECT_ROOT"
 

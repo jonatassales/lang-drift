@@ -1,5 +1,5 @@
 # Prints, once, each tracked path whose last segment is not kebab-case, for
-# drift quality rules. Conventional names, Next.js route segments and the forms
+# drift quality coverage. Conventional names, Next.js route segments and the forms
 # the Go toolchain requires pass (.claude/rules/01-filesystem.rule.md).
 {
 	path = ""

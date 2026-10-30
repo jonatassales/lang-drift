@@ -8,8 +8,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
-  checks: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
@@ -53,26 +51,4 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/setup-workspace
       - name: Harness rules audit
-        run: platform/cli/drift quality rules >>"$GITHUB_STEP_SUMMARY"
-
-  delivery-intelligence:
-    name: Delivery - Dashboard
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    needs: [guardrails]
-    if: always()
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-          fetch-depth: 0
-      - uses: ./.github/actions/setup-workspace
-      - name: Publish delivery widgets
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          WIDGET_SHA: ${{ github.event.pull_request.head.sha }}
-          WIDGET_PULL_REQUEST: ${{ github.event.pull_request.number }}
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: platform/cli/drift widget dashboard --publish >>"$GITHUB_STEP_SUMMARY"
+        run: platform/cli/drift quality coverage >>"$GITHUB_STEP_SUMMARY"

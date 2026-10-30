@@ -43,9 +43,8 @@ case "$command" in
       biome) exec "$commands/check-biome.sh" "$@" ;;
       dead-code) exec "$commands/check-dead-code.sh" "$@" ;;
       localization) exec "$commands/check-localization.sh" "$@" ;;
-      rules) exec "$commands/check-rules.sh" "$@" ;;
       workflows) exec "$commands/check-workflows.sh" "$@" ;;
-      *) drift_usage_error "Usage: drift check <biome|dead-code|localization|rules|workflows>" ;;
+      *) drift_usage_error "Usage: drift check <biome|dead-code|localization|workflows>" ;;
     esac
     ;;
   ci)
@@ -83,25 +82,9 @@ case "$command" in
     subcommand=${1:-}
     [ "$#" -eq 0 ] || shift
     case "$subcommand" in
+      check) exec "$commands/quality-check.sh" "$@" ;;
       coverage) exec "$commands/quality-coverage.sh" "$@" ;;
-      rules) exec "$commands/quality-rules.sh" "$@" ;;
-      *) drift_usage_error "Usage: drift quality <coverage|rules>" ;;
-    esac
-    ;;
-  widget)
-    subcommand=${1:-}
-    [ "$#" -eq 0 ] || shift
-    widgets="$DRIFT_PROJECT_ROOT/.github/widgets"
-    case "$subcommand" in
-      check-run) exec "$widgets/check-run.sh" "$@" ;;
-      sticky-comment) exec "$widgets/sticky-comment.sh" "$@" ;;
-      workflow) exec "$widgets/workflow.sh" "$@" ;;
-      finops) exec "$widgets/finops.sh" "$@" ;;
-      microruntimes) exec "$widgets/microruntimes.sh" "$@" ;;
-      code-quality) exec "$widgets/code-quality.sh" "$@" ;;
-      agentic) exec "$widgets/agentic.sh" "$@" ;;
-      dashboard) exec "$widgets/dashboard.sh" "$@" ;;
-      *) drift_usage_error "Usage: drift widget <check-run|sticky-comment|workflow|finops|microruntimes|code-quality|agentic|dashboard>" ;;
+      *) drift_usage_error "Usage: drift quality <check|coverage>" ;;
     esac
     ;;
   --*) drift_usage_error "Unknown option: $command" ;;

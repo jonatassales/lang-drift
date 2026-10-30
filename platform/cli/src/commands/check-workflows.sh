@@ -37,12 +37,9 @@ GOWORK=off go run "$actionlint" || fail "actionlint found problems in .github/wo
 
 # Layout: workflows sit directly in .github/workflows as kebab-case .yml files;
 # each composite action is .github/actions/<name>/action.yml and nothing else,
-# because scripts belong to drift. The pull request widgets are the one
-# exception: kebab-case .sh files directly in .github/widgets.
+# because scripts belong to drift.
 workflows=$(find .github/workflows -type f | sort)
 actions=$(find .github/actions -type f | sort)
-widgets=
-[ ! -d .github/widgets ] || widgets=$(find .github/widgets -type f | sort)
 
 for file in $workflows; do
   name=${file#.github/workflows/}
@@ -60,15 +57,6 @@ for file in $actions; do
     */*/*) fail "$file: an action is .github/actions/<name>/action.yml" ;;
     */action.yml) is_kebab_case "${name%/action.yml}" || fail "$file: action names are kebab-case" ;;
     *) fail "$file: an action folder holds only its action.yml; scripts belong to drift" ;;
-  esac
-done
-
-for file in $widgets; do
-  name=${file#.github/widgets/}
-  case "$name" in
-    */*) fail "$file: widgets sit directly in .github/widgets" ;;
-    *.sh) is_kebab_case "${name%.sh}" || fail "$file: widget names are kebab-case" ;;
-    *) fail "$file: widgets are .sh files" ;;
   esac
 done
 
