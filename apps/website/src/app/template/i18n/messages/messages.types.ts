@@ -5,8 +5,14 @@ import type { EmailErrorCode } from '@components/early-access/form.types'
 export interface HeaderMessages {
 	home: string
 	navigation: string
+	platform: string
+	platformMenu: string
 	finops: string
 	microruntimes: string
+	ciGates: string
+	finopsDescription: string
+	microruntimesDescription: string
+	ciGatesDescription: string
 	pricing: string
 	docs: string
 	github: string
