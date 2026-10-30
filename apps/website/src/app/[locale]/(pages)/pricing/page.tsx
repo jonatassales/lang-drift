@@ -4,7 +4,7 @@ import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
 import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
-import { EarlyAccessSection } from '@components/early-access/section'
+// import { EarlyAccessSection } from '@components/early-access/section'
 import { PlansSection } from '@components/plans-section'
 import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
@@ -43,9 +43,8 @@ export default async function PricingPage(props: PricingPageProps) {
 			<WebsiteHeader />
 			<main className="plans-page" id="plans-main">
 				<PlansSection locale={locale} />
-				<EarlyAccessSection locale={locale} compact />
 			</main>
-			<WebsiteFooter locale={locale} compact />
+			<WebsiteFooter locale={locale} />
 		</>
 	)
 }

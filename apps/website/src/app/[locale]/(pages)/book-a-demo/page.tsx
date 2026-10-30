@@ -69,7 +69,7 @@ export default async function BookDemoPage(props: BookDemoPageProps) {
 					</div>
 				</section>
 			</main>
-			<WebsiteFooter compact locale={locale} />
+			<WebsiteFooter locale={locale} />
 		</>
 	)
 }
