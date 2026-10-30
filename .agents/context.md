@@ -44,11 +44,11 @@ The website needs `CRYPTO_SECRET` even locally; without it every page answers 50
 
 ## Platform CLI
 
-`platform/cli/drift` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `reset`, `check biome|dead-code|localization|workflows`, `ci summary|record|ship`, `env setup|validate`, `git setup|doctor|pre-commit|commit-msg|lint-history`, `quality check|coverage` and `widget check-run|sticky-comment`. The `ci` and `widget` commands serve the workflows (see Continuous integration): the `ci` commands need `gh`, `jq` and `curl`, the `widget` commands `gh` and `jq`.
+`platform/cli/drift` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `reset`, `check biome|localization|workflows`, `ci summary|record|ship`, `env setup|validate`, `git setup|doctor|pre-commit|commit-msg|lint-history`, `quality check|coverage|dead-code` and `widget check-run|sticky-comment`. The `ci` and `widget` commands serve the workflows (see Continuous integration): the `ci` commands need `gh`, `jq` and `curl`, the `widget` commands `gh` and `jq`.
 
 `drift env setup` creates each `.env` from its tracked `.env.development`, and `drift env validate` checks that each `.env.development` has its `.env`.
 
-`drift check dead-code` finds code that only served something a refactor removed: a tsconfig alias nothing imports through, a module or export nothing uses, a dependency nothing imports, a `turbo.json` variable nothing reads, a CSS class no markup carries. A reference in a comment counts, so code parked in comments keeps what it needs, and folders held by a `.gitkeep` are never examined. Run it after a refactor; CI runs it in the Check job. `platform/cli/src/exceptions/dead-code.allow` lists what the owner keeps on purpose.
+`drift quality dead-code` finds code that only served something a refactor removed: a tsconfig alias nothing imports through, a module or export nothing uses, a dependency nothing imports, a `turbo.json` variable nothing reads, a CSS class no markup carries. A reference in a comment counts, so code parked in comments keeps what it needs, and folders held by a `.gitkeep` are never examined. Run it after a refactor; CI runs it in the Check job. `platform/cli/src/exceptions/dead-code.allow` lists what the owner keeps on purpose.
 
 The `quality` commands hold the rules in `.claude/rules`:
 
@@ -129,7 +129,7 @@ Sign-up is paused in the website's code, so CI builds it without any service val
 | Job | Runs |
 | --- | --- |
 | Build | `pnpm turbo run build` |
-| Check | `pnpm turbo run check`, `pnpm turbo run typecheck`, `drift check localization`, then `drift check dead-code` |
+| Check | `pnpm turbo run check`, `pnpm turbo run typecheck`, `drift check localization`, then `drift quality dead-code` |
 | Test | `pnpm turbo run test` |
 | Security | `pnpm audit --prod --audit-level=high`, then govulncheck, pinned, in each Go module; it fails on a high or critical npm advisory or on a Go vulnerability our code reaches |
 | Guardrails | pull requests only: `drift git lint-history` over the pull request's commits, then `drift check workflows` |
