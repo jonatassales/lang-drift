@@ -11,7 +11,7 @@ Monorepo with four packages, `@langdrift/tokens`, `@langdrift/web`, the `ex` CLI
 - `packages/ex`, `packages/contracts` and `apps/extub` are Go modules tied together by the root `go.work`: Turborepo runs their `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds them (no Go toolchain required for frontend work).
 - A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package. Package scope: `@langdrift/*`.
 - `.github/`: GitHub Actions. Entry workflows are named after their event (`pull-request.yml`, `main.yml`), `validate.yml` is the validation they share; composite actions sit in `actions/<name>/` and the pull request widgets in `widgets/`. Publishing gets its own workflow file. See Continuous integration.
-- `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, its Git hooks (`.husky/`), its `src/exceptions/dead-code.allow` and the `drift quality coverage` detectors (`src/quality/`), `docs/` the README's translations and, under `assets/images/`, its light and dark banners with the SVG sources the PNGs are rendered from. The English `README.md` sits at the root; each README links every language right after the banner and the headline.
+- `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, its Git hooks (`.husky/`), its `src/exceptions/dead-code.allow` and the detectors `drift quality check` and `coverage` share (`src/quality/`), `docs/` the README's translations and, under `assets/images/`, its light and dark banners with the SVG sources the PNGs are rendered from. The English `README.md` sits at the root; each README links every language right after the banner and the headline.
 - `turbo.json` declares the environment each task may see: Turborepo runs in strict mode, so a variable reaches a task only through `globalEnv`, a task's `env` or the pass-through lists. `apps/website/README.md` holds the website's variable contract and its tracked `.env.development` the shared development defaults, including a development-only `CRYPTO_SECRET`; deployed environments set their own value, and `CRYPTO_SECRET` stays pass-through only in Turborepo. The `build` task declares `VERCEL_ENV` in its `env`: the website's header policy differs on preview builds, so a preview and a production build must never share a cache entry.
 
 ## Toolchain and commands
@@ -50,10 +50,12 @@ The website needs `CRYPTO_SECRET` even locally; without it every page answers 50
 
 `drift quality dead-code` finds code that only served something a refactor removed: a tsconfig alias nothing imports through, a module or export nothing uses, a dependency nothing imports, a `turbo.json` variable nothing reads, a CSS class no markup carries. A reference in a comment counts, so code parked in comments keeps what it needs, and folders held by a `.gitkeep` are never examined. Run it after a refactor; CI runs it in the Check job. `platform/cli/src/exceptions/dead-code.allow` lists what the owner keeps on purpose.
 
-The `quality` commands hold the rules in `.claude/rules`:
+The `quality` commands measure the tree against `.claude/rules`. Both run the detectors in `platform/cli/src/quality/rule-detectors.tsv` (`run-detectors.sh`): `rg` patterns, awk programs for statement spacing, Biome's import order and checks on the tracked paths. They are patterns, so what they find is an estimate to review, and neither command fails on it. Test files and testdata are skipped, except by the testing rules; a rule file no detector covers shows as not measured. Both need `rg`, which CI installs in `setup-workspace`.
 
-- `drift quality check` enforces them and fails on a breach; the pre-commit hook and CI run it.
-- `drift quality coverage` prints, per rule file, the share of the files its detectors look at with no finding. The detectors are the rows of `platform/cli/src/quality/rule-detectors.tsv`, `rg` patterns and checks on the tracked paths, so the percentage is an estimate; a rule file no detector covers shows as not measured. Test files and testdata are skipped, except by the testing rules. It needs `rg` and never fails on what it finds.
+- `drift quality check [rule]` prints, in red, each path that does not apply a rule file, with the rule and the violation; the pre-commit hook and CI run it.
+- `drift quality coverage [rule]` prints, per rule file, the share of the files its detectors look at with no finding; the Code Quality widget shows the same table.
+
+A rule narrows either command to one file of `.claude/rules`: `drift quality coverage react.rule.md`, `05-react.rule.md` or `react`.
 
 When the shell resolves `drift` to another program (a link from an older checkout, say), `drift setup` says which one and how to fix `PATH`.
 
