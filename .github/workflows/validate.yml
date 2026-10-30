@@ -51,7 +51,7 @@ jobs:
       - name: Dead code
         run: platform/cli/drift check dead-code
       - name: Repository rules
-        run: platform/cli/drift check rules
+        run: platform/cli/drift quality check
       - uses: ./.github/actions/turbo-summary
         if: ${{ !cancelled() }}
         with:

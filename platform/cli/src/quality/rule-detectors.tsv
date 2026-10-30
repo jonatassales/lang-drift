@@ -1,4 +1,4 @@
-# The detectors of drift quality rules, one per line, fields separated by a tab:
+# The detectors of drift quality coverage, one per line, fields separated by a tab:
 # rule, violation, scope, mode, roots, globs, pattern. A dash fills an unused field.
 # scope: code skips tests and testdata, tests looks only at tests, all looks everywhere.
 # mode: lines (each matching line), multiline (each match across lines), per-file

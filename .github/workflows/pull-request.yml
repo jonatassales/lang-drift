@@ -53,7 +53,7 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/setup-workspace
       - name: Harness rules audit
-        run: platform/cli/drift quality rules >>"$GITHUB_STEP_SUMMARY"
+        run: platform/cli/drift quality coverage >>"$GITHUB_STEP_SUMMARY"
 
   delivery-intelligence:
     name: Delivery - Dashboard

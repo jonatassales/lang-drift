@@ -1,17 +1,19 @@
 #!/bin/sh
 set -eu
-# Test patterns travel to the runners as text; the shell never expands them.
+# Globs travel to rg and grep as text; the shell never expands them.
 set -f
 . "$DRIFT_CLI_DIR/core/common.sh"
-drift_need jq
+[ "$#" -eq 0 ] || drift_die "Usage: drift quality coverage" 2
+drift_need rg
 cd "$DRIFT_PROJECT_ROOT"
 
-# The test coverage of every workspace package that has a test script, measured
-# by the package's own runner and printed as a Markdown table. The runners count
-# differently: Vitest counts every source file under src/, node --test only the
-# files its tests load, and Go every package of the module, so the Files column
-# says what each figure covers. Arguments narrow the run to some packages:
-# drift quality coverage apps/console packages/ex
+# How much of the tree applies each rule file in .claude/rules, as a Markdown
+# table: of the files a rule's detectors look at, the share with no finding.
+# The detectors (platform/cli/src/quality/rule-detectors.tsv) are patterns, so
+# the percentage is an estimate; drift quality check stays the gate.
+
+detectors=$DRIFT_CLI_DIR/quality/rule-detectors.tsv
+kebab_case=$DRIFT_CLI_DIR/quality/kebab-case.awk
 
 workdir=$(mktemp -d)
 # drift's own EXIT trap prints the queued results, so this one chains to it.
@@ -20,125 +22,78 @@ trap 'rm -rf "$workdir"; drift_flush_results' EXIT
 tracked=$workdir/tracked
 git ls-files >"$tracked"
 
-packages=$*
+matches=$workdir/matches
+mkdir "$workdir/scope" "$workdir/findings"
 
-if [ -z "$packages" ]; then
-  find apps packages -mindepth 2 -maxdepth 2 -name package.json >"$workdir/manifests"
-  packages=$(sed 's#/package\.json$##' "$workdir/manifests" | sort)
-fi
-
-for package in $packages; do
-  [ -f "$package/package.json" ] || drift_die "$package has no package.json." 2
-done
-
-status=0
-
-printf '| Package | Runner | Lines | Branches | Files measured |\n'
-printf '| --- | --- | --- | --- | --- |\n'
-
-for package in $packages; do
-  test_script=$(jq -r '.scripts.test // empty' "$package/package.json")
-  [ -n "$test_script" ] || continue
-
-  case "$test_script" in
-    vitest*) runner=vitest ;;
-    'node --test'*) runner=node ;;
-    'go test'*) runner=go ;;
-    *)
-      printf '| %s | unsupported | | | no coverage for `%s` |\n' "$package" "$test_script"
-      continue
-      ;;
+while IFS='	' read -r rule violation scope mode roots globs pattern; do
+  case "$rule" in
+    '' | '#'*) continue ;;
   esac
 
-  # The files each runner can measure: Vitest is told to count src/, Go counts
-  # its module, and node --test can only meet the files its tests load.
-  sources=$(awk -v prefix="$package/" -v runner="$runner" '
-    index($0, prefix) != 1 || /\/testdata\// || /(_test\.go|\.(unit|test)\.[a-z]+)$/ { next }
-    runner == "vitest" && index($0, prefix "src/") == 1 && /\.(ts|tsx)$/ { count++ }
-    runner == "node" && /\.(ts|tsx|js|mjs|cjs)$/ { count++ }
-    runner == "go" && /\.go$/ { count++ }
-    END { print count + 0 }' "$tracked")
+  [ "$mode" != unmeasured ] || continue
 
-  report=$workdir/$(printf '%s' "$package" | tr '/' '-')
-  log=$report.log
-  lcov=
-  tests_passed=yes
+  set --
+  for glob in $(printf '%s' "$globs" | tr ',' ' '); do
+    [ "$glob" = - ] || set -- "$@" -g "$glob"
+  done
 
-  case "$runner" in
-    vitest)
-      drift_need pnpm
-      lcov=$report/lcov.info
-      (cd "$package" && pnpm exec vitest run --coverage.enabled --coverage.provider=v8 \
-        --coverage.reporter=lcov --coverage.reportsDirectory="$report" \
-        --coverage.include='src/**/*.{ts,tsx}' --coverage.exclude='**/*.{unit,test}.{ts,tsx}') \
-        >"$log" 2>&1 || tests_passed=no
+  [ "$scope" != code ] || set -- "$@" -g '!**/*_test.go' -g '!**/*.unit.*' -g '!**/*.test.*' -g '!**/testdata/**'
+
+  for root in $(printf '%s' "$roots" | tr ',' ' '); do
+    [ "$root" = - ] || set -- "$@" "$root"
+  done
+
+  # The files the detector looks at, then the files it finds something in.
+  scope_status=0
+
+  case "$mode" in
+    tracked) cat "$tracked" ;;
+    names) grep -v '/testdata/' "$tracked" ;;
+    markdown) grep '\.md$' "$tracked" | grep -v '/testdata/' ;;
+    *) rg --files "$@" ;;
+  esac >>"$workdir/scope/$rule" || scope_status=$?
+
+  [ "$scope_status" -le 1 ] || drift_die "The detector could not list its files: $rule · $violation"
+
+  search_status=0
+
+  case "$mode" in
+    lines | files) rg -l -e "$pattern" "$@" >"$matches" || search_status=$? ;;
+    multiline) rg -l -U -e "$pattern" "$@" >"$matches" || search_status=$? ;;
+    per-file)
+      rg -c -e "$pattern" "$@" >"$workdir/counts" || search_status=$?
+      awk -F: '$NF > 1 { print $1 }' "$workdir/counts" >"$matches"
       ;;
-    node)
-      lcov=$report.lcov
-      patterns=${test_script#node --test}
-
-      case "$patterns" in
-        *[\;\&\|\$\`\<\>]*)
-          printf '| %s | node | | | unsupported test script `%s` |\n' "$package" "$test_script"
-          continue
-          ;;
-      esac
-
-      # node --test reads every flag before its patterns, so the patterns come
-      # from the package's test script, split as the shell would split them.
-      : >"$report.patterns"
-      [ -z "$patterns" ] || printf '%s\n' "$patterns" | xargs -n 1 printf '%s\n' >"$report.patterns"
-
-      set --
-      while IFS= read -r pattern; do
-        set -- "$@" "$pattern"
-      done <"$report.patterns"
-
-      (cd "$package" && node --test --experimental-test-coverage --test-reporter=lcov \
-        --test-reporter-destination="$lcov" "$@") >"$log" 2>&1 || tests_passed=no
+    tracked) grep -E -e "$pattern" "$tracked" >"$matches" || search_status=$? ;;
+    names) grep -v '/testdata/' "$tracked" | awk -F/ -f "$kebab_case" >"$matches" ;;
+    markdown)
+      grep '\.md$' "$tracked" | grep -v '/testdata/' |
+        grep -Ev '(^|/)(README|AGENTS|CLAUDE|SKILL)(\.[a-z-]+)?\.md$' |
+        grep -Ev '\.(rule|spec|ticket|adr|research|policy|prompt)\.md$' >"$matches" || search_status=$?
       ;;
-    go)
-      drift_need go
-      # Without the test script's -race, which coverage does not need.
-      (cd "$package" && go test -coverpkg=./... -coverprofile="$report.out" ./...) \
-        >"$log" 2>&1 || tests_passed=no
-      ;;
+    *) drift_die "Unknown detector mode $mode: $rule · $violation" ;;
   esac
 
-  if [ "$tests_passed" = no ]; then
-    printf '| %s | %s | tests failed | | |\n' "$package" "$runner"
-    printf 'drift: %s: the tests failed; the end of their output follows.\n' "$package" >&2
-    tail -n 20 "$log" >&2
-    status=1
+  [ "$search_status" -le 1 ] || drift_die "The detector failed: $rule · $violation"
+
+  cat "$matches" >>"$workdir/findings/$rule"
+done <"$detectors"
+
+printf '## Rules applied\n\n'
+printf '| Rule | Applied |\n'
+printf '| --- | ---: |\n'
+
+# One row per rule file, in the detectors' order.
+rules=$(awk -F'\t' '$1 != "" && $1 !~ /^#/ && !seen[$1]++ { print $1 }' "$detectors")
+
+for rule in $rules; do
+  if [ ! -f "$workdir/scope/$rule" ]; then
+    printf '| %s | not measured |\n' "$rule"
     continue
   fi
 
-  if [ -z "$lcov" ]; then
-    go tool cover -func="$report.out" >"$report.func"
-    statements=$(awk '/^total:/ { print $NF }' "$report.func")
-    measured=$(awk -F: 'NR > 1 && !seen[$1]++ { count++ } END { print count + 0 }' "$report.out")
-    printf '| %s | go | %s of statements | n/a | %s of %s |\n' "$package" "$statements" "$measured" "$sources"
-    continue
-  fi
-
-  if [ ! -s "$lcov" ]; then
-    printf '| %s | %s | no coverage report | n/a | 0 of %s |\n' "$package" "$runner" "$sources"
-    continue
-  fi
-
-  awk -F: -v package="$package" -v runner="$runner" -v sources="$sources" '
-    /^SF:/ { files++ }
-    /^LF:/ { found_lines += $2 }
-    /^LH:/ { hit_lines += $2 }
-    /^BRF:/ { found_branches += $2 }
-    /^BRH:/ { hit_branches += $2 }
-    END {
-      lines = found_lines ? sprintf("%.1f%%", hit_lines * 100 / found_lines) : "no data"
-      branches = found_branches ? sprintf("%.1f%%", hit_branches * 100 / found_branches) : "n/a"
-      printf "| %s | %s | %s | %s | %d of %d |\n", package, runner, lines, branches, files, sources
-    }' "$lcov"
+  checked=$(sort -u "$workdir/scope/$rule" | wc -l | tr -d ' ')
+  flagged=$(sort -u "$workdir/findings/$rule" | wc -l | tr -d ' ')
+  applied=$(awk -v checked="$checked" -v flagged="$flagged" 'BEGIN { if (checked == 0) print "n/a"; else printf "%.1f%%", (checked - flagged) * 100 / checked }')
+  printf '| %s | %s |\n' "$rule" "$applied"
 done
-
-printf '\nVitest counts every source file under src/, node --test only the files its tests load and Go every package of its module, so percentages from different runners are not comparable.\n'
-
-exit "$status"

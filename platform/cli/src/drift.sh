@@ -43,9 +43,8 @@ case "$command" in
       biome) exec "$commands/check-biome.sh" "$@" ;;
       dead-code) exec "$commands/check-dead-code.sh" "$@" ;;
       localization) exec "$commands/check-localization.sh" "$@" ;;
-      rules) exec "$commands/check-rules.sh" "$@" ;;
       workflows) exec "$commands/check-workflows.sh" "$@" ;;
-      *) drift_usage_error "Usage: drift check <biome|dead-code|localization|rules|workflows>" ;;
+      *) drift_usage_error "Usage: drift check <biome|dead-code|localization|workflows>" ;;
     esac
     ;;
   ci)
@@ -83,9 +82,9 @@ case "$command" in
     subcommand=${1:-}
     [ "$#" -eq 0 ] || shift
     case "$subcommand" in
+      check) exec "$commands/quality-check.sh" "$@" ;;
       coverage) exec "$commands/quality-coverage.sh" "$@" ;;
-      rules) exec "$commands/quality-rules.sh" "$@" ;;
-      *) drift_usage_error "Usage: drift quality <coverage|rules>" ;;
+      *) drift_usage_error "Usage: drift quality <check|coverage>" ;;
     esac
     ;;
   widget)
