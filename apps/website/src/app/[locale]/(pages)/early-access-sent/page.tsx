@@ -69,7 +69,7 @@ export default async function EarlyAccessSentPage({ params }: PageProps) {
 					<Link href="/">{copy.home}</Link>
 				</div>
 			</main>
-			<WebsiteFooter compact locale={locale} />
+			<WebsiteFooter locale={locale} />
 		</>
 	)
 }

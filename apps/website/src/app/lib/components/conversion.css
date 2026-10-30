@@ -27,7 +27,8 @@
 }
 .plans-grid {
 	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(280px, 390px));
+	justify-content: center;
 	gap: 18px;
 }
 .website-plan {
@@ -175,7 +176,6 @@
 	.plans-availability {
 		max-width: 640px;
 		margin-inline: auto;
-		margin-top: 22px;
 	}
 }
 @media (max-width: 600px) {

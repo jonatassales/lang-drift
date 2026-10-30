@@ -95,7 +95,7 @@ export default async function PrivacyPage(props: PrivacyPageProps) {
 					</section>
 				</article>
 			</main>
-			<WebsiteFooter locale={locale} compact />
+			<WebsiteFooter locale={locale} />
 		</>
 	)
 }

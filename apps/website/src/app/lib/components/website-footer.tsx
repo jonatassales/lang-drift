@@ -61,7 +61,7 @@ export function WebsiteFooter(props: WebsiteFooterProps) {
 						<LinkedinLogo aria-hidden="true" size={22} weight="fill" />
 					</a>
 					<a
-						href="https://github.com/jonatassales/langdrift"
+						href="https://github.com/jonatassales/lang-drift"
 						aria-label="GitHub"
 						title="GitHub"
 					>

@@ -18,7 +18,7 @@ import { panelSurface } from './website-header/surface'
 import './website-header.css'
 
 // Entries without a destination yet read like their neighbors but do not
-// navigate: Docs and GitHub, and the products without a page.
+// navigate: Docs, and the products without a page.
 const utilityItem =
 	'inline-flex min-h-11 items-center text-[13px] font-medium whitespace-nowrap text-muted-foreground'
 const drawerItem =
@@ -138,7 +138,13 @@ export function WebsiteHeader() {
 					>
 						<PlatformMenu />
 						<span className={utilityItem}>{t('docs')}</span>
-						<span className={utilityItem}>{t('github')}</span>
+						<a
+							href="https://github.com/jonatassales/lang-drift"
+							rel="noreferrer"
+							target="_blank"
+						>
+							{t('github')}
+						</a>
 						<Link href="/pricing">{t('pricing')}</Link>
 					</nav>
 					<div className="website-header-controls">
@@ -228,7 +234,14 @@ export function WebsiteHeader() {
 						)
 					})}
 					<span className={drawerItem}>{t('docs')}</span>
-					<span className={drawerItem}>{t('github')}</span>
+					<a
+						href="https://github.com/jonatassales/lang-drift"
+						onClick={closeDrawer}
+						rel="noreferrer"
+						target="_blank"
+					>
+						{t('github')}
+					</a>
 					<Link href="/pricing" onClick={closeDrawer}>
 						{t('pricing')}
 					</Link>

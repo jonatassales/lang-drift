@@ -3,7 +3,11 @@ import { Link } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
 import './conversion.css'
 
-const planIds = ['trial', 'plus', 'pro'] as const
+const planIds = [
+	'trial',
+	// 'plus',
+	// 'pro',
+] as const
 
 interface PlansSectionProps {
 	locale: WebsiteLocale
@@ -49,17 +53,17 @@ export function PlansSection(props: PlansSectionProps) {
 									))}
 								</ul>
 							</div>
-							<a
+							<Link
 								className={
 									id === 'trial'
 										? 'smooth-primary-button website-plan-cta'
 										: 'website-plan-cta website-plan-secondary'
 								}
-								href="#early-access"
+								href="/book-a-demo"
 							>
 								{plan.cta}
 								<span aria-hidden="true">↗</span>
-							</a>
+							</Link>
 						</article>
 					)
 				})}
