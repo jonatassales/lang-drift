@@ -151,6 +151,7 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 			Inputs:    inputsService,
 			Store:     inputsinfra.Store{},
 			Artifacts: storage.Artifacts{},
+			Workflows: scaffold.CIGates{},
 			Clock:     deps.Clock,
 		},
 		Inputs: inputsService,

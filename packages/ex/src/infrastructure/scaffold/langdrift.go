@@ -21,7 +21,8 @@ const executionRules = "microruntimes/AGENTS.md"
 // LangDrift adds the Microruntimes execution rules to a project's .langdrift
 // folder. It is additive: an existing file is kept byte for byte, never
 // replaced, and nothing else is written. LangDrift prescribes no workflow
-// and no artifact, so no template, skill or policy text lands here.
+// and no artifact inside .langdrift, so no template, skill or policy text
+// lands here; the CI Gates workflow is CIGates's, written only on a yes.
 type LangDrift struct{}
 
 // Prepare writes the execution rules when the project has none.

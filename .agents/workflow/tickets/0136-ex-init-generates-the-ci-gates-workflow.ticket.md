@@ -16,9 +16,9 @@ An existing file is kept byte for byte. An unreleased build refuses to write it.
 
 **Status:** ready-for-agent
 
-- [ ] A yes writes the workflow, which matches a golden copy under testdata for a fixed version, and the result lists `ci-gates` as recorded.
-- [ ] A no, or no answer, writes nothing outside `.langdrift/`.
-- [ ] An existing workflow file is kept byte for byte, and the result lists it as kept.
-- [ ] A `0.0.0-dev` build refuses the workflow with the reason and writes nothing.
-- [ ] The golden copy pins every action to a SHA with a version comment, sets top-level permissions, and has no expression inside `run`.
-- [ ] The README's boundary and the init documentation describe the file.
+- [x] A yes writes the workflow, which matches a golden copy under testdata for a fixed version, and the result lists `ci-gates` as recorded.
+- [x] A no, or no answer, writes nothing outside `.langdrift/`.
+- [x] An existing workflow file is kept byte for byte, and the result lists it as kept.
+- [x] A `0.0.0-dev` build refuses the workflow with the reason and writes nothing.
+- [x] The golden copy pins every action to a SHA with a version comment, sets top-level permissions, and has no expression inside `run`.
+- [x] The README's boundary and the init documentation describe the file.

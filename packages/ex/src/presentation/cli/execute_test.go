@@ -115,6 +115,7 @@ func TestExecute_MapsEveryCommandToItsRequest(t *testing.T) {
 		{[]string{"init"}, func(h *harness) any { return h.projectInit.requests }, []setup.Request{{
 			Directory: workingDirectory,
 			By:        "owner",
+			Version:   "1.2.3",
 		}}},
 		{[]string{"doctor"}, func(h *harness) any { return h.doctor.requests }, []app.DiagnoseRequest{{Project: discovered}}},
 		{[]string{"cluster", "create"}, func(h *harness) any { return h.clusterCreate.requests }, []app.ClusterRequest{{Project: discovered}}},

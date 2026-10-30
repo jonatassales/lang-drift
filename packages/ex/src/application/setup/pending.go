@@ -7,4 +7,6 @@ type Pending struct {
 	Budget    bool
 	Gates     bool
 	Artifacts bool
+	// CIGates is true while the project has no CI Gates workflow file.
+	CIGates bool
 }

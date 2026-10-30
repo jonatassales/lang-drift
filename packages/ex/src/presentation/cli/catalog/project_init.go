@@ -20,14 +20,14 @@ type ProjectSetup interface {
 // NewProjectInitCommand creates the project initialization command. A person
 // at the terminal is asked for the inputs the flags leave unanswered; --ask
 // decides that either way, and --json never asks.
-func NewProjectInitCommand(setUpProject ProjectSetup, globals *support.Globals) *cobra.Command {
+func NewProjectInitCommand(setUpProject ProjectSetup, globals *support.Globals, version string) *cobra.Command {
 	var values initFlags
 	var ask bool
 	var by string
 
 	command := &cobra.Command{
 		Use:   "init",
-		Short: "Initialize project metadata and record the first inputs, without starting infrastructure",
+		Short: "Initialize project metadata, record the first inputs and offer CI Gates, without starting infrastructure",
 		Args:  validateNoArguments,
 		RunE: func(command *cobra.Command, _ []string) error {
 			answers, err := initAnswers(command.Flags(), values)
@@ -38,6 +38,7 @@ func NewProjectInitCommand(setUpProject ProjectSetup, globals *support.Globals) 
 			request := setup.Request{
 				By:      by,
 				Answers: answers,
+				Version: version,
 			}
 
 			asks := support.Interactive(command.InOrStdin())
@@ -67,6 +68,7 @@ func NewProjectInitCommand(setUpProject ProjectSetup, globals *support.Globals) 
 	flags.IntVar(&values.reserveMargin, "reserve-margin", 0, "the margin a reservation adds to an estimate, in percent")
 	flags.BoolVar(&values.defaultGates, "default-gates", false, "apply the reference gates, FG-01 to FG-06")
 	flags.StringVar(&values.artifacts, "artifacts", "", "the folder of the team's tickets and specs, relative to the project")
+	flags.BoolVar(&values.ciGates, "ci-gates", false, "generate the CI Gates workflow, .github/workflows/langdrift-gates.yml")
 	flags.StringVar(&by, "by", inputs.DefaultBy, "who sets the inputs")
 
 	return command

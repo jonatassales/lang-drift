@@ -17,6 +17,7 @@ type initFlags struct {
 	reserveMargin int
 	defaultGates  bool
 	artifacts     string
+	ciGates       bool
 }
 
 // initAnswers reads the flags' answers. The three budget flags go together,
@@ -25,6 +26,7 @@ func initAnswers(flags *pflag.FlagSet, values initFlags) (setup.Answers, error) 
 	answers := setup.Answers{
 		DefaultGates: values.defaultGates,
 		Artifacts:    values.artifacts,
+		CIGates:      values.ciGates,
 	}
 
 	given := 0

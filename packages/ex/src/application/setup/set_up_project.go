@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	"github.com/jonatassales/tao/packages/ex/src/application/inputs"
@@ -29,6 +30,13 @@ type ArtifactsFolder interface {
 	Record(owner project.Project, relative string) (string, error)
 }
 
+// CIGatesWorkflow writes the CI Gates workflow into the project, never over
+// an existing file.
+type CIGatesWorkflow interface {
+	Exists(owner project.Project) (bool, error)
+	Write(owner project.Project, version string) (bool, error)
+}
+
 // Request names the project directory, who sets the inputs, the flags'
 // answers and, when a person is there, the guide that asks for the rest.
 type Request struct {
@@ -36,6 +44,8 @@ type Request struct {
 	By        string
 	Answers   Answers
 	Guide     Guide
+	// Version is the ex version the CI Gates workflow pins.
+	Version string
 }
 
 // Result is the project with what the setup recorded, what it kept because
@@ -50,6 +60,7 @@ type Result struct {
 // The names the result gives the inputs that are not money rules.
 const (
 	inputArtifacts = "artifacts"
+	inputCIGates   = "ci-gates"
 )
 
 // The inputs a first run still needs after the setup, with their commands.
@@ -79,6 +90,7 @@ type SetUpProject struct {
 	Inputs     Recorder
 	Store      inputs.Store
 	Artifacts  ArtifactsFolder
+	Workflows  CIGatesWorkflow
 	Clock      application.Clock
 }
 
@@ -116,6 +128,13 @@ func (useCase SetUpProject) Execute(ctx context.Context, request Request) (Resul
 
 	result := Result{ProjectResult: initialized}
 
+	// The workflow pins the version that writes it, so an unreleased build is
+	// refused before any input is recorded.
+	writesUnpinnableWorkflow := answers.CIGates && pending.CIGates && unreleased(request.Version)
+	if writesUnpinnableWorkflow {
+		return Result{}, fmt.Errorf("%w: ex %s is an unreleased build, and the CI Gates workflow pins a published @langdrift/ex; run a released ex to generate it", inputs.ErrInvalid, request.Version)
+	}
+
 	if err := useCase.checkArtifacts(owner, pending, answers); err != nil {
 		return Result{}, err
 	}
@@ -125,6 +144,10 @@ func (useCase SetUpProject) Execute(ctx context.Context, request Request) (Resul
 	}
 
 	if err := useCase.recordArtifacts(owner, pending, answers, &result); err != nil {
+		return Result{}, err
+	}
+
+	if err := useCase.recordCIGates(owner, request.Version, pending, answers, &result); err != nil {
 		return Result{}, err
 	}
 
@@ -177,6 +200,13 @@ func (useCase SetUpProject) pending(owner project.Project) (Pending, error) {
 	}
 
 	pending.Artifacts = folder == ""
+
+	exists, err := useCase.Workflows.Exists(owner)
+	if err != nil {
+		return Pending{}, err
+	}
+
+	pending.CIGates = !exists
 
 	return pending, nil
 }
@@ -252,6 +282,35 @@ func (useCase SetUpProject) recordFinOps(ctx context.Context, selection applicat
 
 		result.Recorded = append(result.Recorded, inputs.KindGates)
 	}
+
+	return nil
+}
+
+// recordCIGates writes the CI Gates workflow on a yes, and keeps a file the
+// project already has.
+func (useCase SetUpProject) recordCIGates(owner project.Project, version string, pending Pending, answers Answers, result *Result) error {
+	if !answers.CIGates {
+		return nil
+	}
+
+	if !pending.CIGates {
+		result.Kept = append(result.Kept, inputCIGates)
+
+		return nil
+	}
+
+	written, err := useCase.Workflows.Write(owner, version)
+	if err != nil {
+		return err
+	}
+
+	if !written {
+		result.Kept = append(result.Kept, inputCIGates)
+
+		return nil
+	}
+
+	result.Recorded = append(result.Recorded, inputCIGates)
 
 	return nil
 }

@@ -13,4 +13,6 @@ type Answers struct {
 	// Artifacts is the folder of the team's tickets and specs, relative to
 	// the project root.
 	Artifacts string
+	// CIGates is a yes to generating the CI Gates workflow.
+	CIGates bool
 }

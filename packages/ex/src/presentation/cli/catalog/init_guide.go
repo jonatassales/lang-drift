@@ -17,7 +17,7 @@ type initGuide struct {
 }
 
 // Ask asks for the month's budget, which an empty answer skips, then for the
-// default gates and the artifacts folder.
+// default gates, the artifacts folder and CI Gates.
 func (guide initGuide) Ask(ctx context.Context, pending setup.Pending, answers setup.Answers) (setup.Answers, error) {
 	if pending.Budget && answers.Budget == nil {
 		budget, err := guide.budget(ctx, pending.Period)
@@ -44,6 +44,15 @@ func (guide initGuide) Ask(ctx context.Context, pending setup.Pending, answers s
 		}
 
 		answers.Artifacts = folder
+	}
+
+	if pending.CIGates && !answers.CIGates {
+		generate, err := guide.prompter.Confirm(ctx, "Generate the CI Gates workflow, .github/workflows/langdrift-gates.yml? [y/N]")
+		if err != nil {
+			return setup.Answers{}, err
+		}
+
+		answers.CIGates = generate
 	}
 
 	return answers, nil
