@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/jonatassales/tao/packages/ex/src/presentation/cli"
@@ -269,8 +270,30 @@ func TestLauncherDispatchAndFallback(t *testing.T) {
 		if runErr != nil {
 			t.Fatalf("bin/ex version: %v\n%s", runErr, versionOut)
 		}
-		if strings.TrimSpace(string(versionOut)) != "ex 0.1.0" {
-			t.Fatalf("bin/ex version = %q, want %q", strings.TrimSpace(string(versionOut)), "ex 0.1.0")
+
+		// The version is the package's own, so a release bump never edits
+		// this test.
+		var manifest struct {
+			Version string `json:"version"`
+		}
+
+		manifestData, readErr := os.ReadFile(filepath.Join(packageDir, "package.json"))
+		if readErr != nil {
+			t.Fatal(readErr)
+		}
+
+		if unmarshalErr := json.Unmarshal(manifestData, &manifest); unmarshalErr != nil {
+			t.Fatalf("package.json: %v", unmarshalErr)
+		}
+
+		if manifest.Version == "" {
+			t.Fatal("package.json names no version")
+		}
+
+		want := "ex " + manifest.Version
+
+		if strings.TrimSpace(string(versionOut)) != want {
+			t.Fatalf("bin/ex version = %q, want %q", strings.TrimSpace(string(versionOut)), want)
 		}
 	})
 }
