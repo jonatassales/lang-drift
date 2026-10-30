@@ -41,6 +41,7 @@ export function HomeProductSection(props: HomeProductSectionProps) {
 	const headingId = `${id}-heading`
 	const captionId = `${id}-caption`
 	const summaryId = `${id}-summary`
+	const href = 'href' in product ? product.href : undefined
 	const describedBy = [caption && captionId, summary && summaryId]
 		.filter(Boolean)
 		.join(' ')
@@ -75,11 +76,11 @@ export function HomeProductSection(props: HomeProductSectionProps) {
 					{summary}
 				</p>
 			) : null}
-			{link ? (
+			{link && href ? (
 				<p className="mt-8 mb-0">
 					<Link
 						className="smooth-text-link inline-flex min-h-11 items-center gap-2"
-						href={product.href}
+						href={href}
 						locale={locale}
 					>
 						{link}
