@@ -43,7 +43,7 @@ cross-compiles all four target binaries (`dist/ex-darwin-arm64`,
 
 ## Boundary
 
-In a project, the CLI writes only `.langdrift/`: the project identity, the mirrors of its inputs under `harness/` and `finops/`, one folder per runtime under `microruntimes/runtimes/`, and its private state under `agent/state/`. It reads the team's artifacts where the ticket links them, never outside the project, and asks a FinOps gate before any paid work: the planner's own model calls and every call the stages make through the coding agent. It never pushes, opens a pull request or merges: delivery belongs to the harness, and the CLI only observes it through `git` and `gh`. Anything it cannot observe stays unknown, with the reason; unknown is never zero.
+In a project, the CLI writes only `.langdrift/`, and one file beside it after an explicit yes: the CI Gates workflow `ex init` generates at `.github/workflows/langdrift-gates.yml`, never over an existing file. Inside `.langdrift/` it writes the project identity, the mirrors of its inputs under `harness/` and `finops/`, one folder per runtime under `microruntimes/runtimes/`, and its private state under `agent/state/`. It reads the team's artifacts where the ticket links them, never outside the project, and asks a FinOps gate before any paid work: the planner's own model calls and every call the stages make through the coding agent. It never pushes, opens a pull request or merges: delivery belongs to the harness, and the CLI only observes it through `git` and `gh`. Anything it cannot observe stays unknown, with the reason; unknown is never zero.
 
 The connected agent (`ex agent connect`, `ex agent project`, `ex agent supervise` and `ex agent migrate`) needs a server that answers its protocol and holds each runtime's intent. None exists in this repository yet, so nothing here can drive it.
 
@@ -53,7 +53,7 @@ The folder is machine-local and gitignored: `ex` regenerates it, and nothing a t
 
 | Path | Scope | Written by |
 | --- | --- | --- |
-| `config.json` | general | `ex init`: the project identity |
+| `config.json` | general | `ex init`: the project identity, and `artifacts`, the folder of the team's tickets and specs relative to the project root, when one was given |
 | `agent/state/` | general, private | the CLI: input records, the RAG index, the runs' laps, stage logs and operator records, execution ledgers, Terraform state, build logs, connection records, credentials, locks |
 | `harness/` | general | the CLI, as mirrors of its inputs: the hardware envelope and the delivery stages |
 | `microruntimes/` | Microruntimes | the engine: the execution rules, one folder per runtime with its `runtime.md` (the plan), `run.json` (the execution), `run.md` (the memory), `laps/` and `evidence/` |
@@ -79,6 +79,23 @@ Each input is recorded with who set it, when, through what, its value and the re
 | Forecasts | `ex finops forecasts set --file forecasts.json` | `finops/forecasts.json` |
 
 The workflow names the stages, their skills, where a person takes part and the committed scripts a stage runs first (`hooks`). The forecasts carry the tokens each effort is expected to use and a `planning` entry for the planner's own calls. Every command takes `--by` for who sets the input.
+
+## The first inputs
+
+`ex init` records the inputs a first run needs that a team gives on the way in, through the same use cases as their own commands, under one `--by`:
+
+| Question | Flag | Recorded as |
+| --- | --- | --- |
+| The monthly budget for the current month, in dollars (`1500` or `1500.50`); an empty answer skips the budget | `--budget` | `ex finops budget set --period <this month> --period-cents …` |
+| The per-run cap, in dollars | `--per-run` | `--per-run-cents` |
+| The reserve margin, in percent, with no default | `--reserve-margin` | `--reserve-margin-percent` |
+| Whether to apply the default gates, `[y/N]` | `--default-gates` | `ex finops gates set --default` |
+| The artifacts folder, where the tickets and specs live, relative to the project; an empty answer skips it | `--artifacts` | `artifacts` in `config.json`, once it names a folder inside the project |
+| Whether to generate the CI Gates workflow, `[y/N]` | `--ci-gates` | `.github/workflows/langdrift-gates.yml`, pinned to this `ex` version |
+
+The three budget flags go together. A person at a terminal is asked for what the flags leave unanswered; `--ask` asks on any input, `--ask=false` never asks, and `--json` never asks. Without a terminal and without flags, `ex init` records the identity alone, as it always has. An input already recorded, a budget for this month, the gates or the artifacts folder, is never asked for or replaced: changing it stays with its own command, and a flag that would have changed it is listed as kept. The result adds `recorded`, `kept` and `next`, the commands of the inputs a first run still needs (`ex harness envelope set`, `ex harness model set`, `ex harness driver set`); each is left out when empty, and `next` only appears when the questions ran or a flag answered one.
+
+The CI Gates workflow is the team's from the moment it is written: its header names the `ex` version that generated it and says so, and `ex` never rewrites it. It runs `npx --yes @langdrift/ex@<version> gates report` on every pull request, with `contents: read`, a five-minute timeout, one concurrency group per pull request, `actions/checkout` and `actions/setup-node` pinned to commit SHAs, and checkout without credentials and with the whole history. An unreleased build, such as `0.0.0-dev`, refuses to write it, because `npx` could not resolve that version.
 
 ## The session
 
@@ -121,9 +138,10 @@ In the commands below, `ex` means `npx @langdrift/ex` or this tree's compiled `.
 | Command | Behavior |
 | --- | --- |
 | `ex version` | Print the version; `--version` and `-V` are equivalent. |
-| `ex init` | Create or reuse the project identity in `.langdrift/config.json` and add the Microruntimes execution rules at `.langdrift/microruntimes/AGENTS.md`. Existing files remain unchanged; no template, skill or policy text is written. |
+| `ex init [--budget <dollars> --per-run <dollars> --reserve-margin <percent>] [--default-gates] [--artifacts <folder>] [--ci-gates] [--ask] [--by …]` | Create or reuse the project identity in `.langdrift/config.json` and add the Microruntimes execution rules at `.langdrift/microruntimes/AGENTS.md`. Existing files remain unchanged; no template, skill or policy text is written. Then it records the inputs given on the way in, see [The first inputs](#the-first-inputs). |
 | `ex harness envelope\|workflow\|model\|driver set …` | Record one input of the delivery harness and write its mirror. |
 | `ex finops budget\|gates\|prices\|forecasts set …` | Record one money rule and write its mirror. |
+| `ex gates report` | Report a pull request's commit range for CI Gates, with no project: `BASE_SHA` and `HEAD_SHA` name the range, read through `git log`. Every FinOps reading stays unknown, because `.langdrift/` never reaches CI. The Markdown report is appended to the file `GITHUB_STEP_SUMMARY` names, else printed; `--json` prints the result. It posts no comment or check run and fails only when git cannot read the range or the summary cannot be written. |
 | `ex agent plan <ticket> [--runtime <id>] [--name …] [--component …]… [--cpu-millis … --memory-mib …] [--max-depth … --max-files … --max-bytes …] [--no-judge] [--by …]` | Read the ticket and the files it links, judge, retrieve, size and write the runtime file that plans it. |
 | `ex agent run <runtime> [--model …] [--effort …] [--acknowledge-overspend] [--confirm] [--checks-wait <duration>] [--by …]` | Open a lap, or play on with the open one: the gate, the stages, the runtime, delivery, the settlement and the memory. |
 | `ex agent confirm <runtime> <stage> [--by …]` | Confirm a waiting stage as the owner; the next run plays on from it. |

@@ -17,7 +17,7 @@ import (
 // field is the narrow contract its command consumes; the composition root
 // supplies the implementations.
 type UseCases struct {
-	ProjectInit      catalog.ProjectInitializer
+	ProjectInit      catalog.ProjectSetup
 	ProjectAgent     catalog.ProjectAgent
 	Doctor           catalog.Diagnoser
 	ClusterCreate    catalog.ClusterCreator
@@ -28,6 +28,7 @@ type UseCases struct {
 	Inputs           catalog.Inputs
 	Plan             catalog.PlanOperations
 	Execution        catalog.Executor
+	Gates            catalog.GatesReporter
 }
 
 // Execute runs the CLI and returns the appropriate exit code.

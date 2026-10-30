@@ -91,12 +91,16 @@ func (cliApplication *application) registerGlobalFlags(
 // registerCommands connects the top-level commands and command groups.
 func (cliApplication *application) registerCommands(rootCommand *cobra.Command) {
 	rootCommand.AddCommand(
-		catalog.NewProjectInitCommand(cliApplication.useCases.ProjectInit, &cliApplication.globals),
+		catalog.NewProjectInitCommand(cliApplication.useCases.ProjectInit, &cliApplication.globals, cliApplication.options.Version),
 		catalog.NewDoctorCommand(cliApplication.useCases.Doctor, &cliApplication.globals),
 		cliApplication.runtimeCommand(),
 		cliApplication.clusterCommand(),
 		cliApplication.agentCommand(),
 	)
+
+	if cliApplication.useCases.Gates != nil {
+		rootCommand.AddCommand(cliApplication.gatesCommand())
+	}
 
 	if cliApplication.useCases.Inputs != nil {
 		rootCommand.AddCommand(cliApplication.harnessCommand(), cliApplication.finopsCommand())
