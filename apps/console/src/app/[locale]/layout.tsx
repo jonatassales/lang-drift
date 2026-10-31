@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { notFound } from 'next/navigation'
 import { NextIntlClientProvider } from 'next-intl'
@@ -65,6 +66,7 @@ export default async function LocaleLayout(props: LocaleLayoutProps) {
 		>
 			<body className="min-h-screen bg-background font-sans text-foreground antialiased [&_:focus-visible]:outline-2 [&_:focus-visible]:outline-offset-2 [&_:focus-visible]:outline-ring">
 				<NextIntlClientProvider>{children}</NextIntlClientProvider>
+				<Analytics />
 			</body>
 		</html>
 	)
