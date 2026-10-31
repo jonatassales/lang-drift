@@ -21,6 +21,7 @@
 <p align="center">
   <a href="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml"><img alt="Pull request checks" src="https://github.com/jonatassales/lang-drift/actions/workflows/pull-request.yml/badge.svg?event=pull_request" height="20"></a>
   <a href="https://www.npmjs.com/package/@langdrift/ex"><img alt="npm @langdrift/ex" src="https://img.shields.io/npm/v/@langdrift/ex?logo=npm&amp;logoColor=white&amp;label=%40langdrift%2Fex&amp;color=CB3837&amp;labelColor=18181B" height="20"></a>
+  <a href="https://hub.xerj.org/contributors/jonatassales"><img alt="XERJ Corpus Hub contributor" src="https://hub.xerj.org/contributors/jonatassales/badge.svg" height="20"></a>
   <a href="/LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=18181B" height="20"></a>
   <a href="/packages/ex/README.md"><img alt="Go 1.26 or newer" src="https://img.shields.io/badge/Go-1.26%2B-00ADD8?logo=go&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
   <a href="/package.json"><img alt="Node.js 24" src="https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&amp;logoColor=white&amp;labelColor=18181B" height="20"></a>
