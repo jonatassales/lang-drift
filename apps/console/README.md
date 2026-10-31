@@ -17,7 +17,7 @@ The console listens on loopback only and answers only loopback hosts and same-or
 ## Security and search
 
 - **A nonce policy on every document.**
-  - The proxy builds a `Content-Security-Policy` per request around a fresh nonce: `script-src 'self' 'nonce-…' 'strict-dynamic'`, with no inline grant.
+  - The proxy builds a `Content-Security-Policy` per request around a fresh nonce: `script-src 'self' 'nonce-…' 'strict-dynamic' https://va.vercel-scripts.com`, with no inline grant. `connect-src` adds `https://va.vercel-scripts.com` and `https://vitals.vercel-insights.com` for Vercel Analytics, which the layout renders with `<Analytics />`.
   - It sets the policy on the request, which next-intl forwards, so Next stamps the nonce on its scripts. It also sets the policy on the response, with `Cache-Control: private, no-store`.
   - Styles keep `'unsafe-inline'` for React `style` props and sinapsi's shadow root.
   - Development adds `'unsafe-eval'` and the development websocket, and preview builds allow `https://vercel.live`.

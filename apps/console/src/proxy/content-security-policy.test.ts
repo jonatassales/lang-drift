@@ -27,6 +27,7 @@ test('scripts need this response nonce, never an inline grant', () => {
 		"'self'",
 		`'nonce-${nonce}'`,
 		"'strict-dynamic'",
+		'https://va.vercel-scripts.com',
 	])
 	assert.notEqual(
 		documentPolicy(createNonce(), 'production'),
@@ -34,16 +35,16 @@ test('scripts need this response nonce, never an inline grant', () => {
 	)
 })
 
-test('production allows the console origin and nothing else', () => {
+test('production allows the console origin and Vercel Analytics, nothing else', () => {
 	assert.equal(
 		documentPolicy('bm9uY2U=', 'production'),
 		[
 			"default-src 'self'",
-			"script-src 'self' 'nonce-bm9uY2U=' 'strict-dynamic'",
+			"script-src 'self' 'nonce-bm9uY2U=' 'strict-dynamic' https://va.vercel-scripts.com",
 			"style-src 'self' 'unsafe-inline'",
 			"img-src 'self' data: blob:",
 			"font-src 'self'",
-			"connect-src 'self'",
+			"connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-insights.com",
 			"worker-src 'self' blob:",
 			"manifest-src 'self'",
 			"frame-src 'none'",
@@ -62,9 +63,15 @@ test('development adds eval for React and the development server socket', () => 
 		"'self'",
 		"'nonce-bm9uY2U='",
 		"'strict-dynamic'",
+		'https://va.vercel-scripts.com',
 		"'unsafe-eval'",
 	])
-	assert.deepEqual(sources(policy, 'connect-src'), ["'self'", 'ws:'])
+	assert.deepEqual(sources(policy, 'connect-src'), [
+		"'self'",
+		'https://va.vercel-scripts.com',
+		'https://vitals.vercel-insights.com',
+		'ws:',
+	])
 	assert.doesNotMatch(policy, /vercel\.live/u)
 })
 

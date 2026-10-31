@@ -13,6 +13,7 @@
 		"@langdrift/tokens": "workspace:*",
 		"@langdrift/web": "workspace:*",
 		"@phosphor-icons/react": "^2.1.10",
+		"@vercel/analytics": "^2.0.1",
 		"next": "16.4.3",
 		"next-intl": "4.14.5",
 		"react": "19.3.0",
