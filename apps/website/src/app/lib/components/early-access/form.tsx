@@ -116,6 +116,7 @@ export function EarlyAccessForm(props: EarlyAccessFormProps) {
 			<label htmlFor={emailId}>{copy.emailLabel}</label>
 			<div className="early-access-controls">
 				<input
+					className="focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 					ref={inputRef}
 					id={emailId}
 					type="email"
@@ -144,7 +145,11 @@ export function EarlyAccessForm(props: EarlyAccessFormProps) {
 						handleEmailBlur(event.currentTarget.value, update)
 					}}
 				/>
-				<button type="submit" disabled={!hydrated || busy}>
+				<button
+					className="whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
+					type="submit"
+					disabled={!hydrated || busy}
+				>
 					{busy ? copy.submitting : copy.submit}
 					{busy ? (
 						<span

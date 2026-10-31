@@ -52,7 +52,7 @@ export function FaqTabs(props: FaqTabsProps) {
 					>
 						{active ? (
 							<BasicAccordion
-								className="mt-6 [&_button]:whitespace-normal!"
+								className="mt-6"
 								headingLevel={3}
 								items={group.items.map((item) => ({
 									content: (

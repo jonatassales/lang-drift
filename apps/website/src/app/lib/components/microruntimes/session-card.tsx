@@ -29,7 +29,7 @@ export function SessionCard(props: SessionCardProps) {
 			<button
 				aria-controls={regionId}
 				aria-expanded={expanded}
-				className="flex min-h-11 w-full items-center justify-between gap-4 px-5 py-3 text-left sm:px-6"
+				className="flex min-h-11 w-full items-center justify-between gap-4 px-5 py-3 text-left whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary sm:px-6"
 				id={triggerId}
 				onClick={onOpen}
 				type="button"

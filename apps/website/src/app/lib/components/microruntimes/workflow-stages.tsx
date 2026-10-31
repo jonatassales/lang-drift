@@ -87,7 +87,7 @@ export function WorkflowStages(props: WorkflowStagesProps) {
 									})}
 									checked={human[stage]}
 									className={cn(
-										'size-3.5 shrink-0 cursor-[inherit] accent-primary',
+										'size-3.5 shrink-0 cursor-[inherit] accent-primary focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary',
 										required && 'cursor-not-allowed opacity-50',
 									)}
 									onChange={() => onToggle(stage)}

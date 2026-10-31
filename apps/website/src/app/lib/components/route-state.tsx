@@ -48,7 +48,7 @@ export function RouteState(props: RouteStateProps) {
 					/>
 					<div className="flex flex-wrap items-center justify-center gap-3">
 						<Link
-							className="inline-flex min-h-10 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:-translate-y-px hover:bg-primary-hover"
+							className="inline-flex min-h-10 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:-translate-y-px hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 							href="/"
 						>
 							{homeLabel}

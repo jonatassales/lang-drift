@@ -16,7 +16,7 @@ export function DemoButton(props: DemoButtonProps) {
 
 	return (
 		<Link
-			className="inline-flex min-h-[38px] items-center justify-center rounded-[7px] bg-foreground px-[13px] py-2 text-xs font-semibold whitespace-nowrap text-background"
+			className="inline-flex min-h-[38px] items-center justify-center rounded-[7px] bg-foreground px-[13px] py-2 text-xs font-semibold whitespace-nowrap text-background focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 			href="/book-a-demo"
 			onClick={onClick}
 		>

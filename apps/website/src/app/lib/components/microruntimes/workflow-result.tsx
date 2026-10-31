@@ -110,7 +110,7 @@ export function WorkflowResult(props: WorkflowResultProps) {
 					<>
 						{/* biome-ignore lint/a11y/useValidAnchor: the simulated pull request reads as a link and opens nothing */}
 						<a
-							className="inline-flex items-center gap-1.5 font-mono text-[12px] text-foreground underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+							className="inline-flex items-center gap-1.5 font-mono text-[12px] text-foreground underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 							href="#"
 							onClick={(event) => event.preventDefault()}
 						>

@@ -17,6 +17,9 @@ interface PrivacyPageProps {
 	params: Promise<{ locale: string }>
 }
 
+const link =
+	'focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary'
+
 export async function generateMetadata(
 	props: PrivacyPageProps,
 	parent: ResolvingMetadata,
@@ -72,10 +75,16 @@ export default async function PrivacyPage(props: PrivacyPageProps) {
 						))}
 						<p>
 							{copy.addendumIntroduction}{' '}
-							<a href={copy.addendumUrl}>{copy.addendumLabel}</a>.
+							<a className={link} href={copy.addendumUrl}>
+								{copy.addendumLabel}
+							</a>
+							.
 						</p>
 						<p>
-							<a href="https://www.cloudflare.com/privacypolicy/">
+							<a
+								className={link}
+								href="https://www.cloudflare.com/privacypolicy/"
+							>
 								{copy.providerPolicy}
 							</a>
 						</p>
@@ -87,7 +96,9 @@ export default async function PrivacyPage(props: PrivacyPageProps) {
 					<section aria-labelledby="privacy-contact" className="mb-10">
 						<h2 id="privacy-contact">{copy.contactTitle}</h2>
 						<p>{copy.contact}</p>
-						<a href="mailto:founders@langdrift.md">founders@langdrift.md</a>
+						<a className={link} href="mailto:founders@langdrift.md">
+							founders@langdrift.md
+						</a>
 					</section>
 					<section aria-labelledby="privacy-changes">
 						<h2 id="privacy-changes">{copy.changesTitle}</h2>

@@ -12,7 +12,7 @@ export function SkipLink(props: SkipLinkProps) {
 
 	return (
 		<a
-			className="fixed top-0 left-3 z-200 max-w-[calc(100vw-1.5rem)] -translate-y-full bg-foreground px-2.5 py-2 whitespace-normal text-card focus-visible:top-3 focus-visible:translate-y-0"
+			className="fixed top-0 left-3 z-200 max-w-[calc(100vw-1.5rem)] -translate-y-full bg-foreground px-2.5 py-2 whitespace-normal text-card focus-visible:top-3 focus-visible:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 			href={href}
 		>
 			{children}

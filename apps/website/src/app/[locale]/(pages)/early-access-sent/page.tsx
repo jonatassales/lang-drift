@@ -80,7 +80,10 @@ export default async function EarlyAccessSentPage(props: PageProps) {
 						src="/early-access/early-bird.png"
 						width={360}
 					/>
-					<Link className="inline-block p-2.5 text-foreground" href="/">
+					<Link
+						className="inline-block p-2.5 text-foreground focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
+						href="/"
+					>
 						{copy.home}
 					</Link>
 				</div>

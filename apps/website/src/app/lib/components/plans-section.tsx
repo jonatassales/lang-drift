@@ -21,7 +21,9 @@ export function PlansSection(props: PlansSectionProps) {
 	return (
 		<section className="plans-section" aria-labelledby="plans-heading">
 			<div className="plans-introduction">
-				<span className="section-kicker">{copy.eyebrow}</span>
+				<span className="font-mono text-[10px] tracking-[0.11em] uppercase">
+					{copy.eyebrow}
+				</span>
 				<h1 id="plans-heading">{copy.title}</h1>
 				<p>{copy.introduction}</p>
 			</div>
@@ -56,8 +58,8 @@ export function PlansSection(props: PlansSectionProps) {
 							<Link
 								className={
 									id === 'trial'
-										? 'smooth-primary-button website-plan-cta'
-										: 'website-plan-cta website-plan-secondary'
+										? 'smooth-primary-button website-plan-cta focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary'
+										: 'website-plan-cta website-plan-secondary focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary'
 								}
 								href="/book-a-demo"
 							>
@@ -70,7 +72,10 @@ export function PlansSection(props: PlansSectionProps) {
 			</div>
 			<div className="plans-availability">
 				<p>{copy.availability}</p>
-				<Link className="smooth-text-link" href="/#faq">
+				<Link
+					className="smooth-text-link focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
+					href="/#faq"
+				>
 					{copy.faqLink}
 					<span aria-hidden="true">→</span>
 				</Link>
