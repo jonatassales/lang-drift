@@ -21,8 +21,8 @@ export function ChoiceButton(props: ChoiceButtonProps) {
 			aria-current={kind === 'step' && selected ? 'step' : undefined}
 			aria-pressed={kind === 'toggle' ? selected : undefined}
 			className={cn(
-				'w-full cursor-pointer rounded-xl border text-left text-foreground motion-safe:transition-colors',
-				'hover:bg-foreground/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+				'w-full cursor-pointer rounded-xl border text-left whitespace-nowrap text-foreground motion-safe:transition-colors',
+				'hover:bg-foreground/5 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary',
 				selected && 'border-primary/60 bg-primary/10 hover:bg-primary/10',
 				className,
 			)}

@@ -39,7 +39,7 @@ export type LanguageSwitcherProps<Locale extends string = string> = {
 )
 
 const optionClassName =
-	'inline-flex min-h-[1.7rem] cursor-pointer items-center justify-center whitespace-nowrap rounded-full border-0 bg-transparent px-[0.7rem] text-[0.72rem]! font-[650]! leading-normal! tracking-[0.04em] text-muted-foreground no-underline transition-colors duration-180 hover:text-foreground focus-visible:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground! aria-[current=page]:bg-[color-mix(in_srgb,var(--background)_88%,transparent)] aria-[current=page]:text-foreground aria-pressed:bg-[color-mix(in_srgb,var(--background)_88%,transparent)] aria-pressed:text-foreground disabled:cursor-wait disabled:opacity-60 motion-reduce:transition-none'
+	'inline-flex min-h-[1.7rem] cursor-pointer items-center justify-center whitespace-nowrap rounded-full border-0 bg-transparent px-[0.7rem] text-[0.72rem] font-[650] leading-normal tracking-[0.04em] text-muted-foreground no-underline transition-colors duration-180 hover:text-foreground focus-visible:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-foreground! aria-[current=page]:bg-[color-mix(in_srgb,var(--background)_88%,transparent)] aria-[current=page]:text-foreground aria-pressed:bg-[color-mix(in_srgb,var(--background)_88%,transparent)] aria-pressed:text-foreground disabled:cursor-wait disabled:opacity-60 motion-reduce:transition-none'
 
 export function LanguageSwitcher<Locale extends string>(
 	props: LanguageSwitcherProps<Locale>,
@@ -84,10 +84,7 @@ export function LanguageSwitcher<Locale extends string>(
 					<button
 						aria-label={option.name}
 						aria-pressed={currentLocale === option.locale}
-						className={cn(
-							optionClassName,
-							'focus-visible:outline-offset-[-2px]',
-						)}
+						className={optionClassName}
 						disabled={props.disabled}
 						key={option.locale}
 						onClick={() => props.onLocaleChange(option.locale)}
@@ -103,10 +100,7 @@ export function LanguageSwitcher<Locale extends string>(
 						'aria-current':
 							currentLocale === option.locale ? 'page' : undefined,
 						'aria-label': option.name,
-						className: cn(
-							optionClassName,
-							'focus-visible:outline-offset-[-2px]',
-						),
+						className: optionClassName,
 						href: option.href,
 						hrefLang: option.locale,
 						children: option.label,

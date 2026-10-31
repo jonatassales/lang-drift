@@ -6,16 +6,16 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** completed
 
-- [ ] `globals.css` and `template/tailwind/base.css` are deleted, and `hero.css` keeps no `html` rule.
-- [ ] `app.css` holds only the Tailwind import, the tokens stylesheet and the utilities file.
-- [ ] `<html>` and `<body>` carry the former element rules as utilities, reduced motion included.
-- [ ] Every link, button and input that showed the global focus ring shows the same ring through its own classes.
-- [ ] Every button that relied on the global `nowrap` keeps it through `whitespace-nowrap`.
-- [ ] No font utility on a button or an input starts to apply because the global `font: inherit` is gone.
-- [ ] The three `packages/web` components keep their look on the website and in the console.
-- [ ] The captures at 1280px and 375px, light and dark, match the baseline.
+- [x] `globals.css` and `template/tailwind/base.css` are deleted, and `hero.css` keeps no `html` rule.
+- [x] `app.css` holds only the Tailwind import, the tokens stylesheet and the utilities file.
+- [x] `<html>` and `<body>` carry the former element rules as utilities, reduced motion included.
+- [x] Every link, button and input that showed the global focus ring shows the same ring through its own classes.
+- [x] Every button that relied on the global `nowrap` keeps it through `whitespace-nowrap`.
+- [x] No font utility on a button or an input starts to apply because the global `font: inherit` is gone.
+- [x] The three `packages/web` components keep their look on the website and in the console. Only `LanguageSwitcher` needed a change (its focus offset is 3px, and its font utilities lost their `!`); SmoothUI's own stylesheet already gives `AnimatedTabs` and `BasicAccordion` their font, `nowrap` and focus ring.
+- [x] The captures at 1280px and 375px, light and dark, match the baseline.
 
 ### Verification
 

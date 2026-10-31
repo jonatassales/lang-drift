@@ -22,8 +22,10 @@ interface BookDemoFormProps {
 }
 
 const label = 'text-sm font-medium text-foreground'
-const control =
-	'min-h-11 w-full rounded-lg border border-border bg-background px-3.5 text-sm text-foreground aria-[invalid=true]:border-status-danger'
+const fieldControl =
+	'min-h-11 w-full rounded-lg border border-border bg-background px-3.5 text-foreground aria-[invalid=true]:border-status-danger'
+const inputControl = `${fieldControl} focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary`
+const selectControl = `${fieldControl} text-sm`
 const errorText = 'm-0 text-xs text-status-danger'
 
 // The demo request: validated as the visitor leaves each field and again on
@@ -115,7 +117,7 @@ export function BookDemoForm(props: BookDemoFormProps) {
 					aria-describedby={emailError ? `${fieldId}-email-error` : undefined}
 					aria-invalid={Boolean(emailError)}
 					autoComplete="email"
-					className={control}
+					className={inputControl}
 					id={`${fieldId}-email`}
 					inputMode="email"
 					placeholder={copy.form.emailPlaceholder}
@@ -138,7 +140,7 @@ export function BookDemoForm(props: BookDemoFormProps) {
 					}
 					aria-invalid={Boolean(companyError)}
 					autoComplete="organization"
-					className={control}
+					className={inputControl}
 					id={`${fieldId}-company`}
 					placeholder={copy.form.companyPlaceholder}
 					type="text"
@@ -160,7 +162,7 @@ export function BookDemoForm(props: BookDemoFormProps) {
 					}
 					aria-invalid={Boolean(positionError)}
 					autoComplete="organization-title"
-					className={control}
+					className={selectControl}
 					id={`${fieldId}-position`}
 					{...register('position')}
 				>
@@ -179,7 +181,7 @@ export function BookDemoForm(props: BookDemoFormProps) {
 			</div>
 			<div className="flex flex-wrap items-center gap-4">
 				<button
-					className="smooth-primary-button"
+					className="smooth-primary-button whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 					disabled={formState.isSubmitting}
 					type="submit"
 				>

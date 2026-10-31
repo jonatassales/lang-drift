@@ -38,7 +38,7 @@ interface WorkflowCardProps {
 }
 
 const playButton =
-	'inline-flex min-h-[38px] cursor-pointer items-center gap-[7px] rounded-full bg-primary px-[17px] text-[13px] font-[650] text-primary-foreground motion-safe:transition-[transform,filter] motion-safe:duration-200 hover:saturate-[1.18] motion-safe:hover:-translate-y-px aria-disabled:cursor-not-allowed aria-disabled:opacity-60 aria-disabled:hover:translate-y-0'
+	'inline-flex min-h-[38px] cursor-pointer items-center gap-[7px] rounded-full bg-primary px-[17px] whitespace-nowrap text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary motion-safe:transition-[transform,filter] motion-safe:duration-200 hover:saturate-[1.18] motion-safe:hover:-translate-y-px aria-disabled:cursor-not-allowed aria-disabled:opacity-60 aria-disabled:hover:translate-y-0'
 
 // The label the Play button carries in each moment of the session.
 function playLabel(

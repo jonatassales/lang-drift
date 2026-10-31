@@ -21,7 +21,7 @@ export function ProductFaqSection(props: ProductFaqSectionProps) {
 	return (
 		<FaqSectionShell description={description} title={title}>
 			<BasicAccordion
-				className="mt-10 [&_button]:whitespace-normal!"
+				className="mt-10"
 				headingLevel={3}
 				items={items.map((item) => ({
 					content: (

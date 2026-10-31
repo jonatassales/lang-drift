@@ -92,7 +92,7 @@ export function PlatformMenu() {
 			<button
 				aria-controls={panelId}
 				aria-expanded={visible}
-				className="inline-flex min-h-11 items-center gap-1 text-[13px] font-medium whitespace-nowrap text-muted-foreground group-hover:text-foreground aria-expanded:text-foreground"
+				className="inline-flex min-h-11 items-center gap-1 whitespace-nowrap text-muted-foreground group-hover:text-foreground aria-expanded:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 				onBlur={trackFocusLeaving}
 				onClick={handleToggle}
 				onFocus={handleFocus}
@@ -152,7 +152,7 @@ export function PlatformMenu() {
 										<Link
 											className={cn(
 												item,
-												'hover:bg-card focus-visible:bg-card',
+												'hover:bg-card focus-visible:bg-card focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary',
 											)}
 											href={product.href}
 											onBlur={trackFocusLeaving}

@@ -13,7 +13,6 @@ import { routing } from '@i18n/routing'
 
 import '@langdrift/web/styles.css'
 import '@app/template/tailwind/app.css'
-import '@app/globals.css'
 import '@app/hero.css'
 
 interface LayoutProps {
@@ -52,11 +51,14 @@ export default async function LocaleLayout(props: LayoutProps) {
 	return (
 		<html
 			lang={locale}
-			className="dark"
+			className="dark scroll-pt-24 scroll-smooth bg-background font-sans text-foreground motion-reduce:scroll-auto"
 			style={{ colorScheme: 'dark' }}
 			suppressHydrationWarning
 		>
-			<body suppressHydrationWarning>
+			<body
+				className="min-h-screen bg-background text-foreground transition-[background,color] duration-280 ease-[ease] motion-reduce:transition-none"
+				suppressHydrationWarning
+			>
 				<NextIntlClientProvider
 					locale={locale}
 					messages={getWebsiteMessages(locale)}

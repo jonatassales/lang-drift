@@ -125,7 +125,11 @@ export function WebsiteHeader() {
 			<header className={`website-header ${glass}`} data-scrolled={scrolled}>
 				<div className="website-header-inner grid-cols-[minmax(0,1fr)_auto] lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
 					<div className="website-header-identity">
-						<Link aria-label={t('home')} href="/">
+						<Link
+							aria-label={t('home')}
+							className="focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
+							href="/"
+						>
 							<Brand className="website-header-brand" compact tone={theme} />
 						</Link>
 						<div className="website-header-language">
@@ -139,13 +143,19 @@ export function WebsiteHeader() {
 						<PlatformMenu />
 						<span className={utilityItem}>{t('docs')}</span>
 						<a
+							className="focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 							href="https://github.com/jonatassales/lang-drift"
 							rel="noreferrer"
 							target="_blank"
 						>
 							{t('github')}
 						</a>
-						<Link href="/pricing">{t('pricing')}</Link>
+						<Link
+							className="focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
+							href="/pricing"
+						>
+							{t('pricing')}
+						</Link>
 					</nav>
 					<div className="website-header-controls">
 						<div className="website-header-access">
@@ -155,7 +165,7 @@ export function WebsiteHeader() {
 							aria-controls="website-navigation-drawer"
 							aria-expanded={drawerOpen}
 							aria-label={t('openNavigation')}
-							className="website-header-icon website-navigation-trigger inline-flex lg:hidden"
+							className="website-header-icon website-navigation-trigger inline-flex whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary lg:hidden"
 							onClick={() => setDrawerOpen(true)}
 							ref={triggerRef}
 							type="button"
@@ -166,7 +176,7 @@ export function WebsiteHeader() {
 						</button>
 						<button
 							aria-label={themeLabel}
-							className="website-header-icon website-theme-toggle inline-flex"
+							className="website-header-icon website-theme-toggle inline-flex whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 							onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
 							title={themeLabel}
 							type="button"
@@ -194,12 +204,17 @@ export function WebsiteHeader() {
 				ref={drawerRef}
 			>
 				<div className="website-drawer-heading">
-					<Link aria-label={t('home')} href="/" onClick={closeDrawer}>
+					<Link
+						aria-label={t('home')}
+						className="focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
+						href="/"
+						onClick={closeDrawer}
+					>
 						<Brand compact tone={theme} />
 					</Link>
 					<button
 						aria-label={t('closeNavigation')}
-						className="website-header-icon inline-flex"
+						className="website-header-icon inline-flex whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 						onClick={closeDrawer}
 						ref={closeRef}
 						type="button"
@@ -218,7 +233,7 @@ export function WebsiteHeader() {
 
 						return 'href' in product ? (
 							<Link
-								className="flex items-center gap-3"
+								className="flex items-center gap-3 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 								href={product.href}
 								key={product.label}
 								onClick={closeDrawer}
@@ -235,6 +250,7 @@ export function WebsiteHeader() {
 					})}
 					<span className={drawerItem}>{t('docs')}</span>
 					<a
+						className="focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 						href="https://github.com/jonatassales/lang-drift"
 						onClick={closeDrawer}
 						rel="noreferrer"
@@ -242,7 +258,11 @@ export function WebsiteHeader() {
 					>
 						{t('github')}
 					</a>
-					<Link href="/pricing" onClick={closeDrawer}>
+					<Link
+						className="focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
+						href="/pricing"
+						onClick={closeDrawer}
+					>
 						{t('pricing')}
 					</Link>
 				</nav>

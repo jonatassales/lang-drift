@@ -34,6 +34,7 @@ export function RuntimeFileEditor(props: RuntimeFileEditorProps) {
 
 	return (
 		<CodeEditor
+			className="[&_button]:whitespace-nowrap"
 			language="json"
 			maxHeight={640}
 			theme={theme}

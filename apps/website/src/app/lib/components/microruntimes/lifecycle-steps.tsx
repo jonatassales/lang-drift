@@ -35,7 +35,7 @@ export function LifecycleSteps(props: LifecycleStepsProps) {
 					return (
 						<li key={id}>
 							<ChoiceButton
-								className="flex items-center gap-2.5 border-border px-3 py-2.5 text-[13px]"
+								className="flex items-center gap-2.5 border-border px-3 py-2.5"
 								kind="step"
 								onSelect={() => setSelectedId(id)}
 								selected={selected}
