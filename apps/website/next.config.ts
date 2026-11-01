@@ -16,7 +16,7 @@ function contentSecurityPolicy(): string {
 			'https://va.vercel-scripts.com',
 		],
 		'style-src': ["'self'", "'unsafe-inline'"],
-		'img-src': ["'self'", 'data:', 'blob:'],
+		'img-src': ["'self'", 'data:', 'blob:', 'https://img.shields.io'],
 		'font-src': ["'self'", 'data:'],
 		'connect-src': [
 			"'self'",

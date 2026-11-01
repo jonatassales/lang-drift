@@ -67,6 +67,19 @@ export function WebsiteFooter(props: WebsiteFooterProps) {
 					>
 						<GithubLogo aria-hidden="true" size={22} weight="fill" />
 					</a>
+					<a
+						className="!w-auto px-1"
+						href="https://www.npmjs.com/package/@langdrift/ex"
+						aria-label="npm: @langdrift/ex"
+						title="npm: @langdrift/ex"
+					>
+						<img
+							alt="npm @langdrift/ex"
+							className="block h-5 w-auto"
+							height={20}
+							src="https://img.shields.io/npm/v/@langdrift/ex?logo=npm&logoColor=white&label=%40langdrift%2Fex&color=CB3837&labelColor=18181B"
+						/>
+					</a>
 				</nav>
 			</div>
 		</footer>
