@@ -1,5 +1,6 @@
 {
 	"ui": {
+		"copyright": "© 2026 LangDrift · Apache 2.0",
 		"projects": "Projects",
 		"runtimes": "Runtimes",
 		"executions": "Executions",

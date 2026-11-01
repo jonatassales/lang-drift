@@ -151,6 +151,8 @@ export interface FooterMessages {
 	faq: string
 	social: string
 	copyright: string
+	security: string
+	license: string
 }
 
 export interface PlatformMessages {

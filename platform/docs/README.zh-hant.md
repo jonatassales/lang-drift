@@ -219,4 +219,4 @@ npx @langdrift/ex doctor
 
 ## 授權條款
 
-LangDrift 為依據 [MIT 授權條款](/LICENSE) 發布的開源軟體。
+LangDrift 為依據 [Apache 2.0 授權條款](/LICENSE) 發布的開源軟體。

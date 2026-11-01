@@ -6,8 +6,8 @@
 	for (part = 1; part <= NF; part++) {
 		name = $part
 		path = path (part > 1 ? "/" : "") name
-		if (name ~ /^(README|AGENTS|CLAUDE|SKILL)(\.[a-z-]+)?\.md(\.tmpl)?$/) continue
-		if (name ~ /^(LICENSE|Dockerfile(\.[a-z]+)?)$/) continue
+		if (name ~ /^(README|AGENTS|CLAUDE|SKILL|SECURITY)(\.[a-z-]+)?\.md(\.tmpl)?$/) continue
+		if (name ~ /^(LICENSE|NOTICE|Dockerfile(\.[a-z]+)?)$/) continue
 		sub(/^\./, "", name)
 		gsub(/[\[\]()@]|\.\.\./, "", name)
 		sub(/_test\.go$/, ".go", name)

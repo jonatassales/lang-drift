@@ -219,4 +219,4 @@ Thanks to [Matt Pocock](https://x.com/mattpocockuk). The agent skills this repos
 
 ## License
 
-LangDrift is open-source software licensed under the [MIT License](/LICENSE).
+LangDrift is open-source software licensed under the [Apache License, Version 2.0](/LICENSE).
