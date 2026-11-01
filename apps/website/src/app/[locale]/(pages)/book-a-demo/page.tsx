@@ -1,9 +1,7 @@
-import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
-import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
 import { BookDemoForm } from '@components/book-a-demo/form'
 import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
@@ -12,21 +10,10 @@ import { WebsiteStructuredData } from '@components/website-structured-data'
 import { bookDemoMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
 
+export { generateMetadata } from './page.metadata'
+
 interface BookDemoPageProps {
 	params: Promise<{ locale: string }>
-}
-
-export async function generateMetadata(
-	{ params }: BookDemoPageProps,
-	parent: ResolvingMetadata,
-): Promise<Metadata> {
-	const { locale } = await params
-
-	if (!hasLocale(routing.locales, locale)) notFound()
-
-	const images = await socialImages(parent)
-
-	return pageMetadata('book-a-demo', locale, images)
 }
 
 export default async function BookDemoPage(props: BookDemoPageProps) {

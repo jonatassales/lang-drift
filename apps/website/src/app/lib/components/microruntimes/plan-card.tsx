@@ -1,10 +1,8 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { ShareBar } from '@langdrift/web/ui/share-bar'
 import { cn } from '@langdrift/web/utilities'
-import type { ReactNode } from 'react'
 
 import {
-	hasPlayed,
 	headroom,
 	revealed,
 	suggestedTotals,
@@ -14,7 +12,10 @@ import {
 import { CardSection } from './card-section'
 import { CardValue, type CardValueState, revealState } from './card-value'
 import { ComponentsManifest } from './components-manifest'
+import { resolvedComponents } from './resolved-components.compute'
 import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
+
+export { planSummary } from './plan-summary.compute'
 
 interface PlanCardProps {
 	copy: TicketCardCopy
@@ -33,13 +34,6 @@ interface ReportCell {
 const figure = 'font-mono tabular-nums'
 const fade =
 	'motion-safe:transition-opacity motion-safe:duration-300 starting:opacity-0'
-
-// The components the terminal has resolved so far.
-function resolvedComponents(playedCount: number) {
-	return ticketPlan.components.filter((component) =>
-		hasPlayed(playedCount, component.id),
-	)
-}
 
 // The plan as a receipt: the figures it proposes stepping up as the
 // components resolve, the share of the envelope they take, the components
@@ -223,23 +217,4 @@ export function PlanCard(props: PlanCardProps) {
 			</CardSection>
 		</div>
 	)
-}
-
-// The plan's line in its collapsed header: a dash until a component has
-// resolved, then the figures so far, then the figures pending the team.
-export function planSummary(
-	copy: TicketCardCopy,
-	format: TicketCardFormat,
-	playedCount: number,
-): ReactNode {
-	const resolved = resolvedComponents(playedCount)
-	if (resolved.length === 0) return <CardValue labels={copy} state="unset" />
-
-	const figures = format.figures(suggestedTotals(resolved))
-	if (!revealed(playedCount, 'drafted')) return figures
-
-	return format.message('plan.summary', {
-		figures,
-		pending: copy.plan.pendingAuthorization,
-	})
 }

@@ -14,6 +14,7 @@ export default function GlobalError({ reset }: { reset: () => void }) {
 		)
 	}, [])
 	const copy = messages[locale]
+
 	return (
 		<html lang={locale}>
 			<body>

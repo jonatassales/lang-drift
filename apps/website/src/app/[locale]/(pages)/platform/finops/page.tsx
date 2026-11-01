@@ -1,10 +1,8 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
-import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
 import { BudgetLedgerDemo } from '@components/finops/budget-ledger-demo'
 import { BudgetTerms } from '@components/finops/budget-terms'
 import { DeliveryReceipt } from '@components/finops/delivery-receipt'
@@ -21,21 +19,10 @@ import { finopsFaqIds, gateExample, gateFigures } from '@data/finops-content'
 import { finopsMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
 
+export { generateMetadata } from './page.metadata'
+
 interface FinopsPageProps {
 	params: Promise<{ locale: string }>
-}
-
-export async function generateMetadata(
-	{ params }: FinopsPageProps,
-	parent: ResolvingMetadata,
-): Promise<Metadata> {
-	const { locale } = await params
-
-	if (!hasLocale(routing.locales, locale)) notFound()
-
-	const images = await socialImages(parent)
-
-	return pageMetadata('finops', locale, images)
 }
 
 export default async function FinopsPage(props: FinopsPageProps) {

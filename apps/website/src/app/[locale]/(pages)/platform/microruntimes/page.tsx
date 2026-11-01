@@ -1,12 +1,10 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { MicroruntimesIcon } from '@langdrift/web/ui/icons/platform'
 import { cn } from '@langdrift/web/utilities'
-import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import { createTranslator, hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
-import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
 import { AuthoringFlow } from '@components/microruntimes/authoring-flow'
 import { LifecycleSteps } from '@components/microruntimes/lifecycle-steps'
 import { RuntimeDescriptorCard } from '@components/microruntimes/runtime-descriptor-card'
@@ -34,6 +32,8 @@ import {
 import { microruntimesMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
 
+export { generateMetadata } from './page.metadata'
+
 interface MicroruntimesPageProps {
 	params: Promise<{ locale: string }>
 }
@@ -45,19 +45,6 @@ const stateTones: Record<StateCardId, string> = {
 }
 
 const headerCell = 'px-5 py-3 font-normal'
-
-export async function generateMetadata(
-	{ params }: MicroruntimesPageProps,
-	parent: ResolvingMetadata,
-): Promise<Metadata> {
-	const { locale } = await params
-
-	if (!hasLocale(routing.locales, locale)) notFound()
-
-	const images = await socialImages(parent)
-
-	return pageMetadata('microruntimes', locale, images)
-}
 
 export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 	const { params } = props

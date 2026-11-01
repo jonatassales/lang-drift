@@ -3,7 +3,9 @@ import type { ReactNode } from 'react'
 
 import type { MicroruntimesMessages } from '@data/microruntimes-content'
 
-export type CardValueState = 'unset' | 'resolving' | 'set'
+import type { CardValueState } from './reveal-state.compute'
+
+export { type CardValueState, revealState } from './reveal-state.compute'
 
 export type CardValueLabels = Pick<
 	MicroruntimesMessages['session']['card'],
@@ -17,18 +19,6 @@ interface CardValueProps {
 	state: CardValueState
 	/** The skeleton's width class while the value resolves. */
 	width?: string
-}
-
-// The state of a value the session reveals in two steps: the skeleton once
-// the console starts resolving it, the value once it is known.
-export function revealState(
-	valueShown: boolean,
-	skeletonShown = false,
-): CardValueState {
-	if (valueShown) return 'set'
-	if (skeletonShown) return 'resolving'
-
-	return 'unset'
 }
 
 // One value on the ticket card as the session reveals it: a dash while

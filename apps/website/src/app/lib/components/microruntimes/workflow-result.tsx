@@ -11,6 +11,7 @@ import {
 } from '@data/microruntimes-workflow'
 
 import { CardValue } from './card-value'
+import { pullRequestState } from './pull-request-state.compute'
 import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
 
 interface WorkflowResultProps {
@@ -24,19 +25,6 @@ interface WorkflowResultProps {
 const figure = 'font-mono text-[13px] tabular-nums'
 
 type HasPlayed = (message: RunMessageId) => boolean
-
-// Where the pull request stands: its checks running, passed, then ready for
-// the owner's review or to merge.
-function pullRequestState(
-	workflow: TicketCardCopy['workflow'],
-	played: HasPlayed,
-) {
-	if (played('readyForReview')) return workflow.readyForReview
-	if (played('readyToMerge')) return workflow.readyToMerge
-	if (played('checksPassed')) return workflow.checksPassed
-
-	return workflow.checksRunning
-}
 
 // What the run left as it plays: the reservation once the gate opens, the
 // observed spend once the usage record closes and what the reservation

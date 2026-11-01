@@ -1,15 +1,15 @@
-import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
-import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
 import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
 import { WebsiteStructuredData } from '@components/website-structured-data'
 import { privacyMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
+
+export { generateMetadata } from './page.metadata'
 
 // Provider URLs verified against Cloudflare's published pages on 2026-09-30.
 
@@ -19,19 +19,6 @@ interface PrivacyPageProps {
 
 const link =
 	'focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary'
-
-export async function generateMetadata(
-	props: PrivacyPageProps,
-	parent: ResolvingMetadata,
-): Promise<Metadata> {
-	const { params } = props
-
-	const { locale } = await params
-
-	if (!hasLocale(routing.locales, locale)) notFound()
-
-	return pageMetadata('privacy', locale, await socialImages(parent))
-}
 
 export default async function PrivacyPage(props: PrivacyPageProps) {
 	const { params } = props

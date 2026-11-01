@@ -5,6 +5,8 @@ import { type PageId, pageUrl } from './page-metadata'
 import pages from './pages.json'
 import site from './site.json'
 
+export { serializeJsonLd } from './serialize-json-ld.compute'
+
 const organizationId = `${site.url}/#organization`
 const websiteId = `${site.url}/#website`
 
@@ -43,8 +45,4 @@ export function pageStructuredData(page: PageId, locale: WebsiteLocale) {
 		'@context': 'https://schema.org',
 		'@graph': [...siteNodes, webPage],
 	}
-}
-
-export function serializeJsonLd(value: object) {
-	return JSON.stringify(value).replaceAll('<', '\\u003c')
 }

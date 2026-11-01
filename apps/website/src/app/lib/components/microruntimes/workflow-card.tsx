@@ -1,11 +1,6 @@
 import { useAtomValue, useSetAtom } from 'jotai'
 
 import {
-	budgetCents,
-	type RunLine,
-	runHasPlayed,
-	type WorkflowChoices,
-	workflowDelivery,
 	workflowEfforts,
 	workflowFigures,
 	workflowModel,
@@ -15,7 +10,6 @@ import {
 	canPlayWorkflowAtom,
 	chooseEffortAtom,
 	chooseModelAtom,
-	type MicroruntimeSession,
 	microruntimeSessionAtom,
 	playWorkflowAtom,
 	runInProgressAtom,
@@ -26,6 +20,7 @@ import {
 } from '@state'
 
 import { CardSection } from './card-section'
+import { playLabel } from './play-label.compute'
 import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
 import { WorkflowChoice } from './workflow-choice'
 import { WorkflowResult } from './workflow-result'
@@ -39,19 +34,6 @@ interface WorkflowCardProps {
 
 const playButton =
 	'inline-flex min-h-[38px] cursor-pointer items-center gap-[7px] rounded-full bg-primary px-[17px] whitespace-nowrap text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary motion-safe:transition-[transform,filter] motion-safe:duration-200 hover:saturate-[1.18] motion-safe:hover:-translate-y-px aria-disabled:cursor-not-allowed aria-disabled:opacity-60 aria-disabled:hover:translate-y-0'
-
-// The label the Play button carries in each moment of the session.
-function playLabel(
-	workflow: TicketCardCopy['workflow'],
-	session: MicroruntimeSession,
-	running: boolean,
-) {
-	if (session.stage === 'launching') return workflow.starting
-	if (running) return workflow.playing
-	if (session.stage === 'running') return workflow.playAgain
-
-	return workflow.play
-}
 
 // The session's last card: the run the plan leads to, summarized as money.
 // The visitor picks the human stages, a Claude model and an effort, sees the
@@ -167,90 +149,6 @@ export function WorkflowCard(props: WorkflowCardProps) {
 	)
 }
 
-interface RunOutcome {
-	choices: WorkflowChoices
-	playedCount: number
-	script: readonly RunLine[]
-}
-
-// The run's end, when it has one: paused at the gate, or ready for the
-// owner's review or to merge.
-function runEnd(outcome: RunOutcome) {
-	const { playedCount, script } = outcome
-	const played = (message: Parameters<typeof runHasPlayed>[2]) =>
-		runHasPlayed(script, playedCount, message)
-
-	if (played('gatePaused')) return 'paused'
-	if (played('readyForReview')) return 'readyForReview'
-	if (played('readyToMerge')) return 'readyToMerge'
-
-	return null
-}
-
-// The workflow's line in its collapsed header: the chosen model, effort and
-// estimate against the budget, then how the last run ended.
-export function workflowSummary(
-	copy: TicketCardCopy,
-	format: TicketCardFormat,
-	choices: WorkflowChoices,
-	outcome: RunOutcome | null,
-) {
-	const end = outcome ? runEnd(outcome) : null
-
-	if (end === 'paused') return copy.workflow.summaryPaused
-	if (outcome && end) {
-		return format.message('workflow.summaryDone', {
-			number: workflowDelivery.pullRequest,
-			observed: format.money(workflowFigures(outcome.choices).observed),
-			state: copy.workflow[end],
-		})
-	}
-
-	return format.message('workflow.summaryChoice', {
-		budget: format.money(budgetCents),
-		effort: copy.analysis.efforts[choices.effort],
-		estimate: format.money(workflowFigures(choices).estimate),
-		model: workflowModel(choices.model).shortName,
-	})
-}
-
-// The one sentence the hero announces when a run ends, or nothing while it
-// plays.
-export function workflowStatus(
-	copy: TicketCardCopy,
-	format: TicketCardFormat,
-	outcome: RunOutcome | null,
-) {
-	if (!outcome) return ''
-
-	const end = runEnd(outcome)
-	const figures = workflowFigures(outcome.choices)
-
-	if (end === 'paused') {
-		return format.message('workflow.statusPaused', {
-			budget: format.money(budgetCents),
-			reserved: format.money(figures.reserved),
-		})
-	}
-	if (!end) return ''
-
-	return format.message('workflow.statusDone', {
-		number: workflowDelivery.pullRequest,
-		observed: format.money(figures.observed),
-		reserved: format.money(figures.reserved),
-		state: copy.workflow[end],
-	})
-}
-
-export function runOutcome(
-	session: MicroruntimeSession,
-	script: readonly RunLine[],
-): RunOutcome | null {
-	if (session.stage !== 'running' || !session.ran) return null
-
-	return {
-		choices: session.ran,
-		playedCount: session.playedCount,
-		script,
-	}
-}
+export { type RunOutcome, runOutcome } from './run-outcome.compute'
+export { workflowStatus } from './workflow-status.compute'
+export { workflowSummary } from './workflow-summary.compute'
