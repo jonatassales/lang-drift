@@ -6,7 +6,8 @@ import { cn } from '@langdrift/web/utilities'
 import type { Ticket, TicketWorkflow } from '@data/types'
 
 import { PhaseSummary } from './phase-summary'
-import { type TicketFormat, useTicketFormat } from './ticket-format.hook'
+import { pullRequestState } from './pull-request-state.compute'
+import { useTicketFormat } from './ticket-format.hook'
 import { TicketSection } from './ticket-section'
 import { UnknownValue } from './unknown-value'
 import { WidgetSection } from './widget-section'
@@ -18,14 +19,6 @@ interface WorkflowWidgetProps {
 }
 
 const figure = 'font-mono text-[13px] tabular-nums'
-
-// Where the pull request stands: ready for the owner's review or to merge.
-function pullRequestState(workflow: TicketWorkflow, format: TicketFormat) {
-	const { t } = format
-	if (workflow.outcome === 'readyToMerge') return t('workflow.readyToMerge')
-
-	return t('workflow.readyForReview')
-}
 
 // The workflow as the website's Workflow panel draws it, read-only: the
 // stages with their progress, the model and effort, the estimated spend

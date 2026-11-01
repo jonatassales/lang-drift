@@ -1,13 +1,13 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { ShareBar } from '@langdrift/web/ui/share-bar'
 import { cn } from '@langdrift/web/utilities'
-import type { ReactNode } from 'react'
 
 import type { Ticket, TicketPlan } from '@data/types'
 
 import { ComponentRow } from './component-row'
+import { componentsLine } from './components-line.compute'
 import { PhaseSummary } from './phase-summary'
-import { type TicketFormat, useTicketFormat } from './ticket-format.hook'
+import { useTicketFormat } from './ticket-format.hook'
 import { componentShare, planFigures } from './ticket-phases'
 import { TicketSection } from './ticket-section'
 import { UnknownValue } from './unknown-value'
@@ -26,43 +26,6 @@ interface ReportCell {
 }
 
 const figure = 'font-mono tabular-nums'
-
-// The line under the components: how many have resolved of the spec's
-// count while the plan sizes, then the count and the totals.
-function componentsLine(
-	plan: TicketPlan,
-	specComponents: number | null,
-	format: TicketFormat,
-): ReactNode {
-	const { number, t } = format
-	const resolved = plan.components.reduce(
-		(totals, component) => ({
-			cpuMillis: totals.cpuMillis + component.cpuMillis,
-			memoryMiB: totals.memoryMiB + component.memoryMiB,
-		}),
-		{
-			cpuMillis: 0,
-			memoryMiB: 0,
-		},
-	)
-	const values = {
-		cpu: number.format(resolved.cpuMillis),
-		memory: number.format(resolved.memoryMiB),
-	}
-	if (plan.suggested) {
-		return t('plan.componentsTotal', {
-			count: plan.components.length,
-			...values,
-		})
-	}
-	if (specComponents === null) return <UnknownValue />
-
-	return t('plan.resolvedProgress', {
-		resolved: plan.components.length,
-		total: specComponents,
-		...values,
-	})
-}
 
 // The plan as the website's Plan panel draws it: the figures it proposes,
 // the share of the envelope they take, the components with their marks and

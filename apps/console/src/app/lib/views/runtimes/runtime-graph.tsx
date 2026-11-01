@@ -8,6 +8,7 @@ import type {} from 'sinapsi/react-types'
 
 import type { Component, RuntimeWidgetTone } from '@data/types'
 
+import { paletteHex } from './palette-hex.compute'
 import { RuntimeNodeCards } from './runtime-node-cards'
 
 interface RuntimeGraphProps {
@@ -165,17 +166,4 @@ export function RuntimeGraph(props: RuntimeGraphProps) {
 			) : null}
 		</div>
 	)
-}
-
-/** Sinapsi accepts hex tokens; canvas resolves the browser's computed color space. */
-function paletteHex(color: string): string {
-	const canvas = window.document.createElement('canvas')
-	canvas.width = canvas.height = 1
-	const context = canvas.getContext('2d')
-	if (!context) return '#6d0ad6'
-	context.fillStyle = color
-	context.fillRect(0, 0, 1, 1)
-	const rgba = context.getImageData(0, 0, 1, 1).data
-
-	return `#${[rgba[0], rgba[1], rgba[2]].map((value) => value.toString(16).padStart(2, '0')).join('')}`
 }

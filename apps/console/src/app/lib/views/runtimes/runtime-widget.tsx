@@ -2,9 +2,10 @@
 import { useTranslations } from 'next-intl'
 
 import { StatusLabel } from '@components/status-label/status-label'
-import type { Execution, RuntimeWidgetSnapshot } from '@data/types'
+import type { RuntimeWidgetSnapshot } from '@data/types'
 import { Link } from '@i18n/navigation'
 
+import { peak } from './peak.compute'
 import { RuntimeFinops } from './runtime-finops'
 import { RuntimeLoadTest } from './runtime-load-test'
 import { RuntimeMeter } from './runtime-meter'
@@ -14,19 +15,6 @@ import { RuntimeStackIcons } from './runtime-stack-icons'
 interface RuntimeWidgetProps {
 	snapshot: RuntimeWidgetSnapshot
 	onRefresh: () => void
-}
-
-/** Highest available observation per execution, never a sum across machines. */
-function peak(
-	executions: Execution[],
-	key: 'cpuUsed' | 'memoryUsedMiB' | 'llmCostUsd',
-) {
-	const values = executions
-		.filter((execution) => execution.state === 'running')
-		.map((execution) => execution[key])
-		.filter((value): value is number => value != null)
-
-	return values.length ? Math.max(...values) : null
 }
 
 export function RuntimeWidget(props: RuntimeWidgetProps) {
