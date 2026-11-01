@@ -27,6 +27,8 @@
   <a href="#主な機能">主な機能</a> ·
   <a href="#使い方">使い方</a> ·
   <a href="#設定ファイル">設定ファイル</a> ·
+  <a href="#参考文献">参考文献</a> ·
+  <a href="#謝辞">謝辞</a> ·
   <a href="#ライセンス">ライセンス</a>
 </p>
 
@@ -205,6 +207,15 @@ npx @langdrift/ex doctor
 ```
 
 </details>
+
+## 参考文献
+
+- [AI for FinOps: Agentic Use Cases in FinOps](https://www.finops.org/insights/ai-for-finops-agentic-use-cases/)、Jonathan Morley、FinOps Foundation、2026 年 3 月 27 日。実務者たちが、支出を予算と照合し、無駄を見つけ、開発ライフサイクルのより早い段階でコストポリシーを適用するエージェントについて語っています。最後のテーマ、つまり FinOps をデリバリーの中へ持ち込むことこそ、LangDrift が取り組む領域です。
+- [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)、Birgitta Böckeler、martinfowler.com、2026 年 4 月 2 日。チームがコーディングエージェントの周りに築く外側のハーネス、つまりエージェントが動く前に方向づけるガイドと、自己修正を可能にするセンサーについて述べています。`ex harness` はそのハーネスをプロジェクトごとに記録し、FinOps のゲートはそれが使える金額を制限します。
+
+## 謝辞
+
+[Matt Pocock](https://x.com/mattpocockuk) に感謝します。このリポジトリで使っているエージェントのスキル、grilling から to-spec、to-tickets、implement、tdd、code-review までは、MIT ライセンスで公開されている [mattpocock/skills](https://github.com/mattpocock/skills) を改変したもので、上のワークフロー例でもそのいくつかを使っています。
 
 ## ライセンス
 

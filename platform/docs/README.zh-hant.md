@@ -27,6 +27,8 @@
   <a href="#功能特色">功能特色</a> ·
   <a href="#如何使用">如何使用</a> ·
   <a href="#設定檔">設定檔</a> ·
+  <a href="#參考資料">參考資料</a> ·
+  <a href="#致謝">致謝</a> ·
   <a href="#授權條款">授權條款</a>
 </p>
 
@@ -205,6 +207,15 @@ npx @langdrift/ex doctor
 ```
 
 </details>
+
+## 參考資料
+
+- [AI for FinOps: Agentic Use Cases in FinOps](https://www.finops.org/insights/ai-for-finops-agentic-use-cases/)，Jonathan Morley，FinOps Foundation，2026 年 3 月 27 日。實務工作者描述了代理如何將支出與預算對帳、找出浪費，並在開發生命週期更早的階段落實成本政策；最後這個把 FinOps 帶進交付的主題，正是 LangDrift 投入的地方。
+- [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)，Birgitta Böckeler，martinfowler.com，2026 年 4 月 2 日。文章描述團隊圍繞程式開發代理所打造的外層 harness：在代理行動前引導它的指引，以及讓它自我修正的感測器。`ex harness` 為專案記錄這套 harness，而 FinOps 閘門則限制它能花多少錢。
+
+## 致謝
+
+感謝 [Matt Pocock](https://x.com/mattpocockuk)。本儲存庫所使用的代理 skills，從 grilling 到 to-spec、to-tickets、implement、tdd 與 code-review，都改編自以 MIT 授權釋出的 [mattpocock/skills](https://github.com/mattpocock/skills)，上方的範例工作流程也使用了其中幾個。
 
 ## 授權條款
 

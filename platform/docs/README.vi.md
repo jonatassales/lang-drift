@@ -27,6 +27,8 @@
   <a href="#tính-năng">Tính năng</a> ·
   <a href="#cách-sử-dụng">Cách sử dụng</a> ·
   <a href="#cấu-hình">Cấu hình</a> ·
+  <a href="#tài-liệu-tham-khảo">Tài liệu tham khảo</a> ·
+  <a href="#lời-cảm-ơn">Lời cảm ơn</a> ·
   <a href="#giấy-phép">Giấy phép</a>
 </p>
 
@@ -205,6 +207,15 @@ Bạn có thể tùy chỉnh các giai đoạn quy trình làm việc, trình đ
 ```
 
 </details>
+
+## Tài liệu tham khảo
+
+- [AI for FinOps: Agentic Use Cases in FinOps](https://www.finops.org/insights/ai-for-finops-agentic-use-cases/), Jonathan Morley, FinOps Foundation, ngày 27 tháng 3 năm 2026. Những người thực hành mô tả các tác tử đối soát chi tiêu với ngân sách, tìm ra lãng phí và áp dụng chính sách chi phí sớm hơn trong vòng đời phát triển; chủ đề cuối cùng đó, đưa FinOps vào ngay trong quá trình bàn giao, chính là nơi LangDrift hoạt động.
+- [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html), Birgitta Böckeler, martinfowler.com, ngày 2 tháng 4 năm 2026. Bài viết mô tả lớp harness bên ngoài mà một đội xây quanh tác tử lập trình: các chỉ dẫn định hướng tác tử trước khi nó hành động và các cảm biến giúp nó tự sửa lỗi. `ex harness` ghi lại harness đó cho từng dự án, còn các cổng kiểm soát FinOps giới hạn số tiền nó được chi.
+
+## Lời cảm ơn
+
+Xin cảm ơn [Matt Pocock](https://x.com/mattpocockuk). Các skill tác tử mà kho mã này sử dụng, từ grilling đến to-spec, to-tickets, implement, tdd và code-review, được chuyển thể từ [mattpocock/skills](https://github.com/mattpocock/skills) theo giấy phép MIT, và quy trình mẫu ở trên dùng một vài skill trong số đó.
 
 ## Giấy phép
 
