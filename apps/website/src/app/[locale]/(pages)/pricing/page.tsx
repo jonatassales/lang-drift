@@ -41,7 +41,7 @@ export default async function PricingPage(props: PricingPageProps) {
 				{conversionMessages[locale].plans.skip}
 			</SkipLink>
 			<WebsiteHeader />
-			<main className="plans-page" id="plans-main">
+			<main className="min-w-0" id="plans-main">
 				<PlansSection locale={locale} />
 			</main>
 			<WebsiteFooter locale={locale} />
