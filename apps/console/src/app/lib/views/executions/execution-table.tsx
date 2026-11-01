@@ -13,14 +13,16 @@ interface ExecutionTableProps {
 export function ExecutionTable(props: ExecutionTableProps) {
 	const { executions, environments } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const format = useFormatter()
 	const dateTime = useDateTime()
 
 	return (
 		<Card className="block py-0">
 			{!executions.length ? (
-				<p className="p-6 text-sm text-muted-foreground">{t('empty')}</p>
+				<p className="p-6 text-sm text-muted-foreground">
+					{translate('empty')}
+				</p>
 			) : (
 				<div className="overflow-x-auto">
 					<table className="w-full text-left text-xs">
@@ -39,7 +41,7 @@ export function ExecutionTable(props: ExecutionTableProps) {
 										className="whitespace-nowrap px-4 py-3 font-medium"
 										key={key}
 									>
-										{t(key)}
+										{translate(key)}
 									</th>
 								))}
 							</tr>
@@ -58,7 +60,7 @@ export function ExecutionTable(props: ExecutionTableProps) {
 											{execution.id}
 										</p>
 										<p className="mt-1 text-[10px] text-muted-foreground">
-											{t('revision')} {execution.revision}
+											{translate('revision')} {execution.revision}
 										</p>
 									</td>
 									<td className="px-4 py-4">
@@ -66,21 +68,21 @@ export function ExecutionTable(props: ExecutionTableProps) {
 									</td>
 									<td className="px-4 py-4 tabular-nums">
 										{execution.cpuUsed === null
-											? t('unknown')
+											? translate('unknown')
 											: format.number(execution.cpuUsed, {
 													maximumFractionDigits: 3,
 												})}
 									</td>
 									<td className="px-4 py-4 tabular-nums">
 										{execution.memoryUsedMiB === null
-											? t('unknown')
+											? translate('unknown')
 											: format.number(execution.memoryUsedMiB, {
 													maximumFractionDigits: 1,
 												})}
 									</td>
 									<td className="px-4 py-4 tabular-nums">
 										{execution.downtimeMilliseconds === null
-											? t('unknown')
+											? translate('unknown')
 											: format.number(execution.downtimeMilliseconds / 1000, {
 													maximumFractionDigits: 1,
 												})}
@@ -95,7 +97,7 @@ export function ExecutionTable(props: ExecutionTableProps) {
 									</td>
 									<td className="px-4 py-4">
 										{execution.downtimeQuality === 'unknown' ? (
-											t('unknown')
+											translate('unknown')
 										) : (
 											<StatusLabel value={execution.downtimeQuality} />
 										)}
@@ -106,7 +108,7 @@ export function ExecutionTable(props: ExecutionTableProps) {
 													dateStyle: 'short',
 													timeStyle: 'medium',
 												})
-											: t('unknown')}
+											: translate('unknown')}
 									</td>
 								</tr>
 							))}

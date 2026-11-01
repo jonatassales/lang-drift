@@ -11,21 +11,21 @@ export function workflowLine(
 	workflow: TicketWorkflow,
 	format: TicketFormat,
 ): ReactNode {
-	const { t } = format
+	const { translate } = format
 	const summary = workflowSummary(workflow)
 	switch (summary.kind) {
 		case 'paused':
-			return t('workflow.summaryPaused')
+			return translate('workflow.summaryPaused')
 		case 'done':
-			return t('workflow.summaryDone', {
+			return translate('workflow.summaryDone', {
 				number: summary.number,
 				observed: format.money(summary.observedCents),
-				state: t(`workflow.${summary.state}`),
+				state: translate(`workflow.${summary.state}`),
 			})
 		case 'estimate':
-			return t('workflow.summaryChoice', {
+			return translate('workflow.summaryChoice', {
 				budget: format.money(workflow.budgetCents),
-				effort: t(`analysis.efforts.${workflow.effort}`),
+				effort: translate(`analysis.efforts.${workflow.effort}`),
 				estimate: format.money(workflow.estimateCents),
 				model: workflow.model.shortName,
 			})

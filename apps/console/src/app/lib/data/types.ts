@@ -264,8 +264,8 @@ export interface RuntimeDetailSnapshot {
 }
 
 /** Cursor pages are scoped to the authenticated product; null marks the end. */
-export interface Page<T> {
-	items: T[]
+export interface Page<Item> {
+	items: Item[]
 	nextCursor: string | null
 }
 

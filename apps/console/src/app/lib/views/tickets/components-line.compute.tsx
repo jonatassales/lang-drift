@@ -12,7 +12,7 @@ export function componentsLine(
 	specComponents: number | null,
 	format: TicketFormat,
 ): ReactNode {
-	const { number, t } = format
+	const { number, translate } = format
 	const resolved = plan.components.reduce(
 		(totals, component) => ({
 			cpuMillis: totals.cpuMillis + component.cpuMillis,
@@ -28,14 +28,14 @@ export function componentsLine(
 		memory: number.format(resolved.memoryMiB),
 	}
 	if (plan.suggested) {
-		return t('plan.componentsTotal', {
+		return translate('plan.componentsTotal', {
 			count: plan.components.length,
 			...values,
 		})
 	}
 	if (specComponents === null) return <UnknownValue />
 
-	return t('plan.resolvedProgress', {
+	return translate('plan.resolvedProgress', {
 		resolved: plan.components.length,
 		total: specComponents,
 		...values,

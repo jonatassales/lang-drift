@@ -22,7 +22,7 @@ interface HistoryOverviewProps {
 export function HistoryOverview(props: HistoryOverviewProps) {
 	const { productId, initial } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const resource = usePagedResource<ProductEvent>(
 		`products/${productId}/history`,
 		initial,
@@ -37,12 +37,12 @@ export function HistoryOverview(props: HistoryOverviewProps) {
 					type="button"
 					variant="outline"
 				>
-					{t('refresh')}
+					{translate('refresh')}
 				</Button>
 			</div>
 			{resource.items.length ? (
 				<ol
-					aria-label={t('history')}
+					aria-label={translate('history')}
 					className="m-0 grid list-none grid-cols-1 gap-3 p-0"
 				>
 					{resource.items.map((item) => (
@@ -55,7 +55,7 @@ export function HistoryOverview(props: HistoryOverviewProps) {
 			{resource.loading ? (
 				<div
 					aria-busy="true"
-					aria-label={t('loading')}
+					aria-label={translate('loading')}
 					className="mt-3"
 					role="status"
 				>
@@ -66,12 +66,12 @@ export function HistoryOverview(props: HistoryOverviewProps) {
 				<ErrorNotice error={resource.error} retry={resource.retry} />
 			) : null}
 			{!resource.loading && !resource.error && !resource.items.length ? (
-				<p className="text-sm text-muted-foreground">{t('empty')}</p>
+				<p className="text-sm text-muted-foreground">{translate('empty')}</p>
 			) : null}
 			<ListEnd
 				failed={Boolean(resource.error)}
 				hasMore={resource.hasMore}
-				label={t('loadMore')}
+				label={translate('loadMore')}
 				loading={resource.loading}
 				onEnd={resource.next}
 			/>

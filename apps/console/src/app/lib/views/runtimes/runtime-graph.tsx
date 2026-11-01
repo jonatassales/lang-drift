@@ -24,7 +24,7 @@ interface RuntimeGraphProps {
 export function RuntimeGraph(props: RuntimeGraphProps) {
 	const { components, active, links, tone } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const graph = useRef<SinapsiElement>(null)
 	const [ready, setReady] = useState(false)
 	const [failed, setFailed] = useState(false)
@@ -139,7 +139,7 @@ export function RuntimeGraph(props: RuntimeGraphProps) {
 				move="rotate"
 				speed={active ? 1.2 : 0.35}
 				paused
-				aria-label={t('componentGraph')}
+				aria-label={translate('componentGraph')}
 			/>
 			<RuntimeNodeCards graph={graph} components={components} ready={ready} />
 			{failed ? (
@@ -147,14 +147,14 @@ export function RuntimeGraph(props: RuntimeGraphProps) {
 					role="status"
 					className="absolute inset-x-4 bottom-4 text-xs text-muted-foreground"
 				>
-					{t('graphUnavailable')}
+					{translate('graphUnavailable')}
 				</p>
 			) : !ready ? (
 				<div
 					role="status"
 					className="absolute inset-4 grid grid-cols-3 content-center gap-8"
 					aria-busy="true"
-					aria-label={t('loading')}
+					aria-label={translate('loading')}
 					data-skeleton="graph-skeleton"
 				>
 					{['first', 'second', 'third', 'fourth', 'fifth', 'sixth'].map(

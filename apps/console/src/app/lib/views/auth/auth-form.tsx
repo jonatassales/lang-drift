@@ -23,7 +23,7 @@ interface AuthFormProps {
 export function AuthForm(props: AuthFormProps) {
 	const { signup = false } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const router = useRouter()
 	const [error, setError] = useState<unknown>(null)
 	const [pending, startTransition] = useTransition()
@@ -47,7 +47,7 @@ export function AuthForm(props: AuthFormProps) {
 				<div className="flex justify-center">
 					<Brand className="text-foreground" />
 				</div>
-				<h1 className="sr-only">{t(signup ? 'signup' : 'login')}</h1>
+				<h1 className="sr-only">{translate(signup ? 'signup' : 'login')}</h1>
 				<ElevatedFrame className="p-6">
 					<form
 						className="grid gap-5"
@@ -75,7 +75,7 @@ export function AuthForm(props: AuthFormProps) {
 						}}
 					>
 						<label className={labelClass}>
-							{t('email')}
+							{translate('email')}
 							<input
 								className={fieldClass}
 								type="email"
@@ -86,7 +86,7 @@ export function AuthForm(props: AuthFormProps) {
 							/>
 						</label>
 						<label className={labelClass}>
-							{t('password')}
+							{translate('password')}
 							<input
 								className={fieldClass}
 								type="password"
@@ -98,20 +98,20 @@ export function AuthForm(props: AuthFormProps) {
 							/>
 							{signup ? (
 								<small className="font-normal text-muted-foreground">
-									{t('passwordHint')}
+									{translate('passwordHint')}
 								</small>
 							) : null}
 						</label>
 						{error ? <ErrorNotice error={error} /> : null}
 						<Button type="submit" disabled={pending}>
-							{t(pending ? 'saving' : signup ? 'signup' : 'login')}
+							{translate(pending ? 'saving' : signup ? 'signup' : 'login')}
 						</Button>
 					</form>
 					<Link
 						href={signup ? '/login' : '/signup'}
 						className="mt-5 block text-center text-xs text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 					>
-						{t(signup ? 'haveAccount' : 'needAccount')}
+						{translate(signup ? 'haveAccount' : 'needAccount')}
 					</Link>
 				</ElevatedFrame>
 			</div>

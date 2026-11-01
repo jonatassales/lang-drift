@@ -7,22 +7,25 @@ import { consoleHandler } from './console-handler'
 import { consoleHostAllowed, serverRead } from './extub-link'
 
 /** React cache deduplicates reads only within this server render, never across users. */
-export const readConsole = cache(async <T>(path: string): Promise<T> => {
-	const incoming = await headers()
+export const readConsole = cache(
+	async <Result>(path: string): Promise<Result> => {
+		const incoming = await headers()
 
-	const host = incoming.get('host') ?? ''
-	const origin = new URL(`http://${host}`)
-	if (!consoleHostAllowed(origin.hostname, process.env.EXTUB_TOKEN))
-		throw new ConsoleError('local_only', 403)
-	const response = await consoleHandler(serverRead(host, path))
+		const host = incoming.get('host') ?? ''
+		const origin = new URL(`http://${host}`)
+		if (!consoleHostAllowed(origin.hostname, process.env.EXTUB_TOKEN))
+			throw new ConsoleError('local_only', 403)
 
-	const result = await response.json()
+		const response = await consoleHandler(serverRead(host, path))
 
-	if (!response.ok)
-		throw new ConsoleError(
-			result.error?.code ?? 'operation_failed',
-			response.status,
-		)
+		const result = await response.json()
 
-	return result as T
-})
+		if (!response.ok)
+			throw new ConsoleError(
+				result.error?.code ?? 'operation_failed',
+				response.status,
+			)
+
+		return result as Result
+	},
+)

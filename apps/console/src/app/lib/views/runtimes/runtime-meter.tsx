@@ -9,7 +9,7 @@ interface RuntimeMeterProps {
 export function RuntimeMeter(props: RuntimeMeterProps) {
 	const { label, value, limit } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const format = useFormatter()
 	const known = value !== null && limit !== null
 
@@ -19,11 +19,11 @@ export function RuntimeMeter(props: RuntimeMeterProps) {
 				<span>{label}</span>
 				<span>
 					{value === null
-						? t('unknown')
+						? translate('unknown')
 						: format.number(value, { maximumFractionDigits: 3 })}{' '}
 					/{' '}
 					{limit === null
-						? t('unknown')
+						? translate('unknown')
 						: format.number(limit, { maximumFractionDigits: 3 })}
 				</span>
 			</div>

@@ -36,21 +36,21 @@ export function PlanWidget(props: PlanWidgetProps) {
 	const { plan, ticket } = props
 
 	const format = useTicketFormat()
-	const { t } = format
+	const { translate } = format
 	const figures = planFigures(plan)
 	const drafted = plan.suggested !== null
 	const bounded = plan.bounded
 	const envelopeRows = [
 		{
 			id: 'cpu',
-			label: t('plan.envelope.cpu'),
+			label: translate('plan.envelope.cpu'),
 			bounded: format.cpu(bounded.cpuMillis),
 			share: figures.cpuShare,
 			suggested: figures.suggested && format.cpu(figures.suggested.cpuMillis),
 		},
 		{
 			id: 'memory',
-			label: t('plan.envelope.memory'),
+			label: translate('plan.envelope.memory'),
 			bounded: format.memory(bounded.memoryMiB),
 			share: figures.memoryShare,
 			suggested:
@@ -60,39 +60,39 @@ export function PlanWidget(props: PlanWidgetProps) {
 	const reportCells: ReportCell[] = [
 		{
 			id: 'bounded',
-			term: t('plan.report.bounded'),
+			term: translate('plan.report.bounded'),
 			detail: format.figures(bounded),
 		},
 		{
 			id: 'headroom',
-			term: t('plan.report.headroom'),
+			term: translate('plan.report.headroom'),
 			detail: figures.headroom && format.figures(figures.headroom),
 		},
 		{
 			id: 'resource',
-			term: t('plan.report.suggestedResource'),
+			term: translate('plan.report.suggestedResource'),
 			detail: figures.suggested
-				? t('plan.deployments', { count: plan.components.length })
+				? translate('plan.deployments', { count: plan.components.length })
 				: null,
 		},
 		{
 			id: 'limits',
-			term: t('plan.report.limits'),
-			detail: t('plan.notRuntimeFields'),
+			term: translate('plan.report.limits'),
+			detail: translate('plan.notRuntimeFields'),
 		},
 		{
 			id: 'price',
-			term: t('plan.report.price'),
-			detail: t('plan.priceBasis'),
+			term: translate('plan.report.price'),
+			detail: translate('plan.priceBasis'),
 			tone: 'warning',
 		},
 		{
 			id: 'validation',
-			term: t('plan.report.validation'),
+			term: translate('plan.report.validation'),
 			detail:
 				plan.validationErrors === null
 					? null
-					: t('plan.validated', { count: plan.validationErrors }),
+					: translate('plan.validated', { count: plan.validationErrors }),
 		},
 	]
 
@@ -100,10 +100,10 @@ export function PlanWidget(props: PlanWidgetProps) {
 		<TicketSection
 			id="plan"
 			summary={<PhaseSummary phase="plan" ticket={ticket} />}
-			title={t('labels.plan')}
+			title={translate('labels.plan')}
 		>
 			<div className="grid gap-1.5">
-				<Eyebrow>{t('plan.proposed')}</Eyebrow>
+				<Eyebrow>{translate('plan.proposed')}</Eyebrow>
 				<p className="m-0 flex flex-wrap items-baseline gap-x-3 gap-y-1">
 					{figures.suggested ? (
 						<span
@@ -138,7 +138,7 @@ export function PlanWidget(props: PlanWidgetProps) {
 							<span>{row.label}</span>
 							{row.suggested ? (
 								<span className={figure}>
-									{t('plan.ofBounded', {
+									{translate('plan.ofBounded', {
 										bounded: row.bounded,
 										suggested: row.suggested,
 									})}
@@ -154,9 +154,9 @@ export function PlanWidget(props: PlanWidgetProps) {
 
 			<WidgetSection>
 				<div className="grid grid-cols-[minmax(0,1fr)_auto_auto] gap-x-3">
-					<Eyebrow>{t('plan.components')}</Eyebrow>
-					<Eyebrow>{t('plan.columns.cpu')}</Eyebrow>
-					<Eyebrow>{t('plan.columns.memory')}</Eyebrow>
+					<Eyebrow>{translate('plan.components')}</Eyebrow>
+					<Eyebrow>{translate('plan.columns.cpu')}</Eyebrow>
+					<Eyebrow>{translate('plan.columns.memory')}</Eyebrow>
 				</div>
 				<ul className="m-0 mt-1 list-none p-0">
 					{plan.components.map((component) => (
@@ -164,7 +164,7 @@ export function PlanWidget(props: PlanWidgetProps) {
 							component={component}
 							cpu={format.cpu(component.cpuMillis)}
 							key={component.path}
-							kind={t(`plan.kinds.${component.kind}`)}
+							kind={translate(`plan.kinds.${component.kind}`)}
 							memory={format.memory(component.memoryMiB)}
 							share={componentShare(component, bounded)}
 						/>
@@ -179,7 +179,7 @@ export function PlanWidget(props: PlanWidgetProps) {
 				</p>
 				{drafted && (
 					<p className="m-0 mt-1 text-[11px] text-muted-foreground">
-						{t('plan.crossCheck', {
+						{translate('plan.crossCheck', {
 							ports: plan.components
 								.map((component) => component.port)
 								.join(' · '),
@@ -212,9 +212,9 @@ export function PlanWidget(props: PlanWidgetProps) {
 				</dl>
 				{drafted && (
 					<p className="m-0 mt-3 flex flex-wrap items-baseline gap-x-3 border-t border-border pt-2.5">
-						<Eyebrow>{t('plan.report.evidence')}</Eyebrow>
+						<Eyebrow>{translate('plan.report.evidence')}</Eyebrow>
 						<code className="font-mono text-[12px] break-all">
-							{t('plan.planPath', { revision: plan.revision })}
+							{translate('plan.planPath', { revision: plan.revision })}
 						</code>
 					</p>
 				)}

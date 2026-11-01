@@ -12,7 +12,7 @@ interface ComponentFieldsProps {
 export function ComponentFields(props: ComponentFieldsProps) {
 	const { component, selected: enabled, onSelectionChange } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const prefix = `component:${component.path}:`
 
 	return (
@@ -35,7 +35,7 @@ export function ComponentFields(props: ComponentFieldsProps) {
 			</legend>
 			<div className="grid gap-4 sm:grid-cols-2">
 				<label className={labelClass}>
-					{t('image')}
+					{translate('image')}
 					<input
 						className={fieldClass}
 						name={`${prefix}image`}
@@ -46,7 +46,7 @@ export function ComponentFields(props: ComponentFieldsProps) {
 					/>
 				</label>
 				<label className={labelClass}>
-					{t('port')}
+					{translate('port')}
 					<input
 						className={fieldClass}
 						name={`${prefix}port`}
@@ -59,7 +59,7 @@ export function ComponentFields(props: ComponentFieldsProps) {
 					/>
 				</label>
 				<label className={labelClass}>
-					{t('readinessPath')}
+					{translate('readinessPath')}
 					<input
 						className={fieldClass}
 						name={`${prefix}readinessPath`}
@@ -70,7 +70,7 @@ export function ComponentFields(props: ComponentFieldsProps) {
 					/>
 				</label>
 				<label className={labelClass}>
-					{t('buildExecutable')}
+					{translate('buildExecutable')}
 					<input
 						className={fieldClass}
 						name={`${prefix}executable`}
@@ -81,7 +81,7 @@ export function ComponentFields(props: ComponentFieldsProps) {
 					/>
 				</label>
 				<label className={`${labelClass} sm:col-span-2`}>
-					{t('buildArguments')}
+					{translate('buildArguments')}
 					<textarea
 						className={`${fieldClass} font-mono`}
 						name={`${prefix}args`}

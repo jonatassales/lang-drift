@@ -20,7 +20,7 @@ interface ProductListProps {
 export function ProductList(props: ProductListProps) {
 	const { initial } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const resource = useResource<{ products: Product[] }>('products', 0, initial)
 
 	if (!resource.error && resource.data?.products.length === 0)
@@ -28,10 +28,13 @@ export function ProductList(props: ProductListProps) {
 
 	return (
 		<>
-			<PageHeading title={t('projects')} description={t('localProjectsIntro')}>
+			<PageHeading
+				title={translate('projects')}
+				description={translate('localProjectsIntro')}
+			>
 				<Link href="/products/new" className={linkClass}>
 					<Plus size={15} />
-					{t('createProject')}
+					{translate('createProject')}
 				</Link>
 			</PageHeading>
 			{resource.error ? (
@@ -52,7 +55,7 @@ export function ProductList(props: ProductListProps) {
 							</p>
 							<div className="mt-5 flex items-center justify-between border-t border-border pt-3 text-[11px] text-muted-foreground">
 								<span>
-									{product.components.length} {t('components')}
+									{product.components.length} {translate('components')}
 								</span>
 								<code className="max-w-40 truncate">{product.ref}</code>
 							</div>
@@ -61,7 +64,7 @@ export function ProductList(props: ProductListProps) {
 				</div>
 			) : (
 				<Card className="block p-10 text-center text-sm text-muted-foreground">
-					{t('projectsEmpty')}
+					{translate('projectsEmpty')}
 				</Card>
 			)}
 		</>

@@ -1,10 +1,10 @@
 import { ConsoleError } from './console-error'
 import { consolePathSafe } from './entity-id'
 
-export async function consoleRequest<T>(
+export async function consoleRequest<Data>(
 	path: string,
 	init?: RequestInit,
-): Promise<T> {
+): Promise<Data> {
 	// An id outside the alphabet names no record, so nothing is requested.
 	if (!consolePathSafe(path)) throw new ConsoleError('not_found', 404)
 	try {
@@ -34,7 +34,7 @@ export async function consoleRequest<T>(
 			throw new ConsoleError(code, response.status)
 		}
 
-		return result as T
+		return result as Data
 	} catch (error) {
 		if (
 			error instanceof ConsoleError ||

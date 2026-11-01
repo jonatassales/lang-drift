@@ -18,7 +18,7 @@ interface AccountHomeProps {
 export function AccountHome(props: AccountHomeProps) {
 	const { initial } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const router = useRouter()
 	const resource = useResource<HomeOverview>('home', 5000, initial)
 	const decided = useRef(false)
@@ -35,10 +35,13 @@ export function AccountHome(props: AccountHomeProps) {
 
 	return (
 		<>
-			<PageHeading title={t('home')} description={t('runningRuntimes')} />
+			<PageHeading
+				title={translate('home')}
+				description={translate('runningRuntimes')}
+			/>
 			{resource.data.unknownCount ? (
 				<p role="status" className="mb-5 text-sm text-muted-foreground">
-					{t('unknownExecutions', {
+					{translate('unknownExecutions', {
 						count: resource.data.unknownCount,
 					})}
 				</p>
@@ -59,7 +62,7 @@ export function AccountHome(props: AccountHomeProps) {
 							{runtime.name}
 						</Link>
 						<p className="mt-4 text-xs text-muted-foreground">
-							{t('runningExecutions', {
+							{translate('runningExecutions', {
 								count: executions.length,
 							})}
 						</p>
@@ -68,7 +71,7 @@ export function AccountHome(props: AccountHomeProps) {
 			</div>
 			{!resource.data.running.length ? (
 				<p className="text-sm text-muted-foreground">
-					{t('noRunningRuntimes')}
+					{translate('noRunningRuntimes')}
 				</p>
 			) : null}
 		</>

@@ -6,12 +6,12 @@ import { useTranslations } from 'next-intl'
 import { Navigation } from '@components/navigation/navigation'
 
 export function NavigationSkeleton() {
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 
 	return (
 		<section
 			aria-busy="true"
-			aria-label={t('loading')}
+			aria-label={translate('loading')}
 			data-skeleton="navigation-skeleton"
 		>
 			<Navigation products={[]} />

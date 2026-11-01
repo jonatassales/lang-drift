@@ -32,7 +32,7 @@ const listLabels: Record<TicketPhase, string> = {
 export function TicketListing(props: TicketListingProps) {
 	const { initial, phase, productId } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const resource = usePagedResource<Ticket>(
 		`products/${productId}/tickets?reached=${phase}`,
 		initial,
@@ -47,12 +47,12 @@ export function TicketListing(props: TicketListingProps) {
 					type="button"
 					variant="outline"
 				>
-					{t('refresh')}
+					{translate('refresh')}
 				</Button>
 			</div>
 			{resource.items.length ? (
 				<ol
-					aria-label={t(listLabels[phase])}
+					aria-label={translate(listLabels[phase])}
 					className="m-0 grid list-none grid-cols-1 gap-3 p-0 lg:gap-2"
 				>
 					{resource.items.map((ticket) => (
@@ -66,7 +66,7 @@ export function TicketListing(props: TicketListingProps) {
 			{resource.loading ? (
 				<div
 					aria-busy="true"
-					aria-label={t('loading')}
+					aria-label={translate('loading')}
 					className="mt-3 lg:mt-2"
 					role="status"
 				>
@@ -77,12 +77,12 @@ export function TicketListing(props: TicketListingProps) {
 				<ErrorNotice error={resource.error} retry={resource.retry} />
 			) : null}
 			{!resource.loading && !resource.error && !resource.items.length ? (
-				<p className="text-sm text-muted-foreground">{t('empty')}</p>
+				<p className="text-sm text-muted-foreground">{translate('empty')}</p>
 			) : null}
 			<ListEnd
 				failed={Boolean(resource.error)}
 				hasMore={resource.hasMore}
-				label={t('loadMore')}
+				label={translate('loadMore')}
 				loading={resource.loading}
 				onEnd={resource.next}
 			/>

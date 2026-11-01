@@ -29,9 +29,9 @@ export function WorkflowWidget(props: WorkflowWidgetProps) {
 	const { ticket, workflow } = props
 
 	const format = useTicketFormat()
-	const { t } = format
+	const { translate } = format
 	const overBudget = workflow.reserveCents > workflow.budgetCents
-	const reserves = t('workflow.reserves', {
+	const reserves = translate('workflow.reserves', {
 		budget: format.money(workflow.budgetCents),
 		reserved: format.money(workflow.reserveCents),
 	})
@@ -54,13 +54,13 @@ export function WorkflowWidget(props: WorkflowWidgetProps) {
 		<TicketSection
 			id="workflow"
 			summary={<PhaseSummary phase="workflow" ticket={ticket} />}
-			title={t('labels.workflow')}
+			title={translate('labels.workflow')}
 		>
 			<WorkflowStageList stages={workflow.stages} />
 
 			<WidgetSection className="grid grid-cols-2 gap-x-6 gap-y-2">
 				<div className="grid gap-1.5">
-					<Eyebrow>{t('workflow.model')}</Eyebrow>
+					<Eyebrow>{translate('workflow.model')}</Eyebrow>
 					<span className="grid gap-0.5">
 						<span className="text-[14px]">{workflow.model.name}</span>
 						<span className="font-mono text-[11px] text-muted-foreground">
@@ -69,15 +69,15 @@ export function WorkflowWidget(props: WorkflowWidgetProps) {
 					</span>
 				</div>
 				<div className="grid gap-1.5">
-					<Eyebrow>{t('workflow.effort')}</Eyebrow>
+					<Eyebrow>{translate('workflow.effort')}</Eyebrow>
 					<span className="font-mono text-[14px]">
-						{t(`analysis.efforts.${workflow.effort}`)}
+						{translate(`analysis.efforts.${workflow.effort}`)}
 					</span>
 				</div>
 			</WidgetSection>
 
 			<p className="m-0 mt-2 text-[11px] text-muted-foreground">
-				{t('workflow.modelPrice', {
+				{translate('workflow.modelPrice', {
 					date: format.priceMonth(workflow.priceDate),
 					input: format.money(workflow.model.inputCents),
 					output: format.money(workflow.model.outputCents),
@@ -85,7 +85,7 @@ export function WorkflowWidget(props: WorkflowWidgetProps) {
 			</p>
 
 			<WidgetSection className="grid gap-1.5">
-				<Eyebrow>{t('workflow.estimate')}</Eyebrow>
+				<Eyebrow>{translate('workflow.estimate')}</Eyebrow>
 				<p className="m-0 flex flex-wrap items-baseline gap-x-3 gap-y-1">
 					<strong
 						className={cn(
@@ -96,7 +96,7 @@ export function WorkflowWidget(props: WorkflowWidgetProps) {
 						{format.money(workflow.estimateCents)}
 					</strong>
 					<span className="text-[11px] text-muted-foreground">
-						{t('workflow.tokens', {
+						{translate('workflow.tokens', {
 							input: format.tokens(workflow.inputTokensK),
 							output: format.tokens(workflow.outputTokensK),
 						})}
@@ -113,7 +113,7 @@ export function WorkflowWidget(props: WorkflowWidgetProps) {
 				/>
 				{overBudget && (
 					<span className="text-[11px] text-status-warning">
-						{t('workflow.overBudget')}
+						{translate('workflow.overBudget')}
 					</span>
 				)}
 			</WidgetSection>
@@ -122,10 +122,10 @@ export function WorkflowWidget(props: WorkflowWidgetProps) {
 				{workflow.outcome === 'paused' ? (
 					<div className="grid gap-1">
 						<p className="m-0 text-[12px] text-status-warning">
-							{t('workflow.needsDecision')}
+							{translate('workflow.needsDecision')}
 						</p>
 						<p className="m-0 text-[11px] text-muted-foreground">
-							{reserves} · {t('workflow.nothingPaid')}
+							{reserves} · {translate('workflow.nothingPaid')}
 						</p>
 					</div>
 				) : (
@@ -133,7 +133,9 @@ export function WorkflowWidget(props: WorkflowWidgetProps) {
 						<dl className="m-0 grid grid-cols-3 gap-x-4">
 							{resultCells.map((cell) => (
 								<div className="grid gap-1" key={cell.id}>
-									<Eyebrow as="dt">{t(`workflow.result.${cell.id}`)}</Eyebrow>
+									<Eyebrow as="dt">
+										{translate(`workflow.result.${cell.id}`)}
+									</Eyebrow>
 									<dd className="m-0">
 										{cell.value === null ? (
 											<UnknownValue className={figure} />
@@ -145,7 +147,7 @@ export function WorkflowWidget(props: WorkflowWidgetProps) {
 							))}
 						</dl>
 						<div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 border-t border-border pt-2.5">
-							<Eyebrow>{t('workflow.pullRequest')}</Eyebrow>
+							<Eyebrow>{translate('workflow.pullRequest')}</Eyebrow>
 							{workflow.pullRequest ? (
 								<>
 									<span className="inline-flex items-center gap-1.5 font-mono text-[12px]">
@@ -158,7 +160,7 @@ export function WorkflowWidget(props: WorkflowWidgetProps) {
 										{workflow.pullRequest.commit}
 									</span>
 									<span className="text-[11px] text-status-success">
-										{t('workflow.checksPassed', {
+										{translate('workflow.checksPassed', {
 											passed: workflow.pullRequest.checksPassed,
 											total: workflow.pullRequest.checksTotal,
 										})}{' '}

@@ -29,19 +29,19 @@ export function AnalysisWidget(props: AnalysisWidgetProps) {
 	const { analysis, ticket } = props
 
 	const format = useTicketFormat()
-	const { number, t } = format
+	const { number, translate } = format
 	const guardrailRead = analysis.documentsRead.includes('guardrail')
 
 	return (
 		<TicketSection
 			id="analysis"
 			summary={<PhaseSummary phase="analysis" ticket={ticket} />}
-			title={t('labels.analysis')}
+			title={translate('labels.analysis')}
 		>
 			<div className="flex items-baseline justify-between gap-3">
-				<Eyebrow>{t('analysis.documents')}</Eyebrow>
+				<Eyebrow>{translate('analysis.documents')}</Eyebrow>
 				<span className={aside}>
-					{t('analysis.documentsSummary', {
+					{translate('analysis.documentsSummary', {
 						count: analysis.documentsRead.length,
 					})}
 				</span>
@@ -53,7 +53,7 @@ export function AnalysisWidget(props: AnalysisWidgetProps) {
 						file={ticket.artifacts[id]}
 						judgment={
 							id === 'guardrail' && guardrailRead
-								? t('analysis.guardrailJudgment')
+								? translate('analysis.guardrailJudgment')
 								: undefined
 						}
 						key={id}
@@ -63,9 +63,9 @@ export function AnalysisWidget(props: AnalysisWidgetProps) {
 
 			<WidgetSection>
 				<div className="flex items-baseline justify-between gap-3">
-					<Eyebrow>{t('analysis.episodes')}</Eyebrow>
+					<Eyebrow>{translate('analysis.episodes')}</Eyebrow>
 					<span className={aside}>
-						{t('analysis.threshold', {
+						{translate('analysis.threshold', {
 							value: number.format(analysis.threshold),
 						})}
 					</span>
@@ -85,7 +85,7 @@ export function AnalysisWidget(props: AnalysisWidgetProps) {
 					</ul>
 				)}
 				<div className="mt-1 flex flex-wrap items-baseline justify-between gap-x-3 border-t border-border pt-2">
-					<Eyebrow>{t('analysis.measured')}</Eyebrow>
+					<Eyebrow>{translate('analysis.measured')}</Eyebrow>
 					<span className="flex flex-wrap items-baseline gap-x-2">
 						{measuredLine(analysis, format)}
 					</span>
@@ -94,7 +94,7 @@ export function AnalysisWidget(props: AnalysisWidgetProps) {
 
 			<WidgetSection className="grid grid-cols-2 gap-x-6 gap-y-2">
 				<div className="grid gap-1.5">
-					<Eyebrow>{t('analysis.suggestedModel')}</Eyebrow>
+					<Eyebrow>{translate('analysis.suggestedModel')}</Eyebrow>
 					{analysis.model ? (
 						<span className="grid gap-0.5">
 							<span className="text-[14px]">{analysis.model.name}</span>
@@ -107,10 +107,10 @@ export function AnalysisWidget(props: AnalysisWidgetProps) {
 					)}
 				</div>
 				<div className="grid gap-1.5">
-					<Eyebrow>{t('analysis.suggestedEffort')}</Eyebrow>
+					<Eyebrow>{translate('analysis.suggestedEffort')}</Eyebrow>
 					{analysis.effort ? (
 						<span className="font-mono text-[14px]">
-							{t(`analysis.efforts.${analysis.effort}`)}
+							{translate(`analysis.efforts.${analysis.effort}`)}
 						</span>
 					) : (
 						<UnknownValue className="font-mono text-[14px]" />
@@ -118,7 +118,7 @@ export function AnalysisWidget(props: AnalysisWidgetProps) {
 				</div>
 				{analysis.model && (
 					<p className="col-span-2 m-0 text-[11px] text-muted-foreground">
-						{t('analysis.recommendationNote')}
+						{translate('analysis.recommendationNote')}
 					</p>
 				)}
 			</WidgetSection>

@@ -13,7 +13,7 @@ interface ConnectionInstructionsProps {
 export function ConnectionInstructions(props: ConnectionInstructionsProps) {
 	const { secret, local = false } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const [origin, setOrigin] = useState('')
 	const [copied, setCopied] = useState(false)
 	const [error, setError] = useState<unknown>(null)
@@ -23,10 +23,12 @@ export function ConnectionInstructions(props: ConnectionInstructionsProps) {
 
 	return (
 		<Card className="block p-5">
-			<h2 className="text-sm font-medium">{t('connectionInstructions')}</h2>
+			<h2 className="text-sm font-medium">
+				{translate('connectionInstructions')}
+			</h2>
 			{secret ? (
 				<div className="my-4 grid gap-3">
-					<p className="text-sm text-primary">{t('secretOnce')}</p>
+					<p className="text-sm text-primary">{translate('secretOnce')}</p>
 					<code
 						className="block break-all rounded-md border border-border bg-background p-3 text-xs"
 						data-private="true"
@@ -46,12 +48,12 @@ export function ConnectionInstructions(props: ConnectionInstructionsProps) {
 						type="button"
 						variant="outline"
 					>
-						{t(copied ? 'copied' : 'copySecret')}
+						{translate(copied ? 'copied' : 'copySecret')}
 					</Button>
 				</div>
 			) : null}
 			<p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-				{t(local ? 'projectAgentIntro' : 'setupInstructions')}
+				{translate(local ? 'projectAgentIntro' : 'setupInstructions')}
 			</p>
 			{!local ? (
 				<pre className="mt-4 overflow-x-auto rounded-md border border-border bg-background p-4 text-xs leading-6">

@@ -16,7 +16,7 @@ interface RuntimePlaybackProps {
 export function RuntimePlayback(props: RuntimePlaybackProps) {
 	const { snapshot, onRefresh } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const [pending, startTransition] = useTransition()
 	const [error, setError] = useState<unknown>(null)
 	const { runtime, executions } = snapshot
@@ -33,7 +33,7 @@ export function RuntimePlayback(props: RuntimePlaybackProps) {
 		<div className="flex flex-wrap items-center gap-2">
 			<Button
 				disabled={pending || unavailable}
-				aria-label={t(stopping ? 'pauseNamed' : 'playNamed', {
+				aria-label={translate(stopping ? 'pauseNamed' : 'playNamed', {
 					name: runtime.name,
 				})}
 				onClick={() =>
@@ -55,7 +55,7 @@ export function RuntimePlayback(props: RuntimePlaybackProps) {
 				variant="outline"
 			>
 				{stopping ? <Pause size={14} /> : <Play size={14} />}
-				{t(stopping ? 'pause' : 'start')}
+				{translate(stopping ? 'pause' : 'start')}
 			</Button>
 			{error ? <ErrorNotice error={error} /> : null}
 		</div>

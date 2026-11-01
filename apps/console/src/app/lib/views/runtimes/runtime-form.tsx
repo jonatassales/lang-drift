@@ -25,7 +25,7 @@ interface RuntimeFormProps {
 export function RuntimeForm(props: RuntimeFormProps) {
 	const { productId, components, runtime, locked = false, onSaved } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const [error, setError] = useState<unknown>(null)
 	const [invalidBuild, setInvalidBuild] = useState(false)
 	const [pending, startTransition] = useTransition()
@@ -118,7 +118,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 				>
 					<fieldset disabled={locked || pending} className="grid gap-5">
 						<label className={labelClass}>
-							{t('name')}
+							{translate('name')}
 							<input
 								className={fieldClass}
 								name="name"
@@ -128,7 +128,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 							/>
 						</label>
 						<label className={labelClass}>
-							{t('llmBudget')}
+							{translate('llmBudget')}
 							<input
 								className={fieldClass}
 								type="number"
@@ -144,12 +144,12 @@ export function RuntimeForm(props: RuntimeFormProps) {
 								}
 							/>
 							<span className="text-xs text-muted-foreground">
-								{t('llmBudgetHint')}
+								{translate('llmBudgetHint')}
 							</span>
 						</label>
 						<div className="grid gap-4 sm:grid-cols-2">
 							<label className={labelClass}>
-								{t('cpu')}
+								{translate('cpu')}
 								<input
 									className={fieldClass}
 									type="number"
@@ -167,7 +167,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 								/>
 							</label>
 							<label className={labelClass}>
-								{t('memory')}
+								{translate('memory')}
 								<input
 									className={fieldClass}
 									type="number"
@@ -185,7 +185,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 								/>
 							</label>
 							<label className={labelClass}>
-								{t('model')}
+								{translate('model')}
 								<input
 									className={fieldClass}
 									required
@@ -200,7 +200,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 								/>
 							</label>
 							<label className={labelClass}>
-								{t('effort')}
+								{translate('effort')}
 								<select
 									className={fieldClass}
 									value={configuration.effort}
@@ -219,14 +219,14 @@ export function RuntimeForm(props: RuntimeFormProps) {
 								>
 									{['low', 'medium', 'high'].map((effort) => (
 										<option key={effort} value={effort}>
-											{t(effort)}
+											{translate(effort)}
 										</option>
 									))}
 								</select>
 							</label>
 						</div>
 						<p className="text-xs leading-relaxed text-muted-foreground">
-							{t('agentSettingsHint')}
+							{translate('agentSettingsHint')}
 						</p>
 						{runtime ? (
 							<input
@@ -236,7 +236,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 							/>
 						) : (
 							<label className={labelClass}>
-								{t('migration')}
+								{translate('migration')}
 								<input
 									className={fieldClass}
 									name="nativeRuntimeId"
@@ -244,15 +244,17 @@ export function RuntimeForm(props: RuntimeFormProps) {
 									maxLength={63}
 								/>
 								<span className="font-normal text-muted-foreground">
-									{t('migrationHint')}
+									{translate('migrationHint')}
 								</span>
 							</label>
 						)}
 						<div className="grid gap-4">
 							<div>
-								<h2 className="text-sm font-medium">{t('components')}</h2>
+								<h2 className="text-sm font-medium">
+									{translate('components')}
+								</h2>
 								<p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-									{t('buildHint')}
+									{translate('buildHint')}
 								</p>
 							</div>
 							{components.map((component) => {
@@ -278,17 +280,19 @@ export function RuntimeForm(props: RuntimeFormProps) {
 						</div>
 						{invalidBuild ? (
 							<p role="alert" className="text-sm text-status-danger">
-								{t('invalidBuild')}
+								{translate('invalidBuild')}
 							</p>
 						) : null}
 						{error ? <ErrorNotice error={error} /> : null}
 						<Button type="submit">
-							{t(pending ? 'saving' : runtime ? 'save' : 'createRuntime')}
+							{translate(
+								pending ? 'saving' : runtime ? 'save' : 'createRuntime',
+							)}
 						</Button>
 					</fieldset>
 					{locked ? (
 						<p role="status" className="mt-4 text-sm text-muted-foreground">
-							{t('configurationLocked')}
+							{translate('configurationLocked')}
 						</p>
 					) : null}
 				</form>

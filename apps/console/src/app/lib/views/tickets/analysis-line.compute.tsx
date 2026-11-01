@@ -11,21 +11,21 @@ export function analysisLine(
 	analysis: TicketAnalysis,
 	format: TicketFormat,
 ): ReactNode {
-	const { t } = format
+	const { translate } = format
 	const summary = analysisSummary(analysis)
 	switch (summary.kind) {
 		case 'suggestion':
-			return t('analysis.suggestionSummary', {
-				effort: t(`analysis.efforts.${summary.effort}`),
+			return translate('analysis.suggestionSummary', {
+				effort: translate(`analysis.efforts.${summary.effort}`),
 				model: summary.model,
 			})
 		case 'episodes':
-			return t('analysis.episodesSummary', {
+			return translate('analysis.episodesSummary', {
 				kept: summary.kept,
 				total: summary.total,
 			})
 		case 'documents':
-			return t('analysis.documentsSummary', { count: summary.count })
+			return translate('analysis.documentsSummary', { count: summary.count })
 		case 'unknown':
 			return <UnknownValue />
 	}

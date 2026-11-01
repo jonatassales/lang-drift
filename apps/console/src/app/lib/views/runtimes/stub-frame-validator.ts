@@ -2,6 +2,11 @@ import type { RuntimeWidgetSnapshot } from '@data/types'
 
 import { isLoadTestResult } from './load-test-result.ts'
 
+export interface StubFrameResult {
+	sequence: number
+	widgets: RuntimeWidgetSnapshot[]
+}
+
 class StubFrameValidator {
 	isRecord(value: unknown): value is Record<string, unknown> {
 		return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -177,10 +182,7 @@ class StubFrameValidator {
 		raw: unknown,
 		previous: number,
 		now = Date.now(),
-	): {
-		sequence: number
-		widgets: RuntimeWidgetSnapshot[]
-	} | null {
+	): StubFrameResult | null {
 		if (typeof raw !== 'string' || raw.length > 262144) return null
 		try {
 			const frame: unknown = JSON.parse(raw)

@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 export function ThemeControl() {
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const [theme, setTheme] = useState<'light' | 'dark'>('dark')
 	useEffect(() => {
 		try {
@@ -23,7 +23,7 @@ export function ThemeControl() {
 	return (
 		<ThemeToggle
 			theme={theme}
-			label={t(theme === 'dark' ? 'switchLight' : 'switchDark')}
+			label={translate(theme === 'dark' ? 'switchLight' : 'switchDark')}
 			onToggle={() => {
 				const next = theme === 'light' ? 'dark' : 'light'
 				setTheme(next)

@@ -42,7 +42,7 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 		agent,
 	} = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const [recommendation, setRecommendation] = useState<Recommendation | null>(
 		null,
 	)
@@ -70,12 +70,12 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 
 	return (
 		<Card className="block p-5">
-			<h2 className="text-sm font-medium">{t('recommendations')}</h2>
+			<h2 className="text-sm font-medium">{translate('recommendations')}</h2>
 			<p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-				{t('recommendationIntro')}
+				{translate('recommendationIntro')}
 			</p>
 			<label className={`${labelClass} mt-4`}>
-				{t('ticketMarkdown')}
+				{translate('ticketMarkdown')}
 				<input
 					className={fieldClass}
 					type="file"
@@ -114,7 +114,7 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 					}}
 				/>
 				<span className="text-[11px] text-muted-foreground">
-					{t('ticketMemoryHint')}
+					{translate('ticketMemoryHint')}
 				</span>
 			</label>
 			<Button
@@ -167,7 +167,7 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 				type="button"
 				variant="outline"
 			>
-				{t(pending ? 'loading' : 'getSuggestions')}
+				{translate(pending ? 'loading' : 'getSuggestions')}
 			</Button>
 			{error ? (
 				<div className="mt-4">
@@ -178,53 +178,65 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 				<div className="mt-4 grid gap-3 text-xs">
 					{recommendation.status !== 'suggested' ? (
 						<p className="text-muted-foreground">
-							{t(`recommendationReasons.${recommendation.reasonCode}`)}
+							{translate(`recommendationReasons.${recommendation.reasonCode}`)}
 						</p>
 					) : (
 						<>
-							<h3 className="font-medium text-primary">{t('suggestion')}</h3>
+							<h3 className="font-medium text-primary">
+								{translate('suggestion')}
+							</h3>
 							{recommendation.ticket ? (
 								<p className="text-muted-foreground">
-									{t('ticketBasis')}: {recommendation.ticket.name}
+									{translate('ticketBasis')}: {recommendation.ticket.name}
 								</p>
 							) : null}
 							<dl className="grid grid-cols-2 gap-2">
 								{recommendation.values?.llmBudgetUsd !== undefined ? (
 									<>
-										<dt>{t('estimatedBudget')}</dt>
+										<dt>{translate('estimatedBudget')}</dt>
 										<dd>{recommendation.values.llmBudgetUsd} USD</dd>
 									</>
 								) : null}
 								{recommendation.values?.cpu !== undefined ? (
 									<>
-										<dt className="text-muted-foreground">{t('cpu')}</dt>
+										<dt className="text-muted-foreground">
+											{translate('cpu')}
+										</dt>
 										<dd>{recommendation.values.cpu}</dd>
 									</>
 								) : null}
 								{recommendation.values?.memoryMiB !== undefined ? (
 									<>
-										<dt className="text-muted-foreground">{t('memory')}</dt>
+										<dt className="text-muted-foreground">
+											{translate('memory')}
+										</dt>
 										<dd>{recommendation.values.memoryMiB}</dd>
 									</>
 								) : null}
 								{recommendation.values?.model ? (
 									<>
-										<dt className="text-muted-foreground">{t('model')}</dt>
+										<dt className="text-muted-foreground">
+											{translate('model')}
+										</dt>
 										<dd className="break-all">{recommendation.values.model}</dd>
 									</>
 								) : null}
 								{recommendation.values?.effort ? (
 									<>
-										<dt className="text-muted-foreground">{t('effort')}</dt>
-										<dd>{t(recommendation.values.effort)}</dd>
+										<dt className="text-muted-foreground">
+											{translate('effort')}
+										</dt>
+										<dd>{translate(recommendation.values.effort)}</dd>
 									</>
 								) : null}
 							</dl>
 							<p className="whitespace-pre-wrap text-muted-foreground">
-								{t(`recommendationReasons.${recommendation.reasonCode}`)}
+								{translate(
+									`recommendationReasons.${recommendation.reasonCode}`,
+								)}
 							</p>
 							<div>
-								<h4 className="mb-2 font-medium">{t('episodes')}</h4>
+								<h4 className="mb-2 font-medium">{translate('episodes')}</h4>
 								{evidence ? (
 									<Suspense fallback={<EvidenceSkeleton />}>
 										<EpisodeEvidence
@@ -238,7 +250,7 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 								<ul className="list-inside list-disc text-xs text-muted-foreground">
 									{recommendation.limitationCodes.map((limitation) => (
 										<li key={limitation}>
-											{t(`recommendationLimits.${limitation}`)}
+											{translate(`recommendationLimits.${limitation}`)}
 										</li>
 									))}
 								</ul>
@@ -249,10 +261,10 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 										([field, evidence]) => (
 											<div key={field}>
 												<dt className="font-medium">
-													{t(field === 'memoryMiB' ? 'memory' : field)}
+													{translate(field === 'memoryMiB' ? 'memory' : field)}
 												</dt>
 												<dd className="text-muted-foreground">
-													{t(
+													{translate(
 														evidence.basis === 'observed_resource'
 															? 'observedResource'
 															: evidence.basis === 'ticket_inference'
@@ -277,7 +289,7 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 									type="button"
 									variant="outline"
 								>
-									{t('applySuggestions')}
+									{translate('applySuggestions')}
 								</Button>
 							) : null}
 						</>

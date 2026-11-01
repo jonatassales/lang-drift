@@ -6,12 +6,12 @@ import { useTranslations } from 'next-intl'
 import { HeadingSkeleton } from './heading-skeleton'
 
 export function ProductListSkeleton() {
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 
 	return (
 		<section
 			aria-busy="true"
-			aria-label={t('loading')}
+			aria-label={translate('loading')}
 			data-skeleton="product-list-skeleton"
 		>
 			<HeadingSkeleton />

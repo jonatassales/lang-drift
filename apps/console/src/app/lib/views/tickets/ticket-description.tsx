@@ -15,27 +15,27 @@ interface TicketDescriptionProps {
 export function TicketDescription(props: TicketDescriptionProps) {
 	const { ticket } = props
 
-	const t = useTranslations('tickets')
+	const translate = useTranslations('tickets')
 	const progress = phaseProgress(ticket)
 	const items = [
 		{
 			detail: <StatusLabel value={ticket.status} />,
 			id: 'status',
-			term: t('ticket.status'),
+			term: translate('ticket.status'),
 		},
 		{
-			detail: t('ticket.phaseProgress', {
-				phase: t(`labels.${ticket.phase}`),
+			detail: translate('ticket.phaseProgress', {
+				phase: translate(`labels.${ticket.phase}`),
 				reached: progress.reached,
 				total: progress.total,
 			}),
 			id: 'phase',
-			term: t('ticket.phase'),
+			term: translate('ticket.phase'),
 		},
 		{
 			detail: <TicketCreated createdAt={ticket.createdAt} withYear />,
 			id: 'created',
-			term: t('ticket.created'),
+			term: translate('ticket.created'),
 		},
 	]
 

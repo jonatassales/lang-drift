@@ -18,7 +18,7 @@ export function FolderEntries(props: FolderEntriesProps) {
 	const { listing, navigate, onSelect } = props
 
 	const result = use(listing)
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	if (!result.data) return <ErrorNotice error={result.error} />
 	const data = result.data
 
@@ -33,12 +33,12 @@ export function FolderEntries(props: FolderEntriesProps) {
 					type="button"
 					variant="outline"
 				>
-					{t('parentFolder')}
+					{translate('parentFolder')}
 				</Button>
 			) : null}
 			<ul
 				className="my-4 grid max-h-64 gap-1 overflow-y-auto"
-				aria-label={t('folders')}
+				aria-label={translate('folders')}
 			>
 				{data.folders.map((folder) => (
 					<li key={folder.path}>
@@ -57,7 +57,7 @@ export function FolderEntries(props: FolderEntriesProps) {
 				type="button"
 				variant="outline"
 			>
-				{t('selectFolder')}
+				{translate('selectFolder')}
 			</Button>
 		</>
 	)

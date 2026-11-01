@@ -21,7 +21,7 @@ interface ExecutionOverviewProps {
 export function ExecutionOverview(props: ExecutionOverviewProps) {
 	const { productId, initial } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const resource = usePagedResource<ProductExecution>(
 		`products/${productId}/executions`,
 		initial,
@@ -36,12 +36,12 @@ export function ExecutionOverview(props: ExecutionOverviewProps) {
 					type="button"
 					variant="outline"
 				>
-					{t('refresh')}
+					{translate('refresh')}
 				</Button>
 			</div>
 			{resource.items.length ? (
 				<ol
-					aria-label={t('executions')}
+					aria-label={translate('executions')}
 					className="m-0 grid list-none grid-cols-1 gap-3 p-0"
 				>
 					{resource.items.map((item) => (
@@ -54,7 +54,7 @@ export function ExecutionOverview(props: ExecutionOverviewProps) {
 			{resource.loading ? (
 				<div
 					aria-busy="true"
-					aria-label={t('loading')}
+					aria-label={translate('loading')}
 					className="mt-3"
 					role="status"
 				>
@@ -65,12 +65,12 @@ export function ExecutionOverview(props: ExecutionOverviewProps) {
 				<ErrorNotice error={resource.error} retry={resource.retry} />
 			) : null}
 			{!resource.loading && !resource.error && !resource.items.length ? (
-				<p className="text-sm text-muted-foreground">{t('empty')}</p>
+				<p className="text-sm text-muted-foreground">{translate('empty')}</p>
 			) : null}
 			<ListEnd
 				failed={Boolean(resource.error)}
 				hasMore={resource.hasMore}
-				label={t('loadMore')}
+				label={translate('loadMore')}
 				loading={resource.loading}
 				onEnd={resource.next}
 			/>

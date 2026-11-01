@@ -17,7 +17,7 @@ export function LanguageSettings(props: LanguageSettingsProps) {
 	const { compact = false } = props
 
 	const locale = useLocale()
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const pathname = usePathname()
 	const router = useRouter()
 	const [pending, startTransition] = useTransition()
@@ -26,7 +26,7 @@ export function LanguageSettings(props: LanguageSettingsProps) {
 	return (
 		<div className={compact ? 'grid' : 'grid gap-2'}>
 			<LanguageSwitcher
-				label={t('language')}
+				label={translate('language')}
 				currentLocale={locale}
 				options={languages}
 				disabled={pending}
@@ -57,11 +57,11 @@ export function LanguageSettings(props: LanguageSettingsProps) {
 				aria-live="polite"
 				className={compact ? 'sr-only' : 'text-xs text-muted-foreground'}
 			>
-				{pending ? t('saving') : ''}
+				{pending ? translate('saving') : ''}
 			</span>
 			{failed ? (
 				<p role="alert" className="text-xs text-status-danger">
-					{t('error')}
+					{translate('error')}
 				</p>
 			) : null}
 		</div>

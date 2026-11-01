@@ -23,7 +23,7 @@ const areaIcon: Record<Area, typeof FinopsIcon> = {
 export function AreaSwitcher(props: AreaSwitcherProps) {
 	const { onNavigate } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const pathname = usePathname()
 	const { containerRef, menuId, open, setOpen, triggerRef } =
 		useDismissibleMenu()
@@ -53,17 +53,17 @@ export function AreaSwitcher(props: AreaSwitcherProps) {
 				</span>
 				<span className="grid min-w-0 gap-px">
 					<small className="text-[9px] tracking-wide text-muted-foreground uppercase">
-						{t('area')}
+						{translate('area')}
 					</small>
 					<strong className="truncate text-[12px] font-medium">
-						{t(current)}
+						{translate(current)}
 					</strong>
 				</span>
 				<CaretDown aria-hidden size={12} />
 			</button>
 			{open ? (
 				<nav
-					aria-label={t('areas')}
+					aria-label={translate('areas')}
 					className="absolute inset-x-0 top-[calc(100%+5px)] z-50 grid gap-0.5 rounded-lg border border-border bg-card p-1 shadow-lg"
 					id={menuId}
 				>
@@ -79,7 +79,7 @@ export function AreaSwitcher(props: AreaSwitcherProps) {
 								onClick={choose}
 							>
 								<Icon className="size-4" />
-								<span className="flex-1">{t(area)}</span>
+								<span className="flex-1">{translate(area)}</span>
 								{area === current ? (
 									<CheckCircle aria-hidden className="text-primary" size={15} />
 								) : null}

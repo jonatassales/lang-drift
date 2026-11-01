@@ -34,7 +34,7 @@ interface NavigationProps {
 export function Navigation(props: NavigationProps) {
 	const { product, products, mobile = false, onNavigate } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const pathname = usePathname()
 	const base = product ? `/products/${product.id}` : ''
 	const area = areaOf(pathname)
@@ -138,7 +138,7 @@ export function Navigation(props: NavigationProps) {
 	return (
 		<>
 			<Link
-				aria-label={t('home')}
+				aria-label={translate('home')}
 				className="flex items-center gap-2.5 px-2.5 pt-2 pb-6 no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 				href="/home"
 				onClick={navigate}
@@ -146,7 +146,7 @@ export function Navigation(props: NavigationProps) {
 				<Brand className="text-foreground" compact />
 			</Link>
 			<AreaSwitcher onNavigate={onNavigate} />
-			<nav aria-label={t('navigation')} className="grid gap-1">
+			<nav aria-label={translate('navigation')} className="grid gap-1">
 				{groups.map((group) => (
 					<section
 						key={group.key}
@@ -156,7 +156,7 @@ export function Navigation(props: NavigationProps) {
 					>
 						{group.key === 'project' ? (
 							<h2 className="px-3 pb-2 text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
-								{t(group.key)}
+								{translate(group.key)}
 							</h2>
 						) : null}
 						{group.key === 'project' && product ? (
@@ -181,7 +181,7 @@ export function Navigation(props: NavigationProps) {
 								</button>
 								{open ? (
 									<nav
-										aria-label={t('project')}
+										aria-label={translate('project')}
 										className="absolute inset-x-0 top-[calc(100%+6px)] z-50 grid rounded-lg border border-border bg-card p-1.5 shadow-lg"
 										id={menuId}
 									>
@@ -230,7 +230,7 @@ export function Navigation(props: NavigationProps) {
 										className={active ? 'text-primary' : undefined}
 										size={17}
 									/>
-									{t(item.key)}
+									{translate(item.key)}
 								</Link>
 							)
 						})}
@@ -249,10 +249,10 @@ export function Navigation(props: NavigationProps) {
 						className={settingsActive ? 'text-primary' : undefined}
 						size={17}
 					/>
-					{t('settings')}
+					{translate('settings')}
 				</Link>
 				<p className="mt-3 px-2 text-[10px] tracking-wide text-muted-foreground/60 select-none">
-					{t('copyright')}
+					{translate('copyright')}
 				</p>
 			</div>
 		</>

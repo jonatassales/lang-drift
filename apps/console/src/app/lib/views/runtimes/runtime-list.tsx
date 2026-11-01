@@ -22,7 +22,7 @@ interface RuntimeListProps {
 export function RuntimeList(props: RuntimeListProps) {
 	const { productId, embedded = false, initial } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const resource = useResource<RuntimeListSnapshot>(
 		`runtimes${productId ? `?productId=${encodeURIComponent(productId)}` : ''}`,
 		5000,
@@ -34,22 +34,25 @@ export function RuntimeList(props: RuntimeListProps) {
 	return (
 		<>
 			{embedded ? (
-				<h2 className="mb-4 text-base font-medium">{t('runtimes')}</h2>
+				<h2 className="mb-4 text-base font-medium">{translate('runtimes')}</h2>
 			) : (
-				<PageHeading title={t('runtimes')} description={t('runtimesIntro')}>
+				<PageHeading
+					title={translate('runtimes')}
+					description={translate('runtimesIntro')}
+				>
 					<Link
 						href={
 							productId ? `/products/${productId}/runtimes/new` : '/products'
 						}
 						className={linkClass}
 					>
-						{t('createRuntime')}
+						{translate('createRuntime')}
 					</Link>
 				</PageHeading>
 			)}
 			{resource.data?.source === 'stub' ? (
 				<p role="status" className="mb-4 text-xs text-primary">
-					{t(stream.connected ? 'webrtcConnected' : 'webrtcFallback')}
+					{translate(stream.connected ? 'webrtcConnected' : 'webrtcFallback')}
 				</p>
 			) : null}
 			{resource.error ? (
@@ -66,13 +69,13 @@ export function RuntimeList(props: RuntimeListProps) {
 				</div>
 			) : (
 				<Card className="block p-10 text-center text-sm text-muted-foreground">
-					<p>{t('runtimeEmpty')}</p>
+					<p>{translate('runtimeEmpty')}</p>
 					{productId ? (
 						<Link
 							className={`${linkClass} mt-4`}
 							href={`/products/${productId}/runtimes/new`}
 						>
-							{t('firstRuntime')}
+							{translate('firstRuntime')}
 						</Link>
 					) : null}
 				</Card>

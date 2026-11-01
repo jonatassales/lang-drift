@@ -17,7 +17,7 @@ interface RuntimeLoadTestProps {
 export function RuntimeLoadTest(props: RuntimeLoadTestProps) {
 	const { snapshot } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const format = useFormatter()
 	const dateTime = useDateTime()
 	const [result, setResult] = useState<RuntimeLoadTestResult | null>(null)
@@ -79,7 +79,7 @@ export function RuntimeLoadTest(props: RuntimeLoadTestProps) {
 	return (
 		<section className="rounded-lg border border-border p-4" data-runtime-tests>
 			<div className="flex flex-wrap items-center justify-between gap-3">
-				<h2 className="text-sm font-medium">{t('loadTestTitle')}</h2>
+				<h2 className="text-sm font-medium">{translate('loadTestTitle')}</h2>
 				{snapshot.source === 'stub' ? (
 					<Button
 						disabled={
@@ -92,12 +92,12 @@ export function RuntimeLoadTest(props: RuntimeLoadTestProps) {
 						type="button"
 						variant="outline"
 					>
-						{t(actionLabel)}
+						{translate(actionLabel)}
 					</Button>
 				) : null}
 			</div>
 			<p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-				{t(
+				{translate(
 					snapshot.source === 'stub'
 						? 'loadTestScope'
 						: 'testEvidenceUnavailable',
@@ -111,14 +111,14 @@ export function RuntimeLoadTest(props: RuntimeLoadTestProps) {
 			{report ? (
 				<div role="status" className="mt-4 text-xs">
 					<p className="font-medium">
-						{t('loadTestOutcome', {
+						{translate('loadTestOutcome', {
 							succeeded: report.succeeded,
 							failed: report.failed,
 							requests: report.requests,
 						})}
 					</p>
 					<dl className="mt-3 grid grid-cols-2 gap-x-5 gap-y-2">
-						<dt>{t('loadTestDuration')}</dt>
+						<dt>{translate('loadTestDuration')}</dt>
 						<dd>
 							{format.number(report.durationMs, { maximumFractionDigits: 2 })}{' '}
 							ms
@@ -131,7 +131,7 @@ export function RuntimeLoadTest(props: RuntimeLoadTestProps) {
 						<dd>
 							{format.number(report.p95Ms, { maximumFractionDigits: 2 })} ms
 						</dd>
-						<dt>{t('loadTestMaximum')}</dt>
+						<dt>{translate('loadTestMaximum')}</dt>
 						<dd>
 							{format.number(report.maxMs, { maximumFractionDigits: 2 })} ms
 						</dd>
@@ -141,12 +141,12 @@ export function RuntimeLoadTest(props: RuntimeLoadTestProps) {
 							dateStyle: 'short',
 							timeStyle: 'medium',
 						})}{' '}
-						· {t('loadTestObserved')}
+						· {translate('loadTestObserved')}
 					</p>
 				</div>
 			) : snapshot.source === 'stub' ? (
 				<p className="mt-3 text-xs text-muted-foreground">
-					{t('loadTestEmpty')}
+					{translate('loadTestEmpty')}
 				</p>
 			) : null}
 		</section>

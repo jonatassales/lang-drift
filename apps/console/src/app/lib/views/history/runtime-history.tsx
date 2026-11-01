@@ -23,7 +23,7 @@ interface RuntimeHistoryProps {
 export function RuntimeHistory(props: RuntimeHistoryProps) {
 	const { id, initial, events } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const resource = useResource<{ runtime: Runtime }>(
 		`runtimes/${id}`,
 		0,
@@ -36,11 +36,11 @@ export function RuntimeHistory(props: RuntimeHistoryProps) {
 
 	return (
 		<>
-			<PageHeading title={t('history')} description={id}>
+			<PageHeading title={translate('history')} description={id}>
 				<Button
 					disabled={pending}
 					onClick={() => {
-						if (!window.confirm(t('purgeConfirm'))) return
+						if (!window.confirm(translate('purgeConfirm'))) return
 						setError(null)
 						startTransition(async () => {
 							try {
@@ -60,7 +60,7 @@ export function RuntimeHistory(props: RuntimeHistoryProps) {
 					type="button"
 					variant="destructive"
 				>
-					{t('purge')}
+					{translate('purge')}
 				</Button>
 			</PageHeading>
 			<div className="grid gap-5">

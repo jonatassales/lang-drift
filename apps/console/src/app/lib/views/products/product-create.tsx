@@ -23,7 +23,7 @@ interface ProductCreateProps {
 export function ProductCreate(props: ProductCreateProps) {
 	const { first = false, productId } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const router = useRouter()
 	const [path, setPath] = useState('')
 	const [name, setName] = useState('')
@@ -45,10 +45,10 @@ export function ProductCreate(props: ProductCreateProps) {
 	return (
 		<>
 			<PageHeading
-				title={t(
+				title={translate(
 					productId ? 'attachFolder' : first ? 'firstProject' : 'createProject',
 				)}
-				description={t('localProjectIntro')}
+				description={translate('localProjectIntro')}
 			/>
 			<Card className="block mx-auto max-w-2xl p-7 sm:mt-10">
 				<form
@@ -102,18 +102,20 @@ export function ProductCreate(props: ProductCreateProps) {
 							setDropped(true)
 						}}
 					>
-						<span className="text-base font-medium">{t('dropFolder')}</span>
+						<span className="text-base font-medium">
+							{translate('dropFolder')}
+						</span>
 						<span className="text-sm text-muted-foreground">
-							{t('browseFolder')}
+							{translate('browseFolder')}
 						</span>
 					</button>
 					{dropped ? (
 						<p role="status" className="text-sm text-muted-foreground">
-							{t('confirmFolderPath')}
+							{translate('confirmFolderPath')}
 						</p>
 					) : null}
 					<label className={labelClass}>
-						{t('folderPath')}
+						{translate('folderPath')}
 						<input
 							className={fieldClass}
 							value={path}
@@ -125,7 +127,7 @@ export function ProductCreate(props: ProductCreateProps) {
 					</label>
 					{!productId ? (
 						<label className={labelClass}>
-							{t('projectName')}
+							{translate('projectName')}
 							<input
 								className={fieldClass}
 								value={name}
@@ -136,7 +138,7 @@ export function ProductCreate(props: ProductCreateProps) {
 						</label>
 					) : null}
 					<p className="text-xs text-muted-foreground">
-						{t('projectAgentIntro')}
+						{translate('projectAgentIntro')}
 					</p>
 					{error ? <ErrorNotice error={error} /> : null}
 					<Button
@@ -144,7 +146,7 @@ export function ProductCreate(props: ProductCreateProps) {
 						disabled={pending || !path.trim()}
 						variant="outline"
 					>
-						{t(
+						{translate(
 							pending
 								? 'preparingProject'
 								: productId

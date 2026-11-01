@@ -35,7 +35,7 @@ interface RuntimeDetailProps {
 export function RuntimeDetail(props: RuntimeDetailProps) {
 	const { id, initial, productInitial } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const format = useFormatter()
 	const dateTime = useDateTime()
 	const resource = useResource<RuntimeDetailSnapshot>(
@@ -54,8 +54,10 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 	const [requested, setRequested] = useState(false)
 	const [pending, startTransition] = useTransition()
 	function operate(action: 'revoke' | 'delete') {
-		if (action === 'delete' && !window.confirm(t('deleteConfirm'))) return
-		if (action === 'revoke' && !window.confirm(t('revokeConfirm'))) return
+		if (action === 'delete' && !window.confirm(translate('deleteConfirm')))
+			return
+		if (action === 'revoke' && !window.confirm(translate('revokeConfirm')))
+			return
 		setError(null)
 		setRequested(false)
 		startTransition(async () => {
@@ -88,11 +90,11 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 					<RuntimePlayback snapshot={snapshot} onRefresh={resource.refresh} />
 					{!deleted ? (
 						<Link href={`/runtimes/${id}/configuration`} className={linkClass}>
-							{t('configure')}
+							{translate('configure')}
 						</Link>
 					) : null}
 					<Link href={`/runtimes/${id}/history`} className={linkClass}>
-						{t('history')}
+						{translate('history')}
 					</Link>
 				</div>
 			</PageHeading>
@@ -100,15 +102,19 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 				{error ? <ErrorNotice error={error} /> : null}
 				{requested ? (
 					<p role="status" className="text-sm text-muted-foreground">
-						{t('operationRequested')}
+						{translate('operationRequested')}
 					</p>
 				) : null}
 				<section data-runtime-graph>
 					<div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-						<h2 className="text-sm font-medium">{t('componentGraph')}</h2>
+						<h2 className="text-sm font-medium">
+							{translate('componentGraph')}
+						</h2>
 						{snapshot.source === 'stub' ? (
 							<p role="status" className="text-xs text-muted-foreground">
-								{t(stream.connected ? 'webrtcConnected' : 'webrtcFallback')}
+								{translate(
+									stream.connected ? 'webrtcConnected' : 'webrtcFallback',
+								)}
 							</p>
 						) : null}
 					</div>
@@ -123,14 +129,14 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 						}
 					/>
 					<p className="mt-2 text-xs text-muted-foreground">
-						{t(
+						{translate(
 							snapshot.source === 'stub' && snapshot.componentLinks?.length
 								? 'topologySynthetic'
 								: 'topologyUnavailable',
 						)}
 					</p>
 					<p className="mt-1 text-[11px] text-muted-foreground">
-						{t('graphColorLegend')}
+						{translate('graphColorLegend')}
 					</p>
 				</section>
 				<RuntimeExecutionMetrics snapshot={snapshot} />
@@ -138,7 +144,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 					<dl className="grid gap-5 sm:grid-cols-2 xl:grid-cols-5">
 						<div>
 							<dt className="mb-2 text-[11px] text-muted-foreground">
-								{t('desiredState')}
+								{translate('desiredState')}
 							</dt>
 							<dd>
 								<StatusLabel value={runtime.desiredState} />
@@ -146,7 +152,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 						</div>
 						<div>
 							<dt className="mb-2 text-[11px] text-muted-foreground">
-								{t('cpu')}
+								{translate('cpu')}
 							</dt>
 							<dd className="text-xl tabular-nums">
 								{format.number(runtime.configuration.cpu)}
@@ -154,7 +160,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 						</div>
 						<div>
 							<dt className="mb-2 text-[11px] text-muted-foreground">
-								{t('memory')}
+								{translate('memory')}
 							</dt>
 							<dd className="text-xl tabular-nums">
 								{format.number(runtime.configuration.memoryMiB)}
@@ -162,33 +168,37 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 						</div>
 						<div>
 							<dt className="mb-2 text-[11px] text-muted-foreground">
-								{t('model')}
+								{translate('model')}
 							</dt>
 							<dd className="break-all text-xs">
 								{runtime.configuration.model}
 								<p className="mt-1 text-muted-foreground">
-									{t(runtime.configuration.effort)}
+									{translate(runtime.configuration.effort)}
 								</p>
 							</dd>
 						</div>
 						<div>
 							<dt className="mb-2 text-[11px] text-muted-foreground">
-								{t('revision')}
+								{translate('revision')}
 							</dt>
 							<dd className="text-xl">{runtime.revision}</dd>
 						</div>
 					</dl>
 					{locked && !deleted ? (
 						<p className="mt-5 border-t border-border pt-4 text-xs text-muted-foreground">
-							{t('configurationLocked')}
+							{translate('configurationLocked')}
 						</p>
 					) : null}
 					{runtime.credentialRevoked ? (
-						<p className="mt-4 text-xs text-status-danger">{t('revoked')}</p>
+						<p className="mt-4 text-xs text-status-danger">
+							{translate('revoked')}
+						</p>
 					) : null}
 				</Card>
 				<section>
-					<h2 className="mb-3 text-sm font-medium">{t('environments')}</h2>
+					<h2 className="mb-3 text-sm font-medium">
+						{translate('environments')}
+					</h2>
 					{environments.length ? (
 						<div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
 							{environments.map((environment) => (
@@ -203,7 +213,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 										{environment.id}
 									</p>
 									<p className="mt-2 text-[11px] text-muted-foreground">
-										{t('lastSeen')}:{' '}
+										{translate('lastSeen')}:{' '}
 										{dateTime(new Date(environment.lastSeenAt), {
 											dateStyle: 'short',
 											timeStyle: 'medium',
@@ -211,7 +221,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 									</p>
 									{environment.cleanupPending ? (
 										<p className="mt-2 text-xs text-status-danger">
-											{t('cleanupPending')}
+											{translate('cleanupPending')}
 										</p>
 									) : null}
 								</Card>
@@ -219,12 +229,14 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 						</div>
 					) : (
 						<Card className="block p-5 text-sm text-muted-foreground">
-							{t('environmentsEmpty')}
+							{translate('environmentsEmpty')}
 						</Card>
 					)}
 				</section>
 				<section>
-					<h2 className="mb-3 text-sm font-medium">{t('executions')}</h2>
+					<h2 className="mb-3 text-sm font-medium">
+						{translate('executions')}
+					</h2>
 					<ExecutionTable
 						executions={
 							snapshot.source === 'stub'
@@ -236,7 +248,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 				</section>
 				<section>
 					<h2 className="mb-3 text-sm font-medium">
-						{t('components')} · {runtime.components.length}
+						{translate('components')} · {runtime.components.length}
 					</h2>
 					<ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
 						{runtime.components.map((component) => (
@@ -252,8 +264,8 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 									{component.kind} · {component.path}
 								</p>
 								<p className="mt-1 break-all text-muted-foreground">
-									{component.image ?? t('unknown')} ·{' '}
-									{component.port ?? t('unknown')}
+									{component.image ?? translate('unknown')} ·{' '}
+									{component.port ?? translate('unknown')}
 								</p>
 							</li>
 						))}
@@ -262,7 +274,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 				<RuntimeFinops snapshot={snapshot} />
 				<RuntimeLoadTest key={runtime.id} snapshot={snapshot} />
 				<Card className="block p-5">
-					<h2 className="text-sm font-medium">{t('markdown')}</h2>
+					<h2 className="text-sm font-medium">{translate('markdown')}</h2>
 					<pre className="mt-4 max-h-96 overflow-auto rounded-md bg-background p-4 text-xs leading-relaxed">
 						<code>{runtime.markdown}</code>
 					</pre>
@@ -280,7 +292,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 							type="button"
 							variant="destructive"
 						>
-							{t('delete')}
+							{translate('delete')}
 						</Button>
 					) : null}
 					{!deleted && !runtime.credentialRevoked ? (
@@ -290,7 +302,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 							type="button"
 							variant="outline"
 						>
-							{t('revoke')}
+							{translate('revoke')}
 						</Button>
 					) : null}
 				</div>

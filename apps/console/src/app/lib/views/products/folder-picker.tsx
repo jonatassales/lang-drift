@@ -23,7 +23,7 @@ interface FolderPickerProps {
 export function FolderPicker(props: FolderPickerProps) {
 	const { onSelect, onClose, initial } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const [input, setInput] = useState('')
 	const [listing, setListing] = useState(initial)
 	const controller = useRef<AbortController | null>(null)
@@ -60,7 +60,7 @@ export function FolderPicker(props: FolderPickerProps) {
 				onOpenAutoFocus={focus.remember}
 			>
 				<DialogTitle className="mb-4 text-lg font-medium">
-					{t('chooseFolder')}
+					{translate('chooseFolder')}
 				</DialogTitle>
 				<form
 					className="mb-4 flex items-end gap-2"
@@ -70,7 +70,7 @@ export function FolderPicker(props: FolderPickerProps) {
 					}}
 				>
 					<label className={`${labelClass} min-w-0 flex-1`}>
-						{t('folderPath')}
+						{translate('folderPath')}
 						<input
 							className={fieldClass}
 							value={input}
@@ -78,7 +78,7 @@ export function FolderPicker(props: FolderPickerProps) {
 						/>
 					</label>
 					<Button type="submit" disabled={!input.trim()} variant="outline">
-						{t('openFolder')}
+						{translate('openFolder')}
 					</Button>
 				</form>
 				<Suspense fallback={<FolderListSkeleton />}>
@@ -94,7 +94,7 @@ export function FolderPicker(props: FolderPickerProps) {
 					type="button"
 					variant="outline"
 				>
-					{t('cancel')}
+					{translate('cancel')}
 				</Button>
 			</DialogContent>
 		</Dialog>

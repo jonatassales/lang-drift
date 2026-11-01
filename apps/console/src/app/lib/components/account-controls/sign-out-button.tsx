@@ -8,7 +8,7 @@ import { mutation } from '@data/api'
 import { useRouter } from '@i18n/navigation'
 
 export function SignOutButton() {
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const router = useRouter()
 	const [error, setError] = useState<unknown>(null)
 	const [pending, startTransition] = useTransition()
@@ -34,7 +34,7 @@ export function SignOutButton() {
 				}
 			>
 				<SignOut aria-hidden size={15} />
-				{t('logout')}
+				{translate('logout')}
 			</button>
 			{error ? (
 				<div className="absolute right-0 top-full w-64">

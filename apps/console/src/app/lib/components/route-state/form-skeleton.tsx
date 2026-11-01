@@ -5,12 +5,12 @@ import { useTranslations } from 'next-intl'
 import { HeadingSkeleton } from './heading-skeleton'
 
 export function FormSkeleton() {
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 
 	return (
 		<section
 			aria-busy="true"
-			aria-label={t('loading')}
+			aria-label={translate('loading')}
 			data-skeleton="form-skeleton"
 		>
 			<HeadingSkeleton />

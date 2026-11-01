@@ -7,12 +7,12 @@ import { TicketEntrySkeleton } from './ticket-entry-skeleton'
 const entries = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth']
 
 export function TicketListSkeleton() {
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 
 	return (
 		<section
 			aria-busy="true"
-			aria-label={t('loading')}
+			aria-label={translate('loading')}
 			data-skeleton="ticket-list-skeleton"
 		>
 			<div className="mb-4 flex justify-end">

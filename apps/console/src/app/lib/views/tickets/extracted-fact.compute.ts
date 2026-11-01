@@ -11,32 +11,39 @@ export function extractedFact(
 ): string | null {
 	if (!analysis.documentsRead.includes(id)) return null
 
-	const { number, t } = format
+	const { number, translate } = format
+
 	switch (id) {
 		case 'prd':
 			return analysis.useCase
-				? t('analysis.extracted.prd', { useCase: analysis.useCase })
+				? translate('analysis.extracted.prd', { useCase: analysis.useCase })
 				: null
+
 		case 'designDoc':
 			if (!analysis.bounded || analysis.budgetCents === null) return null
-			return t('analysis.extracted.designDoc', {
+
+			return translate('analysis.extracted.designDoc', {
 				budget: format.money(analysis.budgetCents),
 				cpu: number.format(analysis.bounded.cpuMillis),
 				memory: number.format(analysis.bounded.memoryMiB),
 			})
+
 		case 'spec':
 			if (
 				analysis.specComponents === null ||
 				analysis.acceptanceCriteria === null
 			)
 				return null
-			return t('analysis.extracted.spec', {
+
+			return translate('analysis.extracted.spec', {
 				components: analysis.specComponents,
 				criteria: analysis.acceptanceCriteria,
 			})
+
 		case 'guardrail':
 			if (!analysis.criteria) return null
-			return t('analysis.extracted.guardrail', {
+
+			return translate('analysis.extracted.guardrail', {
 				criteria: analysis.criteria.join(' · '),
 			})
 	}

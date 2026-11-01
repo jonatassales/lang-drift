@@ -3,12 +3,12 @@ import { Skeleton } from '@langdrift/web/ui/skeleton'
 import { useTranslations } from 'next-intl'
 
 export function FolderListSkeleton() {
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 
 	return (
 		<section
 			aria-busy="true"
-			aria-label={t('loading')}
+			aria-label={translate('loading')}
 			data-skeleton="folder-list-skeleton"
 		>
 			<div className="grid gap-2 py-3">

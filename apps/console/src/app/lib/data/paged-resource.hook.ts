@@ -7,9 +7,12 @@ import type { Page } from '@data/types'
 import { consoleRequest } from './api'
 
 /** Owns sequential page requests; route changes cancel every pending request. */
-export function usePagedResource<T>(path: string, initial: Promise<Page<T>>) {
+export function usePagedResource<Item>(
+	path: string,
+	initial: Promise<Page<Item>>,
+) {
 	const initialPage = use(initial)
-	const [items, setItems] = useState<T[]>(initialPage.items)
+	const [items, setItems] = useState<Item[]>(initialPage.items)
 	const [error, setError] = useState<unknown>(null)
 	const [loading, setLoading] = useState(false)
 	const [hasMore, setHasMore] = useState(initialPage.nextCursor !== null)
@@ -46,7 +49,8 @@ export function usePagedResource<T>(path: string, initial: Promise<Page<T>>) {
 					reset || !cursor
 						? ''
 						: `${separator}cursor=${encodeURIComponent(cursor)}`
-				const page = await consoleRequest<Page<T>>(`${path}${query}`, {
+
+				const page = await consoleRequest<Page<Item>>(`${path}${query}`, {
 					signal: controller.signal,
 				})
 

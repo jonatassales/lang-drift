@@ -11,7 +11,7 @@ export function measuredLine(
 	analysis: TicketAnalysis,
 	format: TicketFormat,
 ): ReactNode {
-	const { t } = format
+	const { translate } = format
 	if (analysis.measuredResources) {
 		return (
 			<span className="font-mono text-[12px]">
@@ -26,10 +26,10 @@ export function measuredLine(
 	return (
 		<>
 			<span className="font-mono text-[12px]">
-				{t('analysis.measuredNone')}
+				{translate('analysis.measuredNone')}
 			</span>
 			<span className="text-[11px] text-muted-foreground">
-				{t('analysis.measuredReasoning')}
+				{translate('analysis.measuredReasoning')}
 			</span>
 		</>
 	)

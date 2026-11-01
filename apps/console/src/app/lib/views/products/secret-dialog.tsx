@@ -20,7 +20,7 @@ interface SecretDialogProps {
 export function SecretDialog(props: SecretDialogProps) {
 	const { secret, pending, error, onClose } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const [copied, setCopied] = useState(false)
 	const [copyFailed, setCopyFailed] = useState(false)
 	const focus = useReturnFocus()
@@ -52,7 +52,7 @@ export function SecretDialog(props: SecretDialogProps) {
 				onOpenAutoFocus={focus.remember}
 			>
 				<DialogTitle className="text-lg font-medium">
-					{t('generateSecret')}
+					{translate('generateSecret')}
 				</DialogTitle>
 				<div className="mt-4 grid gap-4">
 					{pending ? <FieldSkeleton /> : null}
@@ -60,21 +60,21 @@ export function SecretDialog(props: SecretDialogProps) {
 					{secret ? (
 						<>
 							<p className="text-sm text-muted-foreground">
-								{t('projectSecretOnce')}
+								{translate('projectSecretOnce')}
 							</p>
 							<input
 								className={`${fieldClass} font-mono opacity-100`}
-								aria-label={t('secretValue')}
+								aria-label={translate('secretValue')}
 								value={secret}
 								disabled
 								readOnly
 							/>
 							<Button onClick={copy} type="button" variant="outline">
-								{t(copied ? 'secretCopied' : 'copySecret')}
+								{translate(copied ? 'secretCopied' : 'copySecret')}
 							</Button>
 							{copyFailed ? (
 								<p role="alert" className="text-sm text-muted-foreground">
-									{t('secretCopyFailed')}
+									{translate('secretCopyFailed')}
 								</p>
 							) : null}
 						</>
@@ -85,7 +85,7 @@ export function SecretDialog(props: SecretDialogProps) {
 						type="button"
 						variant="outline"
 					>
-						{t('close')}
+						{translate('close')}
 					</Button>
 				</div>
 			</DialogContent>

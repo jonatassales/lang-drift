@@ -7,8 +7,9 @@ export function pullRequestState(
 	workflow: TicketWorkflow,
 	format: TicketFormat,
 ): string {
-	const { t } = format
-	if (workflow.outcome === 'readyToMerge') return t('workflow.readyToMerge')
+	const { translate } = format
+	if (workflow.outcome === 'readyToMerge')
+		return translate('workflow.readyToMerge')
 
-	return t('workflow.readyForReview')
+	return translate('workflow.readyForReview')
 }

@@ -21,7 +21,7 @@ interface ProductSecretsProps {
 export function ProductSecrets(props: ProductSecretsProps) {
 	const { productId, initial } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const resource = useResource<{ secrets: ProductSecret[] }>(
 		`products/${productId}/secrets`,
 		0,
@@ -34,7 +34,10 @@ export function ProductSecrets(props: ProductSecretsProps) {
 
 	return (
 		<>
-			<PageHeading title={t('secrets')} description={t('projectSecretsIntro')}>
+			<PageHeading
+				title={translate('secrets')}
+				description={translate('projectSecretsIntro')}
+			>
 				<Button
 					disabled={pending || open}
 					onClick={() => {
@@ -59,7 +62,7 @@ export function ProductSecrets(props: ProductSecretsProps) {
 					type="button"
 					variant="outline"
 				>
-					{t('generateSecret')}
+					{translate('generateSecret')}
 				</Button>
 			</PageHeading>
 			{open ? (
@@ -85,13 +88,15 @@ export function ProductSecrets(props: ProductSecretsProps) {
 								<span className="text-sm">{credential.name}</span>
 								{credential.revokedAt ? (
 									<span className="text-xs text-muted-foreground">
-										{t('revoked')}
+										{translate('revoked')}
 									</span>
 								) : (
 									<Button
 										disabled={pending}
 										onClick={() => {
-											if (!window.confirm(t('revokeProjectSecretConfirm')))
+											if (
+												!window.confirm(translate('revokeProjectSecretConfirm'))
+											)
 												return
 											startTransition(async () => {
 												setError(null)
@@ -112,7 +117,7 @@ export function ProductSecrets(props: ProductSecretsProps) {
 										type="button"
 										variant="outline"
 									>
-										{t('revokeSecret')}
+										{translate('revokeSecret')}
 									</Button>
 								)}
 							</Card>

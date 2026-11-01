@@ -20,7 +20,7 @@ interface RuntimeWidgetProps {
 export function RuntimeWidget(props: RuntimeWidgetProps) {
 	const { snapshot, onRefresh } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const { runtime, executions } = snapshot
 	const state = executions.some((execution) => execution.state === 'running')
 		? 'running'
@@ -49,35 +49,38 @@ export function RuntimeWidget(props: RuntimeWidgetProps) {
 			</header>
 			<div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
 				<RuntimeStackIcons stacks={stacks} size={14} />
-				<span>{t('componentCount', { count: runtime.components.length })}</span>
 				<span>
-					{runtime.configuration.model} · {t(runtime.configuration.effort)}
+					{translate('componentCount', { count: runtime.components.length })}
 				</span>
-				{snapshot.partial ? <span>{t('partialTelemetry')}</span> : null}
+				<span>
+					{runtime.configuration.model} ·{' '}
+					{translate(runtime.configuration.effort)}
+				</span>
+				{snapshot.partial ? <span>{translate('partialTelemetry')}</span> : null}
 			</div>
 			<div className="mt-3 grid gap-2 sm:grid-cols-3 sm:gap-5">
 				<RuntimeMeter
-					label={t('cpu')}
+					label={translate('cpu')}
 					value={peak(executions, 'cpuUsed')}
 					limit={runtime.configuration.cpu}
 				/>
 				<RuntimeMeter
-					label={t('memory')}
+					label={translate('memory')}
 					value={peak(executions, 'memoryUsedMiB')}
 					limit={runtime.configuration.memoryMiB}
 				/>
 				<RuntimeMeter
-					label={t('llmCost')}
+					label={translate('llmCost')}
 					value={peak(executions, 'llmCostUsd')}
 					limit={runtime.configuration.llmBudgetUsd ?? null}
 				/>
 			</div>
 			<p className="mt-2 text-[10px] text-muted-foreground">
-				{t('peakPerExecution')}
+				{translate('peakPerExecution')}
 			</p>
 			<details className="mt-2 border-t border-border pt-2">
 				<summary className="cursor-pointer text-[11px] text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
-					{t('quickReport')}
+					{translate('quickReport')}
 				</summary>
 				<div className="mt-3 grid gap-3 lg:grid-cols-2">
 					<RuntimeFinops snapshot={snapshot} />

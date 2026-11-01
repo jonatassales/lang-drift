@@ -10,7 +10,7 @@ import { UnknownValue } from './unknown-value'
 export function planLine(plan: TicketPlan, format: TicketFormat): ReactNode {
 	if (!plan.suggested) return <UnknownValue />
 
-	return format.t('plan.summary', {
+	return format.translate('plan.summary', {
 		figures: format.figures(plan.suggested),
 		pending: format.authorization(plan),
 	})

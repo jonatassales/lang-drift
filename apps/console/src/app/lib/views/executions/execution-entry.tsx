@@ -14,7 +14,7 @@ interface ExecutionEntryProps {
 export function ExecutionEntry(props: ExecutionEntryProps) {
 	const { item } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const format = useFormatter()
 	const dateTime = useDateTime()
 	const { execution } = item
@@ -36,38 +36,38 @@ export function ExecutionEntry(props: ExecutionEntryProps) {
 			</p>
 			<dl className="grid grid-cols-2 gap-2 sm:grid-cols-4">
 				<div>
-					<dt className="text-muted-foreground">{t('cpuUsage')}</dt>
+					<dt className="text-muted-foreground">{translate('cpuUsage')}</dt>
 					<dd>
 						{execution.cpuUsed === null
-							? t('unknown')
+							? translate('unknown')
 							: format.number(execution.cpuUsed, {
 									maximumFractionDigits: 3,
 								})}
 					</dd>
 				</div>
 				<div>
-					<dt className="text-muted-foreground">{t('memoryUsage')}</dt>
+					<dt className="text-muted-foreground">{translate('memoryUsage')}</dt>
 					<dd>
 						{execution.memoryUsedMiB === null
-							? t('unknown')
+							? translate('unknown')
 							: format.number(execution.memoryUsedMiB, {
 									maximumFractionDigits: 1,
 								})}
 					</dd>
 				</div>
 				<div>
-					<dt className="text-muted-foreground">{t('revision')}</dt>
+					<dt className="text-muted-foreground">{translate('revision')}</dt>
 					<dd>{execution.revision}</dd>
 				</div>
 				<div>
-					<dt className="text-muted-foreground">{t('observedAt')}</dt>
+					<dt className="text-muted-foreground">{translate('observedAt')}</dt>
 					<dd>
 						{execution.observedAt
 							? dateTime(new Date(execution.observedAt), {
 									dateStyle: 'short',
 									timeStyle: 'medium',
 								})
-							: t('unknown')}
+							: translate('unknown')}
 					</dd>
 				</div>
 			</dl>

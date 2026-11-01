@@ -9,28 +9,28 @@ interface RuntimeFinopsProps {
 export function RuntimeFinops(props: RuntimeFinopsProps) {
 	const { snapshot } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const status = useTranslations('status')
 	const format = useFormatter()
 	const { runtime } = snapshot
 
 	return (
 		<section className="rounded-lg border border-border p-4">
-			<h2 className="text-sm font-medium">{t('finopsReport')}</h2>
+			<h2 className="text-sm font-medium">{translate('finopsReport')}</h2>
 			<div className="mt-4 grid gap-4 text-xs">
 				<p className="leading-relaxed text-muted-foreground">
-					{t('finopsBasis')}
+					{translate('finopsBasis')}
 				</p>
 				<dl className="grid gap-2 sm:grid-cols-2">
-					<dt>{t('configuredLimits')}</dt>
+					<dt>{translate('configuredLimits')}</dt>
 					<dd>
 						{format.number(runtime.configuration.cpu)} CPU ·{' '}
 						{format.number(runtime.configuration.memoryMiB)} MiB
 					</dd>
-					<dt>{t('llmBudget')}</dt>
+					<dt>{translate('llmBudget')}</dt>
 					<dd>
 						{runtime.configuration.llmBudgetUsd === undefined
-							? t('unknown')
+							? translate('unknown')
 							: format.number(runtime.configuration.llmBudgetUsd, {
 									style: 'currency',
 									currency: 'USD',
@@ -46,18 +46,19 @@ export function RuntimeFinops(props: RuntimeFinopsProps) {
 							{execution.environmentId} / {execution.id}
 						</p>
 						<p>
-							{t('measurementWindow')}: {execution.measuredFrom ?? t('unknown')}{' '}
-							→ {execution.observedAt ?? t('unknown')}
+							{translate('measurementWindow')}:{' '}
+							{execution.measuredFrom ?? translate('unknown')} →{' '}
+							{execution.observedAt ?? translate('unknown')}
 						</p>
 						<p>
-							{t('downtime')}:{' '}
+							{translate('downtime')}:{' '}
 							{execution.downtimeMilliseconds === null
-								? t('unknown')
-								: t('downtimeReport', {
+								? translate('unknown')
+								: translate('downtimeReport', {
 										milliseconds: execution.downtimeMilliseconds,
 										quality:
 											execution.downtimeQuality === 'unknown'
-												? t('unknown')
+												? translate('unknown')
 												: status(execution.downtimeQuality),
 									})}
 						</p>
