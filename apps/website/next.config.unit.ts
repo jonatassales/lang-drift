@@ -8,7 +8,7 @@ const productionPolicy = {
 	'default-src': ["'self'"],
 	'script-src': ["'self'", "'unsafe-inline'", 'https://va.vercel-scripts.com'],
 	'style-src': ["'self'", "'unsafe-inline'"],
-	'img-src': ["'self'", 'data:', 'blob:'],
+	'img-src': ["'self'", 'data:', 'blob:', 'https://img.shields.io'],
 	'font-src': ["'self'", 'data:'],
 	'connect-src': [
 		"'self'",
@@ -123,7 +123,13 @@ describe('the website security headers', () => {
 				'https://vercel.live',
 			],
 			'style-src': ["'self'", "'unsafe-inline'", 'https://vercel.live'],
-			'img-src': ["'self'", 'data:', 'blob:', 'https://vercel.live'],
+			'img-src': [
+				"'self'",
+				'data:',
+				'blob:',
+				'https://img.shields.io',
+				'https://vercel.live',
+			],
 			'font-src': ["'self'", 'data:', 'https://vercel.live'],
 			'connect-src': [
 				"'self'",
