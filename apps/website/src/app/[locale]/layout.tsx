@@ -13,7 +13,6 @@ import { routing } from '@i18n/routing'
 
 import '@langdrift/web/styles.css'
 import '@app/template/tailwind/app.css'
-import '@app/hero.css'
 
 interface LayoutProps {
 	children: ReactNode
