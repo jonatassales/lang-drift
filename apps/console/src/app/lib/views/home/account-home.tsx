@@ -23,9 +23,14 @@ export function AccountHome(props: AccountHomeProps) {
 	const resource = useResource<HomeOverview>('home', 5000, initial)
 	const decided = useRef(false)
 	useEffect(() => {
-		if (decided.current || !resource.data || resource.error) return
+		const shouldWait =
+			decided.current || !resource.data || Boolean(resource.error)
+		if (shouldWait || !resource.data) return
+
 		decided.current = true
-		if (resource.data.products.length && !resource.data.running.length)
+		const shouldRedirect =
+			resource.data.products.length > 0 && resource.data.running.length === 0
+		if (shouldRedirect)
 			router.replace(`/products/${resource.data.products[0].id}`)
 	}, [resource.data, resource.error, router])
 	if (resource.error)

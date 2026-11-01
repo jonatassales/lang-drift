@@ -49,6 +49,14 @@ export function RuntimeForm(props: RuntimeFormProps) {
 		}))
 	}
 
+	let submitLabel = translate('createRuntime')
+	if (pending) {
+		submitLabel = translate('saving')
+	} else if (runtime) {
+		submitLabel = translate('save')
+	}
+	const cannotRecommend = locked || pending || selectedPaths.length === 0
+
 	return (
 		<div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
 			<Card className="block p-5">
@@ -57,15 +65,13 @@ export function RuntimeForm(props: RuntimeFormProps) {
 					onSubmit={(event) => {
 						event.preventDefault()
 						const form = new FormData(event.currentTarget)
-						let selected: Component[]
-						try {
-							selected = componentsFromForm(form, components)
-							setInvalidBuild(false)
-						} catch {
+						const selected = componentsFromForm(form, components)
+						if (!selected) {
 							setInvalidBuild(true)
 
 							return
 						}
+						setInvalidBuild(false)
 						setError(null)
 						startTransition(async () => {
 							try {
@@ -284,11 +290,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 							</p>
 						) : null}
 						{error ? <ErrorNotice error={error} /> : null}
-						<Button type="submit">
-							{translate(
-								pending ? 'saving' : runtime ? 'save' : 'createRuntime',
-							)}
-						</Button>
+						<Button type="submit">{submitLabel}</Button>
 					</fieldset>
 					{locked ? (
 						<p role="status" className="mt-4 text-sm text-muted-foreground">
@@ -316,7 +318,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 						? `runtimes/${runtime.id}/recommendations`
 						: `products/${productId}/recommendations`
 				}
-				disabled={locked || pending || selectedPaths.length === 0}
+				disabled={cannotRecommend}
 				onApply={apply}
 			/>
 		</div>

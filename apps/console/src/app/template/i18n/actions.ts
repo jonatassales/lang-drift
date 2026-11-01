@@ -4,7 +4,9 @@ import { cookies, headers } from 'next/headers'
 import { isLocale, localeCookie } from './config'
 export async function setLocale(locale: string) {
 	if (!isLocale(locale)) return { ok: false }
+
 	const store = await cookies()
+
 	const requestHeaders = await headers()
 
 	store.set(localeCookie, locale, {

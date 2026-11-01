@@ -15,6 +15,7 @@ const catalogs = {
 
 export default getRequestConfig(async ({ requestLocale }) => {
 	const requested = await requestLocale
+
 	const locale = isLocale(requested) ? requested : 'en'
 
 	return {

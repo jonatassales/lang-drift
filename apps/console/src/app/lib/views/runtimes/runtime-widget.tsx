@@ -11,6 +11,7 @@ import { RuntimeLoadTest } from './runtime-load-test'
 import { RuntimeMeter } from './runtime-meter'
 import { RuntimePlayback } from './runtime-playback'
 import { RuntimeStackIcons } from './runtime-stack-icons'
+import { runtimeState } from './runtime-state.compute'
 
 interface RuntimeWidgetProps {
 	snapshot: RuntimeWidgetSnapshot
@@ -22,10 +23,7 @@ export function RuntimeWidget(props: RuntimeWidgetProps) {
 
 	const translate = useTranslations('ui')
 	const { runtime, executions } = snapshot
-	const state = executions.some((execution) => execution.state === 'running')
-		? 'running'
-		: (executions[0]?.state ??
-			(runtime.desiredState === 'running' ? 'unknown' : runtime.desiredState))
+	const state = runtimeState(snapshot)
 	const stacks = Array.from(
 		new Set(runtime.components.flatMap((component) => component.stacks ?? [])),
 	)

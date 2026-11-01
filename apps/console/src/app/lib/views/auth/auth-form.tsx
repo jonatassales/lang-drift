@@ -28,6 +28,13 @@ export function AuthForm(props: AuthFormProps) {
 	const [error, setError] = useState<unknown>(null)
 	const [pending, startTransition] = useTransition()
 
+	let submitLabel = translate('login')
+	if (pending) {
+		submitLabel = translate('saving')
+	} else if (signup) {
+		submitLabel = translate('signup')
+	}
+
 	return (
 		<section className="relative isolate min-h-screen overflow-hidden bg-background">
 			<HeroShader tone="muted" />
@@ -104,7 +111,7 @@ export function AuthForm(props: AuthFormProps) {
 						</label>
 						{error ? <ErrorNotice error={error} /> : null}
 						<Button type="submit" disabled={pending}>
-							{translate(pending ? 'saving' : signup ? 'signup' : 'login')}
+							{submitLabel}
 						</Button>
 					</form>
 					<Link

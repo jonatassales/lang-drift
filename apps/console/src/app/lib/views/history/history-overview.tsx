@@ -27,6 +27,8 @@ export function HistoryOverview(props: HistoryOverviewProps) {
 		`products/${productId}/history`,
 		initial,
 	)
+	const isEmpty =
+		!resource.loading && !resource.error && resource.items.length === 0
 
 	return (
 		<>
@@ -65,7 +67,7 @@ export function HistoryOverview(props: HistoryOverviewProps) {
 			{resource.error ? (
 				<ErrorNotice error={resource.error} retry={resource.retry} />
 			) : null}
-			{!resource.loading && !resource.error && !resource.items.length ? (
+			{isEmpty ? (
 				<p className="text-sm text-muted-foreground">{translate('empty')}</p>
 			) : null}
 			<ListEnd

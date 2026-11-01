@@ -37,6 +37,8 @@ export function TicketListing(props: TicketListingProps) {
 		`products/${productId}/tickets?reached=${phase}`,
 		initial,
 	)
+	const isEmpty =
+		!resource.loading && !resource.error && resource.items.length === 0
 
 	return (
 		<>
@@ -76,7 +78,7 @@ export function TicketListing(props: TicketListingProps) {
 			{resource.error ? (
 				<ErrorNotice error={resource.error} retry={resource.retry} />
 			) : null}
-			{!resource.loading && !resource.error && !resource.items.length ? (
+			{isEmpty ? (
 				<p className="text-sm text-muted-foreground">{translate('empty')}</p>
 			) : null}
 			<ListEnd

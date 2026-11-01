@@ -42,12 +42,17 @@ export function ProductCreate(props: ProductCreateProps) {
 		setDropped(false)
 	}
 
+	let headingKey = 'createProject'
+	if (productId) {
+		headingKey = 'attachFolder'
+	} else if (first) {
+		headingKey = 'firstProject'
+	}
+
 	return (
 		<>
 			<PageHeading
-				title={translate(
-					productId ? 'attachFolder' : first ? 'firstProject' : 'createProject',
-				)}
+				title={translate(headingKey)}
 				description={translate('localProjectIntro')}
 			/>
 			<Card className="block mx-auto max-w-2xl p-7 sm:mt-10">

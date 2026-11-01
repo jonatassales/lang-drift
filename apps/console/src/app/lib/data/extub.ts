@@ -12,13 +12,23 @@ export async function extubRequest(
 		const host = request.headers.get('host') ?? url.host
 		const browser = new URL(`${url.protocol}//${host}`)
 		const token = process.env.EXTUB_TOKEN?.trim()
-		if (!consoleHostAllowed(browser.hostname, token) || crossSite(request))
+		const hostAllowed = consoleHostAllowed(browser.hostname, token)
+		const isCrossSite = crossSite(request)
+		if (!hostAllowed || isCrossSite)
 			return Response.json({ error: { code: 'local_only' } }, { status: 403 })
-		const base = extubBase(process.env.EXTUB_URL, token)
+
+		const extubUrl = process.env.EXTUB_URL
+		if (!extubUrl)
+			return Response.json({ error: { code: 'local_only' } }, { status: 503 })
+
+		const base = extubBase(extubUrl, token)
 		if (!base)
 			return Response.json({ error: { code: 'local_only' } }, { status: 503 })
+
 		let body: Uint8Array | undefined
-		if (!['GET', 'HEAD'].includes(request.method) && request.body) {
+		const hasPayload =
+			!['GET', 'HEAD'].includes(request.method) && Boolean(request.body)
+		if (hasPayload && request.body) {
 			const reader = request.body.getReader()
 			const chunks: Uint8Array[] = []
 			let total = 0

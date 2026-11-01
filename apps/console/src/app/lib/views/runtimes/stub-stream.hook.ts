@@ -98,6 +98,7 @@ export function useStubStream(enabled: boolean, productId?: string) {
 				})
 
 				if (!response.ok) throw new Error('negotiation_failed')
+
 				const answer = await response.json()
 
 				await connection.setRemoteDescription(answer)

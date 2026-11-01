@@ -39,6 +39,7 @@ export function LanguageSettings(props: LanguageSettingsProps) {
 
 							if (!result.ok) {
 								setFailed(true)
+
 								return
 							}
 							router.replace(

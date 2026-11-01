@@ -61,6 +61,7 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 	const [reading, setReading] = useState(false)
 	const [error, setError] = useState<unknown>(null)
 	const [pending, startTransition] = useTransition()
+	const isBusy = pending || disabled || reading
 	useEffect(() => {
 		return () => {
 			request.current?.abort()
@@ -80,7 +81,7 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 					className={fieldClass}
 					type="file"
 					accept=".md,text/markdown"
-					disabled={pending || disabled || reading}
+					disabled={isBusy}
 					onChange={async (event) => {
 						const version = ++readingVersion.current
 						request.current?.abort()
@@ -94,6 +95,7 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 							if (!file) return
 							if (file.size > 16000)
 								throw new ConsoleError('invalid_ticket', 400)
+
 							const markdown = await file.text()
 
 							if (version === readingVersion.current)
@@ -119,7 +121,7 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 			</label>
 			<Button
 				className="mt-4"
-				disabled={pending || disabled || reading}
+				disabled={isBusy}
 				onClick={() => {
 					request.current?.abort()
 					const controller = new AbortController()
