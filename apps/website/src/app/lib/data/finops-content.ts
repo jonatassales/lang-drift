@@ -165,6 +165,7 @@ export const finopsFaqIds = [
 	'spending',
 	'unknown',
 	'authorization',
+	'license',
 	'availability',
 ] as const
 

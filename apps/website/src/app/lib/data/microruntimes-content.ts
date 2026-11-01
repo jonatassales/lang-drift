@@ -59,6 +59,7 @@ export const microruntimesFaqIds = [
 	'source',
 	'stacks',
 	'sandbox',
+	'license',
 	'availability',
 ] as const
 

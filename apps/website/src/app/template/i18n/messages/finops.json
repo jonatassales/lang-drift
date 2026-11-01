@@ -212,6 +212,10 @@
 					"question": "Can an agent raise the budget?",
 					"answer": "No. An agent can estimate, recommend and run permitted work. Widening funding, scope or access takes a separately authorized policy decision by the team's owner."
 				},
+				"license": {
+					"question": "How is LangDrift FinOps licensed?",
+					"answer": "LangDrift is open-source software licensed under the Apache License, Version 2.0. The code is available on GitHub to inspect, run and modify."
+				},
 				"availability": {
 					"question": "Can I use LangDrift FinOps today?",
 					"answer": "The pages describe the intended model with illustrative values. The ledger, the gate and the integrations shown here are not available yet, and demo requests are paused for now."
@@ -431,6 +435,10 @@
 				"authorization": {
 					"question": "Um agente pode aumentar o orçamento?",
 					"answer": "Não. Um agente pode estimar, recomendar e executar o trabalho permitido. Ampliar financiamento, escopo ou acesso exige uma decisão de política autorizada separadamente pelo responsável do time."
+				},
+				"license": {
+					"question": "Como o LangDrift FinOps é licenciado?",
+					"answer": "O LangDrift é um software de código aberto licenciado sob a Licença Apache, Versão 2.0. O código está disponível no GitHub para inspeção, execução e modificação."
 				},
 				"availability": {
 					"question": "Posso usar o LangDrift FinOps hoje?",
@@ -652,6 +660,10 @@
 					"question": "代理可以提高預算嗎？",
 					"answer": "不行。代理可以估算、建議並執行被允許的工作。擴大資金、範圍或存取權，需要團隊負責人另行授權的政策決定。"
 				},
+				"license": {
+					"question": "LangDrift FinOps 的授權方式為何？",
+					"answer": "LangDrift 是依據 Apache 授權條款第 2.0 版授權的開源軟體。原始碼公開在 GitHub 上，可供檢視、執行與修改。"
+				},
 				"availability": {
 					"question": "我今天可以使用 LangDrift FinOps 嗎？",
 					"answer": "這些頁面以示意數值描述預期中的模型。這裡展示的帳本、閘門與整合尚未可用，示範申請目前暫停。"
@@ -872,6 +884,10 @@
 					"question": "エージェントは予算を増やせますか？",
 					"answer": "いいえ。エージェントは見積もり、推奨し、許可された作業を実行できます。資金、スコープ、アクセスを広げるには、チームの責任者による別途承認されたポリシーの決定が必要です。"
 				},
+				"license": {
+					"question": "LangDrift FinOps のライセンスはどうなっていますか？",
+					"answer": "LangDrift は Apache License, Version 2.0 の下で提供されるオープンソースソフトウェアです。コードは GitHub で公開されており、閲覧、実行、変更できます。"
+				},
 				"availability": {
 					"question": "LangDrift FinOps は今日から使えますか？",
 					"answer": "これらのページはイメージ上の値で想定するモデルを説明しています。ここに示した台帳、ゲート、連携はまだ利用できず、デモの申し込みは当面停止しています。"
@@ -1091,6 +1107,10 @@
 				"authorization": {
 					"question": "Tác tử có thể tăng ngân sách không?",
 					"answer": "Không. Tác tử có thể ước tính, đề xuất và chạy công việc được phép. Mở rộng vốn, phạm vi hay quyền truy cập cần một quyết định chính sách được người phụ trách đội phê duyệt riêng."
+				},
+				"license": {
+					"question": "LangDrift FinOps được cấp phép như thế nào?",
+					"answer": "LangDrift là phần mềm nguồn mở được cấp phép theo Giấy phép Apache, Phiên bản 2.0. Mã nguồn có sẵn trên GitHub để kiểm tra, chạy và sửa đổi."
 				},
 				"availability": {
 					"question": "Tôi có thể dùng LangDrift FinOps hôm nay không?",

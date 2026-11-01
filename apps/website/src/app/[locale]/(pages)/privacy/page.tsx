@@ -54,7 +54,7 @@ export default async function PrivacyPage(props: PrivacyPageProps) {
 							{copy.title}
 						</h1>
 						<p className="text-sm">
-							<time dateTime="2026-09-30">{copy.updated}</time>
+							<time dateTime="2026-11-01">{copy.updated}</time>
 						</p>
 						<p>{copy.introduction}</p>
 					</header>
