@@ -1,18 +1,17 @@
 'use client'
+import { Skeleton } from '@langdrift/web/ui/skeleton'
 import { useTranslations } from 'next-intl'
-
-import { Skeleton } from '@ui/skeleton'
 
 const cells = ['status', 'phase', 'created']
 const sections = ['artifacts', 'analysis', 'plan']
 
 export function TicketDetailSkeleton() {
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 
 	return (
 		<section
 			aria-busy="true"
-			aria-label={t('loading')}
+			aria-label={translate('loading')}
 			data-skeleton="ticket-detail-skeleton"
 		>
 			<div className="mb-6 grid gap-2">

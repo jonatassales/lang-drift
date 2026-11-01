@@ -18,7 +18,7 @@ export function TicketEntryLink(props: TicketEntryLinkProps) {
 	return (
 		<Link
 			aria-labelledby={labelledBy}
-			className="absolute inset-0 rounded-xl"
+			className="absolute inset-0 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 			href={ticketPath(ticket, listing)}
 			prefetch={false}
 		/>

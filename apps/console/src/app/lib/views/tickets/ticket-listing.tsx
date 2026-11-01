@@ -1,13 +1,13 @@
 'use client'
 
+import { Button } from '@langdrift/web/ui/button'
+import { ListEnd } from '@langdrift/web/ui/list-end'
 import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { TicketEntrySkeleton } from '@components/route-state/ticket-entry-skeleton'
 import { usePagedResource } from '@data/paged-resource.hook'
 import type { Page, Ticket, TicketPhase } from '@data/types'
-import { Button } from '@ui/button'
-import { ListEnd } from '@ui/list-end'
 
 import { TicketCard } from './ticket-card'
 import { TicketRow } from './ticket-row'
@@ -32,22 +32,29 @@ const listLabels: Record<TicketPhase, string> = {
 export function TicketListing(props: TicketListingProps) {
 	const { initial, phase, productId } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const resource = usePagedResource<Ticket>(
 		`products/${productId}/tickets?reached=${phase}`,
 		initial,
 	)
+	const isEmpty =
+		!resource.loading && !resource.error && resource.items.length === 0
 
 	return (
 		<>
 			<div className="mb-4 flex justify-end">
-				<Button onClick={resource.refresh} disabled={resource.loading}>
-					{t('refresh')}
+				<Button
+					onClick={resource.refresh}
+					disabled={resource.loading}
+					type="button"
+					variant="outline"
+				>
+					{translate('refresh')}
 				</Button>
 			</div>
 			{resource.items.length ? (
 				<ol
-					aria-label={t(listLabels[phase])}
+					aria-label={translate(listLabels[phase])}
 					className="m-0 grid list-none grid-cols-1 gap-3 p-0 lg:gap-2"
 				>
 					{resource.items.map((ticket) => (
@@ -61,7 +68,7 @@ export function TicketListing(props: TicketListingProps) {
 			{resource.loading ? (
 				<div
 					aria-busy="true"
-					aria-label={t('loading')}
+					aria-label={translate('loading')}
 					className="mt-3 lg:mt-2"
 					role="status"
 				>
@@ -71,13 +78,13 @@ export function TicketListing(props: TicketListingProps) {
 			{resource.error ? (
 				<ErrorNotice error={resource.error} retry={resource.retry} />
 			) : null}
-			{!resource.loading && !resource.error && !resource.items.length ? (
-				<p className="text-sm text-muted-foreground">{t('empty')}</p>
+			{isEmpty ? (
+				<p className="text-sm text-muted-foreground">{translate('empty')}</p>
 			) : null}
 			<ListEnd
 				failed={Boolean(resource.error)}
 				hasMore={resource.hasMore}
-				label={t('loadMore')}
+				label={translate('loadMore')}
 				loading={resource.loading}
 				onEnd={resource.next}
 			/>

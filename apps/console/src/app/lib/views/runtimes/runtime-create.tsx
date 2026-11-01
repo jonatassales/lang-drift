@@ -21,16 +21,25 @@ interface RuntimeCreateProps {
 export function RuntimeCreate(props: RuntimeCreateProps) {
 	const { productId, initial } = props
 
-	const t = useTranslations('ui')
+	const [created, setCreated] = useState<{
+		runtime: Runtime
+		secret?: string
+	} | null>(null)
+
 	const product = useResource<{ product: Product }>(
 		`products/${productId}`,
 		0,
 		initial,
 	)
-	const [created, setCreated] = useState<{
-		runtime: Runtime
-		secret?: string
-	} | null>(null)
+	const translate = useTranslations('ui')
+
+	function handleSaved(runtime: Runtime, secret?: string) {
+		setCreated({
+			runtime,
+			secret,
+		})
+	}
+
 	if (product.error)
 		return <ErrorNotice error={product.error} retry={product.refresh} />
 	if (!product.data) return null
@@ -38,8 +47,8 @@ export function RuntimeCreate(props: RuntimeCreateProps) {
 	return (
 		<>
 			<PageHeading
-				title={created ? created.runtime.name : t('createRuntime')}
-				description={t('configurationIntro')}
+				title={created ? created.runtime.name : translate('createRuntime')}
+				description={translate('configurationIntro')}
 			/>
 			{created ? (
 				<div className="grid max-w-2xl gap-5">
@@ -48,19 +57,14 @@ export function RuntimeCreate(props: RuntimeCreateProps) {
 						local={!!product.data.product.source}
 					/>
 					<Link href={`/runtimes/${created.runtime.id}`} className={linkClass}>
-						{t('viewRuntime')}
+						{translate('viewRuntime')}
 					</Link>
 				</div>
 			) : (
 				<RuntimeForm
 					productId={productId}
 					components={product.data.product.components}
-					onSaved={(runtime, secret) =>
-						setCreated({
-							runtime,
-							secret,
-						})
-					}
+					onSaved={handleSaved}
 				/>
 			)}
 		</>

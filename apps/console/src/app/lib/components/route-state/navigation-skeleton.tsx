@@ -1,17 +1,17 @@
 'use client'
 
+import { Skeleton } from '@langdrift/web/ui/skeleton'
 import { useTranslations } from 'next-intl'
 
 import { Navigation } from '@components/navigation/navigation'
-import { Skeleton } from '@ui/skeleton'
 
 export function NavigationSkeleton() {
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 
 	return (
 		<section
 			aria-busy="true"
-			aria-label={t('loading')}
+			aria-label={translate('loading')}
 			data-skeleton="navigation-skeleton"
 		>
 			<Navigation products={[]} />

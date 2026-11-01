@@ -15,10 +15,10 @@ interface TicketArtifactsProps {
 export function TicketArtifacts(props: TicketArtifactsProps) {
 	const { ticket } = props
 
-	const t = useTranslations('tickets')
+	const translate = useTranslations('tickets')
 
 	return (
-		<TicketSection id="artifacts" title={t('ticket.links')}>
+		<TicketSection id="artifacts" title={translate('ticket.links')}>
 			<DetailList
 				className="max-w-3xl"
 				items={ticketDocumentIds.map((id) => ({
@@ -28,7 +28,7 @@ export function TicketArtifacts(props: TicketArtifactsProps) {
 						</span>
 					),
 					id,
-					term: t(`ticket.artifacts.${id}`),
+					term: translate(`ticket.artifacts.${id}`),
 				}))}
 			/>
 		</TicketSection>

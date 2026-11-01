@@ -1,11 +1,11 @@
 'use client'
 
+import { CaretDown, CheckCircle } from '@langdrift/web/ui/icons/client'
 import { FinopsIcon, MicroruntimesIcon } from '@langdrift/web/ui/icons/platform'
 import { useTranslations } from 'next-intl'
 
 import { useDismissibleMenu } from '@components/menu/use-dismissible-menu.hook'
 import { Link, usePathname } from '@i18n/navigation'
-import { CaretDown, CheckCircle } from '@ui/icons'
 
 import { type Area, areaHome, areaOf, areas } from './area'
 
@@ -23,25 +23,31 @@ const areaIcon: Record<Area, typeof FinopsIcon> = {
 export function AreaSwitcher(props: AreaSwitcherProps) {
 	const { onNavigate } = props
 
-	const t = useTranslations('ui')
 	const pathname = usePathname()
 	const { containerRef, menuId, open, setOpen, triggerRef } =
 		useDismissibleMenu()
-	const current = areaOf(pathname)
-	const CurrentIcon = areaIcon[current]
 
-	function choose() {
+	const translate = useTranslations('ui')
+
+	function handleToggle() {
+		setOpen(!open)
+	}
+
+	function handleChoose() {
 		setOpen(false)
 		onNavigate?.()
 	}
+
+	const current = areaOf(pathname)
+	const CurrentIcon = areaIcon[current]
 
 	return (
 		<div className="relative mb-4" ref={containerRef}>
 			<button
 				aria-controls={open ? menuId : undefined}
 				aria-expanded={open}
-				className="grid min-h-11 w-full cursor-pointer grid-cols-[28px_minmax(0,1fr)_auto] items-center gap-2 rounded-lg border border-border bg-muted px-2 py-1.5 text-left text-foreground hover:bg-background"
-				onClick={() => setOpen(!open)}
+				className="grid min-h-11 w-full cursor-pointer grid-cols-[28px_minmax(0,1fr)_auto] items-center gap-2 rounded-lg border border-border bg-muted px-2 py-1.5 text-left text-foreground hover:bg-background focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+				onClick={handleToggle}
 				ref={triggerRef}
 				type="button"
 			>
@@ -53,17 +59,17 @@ export function AreaSwitcher(props: AreaSwitcherProps) {
 				</span>
 				<span className="grid min-w-0 gap-px">
 					<small className="text-[9px] tracking-wide text-muted-foreground uppercase">
-						{t('area')}
+						{translate('area')}
 					</small>
 					<strong className="truncate text-[12px] font-medium">
-						{t(current)}
+						{translate(current)}
 					</strong>
 				</span>
 				<CaretDown aria-hidden size={12} />
 			</button>
 			{open ? (
 				<nav
-					aria-label={t('areas')}
+					aria-label={translate('areas')}
 					className="absolute inset-x-0 top-[calc(100%+5px)] z-50 grid gap-0.5 rounded-lg border border-border bg-card p-1 shadow-lg"
 					id={menuId}
 				>
@@ -73,13 +79,13 @@ export function AreaSwitcher(props: AreaSwitcherProps) {
 						return (
 							<Link
 								aria-current={area === current ? 'true' : undefined}
-								className="flex min-h-10 items-center gap-2.5 rounded-md px-2 text-[12px] no-underline hover:bg-muted"
+								className="flex min-h-10 items-center gap-2.5 rounded-md px-2 text-[12px] no-underline hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 								href={areaHome[area]}
 								key={area}
-								onClick={choose}
+								onClick={handleChoose}
 							>
 								<Icon className="size-4" />
-								<span className="flex-1">{t(area)}</span>
+								<span className="flex-1">{translate(area)}</span>
 								{area === current ? (
 									<CheckCircle aria-hidden className="text-primary" size={15} />
 								) : null}

@@ -13,7 +13,7 @@ interface HistoryEntryProps {
 export function HistoryEntry(props: HistoryEntryProps) {
 	const { item } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const kinds = useTranslations('event')
 	const causes = useTranslations('cause')
 	const dateTime = useDateTime()
@@ -24,7 +24,7 @@ export function HistoryEntry(props: HistoryEntryProps) {
 			<header className="flex flex-wrap items-center justify-between gap-3">
 				<Link
 					prefetch={false}
-					className="max-w-full break-words font-medium hover:underline"
+					className="max-w-full break-words font-medium hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 					href={`/runtimes/${event.runtimeId}/history`}
 				>
 					{item.runtimeName}
@@ -37,13 +37,13 @@ export function HistoryEntry(props: HistoryEntryProps) {
 			</p>
 			<dl className="grid grid-cols-1 gap-2 sm:grid-cols-3">
 				<div>
-					<dt className="text-muted-foreground">{t('environments')}</dt>
+					<dt className="text-muted-foreground">{translate('environments')}</dt>
 					<dd className="break-all">
 						{item.environmentName ?? event.environmentId ?? '—'}
 					</dd>
 				</div>
 				<div>
-					<dt className="text-muted-foreground">{t('occurredAt')}</dt>
+					<dt className="text-muted-foreground">{translate('occurredAt')}</dt>
 					<dd>
 						{dateTime(new Date(event.occurredAt), {
 							dateStyle: 'short',
@@ -52,7 +52,7 @@ export function HistoryEntry(props: HistoryEntryProps) {
 					</dd>
 				</div>
 				<div>
-					<dt className="text-muted-foreground">{t('receivedAt')}</dt>
+					<dt className="text-muted-foreground">{translate('receivedAt')}</dt>
 					<dd>
 						{dateTime(new Date(event.receivedAt), {
 							dateStyle: 'short',

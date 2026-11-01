@@ -9,33 +9,35 @@ interface RecommendationAccountingProps {
 export function RecommendationAccounting(props: RecommendationAccountingProps) {
 	const { recommendation } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 
 	return (
 		<dl className="grid grid-cols-2 gap-2 border-t border-border pt-3 text-[11px]">
-			<dt className="text-muted-foreground">{t('generationModel')}</dt>
+			<dt className="text-muted-foreground">{translate('generationModel')}</dt>
 			<dd className="break-all">
-				{recommendation.generationModel ?? t('unknown')}
+				{recommendation.generationModel ?? translate('unknown')}
 			</dd>
-			<dt className="text-muted-foreground">{t('generationEffort')}</dt>
+			<dt className="text-muted-foreground">{translate('generationEffort')}</dt>
 			<dd>
 				{recommendation.generationEffort
-					? t(recommendation.generationEffort)
-					: t('unknown')}
+					? translate(recommendation.generationEffort)
+					: translate('unknown')}
 			</dd>
-			<dt className="text-muted-foreground">{t('generationSettingsSource')}</dt>
+			<dt className="text-muted-foreground">
+				{translate('generationSettingsSource')}
+			</dt>
 			<dd>
 				{recommendation.generationSettingsSource
-					? t(
+					? translate(
 							recommendation.generationSettingsSource === 'draft'
 								? 'generationSourceDraft'
 								: recommendation.generationSettingsSource === 'runtime'
 									? 'generationSourceRuntime'
 									: 'generationSourceOperator',
 						)
-					: t('unknown')}
+					: translate('unknown')}
 			</dd>
-			<dt className="text-muted-foreground">{t('providerUsage')}</dt>
+			<dt className="text-muted-foreground">{translate('providerUsage')}</dt>
 			<dd>
 				{recommendation.usage ? (
 					<ul className="grid gap-1">
@@ -46,18 +48,20 @@ export function RecommendationAccounting(props: RecommendationAccountingProps) {
 						))}
 					</ul>
 				) : (
-					t('unknown')
+					translate('unknown')
 				)}
 			</dd>
-			<dt className="text-muted-foreground">{t('cost')}</dt>
-			<dd>{t('unknown')}</dd>
+			<dt className="text-muted-foreground">{translate('cost')}</dt>
+			<dd>{translate('unknown')}</dd>
 			{recommendation.limits ? (
 				<>
-					<dt className="text-muted-foreground">{t('outputLimit')}</dt>
+					<dt className="text-muted-foreground">{translate('outputLimit')}</dt>
 					<dd>{recommendation.limits.outputTokens}</dd>
-					<dt className="text-muted-foreground">{t('requestTimeout')}</dt>
+					<dt className="text-muted-foreground">
+						{translate('requestTimeout')}
+					</dt>
 					<dd>{recommendation.limits.timeoutSeconds}</dd>
-					<dt className="text-muted-foreground">{t('retries')}</dt>
+					<dt className="text-muted-foreground">{translate('retries')}</dt>
 					<dd>{recommendation.limits.retries}</dd>
 				</>
 			) : null}

@@ -7,12 +7,18 @@ import type { Component } from '@data/types'
 interface ComponentFieldsProps {
 	component: Component
 	selected: boolean
-	onSelectionChange: (selected: boolean) => void
+	onToggle: (path: string, selected: boolean) => void
 }
-export function ComponentFields(props: ComponentFieldsProps) {
-	const { component, selected: enabled, onSelectionChange } = props
 
-	const t = useTranslations('ui')
+export function ComponentFields(props: ComponentFieldsProps) {
+	const { component, selected: enabled, onToggle } = props
+
+	const translate = useTranslations('ui')
+
+	function handleSelectionChange(event: React.ChangeEvent<HTMLInputElement>) {
+		onToggle(component.path, event.target.checked)
+	}
+
 	const prefix = `component:${component.path}:`
 
 	return (
@@ -20,11 +26,12 @@ export function ComponentFields(props: ComponentFieldsProps) {
 			<legend className="px-1 text-sm">
 				<label className="flex items-center gap-2">
 					<input
+						className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 						type="checkbox"
 						name="selectedComponents"
 						value={component.path}
 						checked={enabled}
-						onChange={(event) => onSelectionChange(event.target.checked)}
+						onChange={handleSelectionChange}
 					/>
 					{component.name}
 					<code className="text-[11px] text-muted-foreground">
@@ -34,7 +41,7 @@ export function ComponentFields(props: ComponentFieldsProps) {
 			</legend>
 			<div className="grid gap-4 sm:grid-cols-2">
 				<label className={labelClass}>
-					{t('image')}
+					{translate('image')}
 					<input
 						className={fieldClass}
 						name={`${prefix}image`}
@@ -45,7 +52,7 @@ export function ComponentFields(props: ComponentFieldsProps) {
 					/>
 				</label>
 				<label className={labelClass}>
-					{t('port')}
+					{translate('port')}
 					<input
 						className={fieldClass}
 						name={`${prefix}port`}
@@ -58,7 +65,7 @@ export function ComponentFields(props: ComponentFieldsProps) {
 					/>
 				</label>
 				<label className={labelClass}>
-					{t('readinessPath')}
+					{translate('readinessPath')}
 					<input
 						className={fieldClass}
 						name={`${prefix}readinessPath`}
@@ -69,7 +76,7 @@ export function ComponentFields(props: ComponentFieldsProps) {
 					/>
 				</label>
 				<label className={labelClass}>
-					{t('buildExecutable')}
+					{translate('buildExecutable')}
 					<input
 						className={fieldClass}
 						name={`${prefix}executable`}
@@ -80,7 +87,7 @@ export function ComponentFields(props: ComponentFieldsProps) {
 					/>
 				</label>
 				<label className={`${labelClass} sm:col-span-2`}>
-					{t('buildArguments')}
+					{translate('buildArguments')}
 					<textarea
 						className={`${fieldClass} font-mono`}
 						name={`${prefix}args`}

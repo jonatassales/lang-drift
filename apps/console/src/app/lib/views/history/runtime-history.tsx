@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@langdrift/web/ui/button'
 import { useTranslations } from 'next-intl'
 import { Suspense, useState, useTransition } from 'react'
 
@@ -9,7 +10,6 @@ import { ActivityListSkeleton } from '@components/route-state/activity-list-skel
 import { mutation } from '@data/api'
 import { useResource } from '@data/resource.hook'
 import type { LifecycleEvent, Runtime } from '@data/types'
-import { Button } from '@ui/button'
 import { RecommendationPanel } from '@views/runtimes/recommendation-panel'
 
 import { EventHistory } from './event-history'
@@ -23,43 +23,47 @@ interface RuntimeHistoryProps {
 export function RuntimeHistory(props: RuntimeHistoryProps) {
 	const { id, initial, events } = props
 
-	const t = useTranslations('ui')
-	const resource = useResource<{ runtime: Runtime }>(
-		`runtimes/${id}`,
-		0,
-		initial,
-	)
 	const [eventInitial, setEventInitial] = useState(events)
 	const [revision, setRevision] = useState(0)
 	const [error, setError] = useState<unknown>(null)
 	const [pending, startTransition] = useTransition()
 
+	const resource = useResource<{ runtime: Runtime }>(
+		`runtimes/${id}`,
+		0,
+		initial,
+	)
+	const translate = useTranslations('ui')
+
+	function handlePurge() {
+		if (!window.confirm(translate('purgeConfirm'))) return
+		setError(null)
+		startTransition(async () => {
+			try {
+				await mutation(`runtimes/${id}/history`, 'DELETE')
+
+				setEventInitial(
+					Promise.resolve({
+						events: [],
+					}),
+				)
+				setRevision((current) => current + 1)
+			} catch (failure) {
+				setError(failure)
+			}
+		})
+	}
+
 	return (
 		<>
-			<PageHeading title={t('history')} description={id}>
+			<PageHeading title={translate('history')} description={id}>
 				<Button
-					tone="danger"
 					disabled={pending}
-					onClick={() => {
-						if (!window.confirm(t('purgeConfirm'))) return
-						setError(null)
-						startTransition(async () => {
-							try {
-								await mutation(`runtimes/${id}/history`, 'DELETE')
-
-								setEventInitial(
-									Promise.resolve({
-										events: [],
-									}),
-								)
-								setRevision((current) => current + 1)
-							} catch (failure) {
-								setError(failure)
-							}
-						})
-					}}
+					onClick={handlePurge}
+					type="button"
+					variant="destructive"
 				>
-					{t('purge')}
+					{translate('purge')}
 				</Button>
 			</PageHeading>
 			<div className="grid gap-5">

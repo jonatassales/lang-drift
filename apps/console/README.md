@@ -12,7 +12,7 @@ The sidebar opens with an area switcher, after the old LangDrift dashboard's pro
 | `pnpm --filter console typecheck` | Generate Next.js route types and check TypeScript. |
 | `pnpm --filter console test` | Run the view tests, runtimes and tickets, with Node's test runner. |
 
-The console listens on loopback only and answers only loopback hosts and same-origin requests. `EXTUB_URL` points it at another extub; it must stay plain `http` on loopback, and without it the console uses `http://127.0.0.1:3401`. When extub is down, data requests answer `extub_unavailable` and the screens say so.
+The console listens on loopback only and answers only loopback hosts and same-origin requests. `EXTUB_URL` points it at extub, configured in `.env.development` as `http://127.0.0.1:3401`; it must stay plain `http` on loopback. When extub is down, data requests answer `extub_unavailable` and the screens say so.
 
 ## Security and search
 

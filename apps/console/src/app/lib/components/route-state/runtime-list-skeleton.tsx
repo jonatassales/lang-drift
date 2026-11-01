@@ -1,17 +1,16 @@
 'use client'
+import { Skeleton } from '@langdrift/web/ui/skeleton'
 import { useTranslations } from 'next-intl'
-
-import { Skeleton } from '@ui/skeleton'
 
 import { HeadingSkeleton } from './heading-skeleton'
 
 export function RuntimeListSkeleton() {
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 
 	return (
 		<section
 			aria-busy="true"
-			aria-label={t('loading')}
+			aria-label={translate('loading')}
 			data-skeleton="runtime-list-skeleton"
 		>
 			<HeadingSkeleton />

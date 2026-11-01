@@ -3,11 +3,12 @@
 import { usePathname } from 'next/navigation'
 
 import '@app/template/tailwind/app.css'
+import { Button } from '@langdrift/web/ui/button'
+
 import { RouteStateNotice } from '@components/route-state/route-state-notice'
 import { isLocale, languageTags } from '@i18n/config'
 import messages from '@i18n/messages/global-error.json'
 import { routing } from '@i18n/routing'
-import { Button } from '@ui/button'
 
 interface GlobalErrorProps {
 	retry: () => void
@@ -31,7 +32,7 @@ export default function GlobalError(props: GlobalErrorProps) {
 				<title>{copy.documentTitle}</title>
 				<RouteStateNotice title={copy.title} description={copy.description}>
 					<div className="flex flex-wrap items-center gap-4">
-						<Button tone="primary" onClick={retry}>
+						<Button onClick={retry} type="button">
 							{copy.retry}
 						</Button>
 						<a

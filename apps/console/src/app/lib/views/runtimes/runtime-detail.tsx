@@ -1,5 +1,7 @@
 'use client'
 
+import { Button } from '@langdrift/web/ui/button'
+import { Card } from '@langdrift/web/ui/card'
 import { useFormatter, useTranslations } from 'next-intl'
 import { Suspense, useState, useTransition } from 'react'
 
@@ -13,8 +15,6 @@ import { mutation } from '@data/api'
 import { useResource } from '@data/resource.hook'
 import type { Product, RuntimeDetailSnapshot } from '@data/types'
 import { Link } from '@i18n/navigation'
-import { Button } from '@ui/button'
-import { Card } from '@ui/card'
 import { ExecutionTable } from '@views/executions/execution-table'
 
 import { RuntimeConnection } from './runtime-connection'
@@ -35,8 +35,10 @@ interface RuntimeDetailProps {
 export function RuntimeDetail(props: RuntimeDetailProps) {
 	const { id, initial, productInitial } = props
 
-	const t = useTranslations('ui')
-	const format = useFormatter()
+	const [error, setError] = useState<unknown>(null)
+	const [requested, setRequested] = useState(false)
+	const [pending, startTransition] = useTransition()
+
 	const dateTime = useDateTime()
 	const resource = useResource<RuntimeDetailSnapshot>(
 		`runtimes/${id}`,
@@ -47,15 +49,15 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 		resource.data?.source === 'stub',
 		resource.data?.runtime.productId,
 	)
-	const snapshot =
-		stream.widgets?.find((item) => item.runtime.id === id) ??
-		resource.data?.widget
-	const [error, setError] = useState<unknown>(null)
-	const [requested, setRequested] = useState(false)
-	const [pending, startTransition] = useTransition()
+
+	const translate = useTranslations('ui')
+	const format = useFormatter()
+
 	function operate(action: 'revoke' | 'delete') {
-		if (action === 'delete' && !window.confirm(t('deleteConfirm'))) return
-		if (action === 'revoke' && !window.confirm(t('revokeConfirm'))) return
+		if (action === 'delete' && !window.confirm(translate('deleteConfirm')))
+			return
+		if (action === 'revoke' && !window.confirm(translate('revokeConfirm')))
+			return
 		setError(null)
 		setRequested(false)
 		startTransition(async () => {
@@ -72,6 +74,18 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 			}
 		})
 	}
+
+	function handleDelete() {
+		operate('delete')
+	}
+
+	function handleRevoke() {
+		operate('revoke')
+	}
+
+	const snapshot =
+		stream.widgets?.find((item) => item.runtime.id === id) ??
+		resource.data?.widget
 	if (resource.error)
 		return <ErrorNotice error={resource.error} retry={resource.refresh} />
 	if (!snapshot) return null
@@ -88,11 +102,11 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 					<RuntimePlayback snapshot={snapshot} onRefresh={resource.refresh} />
 					{!deleted ? (
 						<Link href={`/runtimes/${id}/configuration`} className={linkClass}>
-							{t('configure')}
+							{translate('configure')}
 						</Link>
 					) : null}
 					<Link href={`/runtimes/${id}/history`} className={linkClass}>
-						{t('history')}
+						{translate('history')}
 					</Link>
 				</div>
 			</PageHeading>
@@ -100,15 +114,19 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 				{error ? <ErrorNotice error={error} /> : null}
 				{requested ? (
 					<p role="status" className="text-sm text-muted-foreground">
-						{t('operationRequested')}
+						{translate('operationRequested')}
 					</p>
 				) : null}
 				<section data-runtime-graph>
 					<div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-						<h2 className="text-sm font-medium">{t('componentGraph')}</h2>
+						<h2 className="text-sm font-medium">
+							{translate('componentGraph')}
+						</h2>
 						{snapshot.source === 'stub' ? (
 							<p role="status" className="text-xs text-muted-foreground">
-								{t(stream.connected ? 'webrtcConnected' : 'webrtcFallback')}
+								{translate(
+									stream.connected ? 'webrtcConnected' : 'webrtcFallback',
+								)}
 							</p>
 						) : null}
 					</div>
@@ -123,22 +141,22 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 						}
 					/>
 					<p className="mt-2 text-xs text-muted-foreground">
-						{t(
+						{translate(
 							snapshot.source === 'stub' && snapshot.componentLinks?.length
 								? 'topologySynthetic'
 								: 'topologyUnavailable',
 						)}
 					</p>
 					<p className="mt-1 text-[11px] text-muted-foreground">
-						{t('graphColorLegend')}
+						{translate('graphColorLegend')}
 					</p>
 				</section>
 				<RuntimeExecutionMetrics snapshot={snapshot} />
-				<Card className="p-5">
+				<Card className="block p-5">
 					<dl className="grid gap-5 sm:grid-cols-2 xl:grid-cols-5">
 						<div>
 							<dt className="mb-2 text-[11px] text-muted-foreground">
-								{t('desiredState')}
+								{translate('desiredState')}
 							</dt>
 							<dd>
 								<StatusLabel value={runtime.desiredState} />
@@ -146,7 +164,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 						</div>
 						<div>
 							<dt className="mb-2 text-[11px] text-muted-foreground">
-								{t('cpu')}
+								{translate('cpu')}
 							</dt>
 							<dd className="text-xl tabular-nums">
 								{format.number(runtime.configuration.cpu)}
@@ -154,7 +172,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 						</div>
 						<div>
 							<dt className="mb-2 text-[11px] text-muted-foreground">
-								{t('memory')}
+								{translate('memory')}
 							</dt>
 							<dd className="text-xl tabular-nums">
 								{format.number(runtime.configuration.memoryMiB)}
@@ -162,37 +180,41 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 						</div>
 						<div>
 							<dt className="mb-2 text-[11px] text-muted-foreground">
-								{t('model')}
+								{translate('model')}
 							</dt>
 							<dd className="break-all text-xs">
 								{runtime.configuration.model}
 								<p className="mt-1 text-muted-foreground">
-									{t(runtime.configuration.effort)}
+									{translate(runtime.configuration.effort)}
 								</p>
 							</dd>
 						</div>
 						<div>
 							<dt className="mb-2 text-[11px] text-muted-foreground">
-								{t('revision')}
+								{translate('revision')}
 							</dt>
 							<dd className="text-xl">{runtime.revision}</dd>
 						</div>
 					</dl>
 					{locked && !deleted ? (
 						<p className="mt-5 border-t border-border pt-4 text-xs text-muted-foreground">
-							{t('configurationLocked')}
+							{translate('configurationLocked')}
 						</p>
 					) : null}
 					{runtime.credentialRevoked ? (
-						<p className="mt-4 text-xs text-status-danger">{t('revoked')}</p>
+						<p className="mt-4 text-xs text-status-danger">
+							{translate('revoked')}
+						</p>
 					) : null}
 				</Card>
 				<section>
-					<h2 className="mb-3 text-sm font-medium">{t('environments')}</h2>
+					<h2 className="mb-3 text-sm font-medium">
+						{translate('environments')}
+					</h2>
 					{environments.length ? (
 						<div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
 							{environments.map((environment) => (
-								<Card key={environment.id} className="p-4">
+								<Card key={environment.id} className="block p-4">
 									<div className="flex flex-wrap items-center justify-between gap-2">
 										<strong className="text-sm font-medium">
 											{environment.name}
@@ -203,7 +225,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 										{environment.id}
 									</p>
 									<p className="mt-2 text-[11px] text-muted-foreground">
-										{t('lastSeen')}:{' '}
+										{translate('lastSeen')}:{' '}
 										{dateTime(new Date(environment.lastSeenAt), {
 											dateStyle: 'short',
 											timeStyle: 'medium',
@@ -211,20 +233,22 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 									</p>
 									{environment.cleanupPending ? (
 										<p className="mt-2 text-xs text-status-danger">
-											{t('cleanupPending')}
+											{translate('cleanupPending')}
 										</p>
 									) : null}
 								</Card>
 							))}
 						</div>
 					) : (
-						<Card className="p-5 text-sm text-muted-foreground">
-							{t('environmentsEmpty')}
+						<Card className="block p-5 text-sm text-muted-foreground">
+							{translate('environmentsEmpty')}
 						</Card>
 					)}
 				</section>
 				<section>
-					<h2 className="mb-3 text-sm font-medium">{t('executions')}</h2>
+					<h2 className="mb-3 text-sm font-medium">
+						{translate('executions')}
+					</h2>
 					<ExecutionTable
 						executions={
 							snapshot.source === 'stub'
@@ -236,7 +260,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 				</section>
 				<section>
 					<h2 className="mb-3 text-sm font-medium">
-						{t('components')} · {runtime.components.length}
+						{translate('components')} · {runtime.components.length}
 					</h2>
 					<ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
 						{runtime.components.map((component) => (
@@ -252,8 +276,8 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 									{component.kind} · {component.path}
 								</p>
 								<p className="mt-1 break-all text-muted-foreground">
-									{component.image ?? t('unknown')} ·{' '}
-									{component.port ?? t('unknown')}
+									{component.image ?? translate('unknown')} ·{' '}
+									{component.port ?? translate('unknown')}
 								</p>
 							</li>
 						))}
@@ -261,8 +285,8 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 				</section>
 				<RuntimeFinops snapshot={snapshot} />
 				<RuntimeLoadTest key={runtime.id} snapshot={snapshot} />
-				<Card className="p-5">
-					<h2 className="text-sm font-medium">{t('markdown')}</h2>
+				<Card className="block p-5">
+					<h2 className="text-sm font-medium">{translate('markdown')}</h2>
 					<pre className="mt-4 max-h-96 overflow-auto rounded-md bg-background p-4 text-xs leading-relaxed">
 						<code>{runtime.markdown}</code>
 					</pre>
@@ -275,16 +299,22 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 				<div className="flex flex-wrap gap-3 border-t border-border pt-5">
 					{!deleted ? (
 						<Button
-							tone="danger"
 							disabled={pending}
-							onClick={() => operate('delete')}
+							onClick={handleDelete}
+							type="button"
+							variant="destructive"
 						>
-							{t('delete')}
+							{translate('delete')}
 						</Button>
 					) : null}
 					{!deleted && !runtime.credentialRevoked ? (
-						<Button disabled={pending} onClick={() => operate('revoke')}>
-							{t('revoke')}
+						<Button
+							disabled={pending}
+							onClick={handleRevoke}
+							type="button"
+							variant="outline"
+						>
+							{translate('revoke')}
 						</Button>
 					) : null}
 				</div>

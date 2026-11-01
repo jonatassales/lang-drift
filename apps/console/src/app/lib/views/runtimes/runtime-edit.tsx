@@ -22,7 +22,6 @@ interface RuntimeEditProps {
 export function RuntimeEdit(props: RuntimeEditProps) {
 	const { id, initial, productInitial } = props
 
-	const t = useTranslations('ui')
 	const router = useRouter()
 	const resource = useResource<{
 		runtime: Runtime
@@ -33,6 +32,13 @@ export function RuntimeEdit(props: RuntimeEditProps) {
 		0,
 		productInitial,
 	)
+
+	const translate = useTranslations('ui')
+
+	function handleSaved() {
+		router.push(`/runtimes/${id}`)
+	}
+
 	if (resource.error)
 		return <ErrorNotice error={resource.error} retry={resource.refresh} />
 	if (product.error)
@@ -45,7 +51,7 @@ export function RuntimeEdit(props: RuntimeEditProps) {
 	return (
 		<>
 			<PageHeading
-				title={t('configuration')}
+				title={translate('configuration')}
 				description={resource.data.runtime.name}
 			/>
 			<RuntimeForm
@@ -53,7 +59,7 @@ export function RuntimeEdit(props: RuntimeEditProps) {
 				components={product.data.product.components}
 				runtime={resource.data.runtime}
 				locked={locked}
-				onSaved={() => router.push(`/runtimes/${id}`)}
+				onSaved={handleSaved}
 			/>
 		</>
 	)

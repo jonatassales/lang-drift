@@ -24,7 +24,7 @@ interface TicketDetailProps {
 export function TicketDetail(props: TicketDetailProps) {
 	const { id, initial } = props
 
-	const t = useTranslations('tickets')
+	const translate = useTranslations('tickets')
 	const resource = useResource<TicketDetailSnapshot>(
 		`tickets/${id}`,
 		10000,
@@ -60,7 +60,7 @@ export function TicketDetail(props: TicketDetailProps) {
 							className="m-0 border-t border-border pt-6 text-sm text-muted-foreground"
 							key={phase}
 						>
-							{t('notReached', { phase: t(`labels.${phase}`) })}
+							{translate('notReached', { phase: translate(`labels.${phase}`) })}
 						</p>
 					),
 				)}

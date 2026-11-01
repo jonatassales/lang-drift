@@ -1,12 +1,7 @@
-import { getTranslations } from 'next-intl/server'
+import { SignupView } from '@views/auth/signup-view'
 
-import { AuthForm } from '@views/auth/auth-form'
+export { generateMetadata } from './page.metadata'
 
-export async function generateMetadata() {
-	const t = await getTranslations('ui')
-
-	return { title: t('signup') }
-}
 export default function Page() {
-	return <AuthForm signup />
+	return <SignupView />
 }

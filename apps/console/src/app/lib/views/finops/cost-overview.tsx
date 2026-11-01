@@ -1,10 +1,10 @@
+import { Card } from '@langdrift/web/ui/card'
 import { getFormatter, getTranslations } from 'next-intl/server'
 
 import { PageHeading } from '@components/page-heading/page-heading'
 import { readConsole } from '@data/server'
 import type { ProductNavigation, RuntimeListSnapshot } from '@data/types'
 import { Link } from '@i18n/navigation'
-import { Card } from '@ui/card'
 import { RecommendationPanel } from '@views/runtimes/recommendation-panel'
 import { RuntimeFinops } from '@views/runtimes/runtime-finops'
 
@@ -19,7 +19,7 @@ export async function CostOverview() {
 		readConsole<ProductNavigation>('products'),
 	])
 
-	const t = await getTranslations('ui')
+	const translate = await getTranslations('ui')
 
 	const format = await getFormatter()
 
@@ -36,30 +36,34 @@ export async function CostOverview() {
 	const reported = (
 		value: number | null | undefined,
 		show: (value: number) => string = plain,
-	) => (value == null ? t('unknown') : show(value))
+	) => (value == null ? translate('unknown') : show(value))
 
 	return (
 		<>
 			<PageHeading
-				title={t('costOverview')}
-				description={t('costOverviewDescription')}
+				title={translate('costOverview')}
+				description={translate('costOverviewDescription')}
 			/>
-			<Card className="mb-8 p-4 sm:max-w-sm">
-				<p className="text-xs text-muted-foreground">{t('knownLlmCost')}</p>
+			<Card className="block mb-8 p-4 sm:max-w-sm">
+				<p className="text-xs text-muted-foreground">
+					{translate('knownLlmCost')}
+				</p>
 				<p className="mt-2 text-2xl font-medium">
 					{reported(totals.knownLlmCostUsd, usd)}
 				</p>
 				<p className="mt-1 text-xs text-muted-foreground">
 					{totals.executionCount === 0
-						? t('noExecutionsYet')
-						: t('unreportedLlmCosts', {
+						? translate('noExecutionsYet')
+						: translate('unreportedLlmCosts', {
 								count: totals.unknownLlmCostCount,
 								total: totals.executionCount,
 							})}
 				</p>
 			</Card>
 			{totals.runtimes.length === 0 ? (
-				<p className="text-sm text-muted-foreground">{t('noRuntimes')}</p>
+				<p className="text-sm text-muted-foreground">
+					{translate('noRuntimes')}
+				</p>
 			) : (
 				<div className="grid gap-4">
 					{totals.runtimes.map((cost) => {
@@ -67,48 +71,54 @@ export async function CostOverview() {
 						const { configuration } = runtime
 
 						return (
-							<Card className="p-4" key={runtime.id}>
+							<Card className="block p-4" key={runtime.id}>
 								<div className="flex flex-wrap items-baseline justify-between gap-2">
 									<h2 className="text-sm font-medium">
-										<Link href={`/runtimes/${runtime.id}`}>{runtime.name}</Link>
+										<Link
+											className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+											href={`/runtimes/${runtime.id}`}
+										>
+											{runtime.name}
+										</Link>
 									</h2>
 									<span className="text-xs text-muted-foreground">
-										{projectNames.get(runtime.productId) ?? t('unknown')}
+										{projectNames.get(runtime.productId) ??
+											translate('unknown')}
 									</span>
 								</div>
 								<dl className="mt-3 grid gap-3 text-xs sm:grid-cols-3">
-									<Reading label={t('llmCostBudget')}>
+									<Reading label={translate('llmCostBudget')}>
 										{reported(cost.knownLlmCostUsd, usd)} /{' '}
 										{reported(configuration.llmBudgetUsd, usd)}
 									</Reading>
-									<Reading label={t('cpuAgainstLimit')}>
+									<Reading label={translate('cpuAgainstLimit')}>
 										{reported(cost.cpuUsed)} /{' '}
 										{format.number(configuration.cpu)}
 									</Reading>
-									<Reading label={t('memoryAgainstLimit')}>
+									<Reading label={translate('memoryAgainstLimit')}>
 										{reported(cost.memoryUsedMiB)} /{' '}
 										{format.number(configuration.memoryMiB)}
 									</Reading>
 								</dl>
 								{cost.unknownLlmCostCount > 0 ? (
 									<p className="mt-2 text-xs text-muted-foreground">
-										{t('unreportedLlmCosts', {
+										{translate('unreportedLlmCosts', {
 											count: cost.unknownLlmCostCount,
 											total: cost.executionCount,
 										})}
 									</p>
 								) : null}
 								<details className="mt-4">
-									<summary className="cursor-pointer text-xs">
-										{t('finopsReport')}
+									<summary className="cursor-pointer text-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
+										{translate('finopsReport')}
 									</summary>
 									<div className="mt-3">
 										<RuntimeFinops snapshot={cost.snapshot} />
 									</div>
 								</details>
 								<details className="mt-2">
-									<summary className="cursor-pointer text-xs">
-										{t('recommendations')}
+									<summary className="cursor-pointer text-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
+										{translate('recommendations')}
 									</summary>
 									<div className="mt-3">
 										<RecommendationPanel

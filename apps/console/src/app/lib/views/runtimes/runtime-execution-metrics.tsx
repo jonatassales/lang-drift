@@ -13,16 +13,16 @@ interface RuntimeExecutionMetricsProps {
 export function RuntimeExecutionMetrics(props: RuntimeExecutionMetricsProps) {
 	const { snapshot } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const dateTime = useDateTime()
 	const { runtime, executions, environments, startedAt } = snapshot
 
 	return (
 		<section className="grid gap-3">
-			<h2 className="text-sm font-medium">{t('executionMetrics')}</h2>
+			<h2 className="text-sm font-medium">{translate('executionMetrics')}</h2>
 			{!executions.length ? (
 				<p className="text-xs text-muted-foreground">
-					{t('noExecutionObservations')}
+					{translate('noExecutionObservations')}
 				</p>
 			) : null}
 			{executions.map((execution) => {
@@ -50,34 +50,34 @@ export function RuntimeExecutionMetrics(props: RuntimeExecutionMetricsProps) {
 						</p>
 						<div className="grid gap-4 sm:grid-cols-3">
 							<RuntimeMeter
-								label={t('cpu')}
+								label={translate('cpu')}
 								value={execution.cpuUsed}
 								limit={runtime.configuration.cpu}
 							/>
 							<RuntimeMeter
-								label={t('memory')}
+								label={translate('memory')}
 								value={execution.memoryUsedMiB}
 								limit={runtime.configuration.memoryMiB}
 							/>
 							<RuntimeMeter
-								label={t('llmCost')}
+								label={translate('llmCost')}
 								value={execution.llmCostUsd ?? null}
 								limit={runtime.configuration.llmBudgetUsd ?? null}
 							/>
 						</div>
 						<p className="mt-3 text-[11px] text-muted-foreground">
-							{t('runningTime')}:{' '}
+							{translate('runningTime')}:{' '}
 							{minutes === null
-								? t('unknown')
-								: t('durationMinutes', { minutes })}
+								? translate('unknown')
+								: translate('durationMinutes', { minutes })}
 						</p>
 						<p className="mt-1 text-[11px] text-muted-foreground">
-							{t('lastSeen')}:{' '}
+							{translate('lastSeen')}:{' '}
 							{execution.observedAt
 								? dateTime(new Date(execution.observedAt), {
 										timeStyle: 'medium',
 									})
-								: t('unknown')}
+								: translate('unknown')}
 						</p>
 					</div>
 				)

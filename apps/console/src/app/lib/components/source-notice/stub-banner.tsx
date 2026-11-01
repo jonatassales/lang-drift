@@ -7,12 +7,12 @@ interface StubBannerProps {
 export function StubBanner(props: StubBannerProps) {
 	const { source } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	if (source !== 'stub') return null
 
 	return (
 		<aside className="mb-4 text-[11px] text-muted-foreground">
-			{t('stubBanner')}
+			{translate('stubBanner')}
 		</aside>
 	)
 }

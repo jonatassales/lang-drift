@@ -1,5 +1,7 @@
 'use client'
 
+import { Card } from '@langdrift/web/ui/card'
+import { GitBranch, Plus } from '@langdrift/web/ui/icons/client'
 import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
@@ -8,8 +10,6 @@ import { PageHeading } from '@components/page-heading/page-heading'
 import { useResource } from '@data/resource.hook'
 import type { Product } from '@data/types'
 import { Link } from '@i18n/navigation'
-import { Card } from '@ui/card'
-import { GitBranch, Plus } from '@ui/icons'
 
 import { ProductCreate } from './product-create'
 
@@ -20,7 +20,7 @@ interface ProductListProps {
 export function ProductList(props: ProductListProps) {
 	const { initial } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const resource = useResource<{ products: Product[] }>('products', 0, initial)
 
 	if (!resource.error && resource.data?.products.length === 0)
@@ -28,10 +28,13 @@ export function ProductList(props: ProductListProps) {
 
 	return (
 		<>
-			<PageHeading title={t('projects')} description={t('localProjectsIntro')}>
+			<PageHeading
+				title={translate('projects')}
+				description={translate('localProjectsIntro')}
+			>
 				<Link href="/products/new" className={linkClass}>
 					<Plus size={15} />
-					{t('createProject')}
+					{translate('createProject')}
 				</Link>
 			</PageHeading>
 			{resource.error ? (
@@ -39,10 +42,10 @@ export function ProductList(props: ProductListProps) {
 			) : resource.data?.products.length ? (
 				<div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
 					{resource.data.products.map((product) => (
-						<Card key={product.id} className="p-5">
+						<Card key={product.id} className="block p-5">
 							<Link
 								href={`/products/${product.id}`}
-								className="text-sm font-medium hover:text-primary"
+								className="text-sm font-medium hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 							>
 								{product.name}
 							</Link>
@@ -52,7 +55,7 @@ export function ProductList(props: ProductListProps) {
 							</p>
 							<div className="mt-5 flex items-center justify-between border-t border-border pt-3 text-[11px] text-muted-foreground">
 								<span>
-									{product.components.length} {t('components')}
+									{product.components.length} {translate('components')}
 								</span>
 								<code className="max-w-40 truncate">{product.ref}</code>
 							</div>
@@ -60,8 +63,8 @@ export function ProductList(props: ProductListProps) {
 					))}
 				</div>
 			) : (
-				<Card className="p-10 text-center text-sm text-muted-foreground">
-					{t('projectsEmpty')}
+				<Card className="block p-10 text-center text-sm text-muted-foreground">
+					{translate('projectsEmpty')}
 				</Card>
 			)}
 		</>

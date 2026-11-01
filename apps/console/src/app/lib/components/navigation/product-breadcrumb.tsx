@@ -8,9 +8,8 @@ import type {
 	TicketDetailSnapshot,
 } from '@data/types'
 import { Link } from '@i18n/navigation'
-import { ticketSummary } from '@views/tickets/ticket-phases'
 
-const ticketSections = ['tickets', 'analysis', 'plans', 'workflows']
+import { breadcrumbItems } from './breadcrumb-items.compute'
 
 interface ProductBreadcrumbProps {
 	locale: string
@@ -21,12 +20,15 @@ export async function ProductBreadcrumb(props: ProductBreadcrumbProps) {
 	const { locale, segments } = props
 
 	const [root, id, section, ticketId] = segments
-	if (!id || !['products', 'runtimes'].includes(root) || id === 'new')
-		return null
+	const validRoot = ['products', 'runtimes'].includes(root)
+	const validId = Boolean(id) && id !== 'new'
+	if (!validRoot || !validId) return null
+
 	// An id outside the alphabet names nothing, and its page answers 404.
 	const ids = ticketId ? [id, ticketId] : [id]
 	if (!ids.every(isEntityId)) return null
-	const [t, navigation, detail, ticket] = await Promise.all([
+
+	const [translate, navigation, detail, ticket] = await Promise.all([
 		getTranslations({
 			locale,
 			namespace: 'ui',
@@ -43,79 +45,28 @@ export async function ProductBreadcrumb(props: ProductBreadcrumbProps) {
 	const productId = detail?.runtime.productId ?? id
 	const product = navigation.products.find((item) => item.id === productId)
 	if (!product) return null
+
 	const base = `/products/${product.id}`
 	const items = [
 		{
+			href: base,
 			key: 'project',
 			label: product.name,
-			href: base,
 		},
+		...breadcrumbItems({
+			base,
+			detail,
+			id,
+			section,
+			segments,
+			ticket,
+			translate,
+		}),
 	]
-	if (detail) {
-		items.push(
-			{
-				key: 'runtimes',
-				label: t('runtimes'),
-				href: base,
-			},
-			{
-				key: 'runtime',
-				label: detail.runtime.name,
-				href: `/runtimes/${id}`,
-			},
-		)
-		if (section === 'configuration' || section === 'history')
-			items.push({
-				key: section,
-				label: t(section),
-				href: `/runtimes/${id}/${section}`,
-			})
-	} else if (section === 'config') {
-		items.push({
-			key: 'secrets',
-			label: t('secrets'),
-			href: `${base}/config/secrets`,
-		})
-	} else if (section === 'runtimes' && segments[3] === 'new') {
-		items.push(
-			{
-				key: 'runtimes',
-				label: t('runtimes'),
-				href: base,
-			},
-			{
-				key: 'new',
-				label: t('createRuntime'),
-				href: `${base}/runtimes/new`,
-			},
-		)
-	} else if (section && ticketSections.includes(section)) {
-		items.push({
-			key: section,
-			label: t(section),
-			href: `${base}/${section}`,
-		})
-		if (ticket)
-			items.push({
-				key: 'ticket',
-				label: ticketSummary(ticket.ticket),
-				href: `${base}/tickets/${ticket.ticket.id}`,
-			})
-	} else {
-		items.push({
-			key: section || 'runtimes',
-			label: t(
-				section === 'executions' || section === 'history'
-					? section
-					: 'runtimes',
-			),
-			href: section ? `${base}/${section}` : base,
-		})
-	}
 
 	return (
 		<nav
-			aria-label={t('breadcrumb')}
+			aria-label={translate('breadcrumb')}
 			className="min-w-0 overflow-x-auto text-[11px] text-muted-foreground"
 		>
 			<ol className="flex min-w-max items-center gap-2 py-2 pr-3">

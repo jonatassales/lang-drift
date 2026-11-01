@@ -1,14 +1,16 @@
 'use client'
+
 import { use, useCallback, useEffect, useRef, useState } from 'react'
 
 import { consoleRequest } from './api'
-export function useResource<T>(
+
+export function useResource<Data>(
 	path: string | null,
 	interval: number,
-	initial: Promise<T>,
+	initial: Promise<Data>,
 ) {
 	const initialData = use(initial)
-	const [data, setData] = useState<T | null>(initialData ?? null)
+	const [data, setData] = useState<Data | null>(initialData ?? null)
 	const [error, setError] = useState<unknown>(null)
 	const loadRef = useRef<(() => Promise<void>) | null>(null)
 	const refresh = useCallback(() => {
@@ -17,6 +19,7 @@ export function useResource<T>(
 	useEffect(() => {
 		if (!path) {
 			setData(null)
+
 			return
 		}
 		const controller = new AbortController()
@@ -27,7 +30,7 @@ export function useResource<T>(
 			if (pending || controller.signal.aborted || !path) return
 			pending = true
 			try {
-				const result = await consoleRequest<T>(path, {
+				const result = await consoleRequest<Data>(path, {
 					signal: controller.signal,
 				})
 

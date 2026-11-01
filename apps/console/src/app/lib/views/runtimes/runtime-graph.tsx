@@ -1,13 +1,14 @@
 'use client'
 
+import { Skeleton } from '@langdrift/web/ui/skeleton'
 import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { SinapsiElement, SinapsiGraphDocument } from 'sinapsi'
 import type {} from 'sinapsi/react-types'
 
 import type { Component, RuntimeWidgetTone } from '@data/types'
-import { Skeleton } from '@ui/skeleton'
 
+import { paletteHex } from './palette-hex.compute'
 import { RuntimeNodeCards } from './runtime-node-cards'
 
 interface RuntimeGraphProps {
@@ -23,7 +24,7 @@ interface RuntimeGraphProps {
 export function RuntimeGraph(props: RuntimeGraphProps) {
 	const { components, active, links, tone } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const graph = useRef<SinapsiElement>(null)
 	const [ready, setReady] = useState(false)
 	const [failed, setFailed] = useState(false)
@@ -138,7 +139,7 @@ export function RuntimeGraph(props: RuntimeGraphProps) {
 				move="rotate"
 				speed={active ? 1.2 : 0.35}
 				paused
-				aria-label={t('componentGraph')}
+				aria-label={translate('componentGraph')}
 			/>
 			<RuntimeNodeCards graph={graph} components={components} ready={ready} />
 			{failed ? (
@@ -146,14 +147,14 @@ export function RuntimeGraph(props: RuntimeGraphProps) {
 					role="status"
 					className="absolute inset-x-4 bottom-4 text-xs text-muted-foreground"
 				>
-					{t('graphUnavailable')}
+					{translate('graphUnavailable')}
 				</p>
 			) : !ready ? (
 				<div
 					role="status"
 					className="absolute inset-4 grid grid-cols-3 content-center gap-8"
 					aria-busy="true"
-					aria-label={t('loading')}
+					aria-label={translate('loading')}
 					data-skeleton="graph-skeleton"
 				>
 					{['first', 'second', 'third', 'fourth', 'fifth', 'sixth'].map(
@@ -165,17 +166,4 @@ export function RuntimeGraph(props: RuntimeGraphProps) {
 			) : null}
 		</div>
 	)
-}
-
-/** Sinapsi accepts hex tokens; canvas resolves the browser's computed color space. */
-function paletteHex(color: string): string {
-	const canvas = window.document.createElement('canvas')
-	canvas.width = canvas.height = 1
-	const context = canvas.getContext('2d')
-	if (!context) return '#6d0ad6'
-	context.fillStyle = color
-	context.fillRect(0, 0, 1, 1)
-	const rgba = context.getImageData(0, 0, 1, 1).data
-
-	return `#${[rgba[0], rgba[1], rgba[2]].map((value) => value.toString(16).padStart(2, '0')).join('')}`
 }

@@ -1,11 +1,11 @@
 'use client'
+import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
 
 import { useDateTime } from '@app/template/formatters/date-time.hook'
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { useResource } from '@data/resource.hook'
 import type { LifecycleEvent } from '@data/types'
-import { Card } from '@ui/card'
 
 interface EventHistoryProps {
 	initial: Promise<{ events: LifecycleEvent[] }>
@@ -14,7 +14,7 @@ interface EventHistoryProps {
 export function EventHistory(props: EventHistoryProps) {
 	const { runtimeId, initial } = props
 
-	const t = useTranslations('ui')
+	const translate = useTranslations('ui')
 	const causes = useTranslations('cause')
 	const kinds = useTranslations('event')
 	const dateTime = useDateTime()
@@ -27,9 +27,11 @@ export function EventHistory(props: EventHistoryProps) {
 		return <ErrorNotice error={resource.error} retry={resource.refresh} />
 
 	return (
-		<Card className="min-w-0">
+		<Card className="block min-w-0 py-0">
 			{!resource.data?.events.length ? (
-				<p className="p-6 text-sm text-muted-foreground">{t('empty')}</p>
+				<p className="p-6 text-sm text-muted-foreground">
+					{translate('empty')}
+				</p>
 			) : (
 				<div className="overflow-x-auto">
 					<table className="w-full text-left text-xs">
@@ -47,7 +49,7 @@ export function EventHistory(props: EventHistoryProps) {
 										className="whitespace-nowrap px-4 py-3 font-medium"
 										key={key}
 									>
-										{t(key)}
+										{translate(key)}
 									</th>
 								))}
 							</tr>
@@ -63,19 +65,19 @@ export function EventHistory(props: EventHistoryProps) {
 											{event.id}
 										</p>
 										<details className="mt-2">
-											<summary className="cursor-pointer text-[11px] text-primary">
-												{t('evidence')}
+											<summary className="cursor-pointer text-[11px] text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
+												{translate('evidence')}
 											</summary>
 											<dl className="mt-2 grid gap-1 text-[10px]">
 												{event.revision !== undefined ? (
 													<>
-														<dt>{t('revision')}</dt>
+														<dt>{translate('revision')}</dt>
 														<dd>{event.revision}</dd>
 													</>
 												) : null}
 												{event.operationId ? (
 													<>
-														<dt>{t('operation')}</dt>
+														<dt>{translate('operation')}</dt>
 														<dd className="break-all font-mono">
 															{event.operationId}
 														</dd>
@@ -83,13 +85,13 @@ export function EventHistory(props: EventHistoryProps) {
 												) : null}
 												{event.requestedBy ? (
 													<>
-														<dt>{t('actor')}</dt>
+														<dt>{translate('actor')}</dt>
 														<dd className="break-all">{event.requestedBy}</dd>
 													</>
 												) : null}
 												{event.sourceRevision ? (
 													<>
-														<dt>{t('sourceRevision')}</dt>
+														<dt>{translate('sourceRevision')}</dt>
 														<dd className="break-all font-mono">
 															{event.sourceRevision}
 														</dd>
@@ -97,7 +99,7 @@ export function EventHistory(props: EventHistoryProps) {
 												) : null}
 												{event.concreteHash ? (
 													<>
-														<dt>{t('configurationHash')}</dt>
+														<dt>{translate('configurationHash')}</dt>
 														<dd className="break-all font-mono">
 															{event.concreteHash}
 														</dd>
@@ -105,7 +107,7 @@ export function EventHistory(props: EventHistoryProps) {
 												) : null}
 												{event.markdownHash ? (
 													<>
-														<dt>{t('markdownHash')}</dt>
+														<dt>{translate('markdownHash')}</dt>
 														<dd className="break-all font-mono">
 															{event.markdownHash}
 														</dd>

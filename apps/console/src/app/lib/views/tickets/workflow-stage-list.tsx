@@ -1,9 +1,9 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
+import { UserCircle } from '@langdrift/web/ui/icons/client'
 import { cn } from '@langdrift/web/utilities'
 import { useTranslations } from 'next-intl'
 
 import type { TicketStage } from '@data/types'
-import { UserCircle } from '@ui/icons'
 
 interface WorkflowStageListProps {
 	stages: TicketStage[]
@@ -22,11 +22,11 @@ const progressTones: Record<TicketStage['progress'], string> = {
 export function WorkflowStageList(props: WorkflowStageListProps) {
 	const { stages } = props
 
-	const t = useTranslations('tickets')
+	const translate = useTranslations('tickets')
 
 	return (
 		<div className="grid gap-1.5">
-			<Eyebrow>{t('workflow.humanInTheLoop')}</Eyebrow>
+			<Eyebrow>{translate('workflow.humanInTheLoop')}</Eyebrow>
 			<ul className="m-0 grid list-none gap-x-4 gap-y-1 p-0 sm:grid-cols-2">
 				{stages.map((stage) => (
 					<li
@@ -49,10 +49,10 @@ export function WorkflowStageList(props: WorkflowStageListProps) {
 								className="inline-block size-1.5 rounded-full bg-current"
 							/>
 						)}
-						<span>{t(`workflow.stages.${stage.id}`)}</span>
+						<span>{translate(`workflow.stages.${stage.id}`)}</span>
 						{stage.human && stage.id !== 'merge' && (
 							<UserCircle
-								aria-label={t('workflow.humanInTheLoop')}
+								aria-label={translate('workflow.humanInTheLoop')}
 								className="shrink-0 text-muted-foreground"
 								role="img"
 								size={14}
@@ -60,8 +60,8 @@ export function WorkflowStageList(props: WorkflowStageListProps) {
 						)}
 						<span className="font-mono text-[10px] text-muted-foreground">
 							{stage.id === 'merge'
-								? t('workflow.mergeLocked')
-								: t(`workflow.progress.${stage.progress}`)}
+								? translate('workflow.mergeLocked')
+								: translate(`workflow.progress.${stage.progress}`)}
 						</span>
 						{stage.skills && (
 							<span

@@ -16,6 +16,7 @@ const result = {
 	startedAt: '2026-10-21T10:00:00Z',
 	completedAt: '2026-10-21T10:00:00.085Z',
 }
+
 test('burst evidence accepts observed partial failures and rejects fabricated or malformed results', () => {
 	assert.ok(isLoadTestResult(result))
 	for (const override of [

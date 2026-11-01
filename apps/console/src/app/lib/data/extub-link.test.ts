@@ -43,7 +43,10 @@ test('with a token the console serves its hosted host', () => {
 })
 
 test('without a token extub must be plain http on loopback', () => {
-	assert.equal(extubBase(undefined, undefined)?.href, 'http://127.0.0.1:3401/')
+	assert.equal(
+		extubBase('http://127.0.0.1:3401', undefined)?.href,
+		'http://127.0.0.1:3401/',
+	)
 	assert.equal(
 		extubBase('http://localhost:3402', undefined)?.href,
 		'http://localhost:3402/',

@@ -70,11 +70,13 @@ function frame() {
 		],
 	}
 }
+
 test('WebRTC accepts a complete fresh frame, retaining unknown LLM values', () => {
 	const parsed = parseStubFrame(JSON.stringify(frame()), 1, now)
 	assert.equal(parsed?.sequence, 2)
 	assert.equal(parsed?.widgets[0].executions[0].llmCostUsd, null)
 })
+
 test('WebRTC accepts dense stack-tagged graphs within transport bounds', () => {
 	const data = frame()
 	const components = Array.from(
@@ -113,6 +115,7 @@ test('WebRTC accepts dense stack-tagged graphs within transport bounds', () => {
 	components.push(...components.slice(0, 3))
 	assert.equal(parseStubFrame(JSON.stringify(data), 1, now), null)
 })
+
 test('WebRTC rejects incomplete, malformed, foreign and replayed frames', () => {
 	for (const mutate of [
 		(data: ReturnType<typeof frame>) => {

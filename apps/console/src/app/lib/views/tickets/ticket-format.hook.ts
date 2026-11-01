@@ -8,16 +8,16 @@ import { compactTokens, dollars } from './ticket-format'
 // MiB, the pair of them, dollars from cents, compact token counts and
 // whether the team has authorized a plan.
 export function useTicketFormat() {
-	const t = useTranslations('tickets')
+	const translate = useTranslations('tickets')
 	const locale = useLocale()
 
 	const number = new Intl.NumberFormat(locale)
 	const cpu = (millis: number) =>
-		t('cpuValue', { value: number.format(millis) })
+		translate('cpuValue', { value: number.format(millis) })
 	const memory = (mebibytes: number) =>
-		t('memoryValue', { value: number.format(mebibytes) })
+		translate('memoryValue', { value: number.format(mebibytes) })
 	const figures = (resources: Resources) =>
-		t('figures', {
+		translate('figures', {
 			cpu: number.format(resources.cpuMillis),
 			memory: number.format(resources.memoryMiB),
 		})
@@ -31,8 +31,8 @@ export function useTicketFormat() {
 		}).format(new Date(`${date}T00:00:00Z`))
 	const authorization = (plan: Pick<TicketPlan, 'authorization'>) =>
 		plan.authorization === 'authorized'
-			? t('plan.authorized')
-			: t('plan.pendingAuthorization')
+			? translate('plan.authorized')
+			: translate('plan.pendingAuthorization')
 
 	return {
 		authorization,
@@ -42,8 +42,8 @@ export function useTicketFormat() {
 		money,
 		number,
 		priceMonth,
-		t,
 		tokens,
+		translate,
 	}
 }
 

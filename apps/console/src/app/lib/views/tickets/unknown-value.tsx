@@ -8,12 +8,12 @@ interface UnknownValueProps {
 export function UnknownValue(props: UnknownValueProps) {
 	const { className } = props
 
-	const t = useTranslations('tickets')
+	const translate = useTranslations('tickets')
 
 	return (
 		<span className={className}>
 			<span aria-hidden="true">—</span>
-			<span className="sr-only">{t('notSet')}</span>
+			<span className="sr-only">{translate('notSet')}</span>
 		</span>
 	)
 }
