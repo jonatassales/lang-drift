@@ -78,9 +78,9 @@ export function EarlyAccessForm(props: EarlyAccessFormProps) {
 
 	return (
 		<form
-			className="early-access-form"
-			noValidate
 			aria-busy={busy}
+			className="min-w-0"
+			noValidate
 			onSubmit={(event) => {
 				event.preventDefault()
 				const controller = challenge.current
@@ -113,22 +113,25 @@ export function EarlyAccessForm(props: EarlyAccessFormProps) {
 				})
 			}}
 		>
-			<label htmlFor={emailId}>{copy.emailLabel}</label>
-			<div className="early-access-controls">
+			<label
+				className="mb-2.5 block text-sm font-medium text-foreground"
+				htmlFor={emailId}
+			>
+				{copy.emailLabel}
+			</label>
+			<div className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap">
 				<input
-					className="focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
-					ref={inputRef}
-					id={emailId}
-					type="email"
-					autoComplete="email"
-					inputMode="email"
-					required
-					maxLength={254}
-					disabled={busy}
-					value={formState.email}
-					placeholder={copy.placeholder}
 					aria-describedby={`${helperId}${emailError ? ` ${errorId}` : ''}`}
 					aria-invalid={emailError !== null}
+					autoComplete="email"
+					className="min-h-12 w-full min-w-0 flex-initial rounded-[7px] border border-border bg-background px-3.5 py-3 text-base text-foreground placeholder:text-muted-foreground aria-[invalid=true]:border-status-danger disabled:cursor-wait disabled:opacity-65 sm:flex-[1_1_190px] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
+					disabled={busy}
+					id={emailId}
+					inputMode="email"
+					maxLength={254}
+					onBlur={(event) => {
+						handleEmailBlur(event.currentTarget.value, update)
+					}}
 					onChange={(event) => {
 						handleEmailChange(
 							event.currentTarget.value,
@@ -141,14 +144,16 @@ export function EarlyAccessForm(props: EarlyAccessFormProps) {
 							// A submission retries preparation and reports a recoverable error.
 						})
 					}}
-					onBlur={(event) => {
-						handleEmailBlur(event.currentTarget.value, update)
-					}}
+					placeholder={copy.placeholder}
+					ref={inputRef}
+					required
+					type="email"
+					value={formState.email}
 				/>
 				<button
-					className="whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
-					type="submit"
+					className="inline-flex min-h-12 w-full cursor-pointer items-center justify-center gap-4.5 rounded-[7px] border border-primary bg-primary px-4.5 py-3 text-sm font-semibold leading-normal whitespace-nowrap text-primary-foreground hover:bg-primary-hover disabled:cursor-wait disabled:opacity-65 sm:w-auto focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 					disabled={!hydrated || busy}
+					type="submit"
 				>
 					{busy ? copy.submitting : copy.submit}
 					{busy ? (
@@ -157,22 +162,24 @@ export function EarlyAccessForm(props: EarlyAccessFormProps) {
 							className="inline-block size-4 animate-spin rounded-full border-2 border-current border-r-transparent motion-reduce:animate-none"
 						/>
 					) : (
-						<span aria-hidden="true">↗</span>
+						<span aria-hidden="true" className="shrink-0">
+							↗
+						</span>
 					)}
 				</button>
 			</div>
 			<div ref={challengeElement} />
 			<output
-				className="early-access-feedback"
-				aria-live="polite"
 				aria-atomic="true"
+				aria-live="polite"
+				className="block min-h-12 text-[13px] leading-[1.6] [overflow-wrap:anywhere] [&_p]:mt-2.5 [&_p]:mb-0"
 			>
 				{emailError ? (
-					<span id={errorId} className="early-access-field-error">
+					<span className="text-status-danger" id={errorId}>
 						{copy.errors[emailError]}
 					</span>
 				) : null}
-				<span id={statusId} className="early-access-valid-status">
+				<span className="text-foreground" id={statusId}>
 					{formState.status === 'success'
 						? copy.success
 						: formState.status === 'verifying' ||
