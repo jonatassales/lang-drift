@@ -64,7 +64,7 @@ export default async function LocaleLayout(props: LocaleLayoutProps) {
 			lang={languageTags[locale]}
 			suppressHydrationWarning
 		>
-			<body className="min-h-screen bg-background font-sans text-foreground antialiased [&_:focus-visible]:outline-2 [&_:focus-visible]:outline-offset-2 [&_:focus-visible]:outline-ring">
+			<body className="min-h-screen bg-background font-sans text-foreground antialiased">
 				<NextIntlClientProvider>{children}</NextIntlClientProvider>
 				<Analytics />
 			</body>

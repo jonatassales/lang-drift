@@ -1,10 +1,9 @@
 'use client'
 
+import { Button } from '@langdrift/web/ui/button'
 import { useEffect, useEffectEvent, useRef } from 'react'
 
-import { Button } from './button'
-
-interface ListEndProps {
+export interface ListEndProps {
 	/** Set after a failed request, so the list waits for a retry. */
 	failed: boolean
 	hasMore: boolean
@@ -22,28 +21,45 @@ export function ListEnd(props: ListEndProps) {
 
 	const end = useRef<HTMLDivElement>(null)
 	const reachEnd = useEffectEvent(onEnd)
+
 	const armed = hasMore && !loading && !failed
 
-	useEffect(() => {
-		const element = end.current
-		if (!armed || !element) return
+	// The viewport is outside React: an IntersectionObserver subscribes to it.
+	useEffect(
+		function observeEnd() {
+			if (!armed) return
 
-		const observer = new IntersectionObserver(
-			(entries) => {
+			const element = end.current
+
+			if (!element) return
+
+			function handleIntersection(entries: IntersectionObserverEntry[]) {
 				if (entries.some((entry) => entry.isIntersecting)) reachEnd()
-			},
-			{ rootMargin: '0px 0px 600px 0px' },
-		)
-		observer.observe(element)
+			}
 
-		return () => observer.disconnect()
-	}, [armed])
+			const observer = new IntersectionObserver(handleIntersection, {
+				rootMargin: '0px 0px 600px 0px',
+			})
+
+			observer.observe(element)
+
+			return function stopObserving() {
+				observer.disconnect()
+			}
+		},
+		[armed],
+	)
 
 	if (!hasMore) return null
 
 	return (
 		<div className="mt-4" ref={end}>
-			<Button disabled={loading} onClick={onEnd}>
+			<Button
+				disabled={loading}
+				onClick={onEnd}
+				type="button"
+				variant="outline"
+			>
 				{label}
 			</Button>
 		</div>

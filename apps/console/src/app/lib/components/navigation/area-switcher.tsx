@@ -1,11 +1,11 @@
 'use client'
 
+import { CaretDown, CheckCircle } from '@langdrift/web/ui/icons/client'
 import { FinopsIcon, MicroruntimesIcon } from '@langdrift/web/ui/icons/platform'
 import { useTranslations } from 'next-intl'
 
 import { useDismissibleMenu } from '@components/menu/use-dismissible-menu.hook'
 import { Link, usePathname } from '@i18n/navigation'
-import { CaretDown, CheckCircle } from '@ui/icons'
 
 import { type Area, areaHome, areaOf, areas } from './area'
 
@@ -40,7 +40,7 @@ export function AreaSwitcher(props: AreaSwitcherProps) {
 			<button
 				aria-controls={open ? menuId : undefined}
 				aria-expanded={open}
-				className="grid min-h-11 w-full cursor-pointer grid-cols-[28px_minmax(0,1fr)_auto] items-center gap-2 rounded-lg border border-border bg-muted px-2 py-1.5 text-left text-foreground hover:bg-background"
+				className="grid min-h-11 w-full cursor-pointer grid-cols-[28px_minmax(0,1fr)_auto] items-center gap-2 rounded-lg border border-border bg-muted px-2 py-1.5 text-left text-foreground hover:bg-background focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 				onClick={() => setOpen(!open)}
 				ref={triggerRef}
 				type="button"
@@ -73,7 +73,7 @@ export function AreaSwitcher(props: AreaSwitcherProps) {
 						return (
 							<Link
 								aria-current={area === current ? 'true' : undefined}
-								className="flex min-h-10 items-center gap-2.5 rounded-md px-2 text-[12px] no-underline hover:bg-muted"
+								className="flex min-h-10 items-center gap-2.5 rounded-md px-2 text-[12px] no-underline hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 								href={areaHome[area]}
 								key={area}
 								onClick={choose}

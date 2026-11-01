@@ -1,10 +1,10 @@
 'use client'
+import { Card } from '@langdrift/web/ui/card'
 import { useFormatter, useTranslations } from 'next-intl'
 
 import { useDateTime } from '@app/template/formatters/date-time.hook'
 import { StatusLabel } from '@components/status-label/status-label'
 import type { Environment, Execution } from '@data/types'
-import { Card } from '@ui/card'
 
 interface ExecutionTableProps {
 	executions: Execution[]
@@ -18,7 +18,7 @@ export function ExecutionTable(props: ExecutionTableProps) {
 	const dateTime = useDateTime()
 
 	return (
-		<Card>
+		<Card className="block py-0">
 			{!executions.length ? (
 				<p className="p-6 text-sm text-muted-foreground">{t('empty')}</p>
 			) : (

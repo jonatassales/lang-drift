@@ -1,12 +1,12 @@
 'use client'
 
+import { Button } from '@langdrift/web/ui/button'
 import { useTranslations } from 'next-intl'
 import { use } from 'react'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import type { ReadResult } from '@data/read-result'
 import type { FolderListing } from '@data/types'
-import { Button } from '@ui/button'
 
 interface FolderEntriesProps {
 	listing: Promise<ReadResult<FolderListing>>
@@ -28,7 +28,11 @@ export function FolderEntries(props: FolderEntriesProps) {
 				{data.path}
 			</p>
 			{data.parent ? (
-				<Button onClick={() => navigate(data.parent ?? data.path)}>
+				<Button
+					onClick={() => navigate(data.parent ?? data.path)}
+					type="button"
+					variant="outline"
+				>
 					{t('parentFolder')}
 				</Button>
 			) : null}
@@ -40,7 +44,7 @@ export function FolderEntries(props: FolderEntriesProps) {
 					<li key={folder.path}>
 						<button
 							type="button"
-							className="w-full rounded-md px-3 py-2 text-left text-sm hover:bg-muted"
+							className="w-full rounded-md px-3 py-2 text-left text-sm hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 							onClick={() => navigate(folder.path)}
 						>
 							{folder.name}
@@ -48,7 +52,13 @@ export function FolderEntries(props: FolderEntriesProps) {
 					</li>
 				))}
 			</ul>
-			<Button onClick={() => onSelect(data.path)}>{t('selectFolder')}</Button>
+			<Button
+				onClick={() => onSelect(data.path)}
+				type="button"
+				variant="outline"
+			>
+				{t('selectFolder')}
+			</Button>
 		</>
 	)
 }

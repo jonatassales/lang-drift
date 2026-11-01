@@ -1,5 +1,7 @@
 'use client'
 
+import { Button } from '@langdrift/web/ui/button'
+import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
 import { Suspense, useEffect, useRef, useState, useTransition } from 'react'
 
@@ -14,8 +16,6 @@ import type {
 	Recommendation,
 	RuntimeConfiguration,
 } from '@data/types'
-import { Button } from '@ui/button'
-import { Card } from '@ui/card'
 import { EpisodeEvidence } from '@views/history/episode-evidence'
 
 import { RecommendationAccounting } from './recommendation-accounting'
@@ -69,7 +69,7 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 	}, [])
 
 	return (
-		<Card className="p-5">
+		<Card className="block p-5">
 			<h2 className="text-sm font-medium">{t('recommendations')}</h2>
 			<p className="mt-2 text-xs leading-relaxed text-muted-foreground">
 				{t('recommendationIntro')}
@@ -164,6 +164,8 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 						}
 					})
 				}}
+				type="button"
+				variant="outline"
 			>
 				{t(pending ? 'loading' : 'getSuggestions')}
 			</Button>
@@ -272,6 +274,8 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 									onClick={() => {
 										if (recommendation.values) onApply(recommendation.values)
 									}}
+									type="button"
+									variant="outline"
 								>
 									{t('applySuggestions')}
 								</Button>

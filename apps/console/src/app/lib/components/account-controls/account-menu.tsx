@@ -1,11 +1,11 @@
 'use client'
 
+import { CaretDown, Gear, UserCircle } from '@langdrift/web/ui/icons/client'
 import { useTranslations } from 'next-intl'
 import type { ReactNode } from 'react'
 
 import { useDismissibleMenu } from '@components/menu/use-dismissible-menu.hook'
 import { Link } from '@i18n/navigation'
-import { CaretDown, Gear, UserCircle } from '@ui/icons'
 
 interface AccountMenuProps {
 	/** The sign-out item, which talks to the session itself. */
@@ -28,7 +28,7 @@ export function AccountMenu(props: AccountMenuProps) {
 				aria-controls={open ? menuId : undefined}
 				aria-expanded={open}
 				aria-label={t('openAccount')}
-				className="flex h-8 cursor-pointer items-center gap-1.5 rounded-full px-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+				className="flex h-8 cursor-pointer items-center gap-1.5 rounded-full px-1.5 text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 				onClick={() => setOpen(!open)}
 				ref={triggerRef}
 				type="button"
@@ -48,7 +48,7 @@ export function AccountMenu(props: AccountMenuProps) {
 						{email}
 					</p>
 					<Link
-						className="flex min-h-9 items-center gap-2.5 rounded-md px-2.5 text-[12px] text-foreground no-underline hover:bg-muted"
+						className="flex min-h-9 items-center gap-2.5 rounded-md px-2.5 text-[12px] text-foreground no-underline hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 						href="/settings"
 						onClick={() => setOpen(false)}
 					>

@@ -50,7 +50,7 @@ export function RuntimeWidget(props: RuntimeWidgetProps) {
 			<header className="flex flex-wrap items-center justify-between gap-2">
 				<Link
 					href={`/runtimes/${runtime.id}`}
-					className="min-w-0 truncate text-sm font-medium hover:underline"
+					className="min-w-0 truncate text-sm font-medium hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 				>
 					{runtime.name}
 				</Link>
@@ -88,7 +88,7 @@ export function RuntimeWidget(props: RuntimeWidgetProps) {
 				{t('peakPerExecution')}
 			</p>
 			<details className="mt-2 border-t border-border pt-2">
-				<summary className="cursor-pointer text-[11px] text-muted-foreground">
+				<summary className="cursor-pointer text-[11px] text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
 					{t('quickReport')}
 				</summary>
 				<div className="mt-3 grid gap-3 lg:grid-cols-2">

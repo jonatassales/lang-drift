@@ -1,5 +1,6 @@
 'use client'
 
+import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef } from 'react'
 
@@ -8,7 +9,6 @@ import { PageHeading } from '@components/page-heading/page-heading'
 import { useResource } from '@data/resource.hook'
 import type { HomeOverview } from '@data/types'
 import { Link, useRouter } from '@i18n/navigation'
-import { Card } from '@ui/card'
 import { ProductCreate } from '@views/products/product-create'
 
 interface AccountHomeProps {
@@ -45,15 +45,15 @@ export function AccountHome(props: AccountHomeProps) {
 			) : null}
 			<div className="grid gap-4 lg:grid-cols-2">
 				{resource.data.running.map(({ runtime, productName, executions }) => (
-					<Card key={runtime.id} className="p-5">
+					<Card key={runtime.id} className="block p-5">
 						<Link
-							className="text-xs text-muted-foreground"
+							className="text-xs text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 							href={`/products/${runtime.productId}`}
 						>
 							{productName}
 						</Link>
 						<Link
-							className="mt-2 block text-base font-medium"
+							className="mt-2 block text-base font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 							href={`/runtimes/${runtime.id}`}
 						>
 							{runtime.name}

@@ -1,5 +1,7 @@
 'use client'
 
+import { Button } from '@langdrift/web/ui/button'
+import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
 import { useState, useTransition } from 'react'
 
@@ -7,8 +9,6 @@ import { ErrorNotice } from '@components/error-notice/error-notice'
 import { fieldClass, labelClass } from '@components/form-styles/form-styles'
 import { mutation } from '@data/api'
 import type { Component, Runtime, RuntimeConfiguration } from '@data/types'
-import { Button } from '@ui/button'
-import { Card } from '@ui/card'
 
 import { ComponentFields } from './component-fields'
 import { componentsFromForm } from './components-from-form'
@@ -51,7 +51,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 
 	return (
 		<div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
-			<Card className="p-5">
+			<Card className="block p-5">
 				<form
 					className="grid gap-5"
 					onSubmit={(event) => {
@@ -282,7 +282,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 							</p>
 						) : null}
 						{error ? <ErrorNotice error={error} /> : null}
-						<Button type="submit" tone="primary">
+						<Button type="submit">
 							{t(pending ? 'saving' : runtime ? 'save' : 'createRuntime')}
 						</Button>
 					</fieldset>

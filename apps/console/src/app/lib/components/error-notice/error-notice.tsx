@@ -1,9 +1,9 @@
 'use client'
+import { Button } from '@langdrift/web/ui/button'
 import { useTranslations } from 'next-intl'
 
 import { ConsoleError } from '@data/api'
 import { Link } from '@i18n/navigation'
-import { Button } from '@ui/button'
 
 interface ErrorNoticeProps {
 	error: unknown
@@ -23,11 +23,16 @@ export function ErrorNotice(props: ErrorNoticeProps) {
 		>
 			<span>{messages.has(code) ? messages(code) : t('error')}</span>
 			{code === 'authentication_required' ? (
-				<Link href="/login" className="underline">
+				<Link
+					href="/login"
+					className="underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+				>
 					{t('login')}
 				</Link>
 			) : retry ? (
-				<Button onClick={retry}>{t('retry')}</Button>
+				<Button onClick={retry} type="button" variant="outline">
+					{t('retry')}
+				</Button>
 			) : null}
 		</div>
 	)

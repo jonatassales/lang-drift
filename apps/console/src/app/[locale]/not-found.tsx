@@ -18,7 +18,7 @@ export default async function NotFound() {
 	return (
 		<RouteStateNotice title={t('title')} description={t('description')}>
 			<Link
-				className="w-fit text-primary underline underline-offset-4"
+				className="w-fit text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 				href="/home"
 			>
 				{ui('home')}

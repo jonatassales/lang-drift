@@ -1,5 +1,7 @@
 'use client'
 
+import { Button } from '@langdrift/web/ui/button'
+import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
 import { useState, useTransition } from 'react'
 
@@ -8,8 +10,6 @@ import { PageHeading } from '@components/page-heading/page-heading'
 import { mutation } from '@data/api'
 import { useResource } from '@data/resource.hook'
 import type { ProductSecret } from '@data/types'
-import { Button } from '@ui/button'
-import { Card } from '@ui/card'
 
 import { SecretDialog } from './secret-dialog'
 
@@ -56,6 +56,8 @@ export function ProductSecrets(props: ProductSecretsProps) {
 							}
 						})
 					}}
+					type="button"
+					variant="outline"
 				>
 					{t('generateSecret')}
 				</Button>
@@ -79,7 +81,7 @@ export function ProductSecrets(props: ProductSecretsProps) {
 				<ul className="grid max-w-2xl gap-3">
 					{resource.data?.secrets.map((credential) => (
 						<li key={credential.id}>
-							<Card className="flex flex-wrap items-center justify-between gap-3 p-5">
+							<Card className="flex flex-row flex-wrap items-center justify-between gap-3 p-5">
 								<span className="text-sm">{credential.name}</span>
 								{credential.revokedAt ? (
 									<span className="text-xs text-muted-foreground">
@@ -107,6 +109,8 @@ export function ProductSecrets(props: ProductSecretsProps) {
 												}
 											})
 										}}
+										type="button"
+										variant="outline"
 									>
 										{t('revokeSecret')}
 									</Button>

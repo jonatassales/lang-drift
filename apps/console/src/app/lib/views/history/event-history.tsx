@@ -1,11 +1,11 @@
 'use client'
+import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
 
 import { useDateTime } from '@app/template/formatters/date-time.hook'
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { useResource } from '@data/resource.hook'
 import type { LifecycleEvent } from '@data/types'
-import { Card } from '@ui/card'
 
 interface EventHistoryProps {
 	initial: Promise<{ events: LifecycleEvent[] }>
@@ -27,7 +27,7 @@ export function EventHistory(props: EventHistoryProps) {
 		return <ErrorNotice error={resource.error} retry={resource.refresh} />
 
 	return (
-		<Card className="min-w-0">
+		<Card className="block min-w-0 py-0">
 			{!resource.data?.events.length ? (
 				<p className="p-6 text-sm text-muted-foreground">{t('empty')}</p>
 			) : (
@@ -63,7 +63,7 @@ export function EventHistory(props: EventHistoryProps) {
 											{event.id}
 										</p>
 										<details className="mt-2">
-											<summary className="cursor-pointer text-[11px] text-primary">
+											<summary className="cursor-pointer text-[11px] text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
 												{t('evidence')}
 											</summary>
 											<dl className="mt-2 grid gap-1 text-[10px]">

@@ -1,13 +1,13 @@
 'use client'
 
+import { Button } from '@langdrift/web/ui/button'
+import { ListEnd } from '@langdrift/web/ui/list-end'
 import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { ActivityEntrySkeleton } from '@components/route-state/activity-entry-skeleton'
 import { usePagedResource } from '@data/paged-resource.hook'
 import type { Page, ProductEvent } from '@data/types'
-import { Button } from '@ui/button'
-import { ListEnd } from '@ui/list-end'
 
 import { HistoryEntry } from './history-entry'
 
@@ -31,7 +31,12 @@ export function HistoryOverview(props: HistoryOverviewProps) {
 	return (
 		<>
 			<div className="mb-4 flex justify-end">
-				<Button onClick={resource.refresh} disabled={resource.loading}>
+				<Button
+					onClick={resource.refresh}
+					disabled={resource.loading}
+					type="button"
+					variant="outline"
+				>
 					{t('refresh')}
 				</Button>
 			</div>

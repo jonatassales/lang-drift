@@ -1,5 +1,7 @@
 'use client'
 
+import { Button } from '@langdrift/web/ui/button'
+import { Card } from '@langdrift/web/ui/card'
 import { useFormatter, useTranslations } from 'next-intl'
 import { Suspense, useState, useTransition } from 'react'
 
@@ -13,8 +15,6 @@ import { mutation } from '@data/api'
 import { useResource } from '@data/resource.hook'
 import type { Product, RuntimeDetailSnapshot } from '@data/types'
 import { Link } from '@i18n/navigation'
-import { Button } from '@ui/button'
-import { Card } from '@ui/card'
 import { ExecutionTable } from '@views/executions/execution-table'
 
 import { RuntimeConnection } from './runtime-connection'
@@ -134,7 +134,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 					</p>
 				</section>
 				<RuntimeExecutionMetrics snapshot={snapshot} />
-				<Card className="p-5">
+				<Card className="block p-5">
 					<dl className="grid gap-5 sm:grid-cols-2 xl:grid-cols-5">
 						<div>
 							<dt className="mb-2 text-[11px] text-muted-foreground">
@@ -192,7 +192,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 					{environments.length ? (
 						<div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
 							{environments.map((environment) => (
-								<Card key={environment.id} className="p-4">
+								<Card key={environment.id} className="block p-4">
 									<div className="flex flex-wrap items-center justify-between gap-2">
 										<strong className="text-sm font-medium">
 											{environment.name}
@@ -218,7 +218,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 							))}
 						</div>
 					) : (
-						<Card className="p-5 text-sm text-muted-foreground">
+						<Card className="block p-5 text-sm text-muted-foreground">
 							{t('environmentsEmpty')}
 						</Card>
 					)}
@@ -261,7 +261,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 				</section>
 				<RuntimeFinops snapshot={snapshot} />
 				<RuntimeLoadTest key={runtime.id} snapshot={snapshot} />
-				<Card className="p-5">
+				<Card className="block p-5">
 					<h2 className="text-sm font-medium">{t('markdown')}</h2>
 					<pre className="mt-4 max-h-96 overflow-auto rounded-md bg-background p-4 text-xs leading-relaxed">
 						<code>{runtime.markdown}</code>
@@ -275,15 +275,21 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 				<div className="flex flex-wrap gap-3 border-t border-border pt-5">
 					{!deleted ? (
 						<Button
-							tone="danger"
 							disabled={pending}
 							onClick={() => operate('delete')}
+							type="button"
+							variant="destructive"
 						>
 							{t('delete')}
 						</Button>
 					) : null}
 					{!deleted && !runtime.credentialRevoked ? (
-						<Button disabled={pending} onClick={() => operate('revoke')}>
+						<Button
+							disabled={pending}
+							onClick={() => operate('revoke')}
+							type="button"
+							variant="outline"
+						>
 							{t('revoke')}
 						</Button>
 					) : null}

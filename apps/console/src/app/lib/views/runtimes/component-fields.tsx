@@ -20,6 +20,7 @@ export function ComponentFields(props: ComponentFieldsProps) {
 			<legend className="px-1 text-sm">
 				<label className="flex items-center gap-2">
 					<input
+						className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 						type="checkbox"
 						name="selectedComponents"
 						value={component.path}

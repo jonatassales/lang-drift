@@ -9,23 +9,14 @@ export {
 	FlowArrow,
 	Gear,
 	GitBranch,
-	GithubLogo,
 	House,
 	List,
 	MagnifyingGlass,
-	Moon,
 	Pause,
 	Play,
-	PlugsConnected,
 	Plus,
 	SignOut,
-	Stop,
-	Sun,
 	Ticket,
-	Trash,
 	UserCircle,
-	WarningDiamond,
 	X,
 } from '@phosphor-icons/react'
-
-export { StackIcon } from './stack-icon'

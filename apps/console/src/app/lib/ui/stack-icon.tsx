@@ -1,4 +1,4 @@
-import { Cube } from '@phosphor-icons/react'
+import { Cube } from '@langdrift/web/ui/icons/client'
 
 import icons from './stack-icons.json'
 

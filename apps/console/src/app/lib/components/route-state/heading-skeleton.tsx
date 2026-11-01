@@ -1,5 +1,5 @@
 'use client'
-import { Skeleton } from '@ui/skeleton'
+import { Skeleton } from '@langdrift/web/ui/skeleton'
 
 export function HeadingSkeleton() {
 	return (

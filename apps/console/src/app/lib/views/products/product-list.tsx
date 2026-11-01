@@ -1,5 +1,7 @@
 'use client'
 
+import { Card } from '@langdrift/web/ui/card'
+import { GitBranch, Plus } from '@langdrift/web/ui/icons/client'
 import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
@@ -8,8 +10,6 @@ import { PageHeading } from '@components/page-heading/page-heading'
 import { useResource } from '@data/resource.hook'
 import type { Product } from '@data/types'
 import { Link } from '@i18n/navigation'
-import { Card } from '@ui/card'
-import { GitBranch, Plus } from '@ui/icons'
 
 import { ProductCreate } from './product-create'
 
@@ -39,10 +39,10 @@ export function ProductList(props: ProductListProps) {
 			) : resource.data?.products.length ? (
 				<div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
 					{resource.data.products.map((product) => (
-						<Card key={product.id} className="p-5">
+						<Card key={product.id} className="block p-5">
 							<Link
 								href={`/products/${product.id}`}
-								className="text-sm font-medium hover:text-primary"
+								className="text-sm font-medium hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 							>
 								{product.name}
 							</Link>
@@ -60,7 +60,7 @@ export function ProductList(props: ProductListProps) {
 					))}
 				</div>
 			) : (
-				<Card className="p-10 text-center text-sm text-muted-foreground">
+				<Card className="block p-10 text-center text-sm text-muted-foreground">
 					{t('projectsEmpty')}
 				</Card>
 			)}

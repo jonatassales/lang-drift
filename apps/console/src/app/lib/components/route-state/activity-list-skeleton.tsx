@@ -1,7 +1,6 @@
 'use client'
+import { Skeleton } from '@langdrift/web/ui/skeleton'
 import { useTranslations } from 'next-intl'
-
-import { Skeleton } from '@ui/skeleton'
 
 export function ActivityListSkeleton() {
 	const t = useTranslations('ui')

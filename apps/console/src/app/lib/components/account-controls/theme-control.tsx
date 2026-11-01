@@ -1,9 +1,8 @@
 'use client'
 
+import { ThemeToggle } from '@langdrift/web/ui/theme-toggle'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
-
-import { ThemeToggle } from '@ui/theme-toggle'
 
 export function ThemeControl() {
 	const t = useTranslations('ui')

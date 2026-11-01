@@ -1,5 +1,7 @@
 'use client'
 
+import { Button } from '@langdrift/web/ui/button'
+import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState, useTransition } from 'react'
 
@@ -10,8 +12,6 @@ import { mutation } from '@data/api'
 import { type ReadResult, readResult } from '@data/read-result'
 import type { FolderListing, Product } from '@data/types'
 import { useRouter } from '@i18n/navigation'
-import { Button } from '@ui/button'
-import { Card } from '@ui/card'
 
 import { FolderPicker } from './folder-picker'
 
@@ -50,7 +50,7 @@ export function ProductCreate(props: ProductCreateProps) {
 				)}
 				description={t('localProjectIntro')}
 			/>
-			<Card className="mx-auto max-w-2xl p-7 sm:mt-10">
+			<Card className="block mx-auto max-w-2xl p-7 sm:mt-10">
 				<form
 					className="grid gap-5"
 					onSubmit={(event) => {
@@ -78,7 +78,7 @@ export function ProductCreate(props: ProductCreateProps) {
 					<button
 						type="button"
 						disabled={pending}
-						className="grid min-h-40 place-content-center gap-3 rounded-xl border-2 border-dashed border-border p-8 text-center hover:border-primary hover:bg-muted"
+						className="grid min-h-40 place-content-center gap-3 rounded-xl border-2 border-dashed border-border p-8 text-center hover:border-primary hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 						onClick={() => {
 							folderRequest.current?.abort()
 							folderRequest.current = new AbortController()
@@ -139,7 +139,11 @@ export function ProductCreate(props: ProductCreateProps) {
 						{t('projectAgentIntro')}
 					</p>
 					{error ? <ErrorNotice error={error} /> : null}
-					<Button type="submit" disabled={pending || !path.trim()}>
+					<Button
+						type="submit"
+						disabled={pending || !path.trim()}
+						variant="outline"
+					>
 						{t(
 							pending
 								? 'preparingProject'

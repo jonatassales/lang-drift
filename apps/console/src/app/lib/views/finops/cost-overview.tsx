@@ -1,10 +1,10 @@
+import { Card } from '@langdrift/web/ui/card'
 import { getFormatter, getTranslations } from 'next-intl/server'
 
 import { PageHeading } from '@components/page-heading/page-heading'
 import { readConsole } from '@data/server'
 import type { ProductNavigation, RuntimeListSnapshot } from '@data/types'
 import { Link } from '@i18n/navigation'
-import { Card } from '@ui/card'
 import { RecommendationPanel } from '@views/runtimes/recommendation-panel'
 import { RuntimeFinops } from '@views/runtimes/runtime-finops'
 
@@ -44,7 +44,7 @@ export async function CostOverview() {
 				title={t('costOverview')}
 				description={t('costOverviewDescription')}
 			/>
-			<Card className="mb-8 p-4 sm:max-w-sm">
+			<Card className="block mb-8 p-4 sm:max-w-sm">
 				<p className="text-xs text-muted-foreground">{t('knownLlmCost')}</p>
 				<p className="mt-2 text-2xl font-medium">
 					{reported(totals.knownLlmCostUsd, usd)}
@@ -67,10 +67,15 @@ export async function CostOverview() {
 						const { configuration } = runtime
 
 						return (
-							<Card className="p-4" key={runtime.id}>
+							<Card className="block p-4" key={runtime.id}>
 								<div className="flex flex-wrap items-baseline justify-between gap-2">
 									<h2 className="text-sm font-medium">
-										<Link href={`/runtimes/${runtime.id}`}>{runtime.name}</Link>
+										<Link
+											className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+											href={`/runtimes/${runtime.id}`}
+										>
+											{runtime.name}
+										</Link>
 									</h2>
 									<span className="text-xs text-muted-foreground">
 										{projectNames.get(runtime.productId) ?? t('unknown')}
@@ -99,7 +104,7 @@ export async function CostOverview() {
 									</p>
 								) : null}
 								<details className="mt-4">
-									<summary className="cursor-pointer text-xs">
+									<summary className="cursor-pointer text-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
 										{t('finopsReport')}
 									</summary>
 									<div className="mt-3">
@@ -107,7 +112,7 @@ export async function CostOverview() {
 									</div>
 								</details>
 								<details className="mt-2">
-									<summary className="cursor-pointer text-xs">
+									<summary className="cursor-pointer text-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
 										{t('recommendations')}
 									</summary>
 									<div className="mt-3">

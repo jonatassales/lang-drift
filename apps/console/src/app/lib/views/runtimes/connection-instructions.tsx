@@ -1,10 +1,10 @@
 'use client'
+import { Button } from '@langdrift/web/ui/button'
+import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
-import { Button } from '@ui/button'
-import { Card } from '@ui/card'
 
 interface ConnectionInstructionsProps {
 	secret?: string
@@ -22,7 +22,7 @@ export function ConnectionInstructions(props: ConnectionInstructionsProps) {
 	}, [])
 
 	return (
-		<Card className="p-5">
+		<Card className="block p-5">
 			<h2 className="text-sm font-medium">{t('connectionInstructions')}</h2>
 			{secret ? (
 				<div className="my-4 grid gap-3">
@@ -43,6 +43,8 @@ export function ConnectionInstructions(props: ConnectionInstructionsProps) {
 								setError(failure)
 							}
 						}}
+						type="button"
+						variant="outline"
 					>
 						{t(copied ? 'copied' : 'copySecret')}
 					</Button>

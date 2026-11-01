@@ -1,4 +1,5 @@
 'use client'
+import { Button } from '@langdrift/web/ui/button'
 import { useFormatter, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
@@ -6,7 +7,6 @@ import { useDateTime } from '@app/template/formatters/date-time.hook'
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { consoleRequest } from '@data/api'
 import type { RuntimeLoadTestResult, RuntimeWidgetSnapshot } from '@data/types'
-import { Button } from '@ui/button'
 
 import { isLoadTestResult } from './load-test-result'
 
@@ -89,6 +89,8 @@ export function RuntimeLoadTest(props: RuntimeLoadTestProps) {
 							snapshot.runtime.credentialRevoked
 						}
 						onClick={run}
+						type="button"
+						variant="outline"
 					>
 						{t(actionLabel)}
 					</Button>

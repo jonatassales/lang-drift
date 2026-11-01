@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@langdrift/web/ui/button'
 import { useTranslations } from 'next-intl'
 import { Suspense, useState, useTransition } from 'react'
 
@@ -9,7 +10,6 @@ import { ActivityListSkeleton } from '@components/route-state/activity-list-skel
 import { mutation } from '@data/api'
 import { useResource } from '@data/resource.hook'
 import type { LifecycleEvent, Runtime } from '@data/types'
-import { Button } from '@ui/button'
 import { RecommendationPanel } from '@views/runtimes/recommendation-panel'
 
 import { EventHistory } from './event-history'
@@ -38,7 +38,6 @@ export function RuntimeHistory(props: RuntimeHistoryProps) {
 		<>
 			<PageHeading title={t('history')} description={id}>
 				<Button
-					tone="danger"
 					disabled={pending}
 					onClick={() => {
 						if (!window.confirm(t('purgeConfirm'))) return
@@ -58,6 +57,8 @@ export function RuntimeHistory(props: RuntimeHistoryProps) {
 							}
 						})
 					}}
+					type="button"
+					variant="destructive"
 				>
 					{t('purge')}
 				</Button>

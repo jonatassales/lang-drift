@@ -1,5 +1,6 @@
 'use client'
 
+import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
@@ -8,7 +9,6 @@ import { PageHeading } from '@components/page-heading/page-heading'
 import { useResource } from '@data/resource.hook'
 import type { RuntimeListSnapshot } from '@data/types'
 import { Link } from '@i18n/navigation'
-import { Card } from '@ui/card'
 
 import { RuntimeWidget } from './runtime-widget'
 import { useStubStream } from './stub-stream.hook'
@@ -65,7 +65,7 @@ export function RuntimeList(props: RuntimeListProps) {
 					))}
 				</div>
 			) : (
-				<Card className="p-10 text-center text-sm text-muted-foreground">
+				<Card className="block p-10 text-center text-sm text-muted-foreground">
 					<p>{t('runtimeEmpty')}</p>
 					{productId ? (
 						<Link

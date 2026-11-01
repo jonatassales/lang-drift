@@ -1,5 +1,6 @@
 'use client'
 import { Brand } from '@langdrift/web/ui/brand'
+import { Button } from '@langdrift/web/ui/button'
 import { ElevatedFrame } from '@langdrift/web/ui/elevated-frame'
 import { HeroShader } from '@langdrift/web/ui/hero-shader'
 import { useTranslations } from 'next-intl'
@@ -11,7 +12,6 @@ import { fieldClass, labelClass } from '@components/form-styles/form-styles'
 import { mutation } from '@data/api'
 import { LanguageSettings } from '@i18n/language-settings'
 import { Link, useRouter } from '@i18n/navigation'
-import { Button } from '@ui/button'
 
 interface AuthFormProps {
 	signup?: boolean
@@ -103,13 +103,13 @@ export function AuthForm(props: AuthFormProps) {
 							) : null}
 						</label>
 						{error ? <ErrorNotice error={error} /> : null}
-						<Button type="submit" tone="primary" disabled={pending}>
+						<Button type="submit" disabled={pending}>
 							{t(pending ? 'saving' : signup ? 'signup' : 'login')}
 						</Button>
 					</form>
 					<Link
 						href={signup ? '/login' : '/signup'}
-						className="mt-5 block text-center text-xs text-primary"
+						className="mt-5 block text-center text-xs text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 					>
 						{t(signup ? 'haveAccount' : 'needAccount')}
 					</Link>

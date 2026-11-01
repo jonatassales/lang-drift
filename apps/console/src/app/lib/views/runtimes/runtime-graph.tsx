@@ -1,12 +1,12 @@
 'use client'
 
+import { Skeleton } from '@langdrift/web/ui/skeleton'
 import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { SinapsiElement, SinapsiGraphDocument } from 'sinapsi'
 import type {} from 'sinapsi/react-types'
 
 import type { Component, RuntimeWidgetTone } from '@data/types'
-import { Skeleton } from '@ui/skeleton'
 
 import { RuntimeNodeCards } from './runtime-node-cards'
 

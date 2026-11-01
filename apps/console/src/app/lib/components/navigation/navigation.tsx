@@ -1,11 +1,6 @@
 'use client'
 
 import { Brand } from '@langdrift/web/ui/brand'
-import { useTranslations } from 'next-intl'
-
-import { useDismissibleMenu } from '@components/menu/use-dismissible-menu.hook'
-import type { Product } from '@data/types'
-import { Link, usePathname } from '@i18n/navigation'
 import {
 	CaretDown,
 	ChartLineUp,
@@ -19,7 +14,12 @@ import {
 	House,
 	MagnifyingGlass,
 	Ticket,
-} from '@ui/icons'
+} from '@langdrift/web/ui/icons/client'
+import { useTranslations } from 'next-intl'
+
+import { useDismissibleMenu } from '@components/menu/use-dismissible-menu.hook'
+import type { Product } from '@data/types'
+import { Link, usePathname } from '@i18n/navigation'
 
 import { areaOf } from './area'
 import { AreaSwitcher } from './area-switcher'
@@ -133,13 +133,13 @@ export function Navigation(props: NavigationProps) {
 		onNavigate?.()
 	}
 	const linkStyle = (active: boolean) =>
-		`relative flex items-center gap-2.5 rounded-md px-3 text-[12px] no-underline transition-colors hover:bg-muted hover:text-foreground ${active ? 'bg-muted font-medium text-foreground before:absolute before:inset-y-2.5 before:left-0 before:w-0.5 before:rounded-full before:bg-primary' : 'text-muted-foreground'} ${mobile ? 'min-h-10' : 'min-h-9'}`
+		`relative flex items-center gap-2.5 rounded-md px-3 text-[12px] no-underline transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${active ? 'bg-muted font-medium text-foreground before:absolute before:inset-y-2.5 before:left-0 before:w-0.5 before:rounded-full before:bg-primary' : 'text-muted-foreground'} ${mobile ? 'min-h-10' : 'min-h-9'}`
 
 	return (
 		<>
 			<Link
 				aria-label={t('home')}
-				className="flex items-center gap-2.5 px-2.5 pt-2 pb-6 no-underline"
+				className="flex items-center gap-2.5 px-2.5 pt-2 pb-6 no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 				href="/home"
 				onClick={navigate}
 			>
@@ -165,7 +165,7 @@ export function Navigation(props: NavigationProps) {
 									aria-controls={open ? menuId : undefined}
 									aria-expanded={products.length > 1 ? open : undefined}
 									disabled={products.length < 2}
-									className="flex min-h-12 w-full cursor-pointer items-center justify-between gap-3 rounded-lg border border-border bg-background px-3 py-2.5 text-left text-foreground hover:bg-muted"
+									className="flex min-h-12 w-full cursor-pointer items-center justify-between gap-3 rounded-lg border border-border bg-background px-3 py-2.5 text-left text-foreground hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 									onClick={() => setOpen(!open)}
 									ref={triggerRef}
 									type="button"
@@ -187,7 +187,7 @@ export function Navigation(props: NavigationProps) {
 									>
 										{products.map((item) => (
 											<Link
-												className="flex min-h-10 items-center justify-between px-2.5 text-xs"
+												className="flex min-h-10 items-center justify-between px-2.5 text-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 												href={`/products/${item.id}`}
 												onClick={navigate}
 												key={item.id}

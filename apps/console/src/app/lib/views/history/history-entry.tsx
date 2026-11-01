@@ -24,7 +24,7 @@ export function HistoryEntry(props: HistoryEntryProps) {
 			<header className="flex flex-wrap items-center justify-between gap-3">
 				<Link
 					prefetch={false}
-					className="max-w-full break-words font-medium hover:underline"
+					className="max-w-full break-words font-medium hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 					href={`/runtimes/${event.runtimeId}/history`}
 				>
 					{item.runtimeName}

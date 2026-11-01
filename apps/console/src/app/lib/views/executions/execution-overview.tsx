@@ -1,13 +1,13 @@
 'use client'
 
+import { Button } from '@langdrift/web/ui/button'
+import { ListEnd } from '@langdrift/web/ui/list-end'
 import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { ActivityEntrySkeleton } from '@components/route-state/activity-entry-skeleton'
 import { usePagedResource } from '@data/paged-resource.hook'
 import type { Page, ProductExecution } from '@data/types'
-import { Button } from '@ui/button'
-import { ListEnd } from '@ui/list-end'
 
 import { ExecutionEntry } from './execution-entry'
 
@@ -30,7 +30,12 @@ export function ExecutionOverview(props: ExecutionOverviewProps) {
 	return (
 		<>
 			<div className="mb-4 flex justify-end">
-				<Button onClick={resource.refresh} disabled={resource.loading}>
+				<Button
+					onClick={resource.refresh}
+					disabled={resource.loading}
+					type="button"
+					variant="outline"
+				>
 					{t('refresh')}
 				</Button>
 			</div>

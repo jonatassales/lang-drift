@@ -1,3 +1,4 @@
+import { Skeleton } from '@langdrift/web/ui/skeleton'
 import { useTranslations } from 'next-intl'
 import { type ReactNode, Suspense } from 'react'
 
@@ -9,7 +10,6 @@ import { PageFocus } from '@components/page-focus/page-focus'
 import { NavigationSkeleton } from '@components/route-state/navigation-skeleton'
 import { SourceNotice } from '@components/source-notice/source-notice'
 import { LanguageSettings } from '@i18n/language-settings'
-import { Skeleton } from '@ui/skeleton'
 
 interface ConsoleLayoutProps {
 	children: ReactNode
@@ -24,7 +24,7 @@ export default function ConsoleLayout(props: ConsoleLayoutProps) {
 		<div className="min-h-screen [&_:focus]:scroll-mt-20 max-sm:block sm:grid sm:grid-cols-[224px_minmax(0,1fr)]">
 			<a
 				href="#console-content"
-				className="fixed top-3 left-3 z-[110] -translate-y-24 rounded-md bg-foreground px-4 py-2 text-card focus:translate-y-0"
+				className="fixed top-3 left-3 z-[110] -translate-y-24 rounded-md bg-foreground px-4 py-2 text-card focus:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 			>
 				{t('skipContent')}
 			</a>

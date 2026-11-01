@@ -1,11 +1,11 @@
 'use client'
+import { SignOut } from '@langdrift/web/ui/icons/client'
 import { useTranslations } from 'next-intl'
 import { useState, useTransition } from 'react'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { mutation } from '@data/api'
 import { useRouter } from '@i18n/navigation'
-import { SignOut } from '@ui/icons'
 
 export function SignOutButton() {
 	const t = useTranslations('ui')
@@ -18,7 +18,7 @@ export function SignOutButton() {
 			<button
 				disabled={pending}
 				type="button"
-				className="flex min-h-9 w-full cursor-pointer items-center gap-2.5 rounded-md px-2.5 text-left text-[12px] text-foreground hover:bg-muted"
+				className="flex min-h-9 w-full cursor-pointer items-center gap-2.5 rounded-md px-2.5 text-left text-[12px] text-foreground hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 				onClick={() =>
 					startTransition(async () => {
 						setError(null)

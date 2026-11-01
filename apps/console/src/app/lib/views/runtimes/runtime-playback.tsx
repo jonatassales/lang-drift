@@ -1,12 +1,12 @@
 'use client'
+import { Button } from '@langdrift/web/ui/button'
+import { Pause, Play } from '@langdrift/web/ui/icons/client'
 import { useTranslations } from 'next-intl'
 import { useState, useTransition } from 'react'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { mutation } from '@data/api'
 import type { RuntimeWidgetSnapshot } from '@data/types'
-import { Button } from '@ui/button'
-import { Pause, Play } from '@ui/icons'
 
 interface RuntimePlaybackProps {
 	snapshot: RuntimeWidgetSnapshot
@@ -51,6 +51,8 @@ export function RuntimePlayback(props: RuntimePlaybackProps) {
 						}
 					})
 				}
+				type="button"
+				variant="outline"
 			>
 				{stopping ? <Pause size={14} /> : <Play size={14} />}
 				{t(stopping ? 'pause' : 'start')}
