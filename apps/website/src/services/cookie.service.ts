@@ -2,9 +2,18 @@ import 'server-only'
 
 import type { CryptoService } from './crypto.service'
 
-export type CookieReadResult<T = unknown> =
-	| { found: true; value: T }
-	| { found: false }
+export interface CookieReadFound<Value = unknown> {
+	found: true
+	value: Value
+}
+
+export interface CookieReadNotFound {
+	found: false
+}
+
+export type CookieReadResult<Value = unknown> =
+	| CookieReadFound<Value>
+	| CookieReadNotFound
 
 export type SameSite = 'lax' | 'strict' | 'none'
 
@@ -109,10 +118,10 @@ export class CookieService {
 	}
 
 	get(name: string): CookieReadResult
-	get<T>(
+	get<Value>(
 		name: string,
-		validate: (value: unknown) => value is T,
-	): CookieReadResult<T>
+		validate: (value: unknown) => value is Value,
+	): CookieReadResult<Value>
 	get(name: string, validate?: (value: unknown) => boolean): CookieReadResult {
 		this.#assertCookieName(name)
 

@@ -39,7 +39,7 @@ const glass =
 	"before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-transparent before:content-[''] before:transition-colors data-[scrolled=true]:before:bg-background/60 supports-[backdrop-filter]:data-[scrolled=true]:before:bg-background/25 supports-[backdrop-filter]:data-[scrolled=true]:before:backdrop-blur-2xl"
 
 export function WebsiteHeader() {
-	const t = useTranslations('header')
+	const translate = useTranslations('header')
 	const locale = useLocale()
 	const [theme, setTheme] = useAtom(themeAtom)
 	const [scrolled, setScrolled] = useState(false)
@@ -117,7 +117,7 @@ export function WebsiteHeader() {
 		setDrawerOpen(false)
 	}
 
-	const themeLabel = t(theme === 'dark' ? 'lightTheme' : 'darkTheme')
+	const themeLabel = translate(theme === 'dark' ? 'lightTheme' : 'darkTheme')
 
 	return (
 		<>
@@ -132,7 +132,7 @@ export function WebsiteHeader() {
 			>
 				<div className="mx-auto grid min-h-17.5 max-w-[1280px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-[clamp(18px,3vw,36px)] md:min-h-20 md:gap-5 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
 					<div className="flex items-center gap-5 justify-self-start">
-						<Link aria-label={t('home')} className={brandLink} href="/">
+						<Link aria-label={translate('home')} className={brandLink} href="/">
 							<Brand className="website-header-brand" compact tone={theme} />
 						</Link>
 						<div className="website-header-language">
@@ -140,21 +140,21 @@ export function WebsiteHeader() {
 						</div>
 					</div>
 					<nav
-						aria-label={t('navigation')}
+						aria-label={translate('navigation')}
 						className="hidden items-center justify-center gap-4.5 lg:flex"
 					>
 						<PlatformMenu />
-						<span className={utilityItem}>{t('docs')}</span>
+						<span className={utilityItem}>{translate('docs')}</span>
 						<a
 							className={desktopLink}
 							href="https://github.com/jonatassales/lang-drift"
 							rel="noreferrer"
 							target="_blank"
 						>
-							{t('github')}
+							{translate('github')}
 						</a>
 						<Link className={desktopLink} href="/pricing">
-							{t('pricing')}
+							{translate('pricing')}
 						</Link>
 					</nav>
 					<div className="flex items-center gap-1 justify-self-end md:gap-2.5">
@@ -164,7 +164,7 @@ export function WebsiteHeader() {
 						<button
 							aria-controls="website-navigation-drawer"
 							aria-expanded={drawerOpen}
-							aria-label={t('openNavigation')}
+							aria-label={translate('openNavigation')}
 							className={`${iconButton} website-navigation-trigger lg:hidden`}
 							onClick={() => setDrawerOpen(true)}
 							ref={triggerRef}
@@ -214,7 +214,7 @@ export function WebsiteHeader() {
 				</div>
 			</header>
 			<dialog
-				aria-label={t('navigation')}
+				aria-label={translate('navigation')}
 				className={`my-3 mr-3 ml-auto max-h-[calc(100dvh-24px)] w-97.5 max-w-[calc(100vw-24px)] px-5.5 pt-4.5 pb-7.5 backdrop:bg-foreground/38 backdrop:backdrop-blur-[5px] ${panelSurface}`}
 				id="website-navigation-drawer"
 				onCancel={closeDrawer}
@@ -223,7 +223,7 @@ export function WebsiteHeader() {
 			>
 				<div className="flex items-center justify-between gap-2.5">
 					<Link
-						aria-label={t('home')}
+						aria-label={translate('home')}
 						className={brandLink}
 						href="/"
 						onClick={closeDrawer}
@@ -231,7 +231,7 @@ export function WebsiteHeader() {
 						<Brand compact tone={theme} />
 					</Link>
 					<button
-						aria-label={t('closeNavigation')}
+						aria-label={translate('closeNavigation')}
 						className={iconButton}
 						onClick={closeDrawer}
 						ref={closeRef}
@@ -251,9 +251,9 @@ export function WebsiteHeader() {
 						</svg>
 					</button>
 				</div>
-				<nav aria-label={t('navigation')} className="grid gap-1 py-5.5">
+				<nav aria-label={translate('navigation')} className="grid gap-1 py-5.5">
 					<p className="px-2 pt-2 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-						{t('platform')}
+						{translate('platform')}
 					</p>
 					{platformProducts.map((product) => {
 						const Icon = product.icon
@@ -266,16 +266,16 @@ export function WebsiteHeader() {
 								onClick={closeDrawer}
 							>
 								<Icon className="size-5" />
-								{t(product.label)}
+								{translate(product.label)}
 							</Link>
 						) : (
 							<span className={drawerItem} key={product.label}>
 								<Icon className="size-5" />
-								{t(product.label)}
+								{translate(product.label)}
 							</span>
 						)
 					})}
-					<span className={drawerItem}>{t('docs')}</span>
+					<span className={drawerItem}>{translate('docs')}</span>
 					<a
 						className={drawerLink}
 						href="https://github.com/jonatassales/lang-drift"
@@ -283,10 +283,10 @@ export function WebsiteHeader() {
 						rel="noreferrer"
 						target="_blank"
 					>
-						{t('github')}
+						{translate('github')}
 					</a>
 					<Link className={drawerLink} href="/pricing" onClick={closeDrawer}>
-						{t('pricing')}
+						{translate('pricing')}
 					</Link>
 				</nav>
 				<div className="grid justify-items-start gap-6 border-t border-border pt-6">

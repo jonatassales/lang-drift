@@ -69,12 +69,23 @@ function assertCredentialFreeOrigin(endpoint: URL, mode: EarlyAccessMode) {
 
 function readRegistry() {
 	const mode = earlyAccessMode()
-	const registry = new URL(process.env.EARLY_ACCESS_REGISTRY_URL ?? '')
-	const website = new URL(process.env.EARLY_ACCESS_PUBLIC_ORIGIN ?? '')
+	const registryEnv = process.env.EARLY_ACCESS_REGISTRY_URL
+	if (!registryEnv) {
+		throw new Error('EARLY_ACCESS_REGISTRY_URL is not configured')
+	}
+	const registry = new URL(registryEnv)
+
+	const websiteEnv = process.env.EARLY_ACCESS_PUBLIC_ORIGIN
+	if (!websiteEnv) {
+		throw new Error('EARLY_ACCESS_PUBLIC_ORIGIN is not configured')
+	}
+	const website = new URL(websiteEnv)
+
 	assertCredentialFreeOrigin(registry, mode)
 	assertCredentialFreeOrigin(website, mode)
-	const registryKey = process.env.EARLY_ACCESS_REGISTRY_KEY ?? ''
-	if (registryKey.length < 32 || /[\r\n]/.test(registryKey)) {
+
+	const registryKey = process.env.EARLY_ACCESS_REGISTRY_KEY
+	if (!registryKey || registryKey.length < 32 || /[\r\n]/.test(registryKey)) {
 		throw new Error(
 			'EARLY_ACCESS_REGISTRY_KEY must contain at least 32 characters',
 		)

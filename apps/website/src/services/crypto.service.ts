@@ -9,7 +9,16 @@ import {
 } from 'node:crypto'
 import { deserialize, serialize } from 'node:v8'
 
-export type DecryptResult = { ok: true; value: unknown } | { ok: false }
+export interface DecryptSuccess {
+	ok: true
+	value: unknown
+}
+
+export interface DecryptFailure {
+	ok: false
+}
+
+export type DecryptResult = DecryptSuccess | DecryptFailure
 
 const secretPattern = /^[A-Za-z0-9+/]{43}=$/
 const version = 'v2'

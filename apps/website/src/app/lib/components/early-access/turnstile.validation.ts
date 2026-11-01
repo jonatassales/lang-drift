@@ -25,15 +25,31 @@ function earlyAccessMode(): EarlyAccessMode {
 
 function readTurnstile() {
 	const mode = earlyAccessMode()
-	const turnstileSecret = process.env.TURNSTILE_SECRET_KEY ?? ''
-	const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? ''
-	const turnstileHostname = process.env.TURNSTILE_EXPECTED_HOSTNAME ?? ''
-	if (!/^[a-zA-Z0-9](?:[a-zA-Z0-9.-]*[a-zA-Z0-9])?$/.test(turnstileHostname)) {
+	const turnstileSecret = process.env.TURNSTILE_SECRET_KEY
+	if (!turnstileSecret) {
+		throw new Error('TURNSTILE_SECRET_KEY is not configured')
+	}
+
+	const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+	if (!turnstileSiteKey) {
+		throw new Error('NEXT_PUBLIC_TURNSTILE_SITE_KEY is not configured')
+	}
+
+	const turnstileHostname = process.env.TURNSTILE_EXPECTED_HOSTNAME
+	if (
+		!turnstileHostname ||
+		!/^[a-zA-Z0-9](?:[a-zA-Z0-9.-]*[a-zA-Z0-9])?$/.test(turnstileHostname)
+	) {
 		throw new Error(
 			'TURNSTILE_EXPECTED_HOSTNAME must be a hostname without a scheme, port or path',
 		)
 	}
-	const turnstileVerifyUrl = process.env.TURNSTILE_VERIFY_URL ?? ''
+
+	const turnstileVerifyUrl = process.env.TURNSTILE_VERIFY_URL
+	if (!turnstileVerifyUrl) {
+		throw new Error('TURNSTILE_VERIFY_URL is not configured')
+	}
+
 	let verifier: URL
 	try {
 		verifier = new URL(turnstileVerifyUrl)

@@ -15,7 +15,7 @@ interface DemoButtonProps {
 export function DemoButton(props: DemoButtonProps) {
 	const { className, onClick } = props
 
-	const t = useTranslations('header')
+	const translate = useTranslations('header')
 
 	return (
 		<Link
@@ -26,7 +26,7 @@ export function DemoButton(props: DemoButtonProps) {
 			href="/book-a-demo"
 			onClick={onClick}
 		>
-			{t('bookDemo')}
+			{translate('bookDemo')}
 		</Link>
 	)
 }

@@ -41,7 +41,7 @@ export function LanguagePill(props: LanguagePillProps) {
 	const { fromDrawer = false } = props
 
 	const locale = useLocale()
-	const t = useTranslations('header')
+	const translate = useTranslations('header')
 	const pathname = usePathname()
 	const [urlSuffix, setUrlSuffix] = useState('')
 
@@ -99,11 +99,11 @@ export function LanguagePill(props: LanguagePillProps) {
 					: undefined
 			}
 			currentLocale={locale}
-			label={t('language')}
+			label={translate('language')}
 			options={languages.map((language) => ({
 				locale: language.locale,
 				label: languageLabels[language.locale],
-				name: t(`languages.${language.name}`),
+				name: translate(`languages.${language.name}`),
 				href: `${pathname}${urlSuffix}`,
 			}))}
 			renderLink={(language, linkProps) => (
