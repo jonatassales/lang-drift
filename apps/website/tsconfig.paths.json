@@ -8,7 +8,7 @@
 			"@i18n/*": ["./src/app/template/i18n/*"],
 			"@services/*": ["./src/services/*"],
 			"@data/*": ["./src/app/lib/data/*"],
-			"@state": ["./src/app/lib/state/index.ts"]
+			"@state": ["./src/app/state/index.ts"]
 		}
 	}
 }
