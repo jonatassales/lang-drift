@@ -27,6 +27,8 @@
   <a href="#recursos">Recursos</a> ·
   <a href="#como-usar">Como usar</a> ·
   <a href="#configuracao">Configuração</a> ·
+  <a href="#referencias">Referências</a> ·
+  <a href="#agradecimentos">Agradecimentos</a> ·
   <a href="#licenca">Licença</a>
 </p>
 
@@ -205,6 +207,15 @@ Você pode personalizar estágios de workflow, drivers de agentes e parâmetros 
 ```
 
 </details>
+
+## Referências
+
+- [AI for FinOps: Agentic Use Cases in FinOps](https://www.finops.org/insights/ai-for-finops-agentic-use-cases/), Jonathan Morley, FinOps Foundation, 27 de março de 2026. Praticantes descrevem agentes que reconciliam gastos com orçamentos, encontram desperdício e aplicam políticas de custo mais cedo no ciclo de desenvolvimento; esse último tema, levar o FinOps para dentro da entrega, é onde o LangDrift trabalha.
+- [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html), Birgitta Böckeler, martinfowler.com, 2 de abril de 2026. O artigo descreve o harness externo que um time constrói em volta de um agente de código: guias que orientam o agente antes de ele agir e sensores que permitem que ele se corrija. O `ex harness` registra esse harness para um projeto, e os gates de FinOps limitam o que ele pode gastar.
+
+## Agradecimentos
+
+Obrigado a [Matt Pocock](https://x.com/mattpocockuk). As skills de agente com que este repositório trabalha, de grilling a to-spec, to-tickets, implement, tdd e code-review, são adaptadas de [mattpocock/skills](https://github.com/mattpocock/skills), sob a licença MIT, e o workflow de exemplo acima usa várias delas.
 
 ## Licença
 
