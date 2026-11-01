@@ -41,6 +41,20 @@ export function WebsiteFooter(props: WebsiteFooterProps) {
 						{copy.faq}
 					</Link>
 					<Link href="/privacy">{privacyMessages[locale].title}</Link>
+					<a
+						href="https://github.com/jonatassales/lang-drift/blob/main/SECURITY.md"
+						rel="noopener noreferrer"
+						target="_blank"
+					>
+						{copy.security}
+					</a>
+					<a
+						href="https://github.com/jonatassales/lang-drift/blob/main/LICENSE"
+						rel="noopener noreferrer"
+						target="_blank"
+					>
+						{copy.license}
+					</a>
 					<a href="mailto:founders@langdrift.md">founders@langdrift.md</a>
 				</nav>
 			</div>

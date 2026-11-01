@@ -219,4 +219,4 @@ Xin cảm ơn [Matt Pocock](https://x.com/mattpocockuk). Các skill tác tử m�
 
 ## Giấy phép
 
-LangDrift là phần mềm mã nguồn mở được phát hành theo [Giấy phép MIT](/LICENSE).
+LangDrift là phần mềm mã nguồn mở được phát hành theo [Giấy phép Apache 2.0](/LICENSE).

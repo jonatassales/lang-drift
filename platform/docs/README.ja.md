@@ -219,4 +219,4 @@ npx @langdrift/ex doctor
 
 ## ライセンス
 
-LangDrift は [MIT ライセンス](/LICENSE) のもとで公開されているオープンソースソフトウェアです。
+LangDrift は [Apache 2.0 ライセンス](/LICENSE) のもとで公開されているオープンソースソフトウェアです。

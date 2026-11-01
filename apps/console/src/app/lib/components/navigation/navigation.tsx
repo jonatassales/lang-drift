@@ -251,6 +251,9 @@ export function Navigation(props: NavigationProps) {
 					/>
 					{t('settings')}
 				</Link>
+				<p className="mt-3 px-2 text-[10px] tracking-wide text-muted-foreground/60 select-none">
+					{t('copyright')}
+				</p>
 			</div>
 		</>
 	)

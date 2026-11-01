@@ -219,4 +219,4 @@ Obrigado a [Matt Pocock](https://x.com/mattpocockuk). As skills de agente com qu
 
 ## Licença
 
-O LangDrift é um software de código aberto licenciado sob a [Licença MIT](/LICENSE).
+O LangDrift é um software de código aberto licenciado sob a [Licença Apache 2.0](/LICENSE).

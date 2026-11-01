@@ -2,7 +2,7 @@
 	"name": "@langdrift/ex",
 	"version": "0.2.3",
 	"description": "LangDrift FinOps and Microruntimes CLI",
-	"license": "MIT",
+	"license": "Apache-2.0",
 	"homepage": "https://langdrift.md",
 	"repository": {
 		"type": "git",
