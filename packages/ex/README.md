@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jonatassales/lang-drift/main/platform/docs/assets/images/langdrift-banner-dark.png">
+    <img src="https://raw.githubusercontent.com/jonatassales/lang-drift/main/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: Agentic FinOps Platform" width="820">
+  </picture>
+</p>
+
 # LangDrift CLI
 
 This Go module, adopted from the Exphere repository, performs the Microruntimes session inside a project. `ex agent plan` reads a ticket and the artifacts it links, judges them through a model, retrieves the project's earlier runs, sizes the components inside the team's envelope and writes the runtime file that plans the work. `ex agent run` runs that plan as laps under the team's money gates: it drives the owner's coding agent through the delivery stages, brings the runtime up on the bounded local kind/Terraform/Kubernetes lifecycle, observes what the harness delivered, settles the ledger and remembers what it measured. The module also keeps the connected agent that supervises microruntimes from a LangDrift console, which needs a server this repository does not have. Applications need no LangDrift dependency. It is published on npm as `@langdrift/ex` (`npx @langdrift/ex`).
