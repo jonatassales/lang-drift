@@ -2,7 +2,7 @@
 	"en": {
 		"title": "Privacy Policy",
 		"description": "How the LangDrift website handles information and uses Cloudflare Turnstile for bot protection.",
-		"updated": "Last updated: September 30, 2026",
+		"updated": "Last updated: November 1, 2026",
 		"skip": "Skip to privacy policy",
 		"introduction": "This policy describes privacy on the public LangDrift website at langdrift.md, including its Early Access forms. It does not describe the handling of customer workspace data by the future LangDrift product.",
 		"overviewTitle": "Information on this website",
@@ -30,7 +30,7 @@
 	"pt-BR": {
 		"title": "Política de Privacidade",
 		"description": "Como o site do LangDrift trata informações e usa o Cloudflare Turnstile para proteção contra bots.",
-		"updated": "Última atualização: 30 de setembro de 2026",
+		"updated": "Última atualização: 1 de novembro de 2026",
 		"skip": "Ir para a política de privacidade",
 		"introduction": "Esta política descreve a privacidade no site público do LangDrift em langdrift.md, incluindo seus formulários de acesso antecipado. Ela não descreve o tratamento de dados dos espaços de trabalho de clientes pelo futuro produto LangDrift.",
 		"overviewTitle": "Informações neste site",
@@ -58,7 +58,7 @@
 	"zh-Hant": {
 		"title": "隱私權政策",
 		"description": "了解 LangDrift 網站如何處理資訊，以及如何使用 Cloudflare Turnstile 防範機器人流量。",
-		"updated": "最後更新日期：2026 年 9 月 30 日",
+		"updated": "最後更新日期：2026 年 11 月 1 日",
 		"skip": "跳至隱私權政策",
 		"introduction": "本政策說明 LangDrift 公開網站 langdrift.md 的隱私權事項，包括搶先體驗表單。本政策不涵蓋未來 LangDrift 產品對客戶工作區資料的處理。",
 		"overviewTitle": "本網站的資訊處理",
@@ -86,7 +86,7 @@
 	"ja": {
 		"title": "プライバシーポリシー",
 		"description": "LangDrift のウェブサイトにおける情報の取扱いと、Cloudflare Turnstile によるボット対策について。",
-		"updated": "最終更新日：2026年9月30日",
+		"updated": "最終更新日：2026年11月1日",
 		"skip": "プライバシーポリシーへ移動",
 		"introduction": "本ポリシーは、先行アクセスのフォームを含む LangDrift の公開ウェブサイト langdrift.md におけるプライバシーについて説明します。今後提供される LangDrift 製品でのお客様のワークスペースデータの取扱いは対象としていません。",
 		"overviewTitle": "このサイトで取り扱う情報",
@@ -114,7 +114,7 @@
 	"vi": {
 		"title": "Chính sách quyền riêng tư",
 		"description": "Cách trang web LangDrift xử lý thông tin và sử dụng Cloudflare Turnstile để chống bot.",
-		"updated": "Cập nhật lần cuối: ngày 30 tháng 9 năm 2026",
+		"updated": "Cập nhật lần cuối: ngày 1 tháng 11 năm 2026",
 		"skip": "Chuyển đến chính sách quyền riêng tư",
 		"introduction": "Chính sách này mô tả quyền riêng tư trên trang web công khai LangDrift tại langdrift.md, bao gồm các biểu mẫu Truy cập sớm. Chính sách không mô tả cách sản phẩm LangDrift trong tương lai xử lý dữ liệu không gian làm việc của khách hàng.",
 		"overviewTitle": "Thông tin trên trang web này",

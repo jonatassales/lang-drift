@@ -504,6 +504,10 @@
 					"question": "Is it a sandbox?",
 					"answer": "No. Limits, quotas and an allowlisted build recipe bound the run, but your build code is still trusted code. A microruntime is not an operating-system sandbox."
 				},
+				"license": {
+					"question": "How are Microruntimes and the ex CLI licensed?",
+					"answer": "LangDrift Microruntimes, the contracts and the ex CLI are open-source software licensed under the Apache License, Version 2.0."
+				},
 				"availability": {
 					"question": "Can I use LangDrift Microruntimes today?",
 					"answer": "The connected agent exists as a local development candidate, not a published release. Demo requests are paused for now."
@@ -1015,6 +1019,10 @@
 				"sandbox": {
 					"question": "É um sandbox?",
 					"answer": "Não. Limites, cotas e uma receita de build permitida delimitam a execução, mas o seu código de build continua sendo código confiável. Um microruntime não é um sandbox do sistema operacional."
+				},
+				"license": {
+					"question": "Como o Microruntimes e a CLI ex são licenciados?",
+					"answer": "O LangDrift Microruntimes, os contratos e a CLI ex são softwares de código aberto licenciados sob a Licença Apache, Versão 2.0."
 				},
 				"availability": {
 					"question": "Posso usar o LangDrift Microruntimes hoje?",
@@ -1528,6 +1536,10 @@
 					"question": "它是沙箱嗎？",
 					"answer": "不是。限制、配額與允許的建置配方會約束執行，但你的建置程式碼仍是受信任的程式碼。microruntime 不是作業系統沙箱。"
 				},
+				"license": {
+					"question": "Microruntimes 與 ex CLI 的授權方式為何？",
+					"answer": "LangDrift Microruntimes、相關合約與 ex CLI 皆為依據 Apache 授權條款第 2.0 版授權的開源軟體。"
+				},
 				"availability": {
 					"question": "我今天可以使用 LangDrift Microruntimes 嗎？",
 					"answer": "連線代理目前是本機開發候選版本，而不是已發布的版本。示範申請目前暫停。"
@@ -2040,6 +2052,10 @@
 					"question": "サンドボックスですか？",
 					"answer": "いいえ。上限、クォータ、許可されたビルドレシピが実行を制限しますが、ビルドのコードは引き続き信頼されたコードです。microruntime は OS のサンドボックスではありません。"
 				},
+				"license": {
+					"question": "Microruntimes と ex CLI のライセンスはどうなっていますか？",
+					"answer": "LangDrift Microruntimes、コントラクト、および ex CLI は、Apache License, Version 2.0 の下で提供されるオープンソースソフトウェアです。"
+				},
 				"availability": {
 					"question": "LangDrift Microruntimes は今日から使えますか？",
 					"answer": "接続エージェントはローカル開発の候補版として存在し、公開リリースではありません。デモの申し込みは当面停止しています。"
@@ -2551,6 +2567,10 @@
 				"sandbox": {
 					"question": "Nó có phải là sandbox không?",
 					"answer": "Không. Giới hạn, hạn ngạch và một công thức build được cho phép ràng buộc lần chạy, nhưng mã build của bạn vẫn là mã được tin cậy. Microruntime không phải là sandbox của hệ điều hành."
+				},
+				"license": {
+					"question": "Microruntimes và CLI ex được cấp phép như thế nào?",
+					"answer": "LangDrift Microruntimes, các hợp đồng và CLI ex là phần mềm nguồn mở được cấp phép theo Giấy phép Apache, Phiên bản 2.0."
 				},
 				"availability": {
 					"question": "Tôi có thể dùng LangDrift Microruntimes hôm nay không?",
