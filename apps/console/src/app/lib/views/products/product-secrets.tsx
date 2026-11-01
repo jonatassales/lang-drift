@@ -21,16 +21,63 @@ interface ProductSecretsProps {
 export function ProductSecrets(props: ProductSecretsProps) {
 	const { productId, initial } = props
 
-	const translate = useTranslations('ui')
+	const [open, setOpen] = useState(false)
+	const [secret, setSecret] = useState('')
+	const [error, setError] = useState<unknown>(null)
+	const [pending, startTransition] = useTransition()
+
 	const resource = useResource<{ secrets: ProductSecret[] }>(
 		`products/${productId}/secrets`,
 		0,
 		initial,
 	)
-	const [open, setOpen] = useState(false)
-	const [secret, setSecret] = useState('')
-	const [error, setError] = useState<unknown>(null)
-	const [pending, startTransition] = useTransition()
+	const translate = useTranslations('ui')
+
+	function handleGenerateSecret() {
+		setOpen(true)
+		setError(null)
+		setSecret('')
+		startTransition(async () => {
+			try {
+				const result = await mutation<{ secret: string }>(
+					`products/${productId}/secrets`,
+					'POST',
+					{},
+				)
+
+				setSecret(result.secret)
+				resource.refresh()
+			} catch (failure) {
+				setError(failure)
+			}
+		})
+	}
+
+	function handleCloseDialog() {
+		setOpen(false)
+		setSecret('')
+		setError(null)
+	}
+
+	function handleRevokeSecret(event: React.MouseEvent<HTMLButtonElement>) {
+		const credentialId = event.currentTarget.dataset.credentialId
+		if (!credentialId) return
+		if (!window.confirm(translate('revokeProjectSecretConfirm'))) return
+		startTransition(async () => {
+			setError(null)
+			try {
+				await mutation(
+					`products/${productId}/secrets/${credentialId}`,
+					'DELETE',
+				)
+
+				setSecret('')
+				resource.refresh()
+			} catch (failure) {
+				setError(failure)
+			}
+		})
+	}
 
 	return (
 		<>
@@ -40,25 +87,7 @@ export function ProductSecrets(props: ProductSecretsProps) {
 			>
 				<Button
 					disabled={pending || open}
-					onClick={() => {
-						setOpen(true)
-						setError(null)
-						setSecret('')
-						startTransition(async () => {
-							try {
-								const result = await mutation<{ secret: string }>(
-									`products/${productId}/secrets`,
-									'POST',
-									{},
-								)
-
-								setSecret(result.secret)
-								resource.refresh()
-							} catch (failure) {
-								setError(failure)
-							}
-						})
-					}}
+					onClick={handleGenerateSecret}
 					type="button"
 					variant="outline"
 				>
@@ -70,11 +99,7 @@ export function ProductSecrets(props: ProductSecretsProps) {
 					secret={secret}
 					error={error}
 					pending={pending}
-					onClose={() => {
-						setOpen(false)
-						setSecret('')
-						setError(null)
-					}}
+					onClose={handleCloseDialog}
 				/>
 			) : null}
 			{!open && error ? <ErrorNotice error={error} /> : null}
@@ -92,28 +117,9 @@ export function ProductSecrets(props: ProductSecretsProps) {
 									</span>
 								) : (
 									<Button
+										data-credential-id={credential.id}
 										disabled={pending}
-										onClick={() => {
-											if (
-												!window.confirm(translate('revokeProjectSecretConfirm'))
-											)
-												return
-											startTransition(async () => {
-												setError(null)
-
-												try {
-													await mutation(
-														`products/${productId}/secrets/${credential.id}`,
-														'DELETE',
-													)
-
-													setSecret('')
-													resource.refresh()
-												} catch (failure) {
-													setError(failure)
-												}
-											})
-										}}
+										onClick={handleRevokeSecret}
 										type="button"
 										variant="outline"
 									>

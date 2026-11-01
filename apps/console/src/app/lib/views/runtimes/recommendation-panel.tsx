@@ -42,7 +42,6 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 		agent,
 	} = props
 
-	const translate = useTranslations('ui')
 	const [recommendation, setRecommendation] = useState<Recommendation | null>(
 		null,
 	)
@@ -56,18 +55,104 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 		  }
 		| undefined
 	>()
-	const readingVersion = useRef(0)
-	const request = useRef<AbortController | null>(null)
 	const [reading, setReading] = useState(false)
 	const [error, setError] = useState<unknown>(null)
 	const [pending, startTransition] = useTransition()
-	const isBusy = pending || disabled || reading
+	const readingVersion = useRef(0)
+	const request = useRef<AbortController | null>(null)
+
+	const translate = useTranslations('ui')
+
+	// Abort pending file reads and recommendations on unmount.
 	useEffect(() => {
 		return () => {
 			request.current?.abort()
 			readingVersion.current++
 		}
 	}, [])
+
+	async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+		const version = ++readingVersion.current
+		request.current?.abort()
+		setEvidence(null)
+		setTicket(undefined)
+		setRecommendation(null)
+		setError(null)
+		setReading(true)
+		try {
+			const file = event.target.files?.[0]
+			if (!file) return
+			if (file.size > 16000) throw new ConsoleError('invalid_ticket', 400)
+
+			const markdown = await file.text()
+
+			if (version === readingVersion.current)
+				setTicket({
+					name: file.name,
+					markdown,
+				})
+		} catch (failure) {
+			if (version === readingVersion.current)
+				setError(
+					failure instanceof ConsoleError
+						? failure
+						: new ConsoleError('invalid_ticket', 400),
+				)
+		} finally {
+			if (version === readingVersion.current) setReading(false)
+		}
+	}
+
+	function handleGetSuggestions() {
+		request.current?.abort()
+		const controller = new AbortController()
+		request.current = controller
+		setEvidence(null)
+		setError(null)
+		startTransition(async () => {
+			try {
+				const result = await consoleRequest<{
+					recommendation: Recommendation
+				}>(endpoint, {
+					method: 'POST',
+					signal: controller.signal,
+					body: JSON.stringify({
+						...(components
+							? {
+									components: components.map(({ path, name, kind }) => ({
+										path,
+										name,
+										kind,
+									})),
+								}
+							: {}),
+						...(agent ? { agent } : {}),
+						...(ticket ? { ticket } : {}),
+					}),
+				})
+
+				if (controller.signal.aborted) return
+				setRecommendation(result.recommendation)
+				const ids = result.recommendation.episodeIds
+				setEvidence(
+					ids.length
+						? readResult(
+								`products/${productId}/episodes?${ids.map((id) => `id=${encodeURIComponent(id)}`).join('&')}`,
+								controller.signal,
+							)
+						: null,
+				)
+			} catch (failure) {
+				if (!controller.signal.aborted) setError(failure)
+			}
+		})
+	}
+
+	function handleApply() {
+		if (recommendation?.values) onApply?.(recommendation.values)
+	}
+
+	const isBusy = pending || disabled || reading
 
 	return (
 		<Card className="block p-5">
@@ -82,38 +167,7 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 					type="file"
 					accept=".md,text/markdown"
 					disabled={isBusy}
-					onChange={async (event) => {
-						const version = ++readingVersion.current
-						request.current?.abort()
-						setEvidence(null)
-						setTicket(undefined)
-						setRecommendation(null)
-						setError(null)
-						setReading(true)
-						try {
-							const file = event.target.files?.[0]
-							if (!file) return
-							if (file.size > 16000)
-								throw new ConsoleError('invalid_ticket', 400)
-
-							const markdown = await file.text()
-
-							if (version === readingVersion.current)
-								setTicket({
-									name: file.name,
-									markdown,
-								})
-						} catch (failure) {
-							if (version === readingVersion.current)
-								setError(
-									failure instanceof ConsoleError
-										? failure
-										: new ConsoleError('invalid_ticket', 400),
-								)
-						} finally {
-							if (version === readingVersion.current) setReading(false)
-						}
-					}}
+					onChange={handleFileChange}
 				/>
 				<span className="text-[11px] text-muted-foreground">
 					{translate('ticketMemoryHint')}
@@ -122,50 +176,7 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 			<Button
 				className="mt-4"
 				disabled={isBusy}
-				onClick={() => {
-					request.current?.abort()
-					const controller = new AbortController()
-					request.current = controller
-					setEvidence(null)
-					setError(null)
-					startTransition(async () => {
-						try {
-							const result = await consoleRequest<{
-								recommendation: Recommendation
-							}>(endpoint, {
-								method: 'POST',
-								signal: controller.signal,
-								body: JSON.stringify({
-									...(components
-										? {
-												components: components.map(({ path, name, kind }) => ({
-													path,
-													name,
-													kind,
-												})),
-											}
-										: {}),
-									...(agent ? { agent } : {}),
-									...(ticket ? { ticket } : {}),
-								}),
-							})
-
-							if (controller.signal.aborted) return
-							setRecommendation(result.recommendation)
-							const ids = result.recommendation.episodeIds
-							setEvidence(
-								ids.length
-									? readResult(
-											`products/${productId}/episodes?${ids.map((id) => `id=${encodeURIComponent(id)}`).join('&')}`,
-											controller.signal,
-										)
-									: null,
-							)
-						} catch (failure) {
-							if (!controller.signal.aborted) setError(failure)
-						}
-					})
-				}}
+				onClick={handleGetSuggestions}
 				type="button"
 				variant="outline"
 			>
@@ -285,9 +296,7 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 							{onApply && recommendation.values ? (
 								<Button
 									disabled={disabled}
-									onClick={() => {
-										if (recommendation.values) onApply(recommendation.values)
-									}}
+									onClick={handleApply}
 									type="button"
 									variant="outline"
 								>

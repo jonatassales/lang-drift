@@ -1,7 +1,7 @@
-import { AuthForm } from '@views/auth/auth-form'
+import { SignupView } from '@views/auth/signup-view'
 
 export { generateMetadata } from './page.metadata'
 
 export default function Page() {
-	return <AuthForm signup />
+	return <SignupView />
 }

@@ -2,13 +2,12 @@
 
 import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
-import { useEffect, useRef } from 'react'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { PageHeading } from '@components/page-heading/page-heading'
 import { useResource } from '@data/resource.hook'
 import type { HomeOverview } from '@data/types'
-import { Link, useRouter } from '@i18n/navigation'
+import { Link } from '@i18n/navigation'
 import { ProductCreate } from '@views/products/product-create'
 
 interface AccountHomeProps {
@@ -18,21 +17,9 @@ interface AccountHomeProps {
 export function AccountHome(props: AccountHomeProps) {
 	const { initial } = props
 
-	const translate = useTranslations('ui')
-	const router = useRouter()
 	const resource = useResource<HomeOverview>('home', 5000, initial)
-	const decided = useRef(false)
-	useEffect(() => {
-		const shouldWait =
-			decided.current || !resource.data || Boolean(resource.error)
-		if (shouldWait || !resource.data) return
+	const translate = useTranslations('ui')
 
-		decided.current = true
-		const shouldRedirect =
-			resource.data.products.length > 0 && resource.data.running.length === 0
-		if (shouldRedirect)
-			router.replace(`/products/${resource.data.products[0].id}`)
-	}, [resource.data, resource.error, router])
 	if (resource.error)
 		return <ErrorNotice error={resource.error} retry={resource.refresh} />
 	if (!resource.data) return null

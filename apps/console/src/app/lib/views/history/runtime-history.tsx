@@ -23,40 +23,43 @@ interface RuntimeHistoryProps {
 export function RuntimeHistory(props: RuntimeHistoryProps) {
 	const { id, initial, events } = props
 
-	const translate = useTranslations('ui')
+	const [eventInitial, setEventInitial] = useState(events)
+	const [revision, setRevision] = useState(0)
+	const [error, setError] = useState<unknown>(null)
+	const [pending, startTransition] = useTransition()
+
 	const resource = useResource<{ runtime: Runtime }>(
 		`runtimes/${id}`,
 		0,
 		initial,
 	)
-	const [eventInitial, setEventInitial] = useState(events)
-	const [revision, setRevision] = useState(0)
-	const [error, setError] = useState<unknown>(null)
-	const [pending, startTransition] = useTransition()
+	const translate = useTranslations('ui')
+
+	function handlePurge() {
+		if (!window.confirm(translate('purgeConfirm'))) return
+		setError(null)
+		startTransition(async () => {
+			try {
+				await mutation(`runtimes/${id}/history`, 'DELETE')
+
+				setEventInitial(
+					Promise.resolve({
+						events: [],
+					}),
+				)
+				setRevision((current) => current + 1)
+			} catch (failure) {
+				setError(failure)
+			}
+		})
+	}
 
 	return (
 		<>
 			<PageHeading title={translate('history')} description={id}>
 				<Button
 					disabled={pending}
-					onClick={() => {
-						if (!window.confirm(translate('purgeConfirm'))) return
-						setError(null)
-						startTransition(async () => {
-							try {
-								await mutation(`runtimes/${id}/history`, 'DELETE')
-
-								setEventInitial(
-									Promise.resolve({
-										events: [],
-									}),
-								)
-								setRevision((current) => current + 1)
-							} catch (failure) {
-								setError(failure)
-							}
-						})
-					}}
+					onClick={handlePurge}
 					type="button"
 					variant="destructive"
 				>

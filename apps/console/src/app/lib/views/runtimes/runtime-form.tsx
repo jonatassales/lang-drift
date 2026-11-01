@@ -25,7 +25,6 @@ interface RuntimeFormProps {
 export function RuntimeForm(props: RuntimeFormProps) {
 	const { productId, components, runtime, locked = false, onSaved } = props
 
-	const translate = useTranslations('ui')
 	const [error, setError] = useState<unknown>(null)
 	const [invalidBuild, setInvalidBuild] = useState(false)
 	const [pending, startTransition] = useTransition()
@@ -39,7 +38,10 @@ export function RuntimeForm(props: RuntimeFormProps) {
 		model: runtime?.configuration.model ?? '',
 		effort: runtime?.configuration.effort ?? 'medium',
 	})
-	function apply(values: Partial<RuntimeConfiguration>) {
+
+	const translate = useTranslations('ui')
+
+	function handleApply(values: Partial<RuntimeConfiguration>) {
 		setConfiguration((current) => ({
 			llmBudgetUsd: values.llmBudgetUsd?.toString() ?? current.llmBudgetUsd,
 			cpu: values.cpu?.toString() ?? current.cpu,
@@ -47,6 +49,109 @@ export function RuntimeForm(props: RuntimeFormProps) {
 			model: values.model ?? current.model,
 			effort: values.effort ?? current.effort,
 		}))
+	}
+
+	function handleToggleComponent(path: string, selected: boolean) {
+		setSelectedPaths((current) =>
+			selected
+				? [...current, path]
+				: current.filter((currentPath) => currentPath !== path),
+		)
+	}
+
+	function handleLlmBudgetChange(event: React.ChangeEvent<HTMLInputElement>) {
+		setConfiguration({
+			...configuration,
+			llmBudgetUsd: event.target.value,
+		})
+	}
+
+	function handleCpuChange(event: React.ChangeEvent<HTMLInputElement>) {
+		setConfiguration({
+			...configuration,
+			cpu: event.target.value,
+		})
+	}
+
+	function handleMemoryChange(event: React.ChangeEvent<HTMLInputElement>) {
+		setConfiguration({
+			...configuration,
+			memoryMiB: event.target.value,
+		})
+	}
+
+	function handleModelChange(event: React.ChangeEvent<HTMLInputElement>) {
+		setConfiguration({
+			...configuration,
+			model: event.target.value,
+		})
+	}
+
+	function handleEffortChange(event: React.ChangeEvent<HTMLSelectElement>) {
+		const value = event.target.value
+		if (value === 'low' || value === 'medium' || value === 'high')
+			setConfiguration({
+				...configuration,
+				effort: value,
+			})
+	}
+
+	function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault()
+		const form = new FormData(event.currentTarget)
+		const selected = componentsFromForm(form, components)
+		if (!selected) {
+			setInvalidBuild(true)
+
+			return
+		}
+		setInvalidBuild(false)
+		setError(null)
+		startTransition(async () => {
+			try {
+				const nativeRuntimeId = String(form.get('nativeRuntimeId') ?? '').trim()
+				const config: RuntimeConfiguration = {
+					...(configuration.llmBudgetUsd
+						? {
+								llmBudgetUsd: Number(configuration.llmBudgetUsd),
+							}
+						: {}),
+					cpu: Number(configuration.cpu),
+					memoryMiB: Number(configuration.memoryMiB),
+					model: configuration.model,
+					effort: configuration.effort,
+					...(nativeRuntimeId
+						? {
+								nativeRuntimeId,
+							}
+						: {}),
+				}
+
+				const result = await mutation<{
+					runtime: Runtime
+					secret?: string
+				}>(
+					runtime ? `runtimes/${runtime.id}` : 'runtimes',
+					runtime ? 'PATCH' : 'POST',
+					{
+						...(runtime
+							? {
+									revision: runtime.revision,
+								}
+							: {
+									productId,
+								}),
+						name: form.get('name'),
+						components: selected,
+						configuration: config,
+					},
+				)
+
+				onSaved(result.runtime, result.secret)
+			} catch (failure) {
+				setError(failure)
+			}
+		})
 	}
 
 	let submitLabel = translate('createRuntime')
@@ -60,68 +165,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 	return (
 		<div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
 			<Card className="block p-5">
-				<form
-					className="grid gap-5"
-					onSubmit={(event) => {
-						event.preventDefault()
-						const form = new FormData(event.currentTarget)
-						const selected = componentsFromForm(form, components)
-						if (!selected) {
-							setInvalidBuild(true)
-
-							return
-						}
-						setInvalidBuild(false)
-						setError(null)
-						startTransition(async () => {
-							try {
-								const nativeRuntimeId = String(
-									form.get('nativeRuntimeId') ?? '',
-								).trim()
-								const config: RuntimeConfiguration = {
-									...(configuration.llmBudgetUsd
-										? {
-												llmBudgetUsd: Number(configuration.llmBudgetUsd),
-											}
-										: {}),
-									cpu: Number(configuration.cpu),
-									memoryMiB: Number(configuration.memoryMiB),
-									model: configuration.model,
-									effort: configuration.effort,
-									...(nativeRuntimeId
-										? {
-												nativeRuntimeId,
-											}
-										: {}),
-								}
-
-								const result = await mutation<{
-									runtime: Runtime
-									secret?: string
-								}>(
-									runtime ? `runtimes/${runtime.id}` : 'runtimes',
-									runtime ? 'PATCH' : 'POST',
-									{
-										...(runtime
-											? {
-													revision: runtime.revision,
-												}
-											: {
-													productId,
-												}),
-										name: form.get('name'),
-										components: selected,
-										configuration: config,
-									},
-								)
-
-								onSaved(result.runtime, result.secret)
-							} catch (failure) {
-								setError(failure)
-							}
-						})
-					}}
-				>
+				<form className="grid gap-5" onSubmit={handleSubmit}>
 					<fieldset disabled={locked || pending} className="grid gap-5">
 						<label className={labelClass}>
 							{translate('name')}
@@ -142,12 +186,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 								max="1000000"
 								step="0.01"
 								value={configuration.llmBudgetUsd}
-								onChange={(event) =>
-									setConfiguration({
-										...configuration,
-										llmBudgetUsd: event.target.value,
-									})
-								}
+								onChange={handleLlmBudgetChange}
 							/>
 							<span className="text-xs text-muted-foreground">
 								{translate('llmBudgetHint')}
@@ -164,12 +203,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 									step="0.001"
 									required
 									value={configuration.cpu}
-									onChange={(event) =>
-										setConfiguration({
-											...configuration,
-											cpu: event.target.value,
-										})
-									}
+									onChange={handleCpuChange}
 								/>
 							</label>
 							<label className={labelClass}>
@@ -182,12 +216,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 									step="1"
 									required
 									value={configuration.memoryMiB}
-									onChange={(event) =>
-										setConfiguration({
-											...configuration,
-											memoryMiB: event.target.value,
-										})
-									}
+									onChange={handleMemoryChange}
 								/>
 							</label>
 							<label className={labelClass}>
@@ -197,12 +226,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 									required
 									maxLength={160}
 									value={configuration.model}
-									onChange={(event) =>
-										setConfiguration({
-											...configuration,
-											model: event.target.value,
-										})
-									}
+									onChange={handleModelChange}
 								/>
 							</label>
 							<label className={labelClass}>
@@ -210,18 +234,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 								<select
 									className={fieldClass}
 									value={configuration.effort}
-									onChange={(event) => {
-										const value = event.target.value
-										if (
-											value === 'low' ||
-											value === 'medium' ||
-											value === 'high'
-										)
-											setConfiguration({
-												...configuration,
-												effort: value,
-											})
-									}}
+									onChange={handleEffortChange}
 								>
 									{['low', 'medium', 'high'].map((effort) => (
 										<option key={effort} value={effort}>
@@ -273,13 +286,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 										key={component.path}
 										component={existing ?? component}
 										selected={selectedPaths.includes(component.path)}
-										onSelectionChange={(selected) => {
-											setSelectedPaths((current) =>
-												selected
-													? [...current, component.path]
-													: current.filter((path) => path !== component.path),
-											)
-										}}
+										onToggle={handleToggleComponent}
 									/>
 								)
 							})}
@@ -319,7 +326,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 						: `products/${productId}/recommendations`
 				}
 				disabled={cannotRecommend}
-				onApply={apply}
+				onApply={handleApply}
 			/>
 		</div>
 	)

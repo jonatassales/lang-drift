@@ -1,7 +1,7 @@
 'use client'
 import { Button } from '@langdrift/web/ui/button'
 import { useFormatter, useTranslations } from 'next-intl'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
 
 import { useDateTime } from '@app/template/formatters/date-time.hook'
 import { ErrorNotice } from '@components/error-notice/error-notice'
@@ -17,23 +17,29 @@ interface RuntimeLoadTestProps {
 export function RuntimeLoadTest(props: RuntimeLoadTestProps) {
 	const { snapshot } = props
 
-	const translate = useTranslations('ui')
-	const format = useFormatter()
-	const dateTime = useDateTime()
+	const [pending, startTransition] = useTransition()
 	const [result, setResult] = useState<RuntimeLoadTestResult | null>(null)
 	const [error, setError] = useState<unknown>(null)
-	const [pending, setPending] = useState(false)
+	const [cooling, setCooling] = useState(
+		Boolean(snapshot.runtime.loadTest?.completedAt),
+	)
 	const controller = useRef<AbortController | null>(null)
 	const saved = snapshot.runtime.loadTest
-	const report =
-		result && (!saved || result.completedAt > saved.completedAt)
-			? result
-			: saved
-	const running = snapshot.executions.some(
-		(execution) => execution.state === 'running',
+	const report = useMemo(
+		() =>
+			result && (!saved || result.completedAt > saved.completedAt)
+				? result
+				: saved,
+		[result, saved],
 	)
 	const completedAt = report?.completedAt
-	const [cooling, setCooling] = useState(!!completedAt)
+
+	const dateTime = useDateTime()
+
+	const translate = useTranslations('ui')
+	const format = useFormatter()
+
+	// Manage cooldown timer after a load test run completes.
 	useEffect(() => {
 		const remaining = completedAt
 			? Date.parse(completedAt) + 10000 - Date.now()
@@ -44,37 +50,42 @@ export function RuntimeLoadTest(props: RuntimeLoadTestProps) {
 
 		return () => window.clearTimeout(timer)
 	}, [completedAt])
+
+	// Abort in-flight load test request on unmount.
 	useEffect(() => () => controller.current?.abort(), [])
+
+	function handleRun() {
+		if (pending) return
+		const request = new AbortController()
+		controller.current = request
+		setError(null)
+		startTransition(async () => {
+			try {
+				const response = await consoleRequest<{
+					loadTest: RuntimeLoadTestResult
+				}>(`runtimes/${snapshot.runtime.id}/load-test`, {
+					method: 'POST',
+					body: '{}',
+					signal: request.signal,
+				})
+
+				if (!isLoadTestResult(response.loadTest))
+					throw new Error('invalid_load_test')
+				if (!request.signal.aborted) setResult(response.loadTest)
+			} catch (failure) {
+				if (!request.signal.aborted) setError(failure)
+			}
+		})
+	}
+
+	const running = snapshot.executions.some(
+		(execution) => execution.state === 'running',
+	)
 	const actionLabel = pending
 		? 'loadTestRunning'
 		: cooling
 			? 'loadTestCooldown'
 			: 'runLoadTest'
-
-	async function run() {
-		if (pending) return
-		const request = new AbortController()
-		controller.current = request
-		setPending(true)
-		setError(null)
-		try {
-			const response = await consoleRequest<{
-				loadTest: RuntimeLoadTestResult
-			}>(`runtimes/${snapshot.runtime.id}/load-test`, {
-				method: 'POST',
-				body: '{}',
-				signal: request.signal,
-			})
-
-			if (!isLoadTestResult(response.loadTest))
-				throw new Error('invalid_load_test')
-			if (!request.signal.aborted) setResult(response.loadTest)
-		} catch (failure) {
-			if (!request.signal.aborted) setError(failure)
-		} finally {
-			if (!request.signal.aborted) setPending(false)
-		}
-	}
 
 	return (
 		<section className="rounded-lg border border-border p-4" data-runtime-tests>
@@ -88,7 +99,7 @@ export function RuntimeLoadTest(props: RuntimeLoadTestProps) {
 							cooling ||
 							snapshot.runtime.credentialRevoked
 						}
-						onClick={run}
+						onClick={handleRun}
 						type="button"
 						variant="outline"
 					>

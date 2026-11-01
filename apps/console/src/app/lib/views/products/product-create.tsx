@@ -23,23 +23,84 @@ interface ProductCreateProps {
 export function ProductCreate(props: ProductCreateProps) {
 	const { first = false, productId } = props
 
-	const translate = useTranslations('ui')
-	const router = useRouter()
 	const [path, setPath] = useState('')
 	const [name, setName] = useState('')
 	const [picker, setPicker] = useState<Promise<
 		ReadResult<FolderListing>
 	> | null>(null)
-	const folderRequest = useRef<AbortController | null>(null)
-	useEffect(() => () => folderRequest.current?.abort(), [])
 	const [dropped, setDropped] = useState(false)
 	const [error, setError] = useState<unknown>(null)
 	const [pending, startTransition] = useTransition()
-	function select(path: string) {
-		setPath(path)
-		setName(path.split('/').filter(Boolean).at(-1) || '')
+	const folderRequest = useRef<AbortController | null>(null)
+
+	const router = useRouter()
+	const translate = useTranslations('ui')
+
+	// Abort pending folder request on unmount.
+	useEffect(() => () => folderRequest.current?.abort(), [])
+
+	function handleSelect(selectedPath: string) {
+		setPath(selectedPath)
+		setName(selectedPath.split('/').filter(Boolean).at(-1) || '')
 		setPicker(null)
 		setDropped(false)
+	}
+
+	function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault()
+		setError(null)
+		startTransition(async () => {
+			try {
+				const result = await mutation<{ product: Product }>(
+					productId ? `products/${productId}/folder` : 'products',
+					'POST',
+					{
+						path,
+						name: name.trim() || undefined,
+					},
+				)
+
+				router.push(`/products/${result.product.id}`)
+				router.refresh()
+			} catch (failure) {
+				setError(failure)
+			}
+		})
+	}
+
+	function handleBrowseFolder() {
+		folderRequest.current?.abort()
+		folderRequest.current = new AbortController()
+		setPicker(
+			readResult<FolderListing>('local/folders', folderRequest.current.signal),
+		)
+	}
+
+	function handleDragOver(event: React.DragEvent) {
+		event.preventDefault()
+		event.dataTransfer.dropEffect = 'copy'
+	}
+
+	function handleDrop(event: React.DragEvent) {
+		event.preventDefault()
+		if (pending) return
+		const file = event.dataTransfer.files[0]
+		setPath('')
+		setName(file?.name || '')
+		setDropped(true)
+	}
+
+	function handlePathChange(event: React.ChangeEvent<HTMLInputElement>) {
+		setPath(event.target.value)
+	}
+
+	function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
+		setName(event.target.value)
+	}
+
+	function handleClosePicker() {
+		folderRequest.current?.abort()
+		setPicker(null)
 	}
 
 	let headingKey = 'createProject'
@@ -56,56 +117,14 @@ export function ProductCreate(props: ProductCreateProps) {
 				description={translate('localProjectIntro')}
 			/>
 			<Card className="block mx-auto max-w-2xl p-7 sm:mt-10">
-				<form
-					className="grid gap-5"
-					onSubmit={(event) => {
-						event.preventDefault()
-						setError(null)
-						startTransition(async () => {
-							try {
-								const result = await mutation<{ product: Product }>(
-									productId ? `products/${productId}/folder` : 'products',
-									'POST',
-									{
-										path,
-										name: name.trim() || undefined,
-									},
-								)
-
-								router.push(`/products/${result.product.id}`)
-								router.refresh()
-							} catch (failure) {
-								setError(failure)
-							}
-						})
-					}}
-				>
+				<form className="grid gap-5" onSubmit={handleSubmit}>
 					<button
 						type="button"
 						disabled={pending}
 						className="grid min-h-40 place-content-center gap-3 rounded-xl border-2 border-dashed border-border p-8 text-center hover:border-primary hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-						onClick={() => {
-							folderRequest.current?.abort()
-							folderRequest.current = new AbortController()
-							setPicker(
-								readResult<FolderListing>(
-									'local/folders',
-									folderRequest.current.signal,
-								),
-							)
-						}}
-						onDragOver={(event) => {
-							event.preventDefault()
-							event.dataTransfer.dropEffect = 'copy'
-						}}
-						onDrop={(event) => {
-							event.preventDefault()
-							if (pending) return
-							const file = event.dataTransfer.files[0]
-							setPath('')
-							setName(file?.name || '')
-							setDropped(true)
-						}}
+						onClick={handleBrowseFolder}
+						onDragOver={handleDragOver}
+						onDrop={handleDrop}
 					>
 						<span className="text-base font-medium">
 							{translate('dropFolder')}
@@ -126,7 +145,7 @@ export function ProductCreate(props: ProductCreateProps) {
 							value={path}
 							required
 							disabled={pending}
-							onChange={(event) => setPath(event.target.value)}
+							onChange={handlePathChange}
 							autoComplete="off"
 						/>
 					</label>
@@ -138,7 +157,7 @@ export function ProductCreate(props: ProductCreateProps) {
 								value={name}
 								maxLength={100}
 								disabled={pending}
-								onChange={(event) => setName(event.target.value)}
+								onChange={handleNameChange}
 							/>
 						</label>
 					) : null}
@@ -164,11 +183,8 @@ export function ProductCreate(props: ProductCreateProps) {
 			{picker ? (
 				<FolderPicker
 					initial={picker}
-					onSelect={select}
-					onClose={() => {
-						folderRequest.current?.abort()
-						setPicker(null)
-					}}
+					onSelect={handleSelect}
+					onClose={handleClosePicker}
 				/>
 			) : null}
 		</>

@@ -18,9 +18,17 @@ interface AccountMenuProps {
 export function AccountMenu(props: AccountMenuProps) {
 	const { children, email } = props
 
-	const translate = useTranslations('ui')
 	const { containerRef, menuId, open, setOpen, triggerRef } =
 		useDismissibleMenu()
+	const translate = useTranslations('ui')
+
+	function handleToggle() {
+		setOpen(!open)
+	}
+
+	function handleClose() {
+		setOpen(false)
+	}
 
 	return (
 		<div className="relative" ref={containerRef}>
@@ -29,7 +37,7 @@ export function AccountMenu(props: AccountMenuProps) {
 				aria-expanded={open}
 				aria-label={translate('openAccount')}
 				className="flex h-8 cursor-pointer items-center gap-1.5 rounded-full px-1.5 text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-				onClick={() => setOpen(!open)}
+				onClick={handleToggle}
 				ref={triggerRef}
 				type="button"
 			>
@@ -50,7 +58,7 @@ export function AccountMenu(props: AccountMenuProps) {
 					<Link
 						className="flex min-h-9 items-center gap-2.5 rounded-md px-2.5 text-[12px] text-foreground no-underline hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 						href="/settings"
-						onClick={() => setOpen(false)}
+						onClick={handleClose}
 					>
 						<Gear aria-hidden size={15} />
 						{translate('settings')}

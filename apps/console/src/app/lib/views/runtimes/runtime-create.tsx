@@ -21,16 +21,25 @@ interface RuntimeCreateProps {
 export function RuntimeCreate(props: RuntimeCreateProps) {
 	const { productId, initial } = props
 
-	const translate = useTranslations('ui')
+	const [created, setCreated] = useState<{
+		runtime: Runtime
+		secret?: string
+	} | null>(null)
+
 	const product = useResource<{ product: Product }>(
 		`products/${productId}`,
 		0,
 		initial,
 	)
-	const [created, setCreated] = useState<{
-		runtime: Runtime
-		secret?: string
-	} | null>(null)
+	const translate = useTranslations('ui')
+
+	function handleSaved(runtime: Runtime, secret?: string) {
+		setCreated({
+			runtime,
+			secret,
+		})
+	}
+
 	if (product.error)
 		return <ErrorNotice error={product.error} retry={product.refresh} />
 	if (!product.data) return null
@@ -55,12 +64,7 @@ export function RuntimeCreate(props: RuntimeCreateProps) {
 				<RuntimeForm
 					productId={productId}
 					components={product.data.product.components}
-					onSaved={(runtime, secret) =>
-						setCreated({
-							runtime,
-							secret,
-						})
-					}
+					onSaved={handleSaved}
 				/>
 			)}
 		</>

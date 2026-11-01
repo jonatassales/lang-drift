@@ -23,17 +23,23 @@ const areaIcon: Record<Area, typeof FinopsIcon> = {
 export function AreaSwitcher(props: AreaSwitcherProps) {
 	const { onNavigate } = props
 
-	const translate = useTranslations('ui')
 	const pathname = usePathname()
 	const { containerRef, menuId, open, setOpen, triggerRef } =
 		useDismissibleMenu()
-	const current = areaOf(pathname)
-	const CurrentIcon = areaIcon[current]
 
-	function choose() {
+	const translate = useTranslations('ui')
+
+	function handleToggle() {
+		setOpen(!open)
+	}
+
+	function handleChoose() {
 		setOpen(false)
 		onNavigate?.()
 	}
+
+	const current = areaOf(pathname)
+	const CurrentIcon = areaIcon[current]
 
 	return (
 		<div className="relative mb-4" ref={containerRef}>
@@ -41,7 +47,7 @@ export function AreaSwitcher(props: AreaSwitcherProps) {
 				aria-controls={open ? menuId : undefined}
 				aria-expanded={open}
 				className="grid min-h-11 w-full cursor-pointer grid-cols-[28px_minmax(0,1fr)_auto] items-center gap-2 rounded-lg border border-border bg-muted px-2 py-1.5 text-left text-foreground hover:bg-background focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-				onClick={() => setOpen(!open)}
+				onClick={handleToggle}
 				ref={triggerRef}
 				type="button"
 			>
@@ -76,7 +82,7 @@ export function AreaSwitcher(props: AreaSwitcherProps) {
 								className="flex min-h-10 items-center gap-2.5 rounded-md px-2 text-[12px] no-underline hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 								href={areaHome[area]}
 								key={area}
-								onClick={choose}
+								onClick={handleChoose}
 							>
 								<Icon className="size-4" />
 								<span className="flex-1">{translate(area)}</span>

@@ -10,16 +10,28 @@ interface ConnectionInstructionsProps {
 	secret?: string
 	local?: boolean
 }
+
 export function ConnectionInstructions(props: ConnectionInstructionsProps) {
 	const { secret, local = false } = props
 
-	const translate = useTranslations('ui')
 	const [origin, setOrigin] = useState('')
 	const [copied, setCopied] = useState(false)
 	const [error, setError] = useState<unknown>(null)
+
+	const translate = useTranslations('ui')
+
+	// Read window.location.origin after hydration to prevent SSR mismatch.
 	useEffect(() => {
 		setOrigin(window.location.origin)
 	}, [])
+
+	function handleCopy() {
+		if (!secret) return
+		navigator.clipboard
+			.writeText(secret)
+			.then(() => setCopied(true))
+			.catch((failure) => setError(failure))
+	}
 
 	return (
 		<Card className="block p-5">
@@ -35,19 +47,7 @@ export function ConnectionInstructions(props: ConnectionInstructionsProps) {
 					>
 						{secret}
 					</code>
-					<Button
-						onClick={async () => {
-							try {
-								await navigator.clipboard.writeText(secret)
-
-								setCopied(true)
-							} catch (failure) {
-								setError(failure)
-							}
-						}}
-						type="button"
-						variant="outline"
-					>
+					<Button onClick={handleCopy} type="button" variant="outline">
 						{translate(copied ? 'copied' : 'copySecret')}
 					</Button>
 				</div>

@@ -1,1 +1,11 @@
-export { PageTemplate as default } from '@components/route-state/page-template'
+import type { ReactNode } from 'react'
+
+interface TemplateProps {
+	children: ReactNode
+}
+
+export default function Template(props: TemplateProps) {
+	const { children } = props
+
+	return children
+}

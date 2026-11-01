@@ -1,7 +1,7 @@
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-export {
-	extubProxyRoute as GET,
-	extubProxyRoute as POST,
-} from './extub-proxy.route'
+import { extubProxyRoute } from './extub-proxy.route'
+
+export const GET = extubProxyRoute
+export const POST = extubProxyRoute

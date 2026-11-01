@@ -35,8 +35,10 @@ interface RuntimeDetailProps {
 export function RuntimeDetail(props: RuntimeDetailProps) {
 	const { id, initial, productInitial } = props
 
-	const translate = useTranslations('ui')
-	const format = useFormatter()
+	const [error, setError] = useState<unknown>(null)
+	const [requested, setRequested] = useState(false)
+	const [pending, startTransition] = useTransition()
+
 	const dateTime = useDateTime()
 	const resource = useResource<RuntimeDetailSnapshot>(
 		`runtimes/${id}`,
@@ -47,12 +49,10 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 		resource.data?.source === 'stub',
 		resource.data?.runtime.productId,
 	)
-	const snapshot =
-		stream.widgets?.find((item) => item.runtime.id === id) ??
-		resource.data?.widget
-	const [error, setError] = useState<unknown>(null)
-	const [requested, setRequested] = useState(false)
-	const [pending, startTransition] = useTransition()
+
+	const translate = useTranslations('ui')
+	const format = useFormatter()
+
 	function operate(action: 'revoke' | 'delete') {
 		if (action === 'delete' && !window.confirm(translate('deleteConfirm')))
 			return
@@ -74,6 +74,18 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 			}
 		})
 	}
+
+	function handleDelete() {
+		operate('delete')
+	}
+
+	function handleRevoke() {
+		operate('revoke')
+	}
+
+	const snapshot =
+		stream.widgets?.find((item) => item.runtime.id === id) ??
+		resource.data?.widget
 	if (resource.error)
 		return <ErrorNotice error={resource.error} retry={resource.refresh} />
 	if (!snapshot) return null
@@ -288,7 +300,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 					{!deleted ? (
 						<Button
 							disabled={pending}
-							onClick={() => operate('delete')}
+							onClick={handleDelete}
 							type="button"
 							variant="destructive"
 						>
@@ -298,7 +310,7 @@ export function RuntimeDetail(props: RuntimeDetailProps) {
 					{!deleted && !runtime.credentialRevoked ? (
 						<Button
 							disabled={pending}
-							onClick={() => operate('revoke')}
+							onClick={handleRevoke}
 							type="button"
 							variant="outline"
 						>

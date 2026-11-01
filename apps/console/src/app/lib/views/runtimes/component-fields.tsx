@@ -7,12 +7,18 @@ import type { Component } from '@data/types'
 interface ComponentFieldsProps {
 	component: Component
 	selected: boolean
-	onSelectionChange: (selected: boolean) => void
+	onToggle: (path: string, selected: boolean) => void
 }
+
 export function ComponentFields(props: ComponentFieldsProps) {
-	const { component, selected: enabled, onSelectionChange } = props
+	const { component, selected: enabled, onToggle } = props
 
 	const translate = useTranslations('ui')
+
+	function handleSelectionChange(event: React.ChangeEvent<HTMLInputElement>) {
+		onToggle(component.path, event.target.checked)
+	}
+
 	const prefix = `component:${component.path}:`
 
 	return (
@@ -25,7 +31,7 @@ export function ComponentFields(props: ComponentFieldsProps) {
 						name="selectedComponents"
 						value={component.path}
 						checked={enabled}
-						onChange={(event) => onSelectionChange(event.target.checked)}
+						onChange={handleSelectionChange}
 					/>
 					{component.name}
 					<code className="text-[11px] text-muted-foreground">

@@ -23,13 +23,18 @@ interface FolderPickerProps {
 export function FolderPicker(props: FolderPickerProps) {
 	const { onSelect, onClose, initial } = props
 
-	const translate = useTranslations('ui')
 	const [input, setInput] = useState('')
 	const [listing, setListing] = useState(initial)
 	const controller = useRef<AbortController | null>(null)
+
 	const mobile = useMobileViewport()
 	const focus = useReturnFocus()
+
+	const translate = useTranslations('ui')
+
+	// Abort pending directory listing request on unmount.
 	useEffect(() => () => controller.current?.abort(), [])
+
 	function navigate(path: string) {
 		controller.current?.abort()
 		controller.current = new AbortController()
@@ -51,6 +56,15 @@ export function FolderPicker(props: FolderPickerProps) {
 		if (!mobile) event.preventDefault()
 	}
 
+	function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+		setInput(event.target.value)
+	}
+
+	function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault()
+		navigate(input)
+	}
+
 	return (
 		<Dialog modal={mobile} open onOpenChange={handleOpenChange}>
 			<DialogContent
@@ -62,19 +76,13 @@ export function FolderPicker(props: FolderPickerProps) {
 				<DialogTitle className="mb-4 text-lg font-medium">
 					{translate('chooseFolder')}
 				</DialogTitle>
-				<form
-					className="mb-4 flex items-end gap-2"
-					onSubmit={(event) => {
-						event.preventDefault()
-						navigate(input)
-					}}
-				>
+				<form className="mb-4 flex items-end gap-2" onSubmit={handleSubmit}>
 					<label className={`${labelClass} min-w-0 flex-1`}>
 						{translate('folderPath')}
 						<input
 							className={fieldClass}
 							value={input}
-							onChange={(event) => setInput(event.target.value)}
+							onChange={handleInputChange}
 						/>
 					</label>
 					<Button type="submit" disabled={!input.trim()} variant="outline">

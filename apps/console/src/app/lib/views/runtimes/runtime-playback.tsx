@@ -16,9 +16,11 @@ interface RuntimePlaybackProps {
 export function RuntimePlayback(props: RuntimePlaybackProps) {
 	const { snapshot, onRefresh } = props
 
-	const translate = useTranslations('ui')
 	const [pending, startTransition] = useTransition()
 	const [error, setError] = useState<unknown>(null)
+
+	const translate = useTranslations('ui')
+
 	const { runtime, executions } = snapshot
 	const stopping =
 		runtime.desiredState === 'running' ||
@@ -29,6 +31,22 @@ export function RuntimePlayback(props: RuntimePlaybackProps) {
 		runtime.desiredState === 'deleted' ||
 		(!stopping && runtime.credentialRevoked)
 
+	function handleTogglePlayback() {
+		startTransition(async () => {
+			setError(null)
+			try {
+				await mutation(
+					`runtimes/${runtime.id}/${stopping ? 'stop' : 'start'}`,
+					'POST',
+				)
+
+				onRefresh?.()
+			} catch (failure) {
+				setError(failure)
+			}
+		})
+	}
+
 	return (
 		<div className="flex flex-wrap items-center gap-2">
 			<Button
@@ -36,21 +54,7 @@ export function RuntimePlayback(props: RuntimePlaybackProps) {
 				aria-label={translate(stopping ? 'pauseNamed' : 'playNamed', {
 					name: runtime.name,
 				})}
-				onClick={() =>
-					startTransition(async () => {
-						setError(null)
-						try {
-							await mutation(
-								`runtimes/${runtime.id}/${stopping ? 'stop' : 'start'}`,
-								'POST',
-							)
-
-							onRefresh?.()
-						} catch (failure) {
-							setError(failure)
-						}
-					})
-				}
+				onClick={handleTogglePlayback}
 				type="button"
 				variant="outline"
 			>

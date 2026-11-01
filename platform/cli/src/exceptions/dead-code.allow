@@ -7,7 +7,6 @@
 module apps/website/src/app/template/formatters/*.fmt.ts # The owner keeps the formatters.
 export apps/website/src/app/template/formatters/*.fmt.ts#* # The owner keeps the formatters.
 export apps/console/src/app/lib/components/route-state/page-error.tsx#PageError # Next.js error.tsx routes re-export it as default.
-export apps/console/src/app/lib/components/route-state/page-template.tsx#PageTemplate # Next.js template.tsx routes re-export it as default.
 dependency apps/website:react-dom # Next.js requires it as a peer.
 dependency apps/console:react-dom # Next.js requires it as a peer.
 export packages/web/src/ui/card/*.tsx#* # shadcn/ui's Card is owned source, kept whole with its parts.
