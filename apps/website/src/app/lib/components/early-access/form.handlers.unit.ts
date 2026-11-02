@@ -10,12 +10,10 @@ import { createEarlyAccessFormState } from './form-state.data'
 
 vi.mock('./form.submission', () => ({ submitEarlyAccess: vi.fn() }))
 
-import {
-	handleEmailBlur,
-	handleEmailChange,
-	handleFormSubmit,
-} from './form.handlers'
+import { handleEmailBlur } from './email-blur.handler'
+import { handleEmailChange } from './email-change.handler'
 import { submitEarlyAccess } from './form.submission'
+import { handleFormSubmit } from './form-submit.handler'
 
 const challenge = {
 	execute: vi.fn(async () => {}),

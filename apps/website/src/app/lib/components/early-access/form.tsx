@@ -8,13 +8,11 @@ import type { EarlyAccessMessages } from '@i18n/messages/messages.types'
 import { useRouter } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
 
-import {
-	handleEmailBlur,
-	handleEmailChange,
-	handleFormSubmit,
-} from './form.handlers'
+import { handleEmailBlur } from './email-blur.handler'
+import { handleEmailChange } from './email-change.handler'
 import type { EarlyAccessFormState, StateUpdater } from './form.types'
 import { createEarlyAccessFormState } from './form-state.data'
+import { handleFormSubmit } from './form-submit.handler'
 import type { TurnstileController } from './turnstile.controller'
 import { createTurnstileController } from './turnstile.controller'
 

@@ -3,118 +3,16 @@ import 'server-only'
 import { randomUUID } from 'node:crypto'
 import { z } from 'zod'
 
+import { declaresOversizedBody } from './declares-oversized-body.validation'
 import { earlyAccessSubmissionSchema, getEmailError } from './form.validation'
+import { isPlainJSON } from './is-plain-json.validation'
+import { parseSubmissionJSON } from './parse-submission-json.compute'
+import { readRegistry } from './read-registry.compute'
+import { reply } from './reply.response'
 import { BodyError, readBoundedBody } from './request.body'
-import {
-	declaresOversizedBody,
-	isPlainJSON,
-	parseSubmissionJSON,
-} from './request.validation'
+import { retrySeconds } from './retry-seconds.compute'
+import { trustedOrigin } from './trusted-origin.compute'
 import { verifyEarlyAccessChallenge } from './turnstile.validation'
-
-function reply(
-	status: number,
-	code: string,
-	retryAfter?: number,
-	fieldErrors?: { email: string },
-) {
-	const headers: Record<string, string> = {
-		'Cache-Control': 'no-store',
-		'X-Content-Type-Options': 'nosniff',
-	}
-	if (retryAfter) headers['Retry-After'] = String(retryAfter)
-
-	return Response.json(
-		{
-			ok: status === 202,
-			code,
-			...(fieldErrors ? { fieldErrors } : {}),
-		},
-		{
-			status,
-			headers,
-		},
-	)
-}
-
-type EarlyAccessMode = 'production' | 'development' | 'test'
-
-function earlyAccessMode(): EarlyAccessMode {
-	if (process.env.NODE_ENV === 'development') return 'development'
-	if (process.env.EARLY_ACCESS_MODE === 'test') return 'test'
-	return 'production'
-}
-
-function assertCredentialFreeOrigin(endpoint: URL, mode: EarlyAccessMode) {
-	if (
-		endpoint.username ||
-		endpoint.password ||
-		endpoint.search ||
-		endpoint.hash ||
-		endpoint.pathname !== '/' ||
-		!['http:', 'https:'].includes(endpoint.protocol)
-	) {
-		throw new Error('Early Access endpoints must be credential-free origins')
-	}
-	const requiresHttps = mode === 'production' && endpoint.protocol !== 'https:'
-	if (requiresHttps) {
-		throw new Error('Production Early Access endpoints require HTTPS')
-	}
-	if (
-		mode !== 'production' &&
-		!['localhost', '127.0.0.1', 'email-store'].includes(endpoint.hostname)
-	) {
-		throw new Error('Development Early Access endpoints must be local')
-	}
-}
-
-function readRegistry() {
-	const mode = earlyAccessMode()
-	const registryEnv = process.env.EARLY_ACCESS_REGISTRY_URL
-	if (!registryEnv) {
-		throw new Error('EARLY_ACCESS_REGISTRY_URL is not configured')
-	}
-	const registry = new URL(registryEnv)
-
-	const websiteEnv = process.env.EARLY_ACCESS_PUBLIC_ORIGIN
-	if (!websiteEnv) {
-		throw new Error('EARLY_ACCESS_PUBLIC_ORIGIN is not configured')
-	}
-	const website = new URL(websiteEnv)
-
-	assertCredentialFreeOrigin(registry, mode)
-	assertCredentialFreeOrigin(website, mode)
-
-	const registryKey = process.env.EARLY_ACCESS_REGISTRY_KEY
-	if (!registryKey || registryKey.length < 32 || /[\r\n]/.test(registryKey)) {
-		throw new Error(
-			'EARLY_ACCESS_REGISTRY_KEY must contain at least 32 characters',
-		)
-	}
-
-	return {
-		mode,
-		registryUrl: registry.origin,
-		registryKey,
-		publicOrigin: website.origin,
-	}
-}
-
-function retrySeconds(response: Response): number {
-	const seconds = Number(response.headers.get('Retry-After'))
-
-	return Number.isSafeInteger(seconds) && seconds > 0
-		? Math.min(seconds, 2_678_400)
-		: 30
-}
-
-// Production fails closed until a trusted proxy contract for the host is
-// implemented and verified; client-supplied forwarding headers never count.
-function trustedOrigin(mode: string): string | null {
-	if (mode !== 'production') return '127.0.0.1'
-
-	return null
-}
 
 export async function postEarlyAccess(request: Request): Promise<Response> {
 	try {

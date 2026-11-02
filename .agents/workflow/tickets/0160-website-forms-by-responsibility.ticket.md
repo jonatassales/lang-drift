@@ -6,11 +6,11 @@
 
 **Blocked by:** 0159
 
-**Status:** ready-for-agent
+**Status:** completed
 
-- [ ] The early-access form has one handler file per event and one map file per mutation, each with one function.
-- [ ] The book-a-demo form has its types, its defaults and its schema in their own files.
-- [ ] Both forms' tests pass, moved with the code they cover.
+- [x] The early-access form has one handler file per event and one map file per mutation, each with one function.
+- [x] The book-a-demo form has its types, its defaults and its schema in their own files.
+- [x] Both forms' tests pass, moved with the code they cover.
 
 ### Verification
 

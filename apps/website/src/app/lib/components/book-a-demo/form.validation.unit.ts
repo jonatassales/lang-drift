@@ -2,12 +2,9 @@ import { describe, expect, it } from 'vitest'
 
 import { bookDemoMessages } from '@i18n/messages/index'
 
-import {
-	bookDemoErrorCodes,
-	bookDemoSchema,
-	bookDemoSubmissionSchema,
-	fieldErrorsOf,
-} from './form.schema'
+import { fieldErrorsOf } from './field-errors.compute'
+import { bookDemoErrorCodes } from './form.types'
+import { bookDemoSchema, bookDemoSubmissionSchema } from './form.validation'
 import { positionIds } from './positions'
 
 const valid = {

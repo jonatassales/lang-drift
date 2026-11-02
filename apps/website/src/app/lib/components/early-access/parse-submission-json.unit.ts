@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest'
 
-import { parseSubmissionJSON } from './request.validation'
+import { parseSubmissionJSON } from './parse-submission-json.compute'
 
 it('rejects ambiguous JSON before properties can be overwritten', () => {
 	for (const text of [

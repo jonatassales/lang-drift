@@ -1,36 +1,11 @@
 import type { WebsiteLocale } from '@i18n/routing'
 
-import {
-	mapEmailBlur,
-	mapEmailChange,
-	mapValidationFailed,
-	mapValidationPassed,
-} from './form.mappers'
 import { submitEarlyAccess } from './form.submission'
 import type { EarlyAccessFormState, StateUpdater } from './form.types'
 import { earlyAccessFormSchema, getEmailError } from './form.validation'
 import type { SubmissionChallenge } from './turnstile.types'
-
-export function handleEmailChange(
-	email: string,
-	hasInteractedWithEmail: boolean,
-	update: StateUpdater<EarlyAccessFormState>,
-): void {
-	const error = hasInteractedWithEmail ? getEmailError(email) : null
-	update((draft) => {
-		mapEmailChange(draft, email, error)
-	})
-}
-
-export function handleEmailBlur(
-	email: string,
-	update: StateUpdater<EarlyAccessFormState>,
-): void {
-	const error = getEmailError(email)
-	update((draft) => {
-		mapEmailBlur(draft, error)
-	})
-}
+import { mapValidationFailed } from './validation-failed.map'
+import { mapValidationPassed } from './validation-passed.map'
 
 export async function handleFormSubmit(
 	email: string,

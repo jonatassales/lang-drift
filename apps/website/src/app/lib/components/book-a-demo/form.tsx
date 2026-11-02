@@ -7,13 +7,10 @@ import { useForm } from 'react-hook-form'
 import type { BookDemoMessages } from '@i18n/messages/messages.types'
 import type { WebsiteLocale } from '@i18n/routing'
 
-import {
-	type BookDemoData,
-	type BookDemoField,
-	type BookDemoInput,
-	bookDemoSchema,
-	isBookDemoErrorCode,
-} from './form.schema'
+import type { BookDemoData, BookDemoField, BookDemoInput } from './form.types'
+import { bookDemoSchema } from './form.validation'
+import { initialBookDemoInput } from './form-state.data'
+import { isBookDemoErrorCode } from './is-book-demo-error-code.validation'
 import { positionIds } from './positions'
 
 interface BookDemoFormProps {
@@ -39,11 +36,7 @@ export function BookDemoForm(props: BookDemoFormProps) {
 		unknown,
 		BookDemoData
 	>({
-		defaultValues: {
-			company: '',
-			email: '',
-			position: '',
-		},
+		defaultValues: initialBookDemoInput,
 		mode: 'onTouched',
 		resolver: zodResolver(bookDemoSchema),
 	})
