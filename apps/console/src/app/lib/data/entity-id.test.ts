@@ -40,6 +40,8 @@ test('dots, slashes, escapes, empty and over-long values are not', () => {
 
 test('a console path is safe when each segment is a name or an entity id', () => {
 	assert.equal(consolePathSafe('home'), true)
+	assert.equal(consolePathSafe('sign-in'), true)
+	assert.equal(consolePathSafe('login'), true)
 	assert.equal(consolePathSafe('runtimes/seed-runtime-4/load-test'), true)
 	assert.equal(
 		consolePathSafe(

@@ -45,15 +45,15 @@ fi
 ticket_label="${ticket:-N/A}"
 
 cat <<EOF
-### <img src="https://langdrift.md/metadata/icon-192.png" width="16" height="16" align="middle" alt="" /> Workflow Gate
+### Workflow Gate
 
 | Stage | Owner / Mechanism | Status | Notes |
 | :--- | :--- | :---: | :--- |
-| **Grilling** | Human in the Loop | 🟢 Confirmed | Scope & acceptance criteria aligned |
-| **To-Spec** | Autonomous Harness | 🟢 Done | ${spec_name} |
-| **To-Tickets** | Autonomous Harness | 🟢 Done | Ticket #${ticket_label}: ${ticket_title} |
-| **Implement** | Autonomous Agent (TDD) | 🟢 Complete | Verified against test seams |
-| **PR Review** | Human in the Loop | 🟡 Pending Review | Awaiting repository owner approval |
+| **Grilling** | Human in the Loop | [Confirmed](https://console.langdrift.md/sign-in) | Scope & acceptance criteria aligned |
+| **To-Spec** | Autonomous Harness | [Done](https://console.langdrift.md/sign-in) | ${spec_name} |
+| **To-Tickets** | Autonomous Harness | [Done](https://console.langdrift.md/sign-in) | Ticket #${ticket_label}: ${ticket_title} |
+| **Implement** | Autonomous Agent (TDD) | [Complete](https://console.langdrift.md/sign-in) | Verified against test seams |
+| **PR Review** | Human in the Loop | [Pending Review](https://console.langdrift.md/sign-in) | Awaiting repository owner approval |
 
 > **Workflow Policy:** Autonomous stages (\`to-spec\`, \`to-tickets\`, \`implement\`) ran strictly within the guardrails. Checkpoints pause only for owner confirmation and final merge.
 EOF

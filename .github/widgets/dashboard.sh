@@ -13,24 +13,25 @@ if [ "${1:-}" = "--publish" ]; then
   shift
 fi
 
+summary_tmp=$(mktemp)
 dashboard_tmp=$(mktemp)
-trap 'rm -f "$dashboard_tmp"' EXIT
+trap 'rm -f "$summary_tmp" "$dashboard_tmp"' EXIT
 
-logo_icon="https://langdrift.md/metadata/icon-192.png"
-
-{
-  cat <<EOF
-## <a href="https://langdrift.md"><img src="${logo_icon}" width="24" height="24" align="middle" alt="LangDrift" /></a> LangDrift CI Gates
+cat <<EOF >"$summary_tmp"
+## LangDrift CI Gates
 
 | CI Gate | Headline Metric | Status |
 | :--- | :--- | :---: |
-| <img src="${logo_icon}" width="14" height="14" align="middle" alt="" /> **Workflow** | Autonomous stages complete · Ticket verified | 🟢 Complete |
-| <img src="${logo_icon}" width="14" height="14" align="middle" alt="" /> **FinOps** | **\$0.24** expended / \$0.50 authorized ceiling | 🟢 In Envelope |
-| <img src="${logo_icon}" width="14" height="14" align="middle" alt="" /> **Microruntimes** | \`@langdrift/ex@0.1.0\` · Contracts in sync | 🟢 Stable |
-| <img src="${logo_icon}" width="14" height="14" align="middle" alt="" /> **Code Quality** | 100% rules verified · 0 dead code · Sound types | 🟢 Passing |
-| <img src="${logo_icon}" width="14" height="14" align="middle" alt="" /> **Agentic** | **96 / 100** Harness Score · Supervised delivery | 🟢 L4 Maturity |
-
+| **Workflow** | Autonomous stages complete · Ticket verified | [Complete](https://console.langdrift.md/sign-in) |
+| **FinOps** | **\$0.24** expended / \$0.50 authorized ceiling | [In Envelope](https://console.langdrift.md/sign-in) |
+| **Microruntimes** | \`@langdrift/ex@0.1.0\` · Contracts in sync | [Stable](https://console.langdrift.md/sign-in) |
+| **Code Quality** | 100% rules verified · 0 dead code · Sound types | [Passing](https://console.langdrift.md/sign-in) |
+| **Agentic** | **96 / 100** Harness Score · Supervised delivery | [L4 Maturity](https://console.langdrift.md/sign-in) |
 EOF
+
+{
+  cat "$summary_tmp"
+  printf '\n\n'
 
   printf '<details open>\n<summary><b>1. Workflow Gate</b></summary>\n\n'
   sh "$widgets_dir/workflow.sh" "$@"
@@ -59,8 +60,13 @@ cat "$dashboard_tmp"
 # Publish if requested and credentials are present
 if [ "$publish" = true ]; then
   if [ -n "${WIDGET_PULL_REQUEST:-}" ] && [ -n "${GITHUB_REPOSITORY:-}" ]; then
-    drift_print_info "Updating PR sticky comment for PR #$WIDGET_PULL_REQUEST..."
-    "$widgets_dir/sticky-comment.sh" "langdrift-delivery-dashboard" <"$dashboard_tmp" || drift_warn "Could not update sticky comment"
+    drift_print_info "Updating PR sticky comments for PR #$WIDGET_PULL_REQUEST..."
+    "$widgets_dir/sticky-comment.sh" "langdrift-ci-gates" <"$summary_tmp" || drift_warn "Could not update CI Gates comment"
+    "$widgets_dir/workflow.sh" "$@" | "$widgets_dir/sticky-comment.sh" "langdrift-workflow" || drift_warn "Could not update Workflow comment"
+    "$widgets_dir/finops.sh" "$@" | "$widgets_dir/sticky-comment.sh" "langdrift-finops" || drift_warn "Could not update FinOps comment"
+    "$widgets_dir/microruntimes.sh" "$@" | "$widgets_dir/sticky-comment.sh" "langdrift-microruntimes" || drift_warn "Could not update Microruntimes comment"
+    "$widgets_dir/code-quality.sh" "$@" | "$widgets_dir/sticky-comment.sh" "langdrift-code-quality" || drift_warn "Could not update Code Quality comment"
+    "$widgets_dir/agentic.sh" "$@" | "$widgets_dir/sticky-comment.sh" "langdrift-agentic" || drift_warn "Could not update Agentic comment"
   fi
 
   if [ -n "${WIDGET_SHA:-}" ] && [ -n "${GITHUB_REPOSITORY:-}" ]; then

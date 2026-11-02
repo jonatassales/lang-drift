@@ -13,7 +13,7 @@ coverage=$("$DRIFT_PROJECT_ROOT/platform/cli/drift" quality coverage) ||
   drift_die "drift quality coverage could not measure the rules."
 
 cat <<EOF_WIDGET
-### <img src="https://langdrift.md/metadata/icon-192.png" width="16" height="16" align="middle" alt="" /> Code Quality Gate
+### Code Quality Gate
 
 $(printf '%s\n' "$coverage" | sed '1,2d')
 EOF_WIDGET

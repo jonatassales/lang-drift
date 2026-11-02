@@ -11,6 +11,30 @@ const config: NextConfig = {
 	poweredByHeader: false,
 	reactStrictMode: true,
 	transpilePackages: ['@langdrift/web'],
+	async redirects() {
+		return [
+			{
+				source: '/sign-in',
+				destination: '/login',
+				permanent: false,
+			},
+			{
+				source: '/:locale/sign-in',
+				destination: '/:locale/login',
+				permanent: false,
+			},
+			{
+				source: '/signin',
+				destination: '/login',
+				permanent: false,
+			},
+			{
+				source: '/:locale/signin',
+				destination: '/:locale/login',
+				permanent: false,
+			},
+		]
+	},
 	async headers() {
 		return [
 			{
