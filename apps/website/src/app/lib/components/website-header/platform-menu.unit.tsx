@@ -31,6 +31,9 @@ vi.mock('next-intl', () => ({
 			ciGates: 'CI Gates',
 			ciGatesDescription:
 				'Pull request reports and delivery evidence in your own CI.',
+			voiceAiInterfaces: 'Voice AI Interfaces',
+			voiceAiInterfacesDescription:
+				'Real-time speech and interactive voice interfaces for agents.',
 			comingSoon: 'Coming soon',
 		}
 
@@ -45,14 +48,20 @@ afterEach(() => {
 })
 
 describe('website/src/app/lib/components/website-header/platform-menu', () => {
-	it('renders platform products with CI Gates coming soon badge and description', () => {
+	it('renders platform products with CI Gates and Voice AI Interfaces coming soon badges', () => {
 		render(<PlatformMenu />)
 
 		expect(screen.getByText('CI Gates')).toBeDefined()
-		expect(screen.getByText('Coming soon')).toBeDefined()
+		expect(screen.getByText('Voice AI Interfaces')).toBeDefined()
+		expect(screen.getAllByText('Coming soon')).toHaveLength(2)
 		expect(
 			screen.getByText(
 				'Pull request reports and delivery evidence in your own CI.',
+			),
+		).toBeDefined()
+		expect(
+			screen.getByText(
+				'Real-time speech and interactive voice interfaces for agents.',
 			),
 		).toBeDefined()
 	})

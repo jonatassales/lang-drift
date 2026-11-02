@@ -2,6 +2,7 @@ import {
 	CiGatesIcon,
 	FinopsIcon,
 	MicroruntimesIcon,
+	VoiceAiInterfacesIcon,
 } from '@langdrift/web/ui/icons/platform'
 
 // The products the header's Platform menu lists, by their message keys. Only
@@ -23,6 +24,12 @@ export const platformProducts = [
 		label: 'ciGates',
 		description: 'ciGatesDescription',
 		icon: CiGatesIcon,
+		badge: 'comingSoon',
+	},
+	{
+		label: 'voiceAiInterfaces',
+		description: 'voiceAiInterfacesDescription',
+		icon: VoiceAiInterfacesIcon,
 		badge: 'comingSoon',
 	},
 ] as const

@@ -10,10 +10,12 @@ export interface HeaderMessages {
 	finops: string
 	microruntimes: string
 	ciGates: string
+	voiceAiInterfaces: string
 	comingSoon: string
 	finopsDescription: string
 	microruntimesDescription: string
 	ciGatesDescription: string
+	voiceAiInterfacesDescription: string
 	pricing: string
 	docs: string
 	github: string
