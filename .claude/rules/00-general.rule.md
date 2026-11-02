@@ -21,7 +21,7 @@ Rules for every task, file and language in this repository: TypeScript, Go, shel
 ## Single responsibility
 
 1. **One responsibility.** Every file, type, component and function has one reason to change. A unit that starts serving a second concern is split.
-2. **One function per file.** A source file declares exactly one top-level function, or exactly one type with its methods: a class, a Go type and its methods, a React component, a hook. Functions nested inside it, such as a component's event handlers or a closure, belong to it. Types and constants that exist only for that function may stay in its file. Any other function, including a helper the main function uses, lives in its own file.
+2. **One function per file.** A source file declares exactly one top-level function, or exactly one type with its methods: a class, a Go type and its methods, a React component, a hook. Functions nested inside it, such as a component's event handlers or a closure, belong to it. Types and constants that exist only for that function may stay in its file. Any other function, including a helper the main function uses, lives in its own file. In Next.js route handlers (`route.ts`), each exported HTTP method handler (`GET`, `POST`, etc.) is an entrypoint.
 3. **Group with folders, not with files.** Related single-function files sit together in a folder named after their concern; in Go, that folder is the package. A folder groups them; a multi-function file never does.
 4. **The file names its one export.** A file is named after the function or type it declares: `to-initials.fmt.ts` declares `toInitials`, `cookie.service.ts` declares `CookieService`.
 
