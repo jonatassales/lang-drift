@@ -33,6 +33,7 @@ Run from the repository root:
 | `EARLY_ACCESS_REGISTRY_URL` | Private authenticated registry origin; HTTPS in production. |
 | `EARLY_ACCESS_REGISTRY_KEY` | Server-only website credential for the registry, at least 32 characters. |
 | `EARLY_ACCESS_MODE` | `test` selects the test fixtures outside development; anything else behaves as production. |
+| `RESEND_API_KEY` | Server-only Resend API key for dispatching demo request emails from `no-reply@langdrift.md`. |
 
 Production fails closed until a trusted ingress contract for the host exists. Registry admission is never exposed to browsers, and client-supplied IP headers never count as proof.
 
