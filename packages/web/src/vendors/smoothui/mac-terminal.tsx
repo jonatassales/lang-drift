@@ -4,6 +4,8 @@ import { cn } from '@langdrift/web/utilities'
 import { useReducedMotion } from 'motion/react'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
 
+import { createTerminalMachine, type Machine } from './create-terminal-machine'
+
 // Adapted from SmoothUI's Mac Terminal (smoothui.dev): a macOS terminal
 // window that types its commands and prints their output line by line. It
 // plays while it is on screen and the tab is visible, shows the whole session
@@ -48,15 +50,6 @@ export interface MacTerminalProps {
 	typingSpeed?: number
 }
 
-type MachinePhase = 'delay' | 'typing'
-
-interface Machine {
-	finished: boolean
-	lineIndex: number
-	phase: MachinePhase
-	phaseElapsed: number
-}
-
 interface TypingDraft {
 	chars: number
 	line: TerminalLine
@@ -77,13 +70,6 @@ const lineTones: Record<TerminalLineType, string> = {
 	warning: 'text-status-warning',
 }
 
-const createMachine = (): Machine => ({
-	finished: false,
-	lineIndex: 0,
-	phase: 'delay',
-	phaseElapsed: 0,
-})
-
 export function MacTerminal(props: MacTerminalProps) {
 	const {
 		action,
@@ -101,7 +87,7 @@ export function MacTerminal(props: MacTerminalProps) {
 	const shouldReduceMotion = useReducedMotion()
 	const containerRef = useRef<HTMLElement>(null)
 	const scrollRef = useRef<HTMLDivElement>(null)
-	const machineRef = useRef<Machine>(createMachine())
+	const machineRef = useRef<Machine>(createTerminalMachine())
 	const shouldPlayRef = useRef(false)
 	const linesRef = useRef(lines)
 	const onProgressRef = useRef(onProgress)
@@ -133,8 +119,9 @@ export function MacTerminal(props: MacTerminalProps) {
 	}, [])
 
 	useEffect(() => {
-		const updateVisibility = () =>
+		function updateVisibility() {
 			setIsPageVisible(document.visibilityState === 'visible')
+		}
 
 		updateVisibility()
 		document.addEventListener('visibilitychange', updateVisibility)
@@ -166,13 +153,13 @@ export function MacTerminal(props: MacTerminalProps) {
 
 		let loopTimeout = 0
 
-		const startNextLine = (machine: Machine) => {
+		function startNextLine(machine: Machine) {
 			machine.lineIndex += 1
 			machine.phase = 'delay'
 			machine.phaseElapsed = 0
 		}
 
-		const tick = () => {
+		function tick() {
 			const machine = machineRef.current
 			if (!shouldPlayRef.current || machine.finished) return
 
@@ -182,10 +169,11 @@ export function MacTerminal(props: MacTerminalProps) {
 				if (!loopRef.current) return
 
 				loopTimeout = window.setTimeout(() => {
-					machineRef.current = createMachine()
+					machineRef.current = createTerminalMachine()
 					setCompletedLines([])
 					setTypingDraft(null)
 				}, LOOP_PAUSE_MS)
+
 				return
 			}
 
@@ -201,6 +189,7 @@ export function MacTerminal(props: MacTerminalProps) {
 				if (!isCommand) {
 					setCompletedLines((previous) => [...previous, line])
 					startNextLine(machine)
+
 					return
 				}
 
@@ -210,6 +199,7 @@ export function MacTerminal(props: MacTerminalProps) {
 					chars: 0,
 					line,
 				})
+
 				return
 			}
 

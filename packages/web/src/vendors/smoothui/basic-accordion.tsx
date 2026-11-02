@@ -1,7 +1,7 @@
 'use client'
 
 import { CaretDown } from '@phosphor-icons/react'
-import type { ReactNode } from 'react'
+import type { MouseEvent, ReactNode } from 'react'
 import { useId, useState } from 'react'
 
 import './basic-accordion.css'
@@ -22,14 +22,16 @@ export interface BasicAccordionProps {
 }
 
 /** SmoothUI Basic Accordion, adapted for heading order and unique ARIA IDs. */
-export function BasicAccordion({
-	items,
-	allowMultiple = false,
-	defaultExpandedIds = [],
-	headingLevel = 5,
-	layoutId,
-	className = '',
-}: BasicAccordionProps) {
+export function BasicAccordion(props: BasicAccordionProps) {
+	const {
+		allowMultiple = false,
+		className = '',
+		defaultExpandedIds = [],
+		headingLevel = 5,
+		items,
+		layoutId,
+	} = props
+
 	const generatedId = useId()
 	const prefix = `${layoutId ?? 'smooth-accordion'}-${generatedId}`
 	const [expandedIds, setExpandedIds] = useState<Array<string | number>>(() =>
@@ -49,9 +51,19 @@ export function BasicAccordion({
 		)
 	}
 
+	function handleTriggerClick(event: MouseEvent<HTMLButtonElement>) {
+		const itemIndex = event.currentTarget.dataset.itemIndex
+		if (itemIndex === undefined) return
+
+		const item = items[Number(itemIndex)]
+		if (item) {
+			toggleItem(item.id)
+		}
+	}
+
 	return (
 		<div className={`smooth-basic-accordion ${className}`}>
-			{items.map((item) => {
+			{items.map((item, index) => {
 				const expanded = expandedIds.includes(item.id)
 				const triggerId = `${prefix}-trigger-${item.id}`
 				const regionId = `${prefix}-region-${item.id}`
@@ -63,8 +75,9 @@ export function BasicAccordion({
 								aria-controls={regionId}
 								aria-expanded={expanded}
 								className="smooth-accordion-trigger"
+								data-item-index={index}
 								id={triggerId}
-								onClick={() => toggleItem(item.id)}
+								onClick={handleTriggerClick}
 								type="button"
 							>
 								<span>{item.title}</span>

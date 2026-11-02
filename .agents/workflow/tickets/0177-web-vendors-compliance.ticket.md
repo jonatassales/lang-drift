@@ -13,6 +13,7 @@ Refactor vendor components under `packages/web/src/vendors/smoothui/`:
    - Replace inline `onClick` with named function `handleTriggerClick`.
 3. `mac-terminal.tsx`:
    - Replace arrow functions (`createMachine`, `startNextLine`, `tick`, `updateVisibility`) with function declarations.
+   - Extract `createTerminalMachine` into its own file.
    - Add blank lines before returns across the file.
 4. `text-morph.tsx`:
    - Split helper functions into single-function files: `segment-graphemes.ts`, `tokenize-text.ts`, `build-tokens.ts`.
@@ -22,11 +23,11 @@ Refactor vendor components under `packages/web/src/vendors/smoothui/`:
 
 **Status:** ready-for-agent
 
-- [ ] `packages/web/src/vendors/smoothui/animated-tabs.tsx` complies with 00-general and 05-react.
-- [ ] `packages/web/src/vendors/smoothui/basic-accordion.tsx` complies with 00-general and 05-react.
-- [ ] `packages/web/src/vendors/smoothui/mac-terminal.tsx` complies with 00-general and 05-react.
-- [ ] `packages/web/src/vendors/smoothui/text-morph.tsx` has one function, delegating helpers to separate single-function files.
-- [ ] Quality check passes for `packages/web/src/vendors/smoothui/`.
+- [x] `packages/web/src/vendors/smoothui/animated-tabs.tsx` complies with 00-general and 05-react.
+- [x] `packages/web/src/vendors/smoothui/basic-accordion.tsx` complies with 00-general and 05-react.
+- [x] `packages/web/src/vendors/smoothui/mac-terminal.tsx` complies with 00-general and 05-react.
+- [x] `packages/web/src/vendors/smoothui/text-morph.tsx` has one function, delegating helpers to separate single-function files.
+- [x] Quality check passes for `packages/web/src/vendors/smoothui/`.
 
 ### Verification
 

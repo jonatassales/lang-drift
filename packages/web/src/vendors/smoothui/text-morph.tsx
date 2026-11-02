@@ -5,6 +5,8 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import type { ElementType, ReactNode } from 'react'
 import { useMemo } from 'react'
 
+import { buildTokens } from './build-tokens'
+
 // Adapted from SmoothUI's Text Morph (smoothui.dev): morphs one string into
 // another by diffing tokens. Shared tokens keep their key and slide to their
 // new position, removed tokens shrink out and added tokens pop in.
@@ -35,7 +37,7 @@ export interface TextMorphProps {
 	text: string
 }
 
-interface TextMorphToken {
+export interface TextMorphToken {
 	key: string
 	value: string
 }
@@ -53,35 +55,6 @@ const ALIGN_CLASS: Record<TextMorphAlign, string> = {
 	center: 'justify-center',
 	end: 'justify-end',
 	start: 'justify-start',
-}
-
-function segmentGraphemes(value: string): string[] {
-	if (typeof Intl === 'undefined' || !('Segmenter' in Intl)) return [...value]
-	const segmenter = new Intl.Segmenter(undefined, {
-		granularity: 'grapheme',
-	})
-
-	return Array.from(segmenter.segment(value), (entry) => entry.segment)
-}
-
-function tokenizeText(text: string, mode: TextMorphMode): string[] {
-	if (mode === 'characters') return segmentGraphemes(text)
-
-	return text.split(/(\s+)/).filter((token) => token.length > 0)
-}
-
-function buildTokens(text: string, mode: TextMorphMode): TextMorphToken[] {
-	const occurrences = new Map<string, number>()
-
-	return tokenizeText(text, mode).map((value) => {
-		const count = occurrences.get(value) ?? 0
-		occurrences.set(value, count + 1)
-
-		return {
-			key: `${value}-${count}`,
-			value,
-		}
-	})
 }
 
 // The token row is positioned on purpose: AnimatePresence in popLayout mode
