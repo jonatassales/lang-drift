@@ -23,6 +23,7 @@ export const platformProducts = [
 		label: 'ciGates',
 		description: 'ciGatesDescription',
 		icon: CiGatesIcon,
+		badge: 'comingSoon',
 	},
 ] as const
 

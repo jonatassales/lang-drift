@@ -8,6 +8,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { Link } from '@i18n/navigation'
 
 import { platformProducts } from './platform-products'
+import { ProductBadge } from './product-badge'
 import { panelSurface } from './surface'
 
 const item = 'block w-full rounded-xl px-3 py-2.5 text-left'
@@ -137,8 +138,13 @@ export function PlatformMenu() {
 										<Icon className="size-4" />
 									</span>
 									<span className="flex min-w-0 flex-col gap-1">
-										<span className="text-sm font-medium text-foreground">
-											{translate(product.label)}
+										<span className="flex items-center gap-2">
+											<span className="text-sm font-medium text-foreground">
+												{translate(product.label)}
+											</span>
+											{'badge' in product && product.badge ? (
+												<ProductBadge>{translate(product.badge)}</ProductBadge>
+											) : null}
 										</span>
 										<span className="text-xs leading-relaxed font-normal text-muted-foreground">
 											{translate(product.description)}
