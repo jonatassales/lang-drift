@@ -1,13 +1,14 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { CaretDownIcon } from '@langdrift/web/ui/icons/arrow'
 import { cn } from '@langdrift/web/utilities'
-import { type ReactNode, useId } from 'react'
+import { type MouseEvent, type ReactNode, useId } from 'react'
 
 interface SessionCardProps {
 	body: ReactNode
 	expanded: boolean
 	label: string
-	onOpen: () => void
+	onOpen: (event: MouseEvent<HTMLButtonElement>) => void
+	phase?: string
 	/** The card's one line while it is collapsed: its latest figure. */
 	summary: ReactNode
 }
@@ -18,7 +19,7 @@ interface SessionCardProps {
 // card is collapsed; shut, it is inert and hidden from assistive
 // technology.
 export function SessionCard(props: SessionCardProps) {
-	const { body, expanded, label, onOpen, summary } = props
+	const { body, expanded, label, onOpen, phase, summary } = props
 
 	const id = useId()
 	const triggerId = `${id}-trigger`
@@ -30,6 +31,7 @@ export function SessionCard(props: SessionCardProps) {
 				aria-controls={regionId}
 				aria-expanded={expanded}
 				className="flex min-h-11 w-full items-center justify-between gap-4 px-5 py-3 text-left whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary sm:px-6"
+				data-phase={phase}
 				id={triggerId}
 				onClick={onOpen}
 				type="button"

@@ -1,5 +1,6 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { GitPullRequest } from '@langdrift/web/ui/icons/server'
+import type { MouseEvent } from 'react'
 
 import {
 	budgetCents,
@@ -34,6 +35,10 @@ type HasPlayed = (message: RunMessageId) => boolean
 // request reads as a link but opens nothing.
 export function WorkflowResult(props: WorkflowResultProps) {
 	const { copy, figures, format, playedCount, script } = props
+
+	function handleAnchorClick(event: MouseEvent<HTMLAnchorElement>) {
+		event.preventDefault()
+	}
 
 	const { workflow } = copy
 	const played: HasPlayed = (message) =>
@@ -100,7 +105,7 @@ export function WorkflowResult(props: WorkflowResultProps) {
 						<a
 							className="inline-flex items-center gap-1.5 font-mono text-[12px] text-foreground underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 							href="#"
-							onClick={(event) => event.preventDefault()}
+							onClick={handleAnchorClick}
 						>
 							#{workflowDelivery.pullRequest} ·
 							<GitPullRequest

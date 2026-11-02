@@ -1,5 +1,6 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { CaretDownIcon } from '@langdrift/web/ui/icons/arrow'
+import type { ChangeEvent } from 'react'
 
 interface WorkflowChoiceOption<Value extends string> {
 	label: string
@@ -24,6 +25,15 @@ export function WorkflowChoice<Value extends string>(
 ) {
 	const { label, locked, note, onChange, options, value } = props
 
+	function handleChange(event: ChangeEvent<HTMLSelectElement>) {
+		const option = options.find(
+			(candidate) => candidate.value === event.target.value,
+		)
+		if (option) {
+			onChange(option.value)
+		}
+	}
+
 	return (
 		<label className="grid min-w-0 content-start gap-1.5">
 			<Eyebrow>{label}</Eyebrow>
@@ -31,12 +41,7 @@ export function WorkflowChoice<Value extends string>(
 				<select
 					aria-disabled={locked || undefined}
 					className="w-full cursor-pointer appearance-none rounded-lg border border-border bg-card py-1.5 pr-8 pl-2.5 font-mono text-base text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-disabled:cursor-not-allowed aria-disabled:opacity-60 sm:text-[12px]"
-					onChange={(event) => {
-						const option = options.find(
-							(candidate) => candidate.value === event.target.value,
-						)
-						if (option) onChange(option.value)
-					}}
+					onChange={handleChange}
 					value={value}
 				>
 					{options.map((option) => (

@@ -1,6 +1,10 @@
 'use client'
 
-import { LanguageSwitcher } from '@langdrift/web/ui/language-switcher'
+import {
+	LanguageSwitcher,
+	type LanguageSwitcherLinkProps,
+	type LanguageSwitcherOption,
+} from '@langdrift/web/ui/language-switcher'
 import { useLocale, useTranslations } from 'next-intl'
 import type { MouseEvent } from 'react'
 import { useEffect, useState } from 'react'
@@ -40,11 +44,12 @@ interface LanguagePillProps {
 export function LanguagePill(props: LanguagePillProps) {
 	const { fromDrawer = false } = props
 
+	const [urlSuffix, setUrlSuffix] = useState('')
+	const pathname = usePathname()
 	const locale = useLocale()
 	const translate = useTranslations('header')
-	const pathname = usePathname()
-	const [urlSuffix, setUrlSuffix] = useState('')
 
+	// Sync the active locale to local storage for returning visitors.
 	useEffect(() => {
 		try {
 			window.localStorage.setItem('langdrift-website-locale', locale)
@@ -53,6 +58,7 @@ export function LanguagePill(props: LanguagePillProps) {
 		}
 	}, [locale])
 
+	// Listen for hash and popstate changes to preserve query and hash in language links.
 	useEffect(() => {
 		const syncUrlSuffix = () => {
 			setUrlSuffix(`${window.location.search}${window.location.hash}`)
@@ -67,10 +73,7 @@ export function LanguagePill(props: LanguagePillProps) {
 		}
 	}, [])
 
-	function selectLanguage(
-		event: MouseEvent<HTMLAnchorElement>,
-		nextLocale: (typeof languages)[number]['locale'],
-	) {
+	function handleLanguageClick(event: MouseEvent<HTMLAnchorElement>) {
 		if (
 			event.button !== 0 ||
 			event.metaKey ||
@@ -78,6 +81,14 @@ export function LanguagePill(props: LanguagePillProps) {
 			event.shiftKey ||
 			event.altKey
 		) {
+			return
+		}
+
+		const nextLocale = event.currentTarget.dataset.locale as
+			| (typeof languages)[number]['locale']
+			| undefined
+
+		if (!nextLocale) {
 			return
 		}
 
@@ -91,6 +102,30 @@ export function LanguagePill(props: LanguagePillProps) {
 		}
 	}
 
+	function renderLanguageLink(
+		language: LanguageSwitcherOption & { href: string },
+		linkProps: LanguageSwitcherLinkProps,
+	) {
+		return (
+			<a
+				{...linkProps}
+				data-locale={language.locale}
+				href={`${getPathname({
+					href: pathname,
+					locale: language.locale,
+				}).replace(/\/?$/, '/')}${urlSuffix}`}
+				onClick={handleLanguageClick}
+			/>
+		)
+	}
+
+	const options = languages.map((language) => ({
+		href: `${pathname}${urlSuffix}`,
+		label: languageLabels[language.locale],
+		locale: language.locale,
+		name: translate(`languages.${language.name}`),
+	}))
+
 	return (
 		<LanguageSwitcher
 			className={
@@ -100,22 +135,8 @@ export function LanguagePill(props: LanguagePillProps) {
 			}
 			currentLocale={locale}
 			label={translate('language')}
-			options={languages.map((language) => ({
-				locale: language.locale,
-				label: languageLabels[language.locale],
-				name: translate(`languages.${language.name}`),
-				href: `${pathname}${urlSuffix}`,
-			}))}
-			renderLink={(language, linkProps) => (
-				<a
-					{...linkProps}
-					href={`${getPathname({
-						href: pathname,
-						locale: language.locale,
-					}).replace(/\/?$/, '/')}${urlSuffix}`}
-					onClick={(event) => selectLanguage(event, language.locale)}
-				/>
-			)}
+			options={options}
+			renderLink={renderLanguageLink}
 		/>
 	)
 }

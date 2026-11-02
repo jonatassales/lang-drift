@@ -11,11 +11,13 @@ import { routing } from '@i18n/routing'
 
 export { generateMetadata } from './page.metadata'
 
-interface PageProps {
+interface EarlyAccessSentPageProps {
 	params: Promise<{ locale: string }>
 }
 
-export default async function EarlyAccessSentPage(props: PageProps) {
+export default async function EarlyAccessSentPage(
+	props: EarlyAccessSentPageProps,
+) {
 	const { params } = props
 
 	const { locale } = await params

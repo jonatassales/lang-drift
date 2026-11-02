@@ -43,7 +43,6 @@ const playButton =
 export function WorkflowCard(props: WorkflowCardProps) {
 	const { copy, format } = props
 
-	const { workflow } = copy
 	const session = useAtomValue(microruntimeSessionAtom)
 	const choices = useAtomValue(workflowChoicesAtom)
 	const script = useAtomValue(runScriptAtom)
@@ -54,6 +53,12 @@ export function WorkflowCard(props: WorkflowCardProps) {
 	const chooseEffort = useSetAtom(chooseEffortAtom)
 	const toggleHumanStage = useSetAtom(toggleHumanStageAtom)
 	const play = useSetAtom(playWorkflowAtom)
+
+	function handlePlay() {
+		play()
+	}
+
+	const { workflow } = copy
 	const model = workflowModel(choices.model)
 	const showsRun = session.stage === 'running' && session.ran !== null
 
@@ -121,7 +126,7 @@ export function WorkflowCard(props: WorkflowCardProps) {
 				<button
 					aria-disabled={!canPlay || undefined}
 					className={playButton}
-					onClick={() => play()}
+					onClick={handlePlay}
 					type="button"
 				>
 					{playLabel(workflow, session, running)}

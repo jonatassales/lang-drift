@@ -13,12 +13,15 @@ export default function GlobalError(props: GlobalErrorProps) {
 	const { reset } = props
 
 	const [locale, setLocale] = useState<WebsiteLocale>('en')
+
+	// Determine the active locale from the URL pathname to render error messages.
 	useEffect(() => {
 		const prefix = window.location.pathname.split('/')[1].toLowerCase()
 		setLocale(
 			routing.locales.find((value) => value.toLowerCase() === prefix) ?? 'en',
 		)
 	}, [])
+
 	const copy = messages[locale]
 
 	return (

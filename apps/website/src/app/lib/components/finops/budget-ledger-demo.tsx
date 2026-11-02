@@ -3,6 +3,7 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { cn } from '@langdrift/web/utilities'
 import { useAtom } from 'jotai'
+import type { MouseEvent } from 'react'
 
 import { ChoiceButton } from '@components/product-page/choice-button'
 import {
@@ -12,6 +13,7 @@ import {
 	envelopeSegmentIds,
 	envelopeSegments,
 	type FinopsMessages,
+	type WorkItemId,
 	workItems,
 } from '@data/finops-content'
 import type { WebsiteLocale } from '@i18n/routing'
@@ -38,6 +40,14 @@ export function BudgetLedgerDemo(props: BudgetLedgerDemoProps) {
 	const { copy, locale } = props
 
 	const [selectedId, setSelectedId] = useAtom(selectedWorkItemAtom)
+
+	function selectWorkItem(event: MouseEvent<HTMLButtonElement>) {
+		const targetId = event.currentTarget.dataset.id as WorkItemId | undefined
+		if (targetId) {
+			setSelectedId(targetId)
+		}
+	}
+
 	const money = dollars(locale)
 	const percent = new Intl.NumberFormat(locale, {
 		maximumFractionDigits: 0,
@@ -118,8 +128,9 @@ export function BudgetLedgerDemo(props: BudgetLedgerDemoProps) {
 							<li key={item.id}>
 								<ChoiceButton
 									className="grid grid-cols-2 gap-x-4 gap-y-1.5 border-transparent px-3 py-3 sm:grid-cols-[minmax(0,1.6fr)_repeat(3,minmax(0,0.8fr))] sm:items-center"
+									data-id={item.id}
 									kind="toggle"
-									onSelect={() => setSelectedId(item.id)}
+									onSelect={selectWorkItem}
 									selected={item.id === selectedId}
 								>
 									<span className="col-span-2 grid gap-0.5 sm:col-span-1">

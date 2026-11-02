@@ -39,17 +39,19 @@ const glass =
 	"before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-transparent before:content-[''] before:transition-colors data-[scrolled=true]:before:bg-background/60 supports-[backdrop-filter]:data-[scrolled=true]:before:bg-background/25 supports-[backdrop-filter]:data-[scrolled=true]:before:backdrop-blur-2xl"
 
 export function WebsiteHeader() {
-	const translate = useTranslations('header')
-	const locale = useLocale()
-	const [theme, setTheme] = useAtom(themeAtom)
 	const [scrolled, setScrolled] = useState(false)
 	const [drawerOpen, setDrawerOpen] = useState(false)
 	const sentinelRef = useRef<HTMLDivElement>(null)
 	const drawerRef = useRef<HTMLDialogElement>(null)
 	const triggerRef = useRef<HTMLButtonElement>(null)
 	const closeRef = useRef<HTMLButtonElement>(null)
-	const previousLocale = useRef(locale)
 
+	const translate = useTranslations('header')
+	const locale = useLocale()
+	const previousLocale = useRef(locale)
+	const [theme, setTheme] = useAtom(themeAtom)
+
+	// Sync document theme classes and meta theme-color with theme state.
 	useEffect(() => {
 		document.documentElement.classList.toggle('dark', theme === 'dark')
 		document.documentElement.style.colorScheme = theme
@@ -58,6 +60,7 @@ export function WebsiteHeader() {
 			?.setAttribute('content', theme === 'dark' ? '#0b0b0c' : '#f7f6f2')
 	}, [theme])
 
+	// Observe scroll sentinel at top of viewport to apply scrolled glass styling.
 	useEffect(() => {
 		const sentinel = sentinelRef.current
 		if (!sentinel) return
@@ -69,6 +72,7 @@ export function WebsiteHeader() {
 		return () => observer.disconnect()
 	}, [])
 
+	// Close drawer when the active locale changes.
 	useEffect(() => {
 		if (previousLocale.current !== locale) {
 			previousLocale.current = locale
@@ -76,6 +80,7 @@ export function WebsiteHeader() {
 		}
 	}, [locale])
 
+	// Restore focus to trigger when drawer changes locale.
 	useEffect(() => {
 		if (drawerFocus.locale !== locale) return
 		const frame = requestAnimationFrame(() => {
@@ -87,6 +92,7 @@ export function WebsiteHeader() {
 		return () => cancelAnimationFrame(frame)
 	}, [locale])
 
+	// Manage modal dialog lifecycle and body scroll lock for navigation drawer.
 	useEffect(() => {
 		if (!drawerOpen) return
 		const drawer = drawerRef.current
@@ -103,6 +109,7 @@ export function WebsiteHeader() {
 		}
 	}, [drawerOpen])
 
+	// Close navigation drawer when viewport expands to desktop size.
 	useEffect(() => {
 		const desktop = window.matchMedia('(min-width: 64rem)')
 		const closeOnDesktop = () => {
@@ -115,6 +122,14 @@ export function WebsiteHeader() {
 
 	function closeDrawer() {
 		setDrawerOpen(false)
+	}
+
+	function openDrawer() {
+		setDrawerOpen(true)
+	}
+
+	function toggleTheme() {
+		setTheme(theme === 'light' ? 'dark' : 'light')
 	}
 
 	const themeLabel = translate(theme === 'dark' ? 'lightTheme' : 'darkTheme')
@@ -166,7 +181,7 @@ export function WebsiteHeader() {
 							aria-expanded={drawerOpen}
 							aria-label={translate('openNavigation')}
 							className={`${iconButton} website-navigation-trigger lg:hidden`}
-							onClick={() => setDrawerOpen(true)}
+							onClick={openDrawer}
 							ref={triggerRef}
 							type="button"
 						>
@@ -186,7 +201,7 @@ export function WebsiteHeader() {
 						<button
 							aria-label={themeLabel}
 							className={`${iconButton} website-theme-toggle`}
-							onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+							onClick={toggleTheme}
 							title={themeLabel}
 							type="button"
 						>

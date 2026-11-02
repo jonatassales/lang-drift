@@ -16,17 +16,17 @@ import '@app/template/tailwind/app.css'
 export { generateMetadata } from './layout.metadata'
 export { generateStaticParams } from './layout.static'
 
-interface LayoutProps {
-	children: ReactNode
-	params: Promise<{ locale: string }>
-}
-
 export const viewport: Viewport = {
 	colorScheme: 'dark light',
 	themeColor: '#0b0b0c',
 }
 
-export default async function LocaleLayout(props: LayoutProps) {
+interface LocaleLayoutProps {
+	children: ReactNode
+	params: Promise<{ locale: string }>
+}
+
+export default async function LocaleLayout(props: LocaleLayoutProps) {
 	const { children, params } = props
 
 	const { locale } = await params

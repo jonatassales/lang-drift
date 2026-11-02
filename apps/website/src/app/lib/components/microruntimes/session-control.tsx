@@ -27,16 +27,24 @@ export function SessionControl(props: SessionControlProps) {
 	const replay = useSetAtom(replaySessionAtom)
 	const togglePause = useSetAtom(toggleSessionPauseAtom)
 
+	function handleReplay() {
+		replay()
+	}
+
+	function handleTogglePause() {
+		togglePause()
+	}
+
 	if (ended) {
 		return (
-			<button className={button} onClick={() => replay()} type="button">
+			<button className={button} onClick={handleReplay} type="button">
 				{copy.replay}
 			</button>
 		)
 	}
 
 	return (
-		<button className={button} onClick={() => togglePause()} type="button">
+		<button className={button} onClick={handleTogglePause} type="button">
 			{paused ? copy.resume : copy.pause}
 		</button>
 	)

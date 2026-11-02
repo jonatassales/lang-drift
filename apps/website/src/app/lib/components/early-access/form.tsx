@@ -1,6 +1,7 @@
 'use client'
 
 import { produce } from 'immer'
+import type { ChangeEvent, FocusEvent, FormEvent } from 'react'
 import { useEffect, useId, useRef, useState } from 'react'
 
 import type { EarlyAccessMessages } from '@i18n/messages/messages.types'
@@ -26,8 +27,8 @@ interface EarlyAccessFormProps {
 
 export function EarlyAccessForm(props: EarlyAccessFormProps) {
 	const { copy, helperId, locale, source } = props
-	const router = useRouter()
 
+	const router = useRouter()
 	const [formState, setFormState] = useState(createEarlyAccessFormState)
 	const [hydrated, setHydrated] = useState(false)
 	const inputRef = useRef<HTMLInputElement>(null)
@@ -37,6 +38,9 @@ export function EarlyAccessForm(props: EarlyAccessFormProps) {
 	const request = useRef<AbortController | null>(null)
 	const transitioning = useRef(false)
 	const challengeElement = useRef<HTMLDivElement>(null)
+	const instanceId = useId()
+
+	// Initialize Cloudflare Turnstile verification controller and clean up on unmount.
 	useEffect(() => {
 		mounted.current = true
 		setHydrated(true)
@@ -63,18 +67,72 @@ export function EarlyAccessForm(props: EarlyAccessFormProps) {
 			challenge.current = null
 		}
 	}, [])
-	const busy =
-		formState.status === 'verifying' ||
-		formState.status === 'submitting' ||
-		formState.status === 'success'
-	const instanceId = useId()
-	const emailId = `${instanceId}-email`
-	const errorId = `${instanceId}-error`
-	const statusId = `${instanceId}-status`
+
 	const emailError = formState.fieldErrors.email
 	const update: StateUpdater<EarlyAccessFormState> = (recipe) => {
 		if (mounted.current) setFormState(produce<EarlyAccessFormState>(recipe))
 	}
+
+	function handleEmailFieldBlur(event: FocusEvent<HTMLInputElement>) {
+		handleEmailBlur(event.currentTarget.value, update)
+	}
+
+	function handleEmailFieldChange(event: ChangeEvent<HTMLInputElement>) {
+		handleEmailChange(
+			event.currentTarget.value,
+			formState.hasInteractedWithEmail,
+			update,
+		)
+	}
+
+	function handleEmailFieldFocus() {
+		void challenge.current?.prepare().catch(() => undefined)
+	}
+
+	function handleFormSubmission(event: FormEvent<HTMLFormElement>) {
+		event.preventDefault()
+		const controller = challenge.current
+		if (submitting.current || !controller) return
+		submitting.current = true
+		request.current = new AbortController()
+
+		function focusInput() {
+			inputRef.current?.focus()
+		}
+
+		function navigateToSent() {
+			if (!mounted.current) return
+			transitioning.current = true
+			try {
+				router.push('/early-access-sent')
+			} catch (error) {
+				transitioning.current = false
+				throw error
+			}
+		}
+
+		void handleFormSubmit(
+			inputRef.current?.value ?? '',
+			update,
+			focusInput,
+			locale,
+			source,
+			controller,
+			navigateToSent,
+			request.current.signal,
+		).finally(() => {
+			if (!transitioning.current) submitting.current = false
+			controller.reset()
+		})
+	}
+
+	const busy =
+		formState.status === 'verifying' ||
+		formState.status === 'submitting' ||
+		formState.status === 'success'
+	const emailId = `${instanceId}-email`
+	const errorId = `${instanceId}-error`
+	const statusId = `${instanceId}-status`
 
 	let statusText = ''
 	if (formState.status === 'success') {
@@ -100,37 +158,7 @@ export function EarlyAccessForm(props: EarlyAccessFormProps) {
 			aria-busy={busy}
 			className="min-w-0"
 			noValidate
-			onSubmit={(event) => {
-				event.preventDefault()
-				const controller = challenge.current
-				if (submitting.current || !controller) return
-				submitting.current = true
-				request.current = new AbortController()
-				void handleFormSubmit(
-					inputRef.current?.value ?? '',
-					update,
-					() => {
-						inputRef.current?.focus()
-					},
-					locale,
-					source,
-					controller,
-					() => {
-						if (!mounted.current) return
-						transitioning.current = true
-						try {
-							router.push('/early-access-sent')
-						} catch (error) {
-							transitioning.current = false
-							throw error
-						}
-					},
-					request.current.signal,
-				).finally(() => {
-					if (!transitioning.current) submitting.current = false
-					controller.reset()
-				})
-			}}
+			onSubmit={handleFormSubmission}
 		>
 			<label
 				className="mb-2.5 block text-sm font-medium text-foreground"
@@ -148,21 +176,9 @@ export function EarlyAccessForm(props: EarlyAccessFormProps) {
 					id={emailId}
 					inputMode="email"
 					maxLength={254}
-					onBlur={(event) => {
-						handleEmailBlur(event.currentTarget.value, update)
-					}}
-					onChange={(event) => {
-						handleEmailChange(
-							event.currentTarget.value,
-							formState.hasInteractedWithEmail,
-							update,
-						)
-					}}
-					onFocus={() => {
-						void challenge.current?.prepare().catch(() => {
-							// A submission retries preparation and reports a recoverable error.
-						})
-					}}
+					onBlur={handleEmailFieldBlur}
+					onChange={handleEmailFieldChange}
+					onFocus={handleEmailFieldFocus}
 					placeholder={copy.placeholder}
 					ref={inputRef}
 					required

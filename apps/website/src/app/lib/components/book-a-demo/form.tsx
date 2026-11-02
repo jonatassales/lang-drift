@@ -53,6 +53,7 @@ export function BookDemoForm(props: BookDemoFormProps) {
 	const noticeRef = useRef<HTMLHeadingElement>(null)
 	const fieldId = useId()
 
+	// Focus the unavailable heading if the demo request submission is temporarily unavailable.
 	useEffect(() => {
 		if (outcome === 'unavailable') noticeRef.current?.focus()
 	}, [outcome])

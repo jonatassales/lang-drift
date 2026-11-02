@@ -27,6 +27,7 @@ export function PlatformMenu() {
 
 	const visible = (open || focusWithin) && !dismissed
 
+	// Dismiss pinned platform menu on outside press or Escape key.
 	useEffect(() => {
 		if (!visible) return
 

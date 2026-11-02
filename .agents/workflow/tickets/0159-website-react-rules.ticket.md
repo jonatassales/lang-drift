@@ -6,14 +6,14 @@
 
 **Blocked by:** 0158
 
-**Status:** ready-for-agent
+**Status:** completed
 
-- [ ] Every props interface sits right above its component and matches its name.
-- [ ] Every component scope follows the rule's order.
-- [ ] No inline event handler or arrow function remains in component scope.
-- [ ] `'use client'` marks only components that need the browser.
-- [ ] No effect derives state, and every effect says why it exists.
-- [ ] Behavior is unchanged: the test suite, the build and the captures still pass.
+- [x] Every props interface sits right above its component and matches its name.
+- [x] Every component scope follows the rule's order.
+- [x] No inline event handler or arrow function remains in component scope.
+- [x] `'use client'` marks only components that need the browser.
+- [x] No effect derives state, and every effect says why it exists.
+- [x] Behavior is unchanged: the test suite, the build and the captures still pass.
 
 ### Verification
 

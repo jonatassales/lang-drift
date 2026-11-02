@@ -3,9 +3,11 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { cn } from '@langdrift/web/utilities'
 import { useAtom } from 'jotai'
+import type { MouseEvent } from 'react'
 
 import { ChoiceButton } from '@components/product-page/choice-button'
 import {
+	type LifecycleStageId,
 	lifecycleStageIds,
 	type MicroruntimesMessages,
 } from '@data/microruntimes-content'
@@ -21,6 +23,16 @@ export function LifecycleSteps(props: LifecycleStepsProps) {
 	const { copy } = props
 
 	const [selectedId, setSelectedId] = useAtom(selectedLifecycleStageAtom)
+
+	function selectStage(event: MouseEvent<HTMLButtonElement>) {
+		const stageId = event.currentTarget.dataset.id as
+			| LifecycleStageId
+			| undefined
+		if (stageId) {
+			setSelectedId(stageId)
+		}
+	}
+
 	const stage = copy.stages[selectedId]
 
 	return (
@@ -36,8 +48,9 @@ export function LifecycleSteps(props: LifecycleStepsProps) {
 						<li key={id}>
 							<ChoiceButton
 								className="flex items-center gap-2.5 border-border px-3 py-2.5"
+								data-id={id}
 								kind="step"
-								onSelect={() => setSelectedId(id)}
+								onSelect={selectStage}
 								selected={selected}
 							>
 								<span
