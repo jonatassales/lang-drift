@@ -8,12 +8,12 @@
 
 **Status:** ready-for-agent
 
-- [ ] `apps/console/src/app/api/extub/[...path]/route.ts` implements `GET` and `POST` directly.
-- [ ] `apps/console/src/app/api/extub/[...path]/extub-proxy.route.ts` is deleted.
-- [ ] `apps/console/src/app/api/console/products/[id]/secrets/route.ts` declares explicit `GET` and `POST` functions.
-- [ ] `apps/console/src/app/api/console/[...path]/route.ts` declares explicit `GET`, `POST`, `PATCH`, `DELETE` functions.
-- [ ] All console tests (40 unit tests) pass.
-- [ ] No quality detector violations in `apps/console`.
+- [x] `apps/console/src/app/api/extub/[...path]/route.ts` implements `GET` and `POST` directly.
+- [x] `apps/console/src/app/api/extub/[...path]/extub-proxy.route.ts` is deleted.
+- [x] `apps/console/src/app/api/console/products/[id]/secrets/route.ts` declares explicit `GET` and `POST` functions.
+- [x] `apps/console/src/app/api/console/[...path]/route.ts` declares explicit `GET`, `POST`, `PATCH`, `DELETE` functions.
+- [x] All console tests (40 unit tests) pass.
+- [x] No quality detector violations in `apps/console`.
 
 ### Verification
 
