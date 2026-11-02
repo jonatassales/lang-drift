@@ -1,10 +1,20 @@
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
 import test from 'node:test'
 
-import { proxyMatcher } from './proxy-matcher.data.ts'
+function readProxyMatcher(): string {
+	const proxySource = readFileSync(
+		new URL('../proxy.ts', import.meta.url),
+		'utf-8',
+	)
+	const match = proxySource.match(/matcher:\s*\[\s*['"]([^'"]+)['"],?\s*\]/)
+	assert.ok(match?.[1], 'proxy.ts must export config.matcher')
+	return match[1].replace(/\\\\/g, '\\')
+}
 
 test('proxy matcher matches application routes', () => {
-	const regex = new RegExp(`^${proxyMatcher[0]}$`, 'i')
+	const pattern = readProxyMatcher()
+	const regex = new RegExp(`^${pattern}$`, 'i')
 
 	const routes = [
 		'/',
@@ -36,7 +46,8 @@ test('proxy matcher matches application routes', () => {
 })
 
 test('proxy matcher excludes API, _next, and static asset files', () => {
-	const regex = new RegExp(`^${proxyMatcher[0]}$`, 'i')
+	const pattern = readProxyMatcher()
+	const regex = new RegExp(`^${pattern}$`, 'i')
 
 	const exclusions = [
 		'/_next/static/immutable/chunks/39hocmh4qdt17.css',
