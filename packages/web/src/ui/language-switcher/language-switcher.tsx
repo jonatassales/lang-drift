@@ -1,7 +1,14 @@
 'use client'
 
 import { cn } from '@langdrift/web/utilities'
-import type { ComponentPropsWithoutRef, ReactNode } from 'react'
+import type {
+	ComponentPropsWithoutRef,
+	FocusEvent,
+	KeyboardEvent,
+	MouseEvent,
+	ReactNode,
+	PointerEvent as ReactPointerEvent,
+} from 'react'
 import { Fragment, useEffect, useId, useRef, useState } from 'react'
 
 export interface LanguageSwitcherOption<Locale extends string = string> {
@@ -16,27 +23,34 @@ export type LanguageSwitcherLinkProps = Omit<
 	'href'
 > & { href: string }
 
-export type LanguageSwitcherProps<Locale extends string = string> = {
-	label: string
-	currentLocale: string
+export interface BaseLanguageSwitcherProps {
 	className?: string
-} & (
-	| {
-			options: readonly (LanguageSwitcherOption<Locale> & { href: string })[]
-			onLocaleChange?: never
-			disabled?: never
-			renderLink?: (
-				option: LanguageSwitcherOption<Locale> & { href: string },
-				linkProps: LanguageSwitcherLinkProps,
-			) => ReactNode
-	  }
-	| {
-			options: readonly LanguageSwitcherOption<Locale>[]
-			onLocaleChange: (locale: Locale) => void
-			disabled?: boolean
-			renderLink?: never
-	  }
-)
+	currentLocale: string
+	label: string
+}
+
+export interface NavigationLanguageSwitcherProps<Locale extends string = string>
+	extends BaseLanguageSwitcherProps {
+	disabled?: never
+	onLocaleChange?: never
+	options: readonly (LanguageSwitcherOption<Locale> & { href: string })[]
+	renderLink?: (
+		option: LanguageSwitcherOption<Locale> & { href: string },
+		linkProps: LanguageSwitcherLinkProps,
+	) => ReactNode
+}
+
+export interface ActionLanguageSwitcherProps<Locale extends string = string>
+	extends BaseLanguageSwitcherProps {
+	disabled?: boolean
+	onLocaleChange: (locale: Locale) => void
+	options: readonly LanguageSwitcherOption<Locale>[]
+	renderLink?: never
+}
+
+export type LanguageSwitcherProps<Locale extends string = string> =
+	| NavigationLanguageSwitcherProps<Locale>
+	| ActionLanguageSwitcherProps<Locale>
 
 const optionClassName =
 	'inline-flex min-h-[1.7rem] cursor-pointer items-center justify-center whitespace-nowrap rounded-full border-0 bg-transparent px-[0.7rem] text-[0.72rem] font-[650] leading-normal tracking-[0.04em] text-muted-foreground no-underline transition-colors duration-180 hover:text-foreground focus-visible:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-foreground! aria-[current=page]:bg-[color-mix(in_srgb,var(--background)_88%,transparent)] aria-[current=page]:text-foreground aria-pressed:bg-[color-mix(in_srgb,var(--background)_88%,transparent)] aria-pressed:text-foreground disabled:cursor-wait disabled:opacity-60 motion-reduce:transition-none'
@@ -44,17 +58,13 @@ const optionClassName =
 export function LanguageSwitcher<Locale extends string>(
 	props: LanguageSwitcherProps<Locale>,
 ) {
-	const { label, currentLocale, className } = props
+	const { className, currentLocale, label } = props
 
 	const [open, setOpen] = useState(false)
 	const containerRef = useRef<HTMLElement | null>(null)
 	const triggerRef = useRef<HTMLButtonElement>(null)
 	const optionsRef = useRef<HTMLDivElement>(null)
 	const optionsId = useId()
-	const currentOption = props.options.find(
-		(option) => option.locale === currentLocale,
-	)
-	const Container = props.onLocaleChange ? 'div' : 'nav'
 
 	useEffect(() => {
 		if (!open) return
@@ -77,6 +87,54 @@ export function LanguageSwitcher<Locale extends string>(
 		setOpen(false)
 	}
 
+	function handleTriggerClick() {
+		setOpen(!open)
+	}
+
+	function handleOptionClick(event: MouseEvent<HTMLButtonElement>) {
+		const targetLocale = event.currentTarget.dataset.locale as
+			| Locale
+			| undefined
+		if (targetLocale && props.onLocaleChange) {
+			props.onLocaleChange(targetLocale)
+		}
+	}
+
+	function handleContainerBlur(event: FocusEvent<HTMLElement>) {
+		if (!event.currentTarget.contains(event.relatedTarget)) {
+			setOpen(false)
+		}
+	}
+
+	function handleContainerKeyDown(event: KeyboardEvent<HTMLElement>) {
+		if (event.key === 'Escape' && open) {
+			event.preventDefault()
+			event.stopPropagation()
+			closePill()
+		}
+	}
+
+	function handlePointerEnter(event: ReactPointerEvent<HTMLElement>) {
+		if (event.pointerType !== 'touch' && !props.disabled) {
+			setOpen(true)
+		}
+	}
+
+	function handlePointerLeave(event: ReactPointerEvent<HTMLElement>) {
+		if (event.pointerType !== 'touch') {
+			closePill()
+		}
+	}
+
+	function handleContainerRef(element: HTMLElement | null) {
+		containerRef.current = element
+	}
+
+	const currentOption = props.options.find(
+		(option) => option.locale === currentLocale,
+	)
+	const Container = props.onLocaleChange ? 'div' : 'nav'
+
 	const choices = props.onLocaleChange
 		? props.options
 				.filter((option) => option.locale !== currentLocale)
@@ -85,9 +143,10 @@ export function LanguageSwitcher<Locale extends string>(
 						aria-label={option.name}
 						aria-pressed={currentLocale === option.locale}
 						className={optionClassName}
+						data-locale={option.locale}
 						disabled={props.disabled}
 						key={option.locale}
-						onClick={() => props.onLocaleChange(option.locale)}
+						onClick={handleOptionClick}
 						type="button"
 					>
 						{option.label}
@@ -125,29 +184,11 @@ export function LanguageSwitcher<Locale extends string>(
 				className,
 			)}
 			data-state={open ? 'open' : 'idle'}
-			onBlur={(event) => {
-				if (!event.currentTarget.contains(event.relatedTarget)) {
-					setOpen(false)
-				}
-			}}
-			onKeyDown={(event) => {
-				if (event.key === 'Escape' && open) {
-					event.preventDefault()
-					event.stopPropagation()
-					closePill()
-				}
-			}}
-			onPointerEnter={(event) => {
-				if (event.pointerType !== 'touch' && !props.disabled) {
-					setOpen(true)
-				}
-			}}
-			onPointerLeave={(event) => {
-				if (event.pointerType !== 'touch') closePill()
-			}}
-			ref={(element) => {
-				containerRef.current = element
-			}}
+			onBlur={handleContainerBlur}
+			onKeyDown={handleContainerKeyDown}
+			onPointerEnter={handlePointerEnter}
+			onPointerLeave={handlePointerLeave}
+			ref={handleContainerRef}
 			role={props.onLocaleChange ? 'group' : undefined}
 		>
 			<button
@@ -159,7 +200,7 @@ export function LanguageSwitcher<Locale extends string>(
 					'shrink-0 bg-[color-mix(in_srgb,var(--background)_88%,transparent)] text-foreground',
 				)}
 				disabled={props.disabled}
-				onClick={() => setOpen(!open)}
+				onClick={handleTriggerClick}
 				ref={triggerRef}
 				type="button"
 			>
