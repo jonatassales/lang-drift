@@ -2,7 +2,8 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 
 vi.mock('server-only', () => ({}))
 
-import { postEarlyAccess } from './submission.route'
+import { postEarlyAccess } from '@app/api/early-access/route'
+
 import { verifyEarlyAccessChallenge } from './turnstile.validation'
 
 const input = {
