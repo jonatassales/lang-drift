@@ -1,5 +1,4 @@
 @import 'tailwindcss';
 @import '@langdrift/tokens/website.css';
 
-@import './base.css';
 @import './utilities.css';

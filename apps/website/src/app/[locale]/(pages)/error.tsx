@@ -33,7 +33,7 @@ export default function ErrorPage(props: ErrorPageProps) {
 			title={translate('error')}
 		>
 			<button
-				className="inline-flex min-h-10 items-center rounded-full border border-border px-5 text-sm font-semibold text-foreground transition hover:bg-muted"
+				className="inline-flex min-h-10 items-center rounded-full border border-border px-5 whitespace-nowrap text-foreground transition hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 				onClick={handleRetry}
 				type="button"
 			>

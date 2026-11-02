@@ -7,6 +7,8 @@ import { CardSection } from './card-section'
 import { CardValue, revealState } from './card-value'
 import type { TicketCardCopy } from './ticket-card-format'
 
+export { ticketSummary } from './ticket-summary.compute'
+
 interface TicketCardProps {
 	copy: TicketCardCopy
 	playedCount: number
@@ -61,10 +63,4 @@ export function TicketCard(props: TicketCardProps) {
 			</CardSection>
 		</div>
 	)
-}
-
-// The ticket's line in its collapsed header: its number and slug, known
-// from the command that names them.
-export function ticketSummary() {
-	return `${ticketPlan.ticket.number} · ${ticketPlan.ticket.slug}`
 }

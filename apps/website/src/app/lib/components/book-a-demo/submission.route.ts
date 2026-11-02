@@ -1,75 +1,19 @@
 import 'server-only'
 
+import { declaresOversizedBody } from '@components/early-access/declares-oversized-body.validation'
+import { isPlainJSON } from '@components/early-access/is-plain-json.validation'
+import { parseSubmissionJSON } from '@components/early-access/parse-submission-json.compute'
 import {
 	BodyError,
 	readBoundedBody,
 } from '@components/early-access/request.body'
-import {
-	declaresOversizedBody,
-	isPlainJSON,
-	parseSubmissionJSON,
-} from '@components/early-access/request.validation'
 
-import {
-	type BookDemoErrorCode,
-	type BookDemoField,
-	bookDemoSubmissionSchema,
-	fieldErrorsOf,
-} from './form.schema'
+import { reply } from './book-demo-reply.response'
+import { fieldErrorsOf } from './field-errors.compute'
+import { bookDemoSubmissionSchema } from './form.validation'
+import { isForeignRequest } from './is-foreign-request.validation'
 
 const bodyLimit = 4096
-
-function reply(
-	status: number,
-	code:
-		| 'INVALID_ORIGIN'
-		| 'INVALID_REQUEST'
-		| 'VALIDATION_ERROR'
-		| 'UNAVAILABLE',
-	fieldErrors?: Partial<Record<BookDemoField, BookDemoErrorCode>>,
-) {
-	const headers: Record<string, string> = {
-		'Cache-Control': 'no-store',
-		'X-Content-Type-Options': 'nosniff',
-	}
-	if (status === 503) headers['Retry-After'] = '30'
-	const hasFieldErrors = fieldErrors && Object.keys(fieldErrors).length > 0
-
-	return Response.json(
-		{
-			ok: false,
-			code,
-			...(hasFieldErrors ? { fieldErrors } : {}),
-		},
-		{
-			status,
-			headers,
-		},
-	)
-}
-
-// The origin a request was addressed to. Next names every loopback host
-// localhost in the request URL, so the Host header keeps 127.0.0.1 apart, as
-// a browser does.
-function addressedOrigin(request: Request): string {
-	const addressed = new URL(request.url)
-	addressed.host = request.headers.get('host') ?? addressed.host
-
-	return addressed.origin
-}
-
-// A browser names the page behind a request in Origin and Sec-Fetch-Site.
-// Book a demo has no configured public origin, so a page that names one must
-// share the origin the request was addressed to. Browsers send Origin with
-// every cross-origin POST, so a request without one is not a cross-origin
-// browser request.
-function isForeignRequest(request: Request): boolean {
-	if (request.headers.get('sec-fetch-site') === 'cross-site') return true
-	const origin = request.headers.get('origin')
-	if (origin === null) return false
-
-	return origin !== addressedOrigin(request)
-}
 
 // A demo request holds the early-access request contract before its body is
 // read, and is validated as the form validates it, so that a destination slots

@@ -56,7 +56,7 @@ export function createTurnstileController(
 		try {
 			api?.reset(previousWidget)
 		} catch {
-			// Removal below still runs if the provider cannot reset.
+			widget = undefined
 		}
 		try {
 			api?.remove(previousWidget)
@@ -128,7 +128,8 @@ export function createTurnstileController(
 	async function execute() {
 		await prepare()
 
-		if (phase !== 'ready' || !api || widget === undefined) {
+		const notReady = phase !== 'ready' || !api || widget === undefined
+		if (notReady) {
 			throw new Error('turnstile-not-ready')
 		}
 		phase = 'verifying'

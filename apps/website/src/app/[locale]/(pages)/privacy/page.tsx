@@ -1,9 +1,7 @@
-import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
-import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
 import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
@@ -11,24 +9,16 @@ import { WebsiteStructuredData } from '@components/website-structured-data'
 import { privacyMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
 
+export { generateMetadata } from './page.metadata'
+
 // Provider URLs verified against Cloudflare's published pages on 2026-09-30.
 
 interface PrivacyPageProps {
 	params: Promise<{ locale: string }>
 }
 
-export async function generateMetadata(
-	props: PrivacyPageProps,
-	parent: ResolvingMetadata,
-): Promise<Metadata> {
-	const { params } = props
-
-	const { locale } = await params
-
-	if (!hasLocale(routing.locales, locale)) notFound()
-
-	return pageMetadata('privacy', locale, await socialImages(parent))
-}
+const link =
+	'focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary'
 
 export default async function PrivacyPage(props: PrivacyPageProps) {
 	const { params } = props
@@ -72,10 +62,16 @@ export default async function PrivacyPage(props: PrivacyPageProps) {
 						))}
 						<p>
 							{copy.addendumIntroduction}{' '}
-							<a href={copy.addendumUrl}>{copy.addendumLabel}</a>.
+							<a className={link} href={copy.addendumUrl}>
+								{copy.addendumLabel}
+							</a>
+							.
 						</p>
 						<p>
-							<a href="https://www.cloudflare.com/privacypolicy/">
+							<a
+								className={link}
+								href="https://www.cloudflare.com/privacypolicy/"
+							>
 								{copy.providerPolicy}
 							</a>
 						</p>
@@ -87,7 +83,9 @@ export default async function PrivacyPage(props: PrivacyPageProps) {
 					<section aria-labelledby="privacy-contact" className="mb-10">
 						<h2 id="privacy-contact">{copy.contactTitle}</h2>
 						<p>{copy.contact}</p>
-						<a href="mailto:founders@langdrift.md">founders@langdrift.md</a>
+						<a className={link} href="mailto:founders@langdrift.md">
+							founders@langdrift.md
+						</a>
 					</section>
 					<section aria-labelledby="privacy-changes">
 						<h2 id="privacy-changes">{copy.changesTitle}</h2>

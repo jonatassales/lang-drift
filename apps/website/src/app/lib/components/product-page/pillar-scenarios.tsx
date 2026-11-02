@@ -28,6 +28,10 @@ export function PillarScenarios<PillarId extends string>(
 	const layoutId = useId()
 	const [activeId, setActiveId] = useState(scenarios[0]?.id ?? '')
 
+	function handleTabChange(tabId: string) {
+		setActiveId(tabId)
+	}
+
 	return (
 		<div className="mt-11">
 			<Eyebrow className="text-[10px]">{selectorLabel}</Eyebrow>
@@ -36,7 +40,7 @@ export function PillarScenarios<PillarId extends string>(
 				ariaLabel={selectorLabel}
 				className="mt-3"
 				layoutId={layoutId}
-				onChange={setActiveId}
+				onChange={handleTabChange}
 				tabs={scenarios.map((scenario) => ({
 					id: scenario.id,
 					label: scenario.tabLabel,

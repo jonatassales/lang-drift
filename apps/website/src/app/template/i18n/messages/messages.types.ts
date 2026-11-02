@@ -1,4 +1,4 @@
-import type { BookDemoErrorCode } from '@components/book-a-demo/form.schema'
+import type { BookDemoErrorCode } from '@components/book-a-demo/form.types'
 import type { PositionId } from '@components/book-a-demo/positions'
 import type { EmailErrorCode } from '@components/early-access/form.types'
 

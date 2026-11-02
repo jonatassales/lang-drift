@@ -25,13 +25,17 @@ export function FaqTabs(props: FaqTabsProps) {
 	const layoutId = useId()
 	const [activeId, setActiveId] = useState(groups[0]?.id ?? '')
 
+	function handleTabChange(tabId: string) {
+		setActiveId(tabId)
+	}
+
 	return (
 		<div className="mt-10">
 			<AnimatedTabs
 				activeTab={activeId}
 				ariaLabel={tabsLabel}
 				layoutId={layoutId}
-				onChange={setActiveId}
+				onChange={handleTabChange}
 				tabs={groups.map((group) => ({
 					id: group.id,
 					label: group.label,
@@ -52,7 +56,7 @@ export function FaqTabs(props: FaqTabsProps) {
 					>
 						{active ? (
 							<BasicAccordion
-								className="mt-6 [&_button]:whitespace-normal!"
+								className="mt-6"
 								headingLevel={3}
 								items={group.items.map((item) => ({
 									content: (

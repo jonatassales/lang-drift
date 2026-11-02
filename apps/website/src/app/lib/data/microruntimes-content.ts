@@ -302,15 +302,8 @@ export const planSession = [
 
 export type PlanLineId = (typeof planSession)[number]['id']
 
-export function planLineIndex(id: PlanLineId) {
-	return planSession.findIndex((line) => line.id === id)
-}
-
-// True once the terminal has completed the line, so the card can show what
-// that line reveals.
-export function hasPlayed(playedCount: number, id: PlanLineId) {
-	return playedCount > planLineIndex(id)
-}
+export { hasPlayed } from './has-played.compute'
+export { planLineIndex } from './plan-line-index.compute'
 
 // The acts of the session, each the concern of one card beside the
 // terminal, and the line that opens each. The workflow opens once the plan
@@ -326,14 +319,7 @@ export const planPhases = {
 	workflow: 'handoff',
 } as const satisfies Record<PlanPhaseId, PlanLineId>
 
-// The act the session is in: the last one whose opening line has played.
-export function phaseOf(playedCount: number): PlanPhaseId {
-	const reached = planPhaseIds.filter((phase) =>
-		hasPlayed(playedCount, planPhases[phase]),
-	)
-
-	return reached.at(-1) ?? 'ticket'
-}
+export { phaseOf } from './phase-of.compute'
 
 export type PlanEffort = 'low' | 'medium' | 'high'
 export type ComponentKind = 'api' | 'broker' | 'cache' | 'web'
@@ -452,29 +438,8 @@ export const ticketPlan = {
 	draftRevision: 1,
 } as const
 
-// The totals the plan proposes: the sum of the components' shares.
-export function suggestedTotals(
-	components: readonly PlanComponent[],
-): Resources {
-	return components.reduce<Resources>(
-		(totals, component) => ({
-			cpuMillis: totals.cpuMillis + component.cpuMillis,
-			memoryMiB: totals.memoryMiB + component.memoryMiB,
-		}),
-		{
-			cpuMillis: 0,
-			memoryMiB: 0,
-		},
-	)
-}
-
-// What the envelope leaves once the plan's totals are taken from it.
-export function headroom(bounded: Resources, suggested: Resources): Resources {
-	return {
-		cpuMillis: bounded.cpuMillis - suggested.cpuMillis,
-		memoryMiB: bounded.memoryMiB - suggested.memoryMiB,
-	}
-}
+export { headroom } from './headroom.compute'
+export { suggestedTotals } from './suggested-totals.compute'
 
 export type EpisodeVerdict = 'kept' | 'dropped'
 export type DropReason = 'otherRuntime' | 'noBroker' | 'docsOnly'
@@ -562,11 +527,7 @@ export const planReveals = {
 
 export type PlanRevealId = keyof typeof planReveals
 
-// True once the terminal has completed the line that reveals this part of
-// the cards.
-export function revealed(playedCount: number, id: PlanRevealId) {
-	return hasPlayed(playedCount, planReveals[id])
-}
+export { revealed } from './revealed.compute'
 
 export const runtimeFilePath = '.langdrift/runtimes/checkout-preview/runtime.md'
 
@@ -617,14 +578,7 @@ export const runtimeDescriptor = {
 	],
 }
 
-// Renders the descriptor as the indented JSON a reader would see in the
-// file, with short arrays kept on one line.
-export function formatDescriptor(descriptor: typeof runtimeDescriptor) {
-	return JSON.stringify(descriptor, null, 2).replace(
-		/\[\n\s+([^\]{}]*?)\n\s+\]/g,
-		(_match, items: string) => `[${items.replace(/,\n\s+/g, ', ')}]`,
-	)
-}
+export { formatDescriptor } from './format-descriptor.compute'
 
 export const executionLedger = {
 	executionId: 'exec-41b2',

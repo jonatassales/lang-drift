@@ -1,5 +1,5 @@
 import { cn } from '@langdrift/web/utilities'
-import { useId } from 'react'
+import { type ChangeEvent, useId } from 'react'
 
 import {
 	type HumanStageId,
@@ -35,8 +35,16 @@ const skillText = 'font-mono text-[10px] text-muted-foreground'
 export function WorkflowStages(props: WorkflowStagesProps) {
 	const { copy, format, human, locked, onToggle, run } = props
 
-	const { workflow } = copy
 	const noteId = useId()
+
+	function handleToggleStage(event: ChangeEvent<HTMLInputElement>) {
+		const stage = event.currentTarget.dataset.stage as HumanStageId | undefined
+		if (stage) {
+			onToggle(stage)
+		}
+	}
+
+	const { workflow } = copy
 
 	return (
 		<fieldset className="m-0 min-w-0 border-0 p-0">
@@ -87,10 +95,11 @@ export function WorkflowStages(props: WorkflowStagesProps) {
 									})}
 									checked={human[stage]}
 									className={cn(
-										'size-3.5 shrink-0 cursor-[inherit] accent-primary',
+										'size-3.5 shrink-0 cursor-[inherit] accent-primary focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary',
 										required && 'cursor-not-allowed opacity-50',
 									)}
-									onChange={() => onToggle(stage)}
+									data-stage={stage}
+									onChange={handleToggleStage}
 									type="checkbox"
 								/>
 								<span>{workflow.stages[stage]}</span>

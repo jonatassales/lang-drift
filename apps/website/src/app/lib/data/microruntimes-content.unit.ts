@@ -83,7 +83,9 @@ describe('the simulated planning session', () => {
 
 	it('keeps the episodes at or above the threshold and drops the rest with a reason', () => {
 		expect(episodes.map((episode) => episode.similarity)).toEqual(
-			[...episodes].map((episode) => episode.similarity).sort((a, b) => b - a),
+			[...episodes]
+				.map((episode) => episode.similarity)
+				.sort((first, second) => second - first),
 		)
 		for (const episode of episodes) {
 			const aboveThreshold = episode.similarity >= similarityThreshold

@@ -11,6 +11,7 @@ export function ScrollToTop() {
 	const pathname = usePathname()
 	const previous = useRef(pathname)
 
+	// Reset window scroll to top on navigation unless navigating to an anchor hash.
 	useEffect(() => {
 		if (previous.current === pathname) return
 		previous.current = pathname

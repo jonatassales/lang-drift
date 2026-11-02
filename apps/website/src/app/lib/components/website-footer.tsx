@@ -6,42 +6,45 @@ import { footerMessages, privacyMessages } from '@i18n/messages/index'
 import { Link } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
 
-import './website-footer.css'
+const focusRing =
+	'rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary'
+const brandLink = `inline-flex items-center gap-2 text-lg font-[650] tracking-[-0.055em] text-foreground hover:text-foreground ${focusRing}`
+const footerLink = `inline-flex min-h-11 items-center text-[13px] text-muted-foreground hover:text-foreground ${focusRing}`
+const socialLink = `inline-flex size-11 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground ${focusRing}`
 
 interface WebsiteFooterProps {
 	locale: WebsiteLocale
-	compact?: boolean
 }
 
 export function WebsiteFooter(props: WebsiteFooterProps) {
-	const { locale, compact = false } = props
+	const { locale } = props
 
 	const copy = footerMessages[locale]
 
 	return (
-		<footer
-			className="smooth-footer website-footer"
-			data-compact={compact || undefined}
-		>
-			<div className="website-footer-top">
-				{!compact ? (
-					<div className="website-footer-intro">
-						<Link className="website-footer-brand" href="/" locale={locale}>
-							<LogoMark size={23} />
-							LangDrift
-						</Link>
-						<p>{copy.description}</p>
-					</div>
-				) : null}
-				<nav aria-label={copy.navigation} className="website-footer-links">
-					{/* <Link href="/pricing" locale={locale}>
-            {headerMessages[locale].pricing}
-          </Link> */}
-					<Link href="/#faq" locale={locale}>
+		<footer className="smooth-footer text-foreground [overflow-wrap:anywhere] md:[overflow-wrap:normal]">
+			<div className="flex flex-col items-start justify-between gap-4.5 md:flex-row md:gap-8">
+				<div className="max-w-[460px]">
+					<Link className={brandLink} href="/" locale={locale}>
+						<LogoMark size={23} />
+						LangDrift
+					</Link>
+					<p className="mt-4 text-[15px] leading-[1.7] text-muted-foreground">
+						{copy.description}
+					</p>
+				</div>
+				<nav
+					aria-label={copy.navigation}
+					className="flex flex-wrap items-center gap-x-6 gap-y-2"
+				>
+					<Link className={footerLink} href="/#faq" locale={locale}>
 						{copy.faq}
 					</Link>
-					<Link href="/privacy">{privacyMessages[locale].title}</Link>
+					<Link className={footerLink} href="/privacy">
+						{privacyMessages[locale].title}
+					</Link>
 					<a
+						className={footerLink}
 						href="https://github.com/jonatassales/lang-drift/blob/main/SECURITY.md"
 						rel="noopener noreferrer"
 						target="_blank"
@@ -49,42 +52,47 @@ export function WebsiteFooter(props: WebsiteFooterProps) {
 						{copy.security}
 					</a>
 					<a
+						className={footerLink}
 						href="https://github.com/jonatassales/lang-drift/blob/main/LICENSE"
 						rel="noopener noreferrer"
 						target="_blank"
 					>
 						{copy.license}
 					</a>
-					<a href="mailto:founders@langdrift.md">founders@langdrift.md</a>
+					<a className={footerLink} href="mailto:founders@langdrift.md">
+						founders@langdrift.md
+					</a>
 				</nav>
 			</div>
-			<div className="website-footer-bottom">
-				<div className="website-footer-credit">
-					<span className="website-footer-orb">
+			<div className="mt-[34px] flex flex-col items-start justify-between gap-2.5 pt-4.5 md:flex-row md:items-center md:gap-5">
+				<div className="flex flex-wrap items-center gap-2 text-xs leading-[1.6] text-muted-foreground">
+					<span className="inline-flex size-7 shrink-0">
 						<AgentOrb preset="neongate" size="28px" speed={0.35} />
 					</span>
 					<span>Neongate AI</span>
-					<span>{copy.copyright}</span>
+					<span className="basis-full md:basis-auto">{copy.copyright}</span>
 				</div>
-				<nav aria-label={copy.social} className="website-footer-social">
+				<nav aria-label={copy.social} className="flex items-center gap-1.5">
 					<a
-						href="https://www.linkedin.com/company/langdrift/"
 						aria-label="LinkedIn"
+						className={socialLink}
+						href="https://www.linkedin.com/company/langdrift/"
 						title="LinkedIn"
 					>
 						<LinkedinLogo aria-hidden="true" size={22} weight="fill" />
 					</a>
 					<a
-						href="https://github.com/jonatassales/lang-drift"
 						aria-label="GitHub"
+						className={socialLink}
+						href="https://github.com/jonatassales/lang-drift"
 						title="GitHub"
 					>
 						<GithubLogo aria-hidden="true" size={22} weight="fill" />
 					</a>
 					<a
-						className="!w-auto px-1"
-						href="https://www.npmjs.com/package/@langdrift/ex"
 						aria-label="npm: @langdrift/ex"
+						className={`inline-flex h-11 items-center px-1 text-muted-foreground hover:text-foreground ${focusRing}`}
+						href="https://www.npmjs.com/package/@langdrift/ex"
 						title="npm: @langdrift/ex"
 					>
 						<img

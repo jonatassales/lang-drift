@@ -50,6 +50,7 @@ export function SessionTerminal(props: SessionTerminalProps) {
 	const windowRef = useRef<HTMLDivElement>(null)
 	const { run, stage } = session
 
+	// Launch the workflow run after the visual launch delay.
 	useEffect(() => {
 		if (stage !== 'launching') return
 
@@ -58,6 +59,7 @@ export function SessionTerminal(props: SessionTerminalProps) {
 		return () => window.clearTimeout(launch)
 	}, [stage, startRun])
 
+	// Scroll terminal into view when a workflow run begins.
 	useEffect(() => {
 		if (stage !== 'launching') return
 

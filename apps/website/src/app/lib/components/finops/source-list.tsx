@@ -32,7 +32,7 @@ export function SourceList(props: SourceListProps) {
 						</span>
 						{id === 'microruntimes' && (
 							<Link
-								className="smooth-text-link mt-1 justify-self-start"
+								className="smooth-text-link mt-1 justify-self-start focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 								href="/platform/microruntimes"
 								locale={locale}
 							>

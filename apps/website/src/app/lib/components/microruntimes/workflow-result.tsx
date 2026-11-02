@@ -1,5 +1,6 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { GitPullRequest } from '@langdrift/web/ui/icons/server'
+import type { MouseEvent } from 'react'
 
 import {
 	budgetCents,
@@ -11,6 +12,7 @@ import {
 } from '@data/microruntimes-workflow'
 
 import { CardValue } from './card-value'
+import { pullRequestState } from './pull-request-state.compute'
 import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
 
 interface WorkflowResultProps {
@@ -25,19 +27,6 @@ const figure = 'font-mono text-[13px] tabular-nums'
 
 type HasPlayed = (message: RunMessageId) => boolean
 
-// Where the pull request stands: its checks running, passed, then ready for
-// the owner's review or to merge.
-function pullRequestState(
-	workflow: TicketCardCopy['workflow'],
-	played: HasPlayed,
-) {
-	if (played('readyForReview')) return workflow.readyForReview
-	if (played('readyToMerge')) return workflow.readyToMerge
-	if (played('checksPassed')) return workflow.checksPassed
-
-	return workflow.checksRunning
-}
-
 // What the run left as it plays: the reservation once the gate opens, the
 // observed spend once the usage record closes and what the reservation
 // released at the end, then the pull request and its checks. A run the
@@ -46,6 +35,10 @@ function pullRequestState(
 // request reads as a link but opens nothing.
 export function WorkflowResult(props: WorkflowResultProps) {
 	const { copy, figures, format, playedCount, script } = props
+
+	function handleAnchorClick(event: MouseEvent<HTMLAnchorElement>) {
+		event.preventDefault()
+	}
 
 	const { workflow } = copy
 	const played: HasPlayed = (message) =>
@@ -110,9 +103,9 @@ export function WorkflowResult(props: WorkflowResultProps) {
 					<>
 						{/* biome-ignore lint/a11y/useValidAnchor: the simulated pull request reads as a link and opens nothing */}
 						<a
-							className="inline-flex items-center gap-1.5 font-mono text-[12px] text-foreground underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+							className="inline-flex items-center gap-1.5 font-mono text-[12px] text-foreground underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 							href="#"
-							onClick={(event) => event.preventDefault()}
+							onClick={handleAnchorClick}
 						>
 							#{workflowDelivery.pullRequest} ·
 							<GitPullRequest

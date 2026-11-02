@@ -9,7 +9,16 @@ import {
 } from 'node:crypto'
 import { deserialize, serialize } from 'node:v8'
 
-export type DecryptResult = { ok: true; value: unknown } | { ok: false }
+export interface DecryptSuccess {
+	ok: true
+	value: unknown
+}
+
+export interface DecryptFailure {
+	ok: false
+}
+
+export type DecryptResult = DecryptSuccess | DecryptFailure
 
 const secretPattern = /^[A-Za-z0-9+/]{43}=$/
 const version = 'v2'
@@ -40,7 +49,7 @@ export class CryptoService {
 	}
 
 	encrypt(value: unknown, context = defaultContext): string {
-		assertContext(context)
+		this.#assertContext(context)
 
 		const plaintext = serialize(value)
 		const initializationVector = randomBytes(ivBytes)
@@ -52,7 +61,7 @@ export class CryptoService {
 				authTagLength: tagBytes,
 			},
 		)
-		cipher.setAAD(associatedData(context))
+		cipher.setAAD(this.#associatedData(context))
 		const ciphertext = Buffer.concat([cipher.update(plaintext), cipher.final()])
 		const authTag = cipher.getAuthTag()
 
@@ -66,9 +75,9 @@ export class CryptoService {
 	}
 
 	decrypt(token: string, context = defaultContext): DecryptResult {
-		assertContext(context)
+		this.#assertContext(context)
 
-		const parsed = parseToken(token)
+		const parsed = this.#parseToken(token)
 		if (!parsed) return { ok: false }
 
 		try {
@@ -80,7 +89,7 @@ export class CryptoService {
 					authTagLength: tagBytes,
 				},
 			)
-			decipher.setAAD(associatedData(context))
+			decipher.setAAD(this.#associatedData(context))
 			decipher.setAuthTag(parsed.authTag)
 			const plaintext = Buffer.concat([
 				decipher.update(parsed.ciphertext),
@@ -95,59 +104,67 @@ export class CryptoService {
 			return { ok: false }
 		}
 	}
-}
 
-function assertContext(context: string) {
-	if (typeof context !== 'string') {
-		throw new Error('Crypto context must be a string')
+	#assertContext(context: string): void {
+		if (typeof context !== 'string') {
+			throw new Error('Crypto context must be a string')
+		}
 	}
-}
 
-function associatedData(context: string): Buffer {
-	return Buffer.from(
-		JSON.stringify(['langdrift-crypto', version, codec, context]),
-		'utf8',
-	)
-}
-
-function parseToken(token: string):
-	| {
-			initializationVector: Buffer
-			ciphertext: Buffer
-			authTag: Buffer
-	  }
-	| undefined {
-	if (typeof token !== 'string') return undefined
-
-	const segments = token.split('.')
-	if (segments.length !== 5) return undefined
-
-	const [tokenVersion, tokenCodec, encodedIv, encodedCiphertext, encodedTag] =
-		segments
-	if (tokenVersion !== version || tokenCodec !== codec) return undefined
-
-	const initializationVector = decodeCanonicalBase64Url(encodedIv, ivBytes)
-	const ciphertext = decodeCanonicalBase64Url(encodedCiphertext)
-	const authTag = decodeCanonicalBase64Url(encodedTag, tagBytes)
-	if (!initializationVector || !ciphertext || !authTag) return undefined
-
-	return {
-		initializationVector,
-		ciphertext,
-		authTag,
+	#associatedData(context: string): Buffer {
+		return Buffer.from(
+			JSON.stringify(['langdrift-crypto', version, codec, context]),
+			'utf8',
+		)
 	}
-}
 
-function decodeCanonicalBase64Url(
-	segment: string,
-	expectedLength?: number,
-): Buffer | undefined {
-	if (segment !== '' && !/^[A-Za-z0-9_-]+$/.test(segment)) return undefined
+	#parseToken(token: string):
+		| {
+				initializationVector: Buffer
+				ciphertext: Buffer
+				authTag: Buffer
+		  }
+		| undefined {
+		if (typeof token !== 'string') return undefined
 
-	const decoded = Buffer.from(segment, 'base64url')
-	if (decoded.toString('base64url') !== segment) return undefined
-	if (expectedLength !== undefined && decoded.length !== expectedLength)
-		return undefined
+		const segments = token.split('.')
+		if (segments.length !== 5) return undefined
 
-	return decoded
+		const [tokenVersion, tokenCodec, encodedIv, encodedCiphertext, encodedTag] =
+			segments
+		const unsupportedVersion = tokenVersion !== version || tokenCodec !== codec
+		if (unsupportedVersion) return undefined
+
+		const initializationVector = this.#decodeCanonicalBase64Url(
+			encodedIv,
+			ivBytes,
+		)
+		const ciphertext = this.#decodeCanonicalBase64Url(encodedCiphertext)
+		const authTag = this.#decodeCanonicalBase64Url(encodedTag, tagBytes)
+		const malformedSegments = !initializationVector || !ciphertext || !authTag
+		if (malformedSegments) return undefined
+
+		return {
+			initializationVector,
+			ciphertext,
+			authTag,
+		}
+	}
+
+	#decodeCanonicalBase64Url(
+		segment: string,
+		expectedLength?: number,
+	): Buffer | undefined {
+		const invalidBase64Url = segment !== '' && !/^[A-Za-z0-9_-]+$/.test(segment)
+		if (invalidBase64Url) return undefined
+
+		const decoded = Buffer.from(segment, 'base64url')
+		if (decoded.toString('base64url') !== segment) return undefined
+
+		const lengthMismatch =
+			expectedLength !== undefined && decoded.length !== expectedLength
+		if (lengthMismatch) return undefined
+
+		return decoded
+	}
 }

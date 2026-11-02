@@ -47,12 +47,7 @@ export const workflowEfforts = [
 	'high',
 ] as const satisfies readonly PlanEffort[]
 
-export function workflowModel(id: WorkflowModelId): WorkflowModel {
-	const model = workflowModels.find((candidate) => candidate.id === id)
-	if (!model) throw new Error(`Unknown workflow model: ${id}`)
-
-	return model
-}
+export { workflowModel } from './workflow-model.compute'
 
 // Input and output tokens, in thousands.
 export interface Tokens {
@@ -98,19 +93,9 @@ export const observedTokens: Record<PlanEffort, Tokens> = {
 export const budgetCents = 2500
 export const reserveMarginPercent = 20
 
+export { reserveCents } from './reserve-cents.compute'
 // What the tokens cost at the model's uncached list prices.
-export function spendCents(modelId: WorkflowModelId, tokens: Tokens) {
-	const model = workflowModel(modelId)
-	const tenthsOfCents =
-		tokens.inputThousands * model.inputCents +
-		tokens.outputThousands * model.outputCents
-
-	return Math.round(tenthsOfCents / 1000)
-}
-
-export function reserveCents(estimateCents: number) {
-	return Math.ceil((estimateCents * (100 + reserveMarginPercent)) / 100)
-}
+export { spendCents } from './spend-cents.compute'
 
 export const workflowStageIds = [
 	'planning',
@@ -128,11 +113,9 @@ export type HumanStageId = Exclude<WorkflowStageId, 'merge'>
 
 // The stages this workflow always gives a person: planning ends only when
 // the owner confirms it, so its checkbox stays checked.
-const requiredHumanStages: readonly HumanStageId[] = ['planning']
+export const requiredHumanStages: readonly HumanStageId[] = ['planning']
 
-export function isRequiredHumanStage(stage: HumanStageId) {
-	return requiredHumanStages.includes(stage)
-}
+export { isRequiredHumanStage } from './is-required-human-stage.compute'
 
 // The skills each stage runs, as the repository names them.
 export const stageSkills: Record<WorkflowStageId, string | null> = {
@@ -164,21 +147,10 @@ export const initialWorkflowChoices: WorkflowChoices = {
 
 // The run's money in cents: the estimate, the reservation the gate would
 // hold, what the usage record observed and what the reservation releases.
-export function workflowFigures(choices: WorkflowChoices) {
-	const estimate = spendCents(choices.model, expectedTokens[choices.effort])
-	const reserved = reserveCents(estimate)
-	const observed = spendCents(choices.model, observedTokens[choices.effort])
-
-	return {
-		estimate,
-		reserved,
-		observed,
-		released: reserved - observed,
-		overBudget: reserved > budgetCents,
-	}
-}
-
-export type WorkflowFigures = ReturnType<typeof workflowFigures>
+export {
+	type WorkflowFigures,
+	workflowFigures,
+} from './workflow-figures.compute'
 
 export const workflowDelivery = {
 	branch: 'feat/0031-early-access-runtime',
@@ -186,23 +158,8 @@ export const workflowDelivery = {
 	pullRequest: 19,
 }
 
-// US dollars with cents, for figures from a fraction of a cent upwards.
-export function workflowDollars(locale: string) {
-	return new Intl.NumberFormat(locale, {
-		currency: 'USD',
-		maximumFractionDigits: 2,
-		minimumFractionDigits: 2,
-		style: 'currency',
-	})
-}
-
-// Thousands of tokens as a compact count: 3.5M, 250K.
-export function tokenCount(locale: string, thousands: number) {
-	return new Intl.NumberFormat(locale, {
-		maximumFractionDigits: 1,
-		notation: 'compact',
-	}).format(thousands * 1000)
-}
+export { tokenCount } from './token-count.fmt'
+export { workflowDollars } from './workflow-dollars.fmt'
 
 // The run's lines in the catalog, by message. Waiting and confirmed lines
 // repeat per stage, so a line carries its own unique id beside the message.
@@ -248,7 +205,7 @@ export interface RunLine {
 }
 
 // The lines a stage's own work prints once it is allowed to run.
-const stageWork: Record<
+export const stageWork: Record<
 	Exclude<HumanStageId, 'review'>,
 	readonly Omit<RunLine, 'id' | 'stage'>[]
 > = {
@@ -292,234 +249,17 @@ const stageWork: Record<
 	],
 }
 
-const workStageIds = ['planning', 'spec', 'tickets', 'implement'] as const
+export const workStageIds = [
+	'planning',
+	'spec',
+	'tickets',
+	'implement',
+] as const
 
-// One stage: the wait for the owner when the stage asks for a person, then
-// the stage's own work.
-function stageLines(stage: (typeof workStageIds)[number], human: boolean) {
-	const confirmation: RunLine[] = human
-		? [
-				{
-					delay: 600,
-					id: `waiting-${stage}`,
-					message: 'waiting',
-					stage,
-					type: 'output',
-					values: { stage },
-				},
-				{
-					delay: 1600,
-					id: `confirmed-${stage}`,
-					message: 'confirmed',
-					stage,
-					type: 'success',
-					values: { stage },
-				},
-			]
-		: []
-	const work = stageWork[stage].map((line) => ({
-		...line,
-		id: line.message,
-		stage,
-	}))
-
-	return [...confirmation, ...work]
-}
-
-// The run the Workflow card plays, built from the choices it was launched
-// with: the recorded intent, the estimate and the budget, the console's gate,
-// then each stage, the microruntime the checks use, the push, the pull
-// request and its checks. A reservation over the budget stops the run at
-// the gate with nothing paid for. Dollar figures are formatted in English,
-// as every console line is.
-export function runSession(choices: WorkflowChoices): RunLine[] {
-	const dollars = workflowDollars('en')
-	const figures = workflowFigures(choices)
-	const tokens = expectedTokens[choices.effort]
-	const money = (cents: number) => dollars.format(cents / 100)
-	const opening: RunLine[] = [
-		{
-			delay: 0,
-			id: 'command',
-			message: 'command',
-			type: 'command',
-		},
-		{
-			delay: 400,
-			id: 'scope',
-			message: 'scope',
-			type: 'comment',
-		},
-		{
-			delay: 600,
-			id: 'intent',
-			message: 'intent',
-			type: 'output',
-			values: {
-				effort: choices.effort,
-				model: choices.model,
-			},
-		},
-		{
-			delay: 600,
-			id: 'estimate',
-			message: 'estimate',
-			type: 'output',
-			values: {
-				estimate: money(figures.estimate),
-				input: tokenCount('en', tokens.inputThousands),
-				output: tokenCount('en', tokens.outputThousands),
-			},
-		},
-		{
-			delay: 500,
-			id: 'budget',
-			message: 'budget',
-			type: 'output',
-			values: { budget: money(budgetCents) },
-		},
-	]
-
-	if (figures.overBudget) {
-		return [
-			...opening,
-			{
-				delay: 900,
-				id: 'gatePaused',
-				message: 'gatePaused',
-				type: 'warning',
-				values: {
-					budget: money(budgetCents),
-					reserved: money(figures.reserved),
-				},
-			},
-			{
-				delay: 700,
-				id: 'paused',
-				message: 'paused',
-				type: 'comment',
-			},
-		]
-	}
-
-	const reviewed = choices.human.review
-	const delivery = {
-		branch: workflowDelivery.branch,
-		hash: workflowDelivery.hash,
-		number: String(workflowDelivery.pullRequest),
-	}
-
-	return [
-		...opening,
-		{
-			delay: 900,
-			id: 'gateOpened',
-			message: 'gateOpened',
-			type: 'success',
-			values: {
-				budget: money(budgetCents),
-				reserved: money(figures.reserved),
-			},
-		},
-		...workStageIds.flatMap((stage) => stageLines(stage, choices.human[stage])),
-		{
-			delay: 900,
-			id: 'runtimeReady',
-			message: 'runtimeReady',
-			type: 'output',
-		},
-		{
-			delay: 800,
-			id: 'completed',
-			message: 'completed',
-			type: 'success',
-			values: {
-				observed: money(figures.observed),
-				reserved: money(figures.reserved),
-			},
-		},
-		{
-			delay: 600,
-			id: 'pushed',
-			message: 'pushed',
-			type: 'success',
-			values: delivery,
-		},
-		{
-			delay: 600,
-			id: 'pullRequest',
-			message: 'pullRequest',
-			type: 'success',
-			values: delivery,
-		},
-		{
-			delay: 700,
-			id: 'checks',
-			message: 'checks',
-			type: 'output',
-		},
-		{
-			delay: 1800,
-			id: 'checksPassed',
-			message: 'checksPassed',
-			type: 'success',
-		},
-		{
-			delay: 600,
-			id: 'runtimeStopped',
-			message: 'runtimeStopped',
-			type: 'output',
-		},
-		{
-			delay: 800,
-			id: 'ready',
-			message: reviewed ? 'readyForReview' : 'readyToMerge',
-			stage: 'review',
-			type: 'success',
-			values: {
-				...delivery,
-				released: money(figures.released),
-			},
-		},
-		{
-			delay: 700,
-			id: 'next',
-			message: reviewed ? 'nextReview' : 'nextMerge',
-			type: 'comment',
-			values: delivery,
-		},
-	]
-}
-
-// True once the run has completed a line with this message.
-export function runHasPlayed(
-	script: readonly RunLine[],
-	playedCount: number,
-	message: RunMessageId,
-) {
-	const index = script.findIndex((line) => line.message === message)
-
-	return index >= 0 && playedCount > index
-}
+export { runHasPlayed } from './run-has-played.compute'
+export { runSession } from './run-session.compute'
+export { stageLines } from './stage-lines.compute'
 
 export type StageProgress = 'pending' | 'active' | 'done'
 
-// Where a stage stands in a playing run: pending until its first line
-// prints, active while its lines print, done after its last.
-export function stageProgress(
-	script: readonly RunLine[],
-	playedCount: number,
-	stage: HumanStageId,
-): StageProgress {
-	const indexes = script
-		.map((line, index) => (line.stage === stage ? index : -1))
-		.filter((index) => index >= 0)
-	const first = indexes.at(0)
-	const last = indexes.at(-1)
-
-	if (first === undefined || last === undefined) return 'pending'
-	if (playedCount > last) return 'done'
-	if (playedCount > first) return 'active'
-
-	return 'pending'
-}
+export { stageProgress } from './stage-progress.compute'

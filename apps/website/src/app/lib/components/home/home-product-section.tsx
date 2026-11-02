@@ -79,7 +79,7 @@ export function HomeProductSection(props: HomeProductSectionProps) {
 			{link && href ? (
 				<p className="mt-8 mb-0">
 					<Link
-						className="smooth-text-link inline-flex min-h-11 items-center gap-2"
+						className="smooth-text-link inline-flex min-h-11 items-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 						href={href}
 						locale={locale}
 					>

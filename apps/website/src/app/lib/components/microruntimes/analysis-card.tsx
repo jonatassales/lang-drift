@@ -1,8 +1,6 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import type { ReactNode } from 'react'
 
 import {
-	type DocumentId,
 	documentIds,
 	documentReads,
 	episodes,
@@ -11,13 +9,16 @@ import {
 	similarityThreshold,
 	ticketPlan,
 } from '@data/microruntimes-content'
-import { budgetCents, workflowModel } from '@data/microruntimes-workflow'
+import { workflowModel } from '@data/microruntimes-workflow'
 
 import { CardSection } from './card-section'
 import { CardValue, revealState } from './card-value'
 import { DocumentRow } from './document-row'
 import { EpisodeRow } from './episode-row'
+import { extractedFact } from './extracted-fact.compute'
 import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
+
+export { analysisSummary } from './analysis-summary.compute'
 
 interface AnalysisCardProps {
 	copy: TicketCardCopy
@@ -27,36 +28,6 @@ interface AnalysisCardProps {
 
 const aside = 'font-mono text-[11px] text-muted-foreground'
 const suggestedModel = workflowModel(ticketPlan.model)
-const keptCount = episodes.filter(
-	(episode) => episode.verdict === 'kept',
-).length
-
-// What the read of each document extracted, in the visitor's locale.
-function extractedFact(
-	id: DocumentId,
-	copy: TicketCardCopy,
-	format: TicketCardFormat,
-) {
-	switch (id) {
-		case 'prd':
-			return copy.analysis.extracted.prd
-		case 'designDoc':
-			return format.message('analysis.extracted.designDoc', {
-				budget: format.money(budgetCents),
-				cpu: format.formatNumber.format(ticketPlan.bounded.cpuMillis),
-				memory: format.formatNumber.format(ticketPlan.bounded.memoryMiB),
-			})
-		case 'spec':
-			return format.message('analysis.extracted.spec', {
-				components: ticketPlan.spec.components,
-				criteria: ticketPlan.spec.acceptanceCriteria,
-			})
-		case 'guardrail':
-			return format.message('analysis.extracted.guardrail', {
-				criteria: ticketPlan.guardrailCriteria.join(' · '),
-			})
-	}
-}
 
 // What the agent learned before it planned: each linked document with what
 // its read extracted, the project's episodes ranked by similarity and
@@ -204,32 +175,4 @@ export function AnalysisCard(props: AnalysisCardProps) {
 			</CardSection>
 		</div>
 	)
-}
-
-// The analysis's line in its collapsed header: the latest thing it has
-// settled, from the documents read to the suggestion.
-export function analysisSummary(
-	copy: TicketCardCopy,
-	format: TicketCardFormat,
-	playedCount: number,
-): ReactNode {
-	if (revealed(playedCount, 'suggestion')) {
-		return format.message('analysis.suggestionSummary', {
-			effort: copy.analysis.efforts[ticketPlan.effort],
-			model: suggestedModel.name,
-		})
-	}
-	if (revealed(playedCount, 'verdicts')) {
-		return format.message('analysis.episodesSummary', {
-			kept: keptCount,
-			total: episodes.length,
-		})
-	}
-	if (revealed(playedCount, 'documentsRead')) {
-		return format.message('analysis.documentsSummary', {
-			count: documentIds.length,
-		})
-	}
-
-	return <CardValue labels={copy} state="unset" />
 }

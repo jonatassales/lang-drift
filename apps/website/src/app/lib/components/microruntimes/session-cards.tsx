@@ -2,7 +2,7 @@
 
 import { cn } from '@langdrift/web/utilities'
 import { useAtomValue, useSetAtom } from 'jotai'
-import type { ReactNode } from 'react'
+import type { MouseEvent, ReactNode } from 'react'
 
 import {
 	type PlanPhaseId,
@@ -57,6 +57,14 @@ export function SessionCards(props: SessionCardsProps) {
 	const script = useAtomValue(runScriptAtom)
 	const openCard = useAtomValue(openCardAtom)
 	const openCardByHand = useSetAtom(openCardByHandAtom)
+
+	function handleOpenCard(event: MouseEvent<HTMLButtonElement>) {
+		const phase = event.currentTarget.dataset.phase as PlanPhaseId | undefined
+		if (phase) {
+			openCardByHand(phase)
+		}
+	}
+
 	const format = createTicketCardFormat(copy, locale)
 	const visible = revealed(playedCount, 'cards')
 	const outcome = runOutcome(session, script)
@@ -95,7 +103,8 @@ export function SessionCards(props: SessionCardsProps) {
 					expanded={openCard === phase}
 					key={phase}
 					label={copy.labels[phase]}
-					onOpen={() => openCardByHand(phase)}
+					onOpen={handleOpenCard}
+					phase={phase}
 					summary={cards[phase].summary}
 				/>
 			))}

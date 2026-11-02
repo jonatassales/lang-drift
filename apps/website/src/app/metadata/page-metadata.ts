@@ -1,12 +1,20 @@
-import type { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata } from 'next'
 
-import { localePath, routing, type WebsiteLocale } from '@i18n/routing'
+import { routing, type WebsiteLocale } from '@i18n/routing'
 
+import {
+	type InheritedSocialImages,
+	inheritedImages,
+} from './inherited-images.compute'
 import locales from './locales.json'
+import type { PageId } from './page-path.compute'
+import { pageUrl } from './page-url.compute'
 import pages from './pages.json'
 import site from './site.json'
 
-export type PageId = keyof typeof pages
+export { pageUrl } from './page-url.compute'
+export { socialImages } from './social-images.compute'
+export type { InheritedSocialImages, PageId }
 
 const indexRobots: Metadata['robots'] = {
 	index: true,
@@ -18,45 +26,6 @@ const indexRobots: Metadata['robots'] = {
 		'max-snippet': -1,
 		'max-video-preview': -1,
 	},
-}
-
-// Pages whose URL is not their id, so the metadata JSON stores no route path.
-const nestedPagePath: Partial<Record<PageId, string>> = {
-	finops: 'platform/finops/',
-	microruntimes: 'platform/microruntimes/',
-}
-
-function pagePath(page: PageId, locale: WebsiteLocale) {
-	if (page === 'home') return localePath[locale]
-
-	return `${localePath[locale]}${nestedPagePath[page] ?? `${page}/`}`
-}
-
-export function pageUrl(page: PageId, locale: WebsiteLocale) {
-	return new URL(pagePath(page, locale), site.url).toString()
-}
-
-interface InheritedSocialImages {
-	openGraph?: NonNullable<Awaited<ResolvingMetadata>['openGraph']>['images']
-	twitter?: NonNullable<Awaited<ResolvingMetadata>['twitter']>['images']
-}
-
-function inheritedImages(
-	images: InheritedSocialImages['openGraph'] | InheritedSocialImages['twitter'],
-) {
-	if (!images) return
-	if (Array.isArray(images) && images.length === 0) return
-
-	return images
-}
-
-export async function socialImages(parent: ResolvingMetadata) {
-	const resolved = await parent
-
-	return {
-		openGraph: resolved.openGraph?.images,
-		twitter: resolved.twitter?.images,
-	}
 }
 
 export function pageMetadata(

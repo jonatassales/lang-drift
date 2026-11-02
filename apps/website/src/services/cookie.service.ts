@@ -2,9 +2,18 @@ import 'server-only'
 
 import type { CryptoService } from './crypto.service'
 
-export type CookieReadResult<T = unknown> =
-	| { found: true; value: T }
-	| { found: false }
+export interface CookieReadFound<Value = unknown> {
+	found: true
+	value: Value
+}
+
+export interface CookieReadNotFound {
+	found: false
+}
+
+export type CookieReadResult<Value = unknown> =
+	| CookieReadFound<Value>
+	| CookieReadNotFound
 
 export type SameSite = 'lax' | 'strict' | 'none'
 
@@ -81,16 +90,16 @@ export class CookieService {
 	}
 
 	set(name: string, value: unknown, options?: CookieWriteOptions): void {
-		assertCookieName(name)
-		assertHttpOnly(this.#defaults.httpOnly)
+		this.#assertCookieName(name)
+		this.#assertHttpOnly(this.#defaults.httpOnly)
 
-		const ttlSeconds = resolveTtl(
+		const ttlSeconds = this.#resolveTtl(
 			options?.ttlSeconds ?? this.#defaults.ttlSeconds,
 		)
 		const expiresAt = Date.now() + ttlSeconds * 1_000
-		assertExpiry(expiresAt)
+		this.#assertExpiry(expiresAt)
 
-		const attributes = resolveWriteAttributes(
+		const attributes = this.#resolveWriteAttributes(
 			this.#defaults,
 			options,
 			ttlSeconds,
@@ -102,28 +111,28 @@ export class CookieService {
 				value,
 				expiresAt,
 			},
-			cookieContext(name),
+			this.#cookieContext(name),
 		)
-		assertCookieSize(name, token, attributes)
+		this.#assertCookieSize(name, token, attributes)
 		this.#store.set(name, token, attributes)
 	}
 
 	get(name: string): CookieReadResult
-	get<T>(
+	get<Value>(
 		name: string,
-		validate: (value: unknown) => value is T,
-	): CookieReadResult<T>
+		validate: (value: unknown) => value is Value,
+	): CookieReadResult<Value>
 	get(name: string, validate?: (value: unknown) => boolean): CookieReadResult {
-		assertCookieName(name)
+		this.#assertCookieName(name)
 
 		const token = this.#store.get(name)
 		if (!token) return { found: false }
 		if (Buffer.byteLength(token) > tokenBudget) return { found: false }
 
-		const decrypted = this.#crypto.decrypt(token, cookieContext(name))
+		const decrypted = this.#crypto.decrypt(token, this.#cookieContext(name))
 		if (!decrypted.ok) return { found: false }
 
-		const envelope = readEnvelope(decrypted.value)
+		const envelope = this.#readEnvelope(decrypted.value)
 		if (!envelope) return { found: false }
 		if (validate && !validate(envelope.value)) return { found: false }
 
@@ -134,8 +143,8 @@ export class CookieService {
 	}
 
 	delete(name: string, scope?: CookieScope): void {
-		assertCookieName(name)
-		assertHttpOnly(this.#defaults.httpOnly)
+		this.#assertCookieName(name)
+		this.#assertHttpOnly(this.#defaults.httpOnly)
 
 		this.#store.delete(name, {
 			httpOnly: true,
@@ -145,143 +154,145 @@ export class CookieService {
 			domain: scope?.domain ?? this.#defaults.domain,
 		})
 	}
-}
 
-function cookieContext(name: string): string {
-	return `langdrift:website:cookie:${name}`
-}
-
-function assertCookieName(name: string) {
-	if (!cookieNamePattern.test(name)) {
-		throw new Error('Cookie name is not a valid token')
-	}
-}
-
-function assertHttpOnly(httpOnly: true) {
-	if (httpOnly !== true) {
-		throw new Error('Encrypted cookies require HttpOnly')
-	}
-}
-
-function resolveTtl(ttlSeconds: number | undefined): number {
-	if (
-		typeof ttlSeconds !== 'number' ||
-		!Number.isSafeInteger(ttlSeconds) ||
-		ttlSeconds <= 0
-	) {
-		throw new Error('Cookie TTL must be a positive integer number of seconds')
+	#cookieContext(name: string): string {
+		return `langdrift:website:cookie:${name}`
 	}
 
-	return ttlSeconds
-}
-
-function assertExpiry(expiresAt: number) {
-	if (
-		!Number.isSafeInteger(expiresAt) ||
-		expiresAt <= Date.now() ||
-		Math.abs(expiresAt) > maxDateTime
-	) {
-		throw new Error('Cookie expiry is outside the supported range')
-	}
-}
-
-function resolveWriteAttributes(
-	defaults: CookieDefaults,
-	options: CookieWriteOptions | undefined,
-	ttlSeconds: number,
-	expiresAt: number,
-): CookieWriteAttributes {
-	const secure = options?.secure ?? defaults.secure
-	if (defaults.secure && secure === false) {
-		throw new Error('Production cookies cannot disable Secure')
+	#assertCookieName(name: string): void {
+		if (!cookieNamePattern.test(name)) {
+			throw new Error('Cookie name is not a valid token')
+		}
 	}
 
-	const sameSite = options?.sameSite ?? defaults.sameSite
-	if (!Object.hasOwn(sameSiteLabels, sameSite)) {
-		throw new Error('Cookie SameSite is not supported')
+	#assertHttpOnly(httpOnly: true): void {
+		if (httpOnly !== true) {
+			throw new Error('Encrypted cookies require HttpOnly')
+		}
 	}
 
-	const path = options?.path ?? defaults.path
-	if (!path) {
-		throw new Error('Cookie path is required')
+	#resolveTtl(ttlSeconds: number | undefined): number {
+		if (
+			typeof ttlSeconds !== 'number' ||
+			!Number.isSafeInteger(ttlSeconds) ||
+			ttlSeconds <= 0
+		) {
+			throw new Error('Cookie TTL must be a positive integer number of seconds')
+		}
+
+		return ttlSeconds
 	}
 
-	return {
-		httpOnly: true,
-		sameSite,
-		path,
-		secure,
-		domain: options?.domain ?? defaults.domain,
-		maxAge: ttlSeconds,
-		expires: new Date(expiresAt),
-	}
-}
-
-function assertCookieSize(
-	name: string,
-	token: string,
-	attributes: CookieWriteAttributes,
-) {
-	if (Buffer.byteLength(`${name}=${token}`) > nameValueBudget) {
-		throw new Error('Cookie exceeds the size budget')
+	#assertExpiry(expiresAt: number): void {
+		if (
+			!Number.isSafeInteger(expiresAt) ||
+			expiresAt <= Date.now() ||
+			Math.abs(expiresAt) > maxDateTime
+		) {
+			throw new Error('Cookie expiry is outside the supported range')
+		}
 	}
 
-	if (
-		Buffer.byteLength(setCookieHeader(name, token, attributes)) >
-		setCookieBudget
-	) {
-		throw new Error('Cookie exceeds the size budget')
-	}
-}
+	#resolveWriteAttributes(
+		defaults: CookieDefaults,
+		options: CookieWriteOptions | undefined,
+		ttlSeconds: number,
+		expiresAt: number,
+	): CookieWriteAttributes {
+		const secure = options?.secure ?? defaults.secure
+		const insecureInProduction = defaults.secure && secure === false
+		if (insecureInProduction) {
+			throw new Error('Production cookies cannot disable Secure')
+		}
 
-function setCookieHeader(
-	name: string,
-	token: string,
-	attributes: CookieWriteAttributes,
-): string {
-	const parts = [
-		`${name}=${token}`,
-		`Max-Age=${attributes.maxAge}`,
-		`Expires=${attributes.expires.toUTCString()}`,
-	]
-	if (attributes.domain) parts.push(`Domain=${attributes.domain}`)
-	parts.push(`Path=${attributes.path}`)
-	if (attributes.httpOnly) parts.push('HttpOnly')
-	if (attributes.secure) parts.push('Secure')
-	parts.push(`SameSite=${sameSiteLabels[attributes.sameSite]}`)
+		const sameSite = options?.sameSite ?? defaults.sameSite
+		if (!Object.hasOwn(sameSiteLabels, sameSite)) {
+			throw new Error('Cookie SameSite is not supported')
+		}
 
-	return parts.join('; ')
-}
+		const path = options?.path ?? defaults.path
+		if (!path) {
+			throw new Error('Cookie path is required')
+		}
 
-function readEnvelope(value: unknown): { value: unknown } | undefined {
-	if (typeof value !== 'object' || value === null || Array.isArray(value))
-		return undefined
-	if (
-		!Object.hasOwn(value, 'version') ||
-		!Object.hasOwn(value, 'value') ||
-		!Object.hasOwn(value, 'expiresAt')
-	) {
-		return undefined
+		return {
+			httpOnly: true,
+			sameSite,
+			path,
+			secure,
+			domain: options?.domain ?? defaults.domain,
+			maxAge: ttlSeconds,
+			expires: new Date(expiresAt),
+		}
 	}
 
-	const record = value as {
-		version: unknown
-		value: unknown
-		expiresAt: unknown
-	}
-	if (record.version !== 1) return undefined
-	if (
-		typeof record.expiresAt !== 'number' ||
-		!Number.isSafeInteger(record.expiresAt)
-	) {
-		return undefined
-	}
-	if (
-		Math.abs(record.expiresAt) > maxDateTime ||
-		record.expiresAt <= Date.now()
-	) {
-		return undefined
+	#assertCookieSize(
+		name: string,
+		token: string,
+		attributes: CookieWriteAttributes,
+	): void {
+		if (Buffer.byteLength(`${name}=${token}`) > nameValueBudget) {
+			throw new Error('Cookie exceeds the size budget')
+		}
+
+		if (
+			Buffer.byteLength(this.#setCookieHeader(name, token, attributes)) >
+			setCookieBudget
+		) {
+			throw new Error('Cookie exceeds the size budget')
+		}
 	}
 
-	return { value: record.value }
+	#setCookieHeader(
+		name: string,
+		token: string,
+		attributes: CookieWriteAttributes,
+	): string {
+		const parts = [
+			`${name}=${token}`,
+			`Max-Age=${attributes.maxAge}`,
+			`Expires=${attributes.expires.toUTCString()}`,
+		]
+		if (attributes.domain) parts.push(`Domain=${attributes.domain}`)
+		parts.push(`Path=${attributes.path}`)
+		if (attributes.httpOnly) parts.push('HttpOnly')
+		if (attributes.secure) parts.push('Secure')
+		parts.push(`SameSite=${sameSiteLabels[attributes.sameSite]}`)
+
+		return parts.join('; ')
+	}
+
+	#readEnvelope(value: unknown): { value: unknown } | undefined {
+		const isNonObject =
+			typeof value !== 'object' || value === null || Array.isArray(value)
+		if (isNonObject) return undefined
+		if (
+			!Object.hasOwn(value, 'version') ||
+			!Object.hasOwn(value, 'value') ||
+			!Object.hasOwn(value, 'expiresAt')
+		) {
+			return undefined
+		}
+
+		const record = value as {
+			version: unknown
+			value: unknown
+			expiresAt: unknown
+		}
+		if (record.version !== 1) return undefined
+		if (
+			typeof record.expiresAt !== 'number' ||
+			!Number.isSafeInteger(record.expiresAt)
+		) {
+			return undefined
+		}
+		if (
+			Math.abs(record.expiresAt) > maxDateTime ||
+			record.expiresAt <= Date.now()
+		) {
+			return undefined
+		}
+
+		return { value: record.value }
+	}
 }

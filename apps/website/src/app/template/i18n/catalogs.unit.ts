@@ -74,7 +74,7 @@ describe('Website production translations', () => {
 						tagsOf(source[key]),
 					)
 					const errors: unknown[] = []
-					const t = createTranslator({
+					const translate = createTranslator({
 						locale,
 						messages: { value: message },
 						onError: (error) => errors.push(error),
@@ -89,7 +89,7 @@ describe('Website production translations', () => {
 								(chunks: unknown) => String(chunks),
 							]),
 						)
-						t.rich('value', {
+						translate.rich('value', {
 							...values,
 							...tags,
 						})

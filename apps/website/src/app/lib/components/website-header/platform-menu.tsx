@@ -27,6 +27,7 @@ export function PlatformMenu() {
 
 	const visible = (open || focusWithin) && !dismissed
 
+	// Dismiss pinned platform menu on outside press or Escape key.
 	useEffect(() => {
 		if (!visible) return
 
@@ -92,7 +93,7 @@ export function PlatformMenu() {
 			<button
 				aria-controls={panelId}
 				aria-expanded={visible}
-				className="inline-flex min-h-11 items-center gap-1 text-[13px] font-medium whitespace-nowrap text-muted-foreground group-hover:text-foreground aria-expanded:text-foreground"
+				className="inline-flex min-h-11 items-center gap-1 whitespace-nowrap text-muted-foreground group-hover:text-foreground aria-expanded:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
 				onBlur={trackFocusLeaving}
 				onClick={handleToggle}
 				onFocus={handleFocus}
@@ -128,8 +129,8 @@ export function PlatformMenu() {
 						{platformProducts.map((product) => {
 							const Icon = product.icon
 
-							// The header's legacy anchor rule reaches the link inside the
-							// panel; one full-width block inside it keeps this layout.
+							// The link reads like the desktop navigation's links around it;
+							// one full-width block inside it keeps this layout.
 							const copy = (
 								<span className="flex w-full items-start gap-3 whitespace-normal">
 									<span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-card text-foreground">
@@ -152,7 +153,7 @@ export function PlatformMenu() {
 										<Link
 											className={cn(
 												item,
-												'hover:bg-card focus-visible:bg-card',
+												'inline-flex min-h-11 items-center text-[13px] font-medium whitespace-nowrap text-muted-foreground hover:bg-card hover:text-foreground focus-visible:bg-card focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary',
 											)}
 											href={product.href}
 											onBlur={trackFocusLeaving}
