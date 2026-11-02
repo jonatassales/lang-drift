@@ -8,6 +8,11 @@ import {
 } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+const pushMock = vi.fn()
+vi.mock('@i18n/navigation', () => ({
+	useRouter: () => ({ push: pushMock }),
+}))
+
 import { bookDemoMessages } from '@i18n/messages/index'
 
 import { BookDemoForm } from './form'
@@ -16,15 +21,16 @@ const copy = bookDemoMessages.en
 let transport: ReturnType<typeof vi.fn>
 
 beforeEach(() => {
+	pushMock.mockReset()
 	transport = vi.fn(async () =>
 		Response.json(
 			{
-				ok: false,
 				code: 'UNAVAILABLE',
+				ok: false,
 			},
 			{
-				status: 503,
 				headers: { 'Retry-After': '30' },
+				status: 503,
 			},
 		),
 	)
@@ -61,7 +67,7 @@ function submit() {
 	fireEvent.click(screen.getByRole('button', { name: copy.form.submit }))
 }
 
-describe('the Book a demo form', () => {
+describe('website/lib/components/book-a-demo/form', () => {
 	it('asks for the three fields and sends nothing when they are empty', async () => {
 		mount()
 		submit()
@@ -88,6 +94,29 @@ describe('the Book a demo form', () => {
 		expect(transport).not.toHaveBeenCalled()
 	})
 
+	it('navigates to /early-access-sent on successful submission', async () => {
+		transport.mockResolvedValue(
+			Response.json(
+				{
+					code: 'OK',
+					ok: true,
+				},
+				{ status: 200 },
+			),
+		)
+		mount()
+		fill({
+			company: 'Acme',
+			email: 'jane@acme.io',
+			position: 'cto',
+		})
+		submit()
+
+		await waitFor(() => {
+			expect(pushMock).toHaveBeenCalledWith('/early-access-sent')
+		})
+	})
+
 	it('posts a valid request with the locale and shows the return-soon notice when requests are paused', async () => {
 		mount()
 		fill({
@@ -98,7 +127,9 @@ describe('the Book a demo form', () => {
 		submit()
 
 		expect(
-			await screen.findByRole('heading', { name: copy.form.unavailable.title }),
+			await screen.findByRole('heading', {
+				name: copy.form.unavailable.title,
+			}),
 		).toBeTruthy()
 		expect(screen.getByText(copy.form.unavailable.description)).toBeTruthy()
 		expect(screen.queryByLabelText(copy.form.email)).toBeNull()
@@ -114,12 +145,12 @@ describe('the Book a demo form', () => {
 		})
 	})
 
-	it('keeps the form and says so when the request fails for another reason', async () => {
+	it('shows an error toast and keeps the form when request fails', async () => {
 		transport.mockResolvedValue(
 			Response.json(
 				{
-					ok: false,
 					code: 'BOOM',
+					ok: false,
 				},
 				{ status: 500 },
 			),
@@ -132,7 +163,8 @@ describe('the Book a demo form', () => {
 		})
 		submit()
 
-		expect(await screen.findByText(copy.form.failed)).toBeTruthy()
+		const toast = await screen.findByRole('alert')
+		expect(toast.textContent).toContain(copy.form.failed)
 		await waitFor(() => {
 			expect(
 				(screen.getByLabelText(copy.form.email) as HTMLInputElement).value,
@@ -141,5 +173,11 @@ describe('the Book a demo form', () => {
 		expect(
 			screen.queryByRole('heading', { name: copy.form.unavailable.title }),
 		).toBeNull()
+
+		const closeButton = screen.getByRole('button', {
+			name: 'Close notification',
+		})
+		fireEvent.click(closeButton)
+		expect(screen.queryByRole('alert')).toBeNull()
 	})
 })

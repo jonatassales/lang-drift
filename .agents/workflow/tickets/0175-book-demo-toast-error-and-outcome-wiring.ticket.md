@@ -8,11 +8,11 @@
 
 **Status:** ready-for-agent
 
-- [ ] Toast component created in `packages/web/src/ui/toast/` with props interface, accessible roles, and styling.
-- [ ] Exported from `packages/web` exports and index.
-- [ ] `BookDemoForm` navigates to `/early-access-sent` on successful submission.
-- [ ] `BookDemoForm` triggers Toast on failure.
-- [ ] Unit tests in `toast.unit.tsx` and `form.unit.tsx`.
+- [x] Toast component created in `packages/web/src/ui/toast/` with props interface, accessible roles, and styling.
+- [x] Exported from `packages/web` exports and index.
+- [x] `BookDemoForm` navigates to `/early-access-sent` on successful submission.
+- [x] `BookDemoForm` triggers Toast on failure.
+- [x] Unit tests in `toast.unit.tsx` and `form.unit.tsx`.
 
 ### Verification
 

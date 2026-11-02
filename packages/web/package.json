@@ -35,6 +35,7 @@
 		"./ui/share-bar": "./src/ui/share-bar/index.ts",
 		"./ui/skeleton": "./src/ui/skeleton/index.ts",
 		"./ui/theme-toggle": "./src/ui/theme-toggle/index.ts",
+		"./ui/toast": "./src/ui/toast/index.ts",
 		"./vendors/smoothui/animated-tabs": "./src/vendors/smoothui/animated-tabs.tsx",
 		"./vendors/smoothui/basic-accordion": "./src/vendors/smoothui/basic-accordion.tsx",
 		"./vendors/smoothui/mac-terminal": "./src/vendors/smoothui/mac-terminal.tsx",
