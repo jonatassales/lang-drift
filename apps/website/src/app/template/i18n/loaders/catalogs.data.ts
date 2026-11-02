@@ -1,13 +1,11 @@
 import type { FinopsMessages } from '@data/finops-content'
 import type { MicroruntimesMessages } from '@data/microruntimes-content'
-import type { WebsiteLocale } from '@i18n/routing'
-
-import bookDemoJson from './book-a-demo.json'
-import earlyAccessJson from './early-access.json'
-import earlyAccessSentJson from './early-access-sent.json'
-import finopsJson from './finops.json'
-import footerJson from './footer.json'
-import headerJson from './header.json'
+import bookDemoJson from '@i18n/messages/book-a-demo.json'
+import earlyAccessJson from '@i18n/messages/early-access.json'
+import earlyAccessSentJson from '@i18n/messages/early-access-sent.json'
+import finopsJson from '@i18n/messages/finops.json'
+import footerJson from '@i18n/messages/footer.json'
+import headerJson from '@i18n/messages/header.json'
 import type {
 	BookDemoMessages,
 	EarlyAccessMessages,
@@ -16,10 +14,11 @@ import type {
 	HeaderMessages,
 	PlatformMessages,
 	PrivacyMessages,
-} from './messages.types'
-import microruntimesJson from './microruntimes.json'
-import platformJson from './platform.json'
-import privacyJson from './privacy.json'
+} from '@i18n/messages/messages.types'
+import microruntimesJson from '@i18n/messages/microruntimes.json'
+import platformJson from '@i18n/messages/platform.json'
+import privacyJson from '@i18n/messages/privacy.json'
+import type { WebsiteLocale } from '@i18n/routing'
 
 export const headerMessages: Record<WebsiteLocale, HeaderMessages> = headerJson
 export const privacyMessages: Record<WebsiteLocale, PrivacyMessages> =

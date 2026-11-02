@@ -1,5 +1,6 @@
-import type conversionJson from './conversion.json'
-import type { ConversionCopy } from './messages.types'
+import type conversionJson from '@i18n/messages/conversion.json'
+import type { ConversionCopy } from '@i18n/messages/messages.types'
+
 import { triple } from './triple.validator'
 
 export function loadConversion(

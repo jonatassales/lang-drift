@@ -1,8 +1,8 @@
+import conversionJson from '@i18n/messages/conversion.json'
+import type { ConversionCopy } from '@i18n/messages/messages.types'
 import type { WebsiteLocale } from '@i18n/routing'
 
-import conversionJson from './conversion.json'
 import { loadConversion } from './load-conversion.compute'
-import type { ConversionCopy } from './messages.types'
 
 export const conversionMessages: Record<WebsiteLocale, ConversionCopy> = {
 	en: loadConversion(conversionJson.en),

@@ -1,4 +1,4 @@
-import './catalog-shape.validator'
+import '@i18n/loaders/catalog-shape.validator'
 
 export {
 	bookDemoMessages,
@@ -10,6 +10,6 @@ export {
 	microruntimesMessages,
 	platformMessages,
 	privacyMessages,
-} from './catalogs.data'
-export { conversionMessages } from './conversion-messages.data'
-export { getWebsiteMessages } from './website-messages.data'
+} from '@i18n/loaders/catalogs.data'
+export { conversionMessages } from '@i18n/loaders/conversion-messages.data'
+export { getWebsiteMessages } from '@i18n/loaders/website-messages.data'
