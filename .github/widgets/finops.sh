@@ -30,15 +30,15 @@ cache_rate="76%"
 drift_amount="\$0.00"
 
 cat <<EOF
-### <img src="https://langdrift.md/metadata/icon-192.png" width="16" height="16" align="middle" alt="" /> FinOps Gate
+### FinOps Gate
 
 | Ledger Item | Allocation / Ceiling | Observed Spend | Variance / Status |
 | :--- | :---: | :---: | :---: |
-| **Expected Budget** | **${expected_budget}** | – | Initial planned allocation |
-| **Expanded Budget** | **${expanded_budget}** | – | Authorized contingency cap |
-| **Expended Budget** | – | **${expended_spend}** | 🟡 Within contingency |
-| **Token Efficiency** | 25,000 max | ${tokens_total} tokens | ⚡ ${cache_rate} prompt cache hit |
-| **Economic Drift** | \$0.00 unauthorized | ${drift_amount} | 🟢 Controlled |
+| **Expected Budget** | **${expected_budget}** | – | [Initial planned allocation](https://console.langdrift.md/sign-in) |
+| **Expanded Budget** | **${expanded_budget}** | – | [Authorized contingency cap](https://console.langdrift.md/sign-in) |
+| **Expended Budget** | – | **${expended_spend}** | [Within contingency](https://console.langdrift.md/sign-in) |
+| **Token Efficiency** | 25,000 max | ${tokens_total} tokens | [${cache_rate} prompt cache hit](https://console.langdrift.md/sign-in) |
+| **Economic Drift** | \$0.00 unauthorized | ${drift_amount} | [Controlled](https://console.langdrift.md/sign-in) |
 
 > **Receipt Summary:** Model: \`${model_name}\`. Expended spend utilized **48%** of authorized expanded budget envelope. 0 unmetered calls detected.
 EOF
