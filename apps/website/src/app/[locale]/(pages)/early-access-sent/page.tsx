@@ -9,6 +9,8 @@ import { earlyAccessSentMessages } from '@i18n/messages/index'
 import { Link } from '@i18n/navigation'
 import { routing } from '@i18n/routing'
 
+import { AutoRedirect } from './auto-redirect'
+
 export { generateMetadata } from './page.metadata'
 
 interface EarlyAccessSentPageProps {
@@ -30,6 +32,7 @@ export default async function EarlyAccessSentPage(
 
 	return (
 		<>
+			<AutoRedirect delayMs={5000} destination="/" />
 			<WebsiteHeader />
 			<main className="flex min-h-[calc(100svh-170px)] items-center justify-center px-5 pt-12 pb-16 text-center">
 				<div className="max-w-2xl">

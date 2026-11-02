@@ -8,9 +8,9 @@
 
 **Status:** ready-for-agent
 
-- [ ] `auto-redirect.tsx` implements 5-second automatic redirection with cleanup on unmount.
-- [ ] `apps/website/src/app/[locale]/(pages)/early-access-sent/page.tsx` renders `AutoRedirect`.
-- [ ] `auto-redirect.unit.tsx` tests the 5-second timeout and router navigation.
+- [x] `auto-redirect.tsx` implements 5-second automatic redirection with cleanup on unmount.
+- [x] `apps/website/src/app/[locale]/(pages)/early-access-sent/page.tsx` renders `AutoRedirect`.
+- [x] `auto-redirect.unit.tsx` tests the 5-second timeout and router navigation.
 
 ### Verification
 
