@@ -20,11 +20,11 @@ Run from the repository root:
 | `drift env setup` | Creates the local `.env` file from `.env.development`. |
 | `drift env validate` | Checks that `.env.development` has its local `.env`. |
 
-`.env.development` holds the shared development defaults and is tracked, so a fresh checkout runs without setup. Its `CRYPTO_SECRET` is a development-only key: it protects nothing, and no deployed environment may reuse it. Git ignores `.env`. Put real and local values in `apps/website/.env` (run `drift env setup` to create it), which Next.js loads. Never put a production secret in a tracked file or in a `NEXT_PUBLIC_` variable.
+`.env.development` holds the shared development defaults and is tracked, so a fresh checkout runs without setup. In development, `CRYPTO_SECRET` is generated on the fly if not set. Git ignores `.env`. Put real and local values in `apps/website/.env` (run `drift env setup` to create it), which Next.js loads. Never put a production secret in a tracked file or in a `NEXT_PUBLIC_` variable.
 
 | Variable | Requirement |
 | --- | --- |
-| `CRYPTO_SECRET` | Server-only 32-byte AES key in canonical base64; the locale proxy needs it, even locally. Generate with `openssl rand -base64 32`; development uses the tracked key. Every instance of a deploy uses the same key. |
+| `CRYPTO_SECRET` | Server-only 32-byte AES key in canonical base64; the locale proxy needs it. In development, it is generated on the fly if unset. In production, provide a 32-byte key from `openssl rand -base64 32`. Every instance of a deploy uses the same key. |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | The Invisible production widget; Cloudflare's official Invisible test key locally. |
 | `TURNSTILE_SECRET_KEY` | Server-only widget secret; production rejects test keys. |
 | `TURNSTILE_EXPECTED_HOSTNAME` | Exact approved hostname; `localhost` for local fixtures. |
