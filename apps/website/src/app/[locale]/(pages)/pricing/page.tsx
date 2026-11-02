@@ -21,6 +21,7 @@ export default async function PricingPage(props: PricingPageProps) {
 	const { params } = props
 
 	const { locale } = await params
+
 	if (!hasLocale(routing.locales, locale)) notFound()
 	setRequestLocale(locale)
 

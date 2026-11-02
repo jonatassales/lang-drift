@@ -6,21 +6,24 @@ import { socialImages } from '@app/metadata/page-metadata'
 import { earlyAccessSentMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
 
-interface PageMetadataProps {
+interface EarlyAccessSentPageMetadataProps {
 	params: Promise<{ locale: string }>
 }
 
 export async function generateMetadata(
-	props: PageMetadataProps,
+	props: EarlyAccessSentPageMetadataProps,
 	parent: ResolvingMetadata,
 ): Promise<Metadata> {
 	const { params } = props
+
 	const { locale } = await params
 
 	if (!hasLocale(routing.locales, locale)) notFound()
 
 	const title = earlyAccessSentMessages[locale].title
+
 	const images = await socialImages(parent)
+
 	const openGraphImages = images.openGraph
 	const twitterImages = images.twitter
 

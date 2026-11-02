@@ -6,12 +6,12 @@
 
 **Blocked by:** 0160
 
-**Status:** ready-for-agent
+**Status:** completed
 
-- [ ] `drift quality check` reports no spacing finding in `apps/website`.
-- [ ] The review finds no spacing breach the detectors miss, in source or tests.
-- [ ] No test uses a one-letter name.
-- [ ] `drift quality coverage` reaches 100% for the measured rules in the website, or every gap is a documented false positive.
+- [x] `drift quality check` reports no spacing finding in `apps/website`.
+- [x] The review finds no spacing breach the detectors miss, in source or tests.
+- [x] No test uses a one-letter name.
+- [x] `drift quality coverage` reaches 100% for the measured rules in the website, or every gap is a documented false positive.
 
 ### Verification
 

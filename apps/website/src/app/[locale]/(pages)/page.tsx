@@ -23,6 +23,7 @@ export default async function WebsitePage(props: WebsitePageProps) {
 	const { params } = props
 
 	const { locale } = await params
+
 	if (!hasLocale(routing.locales, locale)) notFound()
 	setRequestLocale(locale)
 	const copy = platformMessages[locale]

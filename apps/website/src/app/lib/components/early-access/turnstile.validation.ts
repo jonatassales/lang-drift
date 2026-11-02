@@ -30,6 +30,7 @@ export async function verifyEarlyAccessChallenge(
 
 	try {
 		const earlyAccessServerEnv = readTurnstile()
+
 		const response = await fetch(earlyAccessServerEnv.turnstileVerifyUrl, {
 			body: JSON.stringify({
 				response: token,

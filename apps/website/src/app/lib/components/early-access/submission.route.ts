@@ -78,6 +78,7 @@ export async function postEarlyAccess(request: Request): Promise<Response> {
 				signal: AbortSignal.any([signal, AbortSignal.timeout(3500)]),
 			})
 		}
+
 		const admission = await registry('/v1/admissions', {
 			email,
 			origin,
@@ -93,6 +94,7 @@ export async function postEarlyAccess(request: Request): Promise<Response> {
 				retrySeconds(admission),
 			)
 		}
+
 		const grantText = await readBoundedBody(admission.body, 4096, signal)
 
 		const grant = z
@@ -124,6 +126,7 @@ export async function postEarlyAccess(request: Request): Promise<Response> {
 				retrySeconds(registered),
 			)
 		}
+
 		const receiptText = await readBoundedBody(registered.body, 4096, signal)
 
 		const receipt = z

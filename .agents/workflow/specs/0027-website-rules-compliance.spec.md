@@ -1,6 +1,6 @@
 # The website complies with the repository rules
 
-**Status:** ready-for-agent
+**Status:** completed
 
 ## Problem Statement
 

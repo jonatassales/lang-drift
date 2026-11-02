@@ -14,8 +14,12 @@ export async function generateMetadata(
 	parent: ResolvingMetadata,
 ): Promise<Metadata> {
 	const { params } = props
+
 	const { locale } = await params
+
 	if (!hasLocale(routing.locales, locale)) notFound()
 
-	return pageMetadata('home', locale, await socialImages(parent))
+	const images = await socialImages(parent)
+
+	return pageMetadata('home', locale, images)
 }

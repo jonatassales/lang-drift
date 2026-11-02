@@ -30,6 +30,7 @@ export default async function LocaleLayout(props: LocaleLayoutProps) {
 	const { children, params } = props
 
 	const { locale } = await params
+
 	if (!hasLocale(routing.locales, locale)) notFound()
 	setRequestLocale(locale)
 
