@@ -5,7 +5,7 @@
 ## Tickets
 
 - [x] 0172: Resend email adapters for confirmation and notification
-- [ ] 0173: Integrate email sending in book-a-demo API route
+- [x] 0173: Integrate email sending in book-a-demo API route
 - [ ] 0174: Five-second auto-redirect on sent confirmation page
 - [ ] 0175: Toast error feedback and outcome wiring in BookDemoForm
 

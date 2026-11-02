@@ -1,12 +1,16 @@
 import type { BookDemoErrorCode, BookDemoField } from './form.types'
 
+export type BookDemoReplyCode =
+	| 'OK'
+	| 'INVALID_ORIGIN'
+	| 'INVALID_REQUEST'
+	| 'VALIDATION_ERROR'
+	| 'UNAVAILABLE'
+	| 'DELIVERY_FAILED'
+
 export function reply(
 	status: number,
-	code:
-		| 'INVALID_ORIGIN'
-		| 'INVALID_REQUEST'
-		| 'VALIDATION_ERROR'
-		| 'UNAVAILABLE',
+	code: BookDemoReplyCode,
 	fieldErrors?: Partial<Record<BookDemoField, BookDemoErrorCode>>,
 ) {
 	const headers: Record<string, string> = {
@@ -15,11 +19,12 @@ export function reply(
 	}
 	if (status === 503) headers['Retry-After'] = '30'
 	const hasFieldErrors = fieldErrors && Object.keys(fieldErrors).length > 0
+	const ok = status >= 200 && status < 300
 
 	return Response.json(
 		{
-			ok: false,
 			code,
+			ok,
 			...(hasFieldErrors ? { fieldErrors } : {}),
 		},
 		{

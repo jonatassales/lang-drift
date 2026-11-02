@@ -2,6 +2,18 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('server-only', () => ({}))
 
+const sendDemoConfirmationMock = vi.fn()
+vi.mock('@infra/resend/send-demo-confirmation.adapter', () => ({
+	sendDemoConfirmation: (...args: unknown[]) =>
+		sendDemoConfirmationMock(...args),
+}))
+
+const sendDemoLeadNotificationMock = vi.fn()
+vi.mock('@infra/resend/send-demo-lead-notification.adapter', () => ({
+	sendDemoLeadNotification: (...args: unknown[]) =>
+		sendDemoLeadNotificationMock(...args),
+}))
+
 import { POST } from './route'
 
 const valid = {
@@ -40,6 +52,10 @@ let transport: ReturnType<typeof vi.fn>
 beforeEach(() => {
 	transport = vi.fn()
 	vi.stubGlobal('fetch', transport)
+	sendDemoConfirmationMock.mockReset()
+	sendDemoLeadNotificationMock.mockReset()
+	sendDemoConfirmationMock.mockResolvedValue({ id: 'conf_123' })
+	sendDemoLeadNotificationMock.mockResolvedValue({ id: 'lead_123' })
 })
 afterEach(() => {
 	vi.unstubAllGlobals()
@@ -52,8 +68,8 @@ describe('apps/website/src/app/api/book-a-demo/route.ts', () => {
 
 			expect(response.status).toBe(400)
 			expect(await response.json()).toEqual({
-				ok: false,
 				code: 'VALIDATION_ERROR',
+				ok: false,
 			})
 		})
 
@@ -85,12 +101,12 @@ describe('apps/website/src/app/api/book-a-demo/route.ts', () => {
 
 			expect(response.status).toBe(400)
 			expect(await response.json()).toEqual({
-				ok: false,
 				code: 'VALIDATION_ERROR',
 				fieldErrors: {
 					email: 'emailFreeMail',
 					position: 'positionRequired',
 				},
+				ok: false,
 			})
 		})
 
@@ -105,21 +121,49 @@ describe('apps/website/src/app/api/book-a-demo/route.ts', () => {
 			expect(response.status).toBe(400)
 		})
 
-		it('answers that requests are paused for a valid submission, storing and sending nothing', async () => {
+		it('dispatches confirmation and lead notification emails for a valid submission', async () => {
 			const response = await post(JSON.stringify(valid))
 
-			expect(response.status).toBe(503)
-			expect(response.headers.get('Retry-After')).toBe('30')
+			expect(response.status).toBe(200)
 			expect(response.headers.get('Cache-Control')).toBe('no-store')
 			expect(response.headers.get('X-Content-Type-Options')).toBe('nosniff')
 			expect(await response.json()).toEqual({
-				ok: false,
-				code: 'UNAVAILABLE',
+				code: 'OK',
+				ok: true,
 			})
-			expect(transport).not.toHaveBeenCalled()
+			expect(sendDemoConfirmationMock).toHaveBeenCalledWith(valid)
+			expect(sendDemoLeadNotificationMock).toHaveBeenCalledWith(valid)
 		})
 
-		it('keeps field errors and the pause for a request from the site itself', async () => {
+		it('answers 500 when email delivery fails', async () => {
+			sendDemoConfirmationMock.mockRejectedValue(
+				new Error('Resend delivery error'),
+			)
+
+			const response = await post(JSON.stringify(valid))
+
+			expect(response.status).toBe(500)
+			expect(await response.json()).toEqual({
+				code: 'DELIVERY_FAILED',
+				ok: false,
+			})
+		})
+
+		it('answers 500 when lead notification delivery fails', async () => {
+			sendDemoLeadNotificationMock.mockRejectedValue(
+				new Error('Resend lead notification error'),
+			)
+
+			const response = await post(JSON.stringify(valid))
+
+			expect(response.status).toBe(500)
+			expect(await response.json()).toEqual({
+				code: 'DELIVERY_FAILED',
+				ok: false,
+			})
+		})
+
+		it('processes a valid request from the site itself', async () => {
 			const invalid = await post(
 				JSON.stringify({
 					...valid,
@@ -129,16 +173,14 @@ describe('apps/website/src/app/api/book-a-demo/route.ts', () => {
 			)
 
 			const submitted = request(JSON.stringify(valid), sameOrigin)
-			const paused = await POST(submitted)
+			const accepted = await POST(submitted)
 
 			expect(invalid.status).toBe(400)
-			expect(paused.status).toBe(503)
+			expect(accepted.status).toBe(200)
 			expect(submitted.bodyUsed).toBe(true)
 		})
 
-		it('keeps the pause for a page served from a loopback address', async () => {
-			// Next names every loopback host localhost in the request URL, while the
-			// browser names the address it loaded the page from.
+		it('accepts a request from a loopback address', async () => {
 			const response = await POST(
 				new Request('http://localhost:3110/api/book-a-demo/', {
 					body: JSON.stringify(valid),
@@ -152,7 +194,7 @@ describe('apps/website/src/app/api/book-a-demo/route.ts', () => {
 				}),
 			)
 
-			expect(response.status).toBe(503)
+			expect(response.status).toBe(200)
 		})
 	})
 

@@ -8,10 +8,10 @@
 
 **Status:** ready-for-agent
 
-- [ ] `apps/website/src/app/api/book-a-demo/route.ts` calls `sendDemoConfirmation` and `sendDemoLeadNotification`.
-- [ ] `apps/website/src/app/lib/components/book-a-demo/book-demo-reply.response.ts` handles success and error responses.
-- [ ] `apps/website/src/app/api/book-a-demo/route.unit.ts` tests successful submission and error handling.
-- [ ] Existing origin, validation, and size checks remain intact and tested.
+- [x] `apps/website/src/app/api/book-a-demo/route.ts` calls `sendDemoConfirmation` and `sendDemoLeadNotification`.
+- [x] `apps/website/src/app/lib/components/book-a-demo/book-demo-reply.response.ts` handles success and error responses.
+- [x] `apps/website/src/app/api/book-a-demo/route.unit.ts` tests successful submission and error handling.
+- [x] Existing origin, validation, and size checks remain intact and tested.
 
 ### Verification
 
