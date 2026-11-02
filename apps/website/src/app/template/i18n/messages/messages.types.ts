@@ -10,6 +10,7 @@ export interface HeaderMessages {
 	finops: string
 	microruntimes: string
 	ciGates: string
+	comingSoon: string
 	finopsDescription: string
 	microruntimesDescription: string
 	ciGatesDescription: string

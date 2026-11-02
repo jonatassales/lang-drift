@@ -13,6 +13,7 @@ import { drawerFocus } from './website-header/drawer-focus'
 import { LanguagePill } from './website-header/language-pill'
 import { PlatformMenu } from './website-header/platform-menu'
 import { platformProducts } from './website-header/platform-products'
+import { ProductBadge } from './website-header/product-badge'
 import { panelSurface } from './website-header/surface'
 
 // Entries without a destination yet read like their neighbors but do not
@@ -286,7 +287,12 @@ export function WebsiteHeader() {
 						) : (
 							<span className={drawerItem} key={product.label}>
 								<Icon className="size-5" />
-								{translate(product.label)}
+								<span className="flex items-center gap-2">
+									<span>{translate(product.label)}</span>
+									{'badge' in product && product.badge ? (
+										<ProductBadge>{translate(product.badge)}</ProductBadge>
+									) : null}
+								</span>
 							</span>
 						)
 					})}
