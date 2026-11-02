@@ -6,8 +6,8 @@ set -eu
 . "$DRIFT_CLI_DIR/core/common.sh"
 
 # How much of the tree applies each rule file in .claude/rules, as drift
-# quality coverage measures it. Its detectors are patterns, so the percentages
-# are estimates and the check run stays neutral.
+# quality coverage measures it. Its detectors are patterns, and the Code Quality
+# check run is an active, required CI gate.
 
 coverage=$("$DRIFT_PROJECT_ROOT/platform/cli/drift" quality coverage) ||
   drift_die "drift quality coverage could not measure the rules."

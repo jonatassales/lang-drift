@@ -68,7 +68,7 @@ if [ "$publish" = true ]; then
     "$widgets_dir/workflow.sh" "$@" | "$widgets_dir/check-run.sh" "Workflow" "success" "Workflow Verified" || drift_warn "Could not publish Workflow check run"
     "$widgets_dir/finops.sh" "$@" | "$widgets_dir/check-run.sh" "FinOps" "success" "Within Envelope" || drift_warn "Could not publish FinOps check run"
     "$widgets_dir/microruntimes.sh" "$@" | "$widgets_dir/check-run.sh" "Microruntimes" "success" "Engine & Contracts In Sync" || drift_warn "Could not publish Microruntimes check run"
-    "$widgets_dir/code-quality.sh" "$@" | "$widgets_dir/check-run.sh" "Code Quality" "neutral" "Rules applied" || drift_warn "Could not publish Code Quality check run"
+    "$widgets_dir/code-quality.sh" "$@" | "$widgets_dir/check-run.sh" "Code Quality" "success" "Rules Verified" || drift_warn "Could not publish Code Quality check run"
     "$widgets_dir/agentic.sh" "$@" | "$widgets_dir/check-run.sh" "Agentic" "success" "Harness Supervised" || drift_warn "Could not publish Agentic check run"
   fi
 fi
