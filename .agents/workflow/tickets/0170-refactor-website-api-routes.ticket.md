@@ -8,12 +8,12 @@
 
 **Status:** ready-for-agent
 
-- [ ] `apps/website/src/app/api/book-a-demo/route.ts` declares `export async function POST(request: Request)` directly.
-- [ ] `apps/website/src/app/lib/components/book-a-demo/submission.route.ts` is deleted.
-- [ ] `apps/website/src/app/api/book-a-demo/route.unit.ts` tests `POST` directly on `route.ts`.
-- [ ] `apps/website/src/app/lib/components/early-access/submission.route.ts` is deleted.
-- [ ] All website tests (539 unit tests) pass.
-- [ ] No quality detector violations in `apps/website`.
+- [x] `apps/website/src/app/api/book-a-demo/route.ts` declares `export async function POST(request: Request)` directly.
+- [x] `apps/website/src/app/lib/components/book-a-demo/submission.route.ts` is deleted.
+- [x] `apps/website/src/app/api/book-a-demo/route.unit.ts` tests `POST` directly on `route.ts`.
+- [x] `apps/website/src/app/lib/components/early-access/submission.route.ts` is deleted.
+- [x] All website tests (539 unit tests) pass.
+- [x] No quality detector violations in `apps/website`.
 
 ### Verification
 
