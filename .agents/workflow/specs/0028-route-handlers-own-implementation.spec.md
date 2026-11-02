@@ -1,6 +1,12 @@
 # Route handlers own their implementation
 
-**Status:** ready-for-agent
+**Status:** ready-for-review
+
+## Tickets
+
+- [x] 0169: Next.js route handlers own their implementation directly
+- [x] 0170: Implement route handlers directly in website API routes
+- [x] 0171: Implement route handlers directly in console API routes
 
 ## Problem Statement
 
