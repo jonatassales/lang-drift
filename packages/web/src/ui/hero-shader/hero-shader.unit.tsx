@@ -34,7 +34,7 @@ function brightness(color: Rgb) {
 	return (red + green + blue) / 3
 }
 
-describe('HeroShader markup', () => {
+describe('web/ui/hero-shader/hero-shader', () => {
 	it('renders a hidden, pointer-transparent layer that fills its parent and merges classes', () => {
 		const html = renderToString(<HeroShader className="rounded-xl" />)
 		const document = new DOMParser().parseFromString(html, 'text/html')
@@ -69,7 +69,7 @@ describe('HeroShader markup', () => {
 	})
 })
 
-describe('shader palette', () => {
+describe('web/ui/hero-shader/palette', () => {
 	it('mixes channels linearly', () => {
 		const [red, green, blue] = mix([0, 0, 0], [1, 0.5, 0], 0.5)
 

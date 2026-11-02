@@ -20,7 +20,7 @@ const options = [
 	},
 ] as const
 
-describe('LanguageSwitcher', () => {
+describe('web/ui/language-switcher/language-switcher', () => {
 	it('reveals alternatives on hover and hides them when the pointer leaves', () => {
 		render(
 			<LanguageSwitcher

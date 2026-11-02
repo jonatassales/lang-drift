@@ -26,11 +26,13 @@ out vec4 outputColor;
 
 float softBand(float distance, float width) {
   float scaled = distance / width;
+
   return exp(-scaled * scaled);
 }
 
 vec2 petalCoordinates(vec2 point, vec2 center, vec2 radius, float angle) {
   mat2 rotation = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
+
   return rotation * (point - center) / radius;
 }
 
@@ -75,6 +77,7 @@ vec3 curledPetal(vec3 underneath, vec2 point, vec2 center, vec2 radius,
   float contact = softBand(edge - 1.09, 0.30);
   contact *= smoothstep(-0.45, 0.65, local.y);
   underneath = mix(underneath, mix(lightColor, ink, 0.49), contact * opacity * 0.28);
+
   return mix(underneath, face, coverage * opacity);
 }
 

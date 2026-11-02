@@ -1,5 +1,5 @@
+import { createProgram } from './create-program'
 import { readPalette, type ShaderPalette } from './palette'
-import { fragmentSource, vertexSource } from './shaders'
 
 export interface SurfaceOptions {
 	paused: boolean
@@ -27,49 +27,6 @@ const colorUniforms = [
 // About 1920×1080 pixels, so a large hero stays cheap on dense screens.
 const pixelBudget = 2073600
 
-function compileShader(
-	gl: WebGL2RenderingContext,
-	type: number,
-	source: string,
-) {
-	const shader = gl.createShader(type)
-	if (!shader) return null
-	gl.shaderSource(shader, source)
-	gl.compileShader(shader)
-	if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-		gl.deleteShader(shader)
-
-		return null
-	}
-
-	return shader
-}
-
-function createProgram(gl: WebGL2RenderingContext) {
-	const vertex = compileShader(gl, gl.VERTEX_SHADER, vertexSource)
-	const fragment = compileShader(gl, gl.FRAGMENT_SHADER, fragmentSource)
-	const program = gl.createProgram()
-	if (!vertex || !fragment || !program) {
-		gl.deleteShader(vertex)
-		gl.deleteShader(fragment)
-		gl.deleteProgram(program)
-
-		return null
-	}
-	gl.attachShader(program, vertex)
-	gl.attachShader(program, fragment)
-	gl.linkProgram(program)
-	gl.deleteShader(vertex)
-	gl.deleteShader(fragment)
-	if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-		gl.deleteProgram(program)
-
-		return null
-	}
-
-	return program
-}
-
 // Draws the scene on the canvas until disposed. Returns nothing when the page
 // gives no palette, the browser has no WebGL2 or the program does not build;
 // the caller's fallback then stays visible.
@@ -79,6 +36,7 @@ export function mountSurface(
 ): SurfaceController | undefined {
 	const palette = readPalette(canvas)
 	if (!palette) return
+
 	const context = canvas.getContext('webgl2', {
 		alpha: true,
 		antialias: false,
@@ -87,6 +45,7 @@ export function mountSurface(
 		powerPreference: 'low-power',
 	})
 	if (!context) return
+
 	const gl: WebGL2RenderingContext = context
 	const program = createProgram(gl)
 	if (!program) return
@@ -132,6 +91,7 @@ export function mountSurface(
 
 	function draw() {
 		if (disposed || failed || !hasSize) return
+
 		gl.uniform1f(elapsedLocation, activeTime)
 		gl.drawArrays(gl.TRIANGLES, 0, 3)
 	}
@@ -164,6 +124,7 @@ export function mountSurface(
 
 	function resize() {
 		if (disposed || failed) return
+
 		const bounds = canvas.getBoundingClientRect()
 		hasSize = bounds.width > 0 && bounds.height > 0
 		if (!hasSize) {
@@ -194,8 +155,10 @@ export function mountSurface(
 	// The page's theme toggles `.dark` on <html>; the scene follows it.
 	function recolor() {
 		if (disposed || failed) return
+
 		const next = readPalette(canvas)
 		if (!next) return
+
 		uploadPalette(next)
 		draw()
 	}

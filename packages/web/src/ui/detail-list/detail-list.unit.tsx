@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 
 import { DetailList } from './detail-list'
 
-describe('DetailList', () => {
+describe('web/ui/detail-list/detail-list', () => {
 	it('renders each item as a term and a detail', () => {
 		const html = renderToString(
 			<DetailList

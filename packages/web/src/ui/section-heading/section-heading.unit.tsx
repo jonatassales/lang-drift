@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 
 import { SectionHeading } from './section-heading'
 
-describe('SectionHeading', () => {
+describe('web/ui/section-heading/section-heading', () => {
 	it('renders the kicker before a heading that carries the id', () => {
 		const html = renderToString(
 			<SectionHeading

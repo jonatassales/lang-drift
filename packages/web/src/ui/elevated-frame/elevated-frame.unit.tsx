@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 
 import { ElevatedFrame } from './elevated-frame'
 
-describe('ElevatedFrame', () => {
+describe('web/ui/elevated-frame/elevated-frame', () => {
 	it('frames its children in glass and merges classes over its own', () => {
 		const html = renderToString(
 			<ElevatedFrame className="p-6 rounded-xl">

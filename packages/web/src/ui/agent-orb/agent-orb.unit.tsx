@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 
 import { AgentOrb } from './agent-orb'
 
-describe('AgentOrb public props', () => {
+describe('web/ui/agent-orb/agent-orb', () => {
 	it('renders an SSR-safe native host with caller configuration and reserved dimensions', () => {
 		const html = renderToString(
 			<AgentOrb

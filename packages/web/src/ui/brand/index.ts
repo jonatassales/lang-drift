@@ -1,6 +1,2 @@
-export {
-	Brand,
-	type BrandProps,
-	LogoMark,
-	type LogoMarkProps,
-} from './brand'
+export { Brand, type BrandProps } from './brand'
+export { LogoMark, type LogoMarkProps } from './logo-mark'

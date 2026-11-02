@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 
 import { GoIcon, NatsIcon, NextjsIcon, NodejsIcon, RedisIcon } from './index'
 
-describe('technology icons', () => {
+describe('web/ui/icons/technology/technology-icons', () => {
 	it.each([
 		['GoIcon', GoIcon],
 		['NodejsIcon', NodejsIcon],

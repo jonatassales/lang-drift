@@ -1,6 +1,6 @@
 'use client'
 
-import type { KeyboardEvent, ReactNode } from 'react'
+import type { FocusEvent, KeyboardEvent, MouseEvent, ReactNode } from 'react'
 import { useId, useRef, useState } from 'react'
 
 import './animated-tabs.css'
@@ -23,16 +23,18 @@ export interface AnimatedTabsProps {
 }
 
 /** SmoothUI Animated Tabs, with localized naming and explicit panel relations. */
-export function AnimatedTabs({
-	tabs,
-	ariaLabel,
-	activeTab: controlledActiveTab,
-	defaultTab,
-	onChange,
-	variant = 'underline',
-	layoutId: customLayoutId,
-	className = '',
-}: AnimatedTabsProps) {
+export function AnimatedTabs(props: AnimatedTabsProps) {
+	const {
+		activeTab: controlledActiveTab,
+		ariaLabel,
+		className = '',
+		defaultTab,
+		layoutId: customLayoutId,
+		onChange,
+		tabs,
+		variant = 'underline',
+	} = props
+
 	const generatedId = useId()
 	const layoutId = customLayoutId ?? `smooth-tabs-${generatedId}`
 	const [internalActiveTab, setInternalActiveTab] = useState(
@@ -48,6 +50,7 @@ export function AnimatedTabs({
 
 	function selectTab(id: string) {
 		if (id === activeTab) return
+
 		if (!controlled) setInternalActiveTab(id)
 		onChange?.(id)
 	}
@@ -55,6 +58,7 @@ export function AnimatedTabs({
 	function revealTab(button: HTMLButtonElement) {
 		const container = containerRef.current
 		if (!container) return
+
 		const tabBounds = button.getBoundingClientRect()
 		const bounds = container.getBoundingClientRect()
 		if (tabBounds.left < bounds.left + 4) {
@@ -64,10 +68,22 @@ export function AnimatedTabs({
 		}
 	}
 
-	function handleKeyDown(
-		event: KeyboardEvent<HTMLButtonElement>,
-		index: number,
-	) {
+	function handleTabClick(event: MouseEvent<HTMLButtonElement>) {
+		const tabId = event.currentTarget.dataset.tabId
+		if (tabId) {
+			selectTab(tabId)
+		}
+	}
+
+	function handleTabFocus(event: FocusEvent<HTMLButtonElement>) {
+		revealTab(event.currentTarget)
+	}
+
+	function handleTabKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+		const indexValue = event.currentTarget.dataset.tabIndex
+		if (indexValue === undefined) return
+		const index = Number(indexValue)
+
 		let nextIndex: number
 		switch (event.key) {
 			case 'ArrowRight':
@@ -85,9 +101,11 @@ export function AnimatedTabs({
 			default:
 				return
 		}
+
 		event.preventDefault()
 		const tab = tabs[nextIndex]
 		if (!tab) return
+
 		selectTab(tab.id)
 		tabRefs.current.get(tab.id)?.focus({ preventScroll: true })
 	}
@@ -102,16 +120,19 @@ export function AnimatedTabs({
 		>
 			{tabs.map((tab, index) => {
 				const selected = activeTab === tab.id
+
 				return (
 					<button
 						aria-controls={`${layoutId}-panel-${tab.id}`}
 						aria-selected={selected}
 						className="smooth-animated-tab"
+						data-tab-id={tab.id}
+						data-tab-index={index}
 						id={`${layoutId}-tab-${tab.id}`}
 						key={tab.id}
-						onClick={() => selectTab(tab.id)}
-						onFocus={(event) => revealTab(event.currentTarget)}
-						onKeyDown={(event) => handleKeyDown(event, index)}
+						onClick={handleTabClick}
+						onFocus={handleTabFocus}
+						onKeyDown={handleTabKeyDown}
 						ref={(button) => {
 							if (button) tabRefs.current.set(tab.id, button)
 							else tabRefs.current.delete(tab.id)
