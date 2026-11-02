@@ -56,7 +56,8 @@ function assertCredentialFreeOrigin(endpoint: URL, mode: EarlyAccessMode) {
 	) {
 		throw new Error('Early Access endpoints must be credential-free origins')
 	}
-	if (mode === 'production' && endpoint.protocol !== 'https:') {
+	const requiresHttps = mode === 'production' && endpoint.protocol !== 'https:'
+	if (requiresHttps) {
 		throw new Error('Production Early Access endpoints require HTTPS')
 	}
 	if (
@@ -186,7 +187,7 @@ export async function postEarlyAccess(request: Request): Promise<Response> {
 		})
 
 		if (admission.status !== 200) {
-			void admission.body?.cancel().catch(() => {})
+			void admission.body?.cancel().catch(() => undefined)
 
 			return reply(
 				admission.status === 429 ? 429 : 503,
@@ -217,7 +218,7 @@ export async function postEarlyAccess(request: Request): Promise<Response> {
 		})
 
 		if (registered.status !== 202) {
-			void registered.body?.cancel().catch(() => {})
+			void registered.body?.cancel().catch(() => undefined)
 
 			return reply(
 				registered.status === 429 ? 429 : 503,

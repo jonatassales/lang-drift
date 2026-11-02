@@ -15,7 +15,7 @@ export async function readBoundedBody(
 	let size = 0
 	let text = ''
 	const cancel = () => {
-		void reader.cancel().catch(() => {})
+		void reader.cancel().catch(() => undefined)
 	}
 	signal.addEventListener('abort', cancel, { once: true })
 	try {

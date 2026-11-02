@@ -11,10 +11,11 @@ export function runOutcome(
 	session: MicroruntimeSession,
 	script: readonly RunLine[],
 ): RunOutcome | null {
-	if (session.stage !== 'running' || !session.ran) return null
+	const { ran, stage } = session
+	if (stage !== 'running' || !ran) return null
 
 	return {
-		choices: session.ran,
+		choices: ran,
 		playedCount: session.playedCount,
 		script,
 	}

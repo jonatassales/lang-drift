@@ -132,7 +132,8 @@ export class CryptoService {
 
 		const [tokenVersion, tokenCodec, encodedIv, encodedCiphertext, encodedTag] =
 			segments
-		if (tokenVersion !== version || tokenCodec !== codec) return undefined
+		const unsupportedVersion = tokenVersion !== version || tokenCodec !== codec
+		if (unsupportedVersion) return undefined
 
 		const initializationVector = this.#decodeCanonicalBase64Url(
 			encodedIv,
@@ -140,7 +141,8 @@ export class CryptoService {
 		)
 		const ciphertext = this.#decodeCanonicalBase64Url(encodedCiphertext)
 		const authTag = this.#decodeCanonicalBase64Url(encodedTag, tagBytes)
-		if (!initializationVector || !ciphertext || !authTag) return undefined
+		const malformedSegments = !initializationVector || !ciphertext || !authTag
+		if (malformedSegments) return undefined
 
 		return {
 			initializationVector,
@@ -153,12 +155,15 @@ export class CryptoService {
 		segment: string,
 		expectedLength?: number,
 	): Buffer | undefined {
-		if (segment !== '' && !/^[A-Za-z0-9_-]+$/.test(segment)) return undefined
+		const invalidBase64Url = segment !== '' && !/^[A-Za-z0-9_-]+$/.test(segment)
+		if (invalidBase64Url) return undefined
 
 		const decoded = Buffer.from(segment, 'base64url')
 		if (decoded.toString('base64url') !== segment) return undefined
-		if (expectedLength !== undefined && decoded.length !== expectedLength)
-			return undefined
+
+		const lengthMismatch =
+			expectedLength !== undefined && decoded.length !== expectedLength
+		if (lengthMismatch) return undefined
 
 		return decoded
 	}

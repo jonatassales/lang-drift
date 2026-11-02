@@ -76,6 +76,25 @@ export function EarlyAccessForm(props: EarlyAccessFormProps) {
 		if (mounted.current) setFormState(produce<EarlyAccessFormState>(recipe))
 	}
 
+	let statusText = ''
+	if (formState.status === 'success') {
+		statusText = copy.success
+	} else if (
+		formState.status === 'verifying' ||
+		formState.status === 'submitting'
+	) {
+		statusText = copy.submitting
+	} else if (formState.status === 'rate-limited') {
+		statusText = copy.rateLimited.replace(
+			'{seconds}',
+			String(formState.retryAfter ?? 30),
+		)
+	} else if (formState.status === 'challenge-error') {
+		statusText = copy.challengeFailed
+	} else if (formState.status === 'error' && !emailError) {
+		statusText = copy.unavailable
+	}
+
 	return (
 		<form
 			aria-busy={busy}
@@ -180,21 +199,7 @@ export function EarlyAccessForm(props: EarlyAccessFormProps) {
 					</span>
 				) : null}
 				<span className="text-foreground" id={statusId}>
-					{formState.status === 'success'
-						? copy.success
-						: formState.status === 'verifying' ||
-								formState.status === 'submitting'
-							? copy.submitting
-							: formState.status === 'rate-limited'
-								? copy.rateLimited.replace(
-										'{seconds}',
-										String(formState.retryAfter ?? 30),
-									)
-								: formState.status === 'challenge-error'
-									? copy.challengeFailed
-									: formState.status === 'error' && !emailError
-										? copy.unavailable
-										: ''}
+					{statusText}
 				</span>
 			</output>
 		</form>

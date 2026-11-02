@@ -200,7 +200,8 @@ export class CookieService {
 		expiresAt: number,
 	): CookieWriteAttributes {
 		const secure = options?.secure ?? defaults.secure
-		if (defaults.secure && secure === false) {
+		const insecureInProduction = defaults.secure && secure === false
+		if (insecureInProduction) {
 			throw new Error('Production cookies cannot disable Secure')
 		}
 
@@ -262,8 +263,9 @@ export class CookieService {
 	}
 
 	#readEnvelope(value: unknown): { value: unknown } | undefined {
-		if (typeof value !== 'object' || value === null || Array.isArray(value))
-			return undefined
+		const isNonObject =
+			typeof value !== 'object' || value === null || Array.isArray(value)
+		if (isNonObject) return undefined
 		if (
 			!Object.hasOwn(value, 'version') ||
 			!Object.hasOwn(value, 'value') ||

@@ -89,8 +89,9 @@ export async function verifyEarlyAccessChallenge(
 	token: string,
 	parentSignal?: AbortSignal,
 ): Promise<'verified' | 'rejected' | 'unavailable'> {
-	if (typeof token !== 'string' || !token || token.length > 2048)
-		return 'rejected'
+	const invalidToken =
+		typeof token !== 'string' || !token || token.length > 2048
+	if (invalidToken) return 'rejected'
 
 	const signal = parentSignal
 		? AbortSignal.any([parentSignal, AbortSignal.timeout(2500)])
@@ -111,7 +112,7 @@ export async function verifyEarlyAccessChallenge(
 		})
 
 		if (!response.ok) {
-			void response.body?.cancel().catch(() => {})
+			void response.body?.cancel().catch(() => undefined)
 
 			return 'unavailable'
 		}

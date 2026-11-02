@@ -39,7 +39,8 @@ export class LocaleService {
 		const supported = prefixes.some(
 			(entry) => entry.prefix === `/${lowerSegment}`,
 		)
-		if (supported && segment !== lowerSegment) {
+		const needsCanonicalRedirect = supported && segment !== lowerSegment
+		if (needsCanonicalRedirect) {
 			const canonical = new URL(request.url)
 			canonical.pathname = canonical.pathname.replace(
 				`/${segment}`,
@@ -64,11 +65,7 @@ export class LocaleService {
 			request.headers.get('accept-language'),
 		)
 		const unavailable = !explicit && !saved.found && browser === 'zh-CN'
-		const locale =
-			explicit ??
-			(saved.found
-				? saved.value
-				: ((browser === 'zh-CN' ? 'en' : browser) ?? routing.defaultLocale))
+		const locale = this.#resolveTargetLocale(explicit, saved, browser)
 		const target = this.#localizedUrl(request, locale)
 		if (unavailable) target.searchParams.set('availability', 'zh-CN')
 		const response = explicit
@@ -89,6 +86,23 @@ export class LocaleService {
 		}
 
 		return response
+	}
+
+	#resolveTargetLocale(
+		explicit: WebsiteLocale | undefined,
+		saved: ReturnType<ReturnType<typeof cookieServiceFactory>['get']>,
+		browser: WebsiteLocale | 'zh-CN' | undefined,
+	): WebsiteLocale {
+		if (explicit) return explicit
+		const hasValidSavedLocale =
+			saved.found && routing.locales.includes(saved.value as WebsiteLocale)
+		if (hasValidSavedLocale) {
+			return saved.value as WebsiteLocale
+		}
+		if (browser === 'zh-CN') return 'en'
+		if (browser) return browser
+
+		return routing.defaultLocale
 	}
 
 	#matchAcceptLanguage(
