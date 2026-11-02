@@ -1,10 +1,12 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Toast } from '@langdrift/web/ui/toast'
 import { useEffect, useId, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import type { BookDemoMessages } from '@i18n/messages/messages.types'
+import { useRouter } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
 
 import type { BookDemoData, BookDemoField, BookDemoInput } from './form.types'
@@ -31,6 +33,12 @@ const errorText = 'm-0 text-xs text-status-danger'
 export function BookDemoForm(props: BookDemoFormProps) {
 	const { copy, locale } = props
 
+	const [outcome, setOutcome] = useState<'idle' | 'unavailable'>('idle')
+	const [errorMessage, setErrorMessage] = useState<string | null>(null)
+	const noticeRef = useRef<HTMLHeadingElement>(null)
+	const fieldId = useId()
+
+	const router = useRouter()
 	const { formState, handleSubmit, register } = useForm<
 		BookDemoInput,
 		unknown,
@@ -40,11 +48,6 @@ export function BookDemoForm(props: BookDemoFormProps) {
 		mode: 'onTouched',
 		resolver: zodResolver(bookDemoSchema),
 	})
-	const [outcome, setOutcome] = useState<'idle' | 'unavailable' | 'failed'>(
-		'idle',
-	)
-	const noticeRef = useRef<HTMLHeadingElement>(null)
-	const fieldId = useId()
 
 	// Focus the unavailable heading if the demo request submission is temporarily unavailable.
 	useEffect(() => {
@@ -58,7 +61,13 @@ export function BookDemoForm(props: BookDemoFormProps) {
 		return copy.errors[code]
 	}
 
+	function handleDismissError() {
+		setErrorMessage(null)
+	}
+
 	async function send(data: BookDemoData) {
+		setErrorMessage(null)
+
 		try {
 			const response = await fetch('/api/book-a-demo/', {
 				body: JSON.stringify({
@@ -69,9 +78,21 @@ export function BookDemoForm(props: BookDemoFormProps) {
 				method: 'POST',
 			})
 
-			setOutcome(response.status === 503 ? 'unavailable' : 'failed')
+			if (response.ok) {
+				router.push('/early-access-sent')
+
+				return
+			}
+
+			if (response.status === 503) {
+				setOutcome('unavailable')
+
+				return
+			}
+
+			setErrorMessage(copy.form.failed)
 		} catch {
-			setOutcome('failed')
+			setErrorMessage(copy.form.failed)
 		}
 	}
 
@@ -181,10 +202,10 @@ export function BookDemoForm(props: BookDemoFormProps) {
 				>
 					{formState.isSubmitting ? copy.form.submitting : copy.form.submit}
 				</button>
-				<output aria-live="polite" className="text-sm text-status-danger">
-					{outcome === 'failed' ? copy.form.failed : ''}
-				</output>
 			</div>
+			{errorMessage ? (
+				<Toast onClose={handleDismissError}>{errorMessage}</Toast>
+			) : null}
 		</form>
 	)
 }

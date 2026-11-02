@@ -11,14 +11,15 @@ import {
 	BodyError,
 	readBoundedBody,
 } from '@components/early-access/request.body'
+import { sendDemoConfirmation } from '@infra/resend/send-demo-confirmation.adapter'
+import { sendDemoLeadNotification } from '@infra/resend/send-demo-lead-notification.adapter'
 
 export const runtime = 'nodejs'
 
 const bodyLimit = 4096
 
-// A demo request holds the early-access request contract before its body is
-// read, and is validated as the form validates it, so that a destination slots
-// in behind this same contract when one exists.
+// A demo request is validated against origin, headers, size and payload schema,
+// then dispatches confirmation and notification emails via Resend.
 export async function POST(request: Request): Promise<Response> {
 	if (request.method !== 'POST') return reply(405, 'INVALID_REQUEST')
 	if (isForeignRequest(request)) return reply(403, 'INVALID_ORIGIN')
@@ -42,7 +43,23 @@ export async function POST(request: Request): Promise<Response> {
 		return reply(400, 'VALIDATION_ERROR', fieldErrorsOf(result.error))
 	}
 
-	// Requests have no destination yet: refused as paused, and nothing is
-	// stored, logged or forwarded.
-	return reply(503, 'UNAVAILABLE')
+	try {
+		await sendDemoConfirmation({
+			company: result.data.company,
+			email: result.data.email,
+			locale: result.data.locale,
+			position: result.data.position,
+		})
+
+		await sendDemoLeadNotification({
+			company: result.data.company,
+			email: result.data.email,
+			locale: result.data.locale,
+			position: result.data.position,
+		})
+
+		return reply(200, 'OK')
+	} catch {
+		return reply(500, 'DELIVERY_FAILED')
+	}
 }
