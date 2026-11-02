@@ -21,9 +21,9 @@ Update test descriptions in unit tests under `packages/web/` so every `describe(
 
 **Status:** ready-for-agent
 
-- [ ] All `packages/web` test files start their `describe` calls with `web/ui/...` or `web/vendors/...`.
-- [ ] `drift quality check 10-testing` reports zero violations in `packages/web`.
-- [ ] All package and repo tests pass.
+- [x] All `packages/web` test files start their `describe` calls with `web/ui/...` or `web/vendors/...`.
+- [x] `drift quality check 10-testing` reports zero violations in `packages/web`.
+- [x] All package and repo tests pass.
 
 ### Verification
 

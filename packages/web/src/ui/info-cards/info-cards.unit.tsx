@@ -17,7 +17,7 @@ const items = [
 	},
 ]
 
-describe('InfoCards', () => {
+describe('web/ui/info-cards/info-cards', () => {
 	it('renders an unordered list of cards with optional eyebrows', () => {
 		const html = renderToString(<InfoCards items={items} />)
 		expect(html.startsWith('<ul')).toBe(true)

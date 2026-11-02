@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 
 import { ShareBar } from './share-bar'
 
-describe('ShareBar', () => {
+describe('web/ui/share-bar/share-bar', () => {
 	it('fills its share of the track and never more than all of it', () => {
 		expect(renderToString(<ShareBar share={0.25} />)).toContain('width:25%')
 		expect(renderToString(<ShareBar share={1.6} />)).toContain('width:100%')

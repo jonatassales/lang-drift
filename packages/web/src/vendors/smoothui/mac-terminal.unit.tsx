@@ -86,7 +86,7 @@ afterEach(() => {
 	vi.unstubAllGlobals()
 })
 
-describe('MacTerminal progress', () => {
+describe('web/vendors/smoothui/mac-terminal', () => {
 	it('reports each completed line in order and never reports zero', () => {
 		stubBrowser(false)
 		const onProgress = vi.fn()

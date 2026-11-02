@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 
 import { Eyebrow } from './eyebrow'
 
-describe('Eyebrow', () => {
+describe('web/ui/eyebrow/eyebrow', () => {
 	it('renders a span by default and a term on request', () => {
 		expect(renderToString(<Eyebrow>Period</Eyebrow>)).toMatch(/^<span/)
 		expect(renderToString(<Eyebrow as="dt">Estimate</Eyebrow>)).toMatch(/^<dt/)

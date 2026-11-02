@@ -31,7 +31,7 @@ function intersect(isIntersecting: boolean) {
 	})
 }
 
-describe('ScrollHint', () => {
+describe('web/ui/scroll-hint/scroll-hint', () => {
 	it('shows the band until the end of the content is on screen', () => {
 		vi.stubGlobal('IntersectionObserver', RecordingObserver)
 		const { container } = render(<ScrollHint />)
