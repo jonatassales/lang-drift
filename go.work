@@ -4,6 +4,6 @@ toolchain go1.26.10
 
 use (
 	./apps/extub
-	./packages/contracts
-	./packages/ex
+	./lib/core/contracts/go
+	./lib/cli
 )

@@ -1,0 +1,12 @@
+{
+	"name": "@langdrift/core",
+	"private": true,
+	"scripts": {
+		"test": "go -C contracts/go test ./...",
+		"typecheck": "go -C contracts/go vet ./..."
+	},
+	"os": [
+		"darwin",
+		"linux"
+	]
+}

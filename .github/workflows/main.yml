@@ -33,11 +33,11 @@ jobs:
         with:
           go-version-file: go.work
           cache-dependency-path: |
-            packages/ex/go.sum
+            lib/cli/go.sum
             go.work.sum
       # ex uses no cgo, so one runner builds every platform.
       - name: Build
-        working-directory: packages/ex
+        working-directory: lib/cli
         env:
           CGO_ENABLED: '0'
         run: |
@@ -50,10 +50,10 @@ jobs:
           cd dist/platforms && sha256sum ex-* >SHA256SUMS
       - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
-          subject-checksums: packages/ex/dist/platforms/SHA256SUMS
+          subject-checksums: lib/cli/dist/platforms/SHA256SUMS
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ex-${{ github.sha }}
-          path: packages/ex/dist/platforms/
+          path: lib/cli/dist/platforms/
           retention-days: 30
           if-no-files-found: error

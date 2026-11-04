@@ -1,0 +1,34 @@
+package catalog
+
+import (
+	"context"
+
+	"github.com/jonatassales/tao/lib/cli/src/application"
+	"github.com/jonatassales/tao/lib/cli/src/presentation/cli/support"
+
+	"github.com/spf13/cobra"
+)
+
+// RuntimeStarter starts a runtime.
+type RuntimeStarter interface {
+	Execute(context.Context, application.StartRuntimeRequest) (application.ExecutionOutcome, error)
+}
+
+// NewRuntimeUpCommand creates the runtime startup command.
+func NewRuntimeUpCommand(startRuntime RuntimeStarter, globals *support.Globals) *cobra.Command {
+	return &cobra.Command{
+		Use:   "up RUNTIME",
+		Short: "Prepare the runtime's namespace and run every configured unit",
+		Args:  validateSingleArgument,
+		RunE: func(command *cobra.Command, arguments []string) error {
+			return runFinite(command, globals, func(ctx context.Context, project application.ProjectSelection) (application.ExecutionOutcome, error) {
+				return startRuntime.Execute(ctx, application.StartRuntimeRequest{
+					RuntimeRequest: application.RuntimeRequest{
+						Project: project,
+						Runtime: arguments[0],
+					},
+				})
+			})
+		},
+	}
+}
