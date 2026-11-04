@@ -1,0 +1,25 @@
+{
+	"version": 1,
+	"status": "draft",
+	"illustrative": true,
+	"note": "Illustrative token forecasts per effort until this repository's own runs produce observed figures.",
+	"unit": "thousands-of-tokens",
+	"byEffort": {
+		"low": {
+			"input": 2000,
+			"output": 120
+		},
+		"medium": {
+			"input": 3500,
+			"output": 250
+		},
+		"high": {
+			"input": 6000,
+			"output": 500
+		}
+	},
+	"planning": {
+		"input": 35,
+		"output": 5
+	}
+}
