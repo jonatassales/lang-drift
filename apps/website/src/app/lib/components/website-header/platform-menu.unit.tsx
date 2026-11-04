@@ -31,9 +31,9 @@ vi.mock('next-intl', () => ({
 			ciGates: 'CI Gates',
 			ciGatesDescription:
 				'Pull request reports and delivery evidence in your own CI.',
-			voiceAiInterfaces: 'Voice AI Interfaces',
-			voiceAiInterfacesDescription:
-				'Real-time speech and interactive voice interfaces for agents.',
+			safeSeat: 'Safe Seat',
+			safeSeatDescription:
+				'Part of LangDrift FinOps: every ticket keeps a part a person writes by hand.',
 			comingSoon: 'Coming soon',
 		}
 
@@ -48,11 +48,11 @@ afterEach(() => {
 })
 
 describe('website/src/app/lib/components/website-header/platform-menu', () => {
-	it('renders platform products with CI Gates and Voice AI Interfaces coming soon badges', () => {
+	it('renders platform products with CI Gates and Safe Seat coming soon badges', () => {
 		render(<PlatformMenu />)
 
 		expect(screen.getByText('CI Gates')).toBeDefined()
-		expect(screen.getByText('Voice AI Interfaces')).toBeDefined()
+		expect(screen.getByText('Safe Seat')).toBeDefined()
 		expect(screen.getAllByText('Coming soon')).toHaveLength(2)
 		expect(
 			screen.getByText(
@@ -61,8 +61,17 @@ describe('website/src/app/lib/components/website-header/platform-menu', () => {
 		).toBeDefined()
 		expect(
 			screen.getByText(
-				'Real-time speech and interactive voice interfaces for agents.',
+				'Part of LangDrift FinOps: every ticket keeps a part a person writes by hand.',
 			),
 		).toBeDefined()
+		expect(screen.queryByText('Voice AI Interfaces')).toBeNull()
+	})
+
+	it('links Safe Seat to its page while it is coming soon', () => {
+		render(<PlatformMenu />)
+
+		const link = screen.getByText('Safe Seat').closest('a')
+
+		expect(link?.getAttribute('href')).toBe('/platform/safe-seat')
 	})
 })

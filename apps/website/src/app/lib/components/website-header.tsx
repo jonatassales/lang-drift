@@ -273,6 +273,14 @@ export function WebsiteHeader() {
 					</p>
 					{platformProducts.map((product) => {
 						const Icon = product.icon
+						const label = (
+							<span className="flex items-center gap-2">
+								<span>{translate(product.label)}</span>
+								{'badge' in product && product.badge ? (
+									<ProductBadge>{translate(product.badge)}</ProductBadge>
+								) : null}
+							</span>
+						)
 
 						return 'href' in product ? (
 							<Link
@@ -282,17 +290,12 @@ export function WebsiteHeader() {
 								onClick={closeDrawer}
 							>
 								<Icon className="size-5" />
-								{translate(product.label)}
+								{label}
 							</Link>
 						) : (
 							<span className={drawerItem} key={product.label}>
 								<Icon className="size-5" />
-								<span className="flex items-center gap-2">
-									<span>{translate(product.label)}</span>
-									{'badge' in product && product.badge ? (
-										<ProductBadge>{translate(product.badge)}</ProductBadge>
-									) : null}
-								</span>
+								{label}
 							</span>
 						)
 					})}
