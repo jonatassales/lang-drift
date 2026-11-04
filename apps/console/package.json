@@ -10,7 +10,7 @@
 		"test": "node --test 'src/**/*.test.ts'"
 	},
 	"dependencies": {
-		"@langdrift/tokens": "workspace:*",
+		"tokens": "workspace:*",
 		"@langdrift/web": "workspace:*",
 		"@vercel/analytics": "^2.0.1",
 		"next": "16.4.3",

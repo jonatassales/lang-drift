@@ -73,7 +73,7 @@ rather stay anonymous, that is fine too.
 - **Platform assets**: `https://langdrift.md` (the public site), the console
   (`apps/console`), and stub APIs (`apps/extub`).
 - **Published packages**: `@langdrift/ex` (including platform binaries and launchers),
-  `@langdrift/contracts`, `@langdrift/tokens`, and `@langdrift/web`.
+  `@langdrift/contracts` and `@langdrift/web`.
 
 ### Out of scope
 
