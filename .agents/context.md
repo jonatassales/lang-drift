@@ -81,6 +81,7 @@ When the shell resolves `drift` to another program (a link from an older checkou
 Workflow: `research` when a question needs primary sources, then `grill-with-docs` (or `grill-me` for plans outside the code), `to-spec`, `to-tickets`, `implement` and `code-review`.
 
 - `.agents/policies/human-in-the-loop.policy.md` sets where the owner takes part, which stages run on their own and what gates them. It belongs to this project and team; the skills read it instead of assuming.
+- `.agents/policies/safe-seat.policy.md` sets the dev part that every ticket reserves for the owner to write by hand. `to-tickets` proposes it, `implement` leaves its paths alone and stops when only they remain, and `code-review` reviews it once the owner has written it.
 - A direct request to build or change application code enters the workflow: start with the `grilling` skill, plus `domain-modeling` when terms or decisions settle, instead of writing code.
 - `.claude/hooks/guard-implement-effort.sh` blocks `implement` for the current session until the `llm-effort-analyzer` skill (`.claude/skills/llm-effort-analyzer/SKILL.md`) has recorded its result at `.agents/workflow/.effort-log/<session_id>.md`.
 - The commit-msg hook rejects a commit that changes `apps/` or `packages/` without a `Ticket: <NNNN>` trailer naming an existing ticket.
@@ -207,6 +208,10 @@ _Avoid_: Module, vertical, sub-app
 **Console**:
 The one authenticated LangDrift surface on langdrift.md where a team manages FinOps and its microruntimes, behind one account and one shell. It lives in `apps/console`, imported from Exphere's console.
 _Avoid_: Dashboard (for the whole), admin, control panel
+
+**Safe Seat**:
+The LangDrift FinOps harness capability that keeps a person writing a part of every ticket by hand, so the team keeps understanding and debugging what it ships.
+_Avoid_: SS, health, wellness, quota
 
 ### Apps
 

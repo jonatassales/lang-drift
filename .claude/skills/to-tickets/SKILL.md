@@ -3,7 +3,7 @@ name: to-tickets
 description: Break a plan, spec, or the current conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published to the configured tracker (edges as text in one file per ticket locally, or native blocking links on a real tracker).
 metadata:
   source: https://github.com/mattpocock/skills/tree/5beb35b/skills/engineering/to-tickets
-  adapted: Adjusted to this repository's layout; checkpoints follow the workflow policy.
+  adapted: Adjusted to this repository's layout; checkpoints follow the workflow policy; every ticket carries a Safe Seat dev part.
 ---
 
 # To Tickets
@@ -39,6 +39,17 @@ Break the work into **tracer bullet** tickets.
 
 Give each ticket its **blocking edges**: the other tickets that must complete before it can start. A ticket with no blockers can start immediately.
 
+Give each ticket its **dev part**: the problem in it that the owner writes by hand, as `.agents/policies/safe-seat.policy.md` sets out.
+
+- The problem has its own goal and acceptance criteria.
+- Its category is one of those in the policy's Categories section: `core-domain`, `hard-part` or `new-stack`.
+- It is never one of the kinds the policy excludes.
+- It reaches the policy's Floor: at least 5% of the lines the ticket will add.
+- It is located by paths that only the owner writes, including their tests, so that `implement` can leave them alone.
+- The boundary the rest of the code calls (a signature or an interface) is named in the ticket and sits outside those paths.
+
+Your proposal stands as the decision unless the owner changes it, as the policy's Decisions section says. When no part of a ticket qualifies, write an override with its reason and date instead, as the policy's Override section says.
+
 **Wide refactors are the exception to vertical slicing.** A **wide refactor** is one mechanical change (rename a column, retype a shared symbol) whose **blast radius** fans across the whole codebase, so a single edit breaks thousands of call sites at once and no vertical slice can land green. Don't force it into a tracer bullet; sequence it as **expand–contract**. First expand: add the new form beside the old so nothing breaks. Then migrate the call sites over in batches sized by blast radius (per package, per directory), each batch its own ticket blocked by the expand, keeping CI green batch to batch because the old form still exists. Finally contract: delete the old form once no caller remains, in a ticket blocked by every migrate batch. When even the batches can't stay green alone, keep the sequence but let them share an integration branch that all block a final integrate-and-verify ticket; green is promised only there.
 
 ### 4. Review the breakdown
@@ -48,12 +59,14 @@ Draft the breakdown as a numbered list. For each ticket, note:
 - **Title**: short descriptive name
 - **Blocked by**: which other tickets (if any) must complete first
 - **What it delivers**: the end-to-end behaviour this ticket makes work
+- **Dev part**: its category and paths, or its override
 
 Check it yourself, or with the owner if `.agents/policies/human-in-the-loop.policy.md` puts a checkpoint here:
 
 - Does the granularity feel right? (too coarse / too fine)
 - Are the blocking edges correct: does each ticket only depend on tickets that genuinely gate it?
 - Should any tickets be merged or split further?
+- Is each dev part a problem worth reasoning about, and does it reach the Floor? Do its paths stay clear of everything the agent must write in that ticket?
 
 Revise until every answer holds, then publish.
 
@@ -83,6 +96,20 @@ Do NOT close or modify any parent issue.
 - [ ] Acceptance criterion 1
 - [ ] Acceptance criterion 2
 
+## Dev part
+
+**Category:** `core-domain`, `hard-part` or `new-stack`, and why this problem.
+
+**Paths:** the files the owner writes, tests included.
+
+**Boundary:** the signature or interface the rest of the code calls, which the agent writes outside those paths.
+
+**Goal:** the problem the owner solves.
+
+- [ ] Dev part acceptance criterion
+
+**Override:** the reason and the date, only when there is one. It stands in place of the fields above when no part qualifies, and beside them when the owner does not write a part that qualifies.
+
 </local-ticket-template>
 
 <issue-template>
@@ -100,10 +127,14 @@ The end-to-end behaviour this ticket makes work, from the user's perspective, no
 - [ ] Criterion 1
 - [ ] Criterion 2
 
+## Dev part
+
+The category, paths, boundary, goal and acceptance criteria of the part the owner writes, and the override with its reason and date when there is one, as in the local template.
+
 ## Blocked by
 
 - A reference to each blocking ticket, or "None (can start immediately)". Omit this section when blockers were set as native edges.
 
 </issue-template>
 
-In either form, avoid specific file paths or code snippets: they go stale fast. Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it and note briefly that it came from a prototype. Trim to the decision-rich parts, not a working demo, just the important bits.
+In either form, avoid specific file paths or code snippets: they go stale fast. The dev part's paths and boundary are an exception, because they are the decision itself. Another exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it and note briefly that it came from a prototype. Trim to the decision-rich parts, not a working demo, just the important bits.
