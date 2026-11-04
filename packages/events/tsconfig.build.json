@@ -6,5 +6,5 @@
 		"rootDir": "./src",
 		"declaration": true
 	},
-	"exclude": ["src/**/*.unit.ts"]
+	"exclude": ["src/**/*.unit.ts", "src/**/*.mock.ts"]
 }

@@ -16,10 +16,13 @@ describe('demo-requests/event-log/event-log-connection-opener.factory', () => {
 	it('opens a connection that can read the stream without connecting yet', () => {
 		vi.stubEnv('REDIS_URL', 'redis://127.0.0.1:6379')
 
-		const connection = createEventLogConnectionOpener()()
+		const opener = createEventLogConnectionOpener()
+		const consumer = opener.consumer()
+		const producer = opener.producer()
 
-		expect(typeof connection.xreadgroup).toBe('function')
-		expect(typeof connection.xrange).toBe('function')
-		connection.disconnect()
+		expect(typeof consumer.xreadgroup).toBe('function')
+		expect(typeof producer.xadd).toBe('function')
+		consumer.disconnect()
+		producer.disconnect()
 	})
 })

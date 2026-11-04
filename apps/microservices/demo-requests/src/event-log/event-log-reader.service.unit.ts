@@ -37,7 +37,10 @@ describe('demo-requests/event-log/event-log-reader.service', () => {
 				],
 			],
 		})
-		const reader = new EventLogReaderService(() => connection)
+		const reader = new EventLogReaderService({
+			consumer: () => connection,
+			producer: () => connection,
+		})
 
 		const entries = await reader.readAggregate(requestA)
 
@@ -70,7 +73,10 @@ describe('demo-requests/event-log/event-log-reader.service', () => {
 				[['1762178700001-0', fields(requestA, 'demo-request.received')]],
 			],
 		})
-		const reader = new EventLogReaderService(() => connection)
+		const reader = new EventLogReaderService({
+			consumer: () => connection,
+			producer: () => connection,
+		})
 
 		const entries = await reader.readAggregate(requestA)
 
@@ -94,30 +100,44 @@ describe('demo-requests/event-log/event-log-reader.service', () => {
 				],
 			],
 		})
-		const reader = new EventLogReaderService(() => connection)
+		const reader = new EventLogReaderService({
+			consumer: () => connection,
+			producer: () => connection,
+		})
 
 		const entries = await reader.readAggregate(requestA)
 
 		expect(entries.map((entry) => entry.id)).toEqual(['1762178700001-0'])
 	})
 
-	it('follows the stream from the live end on its own connection, pings on an empty block and tears down on unsubscribe', async () => {
+	it('follows the stream from the resolved live end on its own connection, pings on an empty block and tears down on unsubscribe', async () => {
 		const connections: FakeReaderConnection[] = []
-		const reader = new EventLogReaderService(() => {
-			const connection = new FakeReaderConnection({
-				follows: [
-					[
-						[
-							stream,
-							[['1762178700000-0', fields(requestA, 'demo-request.received')]],
-						],
+		const reader = new EventLogReaderService({
+			producer: () => new FakeReaderConnection(),
+			consumer: () => {
+				const connection = new FakeReaderConnection({
+					latest: [
+						['1762178699999-0', fields(requestB, 'demo-request.received')],
 					],
-					null,
-				],
-			})
-			connections.push(connection)
+					follows: [
+						[
+							[
+								stream,
+								[
+									[
+										'1762178700000-0',
+										fields(requestA, 'demo-request.received'),
+									],
+								],
+							],
+						],
+						null,
+					],
+				})
+				connections.push(connection)
 
-			return connection
+				return connection
+			},
 		})
 		const events: FollowEvent[] = []
 
@@ -150,14 +170,22 @@ describe('demo-requests/event-log/event-log-reader.service', () => {
 			},
 		])
 		expect(connections[0].calls[0]).toEqual([
+			'xrevrange',
+			stream,
+			'+',
+			'-',
+			'COUNT',
+			1,
+		])
+		expect(connections[0].calls[1]).toEqual([
 			'xread',
 			'BLOCK',
 			15000,
 			'STREAMS',
 			stream,
-			'$',
+			'1762178699999-0',
 		])
-		expect(connections[0].calls[1]).toEqual([
+		expect(connections[0].calls[2]).toEqual([
 			'xread',
 			'BLOCK',
 			15000,
@@ -170,7 +198,10 @@ describe('demo-requests/event-log/event-log-reader.service', () => {
 
 	it('follows from a given entry when the client names one', async () => {
 		const connection = new FakeReaderConnection()
-		const reader = new EventLogReaderService(() => connection)
+		const reader = new EventLogReaderService({
+			consumer: () => connection,
+			producer: () => connection,
+		})
 
 		const subscription = reader.follow('1762178700000-0').subscribe()
 
@@ -192,7 +223,10 @@ describe('demo-requests/event-log/event-log-reader.service', () => {
 		const connection = new FakeReaderConnection({
 			ranges: [[]],
 		})
-		const reader = new EventLogReaderService(() => connection)
+		const reader = new EventLogReaderService({
+			consumer: () => connection,
+			producer: () => connection,
+		})
 
 		await reader.readAggregate(requestA)
 

@@ -6,13 +6,13 @@ import {
 	demoRequestDeadLetterStream,
 	demoRequestStream,
 } from '@langdrift/events'
-import type { StreamConnection } from '@langdrift/events/transport'
 import { RedisStreamsServer } from '@langdrift/events/transport'
 import { NestFactory } from '@nestjs/core'
 import type { MicroserviceOptions } from '@nestjs/microservices'
 import { ExpressAdapter } from '@nestjs/platform-express'
 
 import { AppModule } from '@app/app.module.js'
+import type { EventLogConnectionOpener } from '@app/event-log/event-log-connection-opener.factory.js'
 import { eventLogConnectionOpenerToken } from '@app/event-log/event-log-connection-opener.token.js'
 
 // A hybrid application: the HTTP routes, plus the archive consumer group on
@@ -23,14 +23,14 @@ async function bootstrap() {
 
 	const app = await NestFactory.create(AppModule, new ExpressAdapter())
 
-	const open = app.get<() => StreamConnection>(eventLogConnectionOpenerToken)
+	const open = app.get<EventLogConnectionOpener>(eventLogConnectionOpenerToken)
 	app.connectMicroservice<MicroserviceOptions>({
 		strategy: new RedisStreamsServer({
 			stream: demoRequestStream,
 			group: demoRequestArchiveGroup,
 			consumer: hostname(),
 			deadLetterStream: demoRequestDeadLetterStream,
-			connect: open,
+			connect: () => open.consumer(),
 		}),
 	})
 	app.enableShutdownHooks()

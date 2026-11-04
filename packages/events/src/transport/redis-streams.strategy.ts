@@ -18,6 +18,7 @@ const defaults = {
 	claimMinIdleMs: 60000,
 	claimEveryMs: 30000,
 	maxDeliveries: 5,
+	recoveryDelayMs: 1000,
 }
 
 const wildcardPattern = '*'
@@ -46,6 +47,7 @@ export class RedisStreamsServer
 	private readonly claimMinIdleMs: number
 	private readonly claimEveryMs: number
 	private readonly maxDeliveries: number
+	private readonly recoveryDelayMs: number
 	private stopping = false
 	private loop: Promise<void> | undefined
 	private lastClaimAt: number | undefined
@@ -59,6 +61,7 @@ export class RedisStreamsServer
 		this.claimMinIdleMs = options.claimMinIdleMs ?? defaults.claimMinIdleMs
 		this.claimEveryMs = options.claimEveryMs ?? defaults.claimEveryMs
 		this.maxDeliveries = options.maxDeliveries ?? defaults.maxDeliveries
+		this.recoveryDelayMs = options.recoveryDelayMs ?? defaults.recoveryDelayMs
 	}
 
 	async listen(callback: (...optionalParams: unknown[]) => unknown) {
@@ -100,15 +103,44 @@ export class RedisStreamsServer
 		}
 	}
 
+	// A failure of the connection or of Redis itself (a stream that was lost,
+	// an outage) is logged, the group is ensured again and the loop goes on
+	// after a pause; only close() ends it.
 	private async consume() {
 		while (!this.stopping) {
-			await this.claimWhenDue()
+			try {
+				await this.claimWhenDue()
 
-			const items = await this.read()
+				const items = await this.read()
 
-			for (const item of items) {
-				await this.deliver(item, 1)
+				for (const item of items) {
+					await this.deliver(item, 1)
+				}
+			} catch (error) {
+				if (this.stopping) return
+
+				const reason = error instanceof Error ? error.message : String(error)
+				this.logger.error(
+					`The ${this.options.group} consumer failed and retries: ${reason}`,
+				)
+
+				await this.recover()
 			}
+		}
+	}
+
+	private async recover() {
+		await new Promise((resolve) => setTimeout(resolve, this.recoveryDelayMs))
+
+		if (this.stopping) return
+
+		try {
+			await this.createGroup()
+		} catch (error) {
+			const reason = error instanceof Error ? error.message : String(error)
+			this.logger.error(
+				`The ${this.options.group} group is not back yet: ${reason}`,
+			)
 		}
 	}
 
@@ -149,6 +181,8 @@ export class RedisStreamsServer
 
 			return reply?.[0]?.[1] ?? []
 		} catch (error) {
+			// close() disconnects the blocking connection, which rejects the read in
+			// flight: that rejection ends the loop and is not a failure.
 			if (this.stopping) return []
 
 			throw error

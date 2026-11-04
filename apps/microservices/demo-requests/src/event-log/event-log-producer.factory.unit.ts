@@ -8,10 +8,13 @@ import { createEventLogProducer } from './event-log-producer.factory.js'
 describe('demo-requests/event-log/event-log-producer.factory', () => {
 	it('builds a Redis Streams client for the demo-requests stream without opening a connection yet', () => {
 		let opened = 0
-		const producer = createEventLogProducer(() => {
-			opened += 1
+		const producer = createEventLogProducer({
+			consumer: () => new FakeReaderConnection(),
+			producer: () => {
+				opened += 1
 
-			return new FakeReaderConnection()
+				return new FakeReaderConnection()
+			},
 		})
 
 		expect(producer).toBeInstanceOf(RedisStreamsClient)

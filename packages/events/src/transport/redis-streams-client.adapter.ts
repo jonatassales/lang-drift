@@ -16,10 +16,23 @@ export class RedisStreamsClient extends ClientProxy {
 		super()
 	}
 
+	// The connection is opened and connected once; an opening that fails is
+	// forgotten, so the next emit tries again instead of reusing a dead one.
 	async connect(): Promise<StreamConnection> {
-		if (!this.connection) this.connection = this.options.connect()
+		if (this.connection) return this.connection
 
-		return this.connection
+		const connection = this.options.connect()
+		try {
+			await connection.connect()
+		} catch (error) {
+			connection.disconnect()
+
+			throw error
+		}
+
+		this.connection = connection
+
+		return connection
 	}
 
 	async close(): Promise<void> {

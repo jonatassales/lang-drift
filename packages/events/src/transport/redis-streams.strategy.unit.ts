@@ -55,6 +55,7 @@ function harness(
 		claimMinIdleMs: 60000,
 		claimEveryMs: 30000,
 		maxDeliveries: 5,
+		recoveryDelayMs: 0,
 		connect: () => {
 			const connection = connections.shift()
 			if (!connection) throw new Error('only two connections are opened')
@@ -167,6 +168,34 @@ describe('events/transport/redis-streams.strategy', () => {
 
 		expect(blocking.calls.at(-1)).toEqual(['disconnect'])
 		expect(commands.calls.at(-1)).toEqual(['quit'])
+	})
+
+	it('logs a failed read, ensures the group again and keeps consuming', async () => {
+		const { server, blocking, commands } = harness({
+			readError: new Error(
+				"NOGROUP No such key 'demo-requests:events' or consumer group 'mailer'",
+			),
+			reads: [[[stream, [['1762178700000-8', fields]]]]],
+		})
+		const handled: unknown[] = []
+		server.addHandler(
+			'demo-request.received',
+			async (data: unknown) => {
+				handled.push(data)
+			},
+			true,
+		)
+
+		await server.listen(() => undefined)
+
+		await blocking.idle()
+
+		await server.close()
+
+		expect(handled).toEqual([envelope])
+		expect(commands.calls.filter((call) => call[0] === 'xgroup')).toHaveLength(
+			2,
+		)
 	})
 
 	it('acknowledges and skips an entry no handler of the group wants', async () => {

@@ -11,6 +11,9 @@ export interface StreamConnectionScript {
 	claims?: StreamItem[][]
 	deliveries?: Record<string, number>
 	groupError?: Error
+	connectError?: Error
+	readError?: Error
+	latest?: StreamItem[]
 	addedIds?: string[]
 }
 
@@ -24,6 +27,9 @@ export class FakeStreamConnection implements StreamConnection {
 	private readonly claims: StreamItem[][]
 	private readonly deliveries: Map<string, number>
 	private readonly groupError: Error | undefined
+	private readonly connectError: Error | undefined
+	private readError: Error | undefined
+	private readonly latest: StreamItem[]
 	private readonly addedIds: string[]
 	private release: (() => void) | undefined
 	private idleResolvers: (() => void)[] = []
@@ -36,6 +42,9 @@ export class FakeStreamConnection implements StreamConnection {
 		this.claims = [...(script.claims ?? [])]
 		this.deliveries = new Map(Object.entries(script.deliveries ?? {}))
 		this.groupError = script.groupError
+		this.connectError = script.connectError
+		this.readError = script.readError
+		this.latest = [...(script.latest ?? [])]
 		this.addedIds = [...(script.addedIds ?? [])]
 	}
 
@@ -47,6 +56,23 @@ export class FakeStreamConnection implements StreamConnection {
 		return new Promise((resolve) => {
 			this.idleResolvers.push(resolve)
 		})
+	}
+
+	async connect(): Promise<void> {
+		this.calls.push(['connect'])
+		if (this.connectError) throw this.connectError
+	}
+
+	async xrevrange(
+		key: string,
+		end: '+',
+		start: '-',
+		countToken: 'COUNT',
+		count: number,
+	): Promise<StreamItem[]> {
+		this.calls.push(['xrevrange', key, end, start, countToken, count])
+
+		return this.latest
 	}
 
 	async xgroup(
@@ -87,6 +113,13 @@ export class FakeStreamConnection implements StreamConnection {
 			key,
 			id,
 		])
+		if (this.readError) {
+			const error = this.readError
+			this.readError = undefined
+
+			throw error
+		}
+
 		const scripted = this.reads.shift()
 		if (scripted !== undefined) return scripted
 

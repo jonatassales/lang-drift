@@ -4,6 +4,7 @@ export type StreamItem = [id: string, fields: string[] | null]
 export type StreamReadReply = [key: string, items: StreamItem[]][] | null
 
 export interface StreamConnection {
+	connect(): Promise<void>
 	xgroup(
 		subcommand: 'CREATE',
 		key: string,
@@ -55,6 +56,13 @@ export interface StreamConnection {
 		key: string,
 		id: string,
 	): Promise<StreamReadReply>
+	xrevrange(
+		key: string,
+		end: '+',
+		start: '-',
+		countToken: 'COUNT',
+		count: number,
+	): Promise<StreamItem[]>
 	disconnect(): void
 	quit(): Promise<unknown>
 }

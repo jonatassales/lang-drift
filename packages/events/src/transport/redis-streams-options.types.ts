@@ -14,6 +14,7 @@ export interface RedisStreamsServerOptions {
 	claimMinIdleMs?: number
 	claimEveryMs?: number
 	maxDeliveries?: number
+	recoveryDelayMs?: number
 }
 
 // What a producer needs: its stream, how to open a connection, and the

@@ -1,3 +1,4 @@
+export { createProducerConnection } from './create-producer-connection.factory.js'
 export { createStreamConnection } from './create-stream-connection.factory.js'
 export { parseStreamEntry } from './parse-stream-entry.compute.js'
 export type { RedisStreamsContextArgs } from './redis-streams.context.js'

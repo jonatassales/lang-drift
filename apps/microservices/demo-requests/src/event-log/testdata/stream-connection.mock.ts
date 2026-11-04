@@ -7,6 +7,7 @@ import type {
 export interface ReaderConnectionScript {
 	ranges?: StreamItem[][]
 	follows?: StreamReadReply[]
+	latest?: StreamItem[]
 }
 
 // Records the read commands the reader runs and answers from a script. A
@@ -15,6 +16,7 @@ export class FakeReaderConnection implements StreamConnection {
 	readonly calls: (string | number)[][] = []
 	private readonly ranges: StreamItem[][]
 	private readonly follows: StreamReadReply[]
+	private readonly latest: StreamItem[]
 	private release: (() => void) | undefined
 	private idleResolvers: (() => void)[] = []
 	private blocking = false
@@ -22,6 +24,7 @@ export class FakeReaderConnection implements StreamConnection {
 	constructor(script: ReaderConnectionScript = {}) {
 		this.ranges = [...(script.ranges ?? [])]
 		this.follows = [...(script.follows ?? [])]
+		this.latest = [...(script.latest ?? [])]
 	}
 
 	// Resolves once a follow finds the script exhausted and blocks.
@@ -31,6 +34,22 @@ export class FakeReaderConnection implements StreamConnection {
 		return new Promise((resolve) => {
 			this.idleResolvers.push(resolve)
 		})
+	}
+
+	async connect(): Promise<void> {
+		this.calls.push(['connect'])
+	}
+
+	async xrevrange(
+		key: string,
+		end: '+',
+		start: '-',
+		countToken: 'COUNT',
+		count: number,
+	): Promise<StreamItem[]> {
+		this.calls.push(['xrevrange', key, end, start, countToken, count])
+
+		return this.latest
 	}
 
 	async xrange(

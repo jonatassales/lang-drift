@@ -10,6 +10,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common'
 import { Observable } from 'rxjs'
 
 import { aggregateIdOf } from './aggregate-id-of.compute.js'
+import type { EventLogConnectionOpener } from './event-log-connection-opener.factory.js'
 import { eventLogConnectionOpenerToken } from './event-log-connection-opener.token.js'
 
 export interface FollowEntry {
@@ -25,7 +26,7 @@ export type FollowEvent = FollowEntry | FollowPing
 
 const pageSize = 500
 const blockMs = 15000
-const liveEnd = '$'
+const streamStart = '0-0'
 
 // Reads the event log without a consumer group: a request's entries by
 // ranging the stream, or the stream as it grows, one blocking connection per
@@ -37,7 +38,7 @@ export class EventLogReaderService implements OnApplicationShutdown {
 
 	constructor(
 		@Inject(eventLogConnectionOpenerToken)
-		private readonly open: () => StreamConnection,
+		private readonly open: EventLogConnectionOpener,
 	) {}
 
 	async readAggregate(aggregateId: string): Promise<StreamEntry[]> {
@@ -69,11 +70,23 @@ export class EventLogReaderService implements OnApplicationShutdown {
 
 	follow(fromId?: string): Observable<FollowEvent> {
 		return new Observable((subscriber) => {
-			const connection = this.open()
+			const connection = this.open.consumer()
 			let stopped = false
-			let last = fromId ?? liveEnd
+			let last = fromId
 
+			// The live end is resolved to a concrete id once, so nothing appended
+			// between two blocking reads is skipped.
 			const run = async () => {
+				if (last === undefined) {
+					try {
+						last = await this.latestEntryId(connection)
+					} catch (error) {
+						if (!stopped) subscriber.error(error)
+
+						return
+					}
+				}
+
 				while (!stopped) {
 					let reply: Awaited<ReturnType<StreamConnection['xread']>>
 					try {
@@ -85,6 +98,8 @@ export class EventLogReaderService implements OnApplicationShutdown {
 							last,
 						)
 					} catch (error) {
+						// Unsubscribing disconnects the blocking read, which rejects it: that
+						// rejection is the teardown, not a failure to report.
 						if (!stopped) subscriber.error(error)
 
 						return
@@ -131,8 +146,21 @@ export class EventLogReaderService implements OnApplicationShutdown {
 		await connection.quit()
 	}
 
+	// The id of the newest entry, or the start when the stream is empty.
+	private async latestEntryId(connection: StreamConnection): Promise<string> {
+		const newest = await connection.xrevrange(
+			demoRequestStream,
+			'+',
+			'-',
+			'COUNT',
+			1,
+		)
+
+		return newest[0]?.[0] ?? streamStart
+	}
+
 	private sharedConnection(): StreamConnection {
-		if (!this.shared) this.shared = this.open()
+		if (!this.shared) this.shared = this.open.consumer()
 
 		return this.shared
 	}

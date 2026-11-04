@@ -22,6 +22,8 @@ Keys, never values. `.env.development` holds the non-secret defaults and is trac
 
 ## Development
 
+The service becomes ready once Redis answers: its consumer group is created on the first command, so with Redis away the process waits and the health route does not listen yet. Once up, a Redis outage makes the recording of an outcome fail at once instead of queueing it, so the entry stays pending and is handled again when Redis returns; the idempotency key keeps the email from going out twice.
+
 From the repository root, with Redis listening on the `REDIS_URL` of `.env.development` and `demo-requests` producing events:
 
 ```sh

@@ -34,6 +34,7 @@ describe('events/transport/redis-streams-client.adapter', () => {
 
 		expect(id).toBe('1762178700000-7')
 		expect(connection.calls).toEqual([
+			['connect'],
 			[
 				'xadd',
 				'demo-requests:events',
@@ -71,6 +72,37 @@ describe('events/transport/redis-streams-client.adapter', () => {
 		await expect(
 			lastValueFrom(client.send('demo-request.received', envelope)),
 		).rejects.toThrow(/request-response/)
+	})
+
+	it('rejects an emit when the connection cannot be opened and opens a new one on the next emit', async () => {
+		const connections: FakeStreamConnection[] = []
+		let failures = 1
+		const client = new RedisStreamsClient({
+			stream: 'demo-requests:events',
+			connect: () => {
+				const connection = new FakeStreamConnection(
+					failures > 0
+						? {
+								connectError: new Error('connect ECONNREFUSED 127.0.0.1:6379'),
+							}
+						: {},
+				)
+				failures -= 1
+				connections.push(connection)
+
+				return connection
+			},
+		})
+
+		await expect(
+			lastValueFrom(client.emit('demo-request.received', envelope)),
+		).rejects.toThrow(/ECONNREFUSED/)
+
+		await lastValueFrom(client.emit('demo-request.received', envelope))
+
+		expect(connections).toHaveLength(2)
+		expect(connections[0].calls).toEqual([['connect'], ['disconnect']])
+		expect(connections[1].calls[0]).toEqual(['connect'])
 	})
 
 	it('quits the connection on close and opens a new one on the next emit', async () => {
