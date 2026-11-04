@@ -9,7 +9,7 @@ export function isLoadTestResult(
 	const counts = [report.succeeded, report.failed]
 	const times = [report.durationMs, report.p50Ms, report.p95Ms, report.maxMs]
 	if (
-		report.target !== 'extub-loopback' ||
+		report.target !== 'console-stubs-loopback' ||
 		report.requests !== 50 ||
 		report.concurrency !== 50 ||
 		!counts.every(

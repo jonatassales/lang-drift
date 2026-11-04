@@ -129,7 +129,7 @@ func TestHostedModeChallengesForABearerToken(t *testing.T) {
 		if writer.Code != 401 || errorCode(result) != "token_required" {
 			t.Fatalf("%q answered %d %v", authorization, writer.Code, result)
 		}
-		if challenge := writer.Header().Get("WWW-Authenticate"); challenge != `Bearer realm="extub"` {
+		if challenge := writer.Header().Get("WWW-Authenticate"); challenge != `Bearer realm="console-stubs"` {
 			t.Fatalf("%q challenged with %q", authorization, challenge)
 		}
 	}

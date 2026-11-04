@@ -54,7 +54,7 @@ test('proxy matcher excludes API, _next, and static asset files', () => {
 		'/_next/static/chunks/main.js',
 		'/_next/image',
 		'/api/console/home',
-		'/api/extub/products',
+		'/api/console-stubs/products',
 		'/favicon.ico',
 		'/icon.svg',
 		'/apple-icon.png',

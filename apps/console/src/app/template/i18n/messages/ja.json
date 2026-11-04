@@ -151,7 +151,7 @@
 			"provider_endpoint_invalid": "推奨設定プロバイダーの接続先が無効です。",
 			"provider_request_failed": "推奨設定のリクエストに失敗しました。後で再試行するか、値を手動で入力してください。",
 			"provider_response_invalid": "プロバイダーが無効な推奨設定を返しました。値を手動で入力してください。",
-			"stub_suggestion": "extub の模擬提案です。RAG 検索やモデル呼び出しは実行されていません。"
+			"stub_suggestion": "console-stubs の模擬提案です。RAG 検索やモデル呼び出しは実行されていません。"
 		},
 		"recommendationLimits": {
 			"future_workload_unverified": "サンプルは過去の実行に基づいています。将来の同等な負荷での性能は未検証です。",
@@ -229,7 +229,7 @@
 		"stubBanner": "ローカルプレビュー · 模擬 microruntime。HTTP バーストの時間はローカルスタブで実測します。",
 		"webrtcConnected": "WebRTC 接続済み · 模擬更新",
 		"webrtcFallback": "HTTP プレビュー · WebRTC 未接続",
-		"topologySynthetic": "extub のシードによる模擬コンテナ接続です。",
+		"topologySynthetic": "console-stubs のシードによる模擬コンテナ接続です。",
 		"componentCount": "{count} 個のコンポーネント",
 		"peakPerExecution": "各実行で報告された最大値。欠落したデータは取得不能として扱います。",
 		"quickReport": "FinOps とテスト",
@@ -241,7 +241,7 @@
 		"loadTestRunning": "テスト中…",
 		"loadTestCooldown": "10 秒お待ちください",
 		"runLoadTest": "50 リクエストを実行",
-		"loadTestScope": "ローカル extub スタブのみに HTTP リクエストを 50 回試行し、最大 50 件を並行処理します。実行は最大 3 秒、間隔は 10 秒です。ワークロードや外部宛先にはアクセスしません。",
+		"loadTestScope": "ローカル console-stubs のみに HTTP リクエストを 50 回試行し、最大 50 件を並行処理します。実行は最大 3 秒、間隔は 10 秒です。ワークロードや外部宛先にはアクセスしません。",
 		"loadTestOutcome": "{succeeded}/{requests} 件成功 · {failed} 件失敗",
 		"loadTestDuration": "合計時間",
 		"loadTestMaximum": "最大レイテンシー",
@@ -363,7 +363,7 @@
 		"unsupported_ignore_pattern": "ローカル検出は除外パターンの文字クラスとエスケープに未対応です。ファイルは保持されています。",
 		"invalid_ticket": "16,000 文字以下の .md チケットを選択してください。",
 		"ticket_contains_credentials": "提案を要求する前にチケットから認証情報を削除してください。",
-		"extub_unavailable": "extub に接続できません。ポート 3401 でローカル API を起動してください。",
+		"console_stubs_unavailable": "console-stubs に接続できません。ポート 3401 でローカル API を起動してください。",
 		"invalid_data_source": "CONSOLE_DATA_SOURCE は stub または local に設定してください。",
 		"load_test_busy": "バーストは実行中または待機期間中です。10 秒後に再試行してください。",
 		"read_only_preview": "これは読み取り専用のプレビューです。ここでは変更できません。",

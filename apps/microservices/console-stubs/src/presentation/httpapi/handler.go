@@ -19,13 +19,13 @@ import (
 type Handler struct {
 	Service  application.Service
 	Signaler application.Signaler
-	// Token switches extub to its hosted preview: empty keeps the local,
+	// Token switches console-stubs to its hosted preview: empty keeps the local,
 	// loopback-only contract; set, every request but the health check must
 	// carry it, and nothing may change the seed.
 	Token string
 }
 
-// hosted is true when extub runs as the token-gated preview.
+// hosted is true when console-stubs runs as the token-gated preview.
 func (handler Handler) hosted() bool {
 	return handler.Token != ""
 }
@@ -54,7 +54,7 @@ func (handler Handler) admit(writer http.ResponseWriter, request *http.Request) 
 		return true
 	}
 	if !handler.carriesToken(request) {
-		writer.Header().Set("WWW-Authenticate", `Bearer realm="extub"`)
+		writer.Header().Set("WWW-Authenticate", `Bearer realm="console-stubs"`)
 		respondError(writer, http.StatusUnauthorized, "token_required")
 		return false
 	}
@@ -194,7 +194,7 @@ func (handler Handler) route(request *http.Request) (any, error) {
 	path := strings.Trim(request.URL.Path, "/")
 	method := request.Method
 	if method == http.MethodGet && path == "health" {
-		return map[string]any{"source": "stub", "service": "extub", "status": "ready"}, nil
+		return map[string]any{"source": "stub", "service": "console-stubs", "status": "ready"}, nil
 	}
 	if path == "webrtc/offer" {
 		if method != http.MethodPost {
@@ -214,7 +214,7 @@ func (handler Handler) route(request *http.Request) (any, error) {
 	}
 	path = strings.TrimPrefix(path, "console/")
 	if path == "meta" && method == http.MethodGet {
-		return map[string]any{"source": "stub", "service": "extub", "webrtc": true}, nil
+		return map[string]any{"source": "stub", "service": "console-stubs", "webrtc": true}, nil
 	}
 	if strings.HasPrefix(path, "auth/") {
 		if (path == "auth/session" && method != http.MethodGet) || (path != "auth/session" && method != http.MethodPost) {

@@ -84,9 +84,9 @@ export interface Runtime {
 	loadTest?: RuntimeLoadTestResult
 }
 
-/** Observed local extub HTTP timings; not workload or security-test evidence. */
+/** Observed local console-stubs HTTP timings; not workload or security-test evidence. */
 export interface RuntimeLoadTestResult {
-	target: 'extub-loopback'
+	target: 'console-stubs-loopback'
 	requests: number
 	concurrency: number
 	succeeded: number

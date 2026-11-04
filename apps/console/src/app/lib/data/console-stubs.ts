@@ -1,9 +1,13 @@
 import 'server-only'
 
-import { consoleHostAllowed, crossSite, extubBase } from './extub-link'
+import {
+	consoleHostAllowed,
+	consoleStubsBase,
+	crossSite,
+} from './console-stubs-link'
 
 /** Server-only bridge: stub mode never forwards browser credentials or invokes native workloads. */
-export async function extubRequest(
+export async function consoleStubsRequest(
 	request: Request,
 	path: string,
 ): Promise<Response> {
@@ -11,17 +15,17 @@ export async function extubRequest(
 		const url = new URL(request.url)
 		const host = request.headers.get('host') ?? url.host
 		const browser = new URL(`${url.protocol}//${host}`)
-		const token = process.env.EXTUB_TOKEN?.trim()
+		const token = process.env.CONSOLE_STUBS_TOKEN?.trim()
 		const hostAllowed = consoleHostAllowed(browser.hostname, token)
 		const isCrossSite = crossSite(request)
 		if (!hostAllowed || isCrossSite)
 			return Response.json({ error: { code: 'local_only' } }, { status: 403 })
 
-		const extubUrl = process.env.EXTUB_URL
-		if (!extubUrl)
+		const consoleStubsUrl = process.env.CONSOLE_STUBS_URL
+		if (!consoleStubsUrl)
 			return Response.json({ error: { code: 'local_only' } }, { status: 503 })
 
-		const base = extubBase(extubUrl, token)
+		const base = consoleStubsBase(consoleStubsUrl, token)
 		if (!base)
 			return Response.json({ error: { code: 'local_only' } }, { status: 503 })
 
@@ -81,7 +85,7 @@ export async function extubRequest(
 		return Response.json(
 			{
 				source: 'stub',
-				error: { code: 'extub_unavailable' },
+				error: { code: 'console_stubs_unavailable' },
 			},
 			{ status: 503 },
 		)

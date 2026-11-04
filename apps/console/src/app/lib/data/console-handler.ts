@@ -1,7 +1,7 @@
 import 'server-only'
 
+import { consoleStubsRequest } from './console-stubs'
 import { consolePathSafe } from './entity-id'
-import { extubRequest } from './extub'
 
 /** Shared request boundary for route handlers and server-rendered read operations. */
 export async function consoleHandler(request: Request) {
@@ -9,5 +9,5 @@ export async function consoleHandler(request: Request) {
 	if (!consolePathSafe(path))
 		return Response.json({ error: { code: 'not_found' } }, { status: 404 })
 
-	return extubRequest(request, `console/${path}`)
+	return consoleStubsRequest(request, `console/${path}`)
 }

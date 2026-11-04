@@ -83,7 +83,7 @@ type Catalog struct {
 	StartedAt        string            `json:"startedAt"`
 }
 
-// LoadTestResult measures a bounded HTTP burst against extub itself, never a workload.
+// LoadTestResult measures a bounded HTTP burst against console-stubs itself, never a workload.
 type LoadTestResult struct {
 	Target      string  `json:"target"`
 	Requests    int     `json:"requests"`

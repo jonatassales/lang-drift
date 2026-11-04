@@ -27,5 +27,10 @@
 			"cache": false
 		}
 	},
-	"globalPassThroughEnv": ["CRYPTO_SECRET", "CI", "EXTUB_URL", "EXTUB_TOKEN"]
+	"globalPassThroughEnv": [
+		"CRYPTO_SECRET",
+		"CI",
+		"CONSOLE_STUBS_URL",
+		"CONSOLE_STUBS_TOKEN"
+	]
 }

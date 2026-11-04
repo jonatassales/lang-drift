@@ -151,7 +151,7 @@
 			"provider_endpoint_invalid": "The configured recommendation endpoint is invalid.",
 			"provider_request_failed": "The recommendation request failed. Try again later or enter values manually.",
 			"provider_response_invalid": "The provider returned an invalid recommendation. Enter values manually.",
-			"stub_suggestion": "Synthetic suggestion from extub seeds; no RAG or model request was performed."
+			"stub_suggestion": "Synthetic suggestion from console-stubs seeds; no RAG or model request was performed."
 		},
 		"recommendationLimits": {
 			"future_workload_unverified": "Samples come from previous executions; comparable future workload performance is unverified.",
@@ -229,7 +229,7 @@
 		"stubBanner": "Local preview · simulated microruntimes. HTTP burst timings are measured on the local stub.",
 		"webrtcConnected": "WebRTC connected · simulated updates",
 		"webrtcFallback": "HTTP seed preview · WebRTC not connected",
-		"topologySynthetic": "Simulated container connections from extub seeds.",
+		"topologySynthetic": "Simulated container connections from console-stubs seeds.",
 		"componentCount": "{count} components",
 		"peakPerExecution": "Highest reported value per execution; missing data stays unavailable.",
 		"quickReport": "FinOps & tests",
@@ -241,7 +241,7 @@
 		"loadTestRunning": "Testing…",
 		"loadTestCooldown": "Wait 10 seconds",
 		"runLoadTest": "Run 50 requests",
-		"loadTestScope": "50 HTTP attempts, up to 50 concurrent, only against the local extub stub. Stops within a 3-second budget, with a 10-second cooldown. No workloads or external targets.",
+		"loadTestScope": "50 HTTP attempts, up to 50 concurrent, only against the local console-stubs. Stops within a 3-second budget, with a 10-second cooldown. No workloads or external targets.",
 		"loadTestOutcome": "{succeeded}/{requests} succeeded · {failed} failed",
 		"loadTestDuration": "Total duration",
 		"loadTestMaximum": "Maximum latency",
@@ -363,7 +363,7 @@
 		"unsupported_ignore_pattern": "Local discovery does not support ignore character classes or escapes. Existing files were preserved.",
 		"invalid_ticket": "Choose a .md ticket up to 16,000 characters.",
 		"ticket_contains_credentials": "Remove credentials from the ticket before requesting suggestions.",
-		"extub_unavailable": "extub is unavailable. Start the local stub API on port 3401.",
+		"console_stubs_unavailable": "console-stubs is unavailable. Start the local stub API on port 3401.",
 		"invalid_data_source": "CONSOLE_DATA_SOURCE must be stub or local.",
 		"load_test_busy": "A burst is already running or cooling down. Wait 10 seconds and try again.",
 		"read_only_preview": "This is a read-only preview: changes are not available here.",

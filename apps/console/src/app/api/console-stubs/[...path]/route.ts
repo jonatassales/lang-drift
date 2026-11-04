@@ -1,10 +1,13 @@
-import { extubRequest } from '@data/extub'
+import { consoleStubsRequest } from '@data/console-stubs'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 async function forward(request: Request): Promise<Response> {
-	const path = new URL(request.url).pathname.replace(/^\/api\/extub\//u, '')
+	const path = new URL(request.url).pathname.replace(
+		/^\/api\/console-stubs\//u,
+		'',
+	)
 	if (!['health', 'webrtc/offer'].includes(path))
 		return Response.json(
 			{
@@ -17,7 +20,7 @@ async function forward(request: Request): Promise<Response> {
 			},
 		)
 
-	return extubRequest(request, path)
+	return consoleStubsRequest(request, path)
 }
 
 export async function GET(request: Request): Promise<Response> {

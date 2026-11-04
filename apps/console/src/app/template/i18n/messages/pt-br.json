@@ -151,7 +151,7 @@
 			"provider_endpoint_invalid": "O endereço configurado para o provedor de sugestões é inválido.",
 			"provider_request_failed": "A solicitação de sugestões falhou. Tente novamente mais tarde ou informe os valores manualmente.",
 			"provider_response_invalid": "O provedor retornou uma sugestão inválida. Informe os valores manualmente.",
-			"stub_suggestion": "Sugestão simulada dos seeds da extub; nenhuma consulta RAG ou chamada de modelo foi realizada."
+			"stub_suggestion": "Sugestão simulada dos seeds do console-stubs; nenhuma consulta RAG ou chamada de modelo foi realizada."
 		},
 		"recommendationLimits": {
 			"future_workload_unverified": "As amostras vêm de execuções anteriores; o desempenho com uma carga futura comparável não foi verificado.",
@@ -229,7 +229,7 @@
 		"stubBanner": "Prévia local · microruntimes simulados. Os tempos da rajada HTTP são medidos no stub local.",
 		"webrtcConnected": "WebRTC conectado · atualizações simuladas",
 		"webrtcFallback": "Prévia HTTP · WebRTC desconectado",
-		"topologySynthetic": "Conexões simuladas entre contêineres dos seeds da extub.",
+		"topologySynthetic": "Conexões simuladas entre contêineres dos seeds do console-stubs.",
 		"componentCount": "{count} componentes",
 		"peakPerExecution": "Maior valor informado por execução; dados ausentes continuam indisponíveis.",
 		"quickReport": "FinOps e testes",
@@ -241,7 +241,7 @@
 		"loadTestRunning": "Testando…",
 		"loadTestCooldown": "Aguarde 10 segundos",
 		"runLoadTest": "Executar 50 requisições",
-		"loadTestScope": "50 tentativas HTTP, até 50 simultâneas, somente no stub extub local. Limite de 3 segundos e intervalo de 10 segundos. Sem workloads ou destinos externos.",
+		"loadTestScope": "50 tentativas HTTP, até 50 simultâneas, somente no console-stubs local. Limite de 3 segundos e intervalo de 10 segundos. Sem workloads ou destinos externos.",
 		"loadTestOutcome": "{succeeded}/{requests} com sucesso · {failed} falharam",
 		"loadTestDuration": "Duração total",
 		"loadTestMaximum": "Latência máxima",
@@ -363,7 +363,7 @@
 		"unsupported_ignore_pattern": "A descoberta local não suporta classes de caracteres ou escapes em regras de exclusão. Os arquivos foram preservados.",
 		"invalid_ticket": "Escolha um ticket .md de até 16.000 caracteres.",
 		"ticket_contains_credentials": "Remova credenciais do ticket antes de solicitar sugestões.",
-		"extub_unavailable": "A extub está indisponível. Inicie a API local na porta 3401.",
+		"console_stubs_unavailable": "O console-stubs está indisponível. Inicie a API local na porta 3401.",
 		"invalid_data_source": "CONSOLE_DATA_SOURCE deve ser stub ou local.",
 		"load_test_busy": "Uma rajada está em execução ou em intervalo. Aguarde 10 segundos e tente novamente.",
 		"read_only_preview": "Esta é uma prévia somente leitura: alterações não estão disponíveis aqui.",

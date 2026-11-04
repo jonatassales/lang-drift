@@ -80,7 +80,7 @@ func TestPeersListenOnLoopbackOnly(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer client.Close()
-	channel, err := client.CreateDataChannel("extub", nil)
+	channel, err := client.CreateDataChannel("console-stubs", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
