@@ -8,12 +8,12 @@
 
 **Status:** ready-for-agent
 
-- [ ] After a request is posted, the bucket holds `demo-request/<id>/<streamId>.json` with the envelope as its body and the type in its metadata.
-- [ ] A mailer event for the same request (0192) lands beside it under the same prefix.
-- [ ] The bucket is created once on module init when absent and left alone when present.
-- [ ] The archive handler acknowledges only after the object is written; a failed write leaves the entry pending.
-- [ ] The service shuts down gracefully on SIGTERM, finishing the batch in flight.
-- [ ] Unit tests cover the object key, the bucket bootstrap and the store call with a fake MinIO client; none reaches MinIO.
+- [x] After a request is posted, the bucket holds `demo-request/<id>/<streamId>.json` with the envelope as its body and the type in its metadata.
+- [x] A mailer event for the same request (0192) lands beside it under the same prefix.
+- [x] The bucket is created once on module init when absent and left alone when present.
+- [x] The archive handler acknowledges only after the object is written; a failed write leaves the entry pending.
+- [x] The service shuts down gracefully on SIGTERM, finishing the batch in flight.
+- [x] Unit tests cover the object key, the bucket bootstrap and the store call with a fake MinIO client; none reaches MinIO.
 
 ### Verification
 

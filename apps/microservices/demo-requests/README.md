@@ -1,15 +1,21 @@
 # demo-requests
 
-The service that receives a Book a Demo request from the website, records it as the first event of an event-sourced request on the Redis Stream `demo-requests:events`, and (spec 0031) exposes the stream over Server-Sent Events, folds a request's events into its state and archives every event into MinIO. It is a Nest.js application on Express, consuming `@langdrift/events` for the event schemas and the Redis Streams transport. The [Nest rules](../../../.claude/rules/11-nestjs.rule.md) say how it is laid out.
+The service that receives a Book a Demo request from the website, records it as the first event of an event-sourced request on the Redis Stream `demo-requests:events`, exposes the stream over Server-Sent Events, folds a request's events into its state and archives every event into MinIO. It is a Nest.js hybrid application on Express, consuming `@langdrift/events` for the event schemas and the Redis Streams transport: the HTTP routes and the `archive` consumer group run in one process. The [Nest rules](../../../.claude/rules/11-nestjs.rule.md) say how it is laid out.
 
 ## Endpoints
 
 | Route | Auth | Answer |
 | --- | --- | --- |
 | `POST /v1/demo-requests` | bearer | 202 `{ "id": … }` with `Location: /v1/demo-requests/<id>` once `demo-request.received` is on the stream; 400 `{ "code": "VALIDATION_ERROR", "fieldErrors": { … } }`; 401 without the token; 503 when the event log cannot take the event |
+| `GET /v1/demo-requests/events` | bearer | Server-Sent Events: each entry with its stream id as `id`, its type as `event` and the envelope as `data`; starts at `Last-Event-ID` when the client sends one, at the live end otherwise; `?from=0-0` replays from the start; a `ping` event on every empty 15-second block |
+| `GET /v1/demo-requests/:id` | bearer | 200 `{ id, state, submission, emails }`, the fold of the request's events (`received`, `confirmed` once the confirmation was sent, `failed` when it failed); 404 when the request has no events |
 | `GET /health` | none | 200 `{ "status": "ok" }` |
 
 The bearer token is `Authorization: Bearer <DEMO_REQUESTS_TOKEN>`, compared in constant time. Only the website holds it.
+
+## Archive
+
+The `archive` consumer group copies every event of the stream into the bucket `MINIO_BUCKET` as `demo-request/<request id>/<stream id>.json`, with `Content-Type: application/json` and the event type as `X-Amz-Meta-Event-Type`, so a trimmed stream never loses a request's history. The bucket is created when the service starts if it is absent. An entry the archive cannot write stays pending and is claimed again; an entry claimed too many times is parked on `demo-requests:events:dead-letter` with the reason.
 
 ## Environment
 
