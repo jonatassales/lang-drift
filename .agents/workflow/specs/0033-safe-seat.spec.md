@@ -290,7 +290,7 @@ A good test drives `ex` the way a person does, through its commands, and checks 
 
 Each item becomes its own work once grilled:
 
-- The website's Safe Seat section and copy.
+- The website's Safe Seat section and copy, now covered by spec 0043.
 - The account, authenticated roles and an organization above the project. Until then, who acts is recorded but not enforced.
 - The Exphere server as the policy's source of truth, and a required CI check that reads it and truly blocks a merge below the floor.
 - The connector of spec 0017. The console reads Safe Seat from extub until it lands.
