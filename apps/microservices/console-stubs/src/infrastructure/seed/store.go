@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/jonatassales/tao/apps/extub/src/domain"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/domain"
 )
 
 //go:embed console.json

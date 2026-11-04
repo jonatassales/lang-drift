@@ -18,7 +18,7 @@ runs:
         go-version-file: go.work
         cache-dependency-path: |
           lib/cli/go.sum
-          apps/extub/go.sum
+          apps/microservices/console-stubs/go.sum
           go.work.sum
     # drift quality reads the tree through ripgrep, which the runner image
     # lacks; the release archive is checked against its published SHA-256.

@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jonatassales/tao/apps/extub/src/domain"
-	"github.com/jonatassales/tao/apps/extub/src/infrastructure/seed"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/domain"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/infrastructure/seed"
 )
 
 type blockingProbe struct {

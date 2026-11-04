@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jonatassales/tao/apps/extub/src/domain"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/domain"
 )
 
 type Store interface {

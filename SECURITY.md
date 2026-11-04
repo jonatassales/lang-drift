@@ -71,7 +71,7 @@ rather stay anonymous, that is fine too.
   `.langdrift/config.json`, console secrets, or environment variables) into logs,
   token-free evidence trails, run ledgers, or episodic memory.
 - **Platform assets**: `https://langdrift.md` (the public site), the console
-  (`apps/console`), and stub APIs (`apps/extub`).
+  (`apps/console`), and stub APIs (`apps/microservices/console-stubs`).
 - **Published packages**: `@langdrift/cli` (including platform binaries and launchers)
   and `@langdrift/core` (the Microruntimes contracts, as a Go module).
 
@@ -87,7 +87,7 @@ rather stay anonymous, that is fine too.
   attack path or impact.
 - missing hardening headers, cookie flags, or TLS configuration without an exploitable
   threat vector.
-- rate limiting on local development loopback stubs (`apps/extub`) with no security
+- rate limiting on local development loopback stubs (`apps/microservices/console-stubs`) with no security
   consequence.
 - social engineering or physical attacks against LangDrift maintainers or users.
 - outdated dependencies with no reachable or exploitable path in LangDrift.

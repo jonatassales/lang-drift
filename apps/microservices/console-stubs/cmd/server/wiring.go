@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jonatassales/tao/apps/extub/src/application"
-	"github.com/jonatassales/tao/apps/extub/src/infrastructure/probe"
-	"github.com/jonatassales/tao/apps/extub/src/infrastructure/rtc"
-	"github.com/jonatassales/tao/apps/extub/src/infrastructure/seed"
-	"github.com/jonatassales/tao/apps/extub/src/presentation/httpapi"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/application"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/infrastructure/probe"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/infrastructure/rtc"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/infrastructure/seed"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/presentation/httpapi"
 )
 
 // config is what the environment decides: the token that switches extub
