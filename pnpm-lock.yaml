@@ -179,6 +179,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: 21.2.3
         version: 21.2.3
+      '@langdrift/cli':
+        specifier: 0.4.0
+        version: 0.4.0
       '@vitest/coverage-v8':
         specifier: 5.0.5
         version: 5.0.5(vitest@5.0.5)
@@ -1330,6 +1333,12 @@ packages:
     engines: {node: '>=10.0'}
     peerDependencies:
       tslib: '2'
+
+  '@langdrift/cli@0.4.0':
+    resolution: {integrity: sha512-T4e8aKPAMdq8vS3INBxZGdwHhtB0YOK6xx6bXlPMqN0pMfH+pADLNRAJN9OrtG+a2yQ5mAlF2FiIc6B3sDHu+A==}
+    cpu: [x64, arm64]
+    os: [darwin, linux]
+    hasBin: true
 
   '@lukeed/csprng@1.1.0':
     resolution: {integrity: sha512-Z7C/xXCiGWsg0KuKsHTKJxbWhpI3Vs5GwLfOean7MGyVFGqdRgBbAjOCh6u4bbjPc/8MJ2pZmK/0DLdCbivLDA==}
@@ -4820,6 +4829,8 @@ snapshots:
       '@jsonjoy.com/buffers': 17.67.0(tslib@2.8.1)
       '@jsonjoy.com/codegen': 17.67.0(tslib@2.8.1)
       tslib: 2.8.1
+
+  '@langdrift/cli@0.4.0': {}
 
   '@lukeed/csprng@1.1.0': {}
 

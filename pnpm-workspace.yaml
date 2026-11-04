@@ -24,3 +24,8 @@ allowBuilds:
 overrides:
   "sinapsi>zod": 4.6.7
   "query-string>decode-uri-component": 0.5.1
+
+# The root pins the CLI the repository publishes; pnpm's minimum release age
+# would otherwise hold a release of our own back for days.
+minimumReleaseAgeExclude:
+  - '@langdrift/cli@0.4.0'
