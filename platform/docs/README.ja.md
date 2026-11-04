@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@langdrift/ex"><img alt="npm @langdrift/ex" src="https://img.shields.io/npm/v/@langdrift/ex?logo=npm&amp;logoColor=white&amp;label=%40langdrift%2Fex&amp;color=CB3837&amp;labelColor=18181B" height="20"></a>
+  <a href="https://www.npmjs.com/package/@langdrift/cli"><img alt="npm @langdrift/cli" src="https://img.shields.io/npm/v/@langdrift/cli?logo=npm&amp;logoColor=white&amp;label=%40langdrift%2Fcli&amp;color=CB3837&amp;labelColor=18181B" height="20"></a>
 </p>
 
 <p align="center">
@@ -44,8 +44,8 @@
 ### 前提条件
 
 - **macOS** または **Linux**
-- **Node.js 24+** (`npx` 経由で `@langdrift/ex` を実行)
-- **Docker**、**kind**、**kubectl**、**Terraform** (境界付きローカルランタイムの実行用。いつでも `npx @langdrift/ex doctor` で確認可能)
+- **Node.js 24+** (`npx` 経由で `@langdrift/cli` を実行)
+- **Docker**、**kind**、**kubectl**、**Terraform** (境界付きローカルランタイムの実行用。いつでも `npx @langdrift/cli doctor` で確認可能)
 - 環境変数 `ANTHROPIC_API_KEY` の設定 (モデルプランナーおよび評価用)
 
 ### 1. プロジェクトの初期化
@@ -53,7 +53,7 @@
 リポジトリのルートディレクトリで初期化コマンドを実行します:
 
 ```sh
-npx @langdrift/ex init
+npx @langdrift/cli init
 ```
 
 これにより、`.langdrift/config.json` にプロジェクト設定が作成され、`.langdrift/microruntimes/AGENTS.md` にローカル実行ルールが配置されます。既存のファイルは変更されません。`/.langdrift/` は `ex` が書き込むローカル状態なので、`.gitignore` に追加してください。
@@ -63,7 +63,7 @@ npx @langdrift/ex init
 `ex` にチケットや仕様書を指定します。リンクされたドキュメントを読み込み、予算枠内でCPUやメモリのサイズを決定し、最適なモデルと作業強度を提案して境界付き実行計画を出力します:
 
 ```sh
-npx @langdrift/ex agent plan <path-to-ticket.md> --component name=console,path=apps/console
+npx @langdrift/cli agent plan <path-to-ticket.md> --component name=console,path=apps/console
 ```
 
 > **ヒント:** `--no-judge` を付けると LLM 呼び出しを行わずにヒューリスティックのみで計画を作成できるため、費用はかかりません。
@@ -102,13 +102,13 @@ npx @langdrift/ex agent plan <path-to-ticket.md> --component name=console,path=a
 ランタイムを実行することで計画が承認され、配信サイクルが開始されます:
 
 ```sh
-npx @langdrift/ex agent run <runtime-id>
+npx @langdrift/cli agent run <runtime-id>
 ```
 
 実行中、`ex` は配信ライフサイクル全体を制御します:
 
 1. **ゲート検証:** 定価が実行内容をカバーしているか確認し、チケットの割り当てと期間予算枠に対して試算コストを予約します。
-2. **ワークフローステージ:** 設定されたコーディングエージェントを通じて各ステージを進めます。人間の承認が必要な場合、ターミナルまたは `npx @langdrift/ex agent confirm <runtime-id> <stage>` で確認されるまで停止します。
+2. **ワークフローステージ:** 設定されたコーディングエージェントを通じて各ステージを進めます。人間の承認が必要な場合、ターミナルまたは `npx @langdrift/cli agent confirm <runtime-id> <stage>` で確認されるまで停止します。
 3. **ローカルランタイム:** 各コンポーネントを Dockerfile からビルドし、コンポーネント名を付けてローカル kind クラスタ上で起動し、準備完了プローブを待ちます。
 4. **配信の監視:** Git コミット、ブランチ、PR チェックを読み取り専用で監視します。
 5. **精算:** ローカルランタイムを停止し、未使用の予約額を予算に戻し、監査元帳に実行結果を記録します。
@@ -119,13 +119,13 @@ npx @langdrift/ex agent run <runtime-id>
 
 ```sh
 # 現在の実行ステータスとラップ状態を表示
-npx @langdrift/ex agent status <runtime-id>
+npx @langdrift/cli agent status <runtime-id>
 
 # 過去の実行からエピソード記憶インデックスを再構築
-npx @langdrift/ex agent reindex
+npx @langdrift/cli agent reindex
 
 # 前提ツールと環境の健全性をチェック
-npx @langdrift/ex doctor
+npx @langdrift/cli doctor
 ```
 
 `status` に `--json` を付けると、ダッシュボードやコンソールとの連携に適した NDJSON イベントを出力できます。

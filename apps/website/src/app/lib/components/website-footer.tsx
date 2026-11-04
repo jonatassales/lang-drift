@@ -89,16 +89,16 @@ export function WebsiteFooter(props: WebsiteFooterProps) {
 						<GithubLogo aria-hidden="true" size={22} weight="fill" />
 					</a>
 					<a
-						aria-label="npm: @langdrift/ex"
+						aria-label="npm: @langdrift/cli"
 						className={`inline-flex h-11 items-center px-1 text-muted-foreground hover:text-foreground ${focusRing}`}
-						href="https://www.npmjs.com/package/@langdrift/ex"
-						title="npm: @langdrift/ex"
+						href="https://www.npmjs.com/package/@langdrift/cli"
+						title="npm: @langdrift/cli"
 					>
 						<img
-							alt="npm @langdrift/ex"
+							alt="npm @langdrift/cli"
 							className="block h-5 w-auto"
 							height={20}
-							src="https://img.shields.io/npm/v/@langdrift/ex?logo=npm&logoColor=white&label=%40langdrift%2Fex&color=CB3837&labelColor=18181B"
+							src="https://img.shields.io/npm/v/@langdrift/cli?logo=npm&logoColor=white&label=%40langdrift%2Fcli&color=CB3837&labelColor=18181B"
 						/>
 					</a>
 				</nav>

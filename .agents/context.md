@@ -4,14 +4,14 @@ Project knowledge for agents working in this repository. [`AGENTS.md`](/AGENTS.m
 
 ## Repository
 
-Monorepo with the internal packages `tokens`, `streaming` and `web`, the published `ex` CLI as `@langdrift/ex` (`@langdrift/cli` from ticket 0217) with the Microruntimes contracts in `@langdrift/core`, and three apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/extub` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from extub.
+Monorepo with the internal packages `tokens`, `streaming` and `web`, the published `ex` CLI as `@langdrift/cli` with the Microruntimes contracts in `@langdrift/core`, and three apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/extub` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from extub.
 
 Four workspace roots, each with one meaning, and a naming rule that follows it (spec 0044). `pnpm-workspace.yaml` lists them all, and a commit under any of them carries a `Ticket:` trailer.
 
 - `apps/<app>/`: one deployable app each, Next.js except `extub`. Picked up through `apps/*`.
 - `apps/microservices/<service>/`: the services, picked up through `apps/microservices/*`: the Nest.js microservices (`demo-requests`, `mailer`), which share the event log through `streaming` (see `.claude/rules/11-nestjs.rule.md`), and, once spec 0044 lands, `console-stubs`, the Go stub API the console reads (today `apps/extub`).
 - `packages/<name>/`: packages internal to the monorepo, shared across apps and never published. Their names are bare, like the apps' (`web`, `tokens`, `streaming`). The scope they carried left under spec 0044. `shell`, `account` and `runtime` are planned.
-- `lib/<name>/`: what LangDrift publishes, and only that, under the `@langdrift/*` scope: `@langdrift/cli` at `lib/cli` (the `ex` CLI, still named `@langdrift/ex` on npm until ticket 0217) and `@langdrift/core` at `lib/core`, whose Go surface, the Microruntimes contracts, is the module `lib/core/contracts/go`. The scope means "published"; nothing outside `lib/` carries it.
+- `lib/<name>/`: what LangDrift publishes, and only that, under the `@langdrift/*` scope: `@langdrift/cli` at `lib/cli` (the `ex` CLI) and `@langdrift/core` at `lib/core`, whose Go surface, the Microruntimes contracts, is the module `lib/core/contracts/go`. The scope means "published"; nothing outside `lib/` carries it.
 - `infrastructure/<component>/`: the infrastructure components the products run on, each a Dockerfile, a README and a minimal private manifest: `messaging` (Redis Streams, the event log) and `storage` (MinIO, the archive). A fence names a component after its folder (ADR 0004).
 - The Go modules (`lib/cli`, `lib/core/contracts/go` and `apps/extub`) are tied together by the root `go.work`: Turborepo runs their `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds them (no Go toolchain required for frontend work).
 - A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
@@ -39,7 +39,7 @@ Run from the repository root:
 | `pnpm turbo run test` | Runs each package's `test` script. |
 | `pnpm turbo run check` | Runs Biome format, lint and import checks on the whole repository. Read-only. |
 | `pnpm turbo run fix` | Same as `check`, writing safe fixes. Review the diff afterwards. |
-| `lib/cli/dist/ex …` | The Microruntimes session in a project (`@langdrift/ex` ships a `bin/ex` launcher and prebuilt binaries on npm for `npx @langdrift/ex …` / `pnpm dlx @langdrift/ex …`): `ex init`, the `ex harness` and `ex finops` inputs, then `ex agent plan`, `ex agent run`, `ex agent confirm`, `ex agent status` and `ex agent reindex`. `lib/cli/README.md` has the command table. |
+| `lib/cli/dist/ex …` | The Microruntimes session in a project (`@langdrift/cli` ships a `bin/ex` launcher and prebuilt binaries on npm for `npx @langdrift/cli …` / `pnpm dlx @langdrift/cli …`): `ex init`, the `ex harness` and `ex finops` inputs, then `ex agent plan`, `ex agent run`, `ex agent confirm`, `ex agent status` and `ex agent reindex`. `lib/cli/README.md` has the command table. |
 
 The website needs `CRYPTO_SECRET` for encrypted locale cookies. In development, it is generated on the fly when unset; deployed environments set a canonical 32-byte key; `apps/website/README.md` says how to generate one for a deployment.
 

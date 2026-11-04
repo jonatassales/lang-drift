@@ -132,7 +132,7 @@ func (useCase SetUpProject) Execute(ctx context.Context, request Request) (Resul
 	// refused before any input is recorded.
 	writesUnpinnableWorkflow := answers.CIGates && pending.CIGates && unreleased(request.Version)
 	if writesUnpinnableWorkflow {
-		return Result{}, fmt.Errorf("%w: ex %s is an unreleased build, and the CI Gates workflow pins a published @langdrift/ex; run a released ex to generate it", inputs.ErrInvalid, request.Version)
+		return Result{}, fmt.Errorf("%w: ex %s is an unreleased build, and the CI Gates workflow pins a published @langdrift/cli; run a released ex to generate it", inputs.ErrInvalid, request.Version)
 	}
 
 	if err := useCase.checkArtifacts(owner, pending, answers); err != nil {
