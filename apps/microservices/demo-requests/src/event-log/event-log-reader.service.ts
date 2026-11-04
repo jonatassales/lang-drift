@@ -1,13 +1,14 @@
-import { demoRequestStream } from '@langdrift/events'
+import type { OnApplicationShutdown } from '@nestjs/common'
+import { Inject, Injectable, Logger } from '@nestjs/common'
+import { Observable } from 'rxjs'
+
+import { demoRequestStream } from 'streaming'
 import type {
 	StreamConnection,
 	StreamEntry,
 	StreamItem,
-} from '@langdrift/events/transport'
-import { parseStreamEntry } from '@langdrift/events/transport'
-import type { OnApplicationShutdown } from '@nestjs/common'
-import { Inject, Injectable, Logger } from '@nestjs/common'
-import { Observable } from 'rxjs'
+} from 'streaming/transport'
+import { parseStreamEntry } from 'streaming/transport'
 
 import { aggregateIdOf } from './aggregate-id-of.compute.js'
 import type { EventLogConnectionOpener } from './event-log-connection-opener.factory.js'

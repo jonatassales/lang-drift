@@ -98,7 +98,9 @@
 									"!@services/**",
 									"!@state",
 									"!@ui/**",
-									"!@views/**"
+									"!@views/**",
+									"!streaming",
+									"!streaming/**"
 								]
 							},
 							":BLANK_LINE:",
@@ -114,7 +116,9 @@
 								"@services/**",
 								"@state",
 								"@ui/**",
-								"@views/**"
+								"@views/**",
+								"streaming",
+								"streaming/**"
 							],
 							":BLANK_LINE:",
 							":PATH:"

@@ -1,5 +1,6 @@
-import { RedisStreamsContext } from '@langdrift/events/transport'
 import { describe, expect, it } from 'vitest'
+
+import { RedisStreamsContext } from 'streaming/transport'
 
 import { ArchiveController } from './archive.controller.js'
 import type { ArchiveService } from './archive.service.js'

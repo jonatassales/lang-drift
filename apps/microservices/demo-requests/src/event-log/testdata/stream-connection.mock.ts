@@ -2,7 +2,7 @@ import type {
 	StreamConnection,
 	StreamItem,
 	StreamReadReply,
-} from '@langdrift/events/transport'
+} from 'streaming/transport'
 
 export interface ReaderConnectionScript {
 	ranges?: StreamItem[][]

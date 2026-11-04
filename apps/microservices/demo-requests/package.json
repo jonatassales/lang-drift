@@ -10,7 +10,6 @@
 		"test": "vitest run"
 	},
 	"dependencies": {
-		"@langdrift/events": "workspace:*",
 		"@nestjs/common": "12.3.2",
 		"@nestjs/core": "12.3.2",
 		"@nestjs/microservices": "12.3.2",
@@ -18,6 +17,7 @@
 		"minio": "^8.0.7",
 		"reflect-metadata": "0.2.2",
 		"rxjs": "7.8.2",
+		"streaming": "workspace:*",
 		"zod": "^4.6.5"
 	},
 	"devDependencies": {

@@ -1,7 +1,4 @@
-import type {
-	DemoRequestEmailKind,
-	DemoRequestReceived,
-} from '@langdrift/events'
+import type { DemoRequestEmailKind, DemoRequestReceived } from 'streaming'
 
 export type DemoRequestState = 'received' | 'confirmed' | 'failed'
 

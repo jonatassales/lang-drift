@@ -6,7 +6,7 @@
 !pnpm-workspace.yaml
 !turbo.json
 !apps/microservices
-!packages/events
+!packages/streaming
 **/node_modules
 **/dist
 **/.env

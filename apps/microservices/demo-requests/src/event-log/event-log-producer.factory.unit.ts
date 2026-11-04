@@ -1,7 +1,7 @@
-import { RedisStreamsClient } from '@langdrift/events/transport'
 import { describe, expect, it } from 'vitest'
 
 import { FakeReaderConnection } from '@app/event-log/testdata/stream-connection.mock.js'
+import { RedisStreamsClient } from 'streaming/transport'
 
 import { createEventLogProducer } from './event-log-producer.factory.js'
 

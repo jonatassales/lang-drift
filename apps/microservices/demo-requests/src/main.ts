@@ -1,12 +1,6 @@
 import 'reflect-metadata'
 
 import { hostname } from 'node:os'
-import {
-	demoRequestArchiveGroup,
-	demoRequestDeadLetterStream,
-	demoRequestStream,
-} from '@langdrift/events'
-import { RedisStreamsServer } from '@langdrift/events/transport'
 import { NestFactory } from '@nestjs/core'
 import type { MicroserviceOptions } from '@nestjs/microservices'
 import { ExpressAdapter } from '@nestjs/platform-express'
@@ -14,6 +8,12 @@ import { ExpressAdapter } from '@nestjs/platform-express'
 import { AppModule } from '@app/app.module.js'
 import type { EventLogConnectionOpener } from '@app/event-log/event-log-connection-opener.factory.js'
 import { eventLogConnectionOpenerToken } from '@app/event-log/event-log-connection-opener.token.js'
+import {
+	demoRequestArchiveGroup,
+	demoRequestDeadLetterStream,
+	demoRequestStream,
+} from 'streaming'
+import { RedisStreamsServer } from 'streaming/transport'
 
 // A hybrid application: the HTTP routes, plus the archive consumer group on
 // the Redis Streams transport, in one process.

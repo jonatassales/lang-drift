@@ -1,6 +1,6 @@
 # mailer
 
-The service that sends the Book a Demo emails: for every `demo-request.received` event on the Redis Stream `demo-requests:events` it sends the confirmation to the visitor, in the visitor's language, and the lead notification to the team, through Resend, and records each outcome on the stream as `demo-request.email-sent` or `demo-request.email-failed`, which the archive of `demo-requests` then stores. It is a Nest.js hybrid application on Express: a health route, plus the `mailer` consumer group on the Redis Streams transport of `@langdrift/events`. The [Nest rules](../../../.claude/rules/11-nestjs.rule.md) say how it is laid out.
+The service that sends the Book a Demo emails: for every `demo-request.received` event on the Redis Stream `demo-requests:events` it sends the confirmation to the visitor, in the visitor's language, and the lead notification to the team, through Resend, and records each outcome on the stream as `demo-request.email-sent` or `demo-request.email-failed`, which the archive of `demo-requests` then stores. It is a Nest.js hybrid application on Express: a health route, plus the `mailer` consumer group on the Redis Streams transport of `streaming`. The [Nest rules](../../../.claude/rules/11-nestjs.rule.md) say how it is laid out.
 
 ## Behavior
 

@@ -1,6 +1,7 @@
-import type { RedisStreamsContext } from '@langdrift/events/transport'
 import { Controller, Inject } from '@nestjs/common'
 import { Ctx, EventPattern, Payload } from '@nestjs/microservices'
+
+import type { RedisStreamsContext } from 'streaming/transport'
 
 import { ArchiveService } from './archive.service.js'
 

@@ -1,6 +1,4 @@
 import { randomUUID } from 'node:crypto'
-import { demoRequestReceivedSchema } from '@langdrift/events'
-import type { StreamEntry } from '@langdrift/events/transport'
 import { NotFoundException, ServiceUnavailableException } from '@nestjs/common'
 import { lastValueFrom, of, throwError, toArray } from 'rxjs'
 import { describe, expect, it } from 'vitest'
@@ -9,6 +7,8 @@ import type {
 	EventLogReaderService,
 	FollowEvent,
 } from '@app/event-log/event-log-reader.service.js'
+import { demoRequestReceivedSchema } from 'streaming'
+import type { StreamEntry } from 'streaming/transport'
 
 import { DemoRequestsController } from './demo-requests.controller.js'
 

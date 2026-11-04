@@ -1,8 +1,8 @@
-import { demoRequestLocales } from '@langdrift/events'
 import { IntlMessageFormat } from 'intl-messageformat'
 import { describe, expect, it } from 'vitest'
 
 import { demoEmailsMessages } from '@app/i18n/messages/index.js'
+import { demoRequestLocales } from 'streaming'
 
 function leaves(value: unknown, prefix = ''): Record<string, string> {
 	if (typeof value === 'string') return { [prefix]: value }
