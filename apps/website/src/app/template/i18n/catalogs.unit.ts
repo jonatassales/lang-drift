@@ -12,6 +12,7 @@ import {
 	microruntimesMessages,
 	platformMessages,
 	privacyMessages,
+	safeSeatMessages,
 } from './messages'
 import routeState from './messages/route-state.json'
 
@@ -58,6 +59,7 @@ describe('Website production translations', () => {
 				privacyMessages,
 				finopsMessages,
 				microruntimesMessages,
+				safeSeatMessages,
 				bookDemoMessages,
 				routeState,
 			]) {

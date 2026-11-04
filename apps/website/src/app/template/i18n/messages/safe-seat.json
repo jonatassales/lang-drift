@@ -1,0 +1,1162 @@
+{
+	"en": {
+		"skip": "Skip to why",
+		"hero": {
+			"eyebrow": "LangDrift FinOps",
+			"comingSoon": "Coming soon",
+			"titleStart": "Agents write most of the code.",
+			"titleEnd": "A person keeps the seat.",
+			"lead": "Keyboards did not end handwriting, because writing is a way of thinking. Code works the same way. Safe Seat reserves part of every ticket for a person to write by hand, so the team keeps understanding, debugging and owning what it ships.",
+			"note": "Safe Seat is in development. Everything on this page describes the planned design."
+		},
+		"why": {
+			"kicker": "Why",
+			"title": "Writing code is how a developer thinks",
+			"lead": "Agents can and should produce much of what a team ships. What they produce is raw material: it reaches its value only after a practiced hand has worked it, and a hand that stops practicing loses its touch.",
+			"items": {
+				"thinking": {
+					"title": "Writing is thinking",
+					"description": "Phones moved handwriting out of the center of work, yet it survived, because writing connects you with what you write. Writing part of the code yourself keeps your mental model of the system sharp."
+				},
+				"irony": {
+					"title": "The irony of automation",
+					"description": "In 1983 Lisanne Bainbridge argued that the more a process is automated, the less its operator practices, and the worse they do when the automation fails and they must take over. Aviation answers it by keeping pilots flying by hand."
+				},
+				"delegate": {
+					"title": "Choose what not to delegate",
+					"description": "Not abandoning agents, but choosing: the core logic you would have to debug in an incident at night, the hard part where learning happens, and the first contact with a new stack."
+				}
+			}
+		},
+		"evidence": {
+			"kicker": "Evidence",
+			"title": "What the research shows, and where it stops",
+			"lead": "Each finding comes with its limit and a link to the primary source. None of them settles the question alone; together they point the same way.",
+			"limitLabel": "Limit",
+			"sourceLink": "Read the source",
+			"followUpLink": "Read the 2026 follow-up",
+			"items": {
+				"bainbridge": {
+					"source": "Bainbridge · Automatica · 1983",
+					"title": "Monitoring is not practice",
+					"description": "Operators who only watch an automated process lose the skill they need when it fails, and the moment to take over comes exactly when something has already gone wrong.",
+					"limit": "An argument from process control and flight decks, not an experiment, and not about software."
+				},
+				"casner": {
+					"source": "Casner et al. · Human Factors · 2014",
+					"title": "Hand skills held, thinking skills slipped",
+					"description": "Airline pilots in a NASA simulator kept their hand-flying skills, while the cognitive ones, such as navigating and noticing a failed instrument, had slipped.",
+					"limit": "Sixteen pilots in one session; the links to disuse and mind-wandering are correlational, and aviation is not software."
+				},
+				"shen-tamkin": {
+					"source": "Shen & Tamkin · Anthropic · 2026",
+					"title": "Learning with an assistant, understanding less",
+					"description": "Developers who learned a new library with an AI assistant scored lower on a quiz of concepts, code reading and debugging, and were not significantly faster. Those who asked for explanations or only conceptual questions kept most of their learning.",
+					"limit": "One library, one short session and a quiz right after; a chat assistant, not an agent."
+				},
+				"metr": {
+					"source": "METR · 2025 and 2026",
+					"title": "Feeling faster is not being faster",
+					"description": "Experienced open-source developers took 19% longer with AI tools in early 2025 while believing they were 20% faster. In the 2026 follow-up, many held back tasks they did not want to do without AI.",
+					"limit": "Sixteen developers in their own repositories, with early-2025 tools; the 2026 estimates were too uncertain to measure a change."
+				},
+				"lee": {
+					"source": "Lee et al. · CHI · 2025",
+					"title": "Trusting the tool, thinking less",
+					"description": "Among 319 knowledge workers, more confidence in generative AI went with less critical thinking, and effort shifted from gathering information to verifying it, and from solving problems to integrating AI output.",
+					"limit": "A survey of self-reported effort: it shows association, not cause."
+				},
+				"feng": {
+					"source": "Feng, Afroz & Sarma · 2025",
+					"title": "Adoption pressure goes with burnout",
+					"description": "In a survey of 442 developers, the job demands that came with generative AI adoption were associated with more burnout, and autonomy with less.",
+					"limit": "Cross-sectional and self-reported, with burnout measured by four survey items: association, not cause."
+				}
+			}
+		},
+		"reserved": {
+			"kicker": "The reserved part",
+			"title": "What stays with the person",
+			"lead": "Every ticket reserves a problem the person solves by hand, with its own goal and acceptance criteria, written together with its tests. The tech lead decides which one.",
+			"categories": {
+				"core-domain": {
+					"title": "Core domain",
+					"description": "The logic the team must explain and debug when it breaks in production."
+				},
+				"hard-part": {
+					"title": "The hard part",
+					"description": "Where the ticket's difficulty sits, because learning happens in the friction of the problem."
+				},
+				"new-stack": {
+					"title": "First contact",
+					"description": "The first work with a new tool, library or stack, to build the foundation before an agent scales it."
+				}
+			},
+			"never": "Never boilerplate, configuration, generated code, a rename or a migration run by a tool: typing is not the practice, reasoning is."
+		},
+		"flow": {
+			"kicker": "Planned flow",
+			"title": "How Safe Seat will work",
+			"lead": "Safe Seat runs inside the LangDrift FinOps harness, through ex and the console. This is the design; it is not available yet.",
+			"steps": {
+				"plan": {
+					"eyebrow": "Plan",
+					"title": "The plan proposes the reserved part",
+					"description": "When ex plans a ticket, it suggests the part worth writing by hand and why. The lead accepts it or picks another."
+				},
+				"boundary": {
+					"eyebrow": "Agent",
+					"title": "The agent stops at the boundary",
+					"description": "The coding agent works through the rest of the ticket and leaves only the interface the reserved part must fulfil."
+				},
+				"dev-ticket": {
+					"eyebrow": "Dev ticket",
+					"title": "The person takes the seat",
+					"description": "During the dev ticket, ex calls no agent. The person writes the solution and its tests."
+				},
+				"attestation": {
+					"eyebrow": "Attestation",
+					"title": "The person closes it",
+					"description": "Closing the dev ticket asks one question: written without an agent? The answer decides whether those lines count as the person's."
+				},
+				"delivery": {
+					"eyebrow": "Delivery",
+					"title": "The share is measured",
+					"description": "Snapshots around every agent call attribute each delivered line. Below the 5% floor, the ticket needs an override from the lead, with a reason."
+				}
+			}
+		},
+		"principles": {
+			"kicker": "Principles",
+			"title": "Practice, not surveillance",
+			"lead": "Safe Seat keeps a person writing code. It does not watch people.",
+			"items": {
+				"private": {
+					"term": "Private numbers",
+					"detail": "A person's share stays on their machine and in their own status. Nobody else sees it."
+				},
+				"team": {
+					"term": "Team reading",
+					"detail": "The team sees each ticket's state and its skill drift: the share of tickets that needed an override."
+				},
+				"no-ranking": {
+					"term": "No ranking",
+					"detail": "No leaderboard, no comparison between people and no use in performance reviews."
+				},
+				"floor": {
+					"term": "A principle, not a dose",
+					"detail": "The 5% floor confirms that a reserved part was really written. The practice comes from the problem, not from the number."
+				},
+				"overrides": {
+					"term": "Recorded overrides",
+					"detail": "A lead can override a ticket, with a reason that stays on record. Only an executive can turn Safe Seat off."
+				}
+			}
+		},
+		"limits": {
+			"kicker": "Limits",
+			"title": "What the evidence does not show",
+			"lead": "Safe Seat rests on evidence and on judgment. This is where the judgment begins.",
+			"items": {
+				"beyond": {
+					"term": "Beyond skill",
+					"detail": "None of these studies tested Safe Seat. They measure skill and attention, and burnout only as an association. Safe Seat claims no effect beyond what they report."
+				},
+				"long-term": {
+					"term": "Over years",
+					"detail": "No study yet follows developers' skill over months or years of working with agents."
+				},
+				"share": {
+					"term": "The 5% itself",
+					"detail": "No study tests a share of hand-written code. The floor is LangDrift's principle, and aviation guidance warns against practice quotas without evidence, which is why the reserved part is chosen by its problem."
+				},
+				"no-call": {
+					"term": "The no-agent rule",
+					"detail": "In the study that measured learning, asking the assistant conceptual questions preserved it. Not calling the agent at all in the reserved part is stricter than the evidence requires: a design choice that keeps the record clean."
+				},
+				"governance": {
+					"term": "Privacy and overrides",
+					"detail": "No study compares private with shared readings, tests a check at delivery, or validates the share of overridden tickets as a measure of skill drift. These rest on product principles."
+				},
+				"analogy": {
+					"term": "Aviation",
+					"detail": "Pilots and process operators are an analogy for developers, argued rather than measured."
+				}
+			}
+		},
+		"sources": {
+			"kicker": "Sources",
+			"title": "Read them yourself",
+			"lead": "The primary sources behind this page.",
+			"items": {
+				"bainbridge": "Bainbridge, L. (1983). Ironies of Automation. Automatica, 19(6), 775–779.",
+				"casner": "Casner, S. M., Geven, R. W., Recker, M. P. & Schooler, J. W. (2014). The Retention of Manual Flying Skills in the Automated Cockpit. Human Factors, 56(8), 1506–1516.",
+				"shen-tamkin": "Shen, J. H. & Tamkin, A. (2026). How AI Impacts Skill Formation. arXiv:2601.20245.",
+				"metr-2025": "Becker, J., Rush, N., Barnes, E. & Rein, D. (2025). Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity. arXiv:2507.09089.",
+				"metr-2026": "METR (2026). We are Changing our Developer Productivity Experiment Design.",
+				"lee": "Lee, H.-P. et al. (2025). The Impact of Generative AI on Critical Thinking. CHI '25.",
+				"feng": "Feng, Z., Afroz, S. & Sarma, A. (2025). From Gains to Strains: Modeling Developer Burnout with GenAI Adoption. arXiv:2510.07435.",
+				"safo-13002": "Federal Aviation Administration (2013). SAFO 13002, Manual Flight Operations.",
+				"safo-17007": "Federal Aviation Administration (2017). SAFO 17007, Manual Flight Operations Proficiency."
+			}
+		},
+		"faq": {
+			"title": "Questions about Safe Seat.",
+			"description": "What teams ask before they adopt the practice.",
+			"items": {
+				"quota": {
+					"question": "Is Safe Seat a quota on developers?",
+					"answer": "No. The team commits to a practice: every ticket reserves a problem worth reasoning about. The 5% floor only confirms that the reserved part was written, and a lead can override any ticket with a reason."
+				},
+				"manager": {
+					"question": "Does my manager see my share?",
+					"answer": "No. Your share stays in your own records. The team sees whether each ticket met the floor or was overridden, and the share of overridden tickets across the team."
+				},
+				"ai": {
+					"question": "Can I use AI during the dev ticket?",
+					"answer": "ex calls no agent during the dev ticket. If you use one elsewhere, say so when you close it: those lines then count as unknown rather than yours."
+				},
+				"why-five": {
+					"question": "Why 5%?",
+					"answer": "It is a floor, not a target. It confirms that a real part of the ticket was written by hand. Teams can raise it; nobody can go below it."
+				},
+				"available": {
+					"question": "Can I use Safe Seat today?",
+					"answer": "Not yet. Safe Seat is in development as part of LangDrift FinOps. This page describes the planned design."
+				},
+				"outside": {
+					"question": "Does it see what I do outside ex?",
+					"answer": "No. Safe Seat measures only what ex runs. Work done in other tools is unknown, and unknown never counts as anyone's."
+				}
+			}
+		}
+	},
+	"pt-BR": {
+		"skip": "Pular para o porquê",
+		"hero": {
+			"eyebrow": "LangDrift FinOps",
+			"comingSoon": "Em breve",
+			"titleStart": "Agentes escrevem a maior parte do código.",
+			"titleEnd": "Uma pessoa continua ao volante.",
+			"lead": "O teclado não acabou com a escrita à mão, porque escrever é uma forma de pensar. Código funciona do mesmo jeito. O Safe Seat reserva parte de cada ticket para uma pessoa escrever à mão, para que o time continue entendendo, depurando e assumindo o que entrega.",
+			"note": "O Safe Seat está em desenvolvimento. Tudo nesta página descreve o desenho planejado."
+		},
+		"why": {
+			"kicker": "Por quê",
+			"title": "Escrever código é como um dev pensa",
+			"lead": "Agentes podem e devem produzir boa parte do que um time entrega. O que eles produzem é matéria-prima: só atinge seu valor depois de passar por mãos experientes, e mãos que deixam de praticar perdem o jeito.",
+			"items": {
+				"thinking": {
+					"title": "Escrever é pensar",
+					"description": "O celular tirou a escrita à mão do centro do trabalho, e ela sobreviveu, porque escrever conecta você com o que escreve. Escrever parte do código com as próprias mãos mantém afiado o seu modelo mental do sistema."
+				},
+				"irony": {
+					"title": "A ironia da automação",
+					"description": "Em 1983, Lisanne Bainbridge argumentou que, quanto mais um processo é automatizado, menos o operador pratica, e pior ele se sai quando a automação falha e ele precisa assumir. A aviação responde mantendo os pilotos voando à mão."
+				},
+				"delegate": {
+					"title": "Escolher o que não delegar",
+					"description": "Não é abandonar os agentes, é escolher: a lógica central que você teria de depurar num incidente de madrugada, a parte difícil, onde o aprendizado acontece, e o primeiro contato com uma stack nova."
+				}
+			}
+		},
+		"evidence": {
+			"kicker": "Evidência",
+			"title": "O que a pesquisa mostra, e onde ela para",
+			"lead": "Cada achado vem com o seu limite e um link para a fonte primária. Nenhum resolve a questão sozinho; juntos, apontam na mesma direção.",
+			"limitLabel": "Limite",
+			"sourceLink": "Ler a fonte",
+			"followUpLink": "Ler o acompanhamento de 2026",
+			"items": {
+				"bainbridge": {
+					"source": "Bainbridge · Automatica · 1983",
+					"title": "Monitorar não é praticar",
+					"description": "Operadores que só observam um processo automatizado perdem a habilidade de que precisam quando ele falha, e a hora de assumir chega justamente quando algo já deu errado.",
+					"limit": "Um argumento a partir de controle de processos e cabines de avião, não um experimento, e não é sobre software."
+				},
+				"casner": {
+					"source": "Casner et al. · Human Factors · 2014",
+					"title": "As mãos se mantiveram, o raciocínio caiu",
+					"description": "Pilotos de linha aérea num simulador da NASA mantiveram a pilotagem manual, enquanto as habilidades cognitivas, como navegar e perceber um instrumento com falha, tinham se perdido.",
+					"limit": "Dezesseis pilotos numa única sessão; as ligações com a falta de prática e a distração são correlações, e aviação não é software."
+				},
+				"shen-tamkin": {
+					"source": "Shen & Tamkin · Anthropic · 2026",
+					"title": "Aprender com um assistente, entender menos",
+					"description": "Devs que aprenderam uma biblioteca nova com um assistente de IA tiraram notas menores num teste de conceitos, leitura de código e depuração, sem ficar significativamente mais rápidos. Quem pedia explicações ou fazia só perguntas conceituais preservou a maior parte do aprendizado.",
+					"limit": "Uma biblioteca, uma sessão curta e um teste logo depois; um assistente de chat, não um agente."
+				},
+				"metr": {
+					"source": "METR · 2025 e 2026",
+					"title": "Sentir-se mais rápido não é ser mais rápido",
+					"description": "Devs experientes de open source levaram 19% mais tempo com ferramentas de IA no início de 2025, acreditando estar 20% mais rápidos. No acompanhamento de 2026, muitos deixaram de lado tarefas que não queriam fazer sem IA.",
+					"limit": "Dezesseis devs nos próprios repositórios, com ferramentas do início de 2025; as estimativas de 2026 eram incertas demais para medir uma mudança."
+				},
+				"lee": {
+					"source": "Lee et al. · CHI · 2025",
+					"title": "Confiar na ferramenta, pensar menos",
+					"description": "Entre 319 profissionais do conhecimento, mais confiança na IA generativa andava junto com menos pensamento crítico, e o esforço passava de reunir informação para verificá-la, e de resolver problemas para integrar o que a IA produz.",
+					"limit": "Uma pesquisa de esforço autodeclarado: mostra associação, não causa."
+				},
+				"feng": {
+					"source": "Feng, Afroz & Sarma · 2025",
+					"title": "A pressão da adoção anda junto com o burnout",
+					"description": "Numa pesquisa com 442 devs, as demandas de trabalho que vieram com a adoção de IA generativa estavam associadas a mais burnout, e a autonomia, a menos.",
+					"limit": "Transversal e autodeclarada, com burnout medido por quatro itens de questionário: associação, não causa."
+				}
+			}
+		},
+		"reserved": {
+			"kicker": "A parte reservada",
+			"title": "O que fica com a pessoa",
+			"lead": "Todo ticket reserva um problema que a pessoa resolve à mão, com objetivo e critérios de aceite próprios, escrito junto com os testes. Quem decide qual é o tech lead.",
+			"categories": {
+				"core-domain": {
+					"title": "Domínio central",
+					"description": "A lógica que o time precisa explicar e depurar quando quebra em produção."
+				},
+				"hard-part": {
+					"title": "A parte difícil",
+					"description": "Onde está a dificuldade do ticket, porque o aprendizado acontece no atrito com o problema."
+				},
+				"new-stack": {
+					"title": "Primeiro contato",
+					"description": "O primeiro trabalho com uma ferramenta, biblioteca ou stack nova, para construir a base antes de um agente escalar."
+				}
+			},
+			"never": "Nunca boilerplate, configuração, código gerado, renomeação ou migração feita por ferramenta: digitar não é a prática, raciocinar é."
+		},
+		"flow": {
+			"kicker": "Fluxo planejado",
+			"title": "Como o Safe Seat vai funcionar",
+			"lead": "O Safe Seat roda dentro do harness do LangDrift FinOps, pelo ex e pelo console. Este é o desenho; ainda não está disponível.",
+			"steps": {
+				"plan": {
+					"eyebrow": "Plano",
+					"title": "O plano propõe a parte reservada",
+					"description": "Quando o ex planeja um ticket, ele sugere a parte que vale escrever à mão e por quê. O lead aceita ou escolhe outra."
+				},
+				"boundary": {
+					"eyebrow": "Agente",
+					"title": "O agente para na fronteira",
+					"description": "O agente de código faz o resto do ticket e deixa só a interface que a parte reservada precisa cumprir."
+				},
+				"dev-ticket": {
+					"eyebrow": "Dev ticket",
+					"title": "A pessoa assume o assento",
+					"description": "Durante o dev ticket, o ex não chama nenhum agente. A pessoa escreve a solução e os testes."
+				},
+				"attestation": {
+					"eyebrow": "Atestação",
+					"title": "A pessoa fecha o ticket",
+					"description": "Fechar o dev ticket faz uma pergunta: escrito sem agente? A resposta decide se essas linhas contam como da pessoa."
+				},
+				"delivery": {
+					"eyebrow": "Entrega",
+					"title": "A participação é medida",
+					"description": "Snapshots em torno de cada chamada do agente atribuem cada linha entregue. Abaixo do piso de 5%, o ticket precisa de um override do lead, com motivo."
+				}
+			}
+		},
+		"principles": {
+			"kicker": "Princípios",
+			"title": "Prática, não vigilância",
+			"lead": "O Safe Seat mantém uma pessoa escrevendo código. Ele não vigia pessoas.",
+			"items": {
+				"private": {
+					"term": "Números privados",
+					"detail": "A participação de cada pessoa fica na máquina dela e no próprio status. Ninguém mais vê."
+				},
+				"team": {
+					"term": "Leitura do time",
+					"detail": "O time vê o estado de cada ticket e o skill drift: a fração de tickets que precisou de override."
+				},
+				"no-ranking": {
+					"term": "Sem ranking",
+					"detail": "Sem placar, sem comparação entre pessoas e sem uso em avaliação de desempenho."
+				},
+				"floor": {
+					"term": "Um princípio, não uma dose",
+					"detail": "O piso de 5% confirma que a parte reservada foi mesmo escrita. A prática vem do problema, não do número."
+				},
+				"overrides": {
+					"term": "Overrides registrados",
+					"detail": "Um lead pode fazer override de um ticket, com um motivo que fica registrado. Só um executivo pode desligar o Safe Seat."
+				}
+			}
+		},
+		"limits": {
+			"kicker": "Limites",
+			"title": "O que a evidência não mostra",
+			"lead": "O Safe Seat se apoia em evidência e em julgamento. Aqui começa o julgamento.",
+			"items": {
+				"beyond": {
+					"term": "Além da habilidade",
+					"detail": "Nenhum destes estudos testou o Safe Seat. Eles medem habilidade e atenção, e burnout só como associação. O Safe Seat não alega nenhum efeito além do que eles relatam."
+				},
+				"long-term": {
+					"term": "Ao longo dos anos",
+					"detail": "Nenhum estudo ainda acompanha a habilidade de devs ao longo de meses ou anos de trabalho com agentes."
+				},
+				"share": {
+					"term": "Os próprios 5%",
+					"detail": "Nenhum estudo testa uma fração de código escrito à mão. O piso é um princípio do LangDrift, e a orientação da aviação desaconselha cotas de prática sem evidência; por isso a parte reservada é escolhida pelo problema."
+				},
+				"no-call": {
+					"term": "A regra sem agente",
+					"detail": "No estudo que mediu aprendizado, fazer perguntas conceituais ao assistente o preservou. Não chamar o agente na parte reservada é mais rígido do que a evidência exige: uma escolha de desenho que mantém o registro limpo."
+				},
+				"governance": {
+					"term": "Privacidade e overrides",
+					"detail": "Nenhum estudo compara leituras privadas e compartilhadas, testa uma verificação na entrega ou valida a fração de tickets com override como medida de skill drift. Isso se apoia em princípios de produto."
+				},
+				"analogy": {
+					"term": "Aviação",
+					"detail": "Pilotos e operadores de processo são uma analogia para devs, argumentada, não medida."
+				}
+			}
+		},
+		"sources": {
+			"kicker": "Fontes",
+			"title": "Leia você mesmo",
+			"lead": "As fontes primárias por trás desta página.",
+			"items": {
+				"bainbridge": "Bainbridge, L. (1983). Ironies of Automation. Automatica, 19(6), 775–779.",
+				"casner": "Casner, S. M., Geven, R. W., Recker, M. P. & Schooler, J. W. (2014). The Retention of Manual Flying Skills in the Automated Cockpit. Human Factors, 56(8), 1506–1516.",
+				"shen-tamkin": "Shen, J. H. & Tamkin, A. (2026). How AI Impacts Skill Formation. arXiv:2601.20245.",
+				"metr-2025": "Becker, J., Rush, N., Barnes, E. & Rein, D. (2025). Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity. arXiv:2507.09089.",
+				"metr-2026": "METR (2026). We are Changing our Developer Productivity Experiment Design.",
+				"lee": "Lee, H.-P. et al. (2025). The Impact of Generative AI on Critical Thinking. CHI '25.",
+				"feng": "Feng, Z., Afroz, S. & Sarma, A. (2025). From Gains to Strains: Modeling Developer Burnout with GenAI Adoption. arXiv:2510.07435.",
+				"safo-13002": "Federal Aviation Administration (2013). SAFO 13002, Manual Flight Operations.",
+				"safo-17007": "Federal Aviation Administration (2017). SAFO 17007, Manual Flight Operations Proficiency."
+			}
+		},
+		"faq": {
+			"title": "Perguntas sobre o Safe Seat.",
+			"description": "O que os times perguntam antes de adotar a prática.",
+			"items": {
+				"quota": {
+					"question": "O Safe Seat é uma cota para devs?",
+					"answer": "Não. O time se compromete com uma prática: todo ticket reserva um problema que vale o raciocínio. O piso de 5% só confirma que a parte reservada foi escrita, e um lead pode fazer override de qualquer ticket, com motivo."
+				},
+				"manager": {
+					"question": "Meu gestor vê a minha participação?",
+					"answer": "Não. A sua participação fica nos seus próprios registros. O time vê se cada ticket cumpriu o piso ou teve override, e a fração de tickets com override no time."
+				},
+				"ai": {
+					"question": "Posso usar IA durante o dev ticket?",
+					"answer": "O ex não chama nenhum agente durante o dev ticket. Se você usar um em outro lugar, diga isso ao fechar: essas linhas passam a contar como desconhecidas, em vez de suas."
+				},
+				"why-five": {
+					"question": "Por que 5%?",
+					"answer": "É um piso, não uma meta. Ele confirma que uma parte real do ticket foi escrita à mão. Times podem subir o número; ninguém pode ficar abaixo dele."
+				},
+				"available": {
+					"question": "Já posso usar o Safe Seat?",
+					"answer": "Ainda não. O Safe Seat está em desenvolvimento como parte do LangDrift FinOps. Esta página descreve o desenho planejado."
+				},
+				"outside": {
+					"question": "Ele vê o que eu faço fora do ex?",
+					"answer": "Não. O Safe Seat mede só o que o ex executa. Trabalho feito em outras ferramentas é desconhecido, e desconhecido nunca conta como de ninguém."
+				}
+			}
+		}
+	},
+	"zh-Hant": {
+		"skip": "跳到為什麼",
+		"hero": {
+			"eyebrow": "LangDrift FinOps",
+			"comingSoon": "即將推出",
+			"titleStart": "代理寫下大部分的程式碼。",
+			"titleEnd": "座位上仍然有人。",
+			"lead": "鍵盤沒有讓手寫消失，因為書寫是一種思考方式。程式碼也是如此。Safe Seat 在每張工單中保留一部分，由人親手撰寫，讓團隊持續理解、除錯並真正擁有自己交付的東西。",
+			"note": "Safe Seat 正在開發中。本頁所有內容描述的是規劃中的設計。"
+		},
+		"why": {
+			"kicker": "為什麼",
+			"title": "寫程式就是開發者思考的方式",
+			"lead": "代理可以、也應該產出團隊交付的大部分內容。它們產出的是原料：要經過熟練的雙手加工才有價值，而停止練習的雙手會失去手感。",
+			"items": {
+				"thinking": {
+					"title": "書寫就是思考",
+					"description": "手機把手寫從工作的中心移開，但手寫依然存在，因為書寫讓你和你寫下的東西連結在一起。親手寫一部分程式碼，能讓你對系統的心智模型保持敏銳。"
+				},
+				"irony": {
+					"title": "自動化的諷刺",
+					"description": "1983 年，Lisanne Bainbridge 主張：流程越自動化，操作員練習得越少，而當自動化失靈、必須接手時，表現也越差。航空業的回應，是讓飛行員持續手動飛行。"
+				},
+				"delegate": {
+					"title": "選擇不要委派什麼",
+					"description": "不是放棄代理，而是做選擇：半夜出事時你得親手除錯的核心邏輯、學習真正發生的困難部分，以及第一次接觸新的技術堆疊。"
+				}
+			}
+		},
+		"evidence": {
+			"kicker": "證據",
+			"title": "研究顯示了什麼，又在哪裡止步",
+			"lead": "每項發現都附上它的限制和原始來源的連結。沒有一項能單獨下定論；放在一起，它們指向同一個方向。",
+			"limitLabel": "限制",
+			"sourceLink": "閱讀來源",
+			"followUpLink": "閱讀 2026 年的後續研究",
+			"items": {
+				"bainbridge": {
+					"source": "Bainbridge · Automatica · 1983",
+					"title": "監看不等於練習",
+					"description": "只負責監看自動化流程的操作員，會失去流程失靈時所需要的技能，而需要接手的時刻，正是事情已經出錯的時候。",
+					"limit": "這是根據流程控制與駕駛艙提出的論證，不是實驗，也不是關於軟體。"
+				},
+				"casner": {
+					"source": "Casner et al. · Human Factors · 2014",
+					"title": "手上功夫還在，思考能力退步了",
+					"description": "在 NASA 模擬器中的航空公司飛行員保住了手動駕駛技能，但導航、察覺儀表失效這類認知技能已經退化。",
+					"limit": "十六位飛行員、一次測試；與缺乏練習和分心的關聯只是相關性，而且是航空，不是軟體。"
+				},
+				"shen-tamkin": {
+					"source": "Shen & Tamkin · Anthropic · 2026",
+					"title": "靠助理學習，理解得更少",
+					"description": "使用 AI 助理學習新函式庫的開發者，在概念、閱讀程式碼與除錯的測驗中得分較低，速度也沒有明顯變快。會要求解釋、或只問概念性問題的人，保住了大部分的學習成果。",
+					"limit": "只有一個函式庫、一次短暫的測試，並在結束後立即測驗；用的是聊天助理，不是代理。"
+				},
+				"metr": {
+					"source": "METR · 2025 與 2026",
+					"title": "感覺更快不等於真的更快",
+					"description": "2025 年初，資深開源開發者使用 AI 工具時多花了 19% 的時間，卻相信自己快了 20%。在 2026 年的後續研究中，許多人把不想在沒有 AI 時做的任務擱置下來。",
+					"limit": "十六位開發者、在自己的儲存庫中、使用 2025 年初的工具；2026 年的估計太不確定，無法衡量變化。"
+				},
+				"lee": {
+					"source": "Lee et al. · CHI · 2025",
+					"title": "越信任工具，思考越少",
+					"description": "在 319 位知識工作者中，對生成式 AI 越有信心，批判性思考就越少；心力也從蒐集資訊轉向驗證資訊，從解決問題轉向整合 AI 的產出。",
+					"limit": "這是自陳努力程度的調查：顯示的是關聯，不是因果。"
+				},
+				"feng": {
+					"source": "Feng, Afroz & Sarma · 2025",
+					"title": "導入壓力與職業倦怠相伴",
+					"description": "在一項針對 442 位開發者的調查中，隨生成式 AI 導入而來的工作要求與更多職業倦怠相關，自主性則與較少的倦怠相關。",
+					"limit": "橫斷面、自陳式調查，職業倦怠以四個問卷題目衡量：是關聯，不是因果。"
+				}
+			}
+		},
+		"reserved": {
+			"kicker": "保留部分",
+			"title": "留給人的部分",
+			"lead": "每張工單都保留一個由人親手解決的問題，有自己的目標與驗收條件，並連同測試一起撰寫。由技術負責人決定是哪一個。",
+			"categories": {
+				"core-domain": {
+					"title": "核心領域",
+					"description": "團隊在正式環境出問題時必須能解釋、能除錯的邏輯。"
+				},
+				"hard-part": {
+					"title": "困難的部分",
+					"description": "工單真正困難的地方，因為學習發生在與問題摩擦的過程中。"
+				},
+				"new-stack": {
+					"title": "第一次接觸",
+					"description": "第一次使用新的工具、函式庫或技術堆疊，先打好基礎，再交給代理擴展。"
+				}
+			},
+			"never": "絕不是樣板程式碼、設定、產生的程式碼、重新命名，或由工具執行的遷移：打字不是練習，推理才是。"
+		},
+		"flow": {
+			"kicker": "規劃中的流程",
+			"title": "Safe Seat 將如何運作",
+			"lead": "Safe Seat 在 LangDrift FinOps 的 harness 中運作，透過 ex 與主控台。這是設計，目前尚未推出。",
+			"steps": {
+				"plan": {
+					"eyebrow": "計畫",
+					"title": "計畫提出保留部分",
+					"description": "ex 規劃工單時，會建議值得親手撰寫的部分及原因。負責人可以接受，或改選另一部分。"
+				},
+				"boundary": {
+					"eyebrow": "代理",
+					"title": "代理停在邊界",
+					"description": "程式碼代理完成工單的其餘部分，只留下保留部分必須實作的介面。"
+				},
+				"dev-ticket": {
+					"eyebrow": "Dev ticket",
+					"title": "由人坐上座位",
+					"description": "在 dev ticket 期間，ex 不呼叫任何代理。由人撰寫解法與測試。"
+				},
+				"attestation": {
+					"eyebrow": "聲明",
+					"title": "由人關閉它",
+					"description": "關閉 dev ticket 時只問一個問題：是否在沒有代理的情況下撰寫？答案決定這些程式碼行是否算作這個人的。"
+				},
+				"delivery": {
+					"eyebrow": "交付",
+					"title": "衡量所佔比例",
+					"description": "在每次代理呼叫前後拍下的快照，會為每一行交付的程式碼標出來源。低於 5% 下限時，工單需要負責人附理由的例外核准。"
+				}
+			}
+		},
+		"principles": {
+			"kicker": "原則",
+			"title": "是練習，不是監控",
+			"lead": "Safe Seat 讓人持續寫程式。它不監看人。",
+			"items": {
+				"private": {
+					"term": "數字保持私密",
+					"detail": "每個人的比例只留在自己的電腦和自己的狀態中。其他人看不到。"
+				},
+				"team": {
+					"term": "團隊的讀數",
+					"detail": "團隊看到的是每張工單的狀態和 skill drift：需要例外核准的工單所佔的比例。"
+				},
+				"no-ranking": {
+					"term": "沒有排名",
+					"detail": "沒有排行榜、不在人與人之間比較，也不用於績效考核。"
+				},
+				"floor": {
+					"term": "是原則，不是劑量",
+					"detail": "5% 下限確認保留部分真的被寫出來。練習來自問題本身，而不是數字。"
+				},
+				"overrides": {
+					"term": "例外核准留有紀錄",
+					"detail": "負責人可以核准工單的例外，理由會留在紀錄中。只有主管層級才能關閉 Safe Seat。"
+				}
+			}
+		},
+		"limits": {
+			"kicker": "限制",
+			"title": "證據沒有顯示的事",
+			"lead": "Safe Seat 建立在證據與判斷之上。判斷從這裡開始。",
+			"items": {
+				"beyond": {
+					"term": "技能之外",
+					"detail": "這些研究都沒有測試 Safe Seat。它們衡量的是技能與注意力，職業倦怠則只是關聯。Safe Seat 不宣稱任何超出研究結果的效果。"
+				},
+				"long-term": {
+					"term": "長年下來",
+					"detail": "目前還沒有研究追蹤開發者與代理共事數月或數年後的技能變化。"
+				},
+				"share": {
+					"term": "5% 本身",
+					"detail": "沒有研究測試過親手撰寫程式碼的比例。這個下限是 LangDrift 的原則，而航空業的指引也提醒不要在缺乏證據時設定練習配額，因此保留部分是依問題來選擇。"
+				},
+				"no-call": {
+					"term": "不呼叫代理的規則",
+					"detail": "在衡量學習的那項研究中，向助理提出概念性問題並未妨礙學習。在保留部分完全不呼叫代理，比證據要求的更嚴格：這是為了讓紀錄清楚的設計選擇。"
+				},
+				"governance": {
+					"term": "隱私與例外核准",
+					"detail": "沒有研究比較私人與共享的數據、測試交付時的檢查，或驗證以需要例外核准的工單比例來衡量 skill drift。這些建立在產品原則之上。"
+				},
+				"analogy": {
+					"term": "航空",
+					"detail": "飛行員與流程操作員只是開發者的類比，是論證而來，不是測量而來。"
+				}
+			}
+		},
+		"sources": {
+			"kicker": "來源",
+			"title": "親自閱讀",
+			"lead": "本頁背後的原始來源。",
+			"items": {
+				"bainbridge": "Bainbridge, L. (1983). Ironies of Automation. Automatica, 19(6), 775–779.",
+				"casner": "Casner, S. M., Geven, R. W., Recker, M. P. & Schooler, J. W. (2014). The Retention of Manual Flying Skills in the Automated Cockpit. Human Factors, 56(8), 1506–1516.",
+				"shen-tamkin": "Shen, J. H. & Tamkin, A. (2026). How AI Impacts Skill Formation. arXiv:2601.20245.",
+				"metr-2025": "Becker, J., Rush, N., Barnes, E. & Rein, D. (2025). Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity. arXiv:2507.09089.",
+				"metr-2026": "METR (2026). We are Changing our Developer Productivity Experiment Design.",
+				"lee": "Lee, H.-P. et al. (2025). The Impact of Generative AI on Critical Thinking. CHI '25.",
+				"feng": "Feng, Z., Afroz, S. & Sarma, A. (2025). From Gains to Strains: Modeling Developer Burnout with GenAI Adoption. arXiv:2510.07435.",
+				"safo-13002": "Federal Aviation Administration (2013). SAFO 13002, Manual Flight Operations.",
+				"safo-17007": "Federal Aviation Administration (2017). SAFO 17007, Manual Flight Operations Proficiency."
+			}
+		},
+		"faq": {
+			"title": "關於 Safe Seat 的問題。",
+			"description": "團隊在採用這項做法之前常問的事。",
+			"items": {
+				"quota": {
+					"question": "Safe Seat 是給開發者的配額嗎？",
+					"answer": "不是。團隊承諾的是一種做法：每張工單都保留一個值得推理的問題。5% 下限只是確認保留部分確實被寫出來，負責人也可以附上理由，為任何工單核准例外。"
+				},
+				"manager": {
+					"question": "我的主管看得到我的比例嗎？",
+					"answer": "看不到。你的比例只留在你自己的紀錄中。團隊看到的是每張工單是否達到下限或已核准例外，以及整個團隊中需要例外核准的工單比例。"
+				},
+				"ai": {
+					"question": "在 dev ticket 期間可以使用 AI 嗎？",
+					"answer": "在 dev ticket 期間，ex 不會呼叫任何代理。如果你在別處使用了代理，關閉時請如實說明：這些程式碼行會改算為未知，而不算作你的。"
+				},
+				"why-five": {
+					"question": "為什麼是 5%？",
+					"answer": "這是下限，不是目標。它確認工單中確實有一部分是親手撰寫的。團隊可以調高；沒有人能低於它。"
+				},
+				"available": {
+					"question": "現在可以使用 Safe Seat 嗎？",
+					"answer": "還不行。Safe Seat 正在作為 LangDrift FinOps 的一部分開發中。本頁描述的是規劃中的設計。"
+				},
+				"outside": {
+					"question": "它看得到我在 ex 之外做的事嗎？",
+					"answer": "看不到。Safe Seat 只衡量 ex 執行的部分。在其他工具中完成的工作屬於未知，而未知永遠不會算作任何人的。"
+				}
+			}
+		}
+	},
+	"ja": {
+		"skip": "「なぜ」へスキップ",
+		"hero": {
+			"eyebrow": "LangDrift FinOps",
+			"comingSoon": "近日公開",
+			"titleStart": "コードの大半はエージェントが書く。",
+			"titleEnd": "それでも、席には人がいる。",
+			"lead": "キーボードが手書きを終わらせなかったのは、書くことが考えることだからです。コードも同じです。Safe Seat は、どのチケットにも人が手で書く部分を残します。チームが、自分たちの出荷するものを理解し、デバッグし、自分のものとして持ち続けられるように。",
+			"note": "Safe Seat は開発中です。このページの内容はすべて、計画中の設計を説明したものです。"
+		},
+		"why": {
+			"kicker": "なぜ",
+			"title": "コードを書くことは、開発者の考え方そのもの",
+			"lead": "チームが出荷するものの多くは、エージェントが作れるし、作るべきです。ただしそれは素材です。熟練した手を通ってはじめて価値になり、練習をやめた手は勘を失います。",
+			"items": {
+				"thinking": {
+					"title": "書くことは考えること",
+					"description": "スマートフォンは手書きを仕事の中心から押し出しましたが、手書きは残りました。書くことが、書いたものと自分を結びつけるからです。コードの一部を自分で書くことで、システムのメンタルモデルが鋭く保たれます。"
+				},
+				"irony": {
+					"title": "自動化の皮肉",
+					"description": "1983 年、Lisanne Bainbridge は、プロセスが自動化されるほどオペレーターの練習は減り、自動化が失敗して引き継ぐときの対応が悪くなることを論じました。航空業界は、パイロットに手動操縦を続けさせることで応えています。"
+				},
+				"delegate": {
+					"title": "任せないものを選ぶ",
+					"description": "エージェントを手放すのではなく、選ぶこと。夜中の障害で自分がデバッグすることになるコアのロジック、学びが生まれる難しい部分、そして新しいスタックとの最初の接点です。"
+				}
+			}
+		},
+		"evidence": {
+			"kicker": "エビデンス",
+			"title": "研究が示すこと、そしてその限界",
+			"lead": "どの知見にも、その限界と一次資料へのリンクを添えています。単独で結論を出せるものはありませんが、合わせると同じ方向を指しています。",
+			"limitLabel": "限界",
+			"sourceLink": "資料を読む",
+			"followUpLink": "2026 年の追跡調査を読む",
+			"items": {
+				"bainbridge": {
+					"source": "Bainbridge · Automatica · 1983",
+					"title": "監視は練習ではない",
+					"description": "自動化されたプロセスを見ているだけのオペレーターは、それが失敗したときに必要なスキルを失います。しかも引き継ぐ瞬間は、すでに何かがおかしくなったときにやってきます。",
+					"limit": "プロセス制御とコックピットに基づく論考で、実験ではなく、ソフトウェアについてのものでもありません。"
+				},
+				"casner": {
+					"source": "Casner et al. · Human Factors · 2014",
+					"title": "手は覚えていても、考える力は衰えた",
+					"description": "NASA のシミュレーターで、航空会社のパイロットは手動操縦の技能を保っていましたが、航法や計器の故障に気づくといった認知的な技能は衰えていました。",
+					"limit": "パイロット 16 人、1 回のセッション。練習不足や注意のそれとの関係は相関にとどまり、航空の話であってソフトウェアではありません。"
+				},
+				"shen-tamkin": {
+					"source": "Shen & Tamkin · Anthropic · 2026",
+					"title": "アシスタントと学ぶと、理解が浅くなる",
+					"description": "AI アシスタントを使って新しいライブラリを学んだ開発者は、概念、コードリーディング、デバッグのテストで点数が低く、速さにも有意な差はありませんでした。説明を求めたり、概念的な質問だけをしたりした人は、学びの大半を保っていました。",
+					"limit": "ライブラリ 1 つ、短いセッション 1 回、直後のテストのみ。使ったのはチャットのアシスタントで、エージェントではありません。"
+				},
+				"metr": {
+					"source": "METR · 2025 年と 2026 年",
+					"title": "速く感じることと、速いことは違う",
+					"description": "2025 年初め、経験豊富なオープンソース開発者は AI ツールを使うと 19% 長くかかったのに、20% 速くなったと信じていました。2026 年の追跡調査では、AI なしではやりたくないタスクを多くの人が提出しませんでした。",
+					"limit": "開発者 16 人が自分のリポジトリで、2025 年初めのツールを使った結果です。2026 年の推定は不確実すぎて、変化を測れませんでした。"
+				},
+				"lee": {
+					"source": "Lee et al. · CHI · 2025",
+					"title": "ツールを信じるほど、考えなくなる",
+					"description": "知識労働者 319 人のうち、生成 AI への信頼が高いほど批判的思考は少なく、労力は情報を集めることから検証することへ、問題を解くことから AI の出力を統合することへ移っていました。",
+					"limit": "自己申告の労力に基づく調査で、示しているのは関連であり、因果ではありません。"
+				},
+				"feng": {
+					"source": "Feng, Afroz & Sarma · 2025",
+					"title": "導入のプレッシャーは燃え尽きと結びつく",
+					"description": "開発者 442 人の調査で、生成 AI の導入に伴う仕事の要求は燃え尽きの増加と、自律性は燃え尽きの減少と関連していました。",
+					"limit": "横断的な自己申告の調査で、燃え尽きは 4 つの設問で測られています。関連であり、因果ではありません。"
+				}
+			}
+		},
+		"reserved": {
+			"kicker": "残しておく部分",
+			"title": "人の手に残すもの",
+			"lead": "どのチケットにも、人が手で解く問題を 1 つ残します。それには独自のゴールと受け入れ条件があり、テストと一緒に書かれます。どれにするかはテックリードが決めます。",
+			"categories": {
+				"core-domain": {
+					"title": "コアドメイン",
+					"description": "本番で壊れたときに、チームが説明し、デバッグできなければならないロジック。"
+				},
+				"hard-part": {
+					"title": "難しい部分",
+					"description": "チケットの難しさがある場所。学びは、問題との摩擦の中で生まれるからです。"
+				},
+				"new-stack": {
+					"title": "最初の接点",
+					"description": "新しいツール、ライブラリ、スタックでの最初の作業。エージェントが広げる前に、土台を自分で作ります。"
+				}
+			},
+			"never": "ボイラープレート、設定、生成されたコード、リネーム、ツールが実行するマイグレーションは対象外です。練習になるのはタイピングではなく、推論です。"
+		},
+		"flow": {
+			"kicker": "計画中の流れ",
+			"title": "Safe Seat の仕組み",
+			"lead": "Safe Seat は LangDrift FinOps のハーネスの中で、ex とコンソールを通じて動きます。これは設計であり、まだ提供されていません。",
+			"steps": {
+				"plan": {
+					"eyebrow": "計画",
+					"title": "計画が残す部分を提案する",
+					"description": "ex がチケットを計画するとき、手で書く価値のある部分とその理由を提案します。リードはそれを受け入れるか、別の部分を選びます。"
+				},
+				"boundary": {
+					"eyebrow": "エージェント",
+					"title": "エージェントは境界で止まる",
+					"description": "コーディングエージェントがチケットの残りを進め、残す部分が満たすべきインターフェースだけを置いておきます。"
+				},
+				"dev-ticket": {
+					"eyebrow": "Dev ticket",
+					"title": "人が席に着く",
+					"description": "dev ticket の間、ex はエージェントを一切呼びません。解決策とテストは人が書きます。"
+				},
+				"attestation": {
+					"eyebrow": "申告",
+					"title": "人がそれを閉じる",
+					"description": "dev ticket を閉じるときの質問は 1 つだけです。エージェントなしで書いたか。その答えで、その行が本人のものとして数えられるかが決まります。"
+				},
+				"delivery": {
+					"eyebrow": "デリバリー",
+					"title": "割合を測る",
+					"description": "エージェントの呼び出しごとに前後で取るスナップショットが、出荷された各行の出どころを特定します。5% の下限を下回ると、そのチケットにはリードによる理由付きのオーバーライドが必要です。"
+				}
+			}
+		},
+		"principles": {
+			"kicker": "原則",
+			"title": "練習であって、監視ではない",
+			"lead": "Safe Seat は人がコードを書き続けられるようにするものです。人を見張るものではありません。",
+			"items": {
+				"private": {
+					"term": "数字は本人だけのもの",
+					"detail": "各自の割合は、本人のマシンと本人のステータスにだけ残ります。ほかの人には見えません。"
+				},
+				"team": {
+					"term": "チームの指標",
+					"detail": "チームに見えるのは、各チケットの状態と skill drift、つまりオーバーライドが必要だったチケットの割合です。"
+				},
+				"no-ranking": {
+					"term": "ランキングはない",
+					"detail": "リーダーボードも、人同士の比較もなく、人事評価にも使いません。"
+				},
+				"floor": {
+					"term": "原則であって、分量ではない",
+					"detail": "5% の下限は、残した部分が本当に書かれたことを確かめるものです。練習を生むのは数字ではなく、問題そのものです。"
+				},
+				"overrides": {
+					"term": "オーバーライドは記録される",
+					"detail": "リードはチケットをオーバーライドできますが、その理由は記録に残ります。Safe Seat をオフにできるのは経営層だけです。"
+				}
+			}
+		},
+		"limits": {
+			"kicker": "限界",
+			"title": "エビデンスが示していないこと",
+			"lead": "Safe Seat はエビデンスと判断の両方に基づいています。ここから先は判断です。",
+			"items": {
+				"beyond": {
+					"term": "スキルの先",
+					"detail": "これらの研究は Safe Seat 自体を検証していません。測っているのはスキルと注意で、燃え尽きは関連としてだけです。Safe Seat は、研究が報告する以上の効果を主張しません。"
+				},
+				"long-term": {
+					"term": "数年単位で",
+					"detail": "エージェントと働く開発者のスキルを、数か月から数年にわたって追跡した研究はまだありません。"
+				},
+				"share": {
+					"term": "5% という数字",
+					"detail": "手で書いたコードの割合を検証した研究はありません。この下限は LangDrift の原則であり、航空のガイダンスもエビデンスのない練習ノルマを戒めています。だからこそ、残す部分は問題によって選びます。"
+				},
+				"no-call": {
+					"term": "エージェントを呼ばないルール",
+					"detail": "学習を測った研究では、アシスタントに概念的な質問をしても学習は保たれました。残す部分でエージェントを一切呼ばないのは、エビデンスが求めるより厳しい設計上の選択で、記録を明確に保つためのものです。"
+				},
+				"governance": {
+					"term": "プライバシーとオーバーライド",
+					"detail": "個人の数値を非公開にする場合と共有する場合の比較、出荷時のチェックの検証、オーバーライドが必要だったチケットの割合を skill drift の指標とする妥当性の検証を行った研究はありません。これらはプロダクトの原則に基づいています。"
+				},
+				"analogy": {
+					"term": "航空",
+					"detail": "パイロットやプロセスのオペレーターは開発者のアナロジーであり、論じられたものであって、測定されたものではありません。"
+				}
+			}
+		},
+		"sources": {
+			"kicker": "出典",
+			"title": "ご自身で読んでください",
+			"lead": "このページの背後にある一次資料です。",
+			"items": {
+				"bainbridge": "Bainbridge, L. (1983). Ironies of Automation. Automatica, 19(6), 775–779.",
+				"casner": "Casner, S. M., Geven, R. W., Recker, M. P. & Schooler, J. W. (2014). The Retention of Manual Flying Skills in the Automated Cockpit. Human Factors, 56(8), 1506–1516.",
+				"shen-tamkin": "Shen, J. H. & Tamkin, A. (2026). How AI Impacts Skill Formation. arXiv:2601.20245.",
+				"metr-2025": "Becker, J., Rush, N., Barnes, E. & Rein, D. (2025). Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity. arXiv:2507.09089.",
+				"metr-2026": "METR (2026). We are Changing our Developer Productivity Experiment Design.",
+				"lee": "Lee, H.-P. et al. (2025). The Impact of Generative AI on Critical Thinking. CHI '25.",
+				"feng": "Feng, Z., Afroz, S. & Sarma, A. (2025). From Gains to Strains: Modeling Developer Burnout with GenAI Adoption. arXiv:2510.07435.",
+				"safo-13002": "Federal Aviation Administration (2013). SAFO 13002, Manual Flight Operations.",
+				"safo-17007": "Federal Aviation Administration (2017). SAFO 17007, Manual Flight Operations Proficiency."
+			}
+		},
+		"faq": {
+			"title": "Safe Seat についての質問。",
+			"description": "チームがこのやり方を取り入れる前によく尋ねること。",
+			"items": {
+				"quota": {
+					"question": "Safe Seat は開発者へのノルマですか？",
+					"answer": "いいえ。チームが約束するのは、どのチケットにも推論する価値のある問題を残すというやり方です。5% の下限は残した部分が書かれたことを確かめるだけで、リードは理由を添えてどのチケットもオーバーライドできます。"
+				},
+				"manager": {
+					"question": "マネージャーに私の割合は見えますか？",
+					"answer": "見えません。あなたの割合は、あなた自身の記録にだけ残ります。チームに見えるのは、各チケットが下限を満たしたかオーバーライドされたか、そしてチーム全体でオーバーライドされたチケットの割合です。"
+				},
+				"ai": {
+					"question": "dev ticket の間に AI を使ってもいいですか？",
+					"answer": "dev ticket の間、ex はエージェントを呼びません。ほかの場所で使ったなら、閉じるときにそう申告してください。その行はあなたのものではなく、不明として数えられます。"
+				},
+				"why-five": {
+					"question": "なぜ 5% なのですか？",
+					"answer": "目標ではなく下限です。チケットの実質的な一部が手で書かれたことを確かめるためのものです。チームは引き上げられますが、下回ることは誰にもできません。"
+				},
+				"available": {
+					"question": "Safe Seat は今使えますか？",
+					"answer": "まだです。Safe Seat は LangDrift FinOps の一部として開発中です。このページは計画中の設計を説明しています。"
+				},
+				"outside": {
+					"question": "ex の外での作業も見えるのですか？",
+					"answer": "いいえ。Safe Seat が測るのは ex が実行したものだけです。ほかのツールで行った作業は不明であり、不明が誰かのものとして数えられることはありません。"
+				}
+			}
+		}
+	},
+	"vi": {
+		"skip": "Chuyển đến lý do",
+		"hero": {
+			"eyebrow": "LangDrift FinOps",
+			"comingSoon": "Sắp ra mắt",
+			"titleStart": "Tác tử viết phần lớn mã nguồn.",
+			"titleEnd": "Một người vẫn giữ ghế lái.",
+			"lead": "Bàn phím không xóa bỏ chữ viết tay, vì viết là một cách suy nghĩ. Mã nguồn cũng vậy. Safe Seat dành riêng một phần của mỗi ticket để một người tự tay viết, để đội tiếp tục hiểu, gỡ lỗi và làm chủ những gì mình giao.",
+			"note": "Safe Seat đang được phát triển. Mọi nội dung trên trang này mô tả thiết kế dự kiến."
+		},
+		"why": {
+			"kicker": "Lý do",
+			"title": "Viết mã là cách một lập trình viên suy nghĩ",
+			"lead": "Tác tử có thể và nên tạo ra phần lớn những gì một đội giao. Thứ chúng tạo ra là nguyên liệu: chỉ có giá trị sau khi qua bàn tay thành thạo, và bàn tay ngừng luyện tập sẽ mất cảm giác.",
+			"items": {
+				"thinking": {
+					"title": "Viết là suy nghĩ",
+					"description": "Điện thoại đã đẩy chữ viết tay ra khỏi trung tâm công việc, nhưng nó vẫn tồn tại, vì viết kết nối bạn với điều bạn viết. Tự viết một phần mã giữ cho mô hình tư duy của bạn về hệ thống luôn sắc bén."
+				},
+				"irony": {
+					"title": "Nghịch lý của tự động hóa",
+					"description": "Năm 1983, Lisanne Bainbridge lập luận rằng quy trình càng tự động, người vận hành càng ít luyện tập, và càng xử lý kém khi tự động hóa hỏng và họ phải tiếp quản. Ngành hàng không đáp lại bằng cách để phi công tiếp tục bay tay."
+				},
+				"delegate": {
+					"title": "Chọn điều không giao phó",
+					"description": "Không phải từ bỏ tác tử, mà là lựa chọn: phần logic cốt lõi bạn sẽ phải gỡ lỗi trong một sự cố lúc nửa đêm, phần khó nơi việc học diễn ra, và lần đầu tiếp xúc với một stack mới."
+				}
+			}
+		},
+		"evidence": {
+			"kicker": "Bằng chứng",
+			"title": "Nghiên cứu cho thấy gì, và dừng ở đâu",
+			"lead": "Mỗi phát hiện đi kèm giới hạn của nó và đường dẫn đến nguồn gốc. Không phát hiện nào tự mình giải quyết được câu hỏi; gộp lại, chúng cùng chỉ về một hướng.",
+			"limitLabel": "Giới hạn",
+			"sourceLink": "Đọc nguồn",
+			"followUpLink": "Đọc bản cập nhật năm 2026",
+			"items": {
+				"bainbridge": {
+					"source": "Bainbridge · Automatica · 1983",
+					"title": "Giám sát không phải là luyện tập",
+					"description": "Người vận hành chỉ theo dõi một quy trình tự động sẽ mất đi kỹ năng họ cần khi nó hỏng, và thời điểm phải tiếp quản đến đúng lúc mọi thứ đã trục trặc.",
+					"limit": "Một lập luận từ điều khiển quy trình và buồng lái, không phải thí nghiệm, và không nói về phần mềm."
+				},
+				"casner": {
+					"source": "Casner et al. · Human Factors · 2014",
+					"title": "Tay còn vững, tư duy đã giảm",
+					"description": "Các phi công hãng hàng không trong một mô phỏng của NASA vẫn giữ được kỹ năng bay tay, trong khi các kỹ năng nhận thức, như dẫn đường và nhận ra một thiết bị hỏng, đã sa sút.",
+					"limit": "Mười sáu phi công trong một buổi; mối liên hệ với việc ít luyện tập và sự xao nhãng chỉ là tương quan, và đây là hàng không, không phải phần mềm."
+				},
+				"shen-tamkin": {
+					"source": "Shen & Tamkin · Anthropic · 2026",
+					"title": "Học cùng trợ lý, hiểu ít hơn",
+					"description": "Các lập trình viên học một thư viện mới với trợ lý AI đạt điểm thấp hơn trong bài kiểm tra về khái niệm, đọc mã và gỡ lỗi, và không nhanh hơn đáng kể. Những người hỏi để được giải thích hoặc chỉ hỏi câu hỏi khái niệm giữ được phần lớn những gì đã học.",
+					"limit": "Một thư viện, một buổi ngắn và bài kiểm tra ngay sau đó; một trợ lý chat, không phải tác tử."
+				},
+				"metr": {
+					"source": "METR · 2025 và 2026",
+					"title": "Cảm thấy nhanh hơn không phải là nhanh hơn",
+					"description": "Đầu năm 2025, các lập trình viên mã nguồn mở giàu kinh nghiệm mất thêm 19% thời gian khi dùng công cụ AI, trong khi tin rằng mình nhanh hơn 20%. Trong nghiên cứu tiếp theo năm 2026, nhiều người gác lại những việc họ không muốn làm khi thiếu AI.",
+					"limit": "Mười sáu lập trình viên trên kho mã của chính họ, với công cụ đầu năm 2025; ước tính năm 2026 quá bất định để đo được thay đổi."
+				},
+				"lee": {
+					"source": "Lee et al. · CHI · 2025",
+					"title": "Càng tin công cụ, càng ít suy nghĩ",
+					"description": "Trong 319 người làm công việc tri thức, càng tin vào AI tạo sinh thì càng ít tư duy phản biện, và công sức chuyển từ thu thập thông tin sang kiểm chứng nó, từ giải quyết vấn đề sang tích hợp kết quả của AI.",
+					"limit": "Một khảo sát về mức nỗ lực tự báo cáo: cho thấy mối liên hệ, không phải nguyên nhân."
+				},
+				"feng": {
+					"source": "Feng, Afroz & Sarma · 2025",
+					"title": "Áp lực áp dụng đi cùng kiệt sức",
+					"description": "Trong một khảo sát với 442 lập trình viên, các yêu cầu công việc đi kèm việc áp dụng AI tạo sinh có liên hệ với tình trạng kiệt sức nhiều hơn, còn quyền tự chủ thì với ít hơn.",
+					"limit": "Khảo sát cắt ngang, tự báo cáo, với tình trạng kiệt sức được đo bằng bốn câu hỏi: là mối liên hệ, không phải nguyên nhân."
+				}
+			}
+		},
+		"reserved": {
+			"kicker": "Phần dành riêng",
+			"title": "Điều ở lại với con người",
+			"lead": "Mỗi ticket dành riêng một vấn đề để người đó tự tay giải quyết, với mục tiêu và tiêu chí chấp nhận riêng, viết cùng với các bài kiểm thử. Trưởng nhóm kỹ thuật quyết định vấn đề nào.",
+			"categories": {
+				"core-domain": {
+					"title": "Miền cốt lõi",
+					"description": "Phần logic mà đội phải giải thích và gỡ lỗi được khi nó hỏng trên môi trường thật."
+				},
+				"hard-part": {
+					"title": "Phần khó",
+					"description": "Nơi chứa độ khó của ticket, vì việc học diễn ra trong ma sát với vấn đề."
+				},
+				"new-stack": {
+					"title": "Lần tiếp xúc đầu",
+					"description": "Công việc đầu tiên với một công cụ, thư viện hay stack mới, để xây nền móng trước khi tác tử mở rộng nó."
+				}
+			},
+			"never": "Không bao giờ là mã mẫu, cấu hình, mã được sinh tự động, đổi tên hay một lần migration do công cụ chạy: gõ phím không phải là luyện tập, suy luận mới là."
+		},
+		"flow": {
+			"kicker": "Quy trình dự kiến",
+			"title": "Safe Seat sẽ hoạt động thế nào",
+			"lead": "Safe Seat chạy bên trong harness của LangDrift FinOps, qua ex và bảng điều khiển. Đây là thiết kế; hiện chưa có sẵn.",
+			"steps": {
+				"plan": {
+					"eyebrow": "Kế hoạch",
+					"title": "Kế hoạch đề xuất phần dành riêng",
+					"description": "Khi ex lập kế hoạch cho một ticket, nó gợi ý phần đáng tự tay viết và lý do. Trưởng nhóm chấp nhận hoặc chọn phần khác."
+				},
+				"boundary": {
+					"eyebrow": "Tác tử",
+					"title": "Tác tử dừng ở ranh giới",
+					"description": "Tác tử lập trình làm phần còn lại của ticket và chỉ để lại giao diện mà phần dành riêng phải đáp ứng."
+				},
+				"dev-ticket": {
+					"eyebrow": "Dev ticket",
+					"title": "Con người ngồi vào ghế",
+					"description": "Trong dev ticket, ex không gọi tác tử nào. Người đó viết lời giải và các bài kiểm thử."
+				},
+				"attestation": {
+					"eyebrow": "Xác nhận",
+					"title": "Người đó đóng nó lại",
+					"description": "Đóng dev ticket chỉ hỏi một câu: viết mà không có tác tử? Câu trả lời quyết định những dòng đó có được tính là của người đó hay không."
+				},
+				"delivery": {
+					"eyebrow": "Bàn giao",
+					"title": "Tỷ lệ được đo",
+					"description": "Các ảnh chụp trước và sau mỗi lần gọi tác tử xác định nguồn gốc của từng dòng được bàn giao. Dưới mức sàn 5%, ticket cần một ngoại lệ được trưởng nhóm phê duyệt, kèm lý do."
+				}
+			}
+		},
+		"principles": {
+			"kicker": "Nguyên tắc",
+			"title": "Luyện tập, không phải giám sát",
+			"lead": "Safe Seat giúp một người tiếp tục viết mã. Nó không theo dõi con người.",
+			"items": {
+				"private": {
+					"term": "Con số riêng tư",
+					"detail": "Tỷ lệ của mỗi người chỉ nằm trên máy và trong trạng thái của chính họ. Không ai khác thấy được."
+				},
+				"team": {
+					"term": "Chỉ số của đội",
+					"detail": "Đội thấy trạng thái của từng ticket và skill drift: tỷ lệ ticket cần ngoại lệ."
+				},
+				"no-ranking": {
+					"term": "Không xếp hạng",
+					"detail": "Không bảng xếp hạng, không so sánh giữa người với người và không dùng trong đánh giá hiệu suất."
+				},
+				"floor": {
+					"term": "Một nguyên tắc, không phải liều lượng",
+					"detail": "Mức sàn 5% xác nhận rằng phần dành riêng thật sự đã được viết. Việc luyện tập đến từ vấn đề, không phải từ con số."
+				},
+				"overrides": {
+					"term": "Ngoại lệ được ghi lại",
+					"detail": "Trưởng nhóm có thể phê duyệt ngoại lệ cho một ticket, với lý do được lưu lại. Chỉ cấp điều hành mới có thể tắt Safe Seat."
+				}
+			}
+		},
+		"limits": {
+			"kicker": "Giới hạn",
+			"title": "Điều bằng chứng không cho thấy",
+			"lead": "Safe Seat dựa trên bằng chứng và trên phán đoán. Đây là nơi phán đoán bắt đầu.",
+			"items": {
+				"beyond": {
+					"term": "Ngoài kỹ năng",
+					"detail": "Không nghiên cứu nào ở đây kiểm tra Safe Seat. Chúng đo kỹ năng và sự chú ý, còn tình trạng kiệt sức chỉ ở mức liên hệ. Safe Seat không tuyên bố tác động nào vượt ra ngoài những gì chúng ghi nhận."
+				},
+				"long-term": {
+					"term": "Qua nhiều năm",
+					"detail": "Chưa có nghiên cứu nào theo dõi kỹ năng của lập trình viên qua nhiều tháng hay nhiều năm làm việc cùng tác tử."
+				},
+				"share": {
+					"term": "Bản thân con số 5%",
+					"detail": "Chưa có nghiên cứu nào kiểm chứng một tỷ lệ mã viết tay. Mức sàn là nguyên tắc của LangDrift, và hướng dẫn hàng không cảnh báo không đặt chỉ tiêu luyện tập khi thiếu bằng chứng; vì vậy phần dành riêng được chọn theo vấn đề."
+				},
+				"no-call": {
+					"term": "Quy tắc không gọi tác tử",
+					"detail": "Trong nghiên cứu có đo việc học, đặt câu hỏi khái niệm cho trợ lý vẫn giữ được việc học. Hoàn toàn không gọi tác tử trong phần dành riêng là chặt hơn mức bằng chứng đòi hỏi: một lựa chọn thiết kế để giữ dữ liệu rõ ràng."
+				},
+				"governance": {
+					"term": "Quyền riêng tư và ngoại lệ",
+					"detail": "Chưa nghiên cứu nào so sánh số liệu riêng tư với số liệu chia sẻ, kiểm chứng bước kiểm tra khi bàn giao, hay xác nhận tỷ lệ ticket cần ngoại lệ là thước đo skill drift. Những điều này dựa trên nguyên tắc sản phẩm."
+				},
+				"analogy": {
+					"term": "Hàng không",
+					"detail": "Phi công và người vận hành quy trình là phép so sánh với lập trình viên, được lập luận chứ không được đo lường."
+				}
+			}
+		},
+		"sources": {
+			"kicker": "Nguồn",
+			"title": "Hãy tự đọc",
+			"lead": "Các nguồn gốc đứng sau trang này.",
+			"items": {
+				"bainbridge": "Bainbridge, L. (1983). Ironies of Automation. Automatica, 19(6), 775–779.",
+				"casner": "Casner, S. M., Geven, R. W., Recker, M. P. & Schooler, J. W. (2014). The Retention of Manual Flying Skills in the Automated Cockpit. Human Factors, 56(8), 1506–1516.",
+				"shen-tamkin": "Shen, J. H. & Tamkin, A. (2026). How AI Impacts Skill Formation. arXiv:2601.20245.",
+				"metr-2025": "Becker, J., Rush, N., Barnes, E. & Rein, D. (2025). Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity. arXiv:2507.09089.",
+				"metr-2026": "METR (2026). We are Changing our Developer Productivity Experiment Design.",
+				"lee": "Lee, H.-P. et al. (2025). The Impact of Generative AI on Critical Thinking. CHI '25.",
+				"feng": "Feng, Z., Afroz, S. & Sarma, A. (2025). From Gains to Strains: Modeling Developer Burnout with GenAI Adoption. arXiv:2510.07435.",
+				"safo-13002": "Federal Aviation Administration (2013). SAFO 13002, Manual Flight Operations.",
+				"safo-17007": "Federal Aviation Administration (2017). SAFO 17007, Manual Flight Operations Proficiency."
+			}
+		},
+		"faq": {
+			"title": "Câu hỏi về Safe Seat.",
+			"description": "Những điều các đội hỏi trước khi áp dụng cách làm này.",
+			"items": {
+				"quota": {
+					"question": "Safe Seat có phải là chỉ tiêu áp lên lập trình viên không?",
+					"answer": "Không. Đội cam kết với một cách làm: mỗi ticket dành riêng một vấn đề đáng để suy luận. Mức sàn 5% chỉ xác nhận rằng phần dành riêng đã được viết, và trưởng nhóm có thể phê duyệt ngoại lệ cho bất kỳ ticket nào, kèm lý do."
+				},
+				"manager": {
+					"question": "Quản lý của tôi có thấy tỷ lệ của tôi không?",
+					"answer": "Không. Tỷ lệ của bạn chỉ nằm trong hồ sơ của chính bạn. Đội thấy mỗi ticket đã đạt mức sàn hay đã có ngoại lệ, và tỷ lệ ticket có ngoại lệ trong cả đội."
+				},
+				"ai": {
+					"question": "Tôi có thể dùng AI trong dev ticket không?",
+					"answer": "Trong dev ticket, ex không gọi tác tử nào. Nếu bạn dùng tác tử ở nơi khác, hãy nói rõ khi đóng nó: khi đó những dòng ấy được tính là không xác định thay vì của bạn."
+				},
+				"why-five": {
+					"question": "Tại sao là 5%?",
+					"answer": "Đó là mức sàn, không phải mục tiêu. Nó xác nhận rằng một phần thật sự của ticket đã được viết tay. Các đội có thể nâng lên; không ai được xuống dưới mức đó."
+				},
+				"available": {
+					"question": "Tôi có thể dùng Safe Seat ngay bây giờ không?",
+					"answer": "Chưa. Safe Seat đang được phát triển như một phần của LangDrift FinOps. Trang này mô tả thiết kế dự kiến."
+				},
+				"outside": {
+					"question": "Nó có thấy những gì tôi làm bên ngoài ex không?",
+					"answer": "Không. Safe Seat chỉ đo những gì ex chạy. Công việc làm trong công cụ khác là không xác định, và không xác định thì không bao giờ được tính là của ai."
+				}
+			}
+		}
+	}
+}

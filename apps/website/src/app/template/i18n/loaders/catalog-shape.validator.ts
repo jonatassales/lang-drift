@@ -9,6 +9,7 @@ import microruntimesJson from '@i18n/messages/microruntimes.json'
 import platformJson from '@i18n/messages/platform.json'
 import privacyJson from '@i18n/messages/privacy.json'
 import routeStateJson from '@i18n/messages/route-state.json'
+import safeSeatJson from '@i18n/messages/safe-seat.json'
 import type { WebsiteLocale } from '@i18n/routing'
 
 import { shape } from './shape.compute'
@@ -39,4 +40,5 @@ assertCatalogShape('platform', platformJson)
 assertCatalogShape('route-state', routeStateJson)
 assertCatalogShape('finops', finopsJson)
 assertCatalogShape('microruntimes', microruntimesJson)
+assertCatalogShape('safe-seat', safeSeatJson)
 assertCatalogShape('book-a-demo', bookDemoJson)
