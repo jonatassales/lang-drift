@@ -100,7 +100,9 @@
 									"!@ui/**",
 									"!@views/**",
 									"!streaming",
-									"!streaming/**"
+									"!streaming/**",
+									"!tokens",
+									"!tokens/**"
 								]
 							},
 							":BLANK_LINE:",
@@ -118,7 +120,9 @@
 								"@ui/**",
 								"@views/**",
 								"streaming",
-								"streaming/**"
+								"streaming/**",
+								"tokens",
+								"tokens/**"
 							],
 							":BLANK_LINE:",
 							":PATH:"

@@ -4,13 +4,13 @@ Project knowledge for agents working in this repository. [`AGENTS.md`](/AGENTS.m
 
 ## Repository
 
-Monorepo with four packages, `@langdrift/tokens`, `@langdrift/web`, the `ex` CLI as `@langdrift/ex` and the Microruntimes contracts as `@langdrift/contracts`, and three apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/extub` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from extub.
+Monorepo with the internal packages `tokens`, `streaming` and `@langdrift/web` (its scope leaves under spec 0044), the published `ex` CLI as `@langdrift/ex` with the Microruntimes contracts as `@langdrift/contracts`, and three apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/extub` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from extub.
 
 Four workspace roots, each with one meaning, and a naming rule that follows it (spec 0044). `pnpm-workspace.yaml` lists them all, and a commit under any of them carries a `Ticket:` trailer.
 
 - `apps/<app>/`: one deployable app each, Next.js except `extub`. Picked up through `apps/*`.
 - `apps/microservices/<service>/`: the services, picked up through `apps/microservices/*`: the Nest.js microservices (`demo-requests`, `mailer`), which share the event log through `streaming` (see `.claude/rules/11-nestjs.rule.md`), and, once spec 0044 lands, `console-stubs`, the Go stub API the console reads (today `apps/extub`).
-- `packages/<name>/`: packages internal to the monorepo, shared across apps and never published. Their names are bare, like the apps' (`web`, `tokens`, `streaming`); `streaming` already carries its bare name; `web` and `tokens` still carry the `@langdrift/*` scope that spec 0044 removes. `shell`, `account` and `runtime` are planned.
+- `packages/<name>/`: packages internal to the monorepo, shared across apps and never published. Their names are bare, like the apps' (`web`, `tokens`, `streaming`); `streaming` and `tokens` already carry their bare names; `web` still carries the `@langdrift/*` scope that spec 0044 removes. `shell`, `account` and `runtime` are planned.
 - `lib/<name>/`: what LangDrift publishes, and only that, under the `@langdrift/*` scope: `@langdrift/cli` (the `ex` CLI, today `packages/ex` as `@langdrift/ex`) and `@langdrift/core` (the Microruntimes contracts, today `packages/contracts`). The scope means "published"; nothing outside `lib/` carries it.
 - `infrastructure/<component>/`: the infrastructure components the products run on, each a Dockerfile, a README and a minimal private manifest: `messaging` (Redis Streams, the event log) and `storage` (MinIO, the archive). A fence names a component after its folder (ADR 0004).
 - The Go modules (`packages/ex`, `packages/contracts`, `apps/extub` today) are tied together by the root `go.work`: Turborepo runs their `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds them (no Go toolchain required for frontend work).
@@ -66,7 +66,7 @@ When the shell resolves `drift` to another program (a link from an older checkou
 
 ## Design and tokens
 
-- `@langdrift/tokens` builds the tokens with Style Dictionary. Each app imports one self-contained stylesheet built from the shared tokens and its app theme: `@langdrift/tokens/website.css`, which the website and the console share.
+- `tokens` builds the tokens with Style Dictionary. Each app imports one self-contained stylesheet built from the shared tokens and its app theme: `tokens/website.css`, which the website and the console share.
 - Purple (primary) surfaces such as buttons carry `primary-foreground` text, which is white in both color schemes.
 - Components use roles, never a foundation or a brand color directly. Roles take shadcn's names (`background`, `foreground`, `primary`, `muted-foreground`, …) because the web apps use SmoothUI and shadcn components.
 - Prefixes: shared tokens are `--lg-*`; the website's app theme is `--site-*`. Each app theme lives in `packages/tokens/themes/` and defines only primary and primary hover (the Exphere purple for both), which `--lg-color-primary` points to.

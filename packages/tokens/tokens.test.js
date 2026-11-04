@@ -146,15 +146,15 @@ function buildEdited(name, sourceFile, edit) {
 	return build(copy)
 }
 
-// The stylesheet an app importing `@langdrift/tokens/<theme>.css` from this
+// The stylesheet an app importing `tokens/<theme>.css` from this
 // copy would receive.
 function stylesheet(copy, name = theme) {
 	const consumer = join(sandbox, `${basename(copy)}-consumer`)
-	mkdirSync(join(consumer, 'node_modules/@langdrift'), { recursive: true })
-	rmSync(join(consumer, 'node_modules/@langdrift/tokens'), { force: true })
-	symlinkSync(copy, join(consumer, 'node_modules/@langdrift/tokens'))
+	mkdirSync(join(consumer, 'node_modules'), { recursive: true })
+	rmSync(join(consumer, 'node_modules/tokens'), { force: true })
+	symlinkSync(copy, join(consumer, 'node_modules/tokens'))
 	const require = createRequire(join(consumer, 'index.js'))
-	return readFileSync(require.resolve(`@langdrift/tokens/${name}.css`), 'utf8')
+	return readFileSync(require.resolve(`tokens/${name}.css`), 'utf8')
 }
 
 // The theme's stylesheet, built once from its own copy.
