@@ -11,7 +11,7 @@ import (
 
 // RuntimeStarter starts a runtime.
 type RuntimeStarter interface {
-	Execute(context.Context, application.RuntimeRequest) (application.ExecutionOutcome, error)
+	Execute(context.Context, application.StartRuntimeRequest) (application.ExecutionOutcome, error)
 }
 
 // NewRuntimeUpCommand creates the runtime startup command.
@@ -22,7 +22,12 @@ func NewRuntimeUpCommand(startRuntime RuntimeStarter, globals *support.Globals) 
 		Args:  validateSingleArgument,
 		RunE: func(command *cobra.Command, arguments []string) error {
 			return runFinite(command, globals, func(ctx context.Context, project application.ProjectSelection) (application.ExecutionOutcome, error) {
-				return startRuntime.Execute(ctx, application.RuntimeRequest{Project: project, Runtime: arguments[0]})
+				return startRuntime.Execute(ctx, application.StartRuntimeRequest{
+					RuntimeRequest: application.RuntimeRequest{
+						Project: project,
+						Runtime: arguments[0],
+					},
+				})
 			})
 		},
 	}

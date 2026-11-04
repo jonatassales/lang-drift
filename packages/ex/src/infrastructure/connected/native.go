@@ -16,6 +16,7 @@ import (
 	"strings"
 	"time"
 
+	contracts "github.com/jonatassales/tao/packages/contracts/configuration"
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	app "github.com/jonatassales/tao/packages/ex/src/application/connected"
 	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
@@ -35,7 +36,7 @@ type imageLoader interface {
 	Execute(context.Context, application.LoadClusterImageRequest) (application.ImageResult, error)
 }
 type starter interface {
-	Execute(context.Context, application.RuntimeRequest) (application.ExecutionOutcome, error)
+	Execute(context.Context, application.StartRuntimeRequest) (application.ExecutionOutcome, error)
 }
 type stopper interface {
 	Execute(context.Context, application.StopRuntimeRequest) (application.ExecutionOutcome, error)
@@ -56,6 +57,31 @@ type Native struct {
 	Inspect      inspector
 	Executions   application.ExecutionReader
 	Runner       runner
+
+	// LookupEnv reads the agent's environment for the components'
+	// pass-through variables; nil reads the process's own.
+	LookupEnv func(string) (string, bool)
+}
+
+// environments reads the components' environments against the descriptor
+// the materialization wrote.
+func (native Native) environments(owner project.Project, config connection.Configuration) ([]microruntime.Environment, error) {
+	runtime, err := microruntime.ParseIdentifier(config.RuntimeID)
+	if err != nil {
+		return nil, err
+	}
+
+	descriptor, err := (configuration.Files{}).Load(owner, runtime)
+	if err != nil {
+		return nil, err
+	}
+
+	lookup := native.LookupEnv
+	if lookup == nil {
+		lookup = os.LookupEnv
+	}
+
+	return componentEnvironments(owner, descriptor, config, lookup)
 }
 
 func request(owner project.Project, id string) application.RuntimeRequest {
@@ -110,16 +136,15 @@ func blueprint(owner project.Project, config connection.Configuration) (microrun
 	plan := microruntime.Blueprint{Owner: config.ProjectID, Target: microruntime.KubernetesTarget{Context: "kind-" + owner.ClusterName(), Namespace: runtime}, Quotas: microruntime.ResourceQuotas{microruntime.QuotaRequestsCPU: cpu, microruntime.QuotaLimitsCPU: cpu, microruntime.QuotaRequestsMemory: memory, microruntime.QuotaLimitsMemory: memory}}
 	// The shares are the plan's own rule: an equal split of the envelope.
 	shares := run.SplitEnvelope(harness.Resources{CPUMillis: config.CPUMillis, MemoryMiB: config.MemoryMiB}, len(config.Components))
-	for i, component := range config.Components {
-		name, _ := microruntime.ParseIdentifier("c-" + digest([]byte(component.Path))[:12])
-		relative, err := microruntime.ParseComponentPath(component.Path)
+	for index, component := range config.Components {
+		workload, err := componentWorkload(owner, config, component, shares[index])
 		if err != nil {
 			return plan, err
 		}
-		cpu, _ := microruntime.ParseQuantity(strconv.Itoa(shares[i].CPUMillis) + "m")
-		memory, _ := microruntime.ParseQuantity(strconv.Itoa(shares[i].MemoryMiB) + "Mi")
-		plan.Workloads = append(plan.Workloads, microruntime.Workload{Name: name, Component: relative, Image: component.Image, Kind: microruntime.DeploymentWorkload, Resources: microruntime.Resources{CPURequest: cpu, CPULimit: cpu, MemoryRequest: memory, MemoryLimit: memory}, Service: microruntime.ServiceSpec{Port: component.Port, ReadinessPath: component.ReadinessPath, Replicas: 1}})
+
+		plan.Workloads = append(plan.Workloads, workload)
 	}
+
 	return plan, plan.Validate()
 }
 
@@ -325,8 +350,9 @@ func (native Native) snapshot(owner project.Project, config connection.Configura
 	return snapshot, nil
 }
 
-// Start runs only explicit recipes, then loads the images into the private
-// project cluster and waits for native readiness. Diagnostics stay local.
+// Start reads each component's environment, builds each component from its
+// own Dockerfile, then loads the images into the private project cluster and
+// waits for native readiness. Diagnostics stay local.
 func (native Native) Start(ctx context.Context, owner project.Project, record app.Connection, config connection.Configuration, report func(string, string) error) error {
 	if err := native.VerifyRepository(ctx, owner, record.Repository); err != nil {
 		return err
@@ -340,6 +366,10 @@ func (native Native) Start(ctx context.Context, owner project.Project, record ap
 	}
 	if snapshot.Hash != record.ConcreteHash {
 		return errors.New("native configuration changed after materialization")
+	}
+	environments, err := native.environments(owner, config)
+	if err != nil {
+		return err
 	}
 	var buildRoot, revision string
 	var cleanup func()
@@ -369,39 +399,27 @@ func (native Native) Start(ctx context.Context, owner project.Project, record ap
 	defer buildLog.Close()
 	logWriter := process.SyncWriter(buildLog)
 	for _, component := range config.Components {
-		directory, err := files.Existing(buildRoot, component.Path)
-		if err != nil {
-			return err
+		dockerfile := component.DockerfilePath()
+		if _, err := files.Existing(buildRoot, filepath.FromSlash(dockerfile)); err != nil {
+			return fmt.Errorf("component %s requires its committed Dockerfile %s: %w", component.Name, dockerfile, err)
 		}
-		// A Docker recipe must refer to an existing Dockerfile. No tool installation
-		// or implicit fallback recipe is attempted.
-		if component.Build.Executable == "docker" {
-			if _, err := files.Existing(directory, "Dockerfile"); err != nil {
-				return errors.New("declared Docker build requires an existing Dockerfile")
-			}
-		}
+
+		image := contracts.ImageTag(config.RuntimeID, component.Name, config.Revision)
+		// The build is fixed: the component's own Dockerfile, the derived tag
+		// and the project root as context. It sees the minimal base plus the
+		// container engine's own selection variables, never the agent's
+		// credentials. See ADR 0004.
 		command := process.Command{
-			Name: component.Build.Executable,
-			Args: component.Build.Args,
-			Dir:  directory,
-			// Recipes see the minimal base plus the container engine's own
-			// selection variables, never the agent's credentials.
+			Name:    "docker",
+			Args:    []string{"build", "--file", dockerfile, "--tag", image, "."},
+			Dir:     buildRoot,
 			PassEnv: []string{"DOCKER_*"},
 			Stdout:  logWriter,
 			Stderr:  logWriter,
 		}
-		// A committed script resolves inside the component's checkout directory,
-		// through the symlink-refusing resolver, and runs by absolute path.
-		if strings.Contains(component.Build.Executable, "/") {
-			resolved, err := files.Existing(directory, component.Build.Executable)
-			if err != nil {
-				return fmt.Errorf("committed build script: %w", err)
-			}
-			command.Name = resolved
-		}
 		if result, err := native.Runner.Run(ctx, command); err != nil {
 			_ = report("build_failed", "build_failed")
-			failure := fmt.Errorf("build recipe %s failed for %s; no runtime was started (full output: %s)", component.Build.Executable, component.Path, logPath)
+			failure := fmt.Errorf("docker build of %s failed for %s; no runtime was started (full output: %s)", dockerfile, component.Name, logPath)
 			if tail := process.Tail(result.Stderr, 2048); tail != "" {
 				return fmt.Errorf("%w\n%s", failure, tail)
 			}
@@ -415,14 +433,18 @@ func (native Native) Start(ctx context.Context, owner project.Project, record ap
 		return err
 	}
 	for _, component := range config.Components {
-		if _, err := native.Load.Execute(ctx, application.LoadClusterImageRequest{Project: request(owner, record.RuntimeID).Project, Image: component.Image}); err != nil {
+		image := contracts.ImageTag(config.RuntimeID, component.Name, config.Revision)
+		if _, err := native.Load.Execute(ctx, application.LoadClusterImageRequest{Project: request(owner, record.RuntimeID).Project, Image: image}); err != nil {
 			return err
 		}
 	}
 	if err := verifyManaged(owner, record); err != nil {
 		return err
 	}
-	_, err = native.StartRuntime.Execute(ctx, request(owner, record.RuntimeID))
+	_, err = native.StartRuntime.Execute(ctx, application.StartRuntimeRequest{
+		RuntimeRequest: request(owner, record.RuntimeID),
+		Environments:   environments,
+	})
 	return err
 }
 func (native Native) Stop(ctx context.Context, owner project.Project, record app.Connection) error {
@@ -601,7 +623,7 @@ func (native Native) Migrate(ctx context.Context, owner project.Project, id stri
 	} else if !errors.Is(err, fs.ErrNotExist) {
 		return "", err
 	}
-	text := "# Migrate " + id + "\n\nImport this existing JSON v2 runtime ID in the console: `" + id + "`.\n\nThe original descriptor, native configuration, ownership ledger and evidence remain unchanged. Select the same components below, provide their existing image/build recipes, and set CPU/RAM no lower than the sum of native workload limits. Configure the agent model and effort in the console. Connect this checkout only after all executions are confirmed stopped.\n\nNative configuration fingerprint: `" + snapshot.Hash + "`. This is configuration evidence, not an observed execution.\n\n"
+	text := "# Migrate " + id + "\n\nImport this existing JSON v2 runtime ID in the console: `" + id + "`.\n\nThe original descriptor, native configuration, ownership ledger and evidence remain unchanged. Select the same components below, name each one and the Dockerfile in its folder, and set CPU/RAM no lower than the sum of native workload limits. Configure the agent model and effort in the console. Connect this checkout only after all executions are confirmed stopped.\n\nNative configuration fingerprint: `" + snapshot.Hash + "`. This is configuration evidence, not an observed execution.\n\n"
 	for _, unit := range descriptor.UnitNames() {
 		text += "- Component: `" + descriptor.Units[unit].Component.String() + "`; native manifests: `" + descriptor.Units[unit].Manifests.String() + "`.\n"
 	}
@@ -801,10 +823,13 @@ func (native Native) preserveNative(owner project.Project, original microruntime
 						probe = microruntime.Object{}
 						container["readinessProbe"] = probe
 					}
+					delete(probe, "httpGet")
 					delete(probe, "exec")
 					delete(probe, "tcpSocket")
 					delete(probe, "grpc")
-					probe["httpGet"] = map[string]any{"path": workload.Service.ReadinessPath, "port": "http"}
+					key, handler := workload.Service.Probe.Handler()
+					probe[key] = handler
+					applyEnvironment(container, workload)
 				}
 			}
 			data, err := json.MarshalIndent(object, "", "  ")

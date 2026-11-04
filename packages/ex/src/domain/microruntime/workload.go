@@ -23,13 +23,23 @@ func (kind WorkloadKind) IsSupported() bool {
 // ServiceSpec describes how a Deployment is exposed and kept ready.
 // A Job has no service, so its ServiceSpec must stay empty.
 type ServiceSpec struct {
-	Port          int
-	Replicas      int
-	ReadinessPath string
+	Port     int
+	Replicas int
+	Probe    Probe
+}
+
+// isZero reports whether the spec names nothing, as a Job's must.
+func (service ServiceSpec) isZero() bool {
+	return service.Port == 0 &&
+		service.Replicas == 0 &&
+		service.Probe.Kind == "" &&
+		len(service.Probe.Command) == 0
 }
 
 // Workload is the initial definition of one unit; later edits belong to the
 // native Kubernetes files. Component is relative to the project root.
+// EnvSecret, when set, names the Secret the container reads its
+// environment from.
 type Workload struct {
 	Name      Identifier
 	Component RelativePath
@@ -37,6 +47,7 @@ type Workload struct {
 	Kind      WorkloadKind
 	Resources Resources
 	Service   ServiceSpec
+	EnvSecret Identifier
 }
 
 // Validate enforces the rules every workload must satisfy before generation.
@@ -72,10 +83,10 @@ func (workload Workload) Validate() error {
 		return workload.validateDeployment()
 
 	case JobWorkload:
-		if workload.Service != (ServiceSpec{}) {
+		if !workload.Service.isZero() {
 			return reject(
 				ErrInvalidBlueprint,
-				"job %s must not specify service port, replicas, or HTTP readiness",
+				"job %s must not specify service port, replicas, or readiness",
 				workload.Name,
 			)
 		}
@@ -102,12 +113,8 @@ func (workload Workload) validateDeployment() error {
 		)
 	}
 
-	if !isReadinessPath(service.ReadinessPath) {
-		return reject(
-			ErrInvalidBlueprint,
-			"workload %s requires an HTTP readiness path",
-			workload.Name,
-		)
+	if err := service.Probe.Validate(); err != nil {
+		return reject(ErrInvalidBlueprint, "workload %s: %v", workload.Name, err)
 	}
 
 	return nil

@@ -3,9 +3,12 @@ package application_test
 import (
 	"context"
 	"errors"
+	"io/fs"
+	"slices"
 	"testing"
 
 	"github.com/jonatassales/tao/packages/ex/src/application"
+	"github.com/jonatassales/tao/packages/ex/src/domain/manifest"
 	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
@@ -37,6 +40,24 @@ func (guide fakeGuide) Blueprint(context.Context) (application.BlueprintInput, e
 	return guide.input, guide.err
 }
 
+// fakeFiles serves the component files guided setup reads.
+type fakeFiles map[string]string
+
+func (files fakeFiles) File(_ project.Project, relativePath string) ([]byte, error) {
+	content, found := files[relativePath]
+	if !found {
+		return nil, fs.ErrNotExist
+	}
+
+	return []byte(content), nil
+}
+
+// guidedFiles holds the web component's Dockerfile and its HEALTHCHECK.
+var guidedFiles = fakeFiles{
+	"services/web/Dockerfile":      "FROM node:24\nEXPOSE 8080\nHEALTHCHECK --interval=10s CMD wget -q --spider http://127.0.0.1:8080/healthz\n",
+	"services/web/Dockerfile.bare": "FROM node:24\nEXPOSE 8080\n",
+}
+
 func guidedInput() application.BlueprintInput {
 	return application.BlueprintInput{
 		Owner:     "team-payments",
@@ -44,12 +65,12 @@ func guidedInput() application.BlueprintInput {
 		Namespace: namespaceName,
 		Workloads: []application.WorkloadInput{
 			{
-				Component: "services/web", Kind: "Deployment", Image: "web:dev",
+				Component: "services/web", Kind: "Deployment", Dockerfile: "Dockerfile",
 				CPURequest: "100m", CPULimit: "500m", MemoryRequest: "128Mi", MemoryLimit: "256Mi",
-				Port: 8080, Replicas: 1, ReadinessPath: "/healthz",
+				Port: 8080, Replicas: 1, Readiness: application.ReadinessHealthcheck,
 			},
 			{
-				Component: "jobs/batch", Kind: "Job", Image: "batch:dev",
+				Component: "jobs/batch", Kind: "Job", Dockerfile: "Dockerfile",
 				CPURequest: "100m", CPULimit: "200m", MemoryRequest: "64Mi", MemoryLimit: "128Mi",
 			},
 		},
@@ -84,7 +105,7 @@ func TestInitializeRuntime_GeneratesFromGuidedChoices(t *testing.T) {
 	w := newWorld(t)
 	scaffolder := &fakeScaffolder{}
 
-	result, err := application.InitializeRuntime{Projects: w.projects, Scaffolder: scaffolder}.Execute(
+	result, err := application.InitializeRuntime{Projects: w.projects, Scaffolder: scaffolder, Files: guidedFiles}.Execute(
 		context.Background(), application.InitializeRuntimeRequest{Project: w.runtimeRequest().Project, Runtime: "demo", Guide: fakeGuide{input: guidedInput()}})
 	if err != nil {
 		t.Fatal(err)
@@ -103,6 +124,12 @@ func TestInitializeRuntime_GeneratesFromGuidedChoices(t *testing.T) {
 	if web.Name.String() != "web" || web.Kind != microruntime.DeploymentWorkload || web.Service.Port != 8080 ||
 		web.Resources.MemoryLimit.String() != "256Mi" || batch.Name.String() != "batch" || batch.Kind != microruntime.JobWorkload {
 		t.Errorf("workloads = %+v, want names derived from component directories", blueprint.Workloads)
+	}
+
+	probe := web.Service.Probe
+	if web.Image != "langdrift-demo-web:r1" || probe.Kind != microruntime.ProbeExec || probe.Period != 10 ||
+		!slices.Equal(probe.Command, []string{"/bin/sh", "-c", "wget -q --spider http://127.0.0.1:8080/healthz"}) {
+		t.Errorf("web = %+v, want the derived image and the Dockerfile's HEALTHCHECK", web)
 	}
 }
 
@@ -138,6 +165,23 @@ func TestInitializeRuntime_RejectsInvalidChoicesBeforeWriting(t *testing.T) {
 			wantErr: microruntime.ErrInvalidBlueprint,
 		},
 		{name: "no workloads", edit: func(input *application.BlueprintInput) { input.Workloads = nil }, wantErr: microruntime.ErrInvalidBlueprint},
+		{
+			name:    "Dockerfile without a HEALTHCHECK",
+			edit:    func(input *application.BlueprintInput) { input.Workloads[0].Dockerfile = "Dockerfile.bare" },
+			wantErr: manifest.ErrNoHealthcheck,
+		},
+		{
+			name:    "missing Dockerfile",
+			edit:    func(input *application.BlueprintInput) { input.Workloads[0].Dockerfile = "Dockerfile.dev" },
+			wantErr: fs.ErrNotExist,
+		},
+		{
+			name: "http readiness without a path",
+			edit: func(input *application.BlueprintInput) {
+				input.Workloads[0].Readiness = application.ReadinessHTTP
+			},
+			wantErr: microruntime.ErrInvalidBlueprint,
+		},
 	}
 
 	for _, tt := range tests {
@@ -149,7 +193,7 @@ func TestInitializeRuntime_RejectsInvalidChoicesBeforeWriting(t *testing.T) {
 			input := guidedInput()
 			tt.edit(&input)
 
-			_, err := application.InitializeRuntime{Projects: w.projects, Scaffolder: scaffolder}.Execute(
+			_, err := application.InitializeRuntime{Projects: w.projects, Scaffolder: scaffolder, Files: guidedFiles}.Execute(
 				context.Background(), application.InitializeRuntimeRequest{Project: w.runtimeRequest().Project, Runtime: "demo", Guide: fakeGuide{input: input}})
 			if !errors.Is(err, tt.wantErr) {
 				t.Fatalf("Execute() error = %v, want %v", err, tt.wantErr)
@@ -187,7 +231,7 @@ func TestInitializeRuntime_Refuses(t *testing.T) {
 			w := newWorld(t)
 			w.projects.err = tt.projects
 
-			_, err := application.InitializeRuntime{Projects: w.projects, Scaffolder: &fakeScaffolder{err: tt.scaffolder}}.Execute(
+			_, err := application.InitializeRuntime{Projects: w.projects, Scaffolder: &fakeScaffolder{err: tt.scaffolder}, Files: guidedFiles}.Execute(
 				context.Background(), application.InitializeRuntimeRequest{Project: w.runtimeRequest().Project, Runtime: tt.runtime, Guide: tt.guide})
 			if !errors.Is(err, tt.wantErr) {
 				t.Fatalf("Execute() error = %v, want %v", err, tt.wantErr)

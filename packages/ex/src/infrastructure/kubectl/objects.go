@@ -19,6 +19,7 @@ var plurals = map[string]string{
 	"Deployment": "deployments",
 	"Service":    "services",
 	"Job":        "jobs",
+	"Secret":     "secrets",
 }
 
 // Get reads one object; an absent object is nil, an API failure an error.

@@ -63,7 +63,7 @@ npx @langdrift/ex init
 `ex` にチケットや仕様書を指定します。リンクされたドキュメントを読み込み、予算枠内でCPUやメモリのサイズを決定し、最適なモデルと作業強度を提案して境界付き実行計画を出力します:
 
 ```sh
-npx @langdrift/ex agent plan <path-to-ticket.md>
+npx @langdrift/ex agent plan <path-to-ticket.md> --component name=console,path=apps/console
 ```
 
 > **ヒント:** `--no-judge` を付けると LLM 呼び出しを行わずにヒューリスティックのみで計画を作成できるため、費用はかかりません。
@@ -77,6 +77,7 @@ npx @langdrift/ex agent plan <path-to-ticket.md>
 ```json
 {
   "llmBudgetUsd": 25,
+  "version": 2,
   "runtimeId": "console-microruntime",
   "revision": 1,
   "cpuMillis": 2000,
@@ -85,15 +86,16 @@ npx @langdrift/ex agent plan <path-to-ticket.md>
   "effort": "medium",
   "components": [
     {
+      "name": "console",
       "path": "apps/console",
-      "image": "langdrift-console:local",
-      "port": 3001,
-      "readinessPath": "/icon.svg",
-      "build": { "executable": "docker", "args": ["build", "-t", "langdrift-console:local", "."] }
+      "dockerfile": "Dockerfile",
+      "port": 3001
     }
   ]
 }
 ```
+
+コンポーネントはファイルを指します: 名前と、Dockerfile を含むフォルダです。`ex` はプロジェクトのルートからその Dockerfile で `docker build` を実行し、イメージに `langdrift-<runtime-id>-<name>:r<revision>` というタグを付け、最初の `EXPOSE` からポートを、Dockerfile 自身の `HEALTHCHECK` から準備完了の判定を取得します。`--component` には `dockerfile=`、`port=`、`readiness=tcp` または `readiness=http:/path`、シークレットを含まないコミット済みの `env-file=`、起動時に `ex` が自身の環境から読み取る変数の `pass-env=A;B` を追加できます。`ex` はこれらをコンポーネントごとに 1 つの Kubernetes Secret に書き込みます。
 
 ### 3. 計画を実行
 
@@ -107,7 +109,7 @@ npx @langdrift/ex agent run <runtime-id>
 
 1. **ゲート検証:** 定価が実行内容をカバーしているか確認し、チケットの割り当てと期間予算枠に対して試算コストを予約します。
 2. **ワークフローステージ:** 設定されたコーディングエージェントを通じて各ステージを進めます。人間の承認が必要な場合、ターミナルまたは `npx @langdrift/ex agent confirm <runtime-id> <stage>` で確認されるまで停止します。
-3. **ローカルランタイム:** イメージをビルドし、ローカル kind クラスタ上でコンポーネントを起動してヘルスチェックを行います。
+3. **ローカルランタイム:** 各コンポーネントを Dockerfile からビルドし、コンポーネント名を付けてローカル kind クラスタ上で起動し、準備完了プローブを待ちます。
 4. **配信の監視:** Git コミット、ブランチ、PR チェックを読み取り専用で監視します。
 5. **精算:** ローカルランタイムを停止し、未使用の予約額を予算に戻し、監査元帳に実行結果を記録します。
 

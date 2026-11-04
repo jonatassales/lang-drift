@@ -8,13 +8,13 @@
 
 **Status:** ready-for-agent
 
-- [ ] The blueprint names workloads and Services by component name and carries the derived image; the three probe kinds render as Kubernetes expects.
-- [ ] The process fake records `docker build --file <folder>/<dockerfile> --tag <image> .` with the minimal environment and nothing else as the build.
-- [ ] The Secret is created from the env file plus the pass-through values, referenced from the container, and listed in the ledger; cleanup deletes it; a missing pass-through variable refuses the start with its name.
-- [ ] A native probe edited by the owner is preserved by materialization as today.
-- [ ] `ex runtime init` with the prompter fake asks for the Dockerfile name and the readiness kind.
-- [ ] ADR 0004 is accepted and the glossary is updated; the root README and its translations show the new fence.
-- [ ] `go test -race ./...` and `go vet ./...` pass in the contracts and CLI modules; `govulncheck` is clean.
+- [x] The blueprint names workloads and Services by component name and carries the derived image; the three probe kinds render as Kubernetes expects.
+- [x] The process fake records `docker build --file <folder>/<dockerfile> --tag <image> .` with the minimal environment and nothing else as the build.
+- [x] The Secret is created from the env file plus the pass-through values, referenced from the container, and listed in the ledger; cleanup deletes it; a missing pass-through variable refuses the start with its name.
+- [x] A native probe edited by the owner is preserved by materialization as today.
+- [x] `ex runtime init` with the prompter fake asks for the Dockerfile name and the readiness kind.
+- [x] ADR 0004 is accepted and the glossary is updated; the root README and its translations show the new fence.
+- [x] `go test -race ./...` and `go vet ./...` pass in the contracts and CLI modules; `govulncheck` is clean.
 
 ### Verification
 

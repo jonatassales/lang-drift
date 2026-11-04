@@ -92,7 +92,7 @@ func testBlueprint(t *testing.T) microruntime.Blueprint {
 			{
 				Name: identifier(t, "web"), Component: relativePath(t, "services/web"), Image: "web:dev",
 				Kind: microruntime.DeploymentWorkload, Resources: resources,
-				Service: microruntime.ServiceSpec{Port: 8080, Replicas: 1, ReadinessPath: "/healthz"},
+				Service: microruntime.ServiceSpec{Port: 8080, Replicas: 1, Probe: microruntime.Probe{Kind: microruntime.ProbeHTTP, Path: "/healthz", Period: 5, Timeout: 2, Failures: 12}},
 			},
 			{
 				Name: identifier(t, "batch"), Component: relativePath(t, "jobs/batch"), Image: "batch:dev",

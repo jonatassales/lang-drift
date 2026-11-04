@@ -260,7 +260,7 @@ func TestStopRuntime_RecoversAPartialUp(t *testing.T) {
 	w := newWorld(t)
 	w.kubernetes.createErr = errInjected
 
-	if _, err := w.startRuntime().Execute(context.Background(), w.runtimeRequest()); !errors.Is(err, errInjected) {
+	if _, err := w.startRuntime().Execute(context.Background(), w.startRequest()); !errors.Is(err, errInjected) {
 		t.Fatalf("up error = %v, want the injected creation failure", err)
 	}
 

@@ -59,16 +59,17 @@ kind-ex-0123456789ab
 demo-local
 services/web, jobs/batch
 Deployment
-web:dev
+Dockerfile
 100m
 500m
 128Mi
 256Mi
 8080
 1
+http
 /healthz
 Job
-batch:dev
+Dockerfile
 100m
 200m
 64Mi
@@ -92,6 +93,12 @@ func TestGuidedRuntimeGenerationValidates(t *testing.T) {
 	status, stdout, stderr := p.ex(guidedAnswers, "runtime", "init", "demo", "--guided")
 	if status != 0 || !strings.Contains(stdout, `"guided": true`) || !strings.Contains(stderr, "Runtime namespace: ") {
 		t.Fatalf("ex runtime init --guided = %d, %s%s", status, stdout, stderr)
+	}
+
+	for _, question := range []string{"Dockerfile in the component folder", "Readiness (healthcheck, tcp or http)"} {
+		if !strings.Contains(stderr, question) || strings.Contains(stderr, "Prebuilt image") {
+			t.Fatalf("ex runtime init --guided asked %s; want the Dockerfile and the readiness kind", stderr)
+		}
 	}
 
 	status, stdout, stderr = p.ex("", "runtime", "validate", "demo", "--json")

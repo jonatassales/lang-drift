@@ -76,6 +76,7 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 		Init: application.InitializeRuntime{
 			Projects:   projects,
 			Scaffolder: scaffolder,
+			Files:      manifestinfra.Inspector{},
 		},
 		Validate: application.ValidateRuntime{
 			Projects:      projects,

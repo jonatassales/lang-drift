@@ -21,7 +21,17 @@ func deploymentWorkload(t testing.TB) microruntime.Workload {
 			MemoryRequest: quantity(t, "128Mi"),
 			MemoryLimit:   quantity(t, "256Mi"),
 		},
-		Service: microruntime.ServiceSpec{Port: 8080, Replicas: 2, ReadinessPath: "/healthz"},
+		Service: microruntime.ServiceSpec{
+			Port:     8080,
+			Replicas: 2,
+			Probe: microruntime.Probe{
+				Kind:     microruntime.ProbeHTTP,
+				Path:     "/healthz",
+				Period:   microruntime.ReadinessPeriodSeconds,
+				Timeout:  microruntime.ReadinessTimeoutSeconds,
+				Failures: microruntime.ReadinessFailures,
+			},
+		},
 	}
 }
 
@@ -75,13 +85,24 @@ func TestWorkload_Validate(t *testing.T) {
 		{name: "port zero", edit: func(w *microruntime.Workload) { w.Service.Port = 0 }, wantErr: true},
 		{name: "port above range", edit: func(w *microruntime.Workload) { w.Service.Port = 65536 }, wantErr: true},
 		{name: "no replicas", edit: func(w *microruntime.Workload) { w.Service.Replicas = 0 }, wantErr: true},
-		{name: "readiness path without slash", edit: func(w *microruntime.Workload) { w.Service.ReadinessPath = "healthz" }, wantErr: true},
+		{name: "readiness path without slash", edit: func(w *microruntime.Workload) { w.Service.Probe.Path = "healthz" }, wantErr: true},
 		{
 			name:    "readiness path with a host",
-			edit:    func(w *microruntime.Workload) { w.Service.ReadinessPath = "http://example.com/healthz" },
+			edit:    func(w *microruntime.Workload) { w.Service.Probe.Path = "http://example.com/healthz" },
 			wantErr: true,
 		},
-		{name: "empty readiness path", edit: func(w *microruntime.Workload) { w.Service.ReadinessPath = "" }, wantErr: true},
+		{name: "empty readiness path", edit: func(w *microruntime.Workload) { w.Service.Probe.Path = "" }, wantErr: true},
+		{name: "tcp readiness", edit: func(w *microruntime.Workload) { w.Service.Probe.Kind = microruntime.ProbeTCP }},
+		{
+			name: "exec readiness",
+			edit: func(w *microruntime.Workload) {
+				w.Service.Probe.Kind = microruntime.ProbeExec
+				w.Service.Probe.Command = []string{"redis-cli", "ping"}
+			},
+		},
+		{name: "exec readiness without a command", edit: func(w *microruntime.Workload) { w.Service.Probe.Kind = microruntime.ProbeExec }, wantErr: true},
+		{name: "unknown readiness", edit: func(w *microruntime.Workload) { w.Service.Probe.Kind = "grpc" }, wantErr: true},
+		{name: "readiness without a period", edit: func(w *microruntime.Workload) { w.Service.Probe.Period = 0 }, wantErr: true},
 		{
 			name:    "job with a service port",
 			job:     true,

@@ -31,7 +31,7 @@ func (r *fakeRunner) Run(_ context.Context, c process.Command) (process.Result, 
 			return process.Result{}, nil
 		}
 		if c.Args[0] == "ls-files" {
-			return process.Result{Stdout: "build.sh\x00"}, nil
+			return process.Result{Stdout: "build.sh\x00Dockerfile\x00api.env\x00"}, nil
 		}
 		if c.Args[0] == "config" {
 			return process.Result{Stdout: "git@github.com:owner/repository.git\n"}, nil
@@ -60,10 +60,37 @@ func ownerForTest(t *testing.T) project.Project {
 	if err := os.WriteFile(filepath.Join(root, "build.sh"), []byte("#!/bin/sh\nexit 1\n"), 0o755); err != nil {
 		t.Fatal(err)
 	}
+	if err := os.WriteFile(filepath.Join(root, "Dockerfile"), []byte(apiDockerfile), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "api.env"), []byte("LOG_URL=http://log:3500\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
 	return owner
 }
+
+// apiDockerfile declares the port and the readiness the fence leaves out.
+const apiDockerfile = "FROM alpine:3\nEXPOSE 8080\nHEALTHCHECK --interval=10s CMD wget -q --spider http://127.0.0.1:8080/health\n"
+
 func nativeConfig() connection.Configuration {
-	return connection.Configuration{Version: 1, RuntimeUID: "runtime-uid", RuntimeID: "runtime", ProjectID: "project", Revision: 1, Name: "Example", CPUMillis: 1200, MemoryMiB: 512, Model: "test-model", Effort: "low", Components: []connection.Component{{Path: ".", Image: "api:local", Port: 8080, ReadinessPath: "/health", Build: &connection.Build{Executable: "./build.sh"}}}}
+	return connection.Configuration{
+		Version:    2,
+		RuntimeUID: "runtime-uid",
+		RuntimeID:  "runtime",
+		ProjectID:  "project",
+		Revision:   1,
+		Name:       "Example",
+		CPUMillis:  1200,
+		MemoryMiB:  512,
+		Model:      "test-model",
+		Effort:     "low",
+		Components: []connection.Component{
+			{
+				Name: "api",
+				Path: ".",
+			},
+		},
+	}
 }
 func TestNative_MaterializationPreservesCustomizationAndBounds(t *testing.T) {
 	owner := ownerForTest(t)
@@ -179,6 +206,53 @@ func TestNative_MigrationKeepsOriginalFilesAndAppliesConsoleEnvelope(t *testing.
 	migrated, err := os.ReadFile(filepath.Join(owner.Root, ".langdrift/microruntimes/runtimes/runtime/console-terraform/main.tf.json"))
 	if err != nil || !strings.Contains(string(migrated), "3000m") {
 		t.Fatal("console resource edit was ignored")
+	}
+}
+
+func TestNative_MigrationKeepsTheOwnersProbeTimingAndSetsTheHandler(t *testing.T) {
+	owner := ownerForTest(t)
+	native := Native{Runner: &fakeRunner{}, Executions: storage.Executions{}}
+	config := nativeConfig()
+	record := app.Connection{RuntimeID: config.RuntimeID, Repository: app.Repository{FullName: "owner/repository"}}
+	if _, _, err := native.Materialize(context.Background(), owner, record, config, config.Markdown()); err != nil {
+		t.Fatal(err)
+	}
+
+	// The owner tunes the native probe of the existing runtime by hand.
+	runtime := filepath.Join(owner.Root, ".langdrift/microruntimes/runtimes/runtime")
+	if err := os.Remove(filepath.Join(runtime, "runtime.md")); err != nil {
+		t.Fatal(err)
+	}
+	workload := filepath.Join(runtime, "units/api/kubernetes/workload.json")
+	original, err := os.ReadFile(workload)
+	if err != nil {
+		t.Fatal(err)
+	}
+	edited := strings.Replace(string(original), `"failureThreshold": 12`, `"failureThreshold": 40`, 1)
+	if edited == string(original) {
+		t.Fatal("the generated probe has no failureThreshold to edit")
+	}
+	if err := os.WriteFile(workload, []byte(edited), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	config.Native = &connection.Native{RuntimeID: "runtime"}
+	config.Components[0].Readiness = &connection.Readiness{Kind: "tcp"}
+	if _, _, err := native.Materialize(context.Background(), owner, record, config, config.Markdown()); err != nil {
+		t.Fatal(err)
+	}
+
+	migrated, err := os.ReadFile(filepath.Join(runtime, "console-units/api/kubernetes/workload.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{`"failureThreshold": 40`, `"tcpSocket"`} {
+		if !strings.Contains(string(migrated), want) {
+			t.Errorf("migrated workload lacks %s:\n%s", want, migrated)
+		}
+	}
+	if strings.Contains(string(migrated), `"exec"`) {
+		t.Errorf("migrated workload kept the replaced exec handler:\n%s", migrated)
 	}
 }
 
@@ -394,59 +468,231 @@ func TestStore_RefusesDeletedButGitTrackedCredentialPath(t *testing.T) {
 	}
 }
 
-func TestNative_CommittedScriptRecipeResolvesInsideTheCheckout(t *testing.T) {
+func TestNative_BuildIsTheFixedDockerBuild(t *testing.T) {
 	owner := ownerForTest(t)
 	// failBuild stops Start right after the build phase, before the nil
-	// infrastructure ports; the resolved command is recorded either way.
+	// infrastructure ports; the build command is recorded either way.
 	runner := &fakeRunner{failBuild: true}
 	native := Native{Runner: runner, Executions: storage.Executions{}}
 	config := nativeConfig()
 	record := app.Connection{RuntimeID: config.RuntimeID, Repository: app.Repository{FullName: "owner/repository"}}
-	record.Managed, record.ConcreteHash, _ = native.Materialize(context.Background(), owner, record, config, config.Markdown())
+	managed, hash, err := native.Materialize(context.Background(), owner, record, config, config.Markdown())
+	if err != nil {
+		t.Fatal(err)
+	}
+	record.Managed, record.ConcreteHash = managed, hash
 
 	if err := native.Start(context.Background(), owner, record, config, func(string, string) error { return nil }); err == nil {
 		t.Fatal("start succeeded with a failing build")
 	}
 
-	var build *process.Command
-	for index, command := range runner.commands {
+	var builds []process.Command
+	for _, command := range runner.commands {
 		if command.Name != "git" {
-			build = &runner.commands[index]
-
-			break
+			builds = append(builds, command)
 		}
 	}
-	if build == nil {
-		t.Fatal("no build command ran")
+	if len(builds) != 1 {
+		t.Fatalf("builds = %v, want one", builds)
 	}
-	if !filepath.IsAbs(build.Name) || !strings.HasSuffix(build.Name, "/build.sh") {
-		t.Fatalf("script ran as %q, want the resolved absolute path", build.Name)
+
+	build := builds[0]
+	want := []string{"build", "--file", "Dockerfile", "--tag", "langdrift-runtime-api:r1", "."}
+	if build.Name != "docker" || !slices.Equal(build.Args, want) {
+		t.Fatalf("build = %s %v, want docker %v", build.Name, build.Args, want)
 	}
 	if !slices.Equal(build.PassEnv, []string{"DOCKER_*"}) || len(build.Env) != 0 {
-		t.Fatalf("recipe environment PassEnv=%v Env=%v, want only the container engine pass-through", build.PassEnv, build.Env)
+		t.Fatalf("build environment PassEnv=%v Env=%v, want only the container engine pass-through", build.PassEnv, build.Env)
 	}
-	if rel, err := filepath.Rel(owner.Root, build.Name); err != nil || strings.HasPrefix(rel, "..") {
-		t.Fatalf("script %q resolved outside the checkout", build.Name)
+	if rel, err := filepath.Rel(filepath.Join(owner.Root, ".langdrift/agent/state/builds"), build.Dir); err != nil || strings.HasPrefix(rel, "..") {
+		t.Fatalf("build ran in %q, want the committed source tree's root", build.Dir)
 	}
 }
 
-func TestNative_MissingCommittedScriptFailsBeforeRunning(t *testing.T) {
+func TestNative_MissingDockerfileFailsBeforeBuilding(t *testing.T) {
 	owner := ownerForTest(t)
 	runner := &fakeRunner{}
 	native := Native{Runner: runner, Executions: storage.Executions{}}
 	config := nativeConfig()
-	config.Components[0].Build = &connection.Build{Executable: "./absent.sh"}
+	config.Components[0].Dockerfile = "Dockerfile.absent"
+	config.Components[0].Port = 8080
+	config.Components[0].Readiness = &connection.Readiness{Kind: "tcp"}
 	record := app.Connection{RuntimeID: config.RuntimeID, Repository: app.Repository{FullName: "owner/repository"}}
-	record.Managed, record.ConcreteHash, _ = native.Materialize(context.Background(), owner, record, config, config.Markdown())
+	managed, hash, err := native.Materialize(context.Background(), owner, record, config, config.Markdown())
+	if err != nil {
+		t.Fatal(err)
+	}
+	record.Managed, record.ConcreteHash = managed, hash
 
-	err := native.Start(context.Background(), owner, record, config, func(string, string) error { return nil })
-	if err == nil || !strings.Contains(err.Error(), "committed build script") {
-		t.Fatalf("err=%v, want a committed-script resolution failure", err)
+	err = native.Start(context.Background(), owner, record, config, func(string, string) error { return nil })
+	if err == nil || !strings.Contains(err.Error(), "Dockerfile.absent") {
+		t.Fatalf("err=%v, want the missing Dockerfile named", err)
 	}
 	for _, command := range runner.commands {
 		if command.Name != "git" {
 			t.Fatalf("a non-git command ran: %v", command.Name)
 		}
+	}
+}
+
+func TestNative_MaterializeNamesWorkloadsAfterComponents(t *testing.T) {
+	owner := ownerForTest(t)
+	native := Native{Runner: &fakeRunner{}, Executions: storage.Executions{}}
+	config := nativeConfig()
+	config.Components[0].EnvFile = "api.env"
+	record := app.Connection{RuntimeID: config.RuntimeID, Repository: app.Repository{FullName: "owner/repository"}}
+	if _, _, err := native.Materialize(context.Background(), owner, record, config, config.Markdown()); err != nil {
+		t.Fatal(err)
+	}
+
+	unit := filepath.Join(owner.Root, ".langdrift/microruntimes/runtimes/runtime/units/api/kubernetes")
+	workload, err := os.ReadFile(filepath.Join(unit, "workload.json"))
+	if err != nil {
+		t.Fatalf("the workload is not named after its component: %v", err)
+	}
+
+	for _, want := range []string{
+		`"name": "api"`,
+		`"image": "langdrift-runtime-api:r1"`,
+		`"containerPort": 8080`,
+		`"wget -q --spider http://127.0.0.1:8080/health"`,
+		`"periodSeconds": 10`,
+		`"name": "api-env"`,
+	} {
+		if !strings.Contains(string(workload), want) {
+			t.Errorf("workload.json lacks %s:\n%s", want, workload)
+		}
+	}
+
+	if _, err := os.Stat(filepath.Join(unit, "service.json")); err != nil {
+		t.Fatalf("the Service is not named after its component: %v", err)
+	}
+}
+
+func TestNative_DockerfileWithoutHealthcheckNeedsAnExplicitReadiness(t *testing.T) {
+	owner := ownerForTest(t)
+	if err := os.WriteFile(filepath.Join(owner.Root, "Dockerfile"), []byte("FROM redis:8\nEXPOSE 6379\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	native := Native{Runner: &fakeRunner{}, Executions: storage.Executions{}}
+	config := nativeConfig()
+	record := app.Connection{RuntimeID: config.RuntimeID, Repository: app.Repository{FullName: "owner/repository"}}
+
+	_, _, err := native.Materialize(context.Background(), owner, record, config, config.Markdown())
+	if err == nil || !strings.Contains(err.Error(), "HEALTHCHECK") {
+		t.Fatalf("err=%v, want the missing HEALTHCHECK named", err)
+	}
+
+	config.Components[0].Readiness = &connection.Readiness{Kind: "tcp"}
+	if _, _, err := native.Materialize(context.Background(), owner, record, config, config.Markdown()); err != nil {
+		t.Fatalf("an explicit tcp readiness was refused: %v", err)
+	}
+
+	workload, err := os.ReadFile(filepath.Join(owner.Root, ".langdrift/microruntimes/runtimes/runtime/units/api/kubernetes/workload.json"))
+	if err != nil || !strings.Contains(string(workload), `"tcpSocket"`) || !strings.Contains(string(workload), `"containerPort": 6379`) {
+		t.Fatalf("workload.json = %s, %v; want a tcp probe on the exposed port", workload, err)
+	}
+}
+
+func TestNative_StartRefusesAMissingPassThroughVariable(t *testing.T) {
+	owner := ownerForTest(t)
+	runner := &fakeRunner{}
+	native := Native{
+		Runner:     runner,
+		Executions: storage.Executions{},
+		LookupEnv: func(string) (string, bool) {
+			return "", false
+		},
+	}
+	config := nativeConfig()
+	config.Components[0].PassEnv = []string{"API_TOKEN"}
+	record := app.Connection{RuntimeID: config.RuntimeID, Repository: app.Repository{FullName: "owner/repository"}}
+	managed, hash, err := native.Materialize(context.Background(), owner, record, config, config.Markdown())
+	if err != nil {
+		t.Fatal(err)
+	}
+	record.Managed, record.ConcreteHash = managed, hash
+
+	err = native.Start(context.Background(), owner, record, config, func(string, string) error { return nil })
+	if !errors.Is(err, connection.ErrPassEnvMissing) || !strings.Contains(err.Error(), "API_TOKEN") {
+		t.Fatalf("err=%v, want the missing variable named", err)
+	}
+	for _, command := range runner.commands {
+		if command.Name != "git" {
+			t.Fatalf("a non-git command ran before the refusal: %v", command.Name)
+		}
+	}
+}
+
+// starterFake records the start request the engine hands the lifecycle.
+type starterFake struct {
+	request application.StartRuntimeRequest
+}
+
+func (starter *starterFake) Execute(_ context.Context, request application.StartRuntimeRequest) (application.ExecutionOutcome, error) {
+	starter.request = request
+
+	return application.ExecutionOutcome{}, nil
+}
+
+type clusterFake struct{}
+
+func (clusterFake) Execute(context.Context, application.ClusterRequest) (application.ClusterResult, error) {
+	return application.ClusterResult{}, nil
+}
+
+// loaderFake records the images the engine loads into the cluster.
+type loaderFake struct {
+	images []string
+}
+
+func (loader *loaderFake) Execute(_ context.Context, request application.LoadClusterImageRequest) (application.ImageResult, error) {
+	loader.images = append(loader.images, request.Image)
+
+	return application.ImageResult{}, nil
+}
+
+func TestNative_StartHandsEachComponentItsEnvironment(t *testing.T) {
+	owner := ownerForTest(t)
+	starter := &starterFake{}
+	loader := &loaderFake{}
+	native := Native{
+		Runner:       &fakeRunner{},
+		Executions:   storage.Executions{},
+		Create:       clusterFake{},
+		Load:         loader,
+		StartRuntime: starter,
+		LookupEnv: func(name string) (string, bool) {
+			return "value-of-" + name, name == "API_TOKEN"
+		},
+	}
+	config := nativeConfig()
+	config.Components[0].EnvFile = "api.env"
+	config.Components[0].PassEnv = []string{"API_TOKEN"}
+	record := app.Connection{RuntimeID: config.RuntimeID, Repository: app.Repository{FullName: "owner/repository"}}
+	var err error
+	record.Managed, record.ConcreteHash, err = native.Materialize(context.Background(), owner, record, config, config.Markdown())
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if err := native.Start(context.Background(), owner, record, config, func(string, string) error { return nil }); err != nil {
+		t.Fatal(err)
+	}
+
+	if !slices.Equal(loader.images, []string{"langdrift-runtime-api:r1"}) {
+		t.Fatalf("loaded %v, want the derived image", loader.images)
+	}
+
+	environments := starter.request.Environments
+	if len(environments) != 1 {
+		t.Fatalf("environments = %+v, want one", environments)
+	}
+
+	environment := environments[0]
+	if environment.Unit.String() != "api" || environment.Secret.String() != "api-env" ||
+		environment.Variables["LOG_URL"] != "http://log:3500" || environment.Variables["API_TOKEN"] != "value-of-API_TOKEN" || len(environment.Variables) != 2 {
+		t.Fatalf("environment = %+v, want the env file and the pass-through value for unit api", environment)
 	}
 }
 
@@ -462,7 +708,7 @@ func TestNative_FailedBuildExplainsItself(t *testing.T) {
 	if err == nil {
 		t.Fatal("build failure reported success")
 	}
-	for _, want := range []string{"./build.sh", "missing header", "build.log"} {
+	for _, want := range []string{"Dockerfile", "missing header", "build.log"} {
 		if !strings.Contains(err.Error(), want) {
 			t.Fatalf("error %q does not name %q", err, want)
 		}

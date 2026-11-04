@@ -1,6 +1,7 @@
 package microruntime_test
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
@@ -71,6 +72,61 @@ func TestWorkload_NativeObjects(t *testing.T) {
 		port := service.Spec().Children("ports")[0]
 		if service.Spec().Text("type") != "ClusterIP" || port["port"] != 8080 || port.Text("targetPort") != "http" {
 			t.Errorf("service spec = %v, want a ClusterIP Service on 8080 targeting the http port", service.Spec())
+		}
+	})
+
+	t.Run("each readiness kind renders as Kubernetes expects", func(t *testing.T) {
+		t.Parallel()
+
+		tests := []struct {
+			name  string
+			probe microruntime.Probe
+			want  string
+		}{
+			{"http", microruntime.Probe{Kind: microruntime.ProbeHTTP, Path: "/healthz"}, `{"failureThreshold":12,"httpGet":{"path":"/healthz","port":"http"},"periodSeconds":5,"timeoutSeconds":2}`},
+			{"tcp", microruntime.Probe{Kind: microruntime.ProbeTCP}, `{"failureThreshold":12,"periodSeconds":5,"tcpSocket":{"port":"http"},"timeoutSeconds":2}`},
+			{"exec", microruntime.Probe{Kind: microruntime.ProbeExec, Command: []string{"/bin/sh", "-c", "redis-cli ping"}, InitialDelay: 10}, `{"exec":{"command":["/bin/sh","-c","redis-cli ping"]},"failureThreshold":12,"initialDelaySeconds":10,"periodSeconds":5,"timeoutSeconds":2}`},
+		}
+
+		for _, test := range tests {
+			workload := deploymentWorkload(t)
+			test.probe.Period = microruntime.ReadinessPeriodSeconds
+			test.probe.Timeout = microruntime.ReadinessTimeoutSeconds
+			test.probe.Failures = microruntime.ReadinessFailures
+			workload.Service.Probe = test.probe
+
+			container := workload.NativeObjects(runtime, namespace)[0].PodSpec().Children("containers")[0]
+
+			rendered, err := json.Marshal(container["readinessProbe"])
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if string(rendered) != test.want {
+				t.Errorf("%s readinessProbe = %s, want %s", test.name, rendered, test.want)
+			}
+		}
+	})
+
+	t.Run("the environment comes from the unit's Secret", func(t *testing.T) {
+		t.Parallel()
+
+		workload := deploymentWorkload(t)
+		container := workload.NativeObjects(runtime, namespace)[0].PodSpec().Children("containers")[0]
+		if _, found := container["envFrom"]; found {
+			t.Fatalf("a workload without an environment reads one: %v", container["envFrom"])
+		}
+
+		workload.EnvSecret = identifier(t, "web-env")
+		container = workload.NativeObjects(runtime, namespace)[0].PodSpec().Children("containers")[0]
+
+		rendered, err := json.Marshal(container["envFrom"])
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if string(rendered) != `[{"secretRef":{"name":"web-env"}}]` {
+			t.Errorf("envFrom = %s, want the web-env Secret", rendered)
 		}
 	})
 

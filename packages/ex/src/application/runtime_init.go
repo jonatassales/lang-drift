@@ -3,7 +3,10 @@ package application
 import (
 	"context"
 	"fmt"
+	"path"
 
+	"github.com/jonatassales/tao/packages/contracts/configuration"
+	"github.com/jonatassales/tao/packages/ex/src/domain/manifest"
 	"github.com/jonatassales/tao/packages/ex/src/domain/microruntime"
 	"github.com/jonatassales/tao/packages/ex/src/domain/project"
 )
@@ -16,6 +19,13 @@ import (
 type InitializeRuntime struct {
 	Projects   ProjectOpener
 	Scaffolder RuntimeScaffolder
+	Files      ComponentFiles
+}
+
+// ComponentFiles reads a file a component names, such as its Dockerfile, by
+// its project-relative path.
+type ComponentFiles interface {
+	File(owner project.Project, relativePath string) ([]byte, error)
 }
 
 // BlueprintGuide supplies the choices a runtime is generated from, for
@@ -44,19 +54,29 @@ type BlueprintInput struct {
 }
 
 // WorkloadInput carries one workload's choices as entered. The workload is
-// named after its component directory.
+// named after its component directory and builds from the Dockerfile in it.
+// Readiness is healthcheck, tcp or http; ReadinessPath serves http only.
 type WorkloadInput struct {
 	Component     string
 	Kind          string
-	Image         string
+	Dockerfile    string
 	CPURequest    string
 	CPULimit      string
 	MemoryRequest string
 	MemoryLimit   string
 	Port          int
 	Replicas      int
+	Readiness     string
 	ReadinessPath string
 }
+
+// The readiness kinds guided setup offers: the Dockerfile's HEALTHCHECK, or
+// an explicit kind.
+const (
+	ReadinessHealthcheck = "healthcheck"
+	ReadinessTCP         = configuration.ReadinessTCP
+	ReadinessHTTP        = configuration.ReadinessHTTP
+)
 
 // RuntimeInitResult describes the published configuration.
 type RuntimeInitResult struct {
@@ -110,7 +130,11 @@ func (useCase InitializeRuntime) generate(
 		return RuntimeInitResult{}, err
 	}
 
-	blueprint, err := input.blueprint()
+	blueprint, err := input.blueprint(guidedSource{
+		owner:   owner,
+		runtime: runtime,
+		files:   useCase.Files,
+	})
 	if err != nil {
 		return RuntimeInitResult{}, err
 	}
@@ -132,7 +156,15 @@ func (useCase InitializeRuntime) generate(
 	}, nil
 }
 
-func (input BlueprintInput) blueprint() (microruntime.Blueprint, error) {
+// guidedSource is what a workload's choices are read against: the project its
+// Dockerfiles live in, and the runtime its images are tagged for.
+type guidedSource struct {
+	owner   project.Project
+	runtime microruntime.Identifier
+	files   ComponentFiles
+}
+
+func (input BlueprintInput) blueprint(source guidedSource) (microruntime.Blueprint, error) {
 	namespace, err := microruntime.ParseIdentifier(input.Namespace)
 	if err != nil {
 		return microruntime.Blueprint{}, fmt.Errorf("namespace: %w", err)
@@ -154,7 +186,7 @@ func (input BlueprintInput) blueprint() (microruntime.Blueprint, error) {
 	}
 
 	for _, workloadInput := range input.Workloads {
-		workload, err := workloadInput.workload()
+		workload, err := workloadInput.workload(source)
 		if err != nil {
 			return microruntime.Blueprint{}, err
 		}
@@ -165,7 +197,7 @@ func (input BlueprintInput) blueprint() (microruntime.Blueprint, error) {
 	return blueprint, nil
 }
 
-func (input WorkloadInput) workload() (microruntime.Workload, error) {
+func (input WorkloadInput) workload(source guidedSource) (microruntime.Workload, error) {
 	component, err := microruntime.ParseRelativePath(input.Component)
 	if err != nil {
 		return microruntime.Workload{}, fmt.Errorf("component: %w", err)
@@ -181,18 +213,62 @@ func (input WorkloadInput) workload() (microruntime.Workload, error) {
 		return microruntime.Workload{}, fmt.Errorf("workload %s: %w", name, err)
 	}
 
-	return microruntime.Workload{
+	workload := microruntime.Workload{
 		Name:      name,
 		Component: component,
-		Image:     input.Image,
+		Image:     configuration.ImageTag(source.runtime.String(), name.String(), 1),
 		Kind:      microruntime.WorkloadKind(input.Kind),
 		Resources: resources,
-		Service: microruntime.ServiceSpec{
-			Port:          input.Port,
-			Replicas:      input.Replicas,
-			ReadinessPath: input.ReadinessPath,
-		},
-	}, nil
+	}
+
+	if workload.Kind != microruntime.DeploymentWorkload {
+		return workload, nil
+	}
+
+	probe, err := input.probe(source, component)
+	if err != nil {
+		return microruntime.Workload{}, fmt.Errorf("workload %s: %w", name, err)
+	}
+
+	workload.Service = microruntime.ServiceSpec{
+		Port:     input.Port,
+		Replicas: input.Replicas,
+		Probe:    probe,
+	}
+
+	return workload, nil
+}
+
+// probe is the readiness the choices name: the HEALTHCHECK of the
+// component's Dockerfile, or an explicit tcp or http kind.
+func (input WorkloadInput) probe(source guidedSource, component microruntime.RelativePath) (microruntime.Probe, error) {
+	switch input.Readiness {
+	case ReadinessTCP:
+		return microruntime.ExplicitProbe(configuration.Readiness{Kind: configuration.ReadinessTCP}), nil
+
+	case ReadinessHTTP:
+		return microruntime.ExplicitProbe(configuration.Readiness{
+			Kind: configuration.ReadinessHTTP,
+			Path: input.ReadinessPath,
+		}), nil
+
+	case ReadinessHealthcheck:
+		dockerfile := path.Join(component.String(), input.Dockerfile)
+
+		content, err := source.files.File(source.owner, dockerfile)
+		if err != nil {
+			return microruntime.Probe{}, fmt.Errorf("read %s: %w", dockerfile, err)
+		}
+
+		probe, err := manifest.Healthcheck(content)
+		if err != nil {
+			return microruntime.Probe{}, fmt.Errorf("%s: %w", dockerfile, err)
+		}
+
+		return probe, nil
+	}
+
+	return microruntime.Probe{}, fmt.Errorf("readiness %q is not %s, %s or %s", input.Readiness, ReadinessHealthcheck, ReadinessTCP, ReadinessHTTP)
 }
 
 func (input WorkloadInput) resources() (microruntime.Resources, error) {

@@ -39,7 +39,7 @@ func (lifecycle *scriptedLifecycle) Up(_ context.Context, _ projectdomain.Projec
 	}
 
 	report("Configured", "`runtime.md` revision 1 materialized")
-	report("Built", "images built from the components' recipes")
+	report("Built", "images built from the components' Dockerfiles")
 
 	return execution.Execution{ID: lifecycle.execution}, nil
 }
@@ -174,7 +174,7 @@ func TestRunBringsTheRuntimeUpObservesDeliveryAndRemembers(t *testing.T) {
 		"**Evidence:** `evidence/exec-5c1e9a/` in this runtime",
 		"| Configured | 13:46:50 | `runtime.md` revision 1 materialized |",
 		"| Claimed | 13:46:50 | execution `exec-5c1e9a` |",
-		"| Ready | 13:46:50 | 1 of 1 containers ready on `/icon.svg` |",
+		"| Ready | 13:46:50 | 1 of 1 containers ready on `HEALTHCHECK of Dockerfile` |",
 		"| Delivered | 13:46:50 | feat/0070-console-microruntime at 3f9c2e1, pull request #19 |",
 		"| Cleaned up | 13:46:50 | 4 of 4 owned resources removed; cluster kept |",
 		"| Released | 13:46:50 | $1.60 of the reservation returned to the budget |",
@@ -208,7 +208,7 @@ func TestRunBringsTheRuntimeUpObservesDeliveryAndRemembers(t *testing.T) {
 		"Lap 0001 followed the suggestion, Claude Sonnet 5.5 at medium effort and finished with $9.80 observed of $11.40 reserved.",
 		"## Worth remembering",
 		"- Claude Sonnet 5.5 at medium effort used 3.7M input and 240K output tokens; the next estimate for this ticket can start from these instead of the effort table.",
-		"- `/icon.svg` passed readiness for `.`.",
+		"- `HEALTHCHECK of Dockerfile` passed readiness for `.`.",
 	} {
 		if !strings.Contains(memory, want) {
 			t.Errorf("run.md lacks %q:\n%s", want, memory)
@@ -222,7 +222,7 @@ func TestRunBringsTheRuntimeUpObservesDeliveryAndRemembers(t *testing.T) {
 	if strings.Join(episode.ComponentPaths, ",") != "." || strings.Join(episode.Stacks, ",") != "nextjs,go" || episode.Observed == nil || *episode.Observed.MemoryMiBPeak != 690 {
 		t.Errorf("memory fence components = %v, stacks %v, observed %+v", episode.ComponentPaths, episode.Stacks, episode.Observed)
 	}
-	for _, fact := range []string{"memory-peak-690-of-", "claude-sonnet-5-5-medium-used-3.7m-input-240k-output", "readiness-icon-svg", "checks-4-of-4-passed"} {
+	for _, fact := range []string{"memory-peak-690-of-", "claude-sonnet-5-5-medium-used-3.7m-input-240k-output", "readiness-healthcheck-of-dockerfile", "checks-4-of-4-passed"} {
 		if !strings.Contains(strings.Join(episode.Facts, "\n"), fact) {
 			t.Errorf("the facts %v lack %q", episode.Facts, fact)
 		}
@@ -328,12 +328,12 @@ func TestRunStopsWhenTheRuntimeDoesNotComeUp(t *testing.T) {
 
 	p, deps := plannedProject(t)
 	lifecycle := websiteLifecycle()
-	lifecycle.failUp = errors.New("build recipe docker failed for .")
+	lifecycle.failUp = errors.New("docker build of Dockerfile failed for console")
 	driver := websiteDriver()
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, lifecycle, websiteDelivery(), time.Millisecond
 
 	status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
-	if status != 1 || !strings.Contains(stderr, "did not come up") || !strings.Contains(stderr, "build recipe") {
+	if status != 1 || !strings.Contains(stderr, "did not come up") || !strings.Contains(stderr, "docker build") {
 		t.Fatalf("a runtime that did not come up gave %d: %s\n%s", status, stderr, stdout)
 	}
 	if record := runRecord(t, p); record.State != "failed" || record.Laps[0].Outcome != "open" {

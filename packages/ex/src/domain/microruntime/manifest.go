@@ -251,7 +251,7 @@ func (claim Claim) Apply(manifest Manifest) {
 	metadata["namespace"] = claim.Namespace.String()
 	claim.label(metadata, manifest.Unit)
 
-	if object.Kind() == "Service" {
+	if object.Kind() == "Service" || object.Kind() == secretKind {
 		return
 	}
 

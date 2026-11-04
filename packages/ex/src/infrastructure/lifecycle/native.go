@@ -82,7 +82,7 @@ func (native Native) Up(ctx context.Context, owner project.Project, runtime micr
 
 	err = native.Engine.Start(ctx, owner, record, config, func(step, _ string) error {
 		if step == "build_succeeded" {
-			report("Built", "images built from the components' recipes")
+			report("Built", "images built from the components' Dockerfiles")
 		}
 
 		return nil
