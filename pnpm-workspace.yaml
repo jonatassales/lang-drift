@@ -2,6 +2,8 @@ packages:
   - apps/*
   - apps/microservices/*
   - packages/*
+  - lib/*
+  - infrastructure/*
 
 engineStrict: true
 
