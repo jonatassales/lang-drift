@@ -1,4 +1,3 @@
-import { Card } from '@langdrift/web/ui/card'
 import { getFormatter, getTranslations } from 'next-intl/server'
 
 import { PageHeading } from '@components/page-heading/page-heading'
@@ -7,6 +6,7 @@ import type { ProductNavigation, RuntimeListSnapshot } from '@data/types'
 import { Link } from '@i18n/navigation'
 import { RecommendationPanel } from '@views/runtimes/recommendation-panel'
 import { RuntimeFinops } from '@views/runtimes/runtime-finops'
+import { Card } from 'web/ui/card'
 
 import { costTotals } from './cost-totals'
 import { Reading } from './reading'

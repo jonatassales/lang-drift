@@ -1,4 +1,4 @@
-import type { TerminalLineType } from '@langdrift/web/vendors/smoothui/mac-terminal'
+import type { TerminalLineType } from 'web/vendors/smoothui/mac-terminal'
 
 import type {
 	RunMessageId,

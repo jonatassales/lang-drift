@@ -1,8 +1,8 @@
-import { CaretRight } from '@langdrift/web/ui/icons/client'
 import { useId } from 'react'
 
 import { StatusLabel } from '@components/status-label/status-label'
 import type { Ticket, TicketPhase } from '@data/types'
+import { CaretRight } from 'web/ui/icons/client'
 
 import { PhaseSummary } from './phase-summary'
 import { TicketCreated } from './ticket-created'

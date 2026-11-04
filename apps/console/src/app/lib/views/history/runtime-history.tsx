@@ -1,6 +1,5 @@
 'use client'
 
-import { Button } from '@langdrift/web/ui/button'
 import { useTranslations } from 'next-intl'
 import { Suspense, useState, useTransition } from 'react'
 
@@ -11,6 +10,7 @@ import { mutation } from '@data/api'
 import { useResource } from '@data/resource.hook'
 import type { LifecycleEvent, Runtime } from '@data/types'
 import { RecommendationPanel } from '@views/runtimes/recommendation-panel'
+import { Button } from 'web/ui/button'
 
 import { EventHistory } from './event-history'
 

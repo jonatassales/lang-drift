@@ -10,7 +10,7 @@ const apiPolicy = "default-src 'none'; frame-ancestors 'none'"
 const config: NextConfig = {
 	poweredByHeader: false,
 	reactStrictMode: true,
-	transpilePackages: ['@langdrift/web'],
+	transpilePackages: ['web'],
 	async redirects() {
 		return [
 			{

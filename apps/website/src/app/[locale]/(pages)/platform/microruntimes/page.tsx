@@ -1,6 +1,3 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import { MicroruntimesIcon } from '@langdrift/web/ui/icons/platform'
-import { cn } from '@langdrift/web/utilities'
 import { notFound } from 'next/navigation'
 import { createTranslator, hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
@@ -31,6 +28,9 @@ import {
 } from '@data/microruntimes-content'
 import { microruntimesMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
+import { Eyebrow } from 'web/ui/eyebrow'
+import { MicroruntimesIcon } from 'web/ui/icons/platform'
+import { cn } from 'web/utilities'
 
 export { generateMetadata } from './page.metadata'
 

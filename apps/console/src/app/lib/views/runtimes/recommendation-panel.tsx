@@ -1,7 +1,5 @@
 'use client'
 
-import { Button } from '@langdrift/web/ui/button'
-import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
 import { Suspense, useEffect, useRef, useState, useTransition } from 'react'
 
@@ -17,6 +15,8 @@ import type {
 	RuntimeConfiguration,
 } from '@data/types'
 import { EpisodeEvidence } from '@views/history/episode-evidence'
+import { Button } from 'web/ui/button'
+import { Card } from 'web/ui/card'
 
 import { RecommendationAccounting } from './recommendation-accounting'
 

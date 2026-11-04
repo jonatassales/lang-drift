@@ -1,4 +1,4 @@
-import { cn } from '@langdrift/web/utilities'
+import { cn } from 'web/utilities'
 
 export interface ShareBarProps {
 	className?: string

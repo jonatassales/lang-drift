@@ -1,7 +1,8 @@
 'use client'
 
-import { cn } from '@langdrift/web/utilities'
 import { useEffect, useRef } from 'react'
+
+import { cn } from 'web/utilities'
 
 import type { SurfaceController, SurfaceOptions } from './surface'
 

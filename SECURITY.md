@@ -72,8 +72,8 @@ rather stay anonymous, that is fine too.
   token-free evidence trails, run ledgers, or episodic memory.
 - **Platform assets**: `https://langdrift.md` (the public site), the console
   (`apps/console`), and stub APIs (`apps/extub`).
-- **Published packages**: `@langdrift/ex` (including platform binaries and launchers),
-  `@langdrift/contracts` and `@langdrift/web`.
+- **Published packages**: `@langdrift/ex` (including platform binaries and launchers)
+  and `@langdrift/contracts`.
 
 ### Out of scope
 

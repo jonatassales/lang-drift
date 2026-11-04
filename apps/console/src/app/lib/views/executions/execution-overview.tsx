@@ -1,13 +1,13 @@
 'use client'
 
-import { Button } from '@langdrift/web/ui/button'
-import { ListEnd } from '@langdrift/web/ui/list-end'
 import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { ActivityEntrySkeleton } from '@components/route-state/activity-entry-skeleton'
 import { usePagedResource } from '@data/paged-resource.hook'
 import type { Page, ProductExecution } from '@data/types'
+import { Button } from 'web/ui/button'
+import { ListEnd } from 'web/ui/list-end'
 
 import { ExecutionEntry } from './execution-entry'
 

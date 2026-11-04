@@ -1,7 +1,8 @@
-import { cn } from '@langdrift/web/utilities'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import type { ComponentProps } from 'react'
+
+import { cn } from 'web/utilities'
 
 // shadcn/ui's new-york v4 button, colored by the token roles. The tokens carry
 // no white, so the destructive label takes the primary foreground, the white

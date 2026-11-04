@@ -1,6 +1,5 @@
 'use client'
 
-import { Button } from '@langdrift/web/ui/button'
 import { useTranslations } from 'next-intl'
 import { type FormEvent, useState, useTransition } from 'react'
 
@@ -8,6 +7,7 @@ import { ErrorNotice } from '@components/error-notice/error-notice'
 import { fieldClass, labelClass } from '@components/form-styles/form-styles'
 import { mutation } from '@data/api'
 import { Link, useRouter } from '@i18n/navigation'
+import { Button } from 'web/ui/button'
 
 import { AuthShell } from './auth-shell'
 

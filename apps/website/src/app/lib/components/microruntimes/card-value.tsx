@@ -1,7 +1,7 @@
-import { cn } from '@langdrift/web/utilities'
 import type { ReactNode } from 'react'
 
 import type { MicroruntimesMessages } from '@data/microruntimes-content'
+import { cn } from 'web/utilities'
 
 import type { CardValueState } from './reveal-state.compute'
 

@@ -1,11 +1,11 @@
 'use client'
-import { SignOut } from '@langdrift/web/ui/icons/client'
 import { useTranslations } from 'next-intl'
 import { useState, useTransition } from 'react'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { mutation } from '@data/api'
 import { useRouter } from '@i18n/navigation'
+import { SignOut } from 'web/ui/icons/client'
 
 export function SignOutButton() {
 	const [error, setError] = useState<unknown>(null)

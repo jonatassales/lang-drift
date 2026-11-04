@@ -1,6 +1,7 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import { cn } from '@langdrift/web/utilities'
 import type { ReactNode } from 'react'
+
+import { Eyebrow } from 'web/ui/eyebrow'
+import { cn } from 'web/utilities'
 
 export interface InfoCard {
 	description: string

@@ -1,5 +1,5 @@
-import { DetailList, type DetailListItem } from '@langdrift/web/ui/detail-list'
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
+import { DetailList, type DetailListItem } from 'web/ui/detail-list'
+import { Eyebrow } from 'web/ui/eyebrow'
 
 interface RecordCardProps {
 	items: readonly DetailListItem[]

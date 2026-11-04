@@ -1,4 +1,4 @@
-import { InfoCards } from '@langdrift/web/ui/info-cards'
+import { InfoCards } from 'web/ui/info-cards'
 
 import {
 	evidenceFollowUps,

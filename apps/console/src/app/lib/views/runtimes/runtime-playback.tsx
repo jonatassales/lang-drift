@@ -1,12 +1,12 @@
 'use client'
-import { Button } from '@langdrift/web/ui/button'
-import { Pause, Play } from '@langdrift/web/ui/icons/client'
 import { useTranslations } from 'next-intl'
 import { useState, useTransition } from 'react'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { mutation } from '@data/api'
 import type { RuntimeWidgetSnapshot } from '@data/types'
+import { Button } from 'web/ui/button'
+import { Pause, Play } from 'web/ui/icons/client'
 
 interface RuntimePlaybackProps {
 	snapshot: RuntimeWidgetSnapshot

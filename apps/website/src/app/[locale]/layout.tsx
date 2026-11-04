@@ -10,7 +10,7 @@ import { ScrollToTop } from '@components/scroll-to-top'
 import { getWebsiteMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
 
-import '@langdrift/web/styles.css'
+import 'web/styles.css'
 import '@app/template/tailwind/app.css'
 
 export { generateMetadata } from './layout.metadata'

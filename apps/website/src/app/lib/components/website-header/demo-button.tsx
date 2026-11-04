@@ -1,9 +1,9 @@
 'use client'
 
-import { cn } from '@langdrift/web/utilities'
 import { useTranslations } from 'next-intl'
 
 import { Link } from '@i18n/navigation'
+import { cn } from 'web/utilities'
 
 interface DemoButtonProps {
 	/** The drawer gives its button the 44px touch height. */

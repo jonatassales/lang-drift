@@ -1,6 +1,5 @@
-import { BasicAccordion } from '@langdrift/web/vendors/smoothui/basic-accordion'
-
 import { FaqSectionShell } from '@components/product-page/faq-section-shell'
+import { BasicAccordion } from 'web/vendors/smoothui/basic-accordion'
 
 export interface ProductFaqItem {
 	answer: string

@@ -1,6 +1,5 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-
 import type { Ticket, TicketAnalysis } from '@data/types'
+import { Eyebrow } from 'web/ui/eyebrow'
 
 import { DocumentRow } from './document-row'
 import { EpisodeRow } from './episode-row'

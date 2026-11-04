@@ -1,13 +1,10 @@
 'use client'
 
-import {
-	CodeEditor,
-	type CodeEditorProps,
-} from '@langdrift/web/vendors/vidro/code-editor'
 import { useAtomValue } from 'jotai'
 
 import type { WebsiteLocale } from '@i18n/routing'
 import { themeAtom } from '@state'
+import { CodeEditor, type CodeEditorProps } from 'web/vendors/vidro/code-editor'
 
 interface RuntimeFileEditorProps {
 	locale: WebsiteLocale

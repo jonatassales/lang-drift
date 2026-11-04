@@ -71,7 +71,7 @@ const nextConfig: NextConfig = {
 	poweredByHeader: false,
 	allowedDevOrigins: ['127.0.0.1'],
 	experimental: { serverActions: { bodySizeLimit: '4kb' } },
-	transpilePackages: ['@langdrift/web'],
+	transpilePackages: ['web'],
 	// The only source of the security headers: the proxy sets none, so every
 	// path, the proxy's own redirects included, carries the same set.
 	async headers() {

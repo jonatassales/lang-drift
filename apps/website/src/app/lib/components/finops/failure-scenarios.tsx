@@ -1,11 +1,10 @@
-import { DetailList } from '@langdrift/web/ui/detail-list'
-
 import {
 	chainPillarIds,
 	type FinopsMessages,
 	failureScenarioIds,
 	failureStatusTones,
 } from '@data/finops-content'
+import { DetailList } from 'web/ui/detail-list'
 
 interface FailureScenariosProps {
 	copy: FinopsMessages['failures']

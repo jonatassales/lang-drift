@@ -1,7 +1,5 @@
 'use client'
 
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import { cn } from '@langdrift/web/utilities'
 import { useAtom } from 'jotai'
 import type { MouseEvent } from 'react'
 
@@ -18,6 +16,8 @@ import {
 } from '@data/finops-content'
 import type { WebsiteLocale } from '@i18n/routing'
 import { selectedWorkItemAtom } from '@state'
+import { Eyebrow } from 'web/ui/eyebrow'
+import { cn } from 'web/utilities'
 
 interface BudgetLedgerDemoProps {
 	copy: FinopsMessages['ledger']

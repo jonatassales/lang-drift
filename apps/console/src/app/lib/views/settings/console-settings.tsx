@@ -1,9 +1,9 @@
 'use client'
-import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
 
 import { PageHeading } from '@components/page-heading/page-heading'
 import { LanguageSettings } from '@i18n/language-settings'
+import { Card } from 'web/ui/card'
 
 export function ConsoleSettings() {
 	const translate = useTranslations('ui')

@@ -1,7 +1,8 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import { CaretDownIcon } from '@langdrift/web/ui/icons/arrow'
-import { cn } from '@langdrift/web/utilities'
 import { type MouseEvent, type ReactNode, useId } from 'react'
+
+import { Eyebrow } from 'web/ui/eyebrow'
+import { CaretDownIcon } from 'web/ui/icons/arrow'
+import { cn } from 'web/utilities'
 
 interface SessionCardProps {
 	body: ReactNode

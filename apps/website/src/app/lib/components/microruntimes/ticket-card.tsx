@@ -1,7 +1,6 @@
-import { DetailList } from '@langdrift/web/ui/detail-list'
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-
 import { documentIds, revealed, ticketPlan } from '@data/microruntimes-content'
+import { DetailList } from 'web/ui/detail-list'
+import { Eyebrow } from 'web/ui/eyebrow'
 
 import { CardSection } from './card-section'
 import { CardValue, revealState } from './card-value'

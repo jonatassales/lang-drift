@@ -1,9 +1,9 @@
-import { ArrowRightIcon } from '@langdrift/web/ui/icons/arrow'
 import type { ReactNode } from 'react'
 
 import type { PlatformProduct } from '@components/website-header/platform-products'
 import { Link } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
+import { ArrowRightIcon } from 'web/ui/icons/arrow'
 
 interface HomeProductSectionProps {
 	/** The illustrative note under the demo. */

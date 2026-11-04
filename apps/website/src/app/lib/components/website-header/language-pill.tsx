@@ -1,16 +1,16 @@
 'use client'
 
-import {
-	LanguageSwitcher,
-	type LanguageSwitcherLinkProps,
-	type LanguageSwitcherOption,
-} from '@langdrift/web/ui/language-switcher'
 import { useLocale, useTranslations } from 'next-intl'
 import type { MouseEvent } from 'react'
 import { useEffect, useState } from 'react'
 
 import languageLabels from '@i18n/messages/language-labels.json'
 import { getPathname, usePathname } from '@i18n/navigation'
+import {
+	LanguageSwitcher,
+	type LanguageSwitcherLinkProps,
+	type LanguageSwitcherOption,
+} from 'web/ui/language-switcher'
 
 import { drawerFocus } from './drawer-focus'
 

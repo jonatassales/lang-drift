@@ -1,11 +1,11 @@
 'use client'
 
-import { CaretDown, Gear, UserCircle } from '@langdrift/web/ui/icons/client'
 import { useTranslations } from 'next-intl'
 import type { ReactNode } from 'react'
 
 import { useDismissibleMenu } from '@components/menu/use-dismissible-menu.hook'
 import { Link } from '@i18n/navigation'
+import { CaretDown, Gear, UserCircle } from 'web/ui/icons/client'
 
 interface AccountMenuProps {
 	/** The sign-out item, which talks to the session itself. */

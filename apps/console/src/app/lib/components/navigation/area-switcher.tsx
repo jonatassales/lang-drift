@@ -1,11 +1,11 @@
 'use client'
 
-import { CaretDown, CheckCircle } from '@langdrift/web/ui/icons/client'
-import { FinopsIcon, MicroruntimesIcon } from '@langdrift/web/ui/icons/platform'
 import { useTranslations } from 'next-intl'
 
 import { useDismissibleMenu } from '@components/menu/use-dismissible-menu.hook'
 import { Link, usePathname } from '@i18n/navigation'
+import { CaretDown, CheckCircle } from 'web/ui/icons/client'
+import { FinopsIcon, MicroruntimesIcon } from 'web/ui/icons/platform'
 
 import { type Area, areaHome, areaOf, areas } from './area'
 

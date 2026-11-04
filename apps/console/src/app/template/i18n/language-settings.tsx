@@ -1,8 +1,9 @@
 'use client'
 
-import { LanguageSwitcher } from '@langdrift/web/ui/language-switcher'
 import { useLocale, useTranslations } from 'next-intl'
 import { useState, useTransition } from 'react'
+
+import { LanguageSwitcher } from 'web/ui/language-switcher'
 
 import { setLocale } from './actions'
 import { isLocale } from './config'

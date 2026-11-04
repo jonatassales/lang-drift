@@ -1,5 +1,3 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import { ArrowRightIcon } from '@langdrift/web/ui/icons/arrow'
 import { createTranslator } from 'next-intl'
 import { Fragment } from 'react'
 
@@ -11,6 +9,8 @@ import {
 	gateStepIds,
 } from '@data/finops-content'
 import type { WebsiteLocale } from '@i18n/routing'
+import { Eyebrow } from 'web/ui/eyebrow'
+import { ArrowRightIcon } from 'web/ui/icons/arrow'
 
 interface GateFlowProps {
 	copy: FinopsMessages['authorization']

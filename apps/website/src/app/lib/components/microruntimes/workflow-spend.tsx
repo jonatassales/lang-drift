@@ -1,13 +1,12 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import { ShareBar } from '@langdrift/web/ui/share-bar'
-import { cn } from '@langdrift/web/utilities'
-
 import type { PlanEffort } from '@data/microruntimes-content'
 import {
 	budgetCents,
 	expectedTokens,
 	type WorkflowFigures,
 } from '@data/microruntimes-workflow'
+import { Eyebrow } from 'web/ui/eyebrow'
+import { ShareBar } from 'web/ui/share-bar'
+import { cn } from 'web/utilities'
 
 import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
 

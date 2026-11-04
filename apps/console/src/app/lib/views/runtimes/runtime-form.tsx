@@ -1,7 +1,5 @@
 'use client'
 
-import { Button } from '@langdrift/web/ui/button'
-import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
 import { useState, useTransition } from 'react'
 
@@ -9,6 +7,8 @@ import { ErrorNotice } from '@components/error-notice/error-notice'
 import { fieldClass, labelClass } from '@components/form-styles/form-styles'
 import { mutation } from '@data/api'
 import type { Component, Runtime, RuntimeConfiguration } from '@data/types'
+import { Button } from 'web/ui/button'
+import { Card } from 'web/ui/card'
 
 import { ComponentFields } from './component-fields'
 import { componentsFromForm } from './components-from-form'

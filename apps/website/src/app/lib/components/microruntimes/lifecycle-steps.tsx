@@ -1,7 +1,5 @@
 'use client'
 
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import { cn } from '@langdrift/web/utilities'
 import { useAtom } from 'jotai'
 import type { MouseEvent } from 'react'
 
@@ -12,6 +10,8 @@ import {
 	type MicroruntimesMessages,
 } from '@data/microruntimes-content'
 import { selectedLifecycleStageAtom } from '@state'
+import { Eyebrow } from 'web/ui/eyebrow'
+import { cn } from 'web/utilities'
 
 interface LifecycleStepsProps {
 	copy: MicroruntimesMessages['lifecycle']

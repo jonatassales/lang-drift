@@ -1,5 +1,6 @@
-import { cn } from '@langdrift/web/utilities'
 import type { ComponentProps } from 'react'
+
+import { cn } from 'web/utilities'
 
 export interface CardDescriptionProps extends ComponentProps<'div'> {}
 

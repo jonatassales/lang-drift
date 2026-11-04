@@ -1,10 +1,10 @@
 'use client'
 
-import { AnimatedTabs } from '@langdrift/web/vendors/smoothui/animated-tabs'
-import { BasicAccordion } from '@langdrift/web/vendors/smoothui/basic-accordion'
 import { useId, useState } from 'react'
 
 import type { ProductFaqItem } from '@components/product-page/product-faq-section'
+import { AnimatedTabs } from 'web/vendors/smoothui/animated-tabs'
+import { BasicAccordion } from 'web/vendors/smoothui/basic-accordion'
 
 interface FaqGroup {
 	id: string

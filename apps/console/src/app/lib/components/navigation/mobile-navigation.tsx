@@ -1,12 +1,12 @@
 'use client'
-import { Dialog, DialogContent } from '@langdrift/web/ui/dialog'
-import { List, X } from '@langdrift/web/ui/icons/client'
 import { useTranslations } from 'next-intl'
 import { type ReactNode, useEffect, useState } from 'react'
 
 import { useMobileViewport } from '@components/dialog/use-mobile-viewport.hook'
 import { useReturnFocus } from '@components/dialog/use-return-focus.hook'
 import { usePathname } from '@i18n/navigation'
+import { Dialog, DialogContent } from 'web/ui/dialog'
+import { List, X } from 'web/ui/icons/client'
 
 interface MobileNavigationProps {
 	children: ReactNode

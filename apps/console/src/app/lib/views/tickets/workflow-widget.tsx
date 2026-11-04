@@ -1,9 +1,8 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import { GitPullRequest } from '@langdrift/web/ui/icons/server'
-import { ShareBar } from '@langdrift/web/ui/share-bar'
-import { cn } from '@langdrift/web/utilities'
-
 import type { Ticket, TicketWorkflow } from '@data/types'
+import { Eyebrow } from 'web/ui/eyebrow'
+import { GitPullRequest } from 'web/ui/icons/server'
+import { ShareBar } from 'web/ui/share-bar'
+import { cn } from 'web/utilities'
 
 import { PhaseSummary } from './phase-summary'
 import { pullRequestState } from './pull-request-state.compute'

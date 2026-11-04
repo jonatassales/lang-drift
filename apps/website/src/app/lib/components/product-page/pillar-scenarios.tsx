@@ -1,9 +1,10 @@
 'use client'
 
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import { ArrowRightIcon } from '@langdrift/web/ui/icons/arrow'
-import { AnimatedTabs } from '@langdrift/web/vendors/smoothui/animated-tabs'
 import { useId, useState } from 'react'
+
+import { Eyebrow } from 'web/ui/eyebrow'
+import { ArrowRightIcon } from 'web/ui/icons/arrow'
+import { AnimatedTabs } from 'web/vendors/smoothui/animated-tabs'
 
 export interface PillarScenario<PillarId extends string> {
 	cells: Record<PillarId, string>

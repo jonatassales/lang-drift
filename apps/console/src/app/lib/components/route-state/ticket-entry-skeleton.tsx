@@ -1,4 +1,4 @@
-import { Skeleton } from '@langdrift/web/ui/skeleton'
+import { Skeleton } from 'web/ui/skeleton'
 
 // A ticket entry while it loads: the card below lg, the row from lg.
 export function TicketEntrySkeleton() {

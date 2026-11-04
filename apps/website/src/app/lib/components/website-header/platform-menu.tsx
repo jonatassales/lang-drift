@@ -1,11 +1,11 @@
 'use client'
 
-import { cn } from '@langdrift/web/utilities'
 import { useTranslations } from 'next-intl'
 import type { FocusEvent } from 'react'
 import { useEffect, useId, useRef, useState } from 'react'
 
 import { Link } from '@i18n/navigation'
+import { cn } from 'web/utilities'
 
 import { platformProducts } from './platform-products'
 import { ProductBadge } from './product-badge'

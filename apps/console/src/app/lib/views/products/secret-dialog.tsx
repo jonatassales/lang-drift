@@ -1,7 +1,5 @@
 'use client'
 
-import { Button } from '@langdrift/web/ui/button'
-import { Dialog, DialogContent, DialogTitle } from '@langdrift/web/ui/dialog'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
@@ -9,6 +7,8 @@ import { useReturnFocus } from '@components/dialog/use-return-focus.hook'
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { fieldClass } from '@components/form-styles/form-styles'
 import { FieldSkeleton } from '@components/route-state/field-skeleton'
+import { Button } from 'web/ui/button'
+import { Dialog, DialogContent, DialogTitle } from 'web/ui/dialog'
 
 interface SecretDialogProps {
 	secret: string

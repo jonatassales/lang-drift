@@ -1,7 +1,7 @@
-import { DetailList } from '@langdrift/web/ui/detail-list'
 import { useTranslations } from 'next-intl'
 
 import type { Ticket } from '@data/types'
+import { DetailList } from 'web/ui/detail-list'
 
 import { ticketDocumentIds } from './ticket-phases'
 import { TicketSection } from './ticket-section'

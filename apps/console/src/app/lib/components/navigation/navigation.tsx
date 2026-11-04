@@ -1,6 +1,11 @@
 'use client'
 
-import { Brand } from '@langdrift/web/ui/brand'
+import { useTranslations } from 'next-intl'
+
+import { useDismissibleMenu } from '@components/menu/use-dismissible-menu.hook'
+import type { Product } from '@data/types'
+import { Link, usePathname } from '@i18n/navigation'
+import { Brand } from 'web/ui/brand'
 import {
 	CaretDown,
 	ChartLineUp,
@@ -14,12 +19,7 @@ import {
 	House,
 	MagnifyingGlass,
 	Ticket,
-} from '@langdrift/web/ui/icons/client'
-import { useTranslations } from 'next-intl'
-
-import { useDismissibleMenu } from '@components/menu/use-dismissible-menu.hook'
-import type { Product } from '@data/types'
-import { Link, usePathname } from '@i18n/navigation'
+} from 'web/ui/icons/client'
 
 import { areaOf } from './area'
 import { AreaSwitcher } from './area-switcher'

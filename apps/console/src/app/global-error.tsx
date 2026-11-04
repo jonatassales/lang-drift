@@ -3,12 +3,12 @@
 import { usePathname } from 'next/navigation'
 
 import '@app/template/tailwind/app.css'
-import { Button } from '@langdrift/web/ui/button'
 
 import { RouteStateNotice } from '@components/route-state/route-state-notice'
 import { isLocale, languageTags } from '@i18n/config'
 import messages from '@i18n/messages/global-error.json'
 import { routing } from '@i18n/routing'
+import { Button } from 'web/ui/button'
 
 interface GlobalErrorProps {
 	retry: () => void

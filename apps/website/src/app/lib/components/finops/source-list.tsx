@@ -1,8 +1,7 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-
 import { type FinopsMessages, sourceIds } from '@data/finops-content'
 import { Link } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
+import { Eyebrow } from 'web/ui/eyebrow'
 
 interface SourceListProps {
 	copy: FinopsMessages['sources']

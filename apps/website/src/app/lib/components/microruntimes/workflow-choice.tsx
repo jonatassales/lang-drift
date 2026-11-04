@@ -1,6 +1,7 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import { CaretDownIcon } from '@langdrift/web/ui/icons/arrow'
 import type { ChangeEvent } from 'react'
+
+import { Eyebrow } from 'web/ui/eyebrow'
+import { CaretDownIcon } from 'web/ui/icons/arrow'
 
 interface WorkflowChoiceOption<Value extends string> {
 	label: string

@@ -33,7 +33,7 @@ return pageMetadata(title, images)
 
 ## Imports
 
-1. **Aliases across boundaries.** An import that does not reach a sibling file uses a configured absolute alias (`@app/*`, `@components/*`, `@state`, `@langdrift/web/*`); see the filesystem rules for `../` and `./`.
+1. **Aliases across boundaries.** An import that does not reach a sibling file uses a configured absolute alias (`@app/*`, `@components/*`, `@state`) or a workspace package (`web/*`); see the filesystem rules for `../` and `./`.
 2. **Aliases are developer-owned.** Make navigation and ownership meaningful rather than imposing a universal vocabulary. Meaningful absolute subpaths are allowed.
 3. **Barrels re-export only.** A barrel (`index.ts`) holds named re-exports and nothing else (`export { MyComponent }`), never `export * from './module'`. Barrels are intentional and optional.
 4. **Import order.** Three groups separated by exactly one blank line (Biome's `:BLANK_LINE:`): third-party packages; workspace packages and absolute aliases; relative sibling imports.
@@ -45,14 +45,14 @@ return pageMetadata(title, images)
 import type { ReactNode } from 'react'
 import { z } from 'zod'
 
-import { Button } from '@langdrift/web/ui'
 import { toCurrency } from '@app/template/formatters/to-currency.fmt'
+import { Button } from 'web/ui'
 
 import { mapFormValues } from './map-form-values.map'
 
 // Don't:
 import { loginFormState } from './form-state.data'
-import { cn } from '@langdrift/web/utilities'
+import { cn } from 'web/utilities'
 import Link from 'next/link'
 import { DemoButton } from './website-header/demo-button'
 ```

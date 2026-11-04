@@ -1,7 +1,5 @@
 'use client'
 
-import { Button } from '@langdrift/web/ui/button'
-import { Card } from '@langdrift/web/ui/card'
 import { useFormatter, useTranslations } from 'next-intl'
 import { Suspense, useState, useTransition } from 'react'
 
@@ -16,6 +14,8 @@ import { useResource } from '@data/resource.hook'
 import type { Product, RuntimeDetailSnapshot } from '@data/types'
 import { Link } from '@i18n/navigation'
 import { ExecutionTable } from '@views/executions/execution-table'
+import { Button } from 'web/ui/button'
+import { Card } from 'web/ui/card'
 
 import { RuntimeConnection } from './runtime-connection'
 import { RuntimeExecutionMetrics } from './runtime-execution-metrics'

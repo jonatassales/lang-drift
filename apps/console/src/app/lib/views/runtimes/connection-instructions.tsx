@@ -1,10 +1,10 @@
 'use client'
-import { Button } from '@langdrift/web/ui/button'
-import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
+import { Button } from 'web/ui/button'
+import { Card } from 'web/ui/card'
 
 interface ConnectionInstructionsProps {
 	secret?: string
