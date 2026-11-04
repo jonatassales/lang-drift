@@ -8,9 +8,9 @@
 
 **Status:** ready-for-human
 
-- [ ] `@langdrift/ex@0.3.0` is on npm with the four binaries and reports its version.
-- [ ] The tag `packages/ex/v0.3.0` and its GitHub Release exist.
-- [ ] `pnpm dlx @langdrift/ex@0.3.0 --version` prints `0.3.0`.
+- [x] `@langdrift/ex@0.3.0` is on npm with the four binaries and reports its version.
+- [x] The tag `packages/ex/v0.3.0` and its GitHub Release exist.
+- [x] `pnpm dlx @langdrift/ex@0.3.0 --version` prints `0.3.0`.
 
 ### Verification
 
