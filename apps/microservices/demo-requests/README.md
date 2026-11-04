@@ -34,7 +34,7 @@ Keys, never values. `.env.development` holds the non-secret defaults and is trac
 
 The service becomes ready once Redis answers: its consumer group is created on the first command, so with Redis away the process waits and the health route does not listen yet. Once up, a Redis outage makes `POST` answer 503 at once and queues nothing, so "nothing was stored" stays true.
 
-From the repository root, with Redis listening on the `REDIS_URL` of `.env.development` (the `redis` component's Dockerfile builds one: `docker build -t langdrift-redis:local apps/microservices/redis && docker run -d -p 6379:6379 langdrift-redis:local`):
+From the repository root, with Redis listening on the `REDIS_URL` of `.env.development` (the `messaging` component's Dockerfile builds one: `docker build -t langdrift-messaging:local infrastructure/messaging && docker run -d -p 6379:6379 langdrift-messaging:local`):
 
 ```sh
 pnpm turbo run dev --filter=demo-requests

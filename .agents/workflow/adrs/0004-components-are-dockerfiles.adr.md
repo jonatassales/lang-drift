@@ -24,3 +24,4 @@ Ticket 0024 ("no container image") keeps standing for the website. Microruntime 
 - An older fence, version 1, is refused with "re-plan the runtime"; there is no migration of inline images or recipes.
 - A component whose image cannot carry its own `HEALTHCHECK` names `tcp` or `http` readiness in the fence.
 - A secret reaches a container only through a pass-through name the fence declares; the declaration is the audit trail.
+- The component's name is its folder's, so this repository's own components are `messaging` and `storage` under `infrastructure/` (spec 0044), and a fence that runs them names them so.

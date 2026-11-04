@@ -1,8 +1,8 @@
-# The event log of the microservices: Redis with append-only persistence, so
+# The event log of the products: Redis with append-only persistence, so
 # the stream survives a restart. The HEALTHCHECK is what `ex` turns into the
 # component's readiness probe (spec 0032).
 #
-#   docker build -t langdrift-redis:local apps/microservices/redis
+#   docker build -t langdrift-messaging:local infrastructure/messaging
 
 FROM redis:8.10.3-alpine
 EXPOSE 6379
