@@ -13,5 +13,12 @@ allowBuilds:
 
 # sinapsi 0.4.0 pins zod 4.6.5, which carries GHSA-mrhx-c7xc-m3w5. Remove this
 # override once sinapsi depends on a patched zod itself.
+#
+# minio 8.0.7 depends on query-string 7, which pins decode-uri-component ^0.2.2,
+# vulnerable to GHSA-qr28-fpjm-wq7f. The patched 0.5.1 is ESM-only: query-string
+# still loads it, and only its parse() would call it, which minio never uses
+# (it calls stringify() alone). Remove this override once minio depends on a
+# query-string that takes a patched decode-uri-component itself.
 overrides:
   "sinapsi>zod": 4.6.7
+  "query-string>decode-uri-component": 0.5.1
