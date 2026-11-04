@@ -8,7 +8,7 @@
 - [x] 0187: `@langdrift/events`: envelope and demo-request events
 - [x] 0188: `@langdrift/events/transport`: Redis Streams strategy and client
 - [x] 0189: demo-requests accepts a request
-- [ ] 0190: demo-requests reads the log
+- [x] 0190: demo-requests reads the log
 - [ ] 0191: demo-requests archives every event to MinIO
 - [ ] 0192: mailer sends and records
 - [ ] 0193: website edge: interceptors and forwarding

@@ -8,11 +8,11 @@
 
 **Status:** ready-for-agent
 
-- [ ] `curl -N` with the bearer token and `Last-Event-ID: 0-0` prints every entry of the stream as an SSE event with `id`, `event` and `data`, then keeps the connection open with pings.
-- [ ] Without `Last-Event-ID` the stream shows only entries appended after the connection opened.
-- [ ] Disconnecting the client ends the reader's blocking loop and closes its duplicated connection.
-- [ ] `GET /v1/demo-requests/:id` answers the folded view; a request with a sent confirmation reads `confirmed`, one with a failed confirmation reads `failed`, an unknown id answers 404.
-- [ ] The fold, the SSE mapping and the reader are unit-tested with fakes; the SSE route is declared before the id route.
+- [x] `curl -N` with the bearer token and `Last-Event-ID: 0-0` prints every entry of the stream as an SSE event with `id`, `event` and `data`, then keeps the connection open with pings.
+- [x] Without `Last-Event-ID` the stream shows only entries appended after the connection opened.
+- [x] Disconnecting the client ends the reader's blocking loop and closes its duplicated connection.
+- [x] `GET /v1/demo-requests/:id` answers the folded view; a request with a sent confirmation reads `confirmed`, one with a failed confirmation reads `failed`, an unknown id answers 404.
+- [x] The fold, the SSE mapping and the reader are unit-tested with fakes; the SSE route is declared before the id route.
 
 ### Verification
 

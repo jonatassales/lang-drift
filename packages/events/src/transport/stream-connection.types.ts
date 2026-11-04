@@ -41,6 +41,20 @@ export interface StreamConnection {
 	): Promise<unknown[]>
 	xack(key: string, group: string, id: string): Promise<number>
 	xadd(key: string, ...args: (string | number)[]): Promise<string | null>
+	xrange(
+		key: string,
+		start: string,
+		end: string,
+		countToken: 'COUNT',
+		count: number,
+	): Promise<StreamItem[]>
+	xread(
+		blockToken: 'BLOCK',
+		milliseconds: number,
+		streamsToken: 'STREAMS',
+		key: string,
+		id: string,
+	): Promise<StreamReadReply>
 	disconnect(): void
 	quit(): Promise<unknown>
 }

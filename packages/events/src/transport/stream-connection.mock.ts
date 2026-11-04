@@ -6,6 +6,8 @@ import type {
 
 export interface StreamConnectionScript {
 	reads?: StreamReadReply[]
+	ranges?: StreamItem[][]
+	follows?: StreamReadReply[]
 	claims?: StreamItem[][]
 	deliveries?: Record<string, number>
 	groupError?: Error
@@ -17,15 +19,20 @@ export interface StreamConnectionScript {
 export class FakeStreamConnection implements StreamConnection {
 	readonly calls: (string | number)[][] = []
 	private readonly reads: StreamReadReply[]
+	private readonly ranges: StreamItem[][]
+	private readonly follows: StreamReadReply[]
 	private readonly claims: StreamItem[][]
 	private readonly deliveries: Map<string, number>
 	private readonly groupError: Error | undefined
 	private readonly addedIds: string[]
 	private release: (() => void) | undefined
 	private idleResolvers: (() => void)[] = []
+	private blocking = false
 
 	constructor(script: StreamConnectionScript = {}) {
 		this.reads = [...(script.reads ?? [])]
+		this.ranges = [...(script.ranges ?? [])]
+		this.follows = [...(script.follows ?? [])]
 		this.claims = [...(script.claims ?? [])]
 		this.deliveries = new Map(Object.entries(script.deliveries ?? {}))
 		this.groupError = script.groupError
@@ -35,6 +42,8 @@ export class FakeStreamConnection implements StreamConnection {
 	// Resolves once a read finds the script exhausted: everything before it
 	// has been handled and the consumer is blocking.
 	idle(): Promise<void> {
+		if (this.blocking) return Promise.resolve()
+
 		return new Promise((resolve) => {
 			this.idleResolvers.push(resolve)
 		})
@@ -81,6 +90,7 @@ export class FakeStreamConnection implements StreamConnection {
 		const scripted = this.reads.shift()
 		if (scripted !== undefined) return scripted
 
+		this.blocking = true
 		for (const resolve of this.idleResolvers) resolve()
 		this.idleResolvers = []
 
@@ -142,8 +152,41 @@ export class FakeStreamConnection implements StreamConnection {
 		return this.addedIds.shift() ?? '1762178700000-0'
 	}
 
+	async xrange(
+		key: string,
+		start: string,
+		end: string,
+		countToken: 'COUNT',
+		count: number,
+	): Promise<StreamItem[]> {
+		this.calls.push(['xrange', key, start, end, countToken, count])
+
+		return this.ranges.shift() ?? []
+	}
+
+	async xread(
+		blockToken: 'BLOCK',
+		milliseconds: number,
+		streamsToken: 'STREAMS',
+		key: string,
+		id: string,
+	): Promise<StreamReadReply> {
+		this.calls.push(['xread', blockToken, milliseconds, streamsToken, key, id])
+		const scripted = this.follows.shift()
+		if (scripted !== undefined) return scripted
+
+		this.blocking = true
+		for (const resolve of this.idleResolvers) resolve()
+		this.idleResolvers = []
+
+		return new Promise((resolve) => {
+			this.release = () => resolve(null)
+		})
+	}
+
 	disconnect(): void {
 		this.calls.push(['disconnect'])
+		this.blocking = false
 		this.release?.()
 		this.release = undefined
 	}
