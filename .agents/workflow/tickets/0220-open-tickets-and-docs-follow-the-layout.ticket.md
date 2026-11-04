@@ -8,11 +8,11 @@
 
 **Status:** ready-for-agent
 
-- [ ] Tickets 0070, 0077, 0085, 0091, 0116, 0198 and 0200 to 0205 cite only paths and package names that exist.
-- [ ] No closed ticket, spec or CLI fixture changed.
-- [ ] `git grep -n -E '@langdrift/(ex|web|tokens|events|contracts|extub)|apps/extub|microservices/(redis|minio)|EXTUB_|packages/(ex|contracts|events)'` outside `.agents/workflow` and the CLI fixtures returns nothing, and inside `.agents/workflow` matches only closed tickets and specs.
-- [ ] `AGENTS.md` and the context document describe the four workspaces, the naming rule and the console-stubs contract with no stale path.
-- [ ] The agent memory note on component paths names `infrastructure/messaging` and `infrastructure/storage`.
+- [x] Tickets 0070, 0077, 0085, 0091, 0116, 0198 and 0200 to 0205 cite only paths and package names that exist.
+- [x] No closed ticket, spec or CLI fixture changed.
+- [x] `git grep -n -E '@langdrift/(ex|web|tokens|events|contracts|extub)|apps/extub|microservices/(redis|minio)|EXTUB_|packages/(ex|contracts|events)'` outside `.agents/workflow` and the CLI fixtures returns nothing, and inside `.agents/workflow` matches only closed tickets and specs.
+- [x] `AGENTS.md` and the context document describe the four workspaces, the naming rule and the console-stubs contract with no stale path.
+- [x] The agent memory note on component paths names `infrastructure/messaging` and `infrastructure/storage`.
 
 ## Dev part
 
