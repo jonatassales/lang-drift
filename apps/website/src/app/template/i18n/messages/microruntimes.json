@@ -3,7 +3,7 @@
 		"skip": "Skip to the lifecycle",
 		"hero": {
 			"title": "Microruntimes",
-			"summary": "A simulated ex session for the ticket 0031-TICKET-early-access-runtime, \"Run the early-access sign-up use case as a microruntime\", told in four cards. The typed command, ex agent plan, is the intended entry point. The console reads the ticket's PRD, design doc, spec and guardrail, takes the envelope the team set, 2,000 millicores and 3,072 MiB, and a budget of $25.00 per run for model calls, cites three project episodes and suggests Claude Sonnet 5.5 at medium effort, a recommendation the team authorizes. It resolves five components from the spec, a Go API, a Node.js API, a NATS broker, a Redis cache and a Next.js app, 1,450 millicores and 2,304 MiB in total; the runtime itself has no price source, so its figures stay in units. The Workflow card prices the run at Anthropic list prices: Claude Sonnet 5.5 at medium effort is estimated at $9.50 and reserves $11.40 of the $25.00 budget. By default a person confirms the planning and reviews the pull request, and the merge is always the owner's. Playing the workflow runs ex agent run through the console's gate, the stages, the push and pull request #19 with its checks, and ends ready for review; a reservation over the budget pauses the run at the gate with nothing paid for. Every step is simulated: nothing is built, started or paid for."
+			"summary": "A simulated ex session for the ticket 0031-TICKET-early-access-runtime, \"Run the early-access sign-up use case as a microruntime\", told in four cards. The typed command, ex agent plan, is the intended entry point. The console reads the ticket's PRD, design doc, spec and guardrail, takes the envelope the team set, 2,000 millicores and 3,072 MiB, and a budget of $25.00 per run for model calls, cites three project episodes and suggests Claude Sonnet 5.5 at medium effort, a recommendation the team authorizes. It resolves five components from the spec, a Go API, a Node.js API, a NATS broker, a Redis cache and a Next.js app, 1,450 millicores and 2,304 MiB in total; the runtime itself has no price source, so its figures stay in units. The Workflow card prices the run at Anthropic list prices: Claude Sonnet 5.5 at medium effort is estimated at $9.50 and reserves $11.40 of the $25.00 budget. By default a person confirms the planning and reviews the pull request, and the merge is always the owner's. Playing the workflow runs ex agent run through the console's gate, the stages, the push and pull request #19 with its checks, and ends ready for review; a reservation over the budget pauses the run at the gate with nothing paid for. After implement, the agent stops at the reserved part: a person writes it in a dev ticket, with no agent and no paid call, the agent's code review follows, and the run ends with Safe Seat met. Every step is simulated: nothing is built, started or paid for."
 		},
 		"session": {
 			"terminal": {
@@ -69,7 +69,9 @@
 					"toSpec": "console › to-spec    0011-SPEC revised · 3 acceptance criteria",
 					"toTickets": "console › to-tickets 3 tickets · blocking edges recorded",
 					"hook": "console › hook       effort recorded · implement unblocked",
-					"implement": "console › implement  tdd · 5 components · 14 files · 32 tests green",
+					"implement": "console › implement  tdd · 5 components · 14 files · boundary only · stops at the reserved part",
+					"devTicketWaiting": "console › waiting    dev-ticket · the person writes the reserved part",
+					"devTicketClosed": "✓ closed     dev-ticket · written without an agent · no paid call",
 					"codeReview": "console › code-review 2 findings · fixed",
 					"runtimeReady": "runtime    early-access-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
 					"completed": "✓ completed  implementation · {observed} observed of {reserved} reserved · usage record",
@@ -77,6 +79,7 @@
 					"pullRequest": "✓ pr #{number}     feat(signup): run early access as a microruntime",
 					"checks": "checks     build · check · test · guardrails · running",
 					"checksPassed": "✓ checks     4 of 4 passed",
+					"safeSeatMet": "✓ Safe Seat  met",
 					"runtimeStopped": "runtime    stopped · 5 Deployments removed · nothing left",
 					"readyForReview": "✓ ready      #{number} for review · {released} released to the envelope",
 					"readyToMerge": "✓ ready      #{number} to merge · {released} released to the envelope",
@@ -185,6 +188,7 @@
 						"spec": "Spec",
 						"tickets": "Tickets",
 						"implement": "Implement",
+						"dev-ticket": "Dev ticket",
 						"review": "Review",
 						"merge": "Merge"
 					},
@@ -192,6 +196,8 @@
 					"mergeLocked": "always the owner's",
 					"requiredStage": "{stage} always has a person in this workflow",
 					"waiting": "waiting for the owner",
+					"personDriven": "driven by the person",
+					"personWriting": "the person writes the reserved part",
 					"model": "Model",
 					"effort": "Effort",
 					"modelPrice": "{input} / {output} per MTok · list price, {date}",
@@ -211,6 +217,8 @@
 					},
 					"nothingPaid": "nothing paid",
 					"pullRequest": "Pull request",
+					"safeSeat": "Safe Seat",
+					"safeSeatMet": "met",
 					"checksRunning": "checks running",
 					"checksPassed": "4 of 4 checks passed",
 					"readyForReview": "ready for review",
@@ -519,7 +527,7 @@
 		"skip": "Pular para o ciclo de vida",
 		"hero": {
 			"title": "Microruntimes",
-			"summary": "Uma sessão simulada do ex para o ticket 0031-TICKET-early-access-runtime, \"Rodar o caso de uso de inscrição no early access como um microruntime\", contada em quatro cards. O comando digitado, ex agent plan, é o ponto de entrada pretendido. O console lê o PRD, o design doc, a spec e o guardrail do ticket, toma o envelope definido pelo time, 2.000 milicores e 3.072 MiB, e um orçamento de US$ 25,00 por execução para chamadas de modelo, cita três episódios do projeto e sugere o Claude Sonnet 5.5 com effort medium, uma recomendação que o time autoriza. Ele resolve cinco componentes a partir da spec, uma API em Go, uma API em Node.js, um broker NATS, um cache Redis e um app Next.js, 1.450 milicores e 2.304 MiB no total; o runtime em si não tem fonte de preço, então seus valores ficam em unidades. O card Workflow precifica a execução pelos preços de tabela da Anthropic: o Claude Sonnet 5.5 com effort medium tem estimativa de US$ 9,50 e reserva US$ 11,40 do orçamento de US$ 25,00. Por padrão, uma pessoa confirma o planejamento e revisa o pull request, e o merge é sempre do responsável. Rodar o workflow executa ex agent run pelo gate do console, pelas etapas, pelo push e pelo pull request #19 com seus checks, e termina pronto para revisão; uma reserva acima do orçamento pausa a execução no gate sem nada pago. Cada etapa é simulada: nada é construído, iniciado ou pago."
+			"summary": "Uma sessão simulada do ex para o ticket 0031-TICKET-early-access-runtime, \"Rodar o caso de uso de inscrição no early access como um microruntime\", contada em quatro cards. O comando digitado, ex agent plan, é o ponto de entrada pretendido. O console lê o PRD, o design doc, a spec e o guardrail do ticket, toma o envelope definido pelo time, 2.000 milicores e 3.072 MiB, e um orçamento de US$ 25,00 por execução para chamadas de modelo, cita três episódios do projeto e sugere o Claude Sonnet 5.5 com effort medium, uma recomendação que o time autoriza. Ele resolve cinco componentes a partir da spec, uma API em Go, uma API em Node.js, um broker NATS, um cache Redis e um app Next.js, 1.450 milicores e 2.304 MiB no total; o runtime em si não tem fonte de preço, então seus valores ficam em unidades. O card Workflow precifica a execução pelos preços de tabela da Anthropic: o Claude Sonnet 5.5 com effort medium tem estimativa de US$ 9,50 e reserva US$ 11,40 do orçamento de US$ 25,00. Por padrão, uma pessoa confirma o planejamento e revisa o pull request, e o merge é sempre do responsável. Rodar o workflow executa ex agent run pelo gate do console, pelas etapas, pelo push e pelo pull request #19 com seus checks, e termina pronto para revisão; uma reserva acima do orçamento pausa a execução no gate sem nada pago. Depois da implementação, o agente para na parte reservada: uma pessoa a escreve num dev ticket, sem agente e sem chamada paga, a revisão de código do agente vem em seguida, e a execução termina com o Safe Seat cumprido. Cada etapa é simulada: nada é construído, iniciado ou pago."
 		},
 		"session": {
 			"terminal": {
@@ -585,7 +593,9 @@
 					"toSpec": "console › to-spec    0011-SPEC revised · 3 acceptance criteria",
 					"toTickets": "console › to-tickets 3 tickets · blocking edges recorded",
 					"hook": "console › hook       effort recorded · implement unblocked",
-					"implement": "console › implement  tdd · 5 components · 14 files · 32 tests green",
+					"implement": "console › implement  tdd · 5 components · 14 files · boundary only · stops at the reserved part",
+					"devTicketWaiting": "console › waiting    dev-ticket · the person writes the reserved part",
+					"devTicketClosed": "✓ closed     dev-ticket · written without an agent · no paid call",
 					"codeReview": "console › code-review 2 findings · fixed",
 					"runtimeReady": "runtime    early-access-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
 					"completed": "✓ completed  implementation · {observed} observed of {reserved} reserved · usage record",
@@ -593,6 +603,7 @@
 					"pullRequest": "✓ pr #{number}     feat(signup): run early access as a microruntime",
 					"checks": "checks     build · check · test · guardrails · running",
 					"checksPassed": "✓ checks     4 of 4 passed",
+					"safeSeatMet": "✓ Safe Seat  met",
 					"runtimeStopped": "runtime    stopped · 5 Deployments removed · nothing left",
 					"readyForReview": "✓ ready      #{number} for review · {released} released to the envelope",
 					"readyToMerge": "✓ ready      #{number} to merge · {released} released to the envelope",
@@ -701,6 +712,7 @@
 						"spec": "Spec",
 						"tickets": "Tickets",
 						"implement": "Implementação",
+						"dev-ticket": "Dev ticket",
 						"review": "Revisão",
 						"merge": "Merge"
 					},
@@ -708,6 +720,8 @@
 					"mergeLocked": "sempre do responsável",
 					"requiredStage": "{stage} sempre tem uma pessoa neste workflow",
 					"waiting": "aguardando o responsável",
+					"personDriven": "pilotada pela pessoa",
+					"personWriting": "a pessoa escreve a parte reservada",
 					"model": "Modelo",
 					"effort": "Effort",
 					"modelPrice": "{input} / {output} por MTok · preço de tabela, {date}",
@@ -727,6 +741,8 @@
 					},
 					"nothingPaid": "nada pago",
 					"pullRequest": "Pull request",
+					"safeSeat": "Safe Seat",
+					"safeSeatMet": "cumprido",
 					"checksRunning": "checks em execução",
 					"checksPassed": "4 de 4 checks aprovados",
 					"readyForReview": "pronto para revisão",
@@ -1035,7 +1051,7 @@
 		"skip": "跳到生命週期",
 		"hero": {
 			"title": "Microruntimes",
-			"summary": "這是針對工單 0031-TICKET-early-access-runtime「以 microruntime 執行 early access 註冊使用案例」的模擬 ex 工作階段，以四張卡片呈現。輸入的指令 ex agent plan 是預期的進入點。主控台讀取工單的 PRD、design doc、spec 與 guardrail，採用團隊設定的額度 2,000 millicores 與 3,072 MiB，以及每次執行 US$25.00 的模型呼叫預算，引用專案的三個過往案例，並建議以 medium effort 使用 Claude Sonnet 5.5，這是建議，須由團隊授權。它從 spec 解析出五個元件：一個 Go API、一個 Node.js API、一個 NATS broker、一個 Redis 快取與一個 Next.js 應用程式，合計 1,450 millicores 與 2,304 MiB；runtime 本身沒有價格來源，因此其數值僅以單位表示。工作流程卡片以 Anthropic 牌價為執行定價：以 medium effort 使用 Claude Sonnet 5.5 預估 US$9.50，並從 US$25.00 的預算中保留 US$11.40。預設由人員確認規劃並審查 pull request，合併一律由負責人決定。執行工作流程時，ex agent run 會依序通過主控台的 gate、各個階段、push，以及含檢查的 pull request #19，最後可供審查；若保留額超出預算，執行會在 gate 暫停，不產生任何費用。每個步驟都是模擬：不會建置、啟動，也不會付費。"
+			"summary": "這是針對工單 0031-TICKET-early-access-runtime「以 microruntime 執行 early access 註冊使用案例」的模擬 ex 工作階段，以四張卡片呈現。輸入的指令 ex agent plan 是預期的進入點。主控台讀取工單的 PRD、design doc、spec 與 guardrail，採用團隊設定的額度 2,000 millicores 與 3,072 MiB，以及每次執行 US$25.00 的模型呼叫預算，引用專案的三個過往案例，並建議以 medium effort 使用 Claude Sonnet 5.5，這是建議，須由團隊授權。它從 spec 解析出五個元件：一個 Go API、一個 Node.js API、一個 NATS broker、一個 Redis 快取與一個 Next.js 應用程式，合計 1,450 millicores 與 2,304 MiB；runtime 本身沒有價格來源，因此其數值僅以單位表示。工作流程卡片以 Anthropic 牌價為執行定價：以 medium effort 使用 Claude Sonnet 5.5 預估 US$9.50，並從 US$25.00 的預算中保留 US$11.40。預設由人員確認規劃並審查 pull request，合併一律由負責人決定。執行工作流程時，ex agent run 會依序通過主控台的 gate、各個階段、push，以及含檢查的 pull request #19，最後可供審查；若保留額超出預算，執行會在 gate 暫停，不產生任何費用。實作之後，代理會停在保留部分：由人在 dev ticket 中撰寫，過程中沒有代理、沒有付費呼叫，接著由代理進行程式碼審查，執行最後以 Safe Seat 已達成作結。每個步驟都是模擬：不會建置、啟動，也不會付費。"
 		},
 		"session": {
 			"terminal": {
@@ -1101,7 +1117,9 @@
 					"toSpec": "console › to-spec    0011-SPEC revised · 3 acceptance criteria",
 					"toTickets": "console › to-tickets 3 tickets · blocking edges recorded",
 					"hook": "console › hook       effort recorded · implement unblocked",
-					"implement": "console › implement  tdd · 5 components · 14 files · 32 tests green",
+					"implement": "console › implement  tdd · 5 components · 14 files · boundary only · stops at the reserved part",
+					"devTicketWaiting": "console › waiting    dev-ticket · the person writes the reserved part",
+					"devTicketClosed": "✓ closed     dev-ticket · written without an agent · no paid call",
 					"codeReview": "console › code-review 2 findings · fixed",
 					"runtimeReady": "runtime    early-access-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
 					"completed": "✓ completed  implementation · {observed} observed of {reserved} reserved · usage record",
@@ -1109,6 +1127,7 @@
 					"pullRequest": "✓ pr #{number}     feat(signup): run early access as a microruntime",
 					"checks": "checks     build · check · test · guardrails · running",
 					"checksPassed": "✓ checks     4 of 4 passed",
+					"safeSeatMet": "✓ Safe Seat  met",
 					"runtimeStopped": "runtime    stopped · 5 Deployments removed · nothing left",
 					"readyForReview": "✓ ready      #{number} for review · {released} released to the envelope",
 					"readyToMerge": "✓ ready      #{number} to merge · {released} released to the envelope",
@@ -1217,6 +1236,7 @@
 						"spec": "Spec",
 						"tickets": "工單",
 						"implement": "實作",
+						"dev-ticket": "Dev ticket",
 						"review": "審查",
 						"merge": "合併"
 					},
@@ -1224,6 +1244,8 @@
 					"mergeLocked": "一律由負責人決定",
 					"requiredStage": "在這個工作流程中，{stage}一律由人員參與",
 					"waiting": "等待負責人",
+					"personDriven": "由人主導",
+					"personWriting": "由人撰寫保留部分",
 					"model": "模型",
 					"effort": "Effort",
 					"modelPrice": "每 MTok {input} / {output} · 牌價，{date}",
@@ -1243,6 +1265,8 @@
 					},
 					"nothingPaid": "未付費",
 					"pullRequest": "Pull request",
+					"safeSeat": "Safe Seat",
+					"safeSeatMet": "已達成",
 					"checksRunning": "檢查執行中",
 					"checksPassed": "4 項檢查全部通過",
 					"readyForReview": "可供審查",
@@ -1551,7 +1575,7 @@
 		"skip": "ライフサイクルへスキップ",
 		"hero": {
 			"title": "Microruntimes",
-			"summary": "これは、チケット 0031-TICKET-early-access-runtime「early access サインアップのユースケースを microruntime として実行する」の ex セッションをシミュレートしたもので、4 枚のカードで示します。入力したコマンド ex agent plan が、想定されているエントリポイントです。コンソールはチケットの PRD、design doc、spec、guardrail を読み取り、チームが設定した枠である 2,000 ミリコアと 3,072 MiB、そしてモデル呼び出しの予算である 1 回の実行あたり $25.00 を取り込み、プロジェクトの過去の事例を 3 件引用して、Claude Sonnet 5.5 を effort medium で提案します。これは推奨であり、承認するのはチームです。コンソールは spec から 5 つのコンポーネントを特定します。内訳は Go API、Node.js API、NATS ブローカー、Redis キャッシュ、Next.js アプリで、合計は 1,450 ミリコアと 2,304 MiB です。runtime 自体には価格ソースがないため、その数値は単位のままです。ワークフローのカードは Anthropic の定価で実行に価格を付けます。effort medium の Claude Sonnet 5.5 は見積もり $9.50 で、$25.00 の予算から $11.40 を確保します。既定では人が計画を確認し、pull request をレビューします。マージは常にオーナーが行います。ワークフローを実行すると、ex agent run がコンソールのゲート、各段階、push、チェック付きの pull request #19 を経て、レビュー待ちで終わります。確保額が予算を超える場合は、ゲートで実行が一時停止し、支払いは発生しません。すべての段階はシミュレーションです。ビルド、起動、支払いは一切行われません。"
+			"summary": "これは、チケット 0031-TICKET-early-access-runtime「early access サインアップのユースケースを microruntime として実行する」の ex セッションをシミュレートしたもので、4 枚のカードで示します。入力したコマンド ex agent plan が、想定されているエントリポイントです。コンソールはチケットの PRD、design doc、spec、guardrail を読み取り、チームが設定した枠である 2,000 ミリコアと 3,072 MiB、そしてモデル呼び出しの予算である 1 回の実行あたり $25.00 を取り込み、プロジェクトの過去の事例を 3 件引用して、Claude Sonnet 5.5 を effort medium で提案します。これは推奨であり、承認するのはチームです。コンソールは spec から 5 つのコンポーネントを特定します。内訳は Go API、Node.js API、NATS ブローカー、Redis キャッシュ、Next.js アプリで、合計は 1,450 ミリコアと 2,304 MiB です。runtime 自体には価格ソースがないため、その数値は単位のままです。ワークフローのカードは Anthropic の定価で実行に価格を付けます。effort medium の Claude Sonnet 5.5 は見積もり $9.50 で、$25.00 の予算から $11.40 を確保します。既定では人が計画を確認し、pull request をレビューします。マージは常にオーナーが行います。ワークフローを実行すると、ex agent run がコンソールのゲート、各段階、push、チェック付きの pull request #19 を経て、レビュー待ちで終わります。確保額が予算を超える場合は、ゲートで実行が一時停止し、支払いは発生しません。実装のあと、エージェントは残す部分で止まります。人が dev ticket でそれを書き、エージェントも有料の呼び出しもありません。続いてエージェントがコードレビューを行い、実行は Safe Seat 達成で終わります。すべての段階はシミュレーションです。ビルド、起動、支払いは一切行われません。"
 		},
 		"session": {
 			"terminal": {
@@ -1617,7 +1641,9 @@
 					"toSpec": "console › to-spec    0011-SPEC revised · 3 acceptance criteria",
 					"toTickets": "console › to-tickets 3 tickets · blocking edges recorded",
 					"hook": "console › hook       effort recorded · implement unblocked",
-					"implement": "console › implement  tdd · 5 components · 14 files · 32 tests green",
+					"implement": "console › implement  tdd · 5 components · 14 files · boundary only · stops at the reserved part",
+					"devTicketWaiting": "console › waiting    dev-ticket · the person writes the reserved part",
+					"devTicketClosed": "✓ closed     dev-ticket · written without an agent · no paid call",
 					"codeReview": "console › code-review 2 findings · fixed",
 					"runtimeReady": "runtime    early-access-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
 					"completed": "✓ completed  implementation · {observed} observed of {reserved} reserved · usage record",
@@ -1625,6 +1651,7 @@
 					"pullRequest": "✓ pr #{number}     feat(signup): run early access as a microruntime",
 					"checks": "checks     build · check · test · guardrails · running",
 					"checksPassed": "✓ checks     4 of 4 passed",
+					"safeSeatMet": "✓ Safe Seat  met",
 					"runtimeStopped": "runtime    stopped · 5 Deployments removed · nothing left",
 					"readyForReview": "✓ ready      #{number} for review · {released} released to the envelope",
 					"readyToMerge": "✓ ready      #{number} to merge · {released} released to the envelope",
@@ -1733,6 +1760,7 @@
 						"spec": "Spec",
 						"tickets": "チケット",
 						"implement": "実装",
+						"dev-ticket": "Dev ticket",
 						"review": "レビュー",
 						"merge": "マージ"
 					},
@@ -1740,6 +1768,8 @@
 					"mergeLocked": "常にオーナーが行う",
 					"requiredStage": "このワークフローでは、{stage}に必ず人が関わります",
 					"waiting": "オーナーの確認待ち",
+					"personDriven": "人が担当",
+					"personWriting": "人が残す部分を書いています",
 					"model": "モデル",
 					"effort": "Effort",
 					"modelPrice": "MTok あたり {input} / {output} · 定価、{date}",
@@ -1759,6 +1789,8 @@
 					},
 					"nothingPaid": "支払いなし",
 					"pullRequest": "Pull request",
+					"safeSeat": "Safe Seat",
+					"safeSeatMet": "達成",
 					"checksRunning": "チェック実行中",
 					"checksPassed": "チェック 4 件中 4 件が合格",
 					"readyForReview": "レビュー待ち",
@@ -2067,7 +2099,7 @@
 		"skip": "Chuyển đến vòng đời",
 		"hero": {
 			"title": "Microruntimes",
-			"summary": "Đây là phiên ex mô phỏng cho ticket 0031-TICKET-early-access-runtime, “Chạy trường hợp sử dụng đăng ký early access dưới dạng microruntime”, được trình bày trong bốn thẻ. Lệnh được gõ, ex agent plan, là điểm vào dự kiến. Console đọc PRD, design doc, spec và guardrail của ticket, lấy hạn mức nhóm đã đặt, gồm 2.000 millicore và 3.072 MiB, cùng ngân sách 25,00 US$ mỗi lần chạy cho các lệnh gọi mô hình, trích dẫn ba trường hợp trước đây của dự án và đề xuất Claude Sonnet 5.5 với effort medium, một khuyến nghị cần nhóm phê duyệt. Console xác định năm thành phần từ spec: một API Go, một API Node.js, một broker NATS, một bộ nhớ đệm Redis và một ứng dụng Next.js, tổng cộng 1.450 millicore và 2.304 MiB; bản thân runtime không có nguồn giá, nên các con số của nó được giữ theo đơn vị. Thẻ Quy trình định giá lần chạy theo giá niêm yết của Anthropic: Claude Sonnet 5.5 với effort medium ước tính 9,50 US$ và giữ 11,40 US$ trong ngân sách 25,00 US$. Theo mặc định, một người xác nhận phần lập kế hoạch và rà soát pull request, còn việc merge luôn thuộc về chủ sở hữu. Khi chạy quy trình, ex agent run đi qua gate của console, các giai đoạn, lần push và pull request #19 cùng các kiểm tra, rồi kết thúc ở trạng thái sẵn sàng để rà soát; nếu khoản giữ vượt ngân sách, lần chạy tạm dừng tại gate và chưa chi trả gì. Mọi bước đều là mô phỏng: không có gì được build, khởi chạy hay chi trả."
+			"summary": "Đây là phiên ex mô phỏng cho ticket 0031-TICKET-early-access-runtime, “Chạy trường hợp sử dụng đăng ký early access dưới dạng microruntime”, được trình bày trong bốn thẻ. Lệnh được gõ, ex agent plan, là điểm vào dự kiến. Console đọc PRD, design doc, spec và guardrail của ticket, lấy hạn mức nhóm đã đặt, gồm 2.000 millicore và 3.072 MiB, cùng ngân sách 25,00 US$ mỗi lần chạy cho các lệnh gọi mô hình, trích dẫn ba trường hợp trước đây của dự án và đề xuất Claude Sonnet 5.5 với effort medium, một khuyến nghị cần nhóm phê duyệt. Console xác định năm thành phần từ spec: một API Go, một API Node.js, một broker NATS, một bộ nhớ đệm Redis và một ứng dụng Next.js, tổng cộng 1.450 millicore và 2.304 MiB; bản thân runtime không có nguồn giá, nên các con số của nó được giữ theo đơn vị. Thẻ Quy trình định giá lần chạy theo giá niêm yết của Anthropic: Claude Sonnet 5.5 với effort medium ước tính 9,50 US$ và giữ 11,40 US$ trong ngân sách 25,00 US$. Theo mặc định, một người xác nhận phần lập kế hoạch và rà soát pull request, còn việc merge luôn thuộc về chủ sở hữu. Khi chạy quy trình, ex agent run đi qua gate của console, các giai đoạn, lần push và pull request #19 cùng các kiểm tra, rồi kết thúc ở trạng thái sẵn sàng để rà soát; nếu khoản giữ vượt ngân sách, lần chạy tạm dừng tại gate và chưa chi trả gì. Sau bước triển khai, tác tử dừng ở phần dành riêng: một người viết nó trong một dev ticket, không có tác tử và không có lần gọi trả phí, tiếp theo là bước rà soát mã của tác tử, và lần chạy kết thúc với Safe Seat đạt. Mọi bước đều là mô phỏng: không có gì được build, khởi chạy hay chi trả."
 		},
 		"session": {
 			"terminal": {
@@ -2133,7 +2165,9 @@
 					"toSpec": "console › to-spec    0011-SPEC revised · 3 acceptance criteria",
 					"toTickets": "console › to-tickets 3 tickets · blocking edges recorded",
 					"hook": "console › hook       effort recorded · implement unblocked",
-					"implement": "console › implement  tdd · 5 components · 14 files · 32 tests green",
+					"implement": "console › implement  tdd · 5 components · 14 files · boundary only · stops at the reserved part",
+					"devTicketWaiting": "console › waiting    dev-ticket · the person writes the reserved part",
+					"devTicketClosed": "✓ closed     dev-ticket · written without an agent · no paid call",
 					"codeReview": "console › code-review 2 findings · fixed",
 					"runtimeReady": "runtime    early-access-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
 					"completed": "✓ completed  implementation · {observed} observed of {reserved} reserved · usage record",
@@ -2141,6 +2175,7 @@
 					"pullRequest": "✓ pr #{number}     feat(signup): run early access as a microruntime",
 					"checks": "checks     build · check · test · guardrails · running",
 					"checksPassed": "✓ checks     4 of 4 passed",
+					"safeSeatMet": "✓ Safe Seat  met",
 					"runtimeStopped": "runtime    stopped · 5 Deployments removed · nothing left",
 					"readyForReview": "✓ ready      #{number} for review · {released} released to the envelope",
 					"readyToMerge": "✓ ready      #{number} to merge · {released} released to the envelope",
@@ -2249,6 +2284,7 @@
 						"spec": "Spec",
 						"tickets": "Ticket",
 						"implement": "Triển khai",
+						"dev-ticket": "Dev ticket",
 						"review": "Rà soát",
 						"merge": "Merge"
 					},
@@ -2256,6 +2292,8 @@
 					"mergeLocked": "luôn thuộc về chủ sở hữu",
 					"requiredStage": "{stage} luôn có người tham gia trong quy trình này",
 					"waiting": "đang chờ chủ sở hữu",
+					"personDriven": "do con người đảm nhận",
+					"personWriting": "người đó đang viết phần dành riêng",
 					"model": "Mô hình",
 					"effort": "Effort",
 					"modelPrice": "{input} / {output} mỗi MTok · giá niêm yết, {date}",
@@ -2275,6 +2313,8 @@
 					},
 					"nothingPaid": "chưa chi trả",
 					"pullRequest": "Pull request",
+					"safeSeat": "Safe Seat",
+					"safeSeatMet": "đạt",
 					"checksRunning": "đang chạy kiểm tra",
 					"checksPassed": "4/4 kiểm tra đạt",
 					"readyForReview": "sẵn sàng để rà soát",

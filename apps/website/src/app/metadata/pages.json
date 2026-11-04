@@ -65,6 +65,28 @@
 			"description": "Thực thi có ranh giới, do đội sở hữu, quanh các thành phần ứng dụng có sẵn: dựng, chạy, kiểm tra và dọn dẹp, với bằng chứng được giữ lại."
 		}
 	},
+	"safe-seat": {
+		"en": {
+			"title": "Safe Seat — A person keeps the seat. | LangDrift FinOps",
+			"description": "Coming soon to LangDrift FinOps: every ticket reserves a part a person writes by hand, so the team keeps understanding and debugging what agents help it ship."
+		},
+		"pt-BR": {
+			"title": "Safe Seat — Uma pessoa continua ao volante. | LangDrift FinOps",
+			"description": "Em breve no LangDrift FinOps: todo ticket reserva uma parte que uma pessoa escreve à mão, para o time continuar entendendo e depurando o que os agentes ajudam a entregar."
+		},
+		"zh-Hant": {
+			"title": "Safe Seat — 座位上仍然有人。| LangDrift FinOps",
+			"description": "即將在 LangDrift FinOps 推出：每張工單都保留一部分由人親手撰寫，讓團隊持續理解並能除錯代理協助交付的東西。"
+		},
+		"ja": {
+			"title": "Safe Seat — それでも、席には人がいる。| LangDrift FinOps",
+			"description": "LangDrift FinOps に近日登場。どのチケットにも人が手で書く部分を残し、エージェントの助けで出荷するものをチームが理解し、デバッグし続けられるようにします。"
+		},
+		"vi": {
+			"title": "Safe Seat — Một người vẫn giữ ghế lái. | LangDrift FinOps",
+			"description": "Sắp có trong LangDrift FinOps: mỗi ticket dành riêng một phần để một người tự tay viết, để đội tiếp tục hiểu và gỡ lỗi những gì tác tử giúp mình giao."
+		}
+	},
 	"pricing": {
 		"en": {
 			"title": "Plans & early access — LangDrift",

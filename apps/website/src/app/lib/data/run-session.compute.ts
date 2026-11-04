@@ -4,17 +4,17 @@ import {
 	type RunLine,
 	type WorkflowChoices,
 	workflowDelivery,
-	workStageIds,
 } from './microruntimes-workflow'
-import { stageLines } from './stage-lines.compute'
 import { tokenCount } from './token-count.fmt'
+import { workLines } from './work-lines.compute'
 import { workflowDollars } from './workflow-dollars.fmt'
 import { workflowFigures } from './workflow-figures.compute'
 
 // The run the Workflow card plays, built from the choices it was launched
 // with: the recorded intent, the estimate and the budget, the console's gate,
-// then each stage, the microruntime the checks use, the push, the pull
-// request and its checks. A reservation over the budget stops the run at
+// then the work, the dev ticket the person writes included, the microruntime
+// the checks use, the push, the pull request, its checks and the Safe Seat
+// state, never a share. A reservation over the budget stops the run at
 // the gate with nothing paid for. Dollar figures are formatted in English,
 // as every console line is.
 export function runSession(choices: WorkflowChoices): RunLine[] {
@@ -106,7 +106,7 @@ export function runSession(choices: WorkflowChoices): RunLine[] {
 				reserved: money(figures.reserved),
 			},
 		},
-		...workStageIds.flatMap((stage) => stageLines(stage, choices.human[stage])),
+		...workLines(choices),
 		{
 			delay: 900,
 			id: 'runtimeReady',
@@ -147,6 +147,12 @@ export function runSession(choices: WorkflowChoices): RunLine[] {
 			delay: 1800,
 			id: 'checksPassed',
 			message: 'checksPassed',
+			type: 'success',
+		},
+		{
+			delay: 700,
+			id: 'safeSeatMet',
+			message: 'safeSeatMet',
 			type: 'success',
 		},
 		{

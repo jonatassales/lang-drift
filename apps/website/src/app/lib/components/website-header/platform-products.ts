@@ -2,7 +2,7 @@ import {
 	CiGatesIcon,
 	FinopsIcon,
 	MicroruntimesIcon,
-	VoiceAiInterfacesIcon,
+	SafeSeatIcon,
 } from '@langdrift/web/ui/icons/platform'
 
 // The products the header's Platform menu lists, by their message keys. Only
@@ -27,9 +27,10 @@ export const platformProducts = [
 		badge: 'comingSoon',
 	},
 	{
-		label: 'voiceAiInterfaces',
-		description: 'voiceAiInterfacesDescription',
-		icon: VoiceAiInterfacesIcon,
+		label: 'safeSeat',
+		description: 'safeSeatDescription',
+		icon: SafeSeatIcon,
+		href: '/platform/safe-seat',
 		badge: 'comingSoon',
 	},
 ] as const

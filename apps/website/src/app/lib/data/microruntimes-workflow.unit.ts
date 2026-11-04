@@ -5,6 +5,7 @@ import { microruntimesMessages } from '@i18n/messages/index'
 import {
 	budgetCents,
 	initialWorkflowChoices,
+	type RunMessageId,
 	runSession,
 	stageProgress,
 	type WorkflowChoices,
@@ -127,6 +128,60 @@ describe('the run', () => {
 		for (const messages of Object.values(microruntimesMessages)) {
 			expect(messages.session.terminal.run.gateOpened).not.toMatch(/FIN-/)
 			expect(messages.session.terminal.run.gatePaused).not.toMatch(/FIN-/)
+		}
+	})
+
+	it('stops at the dev ticket after implement and reviews after the person', () => {
+		const messages = runSession(initialWorkflowChoices).map(
+			(line) => line.message,
+		)
+		const at = (message: RunMessageId) => messages.indexOf(message)
+
+		expect(at('devTicketWaiting')).toBeGreaterThan(at('implement'))
+		expect(at('devTicketClosed')).toBe(at('devTicketWaiting') + 1)
+		expect(at('codeReview')).toBeGreaterThan(at('devTicketClosed'))
+		expect(at('safeSeatMet')).toBeGreaterThan(at('checksPassed'))
+		expect(at('safeSeatMet')).toBeLessThan(at('readyForReview'))
+	})
+
+	it('keeps the dev ticket when no stage asks for a person', () => {
+		const messages = runSession(
+			choices({
+				human: {
+					implement: false,
+					planning: true,
+					review: false,
+					spec: false,
+					tickets: false,
+				},
+			}),
+		).map((line) => line.message)
+
+		expect(messages).toContain('devTicketWaiting')
+		expect(messages).toContain('devTicketClosed')
+		expect(messages).toContain('safeSeatMet')
+	})
+
+	it('follows the dev ticket from pending to done', () => {
+		const script = runSession(initialWorkflowChoices)
+		const first = script.findIndex((line) => line.stage === 'dev-ticket')
+
+		expect(stageProgress(script, first, 'dev-ticket')).toBe('pending')
+		expect(stageProgress(script, first + 1, 'dev-ticket')).toBe('active')
+		expect(stageProgress(script, script.length, 'dev-ticket')).toBe('done')
+	})
+
+	it('never prints a share in the Safe Seat lines', () => {
+		for (const messages of Object.values(microruntimesMessages)) {
+			const { run } = messages.session.terminal
+
+			for (const line of [
+				run.devTicketWaiting,
+				run.devTicketClosed,
+				run.safeSeatMet,
+			]) {
+				expect(line).not.toMatch(/%/)
+			}
 		}
 	})
 

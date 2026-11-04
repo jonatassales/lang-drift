@@ -5,7 +5,7 @@ import {
 	CiGatesIcon,
 	FinopsIcon,
 	MicroruntimesIcon,
-	VoiceAiInterfacesIcon,
+	SafeSeatIcon,
 } from './index'
 
 describe('web/ui/icons/platform/platform-icons', () => {
@@ -13,7 +13,7 @@ describe('web/ui/icons/platform/platform-icons', () => {
 		['CiGatesIcon', CiGatesIcon],
 		['FinopsIcon', FinopsIcon],
 		['MicroruntimesIcon', MicroruntimesIcon],
-		['VoiceAiInterfacesIcon', VoiceAiInterfacesIcon],
+		['SafeSeatIcon', SafeSeatIcon],
 	])('%s renders a decorative monochrome svg', (_name, Icon) => {
 		const html = renderToString(<Icon className="size-4" />)
 

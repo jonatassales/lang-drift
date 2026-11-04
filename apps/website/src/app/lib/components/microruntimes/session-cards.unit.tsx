@@ -337,10 +337,23 @@ describe('Microruntimes Workflow card', () => {
 		playRunTo(store, script.findIndex((line) => line.id === 'gateOpened') + 1)
 		expect(screen.getByText('$11.40')).toBeTruthy()
 
+		playRunTo(
+			store,
+			script.findIndex((line) => line.message === 'devTicketWaiting') + 1,
+		)
+		expect(screen.getByText('the person writes the reserved part')).toBeTruthy()
+
+		playRunTo(store, script.findIndex((line) => line.id === 'codeReview') + 1)
+		expect(screen.queryByText('waiting for the owner')).toBeNull()
+
 		playRunTo(store, script.findIndex((line) => line.id === 'completed') + 1)
 		expect(screen.getByText('$9.80')).toBeTruthy()
+		expect(screen.queryByText('waiting for the owner')).toBeNull()
 
 		playRunTo(store, script.length)
+		expect(screen.getByText('waiting for the owner')).toBeTruthy()
+		expect(screen.getByText('driven by the person')).toBeTruthy()
+		expect(screen.getByText('met')).toBeTruthy()
 		const pullRequest = screen.getByText('#19 ·3f9c2e1')
 		expect(pullRequest.querySelector('svg.text-status-success')).toBeTruthy()
 		expect(header('Workflow').textContent).toContain(

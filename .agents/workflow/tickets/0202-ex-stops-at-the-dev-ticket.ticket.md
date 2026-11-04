@@ -28,6 +28,7 @@ Every agent call before the dev ticket receives the reserved paths through a `{{
 - [ ] At a terminal, closing asks the attestation question. `--confirm` never closes the dev ticket. Without a terminal and without a flag, the close is refused with the reason.
 - [ ] With Safe Seat off, the person stage is skipped. With Safe Seat on and no person stage, the plan fails its check with guidance. A workflow with two person stages is refused when recorded.
 - [ ] The workflow mirror carries `drivenBy` for every stage.
+- [ ] The session prints the website's dev-ticket run lines (spec 0043: `devTicketWaiting`, `devTicketClosed`, `safeSeatMet`, and the implement and code-review lines it moved), and the CLI's session catalog and its test mirror them.
 - [ ] The `ex` README documents `drivenBy`, the dev ticket and the attestation flags.
 
 ## Dev part

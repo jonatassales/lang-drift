@@ -8,6 +8,7 @@ export type PageId = keyof typeof pages
 const nestedPagePath: Partial<Record<PageId, string>> = {
 	finops: 'platform/finops/',
 	microruntimes: 'platform/microruntimes/',
+	'safe-seat': 'platform/safe-seat/',
 }
 
 export function pagePath(page: PageId, locale: WebsiteLocale) {

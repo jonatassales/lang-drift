@@ -1,7 +1,7 @@
 import type {
-	HumanStageId,
 	RunLine,
 	StageProgress,
+	WorkflowStageId,
 } from './microruntimes-workflow'
 
 // Where a stage stands in a playing run: pending until its first line
@@ -9,7 +9,7 @@ import type {
 export function stageProgress(
 	script: readonly RunLine[],
 	playedCount: number,
-	stage: HumanStageId,
+	stage: WorkflowStageId,
 ): StageProgress {
 	const indexes = script
 		.map((line, index) => (line.stage === stage ? index : -1))
