@@ -3,7 +3,7 @@ name: code-review
 description: "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\"."
 metadata:
   source: https://github.com/mattpocock/skills/tree/5beb35b/skills/engineering/code-review
-  adapted: Adjusted to this repository's layout.
+  adapted: Adjusted to this repository's layout; the Spec axis also reviews each ticket's Safe Seat dev part.
 ---
 
 Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
@@ -34,9 +34,11 @@ Look for the originating spec, in this order:
 3. A spec file under `.agents/workflow/specs/` matching the branch name or feature.
 4. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
 
+Then read the `Dev part` section of each ticket you resolved. It names the paths the owner writes by hand, as `.agents/policies/safe-seat.policy.md` sets out, or an override with its reason and date. If you, or an agent working for you, wrote anything in a dev part's paths without an override beside its fields, report that as a Spec finding yourself. The sub-agents cannot see who wrote a line, and the commits carry no AI signature.
+
 ### 3. Identify the standards sources
 
-Search the repo for every file that documents how code should be written. In this repository, the authoritative standards are all rule files in `.claude/rules/*.rule.md` (general, filesystem, frontend, tailwind, code, react, nextjs, jotai, localization, seo). They must always be included in full. When `CODING_STANDARDS.md` or `CONTRIBUTING.md` exists, it must also be on the list.
+Search the repo for every file that documents how code should be written. In this repository, the authoritative standards are all rule files in `.claude/rules/*.rule.md`, whatever their number. They must always be included in full. When `CODING_STANDARDS.md` or `CONTRIBUTING.md` exists, it must also be on the list.
 
 On top of whatever the repo documents, the Standards axis always carries the **smell baseline** below: a fixed set of Fowler code smells (_Refactoring_, ch.3) that applies even when a repo documents nothing. Two rules bind it:
 
@@ -72,7 +74,8 @@ Issue both sub-agent calls together, in the foreground, and aggregate the report
 
 - The diff command and commit list.
 - The path or fetched contents of the spec.
-- The brief: "Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong. Quote the spec line for each finding. Under 400 words."
+- Each ticket's `Dev part` section: its paths, boundary, goal and acceptance criteria, or its override.
+- The brief: "Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong; (d) for each dev part, whether its paths meet its goal and acceptance criteria, whether the boundary sits outside its paths, and whether a dev part is missing or empty with no override. Quote the spec or ticket line for each finding, and mark findings inside a dev part's paths as the owner's to fix. Under 400 words."
 
 If the spec is missing, skip the Spec sub-agent and note this in the final report.
 
