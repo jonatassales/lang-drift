@@ -8,12 +8,12 @@
 
 **Status:** ready-for-agent
 
-- [ ] Every existing refusal (405, 403, 415, 413, oversized or malformed body, 400 with field errors) answers exactly as before, each from its own interceptor.
-- [ ] An accepted submission is posted to `<DEMO_REQUESTS_URL>/v1/demo-requests` with `Authorization: Bearer <DEMO_REQUESTS_TOKEN>` and the submission as JSON, and the route answers 200 `OK` on 202.
-- [ ] With either key unset, with a rejected fetch, a timeout, or any upstream status but 202, the route answers 503 `UNAVAILABLE` with `Retry-After: 30`, and the form shows the return-soon notice.
-- [ ] `DELIVERY_FAILED` is no longer a reply code; `apps/website/src/infra/resend` and the `resend` dependency are gone; the early-access provider-configuration test keeps passing.
-- [ ] The route test covers forwarding, the mapping of every upstream outcome and the missing keys with the transport stubbed; the adapter has its own unit test.
-- [ ] The website README's environment table lists `DEMO_REQUESTS_URL` and `DEMO_REQUESTS_TOKEN` and no longer lists `RESEND_API_KEY`; its prose about the form and about mail is true again.
+- [x] Every existing refusal (405, 403, 415, 413, oversized or malformed body, 400 with field errors) answers exactly as before, each from its own interceptor.
+- [x] An accepted submission is posted to `<DEMO_REQUESTS_URL>/v1/demo-requests` with `Authorization: Bearer <DEMO_REQUESTS_TOKEN>` and the submission as JSON, and the route answers 200 `OK` on 202.
+- [x] With either key unset, with a rejected fetch, a timeout, or any upstream status but 202, the route answers 503 `UNAVAILABLE` with `Retry-After: 30`, and the form shows the return-soon notice.
+- [x] `DELIVERY_FAILED` is no longer a reply code; `apps/website/src/infra/resend` and the `resend` dependency are gone; the early-access provider-configuration test keeps passing.
+- [x] The route test covers forwarding, the mapping of every upstream outcome and the missing keys with the transport stubbed; the adapter has its own unit test.
+- [x] The website README's environment table lists `DEMO_REQUESTS_URL` and `DEMO_REQUESTS_TOKEN` and no longer lists `RESEND_API_KEY`; its prose about the form and about mail is true again.
 
 ### Verification
 

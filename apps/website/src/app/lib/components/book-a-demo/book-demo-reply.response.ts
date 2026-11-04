@@ -6,7 +6,6 @@ export type BookDemoReplyCode =
 	| 'INVALID_REQUEST'
 	| 'VALIDATION_ERROR'
 	| 'UNAVAILABLE'
-	| 'DELIVERY_FAILED'
 
 export function reply(
 	status: number,

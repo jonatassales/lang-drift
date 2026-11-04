@@ -11,7 +11,7 @@
 - [x] 0190: demo-requests reads the log
 - [x] 0191: demo-requests archives every event to MinIO
 - [x] 0192: mailer sends and records
-- [ ] 0193: website edge: interceptors and forwarding
+- [x] 0193: website edge: interceptors and forwarding
 
 ## Problem Statement
 

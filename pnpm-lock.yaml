@@ -372,9 +372,6 @@ importers:
       react-hook-form:
         specifier: 7.91.0
         version: 7.91.0(@types/react@19.3.0)(react@19.2.4)
-      resend:
-        specifier: ^6.37.0
-        version: 6.37.0
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
