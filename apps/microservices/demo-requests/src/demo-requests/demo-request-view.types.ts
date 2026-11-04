@@ -5,7 +5,7 @@ import type {
 
 export type DemoRequestState = 'received' | 'confirmed' | 'failed'
 
-export interface DemoRequestEmailSent {
+export interface DemoRequestEmailSentView {
 	kind: DemoRequestEmailKind
 	outcome: 'sent'
 	provider: 'resend'
@@ -13,7 +13,7 @@ export interface DemoRequestEmailSent {
 	at: string
 }
 
-export interface DemoRequestEmailFailed {
+export interface DemoRequestEmailFailedView {
 	kind: DemoRequestEmailKind
 	outcome: 'failed'
 	provider: 'resend'
@@ -21,7 +21,9 @@ export interface DemoRequestEmailFailed {
 	at: string
 }
 
-export type DemoRequestEmail = DemoRequestEmailSent | DemoRequestEmailFailed
+export type DemoRequestEmail =
+	| DemoRequestEmailSentView
+	| DemoRequestEmailFailedView
 
 // One demo request as its events tell it: what was submitted, whether the
 // visitor was confirmed, and every email the mailer sent or failed to send.
