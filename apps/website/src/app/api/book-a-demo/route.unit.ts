@@ -68,6 +68,7 @@ describe('website/api/book-a-demo/route', () => {
 		const response = await post('[1, 2]')
 
 		expect(response.status).toBe(400)
+
 		expect(await response.json()).toEqual({
 			code: 'VALIDATION_ERROR',
 			ok: false,
@@ -101,6 +102,7 @@ describe('website/api/book-a-demo/route', () => {
 		)
 
 		expect(response.status).toBe(400)
+
 		expect(await response.json()).toEqual({
 			code: 'VALIDATION_ERROR',
 			fieldErrors: {
@@ -129,6 +131,7 @@ describe('website/api/book-a-demo/route', () => {
 		expect(response.status).toBe(200)
 		expect(response.headers.get('Cache-Control')).toBe('no-store')
 		expect(response.headers.get('X-Content-Type-Options')).toBe('nosniff')
+
 		expect(await response.json()).toEqual({
 			code: 'OK',
 			ok: true,
@@ -162,6 +165,7 @@ describe('website/api/book-a-demo/route', () => {
 
 		expect(response.status).toBe(503)
 		expect(response.headers.get('Retry-After')).toBe('30')
+
 		expect(await response.json()).toEqual({
 			code: 'UNAVAILABLE',
 			ok: false,
@@ -176,6 +180,7 @@ describe('website/api/book-a-demo/route', () => {
 		const response = await post(JSON.stringify(valid))
 
 		expect(response.status).toBe(503)
+
 		expect(await response.json()).toEqual({
 			code: 'UNAVAILABLE',
 			ok: false,
@@ -204,6 +209,7 @@ describe('website/api/book-a-demo/route', () => {
 		)
 
 		const submitted = request(JSON.stringify(valid), sameOrigin)
+
 		const accepted = await POST(submitted)
 
 		expect(invalid.status).toBe(400)
@@ -245,6 +251,7 @@ describe('website/api/book-a-demo/route', () => {
 		],
 	])('answers %s with %i', async (_refusal, status, headers) => {
 		const refused = request(JSON.stringify(valid), headers)
+
 		const response = await POST(refused)
 
 		expect(response.status).toBe(status)
@@ -256,6 +263,7 @@ describe('website/api/book-a-demo/route', () => {
 
 	it('answers any method but POST with 405', async () => {
 		const refused = request(JSON.stringify(valid), sameOrigin, 'PUT')
+
 		const response = await POST(refused)
 
 		expect(response.status).toBe(405)
