@@ -11,7 +11,7 @@ The planner read the ticket and the files it links, and the owner confirmed the 
 ```langdrift
 {
   "llmBudgetUsd": 25,
-  "version": 1,
+  "version": 2,
   "runtimeUid": "701706be7e70d681d608826d3ad548b9",
   "runtimeId": "console-microruntime",
   "projectId": "a759267ef752f98d6c25c4114ad65d0c",
@@ -23,14 +23,10 @@ The planner read the ticket and the files it links, and the owner confirmed the 
   "effort": "medium",
   "components": [
     {
+      "name": "console",
       "path": ".",
-      "image": "langdrift-console:local",
-      "port": 3001,
-      "readinessPath": "/icon.svg",
-      "build": {
-        "executable": "platform/microruntime/console/build-image.sh",
-        "args": []
-      }
+      "dockerfile": "Dockerfile",
+      "port": 3001
     }
   ]
 }
@@ -294,16 +290,32 @@ The planner read the ticket and the files it links, and the owner confirmed the 
         { "id": "nextjs", "label": "Next.js" },
         { "id": "go", "label": "Go" }
       ],
-      "image": "langdrift-console:local",
+      "dockerfile": "Dockerfile",
+      "image": "langdrift-console-microruntime-console:r1",
       "port": 3001,
-      "readinessPath": "/icon.svg",
-      "inferredFrom": [],
+      "readiness": {
+        "kind": "exec",
+        "from": "HEALTHCHECK of Dockerfile",
+        "path": null,
+        "command": [
+          "/bin/sh",
+          "-c",
+          "wget -q --spider http://127.0.0.1:3001/icon.svg"
+        ],
+        "periodSeconds": 5,
+        "timeoutSeconds": 2,
+        "failureThreshold": 12,
+        "initialDelaySeconds": 0
+      },
+      "envFile": null,
+      "passEnv": [],
+      "inferredFrom": ["Dockerfile"],
       "confirmedBy": { "person": "owner", "via": "cli" },
       "proposed": { "cpuMillis": 500, "memoryMiB": 1024 },
       "executed": {
         "cpuMillis": 2000,
         "memoryMiB": 3072,
-        "rule": "equal split of the runtime envelope; runtime.md v1 carries no per-component share"
+        "rule": "equal split of the runtime envelope; runtime.md v2 carries no per-component share"
       }
     }
   ],
@@ -323,36 +335,32 @@ The planner read the ticket and the files it links, and the owner confirmed the 
   "checks": [
     { "id": "schema", "result": "passed", "errors": 0 },
     { "id": "ports-distinct", "result": "passed", "detail": "3001" },
+    { "id": "dockerfiles-exist", "result": "passed", "detail": "Dockerfile" },
     {
-      "id": "images-resolved",
+      "id": "readiness-known",
       "result": "passed",
-      "detail": "langdrift-console:local"
+      "detail": "HEALTHCHECK of Dockerfile"
     },
     {
-      "id": "recipe-allowed",
+      "id": "env-file-exists",
       "result": "passed",
-      "detail": "committed script platform/microruntime/console/build-image.sh"
+      "detail": "no env file named"
     },
     {
       "id": "within-ceiling",
       "result": "passed",
       "detail": "2,000m of 4,000m · 3,072 MiB of 6,144 MiB"
-    },
-    {
-      "id": "components-complete",
-      "result": "passed",
-      "detail": "image, port, readiness and build named for every component"
     }
   ],
   "runtime": {
     "path": ".langdrift/microruntimes/runtimes/console-microruntime/runtime.md",
     "revision": 1,
-    "sha256": "d1d9d3f077fcd566d3066015033b795c5d164a955cfe6ae297561b3fc4284af7",
+    "sha256": "25c3c8b0e381a60d60e3c88cffe71e21a20ea82635a2deb0da8dbeea0fbe3459",
     "state": "authorized"
   },
   "contractGaps": [
-    "per-component cpu and memory are not runtime.md v1 fields, so the proposal and the execution can differ",
-    "technologies are not runtime.md v1 fields; the plan keeps them for display"
+    "per-component cpu and memory are not runtime.md v2 fields, so the proposal and the execution can differ",
+    "technologies are not runtime.md v2 fields; the plan keeps them for display"
   ],
   "authorization": { "by": "owner", "via": "cli", "at": "2026-10-28T13:46:50Z" }
 }

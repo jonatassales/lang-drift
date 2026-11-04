@@ -8,7 +8,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/jonatassales/tao/packages/contracts/configuration"
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	"github.com/jonatassales/tao/packages/ex/src/domain/collection"
 	"github.com/jonatassales/tao/packages/ex/src/domain/finops"
@@ -29,13 +28,22 @@ const noManifest = "no manifest"
 
 var criterionID = regexp.MustCompile(`\bFIN-\d{2}\b`)
 
-// resolved is one component, as named and as its manifests describe it.
+// resolved is one component, as named and as its manifests and its
+// Dockerfile describe it.
 type resolved struct {
 	input        ComponentInput
 	manifestName string
 	technologies []run.Technology
 	kind         string
 	proposed     harness.Resources
+
+	// dockerfile is the Dockerfile's path from the project root.
+	dockerfile      string
+	dockerfileFound bool
+	// probe is the readiness, when it is known; readinessErr says why not.
+	probe        *microruntime.Probe
+	readinessErr error
+	envErr       error
 }
 
 // ticketPathOf makes the ticket's path project-relative and checks it stays inside.
@@ -78,54 +86,34 @@ func runtimeIDOf(override, slug string) (microruntime.Identifier, error) {
 // crossChecks are the checks of the draft beyond the schema.
 func crossChecks(components []resolved, bounded, ceiling harness.Resources) []run.Check {
 	ports := make([]string, 0, len(components))
+	var unnamed []string
 	seen := map[int]bool{}
 	for _, component := range components {
+		if component.input.Port == 0 {
+			unnamed = append(unnamed, component.input.Path)
+
+			continue
+		}
+
 		ports = append(ports, strconv.Itoa(component.input.Port))
 		seen[component.input.Port] = true
 	}
 	portsCheck := run.Check{ID: "ports-distinct", Result: passed, Detail: text(strings.Join(ports, " · "))}
-	if len(seen) != len(components) {
+	if len(seen) != len(ports) {
 		portsCheck.Result = failed
 		portsCheck.Detail = text("ports repeat: " + strings.Join(ports, " · "))
 	}
-
-	images := make([]string, 0, len(components))
-	imagesCheck := run.Check{ID: "images-resolved", Result: passed}
-	for _, component := range components {
-		images = append(images, component.input.Image)
-		if !configuration.IsImageReference(component.input.Image) {
-			imagesCheck.Result = failed
-		}
+	if len(unnamed) > 0 {
+		portsCheck.Result = failed
+		portsCheck.Detail = text("no port named or exposed: " + strings.Join(unnamed, " · "))
 	}
-	imagesCheck.Detail = text(strings.Join(images, " · "))
-
-	recipes := make([]string, 0, len(components))
-	recipeCheck := run.Check{ID: "recipe-allowed", Result: passed}
-	for _, component := range components {
-		if err := component.input.Build.Validate(); err != nil {
-			recipeCheck.Result = failed
-			recipes = append(recipes, err.Error())
-
-			continue
-		}
-		recipes = append(recipes, recipeName(component.input.Build))
-	}
-	recipeCheck.Detail = text(strings.Join(recipes, " · "))
 
 	ceilingCheck := run.Check{ID: "within-ceiling", Result: passed, Detail: text(fmt.Sprintf("%sm of %sm · %s MiB of %s MiB", finops.Grouped(bounded.CPUMillis), finops.Grouped(ceiling.CPUMillis), finops.Grouped(bounded.MemoryMiB), finops.Grouped(ceiling.MemoryMiB)))}
 	if bounded.CPUMillis > ceiling.CPUMillis || bounded.MemoryMiB > ceiling.MemoryMiB {
 		ceilingCheck.Result = failed
 	}
 
-	return []run.Check{portsCheck, imagesCheck, recipeCheck, ceilingCheck}
-}
-
-func recipeName(build configuration.Build) string {
-	if strings.Contains(build.Executable, "/") {
-		return "committed script " + build.Executable
-	}
-
-	return strings.TrimSpace(build.Executable + " " + strings.Join(build.Args, " "))
+	return []run.Check{portsCheck, dockerfilesCheck(components), readinessCheck(components), envFileCheck(components), ceilingCheck}
 }
 
 func distinctPorts(components []resolved) int {
@@ -258,40 +246,4 @@ func nonNil[Item any](items []Item) []Item {
 	}
 
 	return items
-}
-
-// completeness is the check that every component names what the fence
-// needs: an image, a port, a readiness path and a build recipe. A missing
-// one blocks the plan with the field named.
-func completeness(components []resolved) run.Check {
-	var missing []string
-	for _, component := range components {
-		if fields := missingFields(component.input); len(fields) > 0 {
-			missing = append(missing, component.input.Path+": "+strings.Join(fields, ", "))
-		}
-	}
-
-	if len(missing) == 0 {
-		return run.Check{ID: "components-complete", Result: passed, Detail: text("image, port, readiness and build named for every component")}
-	}
-
-	return run.Check{ID: "components-complete", Result: failed, Detail: text("missing " + strings.Join(missing, " · "))}
-}
-
-func missingFields(input ComponentInput) []string {
-	var fields []string
-	if input.Image == "" {
-		fields = append(fields, "image")
-	}
-	if input.Port == 0 {
-		fields = append(fields, "port")
-	}
-	if input.ReadinessPath == "" {
-		fields = append(fields, "readiness")
-	}
-	if input.Build.Executable == "" {
-		fields = append(fields, "build")
-	}
-
-	return fields
 }

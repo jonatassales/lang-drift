@@ -4,12 +4,15 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/jonatassales/tao/packages/ex/src/application/plan"
+	"github.com/jonatassales/tao/packages/ex/src/domain/connection"
 	"github.com/jonatassales/tao/packages/ex/src/domain/run"
 	"github.com/jonatassales/tao/packages/ex/src/presentation/cli"
 	"github.com/jonatassales/tao/packages/ex/src/presentation/cli/support"
@@ -211,35 +214,101 @@ func TestPlanWithoutEpisodesSaysSo(t *testing.T) {
 	)
 }
 
-// A component that lacks what the fence needs blocks the plan with the
-// fields named; a port the manifest declares needs no flag.
-func TestPlanBlocksAnIncompleteComponentAndReadsThePortFromTheManifest(t *testing.T) {
+// A component whose Dockerfile declares no HEALTHCHECK, and names no
+// explicit readiness, blocks the plan with the file named; the port of its
+// first EXPOSE needs no flag, and an explicit kind needs no HEALTHCHECK.
+func TestPlanReadsTheDockerfileAndNamesWhatItLacks(t *testing.T) {
 	t.Parallel()
 
 	p, deps := seedProject(t)
+	writeFile(t, filepath.Join(p.root, "apps", "console", "Dockerfile"), "FROM node:24\nEXPOSE 3002\n")
+	writeFile(t, filepath.Join(p.root, "apps", "extub", "Dockerfile.local"), "FROM golang:1.26\nEXPOSE 3401/tcp\n")
 
-	status, stdout, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", "path=.", "--component", "path=apps/console,image=langdrift-console:local,readiness=/icon.svg,build=platform/microruntime/console/build-image.sh")
+	status, stdout, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--no-judge",
+		"--component", "name=console,path=.",
+		"--component", "name=web,path=apps/console",
+		"--component", "name=extub,path=apps/extub,dockerfile=Dockerfile.local,readiness=tcp")
 	if status != 3 || !strings.Contains(stderr, "blocked") {
-		t.Fatalf("an incomplete component gave %d: %s\n%s", status, stderr, stdout)
+		t.Fatalf("a component without readiness gave %d: %s\n%s", status, stderr, stdout)
 	}
-	expectLines(t, stdout, "agent › tool call: inspect apps/console · package.json · :3001")
-	if !strings.Contains(stdout, "✗ plan       runtime.md draft, revision 1 · blocked · ") || !strings.Contains(stdout, "components-complete") {
+	expectLines(t, stdout, "agent › tool call: inspect apps/console · package.json · :3002")
+	if !strings.Contains(stdout, "✗ plan       runtime.md draft, revision 1 · blocked · readiness-known failed\n") {
 		t.Errorf("the plan did not say which check blocked it:\n%s", stdout)
 	}
 
 	var planned run.Plan
 	decodeStrict(t, []byte(fenceBody(t, filepath.Join(runtimeFolder(p), "runtime.md"), "langdrift-plan")), &planned)
-	var completeness *run.Check
+	var readiness *run.Check
 	for index := range planned.Checks {
-		if planned.Checks[index].ID == "components-complete" {
-			completeness = &planned.Checks[index]
+		if planned.Checks[index].ID == "readiness-known" {
+			readiness = &planned.Checks[index]
 		}
 	}
-	if completeness == nil || completeness.Result != "failed" || completeness.Detail == nil || *completeness.Detail != "missing .: image, port, readiness, build" {
-		t.Errorf("components-complete = %+v", completeness)
+	if readiness == nil || readiness.Result != "failed" || readiness.Detail == nil || *readiness.Detail != "apps/console/Dockerfile: no HEALTHCHECK of its own" {
+		t.Errorf("readiness-known = %+v", readiness)
 	}
-	if len(planned.Components) != 2 || planned.Components[1].Port != 3001 {
-		t.Errorf("components = %+v, want the console's port from its manifest", planned.Components)
+
+	console, web, extub := planned.Components[0], planned.Components[1], planned.Components[2]
+	if console.Port != 3001 || console.Readiness == nil || console.Readiness.Kind != "exec" || console.Readiness.From != "HEALTHCHECK of Dockerfile" || console.Image != "langdrift-console-microruntime-console:r1" {
+		t.Errorf("console = %+v, want the root Dockerfile's port, HEALTHCHECK and the derived image", console)
+	}
+	if web.Port != 3002 || web.Readiness != nil {
+		t.Errorf("web = %+v, want the EXPOSE port and no readiness", web)
+	}
+	if extub.Port != 3401 || extub.Dockerfile != "apps/extub/Dockerfile.local" || extub.Readiness == nil || extub.Readiness.Kind != "tcp" || extub.Readiness.From != "runtime.md" {
+		t.Errorf("extub = %+v, want the named Dockerfile's port and the explicit tcp readiness", extub)
+	}
+}
+
+// The flags name the explicit readiness kinds, the env file and the
+// pass-through variables, and the fence records them as given.
+func TestPlanRecordsTheComponentsRefinements(t *testing.T) {
+	t.Parallel()
+
+	p, deps := seedProject(t)
+	writeFile(t, filepath.Join(p.root, "apps", "console", "Dockerfile"), "FROM node:24\nEXPOSE 3002\n")
+	writeFile(t, filepath.Join(p.root, "apps", "console", "runtime.env"), "# committed, no secrets\nLOG_URL=http://log:3500\n")
+
+	status, stdout, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--no-judge",
+		"--component", "name=console,path=.,readiness=http:/icon.svg",
+		"--component", "name=web,path=apps/console,port=3003,readiness=tcp,env-file=apps/console/runtime.env,pass-env=API_TOKEN;MINIO_SECRET_KEY")
+	if status != 0 {
+		t.Fatalf("ex agent plan = %d: %s\n%s", status, stderr, stdout)
+	}
+
+	config, err := connection.Parse(string(mustRead(t, filepath.Join(runtimeFolder(p), "runtime.md"))))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	console, web := config.Components[0], config.Components[1]
+	if config.Version != 2 || console.Readiness == nil || console.Readiness.Kind != "http" || console.Readiness.Path != "/icon.svg" || console.Port != 3001 || console.Dockerfile != "Dockerfile" {
+		t.Errorf("console = %+v, want the explicit http readiness and the EXPOSE port", console)
+	}
+	if web.Port != 3003 || web.Readiness == nil || web.Readiness.Kind != "tcp" || web.EnvFile != "apps/console/runtime.env" || !slices.Equal(web.PassEnv, []string{"API_TOKEN", "MINIO_SECRET_KEY"}) {
+		t.Errorf("web = %+v, want the flags recorded", web)
+	}
+
+	var planned run.Plan
+	decodeStrict(t, []byte(fenceBody(t, filepath.Join(runtimeFolder(p), "runtime.md"), "langdrift-plan")), &planned)
+	for _, check := range planned.Checks {
+		if check.ID == "env-file-exists" && (check.Detail == nil || *check.Detail != "apps/console/runtime.env") {
+			t.Errorf("env-file-exists = %+v", check)
+		}
+	}
+}
+
+// A flag that names no component, or an unknown readiness, is a usage
+// error before anything is read.
+func TestPlanRefusesAComponentFlagItCannotRead(t *testing.T) {
+	t.Parallel()
+
+	p, deps := seedProject(t)
+
+	for _, component := range []string{"path=.", "name=console", "name=console,path=.,readiness=grpc", "name=console,path=.,image=x:1"} {
+		if status, _, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", component); status != 2 {
+			t.Errorf("--component %s gave %d: %s", component, status, stderr)
+		}
 	}
 }
 
@@ -251,5 +320,18 @@ func TestSuperviseIsTheConnectedLoop(t *testing.T) {
 	status := cli.Execute(context.Background(), []string{"agent", "supervise", "--help"}, support.Options{Version: version, Directory: t.TempDir(), Output: &stdout, Diagnostics: &stderr}, mainUseCases())
 	if status != 0 || !strings.Contains(stdout.String(), "Supervise the connected runtimes") {
 		t.Errorf("ex agent supervise --help = %d\n%s%s", status, stdout.String(), stderr.String())
+	}
+}
+
+// writeFile writes one file of the seeded project, with its folders.
+func writeFile(t *testing.T, path, content string) {
+	t.Helper()
+
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		t.Fatal(err)
+	}
+
+	if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
 	}
 }

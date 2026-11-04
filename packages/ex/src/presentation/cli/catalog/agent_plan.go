@@ -53,7 +53,7 @@ func NewAgentPlanCommand(planner Planner, globals *support.Globals) *cobra.Comma
 	flags := command.Flags()
 	flags.StringVar(&request.Runtime, "runtime", "", "the runtime id (defaults to the ticket's slug)")
 	flags.StringVar(&request.Name, "name", "", "the runtime's name (defaults to the ticket's title)")
-	flags.StringArrayVar(&components, "component", nil, "a component: path=,image=,port=,readiness=,build=[,args=][,name=][,kind=][,tech=id:Label;...]")
+	flags.StringArrayVar(&components, "component", nil, "a component: name=,path=[,dockerfile=][,port=][,readiness=tcp|http:/path][,env-file=][,pass-env=A;B][,kind=][,tech=id:Label;...]")
 	flags.IntVar(&request.CPUMillis, "cpu-millis", 0, "override the default envelope's CPU, with --memory-mib")
 	flags.IntVar(&request.MemoryMiB, "memory-mib", 0, "override the default envelope's memory, with --cpu-millis")
 	flags.IntVar(&request.Limits.MaxDepth, "max-depth", collection.DefaultLimits().MaxDepth, "how many links deep to follow")
@@ -91,20 +91,24 @@ func parseComponent(value string) (plan.ComponentInput, error) {
 		}
 
 		switch key {
-		case "path":
-			component.Path = field
 		case "name":
 			component.Name = field
+		case "path":
+			component.Path = field
+		case "dockerfile":
+			component.Dockerfile = field
 		case "kind":
 			component.Kind = field
-		case "image":
-			component.Image = field
 		case "readiness":
-			component.ReadinessPath = field
-		case "build":
-			component.Build.Executable = field
-		case "args":
-			component.Build.Args = strings.Fields(field)
+			readiness, err := parseReadiness(field)
+			if err != nil {
+				return component, err
+			}
+			component.Readiness = readiness
+		case "env-file":
+			component.EnvFile = field
+		case "pass-env":
+			component.PassEnv = strings.FieldsFunc(field, isListSeparator)
 		case "port":
 			port, err := strconv.Atoi(field)
 			if err != nil {
@@ -116,6 +120,10 @@ func parseComponent(value string) (plan.ComponentInput, error) {
 		default:
 			return component, support.UsageError{Cause: fmt.Errorf("--component has no key %q", key)}
 		}
+	}
+
+	if component.Name == "" || component.Path == "" {
+		return component, support.UsageError{Cause: fmt.Errorf("--component %q needs name= and path=", value)}
 	}
 
 	return component, nil

@@ -82,7 +82,7 @@ func copyTree(t *testing.T, from, to string) {
 	}
 }
 
-const consoleComponent = "path=.,name=console,kind=web,image=langdrift-console:local,port=3001,readiness=/icon.svg,build=platform/microruntime/console/build-image.sh,tech=nextjs:Next.js;go:Go"
+const consoleComponent = "name=console,path=.,kind=web,tech=nextjs:Next.js;go:Go"
 
 // The plan's first act reproduces the sample: the ticket, the sources its
 // links reach with their hashes, the context hash, the inputs and the
@@ -106,7 +106,7 @@ func TestPlanReadsTheTicketAndWritesTheRuntimeFile(t *testing.T) {
 		"bounded    cpuMillis 2000 · memoryMiB 3072 · set by owner in the CLI · record envelope-7c2a",
 		"budget     $25.00 per run for model calls · set by owner in the CLI",
 		"agent › resolving 1 components named in the CLI · paths, images, ports",
-		"agent › tool call: inspect . · no manifest · :3001",
+		"agent › tool call: inspect . · Dockerfile · :3001",
 		"✓ .                     Next.js+Go · web 500m · 1024 MiB",
 		"agent › cross-checking · 1 ports distinct · 1 images resolved · no collisions",
 		"✓ size       500m of 2000m · 1024 of 3072 MiB · 1 one-replica Deployments · proposed shares",
@@ -229,13 +229,13 @@ func TestPlanBlocksADraftThatFailsACheck(t *testing.T) {
 	p, deps := seedProject(t)
 
 	status, stdout, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge",
-		"--component", "path=.,image=langdrift-console:local,port=3001,readiness=/icon.svg,build=rm,args=-rf /",
-		"--component", "path=apps/console,image=console:local,port=3001,readiness=/,build=docker,args=build -t console:local .")
-	if status != 3 || !strings.Contains(stderr, "ports-distinct") || !strings.Contains(stderr, "recipe-allowed") {
+		"--component", "name=console,path=.,kind=web,port=3001",
+		"--component", "name=web,path=apps/console,port=3001,env-file=apps/console/runtime.env")
+	if status != 3 || !strings.Contains(stderr, "ports-distinct") || !strings.Contains(stderr, "dockerfiles-exist") {
 		t.Fatalf("a failing draft gave %d: %s\n%s", status, stderr, stdout)
 	}
 
-	if !strings.Contains(stdout, "✗ plan       runtime.md draft, revision 1 · blocked · schema · ports-distinct · recipe-allowed failed\n") {
+	if !strings.Contains(stdout, "✗ plan       runtime.md draft, revision 1 · blocked · ports-distinct · dockerfiles-exist · readiness-known · env-file-exists failed\n") {
 		t.Errorf("the blocked line is missing:\n%s", stdout)
 	}
 
@@ -249,11 +249,25 @@ func TestPlanBlocksADraftThatFailsACheck(t *testing.T) {
 	}
 
 	results := map[string]string{}
+	details := map[string]string{}
 	for _, check := range written.Checks {
 		results[check.ID] = check.Result
+		if check.Detail != nil {
+			details[check.ID] = *check.Detail
+		}
 	}
-	if results["schema"] != "failed" || results["ports-distinct"] != "failed" || results["recipe-allowed"] != "failed" || results["images-resolved"] != "passed" || results["within-ceiling"] != "passed" {
+	if results["schema"] != "passed" || results["ports-distinct"] != "failed" || results["dockerfiles-exist"] != "failed" || results["readiness-known"] != "failed" || results["env-file-exists"] != "failed" || results["within-ceiling"] != "passed" {
 		t.Errorf("checks = %v", results)
+	}
+	for id, want := range map[string]string{
+		"ports-distinct":    "ports repeat: 3001 · 3001",
+		"dockerfiles-exist": "missing apps/console/Dockerfile",
+		"readiness-known":   "apps/console/Dockerfile: the Dockerfile is missing",
+		"env-file-exists":   "apps/console/runtime.env: the env file is missing",
+	} {
+		if details[id] != want {
+			t.Errorf("%s detail = %q, want %q", id, details[id], want)
+		}
 	}
 
 	if written.Totals.Proposed.CPUMillis != 1000 || written.Totals.Headroom.CPUMillis != 1000 || written.Components[1].Executed.CPUMillis != 1000 || written.Components[1].InferredFrom[0] != "apps/console/package.json" {

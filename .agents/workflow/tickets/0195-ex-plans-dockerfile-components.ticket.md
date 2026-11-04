@@ -8,12 +8,12 @@
 
 **Status:** ready-for-agent
 
-- [ ] `ex agent plan <ticket> --component name=web,path=apps/web` on the test project writes a fence whose component has the derived image, the `EXPOSE` port and the `HEALTHCHECK` probe.
-- [ ] `HEALTHCHECK` in shell and exec form, with and without interval, timeout, retries and start period, maps to the probe fields; `HEALTHCHECK NONE` and no `HEALTHCHECK` fail the `readiness-known` check with the file named.
-- [ ] `--component readiness=tcp` and `readiness=http:/path` produce the explicit kinds; `env-file=` and `pass-env=` are recorded and checked.
-- [ ] The findings name `ports-distinct`, `dockerfiles-exist`, `readiness-known`, `env-file-exists` and `within-ceiling`.
-- [ ] The golden fixtures reproduce the expected `runtime.md`, `plan.json` and `run.md`; the README shows the new fence and flags.
-- [ ] `go test -race ./...` passes in the CLI module's plan and session packages.
+- [x] `ex agent plan <ticket> --component name=web,path=apps/web` on the test project writes a fence whose component has the derived image, the `EXPOSE` port and the `HEALTHCHECK` probe.
+- [x] `HEALTHCHECK` in shell and exec form, with and without interval, timeout, retries and start period, maps to the probe fields; `HEALTHCHECK NONE` and no `HEALTHCHECK` fail the `readiness-known` check with the file named.
+- [x] `--component readiness=tcp` and `readiness=http:/path` produce the explicit kinds; `env-file=` and `pass-env=` are recorded and checked.
+- [x] The findings name `ports-distinct`, `dockerfiles-exist`, `readiness-known`, `env-file-exists` and `within-ceiling`.
+- [x] The golden fixtures reproduce the expected `runtime.md`, `plan.json` and `run.md`; the README shows the new fence and flags.
+- [x] `go test -race ./...` passes in the CLI module's plan and session packages.
 
 ### Verification
 

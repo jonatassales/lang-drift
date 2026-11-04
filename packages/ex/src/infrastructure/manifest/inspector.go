@@ -46,3 +46,15 @@ func (Inspector) Inspect(owner project.Project, componentPath string) (domain.In
 
 	return domain.Classify(manifests), nil
 }
+
+// File reads one file a component names, by its project-relative path,
+// through the resolver that refuses links and escapes. An absent file is
+// fs.ErrNotExist.
+func (Inspector) File(owner project.Project, relativePath string) ([]byte, error) {
+	path, err := files.Existing(owner.Root, filepath.FromSlash(relativePath))
+	if err != nil {
+		return nil, err
+	}
+
+	return files.ReadBounded(path, manifestLimit)
+}

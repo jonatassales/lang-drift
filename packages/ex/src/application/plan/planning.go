@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io/fs"
 	"path"
 	"strconv"
 	"strings"
@@ -413,7 +414,7 @@ func (planning *planning) resolve() error {
 	}
 
 	planning.components = components
-	planning.checks = append(crossChecks(components, planning.resources, planning.guards.Envelope.PerExecution), completeness(components))
+	planning.checks = crossChecks(components, planning.resources, planning.guards.Envelope.PerExecution)
 	planning.emit(session.CrossCheck, session.Data{"ports": distinctPorts(components), "images": len(components), "collisions": collisionsOf(planning.checks)})
 
 	planning.totals = totalsOf(components, planning.resources)
@@ -424,18 +425,26 @@ func (planning *planning) resolve() error {
 	return nil
 }
 
-// inspect reads one component's manifests and sizes it. Input wins over
-// what a manifest says; measured runs win over the sizing table.
+// inspect reads one component's manifests, its Dockerfile and its env file,
+// and sizes it. Input wins over what a file says; measured runs win over
+// the sizing table.
 func (planning *planning) inspect(input ComponentInput) (resolved, error) {
 	inspection, err := planning.service.Inspector.Inspect(planning.owner, input.Path)
 	if err != nil {
 		return resolved{}, fmt.Errorf("component %s: %w", input.Path, err)
 	}
-	if input.Port == 0 {
-		input.Port = inspection.Port
-	}
 
 	component := resolved{input: input, manifestName: orDefault(inspection.Manifest, noManifest), kind: orDefault(input.Kind, orDefault(inspection.Kind, manifest.Web))}
+
+	if err := planning.readDockerfile(&component); err != nil {
+		return resolved{}, err
+	}
+
+	if err := planning.readEnvFile(&component); err != nil {
+		return resolved{}, err
+	}
+
+	input = component.input
 
 	technologies := inspection.Technologies
 	if len(input.Technologies) > 0 {
@@ -457,6 +466,82 @@ func (planning *planning) inspect(input ComponentInput) (resolved, error) {
 	planning.emit(session.Component, session.Data{"path": input.Path, "technology": manifest.Labels(technologies), "kind": component.kind, "cpuMillis": component.proposed.CPUMillis, "memoryMiB": component.proposed.MemoryMiB})
 
 	return component, nil
+}
+
+// readDockerfile reads the component's Dockerfile: the port of its first
+// EXPOSE when the input names none, and the readiness of its HEALTHCHECK when
+// the input names no explicit kind. A missing Dockerfile is a failed check,
+// not an error, so the plan still says what it found.
+func (planning *planning) readDockerfile(component *resolved) error {
+	input := &component.input
+	component.dockerfile = input.reference().DockerfilePath()
+
+	if input.Readiness != nil {
+		probe := microruntime.ExplicitProbe(*input.Readiness)
+		component.probe = &probe
+	}
+
+	content, err := planning.service.Inspector.File(planning.owner, component.dockerfile)
+	if errors.Is(err, fs.ErrNotExist) {
+		component.readinessErr = errors.New("the Dockerfile is missing")
+
+		return nil
+	}
+	if err != nil {
+		return fmt.Errorf("component %s: %w", input.Path, err)
+	}
+
+	component.dockerfileFound = true
+
+	if input.Port == 0 {
+		input.Port = manifest.ExposedPort(content)
+	}
+
+	if component.probe != nil {
+		return nil
+	}
+
+	probe, err := manifest.Healthcheck(content)
+	if err != nil {
+		component.readinessErr = err
+
+		return nil
+	}
+
+	component.probe = &probe
+
+	return nil
+}
+
+// readEnvFile reads the component's env file: it must exist, hold uppercase
+// names with plain-text values, and set no name the component also passes
+// through. What it holds never reaches a record.
+func (planning *planning) readEnvFile(component *resolved) error {
+	input := component.input
+	if input.EnvFile == "" {
+		return nil
+	}
+
+	content, err := planning.service.Inspector.File(planning.owner, input.EnvFile)
+	if errors.Is(err, fs.ErrNotExist) {
+		component.envErr = errors.New("the env file is missing")
+
+		return nil
+	}
+	if err != nil {
+		return fmt.Errorf("component %s: %w", input.Path, err)
+	}
+
+	variables, err := configuration.ParseEnvFile(string(content))
+	if err != nil {
+		component.envErr = err
+
+		return nil
+	}
+
+	component.envErr = input.reference().CheckEnv(variables)
+
+	return nil
 }
 
 // limitsRequested says whether the material asked for a resource runtime.md
@@ -529,7 +614,7 @@ func (planning *planning) revision() (int, string, error) {
 // the recorded choice: a suggestion never sets one.
 func (planning *planning) configuration(uid string, revision int) configuration.Configuration {
 	config := configuration.Configuration{
-		Version:    1,
+		Version:    configuration.Version,
 		RuntimeUID: uid,
 		RuntimeID:  planning.runtime.String(),
 		ProjectID:  planning.owner.ID.String(),
@@ -547,12 +632,9 @@ func (planning *planning) configuration(uid string, revision int) configuration.
 	}
 
 	for _, component := range planning.components {
-		input := component.input
-		build := input.Build
-		if build.Args == nil {
-			build.Args = []string{}
-		}
-		config.Components = append(config.Components, configuration.Component{Path: input.Path, Image: input.Image, Port: input.Port, ReadinessPath: input.ReadinessPath, Build: &build})
+		reference := component.input.reference()
+		reference.Dockerfile = reference.DockerfileName()
+		config.Components = append(config.Components, reference)
 	}
 
 	return config
