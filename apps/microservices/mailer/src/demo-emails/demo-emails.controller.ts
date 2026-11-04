@@ -19,8 +19,8 @@ import type { EmailOutcome } from './email-outcome-envelope.compute.js'
 import { emailOutcomeEnvelope } from './email-outcome-envelope.compute.js'
 import type { EmailSender } from './email-sender.port.js'
 import { emailSenderToken } from './email-sender.token.js'
-import { sendDemoConfirmation } from './send-demo-confirmation.adapter.js'
-import { sendDemoLeadNotification } from './send-demo-lead-notification.adapter.js'
+import { sendDemoConfirmation } from './send-demo-confirmation.action.js'
+import { sendDemoLeadNotification } from './send-demo-lead-notification.action.js'
 
 // The mailer consumer: a received request gets its confirmation and its
 // lead notification, and each outcome goes back on the log as an event.

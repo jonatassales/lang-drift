@@ -1,5 +1,4 @@
 import type { DemoRequestReceived } from '@langdrift/events'
-import { IntlMessageFormat } from 'intl-messageformat'
 
 import type {
 	DemoEmailsCatalog,
@@ -7,6 +6,7 @@ import type {
 } from '@app/i18n/messages/messages.types.js'
 
 import type { EmailMessage } from './email-message.types.js'
+import { formatIcuMessage } from './format-icu-message.fmt.js'
 
 // The notification to the team, in the visitor's locale so whoever answers
 // knows which language the visitor expects.
@@ -17,7 +17,7 @@ export function formatLeadNotificationMessage(
 ): EmailMessage {
 	const messages = catalog[locale].leadNotification
 	const format = (message: string) =>
-		String(new IntlMessageFormat(message, locale).format(submission))
+		formatIcuMessage(message, locale, submission)
 
 	return {
 		subject: format(messages.subject),
