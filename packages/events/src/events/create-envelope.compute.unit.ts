@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { createEnvelope } from './create-envelope.compute'
-import { eventEnvelopeSchema } from './event-envelope.validation'
+import { createEnvelope } from './create-envelope.compute.js'
+import { eventEnvelopeSchema } from './event-envelope.validation.js'
 
 const aggregate = {
 	type: 'demo-request',

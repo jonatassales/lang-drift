@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 
-import type { EventAggregate, EventEnvelope } from './event-envelope.types'
+import type { EventAggregate, EventEnvelope } from './event-envelope.types.js'
 
 export interface CreateEnvelopeInput<Payload> {
 	type: string

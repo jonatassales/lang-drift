@@ -1,11 +1,11 @@
-export type { CreateEnvelopeInput } from './create-envelope.compute'
-export { createEnvelope } from './create-envelope.compute'
-export { demoRequestAggregateSchema } from './demo-request-aggregate.validation'
-export { demoRequestEmailFailedSchema } from './demo-request-email-failed.validation'
-export { demoRequestEmailKindSchema } from './demo-request-email-kind.validation'
-export { demoRequestEmailSentSchema } from './demo-request-email-sent.validation'
-export { demoRequestEventSchema } from './demo-request-event.validation'
-export { demoRequestEventNames } from './demo-request-event-names.data'
+export type { CreateEnvelopeInput } from './create-envelope.compute.js'
+export { createEnvelope } from './create-envelope.compute.js'
+export { demoRequestAggregateSchema } from './demo-request-aggregate.validation.js'
+export { demoRequestEmailFailedSchema } from './demo-request-email-failed.validation.js'
+export { demoRequestEmailKindSchema } from './demo-request-email-kind.validation.js'
+export { demoRequestEmailSentSchema } from './demo-request-email-sent.validation.js'
+export { demoRequestEventSchema } from './demo-request-event.validation.js'
+export { demoRequestEventNames } from './demo-request-event-names.data.js'
 export type {
 	DemoRequestEmailFailed,
 	DemoRequestEmailKind,
@@ -13,17 +13,17 @@ export type {
 	DemoRequestEvent,
 	DemoRequestReceived,
 	DemoRequestSubmission,
-} from './demo-request-events.types'
-export { demoRequestLocales } from './demo-request-locales.data'
-export { demoRequestPositionIds } from './demo-request-positions.data'
-export { demoRequestReceivedSchema } from './demo-request-received.validation'
+} from './demo-request-events.types.js'
+export { demoRequestLocales } from './demo-request-locales.data.js'
+export { demoRequestPositionIds } from './demo-request-positions.data.js'
+export { demoRequestReceivedSchema } from './demo-request-received.validation.js'
 export {
 	demoRequestAggregateType,
 	demoRequestArchiveGroup,
 	demoRequestDeadLetterStream,
 	demoRequestMailerGroup,
 	demoRequestStream,
-} from './demo-request-stream.data'
-export { demoRequestSubmissionSchema } from './demo-request-submission.validation'
-export type { EventAggregate, EventEnvelope } from './event-envelope.types'
-export { eventEnvelopeSchema } from './event-envelope.validation'
+} from './demo-request-stream.data.js'
+export { demoRequestSubmissionSchema } from './demo-request-submission.validation.js'
+export type { EventAggregate, EventEnvelope } from './event-envelope.types.js'
+export { eventEnvelopeSchema } from './event-envelope.validation.js'

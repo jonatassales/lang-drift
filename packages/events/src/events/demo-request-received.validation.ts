@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
-import { demoRequestAggregateSchema } from './demo-request-aggregate.validation'
-import { demoRequestEventNames } from './demo-request-event-names.data'
-import { demoRequestSubmissionSchema } from './demo-request-submission.validation'
-import { eventEnvelopeSchema } from './event-envelope.validation'
+import { demoRequestAggregateSchema } from './demo-request-aggregate.validation.js'
+import { demoRequestEventNames } from './demo-request-event-names.data.js'
+import { demoRequestSubmissionSchema } from './demo-request-submission.validation.js'
+import { eventEnvelopeSchema } from './event-envelope.validation.js'
 
 // The first event of a demo request: what the website forwarded, and when.
 export const demoRequestReceivedSchema = eventEnvelopeSchema.extend({

@@ -8,13 +8,13 @@
 
 **Status:** ready-for-agent
 
-- [ ] The strategy implements Nest's custom transport contract and is constructed with the connection URL, the stream, the group, the consumer name and bounded options (block, batch, claim idle, claim interval, maximum deliveries).
-- [ ] An entry whose handler completes is acknowledged; an entry whose handler throws stays pending and is claimed on the next claim pass.
-- [ ] An entry delivered more times than the maximum is appended to the dead-letter stream and acknowledged.
-- [ ] An entry with no handler for its type and no wildcard handler is acknowledged and skipped.
-- [ ] Closing the strategy breaks the blocking read, awaits the batch in flight and quits both connections.
-- [ ] The client resolves `emit` with the stream id of the appended entry and rejects `send`.
-- [ ] Every behavior above is covered by unit tests against a recording fake of the `ioredis` subset in use; no test reaches Redis.
+- [x] The strategy implements Nest's custom transport contract and is constructed with the connection URL, the stream, the group, the consumer name and bounded options (block, batch, claim idle, claim interval, maximum deliveries).
+- [x] An entry whose handler completes is acknowledged; an entry whose handler throws stays pending and is claimed on the next claim pass.
+- [x] An entry delivered more times than the maximum is appended to the dead-letter stream and acknowledged.
+- [x] An entry with no handler for its type and no wildcard handler is acknowledged and skipped.
+- [x] Closing the strategy breaks the blocking read, awaits the batch in flight and quits both connections.
+- [x] The client resolves `emit` with the stream id of the appended entry and rejects `send`.
+- [x] Every behavior above is covered by unit tests against a recording fake of the `ioredis` subset in use; no test reaches Redis.
 
 ### Verification
 

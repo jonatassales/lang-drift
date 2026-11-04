@@ -6,7 +6,7 @@
 
 - [x] 0186: Nest rule and nested-workspace mechanics
 - [x] 0187: `@langdrift/events`: envelope and demo-request events
-- [ ] 0188: `@langdrift/events/transport`: Redis Streams strategy and client
+- [x] 0188: `@langdrift/events/transport`: Redis Streams strategy and client
 - [ ] 0189: demo-requests accepts a request
 - [ ] 0190: demo-requests reads the log
 - [ ] 0191: demo-requests archives every event to MinIO
@@ -65,7 +65,7 @@ Every component of the future microruntime has a Dockerfile: the two services, a
 
 ## Implementation Decisions
 
-**Services and package.** Two Nest.js applications on the Express adapter under `apps/microservices/`, `demo-requests` on port 3402 and `mailer` on port 3403, and one capability package `@langdrift/events` under `packages/`, built to CommonJS and consumed through its exports; the package exists because both services consume it from the first day. `redis` and `minio` are folders under `apps/microservices/` holding only a Dockerfile and a README line; pnpm ignores them.
+**Services and package.** Two Nest.js applications on the Express adapter under `apps/microservices/`, `demo-requests` on port 3402 and `mailer` on port 3403, and one capability package `@langdrift/events` under `packages/`, built to ES modules, which Nest 12 requires, and consumed through its exports; the package exists because both services consume it from the first day. `redis` and `minio` are folders under `apps/microservices/` holding only a Dockerfile and a README line; pnpm ignores them.
 
 **Event log.** One Redis Stream, `demo-requests:events`, trimmed approximately at 100,000 entries, with a dead-letter stream beside it. Each entry carries three fields: `type`, `aggregateId` (both flat, so a range read filters without parsing) and `envelope` (JSON). The envelope is `{ id, type, version, aggregate: { type: 'demo-request', id }, occurredAt, correlationId, causationId?, payload }`; `correlationId` is the aggregate id and a mailer event's `causationId` is the id of the received event. Three event types in version 1:
 

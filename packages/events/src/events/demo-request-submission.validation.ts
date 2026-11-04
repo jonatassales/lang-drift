@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
-import { demoRequestLocales } from './demo-request-locales.data'
-import { demoRequestPositionIds } from './demo-request-positions.data'
+import { demoRequestLocales } from './demo-request-locales.data.js'
+import { demoRequestPositionIds } from './demo-request-positions.data.js'
 
 // What the website forwards once its own checks accepted the form.
 export const demoRequestSubmissionSchema = z

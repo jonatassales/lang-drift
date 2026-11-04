@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { demoRequestSubmissionSchema } from './demo-request-submission.validation'
+import { demoRequestSubmissionSchema } from './demo-request-submission.validation.js'
 
 const submission = {
 	email: 'ana@acme.com',

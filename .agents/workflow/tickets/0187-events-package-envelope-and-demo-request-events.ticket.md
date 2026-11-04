@@ -2,7 +2,7 @@
 
 **Spec:** .agents/workflow/specs/0031-book-a-demo-microservices.spec.md
 
-**What to build:** A developer can import the event envelope and the three demo-request event types from one workspace package and validate any entry with Zod. The package `@langdrift/events` under `packages/` exports the envelope schema and types, a function that creates an envelope (id, occurred-at, correlation and causation ids), the stream and consumer-group names, the submission schema (company email, company, position, locale) and the schemas of `demo-request.received`, `demo-request.email-sent` and `demo-request.email-failed` in version 1, plus the discriminated union over the type. It builds to CommonJS, typechecks and tests through Turborepo like the other packages.
+**What to build:** A developer can import the event envelope and the three demo-request event types from one workspace package and validate any entry with Zod. The package `@langdrift/events` under `packages/` exports the envelope schema and types, a function that creates an envelope (id, occurred-at, correlation and causation ids), the stream and consumer-group names, the submission schema (company email, company, position, locale) and the schemas of `demo-request.received`, `demo-request.email-sent` and `demo-request.email-failed` in version 1, plus the discriminated union over the type. It builds to ES modules, typechecks and tests through Turborepo like the other packages.
 
 **Blocked by:** None (can start immediately).
 
