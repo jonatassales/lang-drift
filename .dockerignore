@@ -6,6 +6,9 @@
 !pnpm-workspace.yaml
 !turbo.json
 !apps/microservices
+# The Go stub API is a service too, but it is Go: Turborepo does not prune it
+# and no Nest image copies it.
+apps/microservices/console-stubs
 !packages/streaming
 **/node_modules
 **/dist

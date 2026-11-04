@@ -1,4 +1,4 @@
-module github.com/jonatassales/tao/apps/extub
+module github.com/jonatassales/tao/apps/microservices/console-stubs
 
 go 1.26.0
 

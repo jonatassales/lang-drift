@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/jonatassales/tao/apps/extub/src/application"
-	"github.com/jonatassales/tao/apps/extub/src/domain"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/application"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/domain"
 	"github.com/pion/ice/v4"
 	"github.com/pion/webrtc/v4"
 )

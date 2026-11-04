@@ -2,7 +2,7 @@
 	"extends": ["//"],
 	"tasks": {
 		"dev": {
-			"with": ["@langdrift/extub#dev"]
+			"with": ["console-stubs#dev"]
 		}
 	}
 }

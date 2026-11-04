@@ -3,7 +3,7 @@ go 1.26.0
 toolchain go1.26.10
 
 use (
-	./apps/extub
+	./apps/microservices/console-stubs
 	./lib/core/contracts/go
 	./lib/cli
 )

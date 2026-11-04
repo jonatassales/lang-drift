@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jonatassales/tao/apps/extub/src/application"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/application"
 	"github.com/pion/transport/v5"
 	"github.com/pion/transport/v5/stdnet"
 	"github.com/pion/webrtc/v4"

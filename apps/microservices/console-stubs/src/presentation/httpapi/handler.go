@@ -12,8 +12,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/jonatassales/tao/apps/extub/src/application"
-	"github.com/jonatassales/tao/apps/extub/src/domain"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/application"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/domain"
 )
 
 type Handler struct {

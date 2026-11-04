@@ -4,16 +4,16 @@ Project knowledge for agents working in this repository. [`AGENTS.md`](/AGENTS.m
 
 ## Repository
 
-Monorepo with the internal packages `tokens`, `streaming` and `web`, the published `ex` CLI as `@langdrift/cli` with the Microruntimes contracts in `@langdrift/core`, and three apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/extub` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from extub.
+Monorepo with the internal packages `tokens`, `streaming` and `web`, the published `ex` CLI as `@langdrift/cli` with the Microruntimes contracts in `@langdrift/core`, two Next.js apps and three services. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/microservices/console-stubs` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from extub.
 
 Four workspace roots, each with one meaning, and a naming rule that follows it (spec 0044). `pnpm-workspace.yaml` lists them all, and a commit under any of them carries a `Ticket:` trailer.
 
-- `apps/<app>/`: one deployable app each, Next.js except `extub`. Picked up through `apps/*`.
-- `apps/microservices/<service>/`: the services, picked up through `apps/microservices/*`: the Nest.js microservices (`demo-requests`, `mailer`), which share the event log through `streaming` (see `.claude/rules/11-nestjs.rule.md`), and, once spec 0044 lands, `console-stubs`, the Go stub API the console reads (today `apps/extub`).
+- `apps/<app>/`: one deployable Next.js app each, `website` and `console`. Picked up through `apps/*`.
+- `apps/microservices/<service>/`: the services, picked up through `apps/microservices/*`: the Nest.js microservices (`demo-requests`, `mailer`), which share the event log through `streaming` (see `.claude/rules/11-nestjs.rule.md`), and `console-stubs`, the Go stub API the console reads (still called extub on its surfaces until ticket 0219).
 - `packages/<name>/`: packages internal to the monorepo, shared across apps and never published. Their names are bare, like the apps' (`web`, `tokens`, `streaming`). The scope they carried left under spec 0044. `shell`, `account` and `runtime` are planned.
 - `lib/<name>/`: what LangDrift publishes, and only that, under the `@langdrift/*` scope: `@langdrift/cli` at `lib/cli` (the `ex` CLI) and `@langdrift/core` at `lib/core`, whose Go surface, the Microruntimes contracts, is the module `lib/core/contracts/go`. The scope means "published"; nothing outside `lib/` carries it.
 - `infrastructure/<component>/`: the infrastructure components the products run on, each a Dockerfile, a README and a minimal private manifest: `messaging` (Redis Streams, the event log) and `storage` (MinIO, the archive). A fence names a component after its folder (ADR 0004).
-- The Go modules (`lib/cli`, `lib/core/contracts/go` and `apps/extub`) are tied together by the root `go.work`: Turborepo runs their `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds them (no Go toolchain required for frontend work).
+- The Go modules (`lib/cli`, `lib/core/contracts/go` and `apps/microservices/console-stubs`) are tied together by the root `go.work`: Turborepo runs their `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds them (no Go toolchain required for frontend work).
 - A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package.
 - `.github/`: GitHub Actions. Entry workflows are named after their event (`pull-request.yml`, `main.yml`), `validate.yml` is the validation they share; composite actions sit in `actions/<name>/` and the pull request widgets in `widgets/`. Publishing gets its own workflow file. See Continuous integration.
 - `platform/`: repository tooling, grouped by concern. `cli/` holds the `drift` CLI, its Git hooks (`.husky/`), its `src/exceptions/dead-code.allow` and the detectors `drift quality check` and `coverage` share (`src/quality/`), `docs/` the README's translations and, under `assets/images/`, its light and dark banners with the SVG sources the PNGs are rendered from. The English `README.md` sits at the root; each README links every language right after the banner and the headline.
@@ -79,7 +79,7 @@ When the shell resolves `drift` to another program (a link from an older checkou
 - Everything is served under `https://langdrift.md` with a locale prefix. Moving between pages, on the site and in the console, is internal routing on that domain; it never links to another domain or subdomain.
 - Account and session come from a central account package, `packages/account`, which is planned. No app owns them.
 - The shell will live in `packages/shell`, which is planned.
-- The console lives here as `apps/console`, imported from `jonatassales/exphere`, and reads the local stub API `apps/extub`.
+- The console lives here as `apps/console`, imported from `jonatassales/exphere`, and reads the local stub API `apps/microservices/console-stubs`.
 
 ## Spec-driven development
 

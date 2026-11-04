@@ -8,8 +8,8 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/jonatassales/tao/apps/extub/src/application"
-	"github.com/jonatassales/tao/apps/extub/src/infrastructure/probe"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/application"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/infrastructure/probe"
 )
 
 func TestLocalBurstMeasures50RequestsAndRejectsTargets(t *testing.T) {

@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/jonatassales/tao/apps/extub/src/domain"
+	"github.com/jonatassales/tao/apps/microservices/console-stubs/src/domain"
 )
 
 // Probe is bound by composition to the local stub endpoint; callers cannot choose a target.

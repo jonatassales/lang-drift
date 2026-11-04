@@ -7,8 +7,8 @@ The local Go stub API the [console](/apps/console/README.md) reads. It serves on
 | Command | Purpose |
 | --- | --- |
 | `pnpm console` | From the repository root: start extub on `127.0.0.1:3401` together with the console. |
-| `pnpm --filter @langdrift/extub dev` | Start extub alone with `go run`. |
-| `pnpm --filter @langdrift/extub test` | Run the Go tests with the race detector (`go test -race ./...`), which needs cgo and a C compiler on Linux. |
+| `pnpm --filter console-stubs dev` | Start extub alone with `go run`. |
+| `pnpm --filter console-stubs test` | Run the Go tests with the race detector (`go test -race ./...`), which needs cgo and a C compiler on Linux. |
 
 It needs a Go toolchain; `go.work` at the root ties it to the other Go modules. The entrypoint is `cmd/server`. `EXTUB_PORT` changes the port, 3401 by default, and extub listens on `127.0.0.1` only, refusing any other host or a foreign origin. The seed lives in `src/infrastructure/seed/console.json` and resets on every start. WebRTC peers keep their sockets on loopback, because multicast DNS is off. A browser's `.local` candidates are ignored, and the connection forms through peer-reflexive candidates. While a console runtime page streams, `lsof -nP -iUDP -a -p <extub pid>` shows only `127.0.0.1`.
 
@@ -35,5 +35,6 @@ The owner's steps on Vercel, which no agent takes:
 
 1. Generate one token, for example with `openssl rand -base64 32`, and set it as `EXTUB_TOKEN` on `langdrift-stubs` and `langdrift-console`, for production and preview.
 2. Set `EXTUB_URL` on `langdrift-console` to the stub's production URL.
-3. Turn on Deployment Protection for the console's production and preview deployments.
-4. Replace `CRYPTO_SECRET` on `langdrift-website` with a canonical 32-byte base64 key, for example from `openssl rand -base64 32`; the website answers 500 until then.
+3. Point the Root Directory of `langdrift-stubs` at `apps/microservices/console-stubs`, the folder this service lives in since spec 0044.
+4. Turn on Deployment Protection for the console's production and preview deployments.
+5. Replace `CRYPTO_SECRET` on `langdrift-website` with a canonical 32-byte base64 key, for example from `openssl rand -base64 32`; the website answers 500 until then.

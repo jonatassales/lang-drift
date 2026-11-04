@@ -1,10 +1,10 @@
 {
-	"name": "@langdrift/extub",
+	"name": "console-stubs",
 	"private": true,
 	"scripts": {
 		"dev": "go run ./cmd/server",
-		"start": "./dist/extub",
-		"build": "go build -o dist/extub ./cmd/server",
+		"start": "./dist/console-stubs",
+		"build": "go build -o dist/console-stubs ./cmd/server",
 		"test": "go test -race ./...",
 		"typecheck": "go vet ./..."
 	}
