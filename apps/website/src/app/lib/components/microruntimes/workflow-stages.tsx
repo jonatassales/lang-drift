@@ -28,8 +28,9 @@ const skillText = 'font-mono text-[10px] text-muted-foreground'
 
 // The delivery stages the workflow runs, each with the skills it uses and a
 // Human in the loop checkbox. Planning always has a person, so its box stays
-// checked and unavailable, with a note on hover or focus saying why; merge is
-// always the owner's and has no box. While the run plays, the stage at work
+// checked and unavailable, with a note on hover or focus saying why; the dev
+// ticket is driven by the person, not approved, and merge is always the
+// owner's, so neither has a box. While the run plays, the stage at work
 // takes the primary tone and a finished stage its read mark; a reviewed run
 // ends waiting for the owner.
 export function WorkflowStages(props: WorkflowStagesProps) {
@@ -67,16 +68,41 @@ export function WorkflowStages(props: WorkflowStagesProps) {
 						)
 					}
 
-					const required = isRequiredHumanStage(stage)
-					const unavailable = locked || required
-					const requiredNoteId = `${noteId}-${stage}`
 					const progress = run
 						? stageProgress(run.script, run.playedCount, stage)
 						: 'pending'
-					const waiting =
-						human[stage] &&
-						(progress === 'active' ||
-							(stage === 'review' && progress === 'done'))
+
+					if (stage === 'dev-ticket') {
+						return (
+							<li
+								className={cn(
+									'flex min-h-7 items-center gap-2 text-[12px]',
+									progress === 'active' && 'text-primary',
+								)}
+								key={stage}
+							>
+								<span>{workflow.stages['dev-ticket']}</span>
+								<span className={skillText}>{workflow.personDriven}</span>
+								{progress === 'done' && (
+									<ReadMark label={workflow.stages['dev-ticket']} />
+								)}
+								{progress === 'active' && (
+									<span className="text-[10px] text-status-warning">
+										{workflow.personWriting}
+									</span>
+								)}
+							</li>
+						)
+					}
+
+					const required = isRequiredHumanStage(stage)
+					const unavailable = locked || required
+					const requiredNoteId = `${noteId}-${stage}`
+					// A person waits on a stage while it runs, except review: the
+					// agent's code review runs first, and the owner's review begins
+					// once the pull request is ready.
+					const ownerTurn = stage === 'review' ? 'done' : 'active'
+					const waiting = human[stage] && progress === ownerTurn
 
 					return (
 						<li className="group relative" key={stage}>

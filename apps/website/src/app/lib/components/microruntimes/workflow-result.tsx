@@ -1,5 +1,6 @@
 import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { GitPullRequest } from '@langdrift/web/ui/icons/server'
+import { cn } from '@langdrift/web/utilities'
 import type { MouseEvent } from 'react'
 
 import {
@@ -29,7 +30,8 @@ type HasPlayed = (message: RunMessageId) => boolean
 
 // What the run left as it plays: the reservation once the gate opens, the
 // observed spend once the usage record closes and what the reservation
-// released at the end, then the pull request and its checks. A run the
+// released at the end, then the pull request, its checks and the Safe Seat
+// state, which shows whether the floor was met and never a share. A run the
 // gate paused shows the decision it needs and that nothing was paid.
 // Every figure stays a dash until its line has printed. The simulated pull
 // request reads as a link but opens nothing.
@@ -78,6 +80,7 @@ export function WorkflowResult(props: WorkflowResultProps) {
 			value: figures.released,
 		},
 	] as const
+	const safeSeatMet = played('safeSeatMet')
 
 	return (
 		<div className="grid gap-2.5">
@@ -134,6 +137,19 @@ export function WorkflowResult(props: WorkflowResultProps) {
 						state="unset"
 					/>
 				)}
+			</div>
+			<div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 border-t border-border pt-2.5">
+				<Eyebrow>{workflow.safeSeat}</Eyebrow>
+				<CardValue
+					className={cn(
+						'text-[11px]',
+						safeSeatMet ? 'text-status-success' : 'text-muted-foreground',
+					)}
+					labels={copy}
+					state={safeSeatMet ? 'set' : 'unset'}
+				>
+					{workflow.safeSeatMet}
+				</CardValue>
 			</div>
 		</div>
 	)

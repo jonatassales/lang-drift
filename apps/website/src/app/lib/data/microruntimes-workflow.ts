@@ -102,14 +102,16 @@ export const workflowStageIds = [
 	'spec',
 	'tickets',
 	'implement',
+	'dev-ticket',
 	'review',
 	'merge',
 ] as const
 
 export type WorkflowStageId = (typeof workflowStageIds)[number]
 
-// The stages a person can be asked to confirm; merge is always the owner's.
-export type HumanStageId = Exclude<WorkflowStageId, 'merge'>
+// The stages a person can be asked to confirm. The dev ticket is the
+// person's own work, never switched off, and merge is always the owner's.
+export type HumanStageId = Exclude<WorkflowStageId, 'dev-ticket' | 'merge'>
 
 // The stages this workflow always gives a person: planning ends only when
 // the owner confirms it, so its checkbox stays checked.
@@ -122,8 +124,9 @@ export const stageSkills: Record<WorkflowStageId, string | null> = {
 	planning: 'grilling',
 	spec: 'to-spec',
 	tickets: 'to-tickets',
-	implement: 'implement · tdd · code-review',
-	review: null,
+	implement: 'implement · tdd',
+	'dev-ticket': null,
+	review: 'code-review',
 	merge: null,
 }
 
@@ -179,6 +182,8 @@ export const runMessageIds = [
 	'toTickets',
 	'hook',
 	'implement',
+	'devTicketWaiting',
+	'devTicketClosed',
 	'codeReview',
 	'runtimeReady',
 	'completed',
@@ -186,6 +191,7 @@ export const runMessageIds = [
 	'pullRequest',
 	'checks',
 	'checksPassed',
+	'safeSeatMet',
 	'runtimeStopped',
 	'readyForReview',
 	'readyToMerge',
@@ -199,7 +205,7 @@ export interface RunLine {
 	delay: number
 	id: string
 	message: RunMessageId
-	stage?: HumanStageId
+	stage?: WorkflowStageId
 	type: TerminalLineType
 	values?: Record<string, string>
 }
@@ -239,11 +245,6 @@ export const stageWork: Record<
 		{
 			delay: 1200,
 			message: 'implement',
-			type: 'output',
-		},
-		{
-			delay: 800,
-			message: 'codeReview',
 			type: 'output',
 		},
 	],

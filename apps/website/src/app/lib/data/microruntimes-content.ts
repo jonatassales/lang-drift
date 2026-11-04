@@ -682,6 +682,8 @@ export interface MicroruntimesMessages {
 				mergeLocked: string
 				requiredStage: string
 				waiting: string
+				personDriven: string
+				personWriting: string
 				model: string
 				effort: string
 				modelPrice: string
@@ -697,6 +699,8 @@ export interface MicroruntimesMessages {
 				result: Record<'reserved' | 'observed' | 'released', string>
 				nothingPaid: string
 				pullRequest: string
+				safeSeat: string
+				safeSeatMet: string
 				checksRunning: string
 				checksPassed: string
 				readyForReview: string
