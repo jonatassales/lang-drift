@@ -2,7 +2,7 @@
 
 **Spec:** .agents/workflow/specs/0033-safe-seat.spec.md
 
-**What to build:** extub seeds LangDrift Studio's tickets with Safe Seat data, labeled illustrative like the rest of the stub:
+**What to build:** console-stubs seeds LangDrift Studio's tickets with Safe Seat data, labeled illustrative like the rest of the stub:
 - a person-driven `dev-ticket` stage in each workflow;
 - a reserved part on each plan;
 - a Safe Seat state per ticket, covering `met`, `needs-override`, `overridden` with a reason, `not-applicable` and `unknown`.
@@ -18,7 +18,7 @@ No type and no view carries a share. The copy goes into the five console catalog
 
 **Status:** ready-for-agent
 
-- [ ] extub serves the Safe Seat fields for LangDrift Studio, and its catalog test checks that the seeded tickets cover every state.
+- [ ] console-stubs serves the Safe Seat fields for LangDrift Studio, and its catalog test checks that the seeded tickets cover every state.
 - [ ] `TicketStage` carries `drivenBy`. The ticket carries its Safe Seat state and override reason. The plan carries the reserved part. No field holds a share.
 - [ ] The Workflow card shows a distinct marker for the person-driven stage, tested beside the ticket phase tests for the person-driven, human-approved and agent cases. The Plan card shows the reserved part and `chosenBy`. The ticket shows its state, labeled as illustrative stub data.
 - [ ] The copy exists in `en`, `pt-BR`, `zh-Hant`, `ja` and `vi`, with the same leaf keys, and "Safe Seat" is never translated or abbreviated.
@@ -54,6 +54,6 @@ Until the owner writes these files, the build fails on `safeSeatView` alone.
 
 - `pnpm --filter console test`
 - `pnpm --filter console typecheck`
-- `pnpm turbo run test --filter @langdrift/extub`
+- `pnpm turbo run test --filter console-stubs`
 - `pnpm turbo run check`
 - `platform/cli/drift check localization`

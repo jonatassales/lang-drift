@@ -31,8 +31,8 @@ At a terminal, `ex init` offers Safe Seat, on by default, and records the answer
 **Category:** core-domain. LangDrift's principle, the floor, as code.
 
 **Paths:**
-- `packages/ex/src/domain/harness/validate-safe-seat.go`
-- `packages/ex/src/domain/harness/validate-safe-seat_test.go`
+- `lib/cli/src/domain/harness/validate-safe-seat.go`
+- `lib/cli/src/domain/harness/validate-safe-seat_test.go`
 
 **Boundary:** The input service calls `harness.ValidateSafeSeat(policy harness.SafeSeat) error` before recording, and the floor is the exported constant `harness.SafeSeatFloor`. The agent declares the `SafeSeat` type and the constant in their own file and writes the callers; it writes nothing in these paths.
 
@@ -47,5 +47,5 @@ Until the owner writes these files, the build fails on `ValidateSafeSeat` alone.
 
 ## Verification
 
-- `pnpm turbo run test typecheck --filter @langdrift/ex`
+- `pnpm turbo run test typecheck --filter @langdrift/cli`
 - `pnpm turbo run check`

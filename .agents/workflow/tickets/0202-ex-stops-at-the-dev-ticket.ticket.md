@@ -36,8 +36,8 @@ Every agent call before the dev ticket receives the reserved paths through a `{{
 **Category:** core-domain. When a person's attestation is valid.
 
 **Paths:**
-- `packages/ex/src/application/execution/close-dev-ticket.go`
-- `packages/ex/src/application/execution/close-dev-ticket_test.go`
+- `lib/cli/src/application/execution/close-dev-ticket.go`
+- `lib/cli/src/application/execution/close-dev-ticket_test.go`
 
 **Boundary:** The confirm use case calls `closeDevTicket(request devTicketClose) (attestation, error)`. The request carries:
 - the attestation flag, if any;
@@ -61,5 +61,5 @@ Until the owner writes these files, the build fails on `closeDevTicket` alone.
 
 ## Verification
 
-- `pnpm turbo run test typecheck --filter @langdrift/ex`
+- `pnpm turbo run test typecheck --filter @langdrift/cli`
 - `pnpm turbo run check`

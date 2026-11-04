@@ -43,8 +43,8 @@ The person's share is person lines over all counted lines, with unknown lines in
 **Category:** hard-part. Following every line back to the interval that introduced it.
 
 **Paths:**
-- `packages/ex/src/infrastructure/snapshots/attribute.go`
-- `packages/ex/src/infrastructure/snapshots/attribute_test.go`
+- `lib/cli/src/infrastructure/snapshots/attribute.go`
+- `lib/cli/src/infrastructure/snapshots/attribute_test.go`
 
 **Boundary:** The measurement reaches attribution through the snapshot port of ticket 0203. Its adapter calls `snapshots.Attribute(ctx context.Context, request AttributionRequest) (Attribution, error)`. The types:
 - `AttributionRequest` carries the project root, the `base` and `head` commits as `CommitID`, the interval chain and the exclusion predicate;
@@ -72,5 +72,5 @@ Until the owner writes these files, the build fails on `Attribute` alone.
 
 ## Verification
 
-- `pnpm turbo run test typecheck --filter @langdrift/ex`
+- `pnpm turbo run test typecheck --filter @langdrift/cli`
 - `pnpm turbo run check`

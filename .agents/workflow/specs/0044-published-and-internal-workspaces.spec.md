@@ -4,15 +4,15 @@
 
 ## Tickets
 
-- [ ] 0211: the workspace knows `lib/` and `infrastructure/`
-- [ ] 0212: the event log and the archive become `infrastructure/messaging` and `infrastructure/storage`
-- [ ] 0213: the event log package is `streaming`
-- [ ] 0214: the design tokens package is `tokens`
-- [ ] 0215: the shared primitives package is `web`
-- [ ] 0216: the contracts and the CLI move to `lib/`
-- [ ] 0217: the CLI is published as `@langdrift/cli` 0.4.0
-- [ ] 0218: the stub API moves to `apps/microservices/console-stubs`
-- [ ] 0219: console-stubs is its name on every visible surface
+- [x] 0211: the workspace knows `lib/` and `infrastructure/`
+- [x] 0212: the event log and the archive become `infrastructure/messaging` and `infrastructure/storage`
+- [x] 0213: the event log package is `streaming`
+- [x] 0214: the design tokens package is `tokens`
+- [x] 0215: the shared primitives package is `web`
+- [x] 0216: the contracts and the CLI move to `lib/`
+- [x] 0217: the CLI is published as `@langdrift/cli` 0.4.0
+- [x] 0218: the stub API moves to `apps/microservices/console-stubs`
+- [x] 0219: console-stubs is its name on every visible surface
 - [ ] 0220: open tickets and documents follow the new layout
 
 ## Problem Statement

@@ -28,8 +28,8 @@ The judge suggests a part only if it qualifies: its planned share reaches the te
 **Category:** core-domain. What makes a part worth reserving.
 
 **Paths:**
-- `packages/ex/src/domain/run/qualify-reserved-part.go`
-- `packages/ex/src/domain/run/qualify-reserved-part_test.go`
+- `lib/cli/src/domain/run/qualify-reserved-part.go`
+- `lib/cli/src/domain/run/qualify-reserved-part_test.go`
 
 **Boundary:** The planner calls `run.QualifyReservedPart(part run.ReservedPart, percent int) run.Qualification`, where `Qualification` carries the verdict (`met`, `below` or `unknown`) and the part's `excludedKind` when there is one. `ReservedPart.excludedKind` is the judge's assessment and is null for the lead's pick. The agent declares `ReservedPart` and `Qualification` in their own files and writes the callers.
 
@@ -44,5 +44,5 @@ Until the owner writes these files, the build fails on `QualifyReservedPart` alo
 
 ## Verification
 
-- `pnpm turbo run test typecheck --filter @langdrift/ex`
+- `pnpm turbo run test typecheck --filter @langdrift/cli`
 - `pnpm turbo run check`

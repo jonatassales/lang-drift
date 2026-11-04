@@ -1,16 +1,16 @@
-# 0116: extub answers like a hardened API
+# 0116: console-stubs answers like a hardened API
 
 **Spec:** .agents/workflow/specs/0018-search-coverage-and-hardening.spec.md
 
 **What to build:**
 
-- **Headers.** Every extub response adds:
+- **Headers.** Every console-stubs response adds:
   - `Content-Security-Policy: default-src 'none'; frame-ancestors 'none'`
   - `X-Frame-Options: DENY`
   - `Referrer-Policy: no-referrer`
   - `Cross-Origin-Resource-Policy: same-origin`
 - **Authentication.**
-  - 401 carries `WWW-Authenticate: Bearer realm="extub"`.
+  - 401 carries `WWW-Authenticate: Bearer realm="console-stubs"`.
   - The Bearer scheme is matched case-insensitively.
   - The token is compared as SHA-256 digests in constant time.
 - **Body limit.** An oversized body answers 413 `request_too_large`.
@@ -33,8 +33,8 @@
 - [ ] The product, runtime and secret caps answer 429 over HTTP.
 - [ ] Out-of-bounds folder paths and runtime fields answer 400.
 - [ ] `go test -race ./...` passes.
-- [ ] While a WebRTC peer is connected, extub holds no UDP socket on a non-loopback address.
+- [ ] While a WebRTC peer is connected, console-stubs holds no UDP socket on a non-loopback address.
 
 ### Verification
 
-- `go test -race ./...` in `apps/extub`; `lsof -nP -iUDP -a -p <extub pid>` during a console runtime stream; `curl` against both modes.
+- `go test -race ./...` in `apps/microservices/console-stubs`; `lsof -nP -iUDP -a -p <console-stubs pid>` during a console runtime stream; `curl` against both modes.

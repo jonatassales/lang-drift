@@ -1,8 +1,8 @@
-# 0070: Run the console with extub as a microruntime
+# 0070: Run the console with console-stubs as a microruntime
 
 **Spec:** .agents/workflow/specs/0010-exphere-and-the-langdrift-folder.spec.md
 
-**What to build:** `apps/console` and `apps/extub` run together as one microruntime: one image with two processes, extub on `127.0.0.1:3401` and the console on `0.0.0.0:3001`, because both apps accept only loopback hosts and a microruntime runs one container per component without injected variables. Readiness uses `/icon.svg`, a static route the kubelet can probe without a loopback Host. The image build is pre-warmed, because each agent operation is bounded to 120 seconds. The team expects the run to fit in about 2,000 millicores and 3,072 MiB; the limits themselves are set in the console.
+**What to build:** `apps/console` and `apps/microservices/console-stubs` run together as one microruntime: one image with two processes, console-stubs on `127.0.0.1:3401` and the console on `0.0.0.0:3001`, because both apps accept only loopback hosts and a microruntime runs one container per component without injected variables. Readiness uses `/icon.svg`, a static route the kubelet can probe without a loopback Host. The image build is pre-warmed, because each agent operation is bounded to 120 seconds. The team expects the run to fit in about 2,000 millicores and 3,072 MiB; the limits themselves are set in the console.
 
 **Blocked by:** the Exphere server, not yet ticketed.
 
@@ -18,4 +18,4 @@
 - [The console's build recipes are allowlisted](/.agents/workflow/adrs/0002-console-input-is-untrusted.adr.md)
 - [FinOps guardrails](/.langdrift/harness/guardrails/0001-finops.gr.md)
 - [The console's manifest](/apps/console/package.json)
-- [extub's module](/apps/extub/go.mod)
+- [the console-stubs module](/apps/microservices/console-stubs/go.mod)
