@@ -17,9 +17,11 @@ fail() {
 }
 
 # A line of a loader that assigns a string literal to a key carries copy. A JSON
-# import attribute (`with { type: 'json' }`) describes module loading, not a value.
+# import attribute (`with { type: 'json' }`, on one line or wrapped by the
+# formatter) describes module loading, not a value.
 loader_carries_copy() {
   grep -Ev "^import .* from ['\"][^'\"]+\\.json['\"] with \\{ type: ['\"]json['\"] \\}\$" "$1" |
+    grep -Ev "^[[:space:]]*type:[[:space:]]*['\"]json['\"],?\$" |
     grep -Eq "^[[:space:]]*[^:]+:[[:space:]]*['\"]"
 }
 
@@ -43,6 +45,17 @@ for directory in $directories; do
       *) fail "Translation catalogs must be JSON: $file" ;;
     esac
   done
+
+  # The loaders folder beside messages imports the catalogs; it may hold code,
+  # never copy.
+  loaders=${directory%/messages}/loaders
+  if [ -d "$loaders" ]; then
+    for file in $(find "$loaders" -type f \( -name '*.ts' -o -name '*.tsx' -o -name '*.js' -o -name '*.jsx' \) | sort); do
+      if loader_carries_copy "$file"; then
+        fail "Translated values are forbidden in catalog loaders: $file"
+      fi
+    done
+  fi
 
   [ "$status" -eq 0 ] && drift_print_success "$directory: $catalogs catalogs are valid JSON and the loaders hold no copy"
 done

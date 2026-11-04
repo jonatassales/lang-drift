@@ -9,7 +9,7 @@ The Nest.js microservices under `apps/microservices/`. Loaded in every session. 
 5. **No configuration module.** No `@nestjs/config`. A provider that needs the environment is a factory (`.factory.ts`) that reads `process.env.NAME` at creation and throws when the value is missing, as the TypeScript rules require. The app's README documents every key.
 6. **Events over a durable log.** Services exchange events through the Redis Streams transport of `@langdrift/events` (a custom strategy and client), never through Nest's pub/sub transporters. Handlers are `@EventPattern` methods on a controller, acknowledged only after they complete; an envelope is validated with Zod on both sides.
 7. **Copy is JSON.** Catalogs live in `src/i18n/messages/*.json` and loaders in `src/i18n/loaders/`, with ICU formatted through `intl-messageformat`. The localization rules apply with that location in place of the Next tree.
-8. **Scripts call Nest directly.** `dev: nest start --watch …`, `build: nest build`, `start: node dist/main.js`, `typecheck: tsc --noEmit`, `test: vitest run`. `nest build` bundles with Nest's webpack configuration so the app's alias resolves at runtime; one alias per app, `@app/*`, in `tsconfig.paths.json`.
+8. **Scripts call Nest directly.** `dev: nest start --watch …`, `build: nest build`, `start: node dist/main.js`, `typecheck: tsc --noEmit`, `test: vitest run`. `nest build` compiles with Nest's own TypeScript compiler, whose paths hook rewrites the app's alias to relative imports at emit, so no bundler is needed; one alias per app, `@app/*`, in `tsconfig.paths.json`.
 9. **Handlers in the controller, helpers in their own files.** A controller method dispatches; a computation, a mapping, a schema or an adapter lives in its own single-responsibility file, the Nest analog of the route-handler rule.
 10. **Tests never boot Nest.** A unit test constructs the class with fakes: no `@nestjs/testing`, no application bootstrap, nothing reaching Redis, MinIO or a provider. Descriptions name the path (`describe('demo-requests/demo-requests/demo-requests.controller')`).
 11. **Dockerfiles.** Every component has a Dockerfile with a `HEALTHCHECK`; `ex` derives readiness from it. A service builds from the repository root with pnpm as a checksum-pinned static binary and Turborepo's `prune --docker`, runs as the `node` user and exposes its port. CI builds no image.
@@ -19,7 +19,7 @@ The Nest.js microservices under `apps/microservices/`. Loaded in every session. 
 @Controller('v1/demo-requests')
 export class DemoRequestsController {
 	constructor(
-		@Inject(EVENT_LOG_PRODUCER) private readonly producer: ClientProxy,
+		@Inject(eventLogProducerToken) private readonly producer: ClientProxy,
 		@Inject(EventLogReaderService) private readonly reader: EventLogReaderService,
 	) {}
 }
