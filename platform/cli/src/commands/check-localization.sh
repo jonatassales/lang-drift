@@ -5,8 +5,10 @@ set -eu
 drift_need jq
 cd "$DRIFT_PROJECT_ROOT"
 
-# Translation catalogs are JSON under each app's messages directory, and the
-# loaders beside them hold no translated value (.claude/rules/08-localization.rule.md).
+# Translation catalogs are JSON under each app's messages directory, the Next
+# tree's src/app/template/i18n/messages or a Nest app's src/i18n/messages, and
+# the loaders beside them hold no translated value
+# (.claude/rules/08-localization.rule.md, .claude/rules/11-nestjs.rule.md).
 
 status=0
 fail() {
@@ -21,8 +23,8 @@ loader_carries_copy() {
     grep -Eq "^[[:space:]]*[^:]+:[[:space:]]*['\"]"
 }
 
-directories=$(find apps -type d -path '*/src/app/template/i18n/messages' -not -path '*/node_modules/*')
-[ -n "$directories" ] || drift_die "No messages directory under apps/*/src/app/template/i18n/."
+directories=$(find apps -type d \( -path '*/src/app/template/i18n/messages' -o -path '*/src/i18n/messages' \) -not -path '*/node_modules/*')
+[ -n "$directories" ] || drift_die "No messages directory under apps/*/src/app/template/i18n/ or apps/microservices/*/src/i18n/."
 
 for directory in $directories; do
   catalogs=0

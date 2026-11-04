@@ -75,6 +75,7 @@ A filename's suffix names the file's responsibility. With one function per file 
 | `.guard` | One route guard. |
 | `.handler` | One event or interaction handler. |
 | `.hook` | One custom React hook. |
+| `.interceptor` | One request interceptor of an API-route domain (`app/api/<domain>/interceptors/`): validates or refuses before the upstream call. |
 | `.loader` | One loader of an external client library or script. |
 | `.map` | One mapping function or state mutation. |
 | `.mock` | One mock or fixture. |

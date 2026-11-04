@@ -8,14 +8,14 @@
 
 **Status:** ready-for-agent
 
-- [ ] `.claude/rules/11-nestjs.rule.md` exists with the decisions above and is written for the owner to promote.
-- [ ] The `.interceptor` row is in the suffix table of the TypeScript rules.
-- [ ] `pnpm-workspace.yaml` includes `apps/microservices/*`, and `pnpm install` succeeds with the folder absent and with an empty folder present.
-- [ ] `drift quality dead-code` scans `apps/microservices/*` workspaces and their `tsconfig.paths.json`.
-- [ ] `drift check localization` also finds catalogs under an app's `src/i18n/messages` folder and still passes.
-- [ ] The launch configurations include `demo-requests` on port 3402 and `mailer` on port 3403.
-- [ ] `.agents/context.md` lists `apps/microservices/*` in the repository section and adds "Event log" to the glossary.
-- [ ] Spec 0029 carries a line under its status saying spec 0031 supersedes its email dispatch decision.
+- [x] `.claude/rules/11-nestjs.rule.md` exists with the decisions above and is written for the owner to promote.
+- [x] The `.interceptor` row is in the suffix table of the TypeScript rules.
+- [x] `pnpm-workspace.yaml` includes `apps/microservices/*`, and `pnpm install` succeeds with the folder absent and with an empty folder present.
+- [x] `drift quality dead-code` scans `apps/microservices/*` workspaces and their `tsconfig.paths.json`.
+- [x] `drift check localization` also finds catalogs under an app's `src/i18n/messages` folder and still passes.
+- [x] The launch configurations include `demo-requests` on port 3402 and `mailer` on port 3403.
+- [x] `.agents/context.md` lists `apps/microservices/*` in the repository section and adds "Event log" to the glossary.
+- [x] Spec 0029 carries a line under its status saying spec 0031 supersedes its email dispatch decision.
 
 ### Verification
 

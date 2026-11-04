@@ -62,7 +62,7 @@ is_framework_file() {
   return 1
 }
 
-workspaces=$(for workspace in apps/* packages/*; do
+workspaces=$(for workspace in apps/* apps/microservices/* packages/*; do
   [ -f "$workspace/package.json" ] && [ ! -f "$workspace/go.mod" ] && printf '%s\n' "$workspace"
 done)
 
@@ -73,7 +73,7 @@ for workspace in $workspaces; do
 done | while IFS= read -r source; do cat "$source"; done >"$sources"
 
 check_aliases() {
-  for paths in $(git ls-files -- 'apps/*/tsconfig.paths.json' 'packages/*/tsconfig.paths.json'); do
+  for paths in $(git ls-files -- 'apps/*/tsconfig.paths.json' 'apps/microservices/*/tsconfig.paths.json' 'packages/*/tsconfig.paths.json'); do
     workspace=${paths%/*}
     jq -r '.compilerOptions.paths // {} | keys[]' "$paths" | while IFS= read -r alias; do
       prefix=${alias%\*}

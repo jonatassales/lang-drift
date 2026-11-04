@@ -12,6 +12,18 @@
 			"runtimeExecutable": "pnpm",
 			"runtimeArgs": ["turbo", "run", "dev", "--filter=console"],
 			"port": 3001
+		},
+		{
+			"name": "demo-requests",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": ["turbo", "run", "dev", "--filter=demo-requests"],
+			"port": 3402
+		},
+		{
+			"name": "mailer",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": ["turbo", "run", "dev", "--filter=mailer"],
+			"port": 3403
 		}
 	]
 }

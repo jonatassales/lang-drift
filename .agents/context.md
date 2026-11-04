@@ -7,6 +7,7 @@ Project knowledge for agents working in this repository. [`AGENTS.md`](/AGENTS.m
 Monorepo with four packages, `@langdrift/tokens`, `@langdrift/web`, the `ex` CLI as `@langdrift/ex` and the Microruntimes contracts as `@langdrift/contracts`, and three apps. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/extub` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from extub.
 
 - `apps/<app>/`: one deployable app each, Next.js except `extub`. `pnpm-workspace.yaml` picks them up through `apps/*`.
+- `apps/microservices/<service>/`: the Nest.js microservices (`demo-requests`, `mailer`), picked up through `apps/microservices/*`, with `redis` and `minio` beside them as infrastructure components that hold only a Dockerfile. They share the event log through `@langdrift/events`. See `.claude/rules/11-nestjs.rule.md`.
 - `packages/<capability>/`: shared across apps, never inside one. `tokens`, `web`, `ex` and `contracts` exist; `shell`, `account` and `runtime` are planned.
 - `packages/ex`, `packages/contracts` and `apps/extub` are Go modules tied together by the root `go.work`: Turborepo runs their `build`, `test` and `typecheck` scripts like any package's, and `pnpm install` never builds them (no Go toolchain required for frontend work).
 - A package takes an app's name only while it has a single consumer. When a second consumer appears, it becomes a capability package. Package scope: `@langdrift/*`.
@@ -218,6 +219,10 @@ _Avoid_: SS, health, wellness, quota
 **App**:
 One LangDrift offering with its own URL, such as the website. Apps share account, plan and shell.
 _Avoid_: Product, module
+
+**Event log**:
+The Redis Stream the microservices append to and consume from through consumer groups: the source of truth of a demo request, replayed to rebuild its state and archived event by event into MinIO.
+_Avoid_: Queue, message bus, topic
 
 ### Design tokens
 

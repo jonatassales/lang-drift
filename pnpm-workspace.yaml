@@ -1,5 +1,6 @@
 packages:
   - apps/*
+  - apps/microservices/*
   - packages/*
 
 engineStrict: true
