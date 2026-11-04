@@ -8,13 +8,13 @@
 
 **Status:** ready-for-agent
 
-- [ ] `pnpm turbo run dev --filter=mailer` starts the service on port 3403; `GET /health` answers `{ "status": "ok" }`.
-- [ ] A received event on the stream produces one confirmation to the visitor's address in the request's locale and one notification to the configured team address, each with an idempotency key, and two sent events with the provider's message ids.
-- [ ] A Resend failure produces a failed event with the reason for that kind and does not prevent the other send.
-- [ ] A redelivered received event reuses the same idempotency keys, so no second email goes out.
-- [ ] The catalog holds `en`, `pt-BR`, `zh-Hant`, `ja` and `vi` with the same keys and placeholders; the parity test formats every message in every locale; the loaders hold no copy; `drift check localization` passes.
-- [ ] The README documents `PORT`, `REDIS_URL`, `RESEND_API_KEY`, `DEMO_LEAD_EMAIL` by key; the Dockerfile builds from the root and declares a `HEALTHCHECK` on `/health`.
-- [ ] Unit tests construct the handler with fake Resend and producer clients and cover both outcomes per kind; none reaches Resend.
+- [x] `pnpm turbo run dev --filter=mailer` starts the service on port 3403; `GET /health` answers `{ "status": "ok" }`.
+- [x] A received event on the stream produces one confirmation to the visitor's address in the request's locale and one notification to the configured team address, each with an idempotency key, and two sent events with the provider's message ids.
+- [x] A Resend failure produces a failed event with the reason for that kind and does not prevent the other send.
+- [x] A redelivered received event reuses the same idempotency keys, so no second email goes out.
+- [x] The catalog holds `en`, `pt-BR`, `zh-Hant`, `ja` and `vi` with the same keys and placeholders; the parity test formats every message in every locale; the loaders hold no copy; `drift check localization` passes.
+- [x] The README documents `PORT`, `REDIS_URL`, `RESEND_API_KEY`, `DEMO_LEAD_EMAIL` by key; the Dockerfile builds from the root and declares a `HEALTHCHECK` on `/health`.
+- [x] Unit tests construct the handler with fake Resend and producer clients and cover both outcomes per kind; none reaches Resend.
 
 ### Verification
 

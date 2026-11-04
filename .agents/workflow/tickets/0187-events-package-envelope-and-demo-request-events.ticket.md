@@ -13,7 +13,7 @@
 - [x] The three event schemas accept their payloads as the spec lists them and refuse an unknown type.
 - [x] Creating an envelope for a received event sets the correlation id to the aggregate id; creating a mailer event sets the causation id to the received event's id.
 - [x] Each schema and the envelope factory has a colocated unit test whose description names the package and the file path.
-- [ ] `drift quality dead-code` reports nothing new for the package once ticket 0189 consumes it; until then its modules have no importer by design, so this box is ticked in 0189.
+- [x] `drift quality dead-code` reports nothing new for the package once the services consume it (verified at ticket 0192, when every export has a consumer).
 
 ### Verification
 

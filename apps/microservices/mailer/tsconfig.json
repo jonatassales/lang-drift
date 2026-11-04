@@ -1,0 +1,18 @@
+{
+	"extends": "./tsconfig.paths.json",
+	"compilerOptions": {
+		"target": "ES2022",
+		"lib": ["ES2022"],
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"strict": true,
+		"noEmit": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"resolveJsonModule": true,
+		"emitDecoratorMetadata": false,
+		"types": ["node"]
+	},
+	"include": ["src/**/*.ts"]
+}
