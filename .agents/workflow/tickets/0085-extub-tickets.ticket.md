@@ -1,8 +1,8 @@
-# 0085: extub serves the project's tickets by phase
+# 0085: console-stubs serves the project's tickets by phase
 
 **Spec:** .agents/workflow/specs/0014-console-ticket-phases.spec.md
 
-**What to build:** extub generates a deterministic set of about sixty tickets for the seeded project, spread across the ticket, analysis, plan and workflow phases, and serves them through `console/products/{id}/tickets?reached=&cursor=` and `console/tickets/{id}`.
+**What to build:** console-stubs generates a deterministic set of about sixty tickets for the seeded project, spread across the ticket, analysis, plan and workflow phases, and serves them through `console/products/{id}/tickets?reached=&cursor=` and `console/tickets/{id}`.
 
 **Blocked by:** None (can start immediately).
 
@@ -15,4 +15,4 @@
 
 ### Verification
 
-- `go test ./...` and `go vet ./...` in `apps/extub`.
+- `go test ./...` and `go vet ./...` in `apps/microservices/console-stubs`.

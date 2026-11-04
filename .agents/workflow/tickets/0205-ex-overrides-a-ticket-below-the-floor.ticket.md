@@ -30,8 +30,8 @@ The run and the README say plainly that `ex` records a merge without an override
 **Category:** core-domain. The ticket's Safe Seat state across its history.
 
 **Paths:**
-- `packages/ex/src/domain/run/resolve-safe-seat-state.go`
-- `packages/ex/src/domain/run/resolve-safe-seat-state_test.go`
+- `lib/cli/src/domain/run/resolve-safe-seat-state.go`
+- `lib/cli/src/domain/run/resolve-safe-seat-state_test.go`
 
 **Boundary:** The run record writer calls `run.ResolveSafeSeatState(laps []run.SafeSeatLap, overrides []run.SafeSeatOverride) run.SafeSeatState`. Each lap keeps the state that ticket 0204 measured for it; this function decides the ticket's state from them. The agent declares the three types in their own files and switches the ticket's state to this function.
 
@@ -52,5 +52,5 @@ Until the owner writes these files, the build fails on `ResolveSafeSeatState` al
 
 ## Verification
 
-- `pnpm turbo run test typecheck --filter @langdrift/ex`
+- `pnpm turbo run test typecheck --filter @langdrift/cli`
 - `pnpm turbo run check`

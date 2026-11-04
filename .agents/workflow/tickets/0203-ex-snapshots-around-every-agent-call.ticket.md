@@ -30,8 +30,8 @@ Both record who and when in the lap's evidence and resume the run. The seeded te
 **Category:** new-stack. First contact with git's plumbing.
 
 **Paths:**
-- `packages/ex/src/infrastructure/snapshots/take.go`
-- `packages/ex/src/infrastructure/snapshots/take_test.go`
+- `lib/cli/src/infrastructure/snapshots/take.go`
+- `lib/cli/src/infrastructure/snapshots/take_test.go`
 
 **Boundary:** The execution use cases reach snapshots through a port the agent declares, whose adapter calls `snapshots.Take(ctx context.Context, root string) (TreeID, error)`. The agent declares `TreeID` in its own file, wires the port and writes the callers.
 
@@ -47,5 +47,5 @@ Until the owner writes these files, the build fails on `Take` alone.
 
 ## Verification
 
-- `pnpm turbo run test typecheck --filter @langdrift/ex`
+- `pnpm turbo run test typecheck --filter @langdrift/cli`
 - `pnpm turbo run check`

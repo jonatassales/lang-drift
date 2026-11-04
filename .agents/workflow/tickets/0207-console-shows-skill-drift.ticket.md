@@ -2,14 +2,14 @@
 
 **Spec:** .agents/workflow/specs/0033-safe-seat.spec.md
 
-**What to build:** The console's FinOps area shows the month's skill drift for the team: the applicable tickets (met plus overridden), the met tickets, the overridden tickets and the share overridden, with the drift colors. Tickets that are `not-applicable` or `unknown`, and tickets `ex` did not run, stay out of the share. The reading never shows a person or a ticket's share. The console computes the reading from the tickets that 0206 seeds, so extub holds no skill drift of its own; the reading is labeled illustrative, and the copy goes into the five catalogs.
+**What to build:** The console's FinOps area shows the month's skill drift for the team: the applicable tickets (met plus overridden), the met tickets, the overridden tickets and the share overridden, with the drift colors. Tickets that are `not-applicable` or `unknown`, and tickets `ex` did not run, stay out of the share. The reading never shows a person or a ticket's share. The console computes the reading from the tickets that 0206 seeds, so console-stubs holds no skill drift of its own; the reading is labeled illustrative, and the copy goes into the five catalogs.
 
 **Blocked by:** 0206.
 
 **Status:** ready-for-agent
 
 - [ ] The FinOps area shows skill drift for the current month from the stub, with the drift colors and the illustrative label.
-- [ ] The reading is computed from the seeded tickets' states. extub serves no skill drift figure.
+- [ ] The reading is computed from the seeded tickets' states. console-stubs serves no skill drift figure.
 - [ ] A month with no applicable ticket shows the reading as unknown, never as zero drift.
 - [ ] The copy exists in the five locales with the same leaf keys.
 - [ ] No horizontal overflow at 375px.
@@ -37,6 +37,6 @@ Until the owner writes these files, the build fails on `skillDrift` alone.
 
 - `pnpm --filter console test`
 - `pnpm --filter console typecheck`
-- `pnpm turbo run test --filter @langdrift/extub`
+- `pnpm turbo run test --filter console-stubs`
 - `pnpm turbo run check`
 - `platform/cli/drift check localization`
