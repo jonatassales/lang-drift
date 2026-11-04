@@ -1,6 +1,5 @@
 'use client'
 
-import { cn } from '@langdrift/web/utilities'
 import { useEffect, useRef, useState } from 'react'
 import type {
 	VidroEditor,
@@ -8,6 +7,8 @@ import type {
 	VidroTheme,
 	VidroUiLocale,
 } from 'vidropro'
+
+import { cn } from 'web/utilities'
 
 // A read-only Vidro editor (vidro.pro): the owner's Monaco-based Web
 // Component, with syntax highlighting, a titled header and a copy button. The

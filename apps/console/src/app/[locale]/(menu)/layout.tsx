@@ -1,4 +1,3 @@
-import { Skeleton } from '@langdrift/web/ui/skeleton'
 import { useTranslations } from 'next-intl'
 import { type ReactNode, Suspense } from 'react'
 
@@ -10,6 +9,7 @@ import { PageFocus } from '@components/page-focus/page-focus'
 import { NavigationSkeleton } from '@components/route-state/navigation-skeleton'
 import { SourceNotice } from '@components/source-notice/source-notice'
 import { LanguageSettings } from '@i18n/language-settings'
+import { Skeleton } from 'web/ui/skeleton'
 
 interface ConsoleLayoutProps {
 	children: ReactNode

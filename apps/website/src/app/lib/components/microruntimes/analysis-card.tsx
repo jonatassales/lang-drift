@@ -1,5 +1,3 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-
 import {
 	documentIds,
 	documentReads,
@@ -10,6 +8,7 @@ import {
 	ticketPlan,
 } from '@data/microruntimes-content'
 import { workflowModel } from '@data/microruntimes-workflow'
+import { Eyebrow } from 'web/ui/eyebrow'
 
 import { CardSection } from './card-section'
 import { CardValue, revealState } from './card-value'

@@ -1,6 +1,3 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import { GitPullRequest } from '@langdrift/web/ui/icons/server'
-import { cn } from '@langdrift/web/utilities'
 import type { MouseEvent } from 'react'
 
 import {
@@ -11,6 +8,9 @@ import {
 	type WorkflowFigures,
 	workflowDelivery,
 } from '@data/microruntimes-workflow'
+import { Eyebrow } from 'web/ui/eyebrow'
+import { GitPullRequest } from 'web/ui/icons/server'
+import { cn } from 'web/utilities'
 
 import { CardValue } from './card-value'
 import { pullRequestState } from './pull-request-state.compute'

@@ -11,7 +11,7 @@
 	"dependencies": {
 		"@hookform/resolvers": "6.0.0",
 		"tokens": "workspace:*",
-		"@langdrift/web": "workspace:*",
+		"web": "workspace:*",
 		"@vercel/analytics": "^2.0.1",
 		"clsx": "^2.1.1",
 		"immer": "^11.1.18",

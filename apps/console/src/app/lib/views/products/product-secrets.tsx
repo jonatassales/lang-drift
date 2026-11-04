@@ -1,7 +1,5 @@
 'use client'
 
-import { Button } from '@langdrift/web/ui/button'
-import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
 import { useState, useTransition } from 'react'
 
@@ -10,6 +8,8 @@ import { PageHeading } from '@components/page-heading/page-heading'
 import { mutation } from '@data/api'
 import { useResource } from '@data/resource.hook'
 import type { ProductSecret } from '@data/types'
+import { Button } from 'web/ui/button'
+import { Card } from 'web/ui/card'
 
 import { SecretDialog } from './secret-dialog'
 

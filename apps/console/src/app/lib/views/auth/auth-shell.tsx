@@ -1,10 +1,10 @@
-import { Brand } from '@langdrift/web/ui/brand'
-import { ElevatedFrame } from '@langdrift/web/ui/elevated-frame'
-import { HeroShader } from '@langdrift/web/ui/hero-shader'
 import type { ReactNode } from 'react'
 
 import { ThemeControl } from '@components/account-controls/theme-control'
 import { LanguageSettings } from '@i18n/language-settings'
+import { Brand } from 'web/ui/brand'
+import { ElevatedFrame } from 'web/ui/elevated-frame'
+import { HeroShader } from 'web/ui/hero-shader'
 
 interface AuthShellProps {
 	children: ReactNode

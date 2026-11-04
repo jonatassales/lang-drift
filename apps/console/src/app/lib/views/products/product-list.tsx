@@ -1,7 +1,5 @@
 'use client'
 
-import { Card } from '@langdrift/web/ui/card'
-import { GitBranch, Plus } from '@langdrift/web/ui/icons/client'
 import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
@@ -10,6 +8,8 @@ import { PageHeading } from '@components/page-heading/page-heading'
 import { useResource } from '@data/resource.hook'
 import type { Product } from '@data/types'
 import { Link } from '@i18n/navigation'
+import { Card } from 'web/ui/card'
+import { GitBranch, Plus } from 'web/ui/icons/client'
 
 import { ProductCreate } from './product-create'
 

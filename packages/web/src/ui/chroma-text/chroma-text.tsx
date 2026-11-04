@@ -1,8 +1,9 @@
 'use client'
 
-import { cn } from '@langdrift/web/utilities'
 import { useReducedMotion } from 'motion/react'
 import { type ReactNode, useEffect, useRef } from 'react'
+
+import { cn } from 'web/utilities'
 
 export interface ChromaTextProps {
 	children: ReactNode

@@ -1,7 +1,5 @@
 'use client'
 
-import { Button } from '@langdrift/web/ui/button'
-import { Dialog, DialogContent, DialogTitle } from '@langdrift/web/ui/dialog'
 import { useTranslations } from 'next-intl'
 import { Suspense, useEffect, useRef, useState } from 'react'
 
@@ -11,6 +9,8 @@ import { fieldClass, labelClass } from '@components/form-styles/form-styles'
 import { FolderListSkeleton } from '@components/route-state/folder-list-skeleton'
 import { type ReadResult, readResult } from '@data/read-result'
 import type { FolderListing } from '@data/types'
+import { Button } from 'web/ui/button'
+import { Dialog, DialogContent, DialogTitle } from 'web/ui/dialog'
 
 import { FolderEntries } from './folder-entries'
 

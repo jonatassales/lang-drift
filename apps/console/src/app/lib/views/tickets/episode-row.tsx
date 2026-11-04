@@ -1,7 +1,6 @@
-import { ShareBar } from '@langdrift/web/ui/share-bar'
-import { cn } from '@langdrift/web/utilities'
-
 import type { TicketEpisode } from '@data/types'
+import { ShareBar } from 'web/ui/share-bar'
+import { cn } from 'web/utilities'
 
 interface EpisodeRowProps {
 	episode: TicketEpisode

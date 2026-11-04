@@ -1,9 +1,9 @@
 'use client'
-import { Button } from '@langdrift/web/ui/button'
 import { useTranslations } from 'next-intl'
 
 import { ConsoleError } from '@data/api'
 import { Link } from '@i18n/navigation'
+import { Button } from 'web/ui/button'
 
 interface ErrorNoticeProps {
 	error: unknown

@@ -194,9 +194,6 @@ importers:
 
   apps/console:
     dependencies:
-      '@langdrift/web':
-        specifier: workspace:*
-        version: link:../../packages/web
       '@vercel/analytics':
         specifier: ^2.0.1
         version: 2.0.1(next@16.4.3(@types/node@24.19.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)
@@ -221,6 +218,9 @@ importers:
       tokens:
         specifier: workspace:*
         version: link:../../packages/tokens
+      web:
+        specifier: workspace:*
+        version: link:../../packages/web
     devDependencies:
       '@tailwindcss/postcss':
         specifier: 4.3.3
@@ -340,9 +340,6 @@ importers:
       '@hookform/resolvers':
         specifier: 6.0.0
         version: 6.0.0(@standard-schema/spec@1.1.0)(ajv@8.20.0)(react-hook-form@7.91.0(@types/react@19.3.0)(react@19.2.4))(zod@4.6.7)
-      '@langdrift/web':
-        specifier: workspace:*
-        version: link:../../packages/web
       '@vercel/analytics':
         specifier: ^2.0.1
         version: 2.0.1(next@16.4.3(@types/node@24.19.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
@@ -379,6 +376,9 @@ importers:
       tokens:
         specifier: workspace:*
         version: link:../../packages/tokens
+      web:
+        specifier: workspace:*
+        version: link:../../packages/web
       zod:
         specifier: ^4.6.5
         version: 4.6.7

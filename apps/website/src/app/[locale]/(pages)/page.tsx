@@ -1,4 +1,3 @@
-import { ScrollHint } from '@langdrift/web/ui/scroll-hint'
 import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
@@ -12,6 +11,7 @@ import { WebsiteHeader } from '@components/website-header'
 import { WebsiteStructuredData } from '@components/website-structured-data'
 import { platformMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
+import { ScrollHint } from 'web/ui/scroll-hint'
 
 export { generateMetadata } from './page.metadata'
 

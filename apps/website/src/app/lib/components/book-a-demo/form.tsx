@@ -1,13 +1,13 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Toast } from '@langdrift/web/ui/toast'
 import { useEffect, useId, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import type { BookDemoMessages } from '@i18n/messages/messages.types'
 import { useRouter } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
+import { Toast } from 'web/ui/toast'
 
 import type { BookDemoData, BookDemoField, BookDemoInput } from './form.types'
 import { bookDemoSchema } from './form.validation'

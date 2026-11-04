@@ -1,9 +1,10 @@
 'use client'
 
-import { cn } from '@langdrift/web/utilities'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import type { ElementType, ReactNode } from 'react'
 import { useMemo } from 'react'
+
+import { cn } from 'web/utilities'
 
 import { buildTokens } from './build-tokens'
 

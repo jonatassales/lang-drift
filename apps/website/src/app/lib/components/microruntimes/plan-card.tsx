@@ -1,13 +1,12 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import { ShareBar } from '@langdrift/web/ui/share-bar'
-import { cn } from '@langdrift/web/utilities'
-
 import {
 	headroom,
 	revealed,
 	suggestedTotals,
 	ticketPlan,
 } from '@data/microruntimes-content'
+import { Eyebrow } from 'web/ui/eyebrow'
+import { ShareBar } from 'web/ui/share-bar'
+import { cn } from 'web/utilities'
 
 import { CardSection } from './card-section'
 import { CardValue, type CardValueState, revealState } from './card-value'

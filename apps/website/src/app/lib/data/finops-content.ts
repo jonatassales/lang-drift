@@ -1,4 +1,4 @@
-import type { DetailTone } from '@langdrift/web/ui/detail-list'
+import type { DetailTone } from 'web/ui/detail-list'
 
 export { dollars } from './dollars.fmt'
 export { envelopeSegments } from './envelope-segments.compute'

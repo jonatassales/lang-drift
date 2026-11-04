@@ -1,6 +1,5 @@
 'use client'
 
-import { cn } from '@langdrift/web/utilities'
 import type {
 	ComponentPropsWithoutRef,
 	FocusEvent,
@@ -10,6 +9,8 @@ import type {
 	PointerEvent as ReactPointerEvent,
 } from 'react'
 import { Fragment, useEffect, useId, useRef, useState } from 'react'
+
+import { cn } from 'web/utilities'
 
 export interface LanguageSwitcherOption<Locale extends string = string> {
 	locale: Locale

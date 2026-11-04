@@ -1,11 +1,10 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-
 import {
 	hasPlayed,
 	revealed,
 	suggestedTotals,
 	ticketPlan,
 } from '@data/microruntimes-content'
+import { Eyebrow } from 'web/ui/eyebrow'
 
 import { CardSection } from './card-section'
 import { CardValue, revealState } from './card-value'

@@ -1,9 +1,9 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import { UserCircle } from '@langdrift/web/ui/icons/client'
-import { cn } from '@langdrift/web/utilities'
 import { useTranslations } from 'next-intl'
 
 import type { TicketStage } from '@data/types'
+import { Eyebrow } from 'web/ui/eyebrow'
+import { UserCircle } from 'web/ui/icons/client'
+import { cn } from 'web/utilities'
 
 interface WorkflowStageListProps {
 	stages: TicketStage[]

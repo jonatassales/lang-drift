@@ -1,6 +1,5 @@
 'use client'
 
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { useAtomValue } from 'jotai'
 
 import {
@@ -8,6 +7,7 @@ import {
 	stageEvidencePaths,
 } from '@data/microruntimes-content'
 import { selectedLifecycleStageAtom } from '@state'
+import { Eyebrow } from 'web/ui/eyebrow'
 
 interface StageEvidenceProps {
 	copy: MicroruntimesMessages['evidence']

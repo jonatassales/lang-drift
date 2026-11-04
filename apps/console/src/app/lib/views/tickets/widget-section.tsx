@@ -1,5 +1,6 @@
-import { cn } from '@langdrift/web/utilities'
 import type { ReactNode } from 'react'
+
+import { cn } from 'web/utilities'
 
 interface WidgetSectionProps {
 	children: ReactNode

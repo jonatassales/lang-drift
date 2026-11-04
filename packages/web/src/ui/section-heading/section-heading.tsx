@@ -1,4 +1,4 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
+import { Eyebrow } from 'web/ui/eyebrow'
 
 export interface SectionHeadingProps {
 	headingId: string

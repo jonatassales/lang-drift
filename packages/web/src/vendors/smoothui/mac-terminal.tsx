@@ -1,8 +1,9 @@
 'use client'
 
-import { cn } from '@langdrift/web/utilities'
 import { useReducedMotion } from 'motion/react'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
+
+import { cn } from 'web/utilities'
 
 import { createTerminalMachine, type Machine } from './create-terminal-machine'
 

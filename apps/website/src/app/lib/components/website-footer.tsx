@@ -1,10 +1,9 @@
-import { AgentOrb } from '@langdrift/web/ui/agent-orb'
-import { LogoMark } from '@langdrift/web/ui/brand'
-import { GithubLogo, LinkedinLogo } from '@langdrift/web/ui/icons/server'
-
 import { footerMessages, privacyMessages } from '@i18n/messages/index'
 import { Link } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
+import { AgentOrb } from 'web/ui/agent-orb'
+import { LogoMark } from 'web/ui/brand'
+import { GithubLogo, LinkedinLogo } from 'web/ui/icons/server'
 
 const focusRing =
 	'rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary'

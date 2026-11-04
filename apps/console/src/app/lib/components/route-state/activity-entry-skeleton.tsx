@@ -1,4 +1,4 @@
-import { Skeleton } from '@langdrift/web/ui/skeleton'
+import { Skeleton } from 'web/ui/skeleton'
 
 const columns = ['first', 'second', 'third', 'fourth']
 

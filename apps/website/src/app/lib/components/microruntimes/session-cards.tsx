@@ -1,6 +1,5 @@
 'use client'
 
-import { cn } from '@langdrift/web/utilities'
 import { useAtomValue, useSetAtom } from 'jotai'
 import type { MouseEvent, ReactNode } from 'react'
 
@@ -18,6 +17,7 @@ import {
 	runScriptAtom,
 	workflowChoicesAtom,
 } from '@state'
+import { cn } from 'web/utilities'
 
 import { AnalysisCard, analysisSummary } from './analysis-card'
 import { PlanCard, planSummary } from './plan-card'

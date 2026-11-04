@@ -1,6 +1,7 @@
-import { Button } from '@langdrift/web/ui/button'
-import { cn } from '@langdrift/web/utilities'
 import type { ComponentProps } from 'react'
+
+import { Button } from 'web/ui/button'
+import { cn } from 'web/utilities'
 
 import { DialogClose } from './dialog-close'
 

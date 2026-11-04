@@ -1,10 +1,10 @@
 'use client'
-import { Card } from '@langdrift/web/ui/card'
 import { useFormatter, useTranslations } from 'next-intl'
 
 import { useDateTime } from '@app/template/formatters/date-time.hook'
 import { StatusLabel } from '@components/status-label/status-label'
 import type { Environment, Execution } from '@data/types'
+import { Card } from 'web/ui/card'
 
 interface ExecutionTableProps {
 	executions: Execution[]

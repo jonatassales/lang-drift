@@ -1,13 +1,13 @@
 'use client'
 
-import { Button } from '@langdrift/web/ui/button'
-import { ListEnd } from '@langdrift/web/ui/list-end'
 import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { TicketEntrySkeleton } from '@components/route-state/ticket-entry-skeleton'
 import { usePagedResource } from '@data/paged-resource.hook'
 import type { Page, Ticket, TicketPhase } from '@data/types'
+import { Button } from 'web/ui/button'
+import { ListEnd } from 'web/ui/list-end'
 
 import { TicketCard } from './ticket-card'
 import { TicketRow } from './ticket-row'

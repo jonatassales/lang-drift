@@ -1,8 +1,9 @@
 'use client'
 
-import { TextMorph } from '@langdrift/web/vendors/smoothui/text-morph'
 import { useReducedMotion } from 'motion/react'
 import { type ReactNode, useEffect, useState } from 'react'
+
+import { TextMorph } from 'web/vendors/smoothui/text-morph'
 
 export interface RotatingTextProps {
 	className?: string

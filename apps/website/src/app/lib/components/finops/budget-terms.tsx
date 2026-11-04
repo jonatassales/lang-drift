@@ -1,6 +1,5 @@
-import { DetailList } from '@langdrift/web/ui/detail-list'
-
 import { budgetTermIds, type FinopsMessages } from '@data/finops-content'
+import { DetailList } from 'web/ui/detail-list'
 
 interface BudgetTermsProps {
 	copy: FinopsMessages['budget']['terms']

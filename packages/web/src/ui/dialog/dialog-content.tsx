@@ -1,7 +1,8 @@
-import { cn } from '@langdrift/web/utilities'
 import { X } from '@phosphor-icons/react/ssr'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import type { ComponentProps } from 'react'
+
+import { cn } from 'web/utilities'
 
 import { DialogClose } from './dialog-close'
 import { DialogOverlay } from './dialog-overlay'

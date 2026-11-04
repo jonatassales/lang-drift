@@ -1,7 +1,5 @@
 'use client'
 
-import { cn } from '@langdrift/web/utilities'
-import { MacTerminal } from '@langdrift/web/vendors/smoothui/mac-terminal'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { createTranslator } from 'next-intl'
 import { useEffect, useRef } from 'react'
@@ -16,6 +14,8 @@ import {
 	runScriptAtom,
 	startRunAtom,
 } from '@state'
+import { cn } from 'web/utilities'
+import { MacTerminal } from 'web/vendors/smoothui/mac-terminal'
 
 import { SessionControl } from './session-control'
 

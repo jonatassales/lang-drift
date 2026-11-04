@@ -1,5 +1,6 @@
-import { ScrollHint } from '@langdrift/web/ui/scroll-hint'
 import type { ReactNode } from 'react'
+
+import { ScrollHint } from 'web/ui/scroll-hint'
 
 interface PlatformLayoutProps {
 	children: ReactNode

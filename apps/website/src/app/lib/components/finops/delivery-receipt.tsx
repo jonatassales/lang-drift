@@ -1,13 +1,13 @@
 'use client'
 
-import { DetailList } from '@langdrift/web/ui/detail-list'
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { useAtomValue } from 'jotai'
 import { createTranslator } from 'next-intl'
 
 import { dollars, type FinopsMessages, workItems } from '@data/finops-content'
 import type { WebsiteLocale } from '@i18n/routing'
 import { selectedWorkItemAtom } from '@state'
+import { DetailList } from 'web/ui/detail-list'
+import { Eyebrow } from 'web/ui/eyebrow'
 
 interface DeliveryReceiptProps {
 	copy: FinopsMessages['receipt']

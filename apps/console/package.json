@@ -11,7 +11,7 @@
 	},
 	"dependencies": {
 		"tokens": "workspace:*",
-		"@langdrift/web": "workspace:*",
+		"web": "workspace:*",
 		"@vercel/analytics": "^2.0.1",
 		"next": "16.4.3",
 		"next-intl": "4.14.5",

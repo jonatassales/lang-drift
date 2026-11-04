@@ -1,3 +1,6 @@
+import type { ComponentType } from 'react'
+
+import type { PlanComponent, Technology } from '@data/microruntimes-content'
 import {
 	GoIcon,
 	NatsIcon,
@@ -5,11 +8,8 @@ import {
 	NodejsIcon,
 	RedisIcon,
 	type TechnologyIconProps,
-} from '@langdrift/web/ui/icons/technology'
-import { ShareBar } from '@langdrift/web/ui/share-bar'
-import type { ComponentType } from 'react'
-
-import type { PlanComponent, Technology } from '@data/microruntimes-content'
+} from 'web/ui/icons/technology'
+import { ShareBar } from 'web/ui/share-bar'
 
 import type { CardValueLabels, CardValueState } from './card-value'
 

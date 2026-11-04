@@ -1,7 +1,8 @@
 'use client'
 
-import { Button } from '@langdrift/web/ui/button'
 import { useEffect, useEffectEvent, useRef } from 'react'
+
+import { Button } from 'web/ui/button'
 
 export interface ListEndProps {
 	/** Set after a failed request, so the list waits for a retry. */

@@ -129,7 +129,7 @@ EOF
 
 check_allowed_imports() {
   for module in ./peer ./nested/child @components/child @/domain/product react \
-    @testing-library/react @langdrift/web node:path; do
+    @testing-library/react web node:path; do
     module_source reexport "$module" | write_fixture "$fixture"
     expect "import of '$module'" 0 "$(restricted_count "$fixture")"
   done
@@ -173,7 +173,7 @@ import React from 'react'
 import ui from '@ui/button'
 import services from '@services/mail'
 import scoped from '@testing-library/react'
-import web from '@langdrift/web'
+import web from 'web'
 import factories from '@factories/early-access'
 import app from '@app/page'
 import eventTestdata from '@event-testdata/sent'
@@ -187,7 +187,6 @@ EOF
   fi
 
   expect_organized "grouping packages, aliases and relative paths" <<'EOF'
-import web from '@langdrift/web'
 import scoped from '@testing-library/react'
 import React from 'react'
 
@@ -201,6 +200,7 @@ import services from '@services/mail'
 import state from '@state'
 import ui from '@ui/button'
 import views from '@views/page'
+import web from 'web'
 import alias from '@/domain/product'
 
 import local from './local'

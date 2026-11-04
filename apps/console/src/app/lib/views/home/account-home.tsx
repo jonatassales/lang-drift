@@ -1,6 +1,5 @@
 'use client'
 
-import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
@@ -9,6 +8,7 @@ import { useResource } from '@data/resource.hook'
 import type { HomeOverview } from '@data/types'
 import { Link } from '@i18n/navigation'
 import { ProductCreate } from '@views/products/product-create'
+import { Card } from 'web/ui/card'
 
 interface AccountHomeProps {
 	initial: Promise<HomeOverview>

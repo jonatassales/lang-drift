@@ -1,8 +1,3 @@
-import { LogoMark } from '@langdrift/web/ui/brand'
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import { ArrowRightIcon } from '@langdrift/web/ui/icons/arrow'
-import { MicroruntimesIcon } from '@langdrift/web/ui/icons/platform'
-import { InfoCards } from '@langdrift/web/ui/info-cards'
 import { Fragment } from 'react'
 
 import {
@@ -10,6 +5,11 @@ import {
 	flowTargetIds,
 	type MicroruntimesMessages,
 } from '@data/microruntimes-content'
+import { LogoMark } from 'web/ui/brand'
+import { Eyebrow } from 'web/ui/eyebrow'
+import { ArrowRightIcon } from 'web/ui/icons/arrow'
+import { MicroruntimesIcon } from 'web/ui/icons/platform'
+import { InfoCards } from 'web/ui/info-cards'
 
 interface AuthoringFlowProps {
 	copy: MicroruntimesMessages['flow']

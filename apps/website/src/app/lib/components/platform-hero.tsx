@@ -1,12 +1,11 @@
-import { ChromaText } from '@langdrift/web/ui/chroma-text'
-import { ElevatedFrame } from '@langdrift/web/ui/elevated-frame'
-import { HeroShader } from '@langdrift/web/ui/hero-shader'
-import { RotatingText } from '@langdrift/web/ui/rotating-text'
-
 import { SessionCards } from '@components/microruntimes/session-cards'
 import { SessionTerminal } from '@components/microruntimes/session-terminal'
 import { microruntimesMessages, platformMessages } from '@i18n/messages/index'
 import type { WebsiteLocale } from '@i18n/routing'
+import { ChromaText } from 'web/ui/chroma-text'
+import { ElevatedFrame } from 'web/ui/elevated-frame'
+import { HeroShader } from 'web/ui/hero-shader'
+import { RotatingText } from 'web/ui/rotating-text'
 
 interface PlatformHeroProps {
 	locale: WebsiteLocale

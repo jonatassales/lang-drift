@@ -1,7 +1,5 @@
 'use client'
 
-import { Button } from '@langdrift/web/ui/button'
-import { Card } from '@langdrift/web/ui/card'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState, useTransition } from 'react'
 
@@ -12,6 +10,8 @@ import { mutation } from '@data/api'
 import { type ReadResult, readResult } from '@data/read-result'
 import type { FolderListing, Product } from '@data/types'
 import { useRouter } from '@i18n/navigation'
+import { Button } from 'web/ui/button'
+import { Card } from 'web/ui/card'
 
 import { FolderPicker } from './folder-picker'
 

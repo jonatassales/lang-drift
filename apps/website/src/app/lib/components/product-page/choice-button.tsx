@@ -1,7 +1,8 @@
 'use client'
 
-import { cn } from '@langdrift/web/utilities'
 import type { MouseEvent, ReactNode } from 'react'
+
+import { cn } from 'web/utilities'
 
 interface ChoiceButtonProps {
 	children: ReactNode

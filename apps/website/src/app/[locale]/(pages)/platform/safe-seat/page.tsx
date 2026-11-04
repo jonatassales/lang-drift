@@ -1,6 +1,3 @@
-import { DetailList } from '@langdrift/web/ui/detail-list'
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
-import { InfoCards } from '@langdrift/web/ui/info-cards'
 import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
@@ -14,6 +11,9 @@ import { ProductBadge } from '@components/website-header/product-badge'
 import { WebsiteStructuredData } from '@components/website-structured-data'
 import { safeSeatMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
+import { DetailList } from 'web/ui/detail-list'
+import { Eyebrow } from 'web/ui/eyebrow'
+import { InfoCards } from 'web/ui/info-cards'
 
 import { EvidenceCards } from './evidence-cards'
 import {

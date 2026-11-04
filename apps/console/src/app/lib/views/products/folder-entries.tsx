@@ -1,12 +1,12 @@
 'use client'
 
-import { Button } from '@langdrift/web/ui/button'
 import { useTranslations } from 'next-intl'
 import { use } from 'react'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import type { ReadResult } from '@data/read-result'
 import type { FolderListing } from '@data/types'
+import { Button } from 'web/ui/button'
 
 interface FolderEntriesProps {
 	listing: Promise<ReadResult<FolderListing>>

@@ -1,4 +1,3 @@
-import { Eyebrow } from '@langdrift/web/ui/eyebrow'
 import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
@@ -18,6 +17,7 @@ import { WebsiteStructuredData } from '@components/website-structured-data'
 import { finopsFaqIds, gateExample, gateFigures } from '@data/finops-content'
 import { finopsMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
+import { Eyebrow } from 'web/ui/eyebrow'
 
 export { generateMetadata } from './page.metadata'
 

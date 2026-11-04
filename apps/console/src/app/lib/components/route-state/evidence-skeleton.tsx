@@ -1,6 +1,7 @@
 'use client'
-import { Skeleton } from '@langdrift/web/ui/skeleton'
 import { useTranslations } from 'next-intl'
+
+import { Skeleton } from 'web/ui/skeleton'
 
 export function EvidenceSkeleton() {
 	const translate = useTranslations('ui')

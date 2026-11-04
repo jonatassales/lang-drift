@@ -1,6 +1,5 @@
-import { Cube } from '@langdrift/web/ui/icons/client'
-
 import { StackIcon } from '@ui/stack-icon'
+import { Cube } from 'web/ui/icons/client'
 
 interface RuntimeStackIconsProps {
 	stacks?: string[]

@@ -1,12 +1,12 @@
 'use client'
 
-import { Brand } from '@langdrift/web/ui/brand'
 import { useAtom } from 'jotai'
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
 import { Link } from '@i18n/navigation'
 import { themeAtom } from '@state'
+import { Brand } from 'web/ui/brand'
 
 import { DemoButton } from './website-header/demo-button'
 import { drawerFocus } from './website-header/drawer-focus'

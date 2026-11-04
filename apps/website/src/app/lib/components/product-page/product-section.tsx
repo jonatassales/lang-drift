@@ -1,5 +1,6 @@
-import { SectionHeading } from '@langdrift/web/ui/section-heading'
 import type { ReactNode } from 'react'
+
+import { SectionHeading } from 'web/ui/section-heading'
 
 interface ProductSectionProps {
 	children: ReactNode

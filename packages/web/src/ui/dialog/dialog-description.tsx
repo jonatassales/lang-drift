@@ -1,6 +1,7 @@
-import { cn } from '@langdrift/web/utilities'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import type { ComponentProps } from 'react'
+
+import { cn } from 'web/utilities'
 
 export interface DialogDescriptionProps
 	extends ComponentProps<typeof DialogPrimitive.Description> {}
