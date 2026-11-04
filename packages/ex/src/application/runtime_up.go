@@ -30,9 +30,18 @@ type StartRuntime struct {
 	Clock Clock
 }
 
+// StartRuntimeRequest names the runtime to start and the environment each
+// unit's container receives. The values travel in memory only: the ledger
+// records the Secret that holds them, never what it holds.
+type StartRuntimeRequest struct {
+	RuntimeRequest
+
+	Environments []microruntime.Environment
+}
+
 // Execute checks everything that can be checked without side effects, then
 // records the obligations and runs the startup.
-func (useCase StartRuntime) Execute(ctx context.Context, request RuntimeRequest) (ExecutionOutcome, error) {
+func (useCase StartRuntime) Execute(ctx context.Context, request StartRuntimeRequest) (ExecutionOutcome, error) {
 	runtime, err := parseRuntime(request.Runtime)
 	if err != nil {
 		return ExecutionOutcome{}, err
@@ -51,6 +60,10 @@ func (useCase StartRuntime) Execute(ctx context.Context, request RuntimeRequest)
 
 	run, err := useCase.sources().open(ctx, owner, runtime)
 	if err != nil {
+		return ExecutionOutcome{}, err
+	}
+
+	if err := run.addEnvironments(request.Environments); err != nil {
 		return ExecutionOutcome{}, err
 	}
 

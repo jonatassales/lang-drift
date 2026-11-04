@@ -269,9 +269,21 @@
 					"label": "Go"
 				}
 			],
-			"image": "langdrift-console:local",
+			"dockerfile": "Dockerfile",
+			"image": "langdrift-console-local-console:r1",
 			"port": 3001,
-			"readinessPath": "/icon.svg",
+			"readiness": {
+				"kind": "http",
+				"from": "runtime.md",
+				"path": "/icon.svg",
+				"command": null,
+				"periodSeconds": 5,
+				"timeoutSeconds": 2,
+				"failureThreshold": 12,
+				"initialDelaySeconds": 0
+			},
+			"envFile": null,
+			"passEnv": [],
 			"inferredFrom": [
 				".agents/workflow/tickets/0070-console-microruntime.ticket.md#L5",
 				"apps/console/package.json#L6-L17",
@@ -288,7 +300,7 @@
 			"executed": {
 				"cpuMillis": 2000,
 				"memoryMiB": 3072,
-				"rule": "equal split of the runtime envelope; runtime.md v1 carries no per-component share"
+				"rule": "equal split of the runtime envelope; runtime.md v2 carries no per-component share"
 			}
 		}
 	],
@@ -329,14 +341,19 @@
 			"detail": "3001"
 		},
 		{
-			"id": "images-resolved",
+			"id": "dockerfiles-exist",
 			"result": "passed",
-			"detail": "langdrift-console:local"
+			"detail": "Dockerfile"
 		},
 		{
-			"id": "recipe-allowed",
+			"id": "readiness-known",
 			"result": "passed",
-			"detail": "committed script platform/microruntime/console/build-image.sh"
+			"detail": "http /icon.svg"
+		},
+		{
+			"id": "env-file-exists",
+			"result": "passed",
+			"detail": "no env file named"
 		},
 		{
 			"id": "within-ceiling",
@@ -347,11 +364,11 @@
 	"runtime": {
 		"path": ".langdrift/microruntimes/runtimes/console-local/runtime.md",
 		"revision": 1,
-		"sha256": "a734802374653f70874eb0448e163a9520c26e3c35c0be6c7ac7dcbfce801d55",
+		"sha256": "d6eee4dafc27d6542f9550d58e6d68a5fd53b64b4f74b0c361c665ecaa2f7477",
 		"state": "authorized"
 	},
 	"contractGaps": [
-		"per-component cpu and memory are not runtime.md v1 fields, so the proposal and the execution can differ",
-		"technologies are not runtime.md v1 fields; the plan keeps them for display"
+		"per-component cpu and memory are not runtime.md v2 fields, so the proposal and the execution can differ",
+		"technologies are not runtime.md v2 fields; the plan keeps them for display"
 	]
 }

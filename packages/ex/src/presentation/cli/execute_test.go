@@ -226,7 +226,7 @@ func TestExecute_ClassifiesFailures(t *testing.T) {
 		{name: "operational failure", arguments: []string{"cluster", "create"}, failure: errors.New("cluster is not ready"), wantStatus: 1, wantStderr: "ex: cluster is not ready\n"},
 		{name: "adoption refused", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("namespace exists: %w", app.ErrAdoptionRefused), wantStatus: 3, wantStderr: "refusing to adopt"},
 		{name: "target mismatch refused", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("guard: %w", app.ErrTargetMismatch), wantStatus: 3, wantStderr: "target differs"},
-		{name: "build recipe refused", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("component api: %w", connection.ErrRecipeRefused), wantStatus: 3, wantStderr: "refused by policy"},
+		{name: "pass-through variable missing", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("component api: %w", connection.ErrPassEnvMissing), wantStatus: 3, wantStderr: "not set in the agent's environment"},
 		{name: "console access revoked", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("sync: %w", connectedapp.ErrAccessRevoked), wantStatus: 3, wantStderr: "revoked"},
 		{name: "replacement refused", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("record: %w", app.ErrAlreadyExists), wantStatus: 3, wantStderr: "already exists"},
 		{name: "missing prerequisite record", arguments: []string{"cluster", "create"}, failure: app.NotFound("no cluster for this project"), wantStatus: 4, wantStderr: "no cluster"},

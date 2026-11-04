@@ -4,13 +4,46 @@ The contracts of LangDrift Microruntimes, and only of Microruntimes. The `ex` CL
 
 | Package | Contract |
 | --- | --- |
-| `configuration` | The `runtime.md` fence: exactly one `langdrift` JSON block, its fields and bounds, the build recipe allowlist, and the lexical rules for identifiers, paths, ports and images. |
+| `configuration` | The `runtime.md` fence: exactly one `langdrift` JSON block, version 2, its fields and bounds, the component env file format, the derived image tag, and the lexical rules for identifiers, paths, ports, images and variable names. |
 | `protocol` | What the connected agent and the server exchange at `<console-url>/api/mcp`: the MCP version, the five tools and their request and response types. |
 
 ```sh
 GOTOOLCHAIN=local go test ./...
 GOTOOLCHAIN=local go vet ./...
 ```
+
+## The fence
+
+A fence is version 2. `Parse` refuses any other version, and any field this version does not define, with "re-plan the runtime": an older fence is never misread as a newer one.
+
+A component is a reference to files: its name and its folder, with the Dockerfile inside the folder. The fence points at those files and does not repeat what they say.
+
+```json
+{
+  "name": "demo-requests",
+  "path": "apps/microservices/demo-requests",
+  "dockerfile": "Dockerfile",
+  "port": 3402,
+  "readiness": { "kind": "tcp" },
+  "envFile": "apps/microservices/demo-requests/runtime.env",
+  "passEnv": ["MINIO_ACCESS_KEY", "MINIO_SECRET_KEY"]
+}
+```
+
+| Field | Rule |
+| --- | --- |
+| `name` | Required. A DNS label, unique in the runtime; workloads and Services take it, so components address each other by it. |
+| `path` | Required. The component folder: a clean relative path, unique, outside `.langdrift`; `.` is the project root. |
+| `dockerfile` | A file name inside the folder, without `/`; `Dockerfile` when absent. |
+| `port` | 1 to 65535; when absent, the Dockerfile's first `EXPOSE`. |
+| `readiness` | `{ "kind": "tcp" }` or `{ "kind": "http", "path": "/…" }`; when absent, the Dockerfile's own `HEALTHCHECK`. |
+| `envFile` | A committed file without secrets: a clean relative path inside the checkout, one `NAME=value` per line, uppercase names, plain-text values of at most 4 KiB. |
+| `passEnv` | Uppercase names the agent reads from its own environment at start; none repeats, and none is also in the env file. |
+| `id`, `kind` | Optional, as before. |
+
+Readiness comes from the component: the planner reads the `HEALTHCHECK` of the component's own Dockerfile (one inherited from a base image is not seen) and renders it as an `exec` probe, the shell form as `/bin/sh -c`, the exec form as its array, with `--interval`, `--timeout`, `--retries` and `--start-period` as the probe's period, timeout, failure threshold and initial delay. A Dockerfile without its own `HEALTHCHECK`, or with `HEALTHCHECK NONE`, needs an explicit `tcp` or `http` readiness.
+
+The image is never authored. `ImageTag` derives it from the runtime id, the component name and the revision, `langdrift-<runtimeId>-<name>:r<revision>`, and the CLI builds it with the fixed `docker build --file <path>/<dockerfile> --tag <image> .` from the project root. See ADR 0004.
 
 ## The protocol
 

@@ -63,7 +63,7 @@ This creates project identity configuration in `.langdrift/config.json` and loca
 Point `ex` to a ticket or specification. It reads linked documents, sizes CPU and memory bounds within your envelope, suggests the optimal model and effort, and writes a bounded execution plan:
 
 ```sh
-npx @langdrift/ex agent plan <path-to-ticket.md>
+npx @langdrift/ex agent plan <path-to-ticket.md> --component name=console,path=apps/console
 ```
 
 > **Tip:** Use `--no-judge` to produce a plan purely from heuristics without making an LLM call, ensuring zero spend.
@@ -77,6 +77,7 @@ The plan is written to `.langdrift/microruntimes/runtimes/<runtime-id>/runtime.m
 ```json
 {
   "llmBudgetUsd": 25,
+  "version": 2,
   "runtimeId": "console-microruntime",
   "revision": 1,
   "cpuMillis": 2000,
@@ -85,15 +86,16 @@ The plan is written to `.langdrift/microruntimes/runtimes/<runtime-id>/runtime.m
   "effort": "medium",
   "components": [
     {
+      "name": "console",
       "path": "apps/console",
-      "image": "langdrift-console:local",
-      "port": 3001,
-      "readinessPath": "/icon.svg",
-      "build": { "executable": "docker", "args": ["build", "-t", "langdrift-console:local", "."] }
+      "dockerfile": "Dockerfile",
+      "port": 3001
     }
   ]
 }
 ```
+
+A component points at files: its name and its folder, which holds a Dockerfile. `ex` builds it with `docker build` against that Dockerfile from the project root, tags the image `langdrift-<runtime-id>-<name>:r<revision>`, and takes the port from its first `EXPOSE` and readiness from its own `HEALTHCHECK`. A `--component` may add `dockerfile=`, `port=`, `readiness=tcp` or `readiness=http:/path`, a committed `env-file=` without secrets, and `pass-env=A;B` for variables `ex` reads from its own environment at start; it writes both into one Kubernetes Secret per component.
 
 ### 3. Run the plan
 
@@ -107,7 +109,7 @@ During execution, `ex` coordinates the entire delivery lifecycle:
 
 1. **Gate check:** Verifies that list prices cover the run and reserves the estimated cost against the ticket allocation and period envelope.
 2. **Workflow stages:** Drives the coding agent through the stages defined in your workflow. When human approval is required, execution pauses until confirmed via terminal prompt or `npx @langdrift/ex agent confirm <runtime-id> <stage>`.
-3. **Local runtime:** Builds images and starts components in a local kind cluster, polling readiness endpoints until healthy.
+3. **Local runtime:** Builds each component from its Dockerfile and starts the components in a local kind cluster, each named after its component, waiting on their readiness probes until healthy.
 4. **Delivery observation:** Observes Git commits, branches, and PR checks read-only.
 5. **Settlement:** Tears down local runtime resources, returns unspent budget reservations, and records the run in the audit ledger.
 

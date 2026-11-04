@@ -92,7 +92,7 @@ func (guide promptGuide) askWorkload(ctx context.Context, component string) (app
 	workload := application.WorkloadInput{Component: component, Kind: kind}
 
 	err = guide.askTexts(ctx, []textQuestion{
-		{"Prebuilt image reference", &workload.Image},
+		{"Dockerfile in the component folder (for example Dockerfile)", &workload.Dockerfile},
 		{"CPU request (for example 100m)", &workload.CPURequest},
 		{"CPU limit", &workload.CPULimit},
 		{"Memory request (for example 128Mi)", &workload.MemoryRequest},
@@ -119,6 +119,14 @@ func (guide promptGuide) askService(ctx context.Context, workload application.Wo
 
 	if workload.Replicas, err = guide.prompter.Integer(ctx, "Replicas"); err != nil {
 		return application.WorkloadInput{}, err
+	}
+
+	if workload.Readiness, err = guide.prompter.Text(ctx, "Readiness (healthcheck, tcp or http)"); err != nil {
+		return application.WorkloadInput{}, err
+	}
+
+	if workload.Readiness != application.ReadinessHTTP {
+		return workload, nil
 	}
 
 	if workload.ReadinessPath, err = guide.prompter.Text(ctx, "HTTP readiness path"); err != nil {

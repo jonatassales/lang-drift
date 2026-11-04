@@ -117,7 +117,7 @@ func TestUpMaterializesAndStartsAsTheLocalOperator(t *testing.T) {
 	if engine.started.ConcreteHash != "hash-1" || engine.started.Managed["schema.json"] != "b2" {
 		t.Errorf("the start got %+v, want what the materialization fixed", engine.started)
 	}
-	if !slices.Equal(steps, []string{"Configured: `runtime.md` revision 1 materialized", "Built: images built from the components' recipes"}) {
+	if !slices.Equal(steps, []string{"Configured: `runtime.md` revision 1 materialized", "Built: images built from the components' Dockerfiles"}) {
 		t.Errorf("steps = %v", steps)
 	}
 

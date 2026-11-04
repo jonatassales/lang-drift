@@ -53,7 +53,7 @@ func (native *projectNativeFake) Materialize(context.Context, project.Project, C
 }
 
 func TestProjectAgentDiscoversLaterRuntimeWithoutStartingIt(t *testing.T) {
-	config := connection.Configuration{Version: 1, Name: "api", ProjectID: "project", RuntimeUID: "runtime-uid", RuntimeID: "runtime", Revision: 1, CPUMillis: 1000, MemoryMiB: 256, Model: "example/model", Effort: "medium", Components: []connection.Component{{Path: ".", Name: "api", Image: "api:local", Port: 3000, ReadinessPath: "/", Build: &connection.Build{Executable: "docker", Args: []string{"build", "-t", "api:local", "."}}}}}
+	config := connection.Configuration{Version: 2, Name: "api", ProjectID: "project", RuntimeUID: "runtime-uid", RuntimeID: "runtime", Revision: 1, CPUMillis: 1000, MemoryMiB: 256, Model: "example/model", Effort: "medium", Components: []connection.Component{{Path: ".", Name: "api", Port: 3000, Readiness: &connection.Readiness{Kind: "http", Path: "/"}}}}
 	console := &projectConsoleFake{consoleFake: consoleFake{intent: Intent{DesiredState: "stopped", Revision: 1, Markdown: config.Markdown(), LeaseSeconds: 15}}}
 	store := &projectStoreFake{}
 	native := &projectNativeFake{configured: make(chan struct{})}

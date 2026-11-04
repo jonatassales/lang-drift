@@ -137,7 +137,7 @@ func (service Service) Migrate(ctx context.Context, request MigrateRequest) (Res
 	if err != nil {
 		return Result{}, err
 	}
-	return Result{Runtime: request.Runtime, Path: path, Status: "migration draft written; import the existing runtime ID in the console and supply its build recipes"}, nil
+	return Result{Runtime: request.Runtime, Path: path, Status: "migration draft written; import the existing runtime ID in the console and name each component's Dockerfile"}, nil
 }
 
 func (service Service) interval() time.Duration {

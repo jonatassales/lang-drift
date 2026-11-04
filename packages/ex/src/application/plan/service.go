@@ -33,16 +33,18 @@ type Service struct {
 	Clock application.Clock
 }
 
-// ComponentInput is one component the owner names on the command line.
+// ComponentInput is one component the owner names on the command line: its
+// name and its folder, and what refines its Dockerfile.
 type ComponentInput struct {
-	Path          string
-	Name          string
-	Kind          string
-	Image         string
-	Port          int
-	ReadinessPath string
-	Build         configuration.Build
-	Technologies  []run.Technology
+	Name         string
+	Path         string
+	Kind         string
+	Dockerfile   string
+	Port         int
+	Readiness    *configuration.Readiness
+	EnvFile      string
+	PassEnv      []string
+	Technologies []run.Technology
 }
 
 // Request plans one ticket.

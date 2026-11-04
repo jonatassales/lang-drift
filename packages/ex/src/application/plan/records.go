@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"path"
 
+	"github.com/jonatassales/tao/packages/contracts/configuration"
 	"github.com/jonatassales/tao/packages/ex/src/application"
 	"github.com/jonatassales/tao/packages/ex/src/application/inputs"
 	"github.com/jonatassales/tao/packages/ex/src/domain/collection"
@@ -19,7 +20,7 @@ func (planning *planning) plan() run.Plan {
 
 	components := make([]run.Component, 0, len(planning.components))
 	for index, component := range planning.components {
-		components = append(components, component.record(planning.by, shares[index]))
+		components = append(components, component.record(planning.config.RuntimeID, planning.config.Revision, planning.by, shares[index]))
 	}
 
 	sources := make([]run.Source, 0, len(planning.collected.Sources))
@@ -232,7 +233,7 @@ func (planning *planning) ownLedger() finops.Ledger {
 	return ledger
 }
 
-func (component resolved) record(by string, share harness.Resources) run.Component {
+func (component resolved) record(runtime string, revision int, by string, share harness.Resources) run.Component {
 	input := component.input
 
 	inferredFrom := []string{}
@@ -241,17 +242,20 @@ func (component resolved) record(by string, share harness.Resources) run.Compone
 	}
 
 	return run.Component{
-		Path:          input.Path,
-		Name:          orDefault(input.Name, componentName(input.Path)),
-		Kind:          component.kind,
-		Technologies:  nonNil(component.technologies),
-		Image:         input.Image,
-		Port:          input.Port,
-		ReadinessPath: input.ReadinessPath,
-		InferredFrom:  inferredFrom,
-		ConfirmedBy:   run.Actor{Person: by, Via: inputs.Via},
-		Proposed:      component.proposed,
-		Executed:      run.Executed{CPUMillis: share.CPUMillis, MemoryMiB: share.MemoryMiB, Rule: run.EqualSplitRule},
+		Path:         input.Path,
+		Name:         input.Name,
+		Kind:         component.kind,
+		Technologies: nonNil(component.technologies),
+		Dockerfile:   component.dockerfile,
+		Image:        configuration.ImageTag(runtime, input.Name, revision),
+		Port:         input.Port,
+		Readiness:    readinessRecord(component.probe, component.dockerfile),
+		EnvFile:      optional(input.EnvFile),
+		PassEnv:      nonNil(input.PassEnv),
+		InferredFrom: inferredFrom,
+		ConfirmedBy:  run.Actor{Person: by, Via: inputs.Via},
+		Proposed:     component.proposed,
+		Executed:     run.Executed{CPUMillis: share.CPUMillis, MemoryMiB: share.MemoryMiB, Rule: run.EqualSplitRule},
 	}
 }
 

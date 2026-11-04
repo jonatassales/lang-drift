@@ -63,7 +63,7 @@ Isso cria a configuração de identidade do projeto em `.langdrift/config.json` 
 Aponte o `ex` para um ticket ou especificação. Ele lê os documentos vinculados, dimensiona limites de CPU e memória dentro do envelope do seu time, escolhe o modelo ideal e escreve um plano de execução delimitado:
 
 ```sh
-npx @langdrift/ex agent plan <caminho-do-ticket.md>
+npx @langdrift/ex agent plan <caminho-do-ticket.md> --component name=console,path=apps/console
 ```
 
 > **Dica:** Use `--no-judge` para gerar o plano por heurística sem realizar chamadas de LLM, sem nenhum custo.
@@ -77,6 +77,7 @@ O plano é salvo em `.langdrift/microruntimes/runtimes/<runtime-id>/runtime.md`.
 ```json
 {
   "llmBudgetUsd": 25,
+  "version": 2,
   "runtimeId": "console-microruntime",
   "revision": 1,
   "cpuMillis": 2000,
@@ -85,15 +86,16 @@ O plano é salvo em `.langdrift/microruntimes/runtimes/<runtime-id>/runtime.md`.
   "effort": "medium",
   "components": [
     {
+      "name": "console",
       "path": "apps/console",
-      "image": "langdrift-console:local",
-      "port": 3001,
-      "readinessPath": "/icon.svg",
-      "build": { "executable": "docker", "args": ["build", "-t", "langdrift-console:local", "."] }
+      "dockerfile": "Dockerfile",
+      "port": 3001
     }
   ]
 }
 ```
+
+Um componente aponta para arquivos: seu nome e sua pasta, que contém um Dockerfile. O `ex` o constrói com `docker build` a partir da raiz do projeto usando esse Dockerfile, nomeia a imagem `langdrift-<runtime-id>-<nome>:r<revisão>` e usa a porta do primeiro `EXPOSE` e a prontidão do próprio `HEALTHCHECK`. Um `--component` pode acrescentar `dockerfile=`, `port=`, `readiness=tcp` ou `readiness=http:/caminho`, um `env-file=` versionado sem segredos e `pass-env=A;B` para variáveis que o `ex` lê do próprio ambiente ao iniciar; ele grava ambos em um Secret do Kubernetes por componente.
 
 ### 3. Executar o plano
 
@@ -107,7 +109,7 @@ Durante a execução, o `ex` coordena todo o ciclo de entrega:
 
 1. **Checagem de portão:** Valida se os preços cobrem a execução e reserva o custo estimado contra a alocação do ticket e o envelope do período.
 2. **Estágios do workflow:** Guia o agente de código pelos estágios definidos no workflow. Quando a aprovação humana é exigida, a execução pausa até ser confirmada no terminal ou com `npx @langdrift/ex agent confirm <runtime-id> <estagio>`.
-3. **Runtime local:** Constrói imagens e inicia os componentes em um cluster kind local, verificando os endpoints de prontidão.
+3. **Runtime local:** Constrói cada componente a partir do seu Dockerfile e inicia os componentes em um cluster kind local, cada um com o nome do seu componente, aguardando as sondas de prontidão.
 4. **Observação da entrega:** Monitora commits, branches e verificações de PR em modo somente leitura.
 5. **Liquidação:** Desativa recursos do runtime local, devolve reservas de orçamento não utilizadas e registra a execução no livro-razão.
 

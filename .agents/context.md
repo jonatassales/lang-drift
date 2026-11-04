@@ -266,9 +266,9 @@ _Avoid_: Runtime (alone, in new writing), service
 The long-running `ex agent` process that supervises a project's microruntimes from authenticated console intent.
 _Avoid_: Daemon, worker
 
-**Build recipe**:
-The console-supplied command that builds a microruntime's image. Only a committed project script or an allowlisted tool may run.
-_Avoid_: Build command, build step
+**Component Dockerfile**:
+The committed Dockerfile in a component's folder that a microruntime builds from. `ex` runs the fixed `docker build` against it from the project root and reads its first `EXPOSE` and its own `HEALTHCHECK` for the port and the readiness. See ADR 0004.
+_Avoid_: Build recipe, build command, build step
 
 **Execution ledger**:
 The on-disk record of what an operation created, written before side effects and settled afterwards. Cleanup acts only on what the ledger owns.

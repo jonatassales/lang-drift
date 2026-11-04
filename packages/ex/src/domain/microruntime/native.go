@@ -5,10 +5,15 @@ package microruntime
 const (
 	jobDeadlineSeconds      = 120
 	terminationGraceSeconds = 30
-	readinessPeriodSeconds  = 5
-	readinessTimeoutSeconds = 2
-	readinessFailures       = 12
 	httpPortName            = "http"
+)
+
+// The readiness probe's defaults, for an option a HEALTHCHECK or an explicit
+// readiness leaves out.
+const (
+	ReadinessPeriodSeconds  = 5
+	ReadinessTimeoutSeconds = 2
+	ReadinessFailures       = 12
 )
 
 // NativeObjects returns the Kubernetes objects that start a workload's native
@@ -47,12 +52,7 @@ func (workload Workload) job(runtime, namespace Identifier) Object {
 func (workload Workload) deployment(runtime, namespace Identifier) Object {
 	container := workload.container()
 	container["ports"] = []any{map[string]any{"name": httpPortName, "containerPort": workload.Service.Port}}
-	container["readinessProbe"] = map[string]any{
-		"httpGet":          map[string]any{"path": workload.Service.ReadinessPath, "port": httpPortName},
-		"periodSeconds":    readinessPeriodSeconds,
-		"timeoutSeconds":   readinessTimeoutSeconds,
-		"failureThreshold": readinessFailures,
-	}
+	container["readinessProbe"] = workload.Service.Probe.native()
 
 	return Object{
 		"apiVersion": "apps/v1",
@@ -101,7 +101,7 @@ func (workload Workload) labels(runtime Identifier) map[string]any {
 }
 
 func (workload Workload) container() map[string]any {
-	return map[string]any{
+	container := map[string]any{
 		"name":            workload.Name.String(),
 		"image":           workload.Image,
 		"imagePullPolicy": "Never",
@@ -116,6 +116,20 @@ func (workload Workload) container() map[string]any {
 			},
 		},
 	}
+
+	if !workload.EnvSecret.IsZero() {
+		container["envFrom"] = workload.EnvFrom()
+	}
+
+	return container
+}
+
+// EnvFrom is the container's envFrom: the unit's environment Secret. Call it
+// only for a workload that names one.
+func (workload Workload) EnvFrom() []any {
+	return []any{map[string]any{
+		"secretRef": map[string]any{"name": workload.EnvSecret.String()},
+	}}
 }
 
 func (workload Workload) podSpec(container map[string]any) map[string]any {

@@ -1,6 +1,8 @@
 package manifest_test
 
 import (
+	"errors"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"testing"
@@ -43,5 +45,36 @@ func TestInspectorReadsTheManifestsUnderAComponent(t *testing.T) {
 
 	if _, err := (manifest.Inspector{}).Inspect(owner, "apps/missing"); err == nil {
 		t.Fatal("a missing path was inspected")
+	}
+}
+
+func TestInspectorReadsAFileTheComponentNames(t *testing.T) {
+	t.Parallel()
+
+	root, err := filepath.EvalSymlinks(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	owner := project.Project{Root: root}
+
+	component := filepath.Join(root, "apps", "signup")
+	if err := os.MkdirAll(component, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(component, "Dockerfile"), []byte("FROM node\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	content, err := (manifest.Inspector{}).File(owner, "apps/signup/Dockerfile")
+	if err != nil || string(content) != "FROM node\n" {
+		t.Fatalf("File() = %q, %v", content, err)
+	}
+
+	if _, err := (manifest.Inspector{}).File(owner, "apps/signup/Dockerfile.dev"); !errors.Is(err, fs.ErrNotExist) {
+		t.Fatalf("a missing file = %v, want fs.ErrNotExist", err)
+	}
+
+	if _, err := (manifest.Inspector{}).File(owner, "../outside.env"); err == nil {
+		t.Fatal("a file outside the project was read")
 	}
 }

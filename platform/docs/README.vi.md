@@ -63,7 +63,7 @@ Lệnh này tạo cấu hình định danh dự án trong `.langdrift/config.jso
 Trỏ `ex` tới một ticket hoặc bản đặc tả. Công cụ sẽ đọc các tài liệu liên kết, xác định giới hạn CPU và bộ nhớ trong hạn mức của bạn, đề xuất mô hình và mức độ nỗ lực tối ưu, đồng thời ghi lại kế hoạch thực thi có giới hạn:
 
 ```sh
-npx @langdrift/ex agent plan <đường-dẫn-đến-ticket.md>
+npx @langdrift/ex agent plan <đường-dẫn-đến-ticket.md> --component name=console,path=apps/console
 ```
 
 > **Mẹo:** Sử dụng `--no-judge` để tạo kế hoạch thuần túy theo kinh nghiệm heuristics mà không cần gọi LLM, hoàn toàn không phát sinh chi phí.
@@ -77,6 +77,7 @@ Kế hoạch được lưu trong `.langdrift/microruntimes/runtimes/<runtime-id>
 ```json
 {
   "llmBudgetUsd": 25,
+  "version": 2,
   "runtimeId": "console-microruntime",
   "revision": 1,
   "cpuMillis": 2000,
@@ -85,15 +86,16 @@ Kế hoạch được lưu trong `.langdrift/microruntimes/runtimes/<runtime-id>
   "effort": "medium",
   "components": [
     {
+      "name": "console",
       "path": "apps/console",
-      "image": "langdrift-console:local",
-      "port": 3001,
-      "readinessPath": "/icon.svg",
-      "build": { "executable": "docker", "args": ["build", "-t", "langdrift-console:local", "."] }
+      "dockerfile": "Dockerfile",
+      "port": 3001
     }
   ]
 }
 ```
+
+Một thành phần trỏ tới các tệp: tên và thư mục của nó, nơi chứa một Dockerfile. `ex` build thành phần bằng `docker build` với Dockerfile đó từ thư mục gốc của dự án, gắn thẻ image `langdrift-<runtime-id>-<name>:r<revision>`, lấy cổng từ `EXPOSE` đầu tiên và trạng thái sẵn sàng từ chính `HEALTHCHECK` của nó. Một `--component` có thể thêm `dockerfile=`, `port=`, `readiness=tcp` hoặc `readiness=http:/path`, một `env-file=` đã commit không chứa bí mật, và `pass-env=A;B` cho các biến mà `ex` đọc từ môi trường của chính nó khi khởi chạy; `ex` ghi cả hai vào một Kubernetes Secret cho mỗi thành phần.
 
 ### 3. Chạy kế hoạch
 
@@ -107,7 +109,7 @@ Trong quá trình thực thi, `ex` điều phối toàn bộ vòng đời bàn g
 
 1. **Kiểm tra cổng chi phí:** Xác minh giá niêm yết bao quát lượt chạy và bảo lưu chi phí ước tính theo phân bổ của ticket và hạn mức kỳ hạn.
 2. **Các giai đoạn quy trình:** Điều khiển tác tử viết mã qua các giai đoạn được định nghĩa trong quy trình làm việc của bạn. Khi cần con người phê duyệt, quá trình thực thi sẽ tạm dừng cho đến khi được xác nhận qua terminal hoặc `npx @langdrift/ex agent confirm <runtime-id> <giai-đoạn>`.
-3. **Runtime cục bộ:** Xây dựng image và khởi chạy các thành phần trong cụm kind cục bộ, thăm dò các điểm cuối sẵn sàng cho đến khi hệ thống ổn định.
+3. **Runtime cục bộ:** Build từng thành phần từ Dockerfile của nó và khởi chạy các thành phần trong cụm kind cục bộ, mỗi thành phần mang tên của chính nó, chờ các probe sẵn sàng cho đến khi hệ thống ổn định.
 4. **Quan sát bàn giao:** Giám sát các commit Git, nhánh và kiểm tra PR ở chế độ chỉ đọc.
 5. **Quyết toán:** Giải phóng tài nguyên runtime cục bộ, hoàn trả các khoản bảo lưu ngân sách chưa sử dụng và ghi lại lượt chạy vào sổ cái kiểm toán.
 

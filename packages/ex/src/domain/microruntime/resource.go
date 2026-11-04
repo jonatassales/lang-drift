@@ -32,6 +32,10 @@ func (resource Resource) IsWorkload() bool {
 // and may therefore delete.
 func (resource Resource) isSupported(namespace Identifier) bool {
 	expected, supported := apiVersions[resource.Kind]
+	if resource.Kind == secretKind {
+		expected, supported = "v1", true
+	}
+
 	_, nameErr := ParseIdentifier(resource.Name)
 
 	return supported &&

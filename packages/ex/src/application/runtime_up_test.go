@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"slices"
 	"strings"
 	"testing"
@@ -169,7 +170,7 @@ func TestStartRuntime_RefusesBeforeRecording(t *testing.T) {
 
 			applied, creates, evidence := len(w.preparation.applied), len(w.kubernetes.creates), len(w.evidence.executions)
 
-			request := w.runtimeRequest()
+			request := w.startRequest()
 			if tt.runtime != "" {
 				request.Runtime = tt.runtime
 			}
@@ -271,7 +272,7 @@ func TestStartRuntime_SettlesEveryFailure(t *testing.T) {
 				defer cancel()
 			}
 
-			_, err := w.startRuntime().Execute(ctx, w.runtimeRequest())
+			_, err := w.startRuntime().Execute(ctx, w.startRequest())
 			if !errors.Is(err, tt.wantErr) {
 				t.Fatalf("Execute() error = %v, want %v", err, tt.wantErr)
 			}
@@ -311,7 +312,7 @@ func TestStartRuntime_ReportsUnrecordedEvidence(t *testing.T) {
 	w := newWorld(t)
 	w.evidence.err = errInjected
 
-	outcome, err := w.startRuntime().Execute(context.Background(), w.runtimeRequest())
+	outcome, err := w.startRuntime().Execute(context.Background(), w.startRequest())
 	if !errors.Is(err, errInjected) || outcome.RunID != "" {
 		t.Fatalf("Execute() = %+v, %v; want the evidence failure and no outcome", outcome, err)
 	}
@@ -345,7 +346,7 @@ func TestStartRuntime_ReportsALedgerThatStopsRecording(t *testing.T) {
 	w := newWorld(t)
 	w.ledger.failAfter = 1
 
-	if _, err := w.startRuntime().Execute(context.Background(), w.runtimeRequest()); !errors.Is(err, errInjected) {
+	if _, err := w.startRuntime().Execute(context.Background(), w.startRequest()); !errors.Is(err, errInjected) {
 		t.Fatalf("Execute() error = %v, want the ledger failure", err)
 	}
 
@@ -355,5 +356,70 @@ func TestStartRuntime_ReportsALedgerThatStopsRecording(t *testing.T) {
 
 	if len(w.evidence.executions) != 1 || w.evidence.executions[0].Status != "failed" {
 		t.Errorf("evidence = %+v, want the failure recorded even though the ledger is unavailable", w.evidence.executions)
+	}
+}
+
+func TestStartRuntime_RecordsEachUnitsSecretAndCleanupRemovesIt(t *testing.T) {
+	t.Parallel()
+
+	w := newWorld(t)
+	request := w.startRequest()
+	request.Environments = []microruntime.Environment{{
+		Unit:   mustIdentifier(t, "web"),
+		Secret: mustIdentifier(t, "web-env"),
+		Variables: map[string]string{
+			"LOG_URL":   "http://log:3500",
+			"API_TOKEN": "agent-held-value",
+		},
+	}}
+
+	outcome, err := w.startRuntime().Execute(context.Background(), request)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(w.kubernetes.creates) == 0 || w.kubernetes.creates[0] != "Secret/web-env" {
+		t.Fatalf("creates = %v, want the Secret before the workload that reads it", w.kubernetes.creates)
+	}
+
+	first := w.ledger.saved[0]
+	if len(first.Resources) != 4 || first.Resources[0].Kind != "Secret" || first.Resources[0].Name != "web-env" || first.Resources[0].Unit.String() != "web" {
+		t.Fatalf("first saved record = %+v, want the Secret claimed with the unit before anything is created", first.Resources)
+	}
+
+	recorded := fmt.Sprintf("%+v", w.ledger.saved)
+	if strings.Contains(recorded, "agent-held-value") || strings.Contains(recorded, "http://log:3500") {
+		t.Fatal("the ledger holds the Secret's values")
+	}
+
+	if outcome.Status != "running" || outcome.Units["web"] != "completed" {
+		t.Fatalf("outcome = %+v, want a running runtime", outcome)
+	}
+
+	if _, err := w.stopRuntime().Execute(context.Background(), application.StopRuntimeRequest{RuntimeRequest: w.runtimeRequest()}); err != nil {
+		t.Fatal(err)
+	}
+
+	if !slices.Contains(w.kubernetes.deletes, "Secret/web-env") {
+		t.Fatalf("deletes = %v, want the recorded Secret removed", w.kubernetes.deletes)
+	}
+}
+
+func TestStartRuntime_RefusesAnEnvironmentForAnUndeclaredUnit(t *testing.T) {
+	t.Parallel()
+
+	w := newWorld(t)
+	request := w.startRequest()
+	request.Environments = []microruntime.Environment{{
+		Unit:   mustIdentifier(t, "absent"),
+		Secret: mustIdentifier(t, "absent-env"),
+	}}
+
+	if _, err := w.startRuntime().Execute(context.Background(), request); !errors.Is(err, application.ErrConfigurationChanged) {
+		t.Fatalf("Execute() error = %v, want the undeclared unit refused", err)
+	}
+
+	if len(w.kubernetes.creates) != 0 || len(w.ledger.saved) != 0 {
+		t.Fatal("a refused start created or recorded something")
 	}
 }

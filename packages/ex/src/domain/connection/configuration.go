@@ -3,16 +3,20 @@
 // names it for the CLI and adds the supervision state machine.
 package connection
 
-import "github.com/jonatassales/tao/packages/contracts/configuration"
+import (
+	"errors"
+
+	"github.com/jonatassales/tao/packages/contracts/configuration"
+)
 
 // Configuration is the concrete contract inside an authored Markdown document.
 type Configuration = configuration.Configuration
 
-// Component references an existing source directory and an explicit build recipe.
+// Component references a folder in the checkout and the Dockerfile in it.
 type Component = configuration.Component
 
-// Build is a direct executable invocation, never implicit shell text.
-type Build = configuration.Build
+// Readiness is a component's explicit readiness kind.
+type Readiness = configuration.Readiness
 
 // Native preserves an existing v2 descriptor and its owned resources on migration.
 type Native = configuration.Native
@@ -20,10 +24,11 @@ type Native = configuration.Native
 // ErrInvalidConfiguration classifies every authored-configuration rejection.
 var ErrInvalidConfiguration = configuration.ErrInvalidConfiguration
 
-// ErrRecipeRefused marks a build recipe outside the allowlist policy.
-var ErrRecipeRefused = configuration.ErrRecipeRefused
-
 // Parse requires one explicit langdrift JSON fence; see the contract.
 func Parse(markdown string) (Configuration, error) {
 	return configuration.Parse(markdown)
 }
+
+// ErrPassEnvMissing refuses a start whose component passes through a
+// variable the agent's environment does not hold.
+var ErrPassEnvMissing = errors.New("a pass-through variable is not set in the agent's environment")

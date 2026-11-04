@@ -65,9 +65,11 @@ type Spend interface {
 	Lock(owner project.Project, runtime microruntime.Identifier) (func(), error)
 }
 
-// Inspector reads a component's manifests.
+// Inspector reads a component's manifests and the files it names: its
+// Dockerfile and its env file. An absent file is fs.ErrNotExist.
 type Inspector interface {
 	Inspect(owner project.Project, componentPath string) (manifest.Inspection, error)
+	File(owner project.Project, relativePath string) ([]byte, error)
 }
 
 // Index holds the project's episodes, rebuilt from the runtimes' memories.

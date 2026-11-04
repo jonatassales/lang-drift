@@ -20,7 +20,7 @@ type Stage struct {
 	Label  string   `json:"label"`
 	Skills []string `json:"skills"`
 	Human  string   `json:"human"`
-	// Hooks are committed scripts the stage runs first, allowlisted like recipes.
+	// Hooks are committed scripts the stage runs first.
 	Hooks []string `json:"hooks,omitempty"`
 }
 

@@ -40,7 +40,7 @@ func exitCode(
 		errors.Is(executionError, app.ErrTargetMismatch) ||
 		errors.Is(executionError, app.ErrConfigurationChanged) ||
 		errors.Is(executionError, app.ErrAlreadyExists) ||
-		errors.Is(executionError, connection.ErrRecipeRefused) ||
+		errors.Is(executionError, connection.ErrPassEnvMissing) ||
 		errors.Is(executionError, plan.ErrBlocked) ||
 		errors.Is(executionError, plan.ErrPaused) ||
 		errors.Is(executionError, plan.ErrRunning) ||

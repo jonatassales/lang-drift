@@ -1046,6 +1046,10 @@ func (w *world) runtimeRequest() application.RuntimeRequest {
 	return application.RuntimeRequest{Project: application.ProjectSelection{Directory: projectRoot}, Runtime: "demo"}
 }
 
+func (w *world) startRequest() application.StartRuntimeRequest {
+	return application.StartRuntimeRequest{RuntimeRequest: w.runtimeRequest()}
+}
+
 func (w *world) clusterRequest() application.ClusterRequest {
 	return application.ClusterRequest{Project: application.ProjectSelection{Directory: projectRoot}}
 }
@@ -1070,7 +1074,7 @@ func (w *world) stopRuntime() application.StopRuntime {
 func (w *world) up(t *testing.T) application.ExecutionOutcome {
 	t.Helper()
 
-	outcome, err := w.startRuntime().Execute(context.Background(), w.runtimeRequest())
+	outcome, err := w.startRuntime().Execute(context.Background(), w.startRequest())
 	if err != nil {
 		t.Fatalf("runtime up: %v", err)
 	}

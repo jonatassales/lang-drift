@@ -11,7 +11,7 @@ The planner inferred the component from the ticket and the files it links, and t
 ```langdrift
 {
   "llmBudgetUsd": 25,
-  "version": 1,
+  "version": 2,
   "runtimeUid": "701706be7e70d681d608826d3ad548b9",
   "runtimeId": "console-local",
   "projectId": "a759267ef752f98d6c25c4114ad65d0c",
@@ -23,13 +23,13 @@ The planner inferred the component from the ticket and the files it links, and t
   "effort": "medium",
   "components": [
     {
+      "name": "console",
       "path": ".",
-      "image": "langdrift-console:local",
+      "dockerfile": "Dockerfile",
       "port": 3001,
-      "readinessPath": "/icon.svg",
-      "build": {
-        "executable": "platform/microruntime/console/build-image.sh",
-        "args": []
+      "readiness": {
+        "kind": "http",
+        "path": "/icon.svg"
       }
     }
   ]

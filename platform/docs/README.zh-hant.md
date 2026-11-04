@@ -63,7 +63,7 @@ npx @langdrift/ex init
 將 `ex` 指向工單或規格文件。它會讀取關聯文件、計算預算額度內的 CPU 與記憶體邊界、建議最佳模型與推理強度，並寫入邊界執行計畫：
 
 ```sh
-npx @langdrift/ex agent plan <path-to-ticket.md>
+npx @langdrift/ex agent plan <path-to-ticket.md> --component name=console,path=apps/console
 ```
 
 > **提示：** 使用 `--no-judge` 可純粹透過啟發式規則產生計畫，無需呼叫 LLM，零成本。
@@ -77,6 +77,7 @@ npx @langdrift/ex agent plan <path-to-ticket.md>
 ```json
 {
   "llmBudgetUsd": 25,
+  "version": 2,
   "runtimeId": "console-microruntime",
   "revision": 1,
   "cpuMillis": 2000,
@@ -85,15 +86,16 @@ npx @langdrift/ex agent plan <path-to-ticket.md>
   "effort": "medium",
   "components": [
     {
+      "name": "console",
       "path": "apps/console",
-      "image": "langdrift-console:local",
-      "port": 3001,
-      "readinessPath": "/icon.svg",
-      "build": { "executable": "docker", "args": ["build", "-t", "langdrift-console:local", "."] }
+      "dockerfile": "Dockerfile",
+      "port": 3001
     }
   ]
 }
 ```
+
+元件指向檔案：它的名稱與資料夾，資料夾中有一個 Dockerfile。`ex` 從專案根目錄以該 Dockerfile 執行 `docker build`，將映像檔標記為 `langdrift-<runtime-id>-<name>:r<revision>`，並從第一個 `EXPOSE` 取得連接埠、從 Dockerfile 自身的 `HEALTHCHECK` 取得就緒判斷。`--component` 可另外指定 `dockerfile=`、`port=`、`readiness=tcp` 或 `readiness=http:/path`、不含機密且已提交的 `env-file=`，以及 `ex` 啟動時從自身環境讀取的變數 `pass-env=A;B`；`ex` 會將兩者寫入每個元件各一個 Kubernetes Secret。
 
 ### 3. 執行計畫
 
@@ -107,7 +109,7 @@ npx @langdrift/ex agent run <runtime-id>
 
 1. **閘門檢查：** 確認標價涵蓋執行內容，並針對工單配額與期間預算保留預估成本。
 2. **工作流程階段：** 驅動程式開發代理執行工作流程中所定義的階段。若需要人工確認，執行會暫停並等待終端機輸入或 `npx @langdrift/ex agent confirm <runtime-id> <stage>`。
-3. **本機 runtime：** 建置映像檔並在本機 kind 叢集中啟動元件，持續輪詢就緒檢查端點直到狀況正常。
+3. **本機 runtime：** 依各元件的 Dockerfile 建置，並以元件名稱在本機 kind 叢集中啟動，等待就緒探針直到狀況正常。
 4. **交付觀察：** 以唯讀方式觀察 Git 提交、分支與 PR 檢查。
 5. **結算清算：** 銷毀本機 runtime 資源、釋出未使用的預算保留額，並將執行紀錄寫入帳本。
 

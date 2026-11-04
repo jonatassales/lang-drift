@@ -196,17 +196,34 @@ type Suggestion struct {
 // Component is one component of the runtime, as inferred, confirmed, proposed
 // and executed.
 type Component struct {
-	Path          string            `json:"path"`
-	Name          string            `json:"name"`
-	Kind          string            `json:"kind"`
-	Technologies  []Technology      `json:"technologies"`
-	Image         string            `json:"image"`
-	Port          int               `json:"port"`
-	ReadinessPath string            `json:"readinessPath"`
-	InferredFrom  []string          `json:"inferredFrom"`
-	ConfirmedBy   Actor             `json:"confirmedBy"`
-	Proposed      harness.Resources `json:"proposed"`
-	Executed      Executed          `json:"executed"`
+	Path         string            `json:"path"`
+	Name         string            `json:"name"`
+	Kind         string            `json:"kind"`
+	Technologies []Technology      `json:"technologies"`
+	Dockerfile   string            `json:"dockerfile"`
+	Image        string            `json:"image"`
+	Port         int               `json:"port"`
+	Readiness    *Readiness        `json:"readiness"`
+	EnvFile      *string           `json:"envFile"`
+	PassEnv      []string          `json:"passEnv"`
+	InferredFrom []string          `json:"inferredFrom"`
+	ConfirmedBy  Actor             `json:"confirmedBy"`
+	Proposed     harness.Resources `json:"proposed"`
+	Executed     Executed          `json:"executed"`
+}
+
+// Readiness is the probe a component's workload waits on, and where it
+// came from: the Dockerfile's HEALTHCHECK, or the fence's explicit kind.
+// Period, timeout and initial delay are seconds.
+type Readiness struct {
+	Kind                string   `json:"kind"`
+	From                string   `json:"from"`
+	Path                *string  `json:"path"`
+	Command             []string `json:"command"`
+	PeriodSeconds       int      `json:"periodSeconds"`
+	TimeoutSeconds      int      `json:"timeoutSeconds"`
+	FailureThreshold    int      `json:"failureThreshold"`
+	InitialDelaySeconds int      `json:"initialDelaySeconds"`
 }
 
 // Technology is one technology a component runs on.
@@ -261,7 +278,7 @@ type RuntimeRef struct {
 }
 
 // SplitEnvelope divides an envelope equally among count components, the
-// remainder going to the first ones: the share runtime.md v1 can express.
+// remainder going to the first ones: the share runtime.md v2 can express.
 func SplitEnvelope(envelope harness.Resources, count int) []harness.Resources {
 	if count <= 0 {
 		return nil
@@ -282,10 +299,10 @@ func SplitEnvelope(envelope harness.Resources, count int) []harness.Resources {
 }
 
 // EqualSplitRule is how the executed shares were given.
-const EqualSplitRule = "equal split of the runtime envelope; runtime.md v1 carries no per-component share"
+const EqualSplitRule = "equal split of the runtime envelope; runtime.md v2 carries no per-component share"
 
-// The contract gaps a plan records while the fence is at version 1.
+// The contract gaps a plan records while the fence is at version 2.
 var ContractGaps = []string{
-	"per-component cpu and memory are not runtime.md v1 fields, so the proposal and the execution can differ",
-	"technologies are not runtime.md v1 fields; the plan keeps them for display",
+	"per-component cpu and memory are not runtime.md v2 fields, so the proposal and the execution can differ",
+	"technologies are not runtime.md v2 fields; the plan keeps them for display",
 }

@@ -130,8 +130,9 @@ func (playing *playing) lessons() ([]string, []string) {
 
 	if playing.lap.Ready != nil {
 		for _, component := range playing.config.Components {
-			lessons = append(lessons, "`"+component.ReadinessPath+"` passed readiness for `"+component.Path+"`.")
-			facts = append(facts, "readiness-"+slug(component.ReadinessPath))
+			signal := readinessSignal(component)
+			lessons = append(lessons, "`"+signal+"` passed readiness for `"+component.Path+"`.")
+			facts = append(facts, "readiness-"+slug(signal))
 		}
 	}
 

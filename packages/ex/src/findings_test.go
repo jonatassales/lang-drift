@@ -22,7 +22,7 @@ func TestAFailedPlanKeepsTheJudgesSpend(t *testing.T) {
 	p, deps := seedProject(t)
 	deps.Judge = &scriptedJudge{answers: sampleAnswers(t)}
 
-	status, stdout, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--component", "path=services/missing,image=x:1,port=80,readiness=/,build=docker")
+	status, stdout, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--component", "name=missing,path=services/missing,port=80,readiness=tcp")
 	if status == 0 || !strings.Contains(stderr, "services/missing") {
 		t.Fatalf("a plan over a missing component gave %d: %s\n%s", status, stderr, stdout)
 	}

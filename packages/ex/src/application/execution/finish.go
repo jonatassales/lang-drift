@@ -76,7 +76,7 @@ func (playing *playing) bringUp(ctx context.Context) error {
 	now := playing.now()
 	playing.lap.Ready = &now
 	playing.lap.Resources = &ResourceObservation{Proposed: playing.planned.Totals.Proposed, Executed: harness.Resources{CPUMillis: playing.config.CPUMillis, MemoryMiB: playing.config.MemoryMiB}}
-	playing.lap.Steps = append(playing.lap.Steps, Step{Name: "Ready", At: now, Note: fmt.Sprintf("%d of %d containers ready on %s", observation.ReadyContainers, observation.Containers, playing.readinessPaths())})
+	playing.lap.Steps = append(playing.lap.Steps, Step{Name: "Ready", At: now, Note: fmt.Sprintf("%d of %d containers ready on %s", observation.ReadyContainers, observation.Containers, playing.readinessSignals())})
 	playing.sample(observation)
 
 	emit(playing.sink, session.RuntimeReady, session.Data{"runtime": playing.runtime.String(), "revision": playing.config.Revision, "deployments": observation.Deployments, "cpuMillis": playing.planned.Totals.Proposed.CPUMillis, "memoryMiB": playing.planned.Totals.Proposed.MemoryMiB})
@@ -107,14 +107,14 @@ func (playing *playing) start(ctx context.Context) error {
 	return nil
 }
 
-// readinessPaths names the paths the components answer readiness on.
-func (playing *playing) readinessPaths() string {
-	paths := make([]string, 0, len(playing.config.Components))
+// readinessSignals names what each component answers readiness with.
+func (playing *playing) readinessSignals() string {
+	signals := make([]string, 0, len(playing.config.Components))
 	for _, component := range playing.config.Components {
-		paths = append(paths, "`"+component.ReadinessPath+"`")
+		signals = append(signals, "`"+readinessSignal(component)+"`")
 	}
 
-	return strings.Join(paths, ", ")
+	return strings.Join(signals, ", ")
 }
 
 // sample keeps the resource peaks and the first steady reading of the
