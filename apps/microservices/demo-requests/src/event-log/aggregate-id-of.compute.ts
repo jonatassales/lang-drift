@@ -1,4 +1,4 @@
-import type { StreamItem } from '@langdrift/events/transport'
+import type { StreamItem } from 'streaming/transport'
 
 // The aggregate id an entry carries as a flat field, read without parsing
 // its envelope, so a range over the stream filters cheaply.

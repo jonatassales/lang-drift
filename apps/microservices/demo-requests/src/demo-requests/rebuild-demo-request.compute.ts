@@ -1,5 +1,5 @@
-import type { DemoRequestEvent } from '@langdrift/events'
-import { demoRequestEventNames } from '@langdrift/events'
+import type { DemoRequestEvent } from 'streaming'
+import { demoRequestEventNames } from 'streaming'
 
 import type {
 	DemoRequestEmail,

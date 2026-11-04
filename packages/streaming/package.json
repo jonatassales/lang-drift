@@ -1,5 +1,5 @@
 {
-	"name": "@langdrift/events",
+	"name": "streaming",
 	"private": true,
 	"type": "module",
 	"main": "./dist/events/index.js",

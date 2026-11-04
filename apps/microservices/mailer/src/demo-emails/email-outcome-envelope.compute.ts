@@ -2,12 +2,12 @@ import type {
 	DemoRequestEmailKind,
 	DemoRequestEvent,
 	DemoRequestReceived,
-} from '@langdrift/events'
+} from 'streaming'
 import {
 	createEnvelope,
 	demoRequestEventNames,
 	demoRequestEventSchema,
-} from '@langdrift/events'
+} from 'streaming'
 
 export interface SentOutcome {
 	kind: DemoRequestEmailKind

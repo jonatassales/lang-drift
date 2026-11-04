@@ -1,12 +1,6 @@
 import 'reflect-metadata'
 
 import { hostname } from 'node:os'
-import {
-	demoRequestDeadLetterStream,
-	demoRequestMailerGroup,
-	demoRequestStream,
-} from '@langdrift/events'
-import { RedisStreamsServer } from '@langdrift/events/transport'
 import { NestFactory } from '@nestjs/core'
 import type { MicroserviceOptions } from '@nestjs/microservices'
 import { ExpressAdapter } from '@nestjs/platform-express'
@@ -14,6 +8,12 @@ import { ExpressAdapter } from '@nestjs/platform-express'
 import { AppModule } from '@app/app.module.js'
 import type { EventLogConnectionOpener } from '@app/event-log/event-log-connection-opener.factory.js'
 import { eventLogConnectionOpenerToken } from '@app/event-log/event-log-connection-opener.token.js'
+import {
+	demoRequestDeadLetterStream,
+	demoRequestMailerGroup,
+	demoRequestStream,
+} from 'streaming'
+import { RedisStreamsServer } from 'streaming/transport'
 
 // A hybrid application: the health route, plus the mailer consumer group on
 // the Redis Streams transport, in one process.

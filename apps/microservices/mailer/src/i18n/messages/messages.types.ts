@@ -1,4 +1,4 @@
-import type { demoRequestLocales } from '@langdrift/events'
+import type { demoRequestLocales } from 'streaming'
 
 export type MailLocale = (typeof demoRequestLocales)[number]
 

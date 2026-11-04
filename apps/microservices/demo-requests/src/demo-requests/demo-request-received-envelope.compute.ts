@@ -1,13 +1,10 @@
-import type {
-	DemoRequestReceived,
-	DemoRequestSubmission,
-} from '@langdrift/events'
+import type { DemoRequestReceived, DemoRequestSubmission } from 'streaming'
 import {
 	createEnvelope,
 	demoRequestAggregateType,
 	demoRequestEventNames,
 	demoRequestReceivedSchema,
-} from '@langdrift/events'
+} from 'streaming'
 
 // The first event of a demo request: the accepted submission, stamped with
 // the time it arrived, under a fresh aggregate id.

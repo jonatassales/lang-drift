@@ -1,5 +1,5 @@
-import { demoRequestStream } from '@langdrift/events'
-import { RedisStreamsClient } from '@langdrift/events/transport'
+import { demoRequestStream } from 'streaming'
+import { RedisStreamsClient } from 'streaming/transport'
 
 import type { EventLogConnectionOpener } from './event-log-connection-opener.factory.js'
 

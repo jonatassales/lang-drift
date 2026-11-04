@@ -1,6 +1,6 @@
 # demo-requests
 
-The service that receives a Book a Demo request from the website, records it as the first event of an event-sourced request on the Redis Stream `demo-requests:events`, exposes the stream over Server-Sent Events, folds a request's events into its state and archives every event into MinIO. It is a Nest.js hybrid application on Express, consuming `@langdrift/events` for the event schemas and the Redis Streams transport: the HTTP routes and the `archive` consumer group run in one process. The [Nest rules](../../../.claude/rules/11-nestjs.rule.md) say how it is laid out.
+The service that receives a Book a Demo request from the website, records it as the first event of an event-sourced request on the Redis Stream `demo-requests:events`, exposes the stream over Server-Sent Events, folds a request's events into its state and archives every event into MinIO. It is a Nest.js hybrid application on Express, consuming `streaming` for the event schemas and the Redis Streams transport: the HTTP routes and the `archive` consumer group run in one process. The [Nest rules](../../../.claude/rules/11-nestjs.rule.md) say how it is laid out.
 
 ## Endpoints
 

@@ -1,6 +1,4 @@
 import { randomUUID } from 'node:crypto'
-import type { DemoRequestSubmission } from '@langdrift/events'
-import { demoRequestSubmissionSchema } from '@langdrift/events'
 import type { MessageEvent } from '@nestjs/common'
 import {
 	Body,
@@ -24,6 +22,8 @@ import { lastValueFrom, map } from 'rxjs'
 import type { EventLogProducer } from '@app/event-log/event-log-producer.port.js'
 import { eventLogProducerToken } from '@app/event-log/event-log-producer.token.js'
 import { EventLogReaderService } from '@app/event-log/event-log-reader.service.js'
+import type { DemoRequestSubmission } from 'streaming'
+import { demoRequestSubmissionSchema } from 'streaming'
 
 import { BearerTokenGuard } from './bearer-token.guard.js'
 import { demoRequestEventsOf } from './demo-request-events-of.compute.js'

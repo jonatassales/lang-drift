@@ -1,6 +1,7 @@
-import type { DemoRequestReceived } from '@langdrift/events'
-import { demoRequestEventSchema } from '@langdrift/events'
 import { describe, expect, it } from 'vitest'
+
+import type { DemoRequestReceived } from 'streaming'
+import { demoRequestEventSchema } from 'streaming'
 
 import { emailOutcomeEnvelope } from './email-outcome-envelope.compute.js'
 

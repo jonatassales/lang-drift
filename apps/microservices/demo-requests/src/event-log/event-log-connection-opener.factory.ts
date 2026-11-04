@@ -1,8 +1,8 @@
-import type { StreamConnection } from '@langdrift/events/transport'
+import type { StreamConnection } from 'streaming/transport'
 import {
 	createProducerConnection,
 	createStreamConnection,
-} from '@langdrift/events/transport'
+} from 'streaming/transport'
 
 // A consumer's connection waits for Redis to come back; a producer's fails
 // at once, so an append either lands now or is reported as not stored.

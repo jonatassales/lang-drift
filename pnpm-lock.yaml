@@ -248,9 +248,6 @@ importers:
 
   apps/microservices/demo-requests:
     dependencies:
-      '@langdrift/events':
-        specifier: workspace:*
-        version: link:../../../packages/events
       '@nestjs/common':
         specifier: 12.3.2
         version: 12.3.2(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -272,6 +269,9 @@ importers:
       rxjs:
         specifier: 7.8.2
         version: 7.8.2
+      streaming:
+        specifier: workspace:*
+        version: link:../../../packages/streaming
       zod:
         specifier: ^4.6.5
         version: 4.6.7
@@ -294,9 +294,6 @@ importers:
 
   apps/microservices/mailer:
     dependencies:
-      '@langdrift/events':
-        specifier: workspace:*
-        version: link:../../../packages/events
       '@nestjs/common':
         specifier: 12.3.2
         version: 12.3.2(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -321,6 +318,9 @@ importers:
       rxjs:
         specifier: 7.8.2
         version: 7.8.2
+      streaming:
+        specifier: workspace:*
+        version: link:../../../packages/streaming
     devDependencies:
       '@nestjs/cli':
         specifier: 12.0.11
@@ -417,7 +417,13 @@ importers:
 
   packages/contracts: {}
 
-  packages/events:
+  packages/ex:
+    devDependencies:
+      '@langdrift/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+
+  packages/streaming:
     dependencies:
       ioredis:
         specifier: ^6.0.0
@@ -447,12 +453,6 @@ importers:
       vitest:
         specifier: 5.0.5
         version: 5.0.5(@types/node@24.19.2)(@vitest/coverage-v8@5.0.5)(jsdom@26.1.0)(vite@8.3.5(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
-
-  packages/ex:
-    devDependencies:
-      '@langdrift/contracts':
-        specifier: workspace:*
-        version: link:../contracts
 
   packages/tokens:
     devDependencies:

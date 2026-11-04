@@ -1,5 +1,6 @@
-import type { DemoRequestEvent } from '@langdrift/events'
 import { describe, expect, it } from 'vitest'
+
+import type { DemoRequestEvent } from 'streaming'
 
 import { rebuildDemoRequest } from './rebuild-demo-request.compute.js'
 
