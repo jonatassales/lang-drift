@@ -415,13 +415,13 @@ importers:
 
   infrastructure/storage: {}
 
-  packages/contracts: {}
-
-  packages/ex:
+  lib/cli:
     devDependencies:
-      '@langdrift/contracts':
+      '@langdrift/core':
         specifier: workspace:*
-        version: link:../contracts
+        version: link:../core
+
+  lib/core: {}
 
   packages/streaming:
     dependencies:

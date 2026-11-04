@@ -13,7 +13,8 @@
 - [ ] No README, translated README, website badge, widget or CLI message names `@langdrift/ex`; the dashboard widget reads the version from the manifest.
 - [ ] `SECURITY.md` lists `@langdrift/cli` and `@langdrift/core` as published and no private package.
 - [ ] `git grep -n '@langdrift/ex\b'` finds only workflow history and CLI fixtures.
-- [ ] Owner, after merge and a fresh `pnpm logout && pnpm login`: `@langdrift/cli@0.4.0` is on npm, `@langdrift/ex` is deprecated with a pointer to it, the tags `lib/cli/v0.4.0` and `lib/core/v0.1.0` and the GitHub Release exist, and `pnpm dlx @langdrift/cli@0.4.0 --version` prints `ex 0.4.0`.
+- [ ] Once the owner has tagged `lib/core/contracts/go/v0.1.0`, `lib/cli/go.mod` requires that version (deferred from 0216: an untagged `require` makes Go fetch the module even inside the workspace).
+- [ ] Owner, after merge and a fresh `pnpm logout && pnpm login`: `@langdrift/cli@0.4.0` is on npm, `@langdrift/ex` is deprecated with a pointer to it, the tags `lib/cli/v0.4.0` and `lib/core/contracts/go/v0.1.0` and the GitHub Release exist, and `pnpm dlx @langdrift/cli@0.4.0 --version` prints `ex 0.4.0`.
 
 ## Dev part
 

@@ -15,7 +15,7 @@ The product carries the brand in its name: **LangDrift FinOps**, with **Microrun
 | Part | The idea it serves |
 | --- | --- |
 | **FinOps** | Make agent-assisted delivery accountable to a team budget. It connects product intent, delivery context, execution evidence and economic outcome in one inspectable chain, on three pillars: FinOps as the economic purpose, the agentic harness as the delivery workflow and its evidence, and microruntimes as bounded, consumer-owned execution around software that already exists. |
-| **Microruntimes** | The engine: plan, run and record a bounded execution around a team's own software. Its Go CLI, `ex`, lives in `packages/ex` beside the Microruntimes contracts in `packages/contracts`; every plan with Microruntimes includes FinOps. |
+| **Microruntimes** | The engine: plan, run and record a bounded execution around a team's own software. Its Go CLI, `ex`, lives in `lib/cli` beside the Microruntimes contracts in `lib/core`; every plan with Microruntimes includes FinOps. |
 
 FinOps grew out of the Exphere project. Its value comes from data the platform produces itself.
 
@@ -36,7 +36,7 @@ The LangDrift console is where a team manages FinOps: projects registered from a
 
 ## Where things stand
 
-A pnpm and Turborepo monorepo. `apps/website` is the platform site, one page with the FinOps and Microruntimes pages beside it; it started as langdrift.md, ported from the earlier `langdrift` monorepo under spec 0003. `apps/console` is the console and `apps/extub` its local stub API. `packages/tokens`, `packages/web`, `packages/ex` (the `ex` CLI) and `packages/contracts` (the Microruntimes contracts) exist; `shell`, `account` and `runtime` are planned. Each app and package has a README with its own contract.
+A pnpm and Turborepo monorepo. `apps/website` is the platform site, one page with the FinOps and Microruntimes pages beside it; it started as langdrift.md, ported from the earlier `langdrift` monorepo under spec 0003. `apps/console` is the console and `apps/extub` its local stub API. `packages/tokens`, `packages/web`, `lib/cli` (the `ex` CLI) and `lib/core` (the Microruntimes contracts) exist; `shell`, `account` and `runtime` are planned. Each app and package has a README with its own contract.
 
 ## How we work
 
@@ -55,7 +55,7 @@ A pnpm and Turborepo monorepo. `apps/website` is the platform site, one page wit
 | The project vocabulary | [`.agents/context.md`](.agents/context.md), `## Glossary` |
 | Specs, tickets, ADRs and research notes | `.agents/workflow/` |
 | The website's environment contract and sign-up pause | [`apps/website/README.md`](apps/website/README.md) |
-| The `ex` CLI and the Microruntimes contracts | [`packages/ex/README.md`](packages/ex/README.md), [`packages/contracts/README.md`](packages/contracts/README.md) |
+| The `ex` CLI and the Microruntimes contracts | [`lib/cli/README.md`](lib/cli/README.md), [`lib/core/contracts/go/README.md`](lib/core/contracts/go/README.md) |
 
 ## Commands
 

@@ -17,7 +17,7 @@ runs:
       with:
         go-version-file: go.work
         cache-dependency-path: |
-          packages/ex/go.sum
+          lib/cli/go.sum
           apps/extub/go.sum
           go.work.sum
     # drift quality reads the tree through ripgrep, which the runner image
