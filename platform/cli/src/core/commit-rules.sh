@@ -6,7 +6,7 @@
 # Each check reads a commit message, or a list of changed paths, on stdin.
 
 DRIFT_AI_SIGNATURE_ERROR='Remove the AI-generated signature, trailer or footer.'
-DRIFT_TICKET_ERROR="Changes under apps/ or packages/ need a 'Ticket: <NNNN>' trailer naming a file in .agents/workflow/tickets/."
+DRIFT_TICKET_ERROR="Changes under apps/, packages/, lib/ or infrastructure/ need a 'Ticket: <NNNN>' trailer naming a file in .agents/workflow/tickets/."
 
 # True when the message carries an AI-generated signature, trailer or footer.
 drift_has_ai_signature() {
@@ -14,9 +14,9 @@ drift_has_ai_signature() {
   grep -Eiq "^co-authored-by:.*($ai_tools)|^claude-session:|generated with.*($ai_tools)"
 }
 
-# True when a changed path lies under apps/ or packages/.
+# True when a changed path lies under apps/, packages/, lib/ or infrastructure/.
 drift_touches_workspaces() {
-  grep -E '^(apps|packages)/' | grep -Evq '/\.gitkeep$'
+  grep -E '^(apps|packages|lib|infrastructure)/' | grep -Evq '/\.gitkeep$'
 }
 
 # True when the message's Ticket trailer names a file in the tickets folder.
