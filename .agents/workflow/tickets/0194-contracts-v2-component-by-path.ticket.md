@@ -8,11 +8,11 @@
 
 **Status:** ready-for-agent
 
-- [ ] A fence with `version: 2` and a component `{ name, path }` parses; `dockerfile` defaults to `Dockerfile`, `port` and `readiness` may be absent.
-- [ ] `name` must be a unique DNS label; `dockerfile` has no slash; `readiness.kind` is `tcp` or `http`, and `http` requires a path starting with `/`; `envFile` is a clean relative path inside the checkout; env and pass-through names match an uppercase variable name and do not overlap; each rule has a refusing test with its reason.
-- [ ] `image`, `build` and `readinessPath` are refused as unknown fields; `version: 1` is refused with "re-plan the runtime".
-- [ ] The contracts README describes the new fence and the readiness derivation.
-- [ ] `go test -race ./...` passes in the contracts module.
+- [x] A fence with `version: 2` and a component `{ name, path }` parses; `dockerfile` defaults to `Dockerfile`, `port` and `readiness` may be absent.
+- [x] `name` must be a unique DNS label; `dockerfile` has no slash; `readiness.kind` is `tcp` or `http`, and `http` requires a path starting with `/`; `envFile` is a clean relative path inside the checkout; env and pass-through names match an uppercase variable name and do not overlap; each rule has a refusing test with its reason.
+- [x] `image`, `build` and `readinessPath` are refused as unknown fields; `version: 1` is refused with "re-plan the runtime".
+- [x] The contracts README describes the new fence and the readiness derivation.
+- [x] `go test -race ./...` passes in the contracts module.
 
 ### Verification
 

@@ -60,3 +60,24 @@ func TestLexicalPredicates(t *testing.T) {
 		t.Error("IsImageReference accepts whitespace")
 	}
 }
+
+func TestCheckVariableName(t *testing.T) {
+	for _, test := range []struct {
+		text string
+		ok   bool
+	}{
+		{"PORT", true},
+		{"MINIO_ACCESS_KEY", true},
+		{"S3", true},
+		{"port", false},
+		{"_PORT", false},
+		{"3PORT", false},
+		{"PORT-NUMBER", false},
+		{"", false},
+	} {
+		err := CheckVariableName(test.text)
+		if (err == nil) != test.ok || (err != nil && !errors.Is(err, ErrInvalidVariable)) {
+			t.Errorf("CheckVariableName(%q) = %v, want ok=%t", test.text, err, test.ok)
+		}
+	}
+}

@@ -4,7 +4,7 @@
 
 ## Tickets
 
-- [ ] 0194: contracts v2: component by path, readiness from the Dockerfile, env by file
+- [x] 0194: contracts v2: component by path, readiness from the Dockerfile, env by file
 - [ ] 0195: ex plans Dockerfile components
 - [ ] 0196: ex runs Dockerfile components
 - [ ] 0197: release `@langdrift/ex` 0.3.0 (owner)
