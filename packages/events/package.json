@@ -1,0 +1,28 @@
+{
+	"name": "@langdrift/events",
+	"private": true,
+	"main": "./dist/events/index.js",
+	"types": "./dist/events/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/events/index.d.ts",
+			"default": "./dist/events/index.js"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsc -p tsconfig.build.json",
+		"typecheck": "tsc --noEmit",
+		"test": "vitest run"
+	},
+	"dependencies": {
+		"zod": "^4.6.5"
+	},
+	"devDependencies": {
+		"@types/node": "^24",
+		"typescript": "^5",
+		"vitest": "5.0.5"
+	}
+}

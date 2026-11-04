@@ -5,7 +5,7 @@
 ## Tickets
 
 - [x] 0186: Nest rule and nested-workspace mechanics
-- [ ] 0187: `@langdrift/events`: envelope and demo-request events
+- [x] 0187: `@langdrift/events`: envelope and demo-request events
 - [ ] 0188: `@langdrift/events/transport`: Redis Streams strategy and client
 - [ ] 0189: demo-requests accepts a request
 - [ ] 0190: demo-requests reads the log

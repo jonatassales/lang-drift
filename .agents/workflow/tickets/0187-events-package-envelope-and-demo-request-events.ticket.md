@@ -8,12 +8,12 @@
 
 **Status:** ready-for-agent
 
-- [ ] `@langdrift/events` is a workspace package with `build`, `typecheck` and `test` scripts that call `tsc` and `vitest` directly, and its exports resolve from the built output.
-- [ ] The envelope schema accepts `{ id, type, version, aggregate: { type, id }, occurredAt, correlationId, causationId?, payload }` and refuses a missing or malformed field with a reason.
-- [ ] The three event schemas accept their payloads as the spec lists them and refuse an unknown type.
-- [ ] Creating an envelope for a received event sets the correlation id to the aggregate id; creating a mailer event sets the causation id to the received event's id.
-- [ ] Each schema and the envelope factory has a colocated unit test whose description names the package and the file path.
-- [ ] `drift quality dead-code` reports nothing new for the package.
+- [x] `@langdrift/events` is a workspace package with `build`, `typecheck` and `test` scripts that call `tsc` and `vitest` directly, and its exports resolve from the built output.
+- [x] The envelope schema accepts `{ id, type, version, aggregate: { type, id }, occurredAt, correlationId, causationId?, payload }` and refuses a missing or malformed field with a reason.
+- [x] The three event schemas accept their payloads as the spec lists them and refuse an unknown type.
+- [x] Creating an envelope for a received event sets the correlation id to the aggregate id; creating a mailer event sets the causation id to the received event's id.
+- [x] Each schema and the envelope factory has a colocated unit test whose description names the package and the file path.
+- [ ] `drift quality dead-code` reports nothing new for the package once ticket 0189 consumes it; until then its modules have no importer by design, so this box is ticked in 0189.
 
 ### Verification
 
