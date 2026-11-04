@@ -42,7 +42,7 @@ if [ -f "$_ex_binary" ] && [ ! -x "$_ex_binary" ]; then
 fi
 
 if [ ! -x "$_ex_binary" ]; then
-  printf '%s\n' "LangDrift CLI binary is missing for $_ex_os/$_ex_arch. Run build.sh or reinstall @langdrift/ex." >&2
+  printf '%s\n' "LangDrift CLI binary is missing for $_ex_os/$_ex_arch. Run build.sh or reinstall @langdrift/cli." >&2
   exit 4
 fi
 

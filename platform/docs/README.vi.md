@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@langdrift/ex"><img alt="npm @langdrift/ex" src="https://img.shields.io/npm/v/@langdrift/ex?logo=npm&amp;logoColor=white&amp;label=%40langdrift%2Fex&amp;color=CB3837&amp;labelColor=18181B" height="20"></a>
+  <a href="https://www.npmjs.com/package/@langdrift/cli"><img alt="npm @langdrift/cli" src="https://img.shields.io/npm/v/@langdrift/cli?logo=npm&amp;logoColor=white&amp;label=%40langdrift%2Fcli&amp;color=CB3837&amp;labelColor=18181B" height="20"></a>
 </p>
 
 <p align="center">
@@ -44,8 +44,8 @@
 ### Điều kiện tiên quyết
 
 - **macOS** hoặc **Linux**
-- **Node.js 24+** (để chạy `@langdrift/ex` qua `npx`)
-- **Docker**, **kind**, **kubectl** và **Terraform** (để chạy microruntime cục bộ có giới hạn; kiểm tra môi trường bất kỳ lúc nào với `npx @langdrift/ex doctor`)
+- **Node.js 24+** (để chạy `@langdrift/cli` qua `npx`)
+- **Docker**, **kind**, **kubectl** và **Terraform** (để chạy microruntime cục bộ có giới hạn; kiểm tra môi trường bất kỳ lúc nào với `npx @langdrift/cli doctor`)
 - `ANTHROPIC_API_KEY` đã được thiết lập trong môi trường (cho bộ lập kế hoạch và thẩm định mô hình)
 
 ### 1. Khởi tạo dự án của bạn
@@ -53,7 +53,7 @@
 Chạy lệnh khởi tạo từ thư mục gốc của kho lưu trữ:
 
 ```sh
-npx @langdrift/ex init
+npx @langdrift/cli init
 ```
 
 Lệnh này tạo cấu hình định danh dự án trong `.langdrift/config.json` và các quy tắc thực thi cục bộ trong `.langdrift/microruntimes/AGENTS.md`. Các tệp hiện có không bị thay đổi. Hãy thêm `/.langdrift/` vào `.gitignore` của bạn: thư mục này chứa trạng thái cục bộ do `ex` tạo ra.
@@ -63,7 +63,7 @@ Lệnh này tạo cấu hình định danh dự án trong `.langdrift/config.jso
 Trỏ `ex` tới một ticket hoặc bản đặc tả. Công cụ sẽ đọc các tài liệu liên kết, xác định giới hạn CPU và bộ nhớ trong hạn mức của bạn, đề xuất mô hình và mức độ nỗ lực tối ưu, đồng thời ghi lại kế hoạch thực thi có giới hạn:
 
 ```sh
-npx @langdrift/ex agent plan <đường-dẫn-đến-ticket.md> --component name=console,path=apps/console
+npx @langdrift/cli agent plan <đường-dẫn-đến-ticket.md> --component name=console,path=apps/console
 ```
 
 > **Mẹo:** Sử dụng `--no-judge` để tạo kế hoạch thuần túy theo kinh nghiệm heuristics mà không cần gọi LLM, hoàn toàn không phát sinh chi phí.
@@ -102,13 +102,13 @@ Một thành phần trỏ tới các tệp: tên và thư mục của nó, nơi 
 Thực thi runtime đồng nghĩa với việc phê duyệt kế hoạch và khởi chạy chu trình bàn giao:
 
 ```sh
-npx @langdrift/ex agent run <runtime-id>
+npx @langdrift/cli agent run <runtime-id>
 ```
 
 Trong quá trình thực thi, `ex` điều phối toàn bộ vòng đời bàn giao:
 
 1. **Kiểm tra cổng chi phí:** Xác minh giá niêm yết bao quát lượt chạy và bảo lưu chi phí ước tính theo phân bổ của ticket và hạn mức kỳ hạn.
-2. **Các giai đoạn quy trình:** Điều khiển tác tử viết mã qua các giai đoạn được định nghĩa trong quy trình làm việc của bạn. Khi cần con người phê duyệt, quá trình thực thi sẽ tạm dừng cho đến khi được xác nhận qua terminal hoặc `npx @langdrift/ex agent confirm <runtime-id> <giai-đoạn>`.
+2. **Các giai đoạn quy trình:** Điều khiển tác tử viết mã qua các giai đoạn được định nghĩa trong quy trình làm việc của bạn. Khi cần con người phê duyệt, quá trình thực thi sẽ tạm dừng cho đến khi được xác nhận qua terminal hoặc `npx @langdrift/cli agent confirm <runtime-id> <giai-đoạn>`.
 3. **Runtime cục bộ:** Build từng thành phần từ Dockerfile của nó và khởi chạy các thành phần trong cụm kind cục bộ, mỗi thành phần mang tên của chính nó, chờ các probe sẵn sàng cho đến khi hệ thống ổn định.
 4. **Quan sát bàn giao:** Giám sát các commit Git, nhánh và kiểm tra PR ở chế độ chỉ đọc.
 5. **Quyết toán:** Giải phóng tài nguyên runtime cục bộ, hoàn trả các khoản bảo lưu ngân sách chưa sử dụng và ghi lại lượt chạy vào sổ cái kiểm toán.
@@ -119,13 +119,13 @@ Theo dõi các lượt chạy đang hoạt động, kiểm tra sự kiện phiê
 
 ```sh
 # Hiển thị trạng thái lượt chạy hiện tại và trạng thái vòng lặp
-npx @langdrift/ex agent status <runtime-id>
+npx @langdrift/cli agent status <runtime-id>
 
 # Tái tạo chỉ mục ký ức theo giai đoạn từ các lượt chạy trước
-npx @langdrift/ex agent reindex
+npx @langdrift/cli agent reindex
 
 # Kiểm tra các điều kiện tiên quyết và tính toàn vẹn của chuỗi công cụ
-npx @langdrift/ex doctor
+npx @langdrift/cli doctor
 ```
 
 Thêm `--json` vào lệnh `status` để truyền luồng sự kiện NDJSON định dạng cho việc tích hợp bảng điều khiển và bảng điều khiển.

@@ -45,7 +45,7 @@ cat <<EOF
 
 | Component | Property | Current Value | PR Status |
 | :--- | :--- | :--- | :---: |
-| **LangDrift-X (CLI)** | Package Version | \`@langdrift/ex@${ex_pkg_version}\` | [Pinned](https://console.langdrift.md/sign-in) |
+| **LangDrift-X (CLI)** | Package Version | \`@langdrift/cli@${ex_pkg_version}\` | [Pinned](https://console.langdrift.md/sign-in) |
 | **LangDrift-X (Binary)** | Engine Build | \`${ex_bin_version}\` | [Development](https://console.langdrift.md/sign-in) |
 | **LangDrift-X (Updates)**| Code Changes | ${ex_updates} | [${ex_status}](https://console.langdrift.md/sign-in) |
 | **Contracts** | State Protocol | \`@langdrift/core\` | [${contracts_status}](https://console.langdrift.md/sign-in) |

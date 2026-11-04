@@ -13,6 +13,9 @@ if [ "${1:-}" = "--publish" ]; then
   shift
 fi
 
+# The CLI version the dashboard names comes from its manifest, never a literal.
+cli_version=$(sed -n 's/.*"version":[[:space:]]*"\([^"]*\)".*/\1/p' "$DRIFT_PROJECT_ROOT/lib/cli/package.json" | head -n 1)
+
 summary_tmp=$(mktemp)
 dashboard_tmp=$(mktemp)
 trap 'rm -f "$summary_tmp" "$dashboard_tmp"' EXIT
@@ -24,7 +27,7 @@ cat <<EOF >"$summary_tmp"
 | :--- | :--- | :---: |
 | **Workflow** | Autonomous stages complete · Ticket verified | [Complete](https://console.langdrift.md/sign-in) |
 | **FinOps** | **\$0.24** expended / \$0.50 authorized ceiling | [In Envelope](https://console.langdrift.md/sign-in) |
-| **Microruntimes** | \`@langdrift/ex@0.1.0\` · Contracts in sync | [Stable](https://console.langdrift.md/sign-in) |
+| **Microruntimes** | \`@langdrift/cli@${cli_version}\` · Contracts in sync | [Stable](https://console.langdrift.md/sign-in) |
 | **Code Quality** | 100% rules verified · 0 dead code · Sound types | [Passing](https://console.langdrift.md/sign-in) |
 | **Agentic** | **96 / 100** Harness Score · Supervised delivery | [L4 Maturity](https://console.langdrift.md/sign-in) |
 EOF

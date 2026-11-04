@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@langdrift/ex"><img alt="npm @langdrift/ex" src="https://img.shields.io/npm/v/@langdrift/ex?logo=npm&amp;logoColor=white&amp;label=%40langdrift%2Fex&amp;color=CB3837&amp;labelColor=18181B" height="20"></a>
+  <a href="https://www.npmjs.com/package/@langdrift/cli"><img alt="npm @langdrift/cli" src="https://img.shields.io/npm/v/@langdrift/cli?logo=npm&amp;logoColor=white&amp;label=%40langdrift%2Fcli&amp;color=CB3837&amp;labelColor=18181B" height="20"></a>
 </p>
 
 <p align="center">
@@ -44,8 +44,8 @@
 ### Pré-requisitos
 
 - **macOS** ou **Linux**
-- **Node.js 24+** (para executar `@langdrift/ex` via `npx`)
-- **Docker**, **kind**, **kubectl** e **Terraform** (para executar microruntimes locais delimitados; verifique seu ambiente a qualquer momento com `npx @langdrift/ex doctor`)
+- **Node.js 24+** (para executar `@langdrift/cli` via `npx`)
+- **Docker**, **kind**, **kubectl** e **Terraform** (para executar microruntimes locais delimitados; verifique seu ambiente a qualquer momento com `npx @langdrift/cli doctor`)
 - `ANTHROPIC_API_KEY` configurada no ambiente (para o planejador de modelos)
 
 ### 1. Inicializar o projeto
@@ -53,7 +53,7 @@
 Execute o inicializador na raiz do seu repositório:
 
 ```sh
-npx @langdrift/ex init
+npx @langdrift/cli init
 ```
 
 Isso cria a configuração de identidade do projeto em `.langdrift/config.json` e as regras locais de execução em `.langdrift/microruntimes/AGENTS.md`. Os arquivos existentes permanecem inalterados. Adicione `/.langdrift/` ao seu `.gitignore`: essa pasta armazena o estado gerado pelo `ex`.
@@ -63,7 +63,7 @@ Isso cria a configuração de identidade do projeto em `.langdrift/config.json` 
 Aponte o `ex` para um ticket ou especificação. Ele lê os documentos vinculados, dimensiona limites de CPU e memória dentro do envelope do seu time, escolhe o modelo ideal e escreve um plano de execução delimitado:
 
 ```sh
-npx @langdrift/ex agent plan <caminho-do-ticket.md> --component name=console,path=apps/console
+npx @langdrift/cli agent plan <caminho-do-ticket.md> --component name=console,path=apps/console
 ```
 
 > **Dica:** Use `--no-judge` para gerar o plano por heurística sem realizar chamadas de LLM, sem nenhum custo.
@@ -102,13 +102,13 @@ Um componente aponta para arquivos: seu nome e sua pasta, que contém um Dockerf
 Executar o runtime autoriza o plano e inicia o ciclo de entrega:
 
 ```sh
-npx @langdrift/ex agent run <runtime-id>
+npx @langdrift/cli agent run <runtime-id>
 ```
 
 Durante a execução, o `ex` coordena todo o ciclo de entrega:
 
 1. **Checagem de portão:** Valida se os preços cobrem a execução e reserva o custo estimado contra a alocação do ticket e o envelope do período.
-2. **Estágios do workflow:** Guia o agente de código pelos estágios definidos no workflow. Quando a aprovação humana é exigida, a execução pausa até ser confirmada no terminal ou com `npx @langdrift/ex agent confirm <runtime-id> <estagio>`.
+2. **Estágios do workflow:** Guia o agente de código pelos estágios definidos no workflow. Quando a aprovação humana é exigida, a execução pausa até ser confirmada no terminal ou com `npx @langdrift/cli agent confirm <runtime-id> <estagio>`.
 3. **Runtime local:** Constrói cada componente a partir do seu Dockerfile e inicia os componentes em um cluster kind local, cada um com o nome do seu componente, aguardando as sondas de prontidão.
 4. **Observação da entrega:** Monitora commits, branches e verificações de PR em modo somente leitura.
 5. **Liquidação:** Desativa recursos do runtime local, devolve reservas de orçamento não utilizadas e registra a execução no livro-razão.
@@ -119,13 +119,13 @@ Acompanhe execuções ativas, inspecione eventos de sessão e verifique ferramen
 
 ```sh
 # Exibir status da execução atual e estado da volta
-npx @langdrift/ex agent status <runtime-id>
+npx @langdrift/cli agent status <runtime-id>
 
 # Reconstruir o índice de memória a partir de execuções anteriores
-npx @langdrift/ex agent reindex
+npx @langdrift/cli agent reindex
 
 # Verificar pré-requisitos e integridade das ferramentas
-npx @langdrift/ex doctor
+npx @langdrift/cli doctor
 ```
 
 Adicione `--json` ao `status` para receber eventos NDJSON compatíveis com consoles e dashboards.

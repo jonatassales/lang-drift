@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@langdrift/ex"><img alt="npm @langdrift/ex" src="https://img.shields.io/npm/v/@langdrift/ex?logo=npm&amp;logoColor=white&amp;label=%40langdrift%2Fex&amp;color=CB3837&amp;labelColor=18181B" height="20"></a>
+  <a href="https://www.npmjs.com/package/@langdrift/cli"><img alt="npm @langdrift/cli" src="https://img.shields.io/npm/v/@langdrift/cli?logo=npm&amp;logoColor=white&amp;label=%40langdrift%2Fcli&amp;color=CB3837&amp;labelColor=18181B" height="20"></a>
 </p>
 
 <p align="center">
@@ -44,8 +44,8 @@
 ### 先決條件
 
 - **macOS** 或 **Linux**
-- **Node.js 24+** (透過 `npx` 執行 `@langdrift/ex`)
-- **Docker**、**kind**、**kubectl** 與 **Terraform** (用於執行本機邊界 runtime；隨時使用 `npx @langdrift/ex doctor` 檢查環境)
+- **Node.js 24+** (透過 `npx` 執行 `@langdrift/cli`)
+- **Docker**、**kind**、**kubectl** 與 **Terraform** (用於執行本機邊界 runtime；隨時使用 `npx @langdrift/cli doctor` 檢查環境)
 - 在環境中設定 `ANTHROPIC_API_KEY` (供模型規劃器與評判使用)
 
 ### 1. 初始化專案
@@ -53,7 +53,7 @@
 在儲存庫根目錄執行初始化指令：
 
 ```sh
-npx @langdrift/ex init
+npx @langdrift/cli init
 ```
 
 這會在 `.langdrift/config.json` 建立專案識別設定，並在 `.langdrift/microruntimes/AGENTS.md` 建立本機執行規則。既有檔案保持不變。請將 `/.langdrift/` 加入 `.gitignore`：這是 `ex` 所產生的本機狀態。
@@ -63,7 +63,7 @@ npx @langdrift/ex init
 將 `ex` 指向工單或規格文件。它會讀取關聯文件、計算預算額度內的 CPU 與記憶體邊界、建議最佳模型與推理強度，並寫入邊界執行計畫：
 
 ```sh
-npx @langdrift/ex agent plan <path-to-ticket.md> --component name=console,path=apps/console
+npx @langdrift/cli agent plan <path-to-ticket.md> --component name=console,path=apps/console
 ```
 
 > **提示：** 使用 `--no-judge` 可純粹透過啟發式規則產生計畫，無需呼叫 LLM，零成本。
@@ -102,13 +102,13 @@ npx @langdrift/ex agent plan <path-to-ticket.md> --component name=console,path=a
 執行 runtime 即代表授權該計畫並啟動交付週期：
 
 ```sh
-npx @langdrift/ex agent run <runtime-id>
+npx @langdrift/cli agent run <runtime-id>
 ```
 
 執行期間，`ex` 會協調整個交付生命週期：
 
 1. **閘門檢查：** 確認標價涵蓋執行內容，並針對工單配額與期間預算保留預估成本。
-2. **工作流程階段：** 驅動程式開發代理執行工作流程中所定義的階段。若需要人工確認，執行會暫停並等待終端機輸入或 `npx @langdrift/ex agent confirm <runtime-id> <stage>`。
+2. **工作流程階段：** 驅動程式開發代理執行工作流程中所定義的階段。若需要人工確認，執行會暫停並等待終端機輸入或 `npx @langdrift/cli agent confirm <runtime-id> <stage>`。
 3. **本機 runtime：** 依各元件的 Dockerfile 建置，並以元件名稱在本機 kind 叢集中啟動，等待就緒探針直到狀況正常。
 4. **交付觀察：** 以唯讀方式觀察 Git 提交、分支與 PR 檢查。
 5. **結算清算：** 銷毀本機 runtime 資源、釋出未使用的預算保留額，並將執行紀錄寫入帳本。
@@ -119,13 +119,13 @@ npx @langdrift/ex agent run <runtime-id>
 
 ```sh
 # 顯示目前執行狀態與圈次進度
-npx @langdrift/ex agent status <runtime-id>
+npx @langdrift/cli agent status <runtime-id>
 
 # 從歷次執行重新建構情節記憶索引
-npx @langdrift/ex agent reindex
+npx @langdrift/cli agent reindex
 
 # 檢查先決條件與工具鏈健全狀況
-npx @langdrift/ex doctor
+npx @langdrift/cli doctor
 ```
 
 在 `status` 後加上 `--json` 可輸出適合主控台與儀表板整合的 NDJSON 事件串流。
