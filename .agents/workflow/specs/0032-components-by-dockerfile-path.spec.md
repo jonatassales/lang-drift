@@ -7,7 +7,7 @@
 - [x] 0194: contracts v2: component by path, readiness from the Dockerfile, env by file
 - [x] 0195: ex plans Dockerfile components
 - [x] 0196: ex runs Dockerfile components
-- [ ] 0197: release `@langdrift/ex` 0.3.0 (owner)
+- [x] 0197: release `@langdrift/ex` 0.3.0 (owner)
 - [ ] 0198: this repository's Book a Demo microruntime
 
 ## Problem Statement
