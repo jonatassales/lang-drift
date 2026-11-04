@@ -1,8 +1,8 @@
 # Website
 
-The LangDrift site, started as today's langdrift.md and reshaped into one agentic FinOps platform page. It is the public, localized LangDrift website: the home page, the FinOps and Microruntimes pages, pricing, privacy and the early-access flow. Demo calls to action lead to `/book-a-demo/`, whose form validates a request and answers that requests are paused.
+The LangDrift site, started as today's langdrift.md and reshaped into one agentic FinOps platform page. It is the public, localized LangDrift website: the home page, the FinOps and Microruntimes pages, pricing, privacy and the early-access flow. Demo calls to action lead to `/book-a-demo/`, whose form validates a request and forwards it to the demo-requests service under `apps/microservices`; while that service is not reachable, the form shows the return-soon notice.
 
-Early access posts to a private registry service outside this repository. Admission → Turnstile Siteverify → registration in the registry, which persists the contact and sends the confirmation. The website holds no email credentials and never sends mail itself. HTTP 202 confirms persistence, not delivery.
+Early access posts to a private registry service outside this repository. Admission → Turnstile Siteverify → registration in the registry, which persists the contact and sends the confirmation. The website holds no email credentials and never sends mail itself: the demo-requests service records a request and its mailer sends the emails. HTTP 202 confirms persistence, not delivery.
 
 Sign-up is paused in code until feature flags have a proper home: the section shows the return-soon notice, the privacy page states the pause and `/api/early-access/` answers 503. The code that opens it stays commented where it lives: the form in `early-access/section.tsx`, the active notice in the privacy page and the real handler in `api/early-access/route.ts`.
 
@@ -33,7 +33,8 @@ Run from the repository root:
 | `EARLY_ACCESS_REGISTRY_URL` | Private authenticated registry origin; HTTPS in production. |
 | `EARLY_ACCESS_REGISTRY_KEY` | Server-only website credential for the registry, at least 32 characters. |
 | `EARLY_ACCESS_MODE` | `test` selects the test fixtures outside development; anything else behaves as production. |
-| `RESEND_API_KEY` | Server-only Resend API key for dispatching demo request emails from `no-reply@langdrift.md`. |
+| `DEMO_REQUESTS_URL` | Origin of the demo-requests service the edge forwards accepted demo requests to; unset, the form answers that requests are paused. |
+| `DEMO_REQUESTS_TOKEN` | Server-only bearer token the demo-requests service expects, at least 32 characters. |
 
 Production fails closed until a trusted ingress contract for the host exists. Registry admission is never exposed to browsers, and client-supplied IP headers never count as proof.
 

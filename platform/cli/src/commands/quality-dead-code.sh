@@ -62,18 +62,18 @@ is_framework_file() {
   return 1
 }
 
-workspaces=$(for workspace in apps/* packages/*; do
+workspaces=$(for workspace in apps/* apps/microservices/* packages/*; do
   [ -f "$workspace/package.json" ] && [ ! -f "$workspace/go.mod" ] && printf '%s\n' "$workspace"
 done)
 
 # Every non-test source file of the JavaScript workspaces, one corpus for the
 # CSS class search.
 for workspace in $workspaces; do
-  git ls-files -- "$workspace/src" | grep -E '\.(ts|tsx|js|jsx)$' | grep -v -E '\.(unit|test)\.' || true
+  git ls-files -- "$workspace/src" | grep -E '\.(ts|tsx|js|jsx)$' | grep -v -E '\.(unit|test|mock)\.' || true
 done | while IFS= read -r source; do cat "$source"; done >"$sources"
 
 check_aliases() {
-  for paths in $(git ls-files -- 'apps/*/tsconfig.paths.json' 'packages/*/tsconfig.paths.json'); do
+  for paths in $(git ls-files -- 'apps/*/tsconfig.paths.json' 'apps/microservices/*/tsconfig.paths.json' 'packages/*/tsconfig.paths.json'); do
     workspace=${paths%/*}
     jq -r '.compilerOptions.paths // {} | keys[]' "$paths" | while IFS= read -r alias; do
       prefix=${alias%\*}
@@ -88,7 +88,7 @@ check_aliases() {
 check_modules() {
   for workspace in $workspaces; do
     git ls-files -- "$workspace/src" | grep -E '\.(ts|tsx|js|jsx|json|css)$' |
-      grep -v -E '\.(unit|test)\.|/testdata/' | while IFS= read -r module; do
+      grep -v -E '\.(unit|test|mock)\.|/testdata/' | while IFS= read -r module; do
       is_framework_file "$module" && continue
       base=${module##*/}
       case "$base" in
@@ -101,7 +101,7 @@ check_modules() {
         *) pattern="[/'\"@]$(escape_regex "${base%.*}")(\\.(ts|tsx|js|jsx))?['\"]" ;;
       esac
       # shellcheck disable=SC2086 # One pathspec per workspace.
-      if ! git grep -q -E -e "$pattern" -- $workspaces ":!$module" ':!*.unit.*' ':!*.test.*'; then
+      if ! git grep -q -E -e "$pattern" -- $workspaces ":!$module" ':!*.unit.*' ':!*.test.*' ':!*.mock.*'; then
         report module "$module" "$module: nothing imports it"
       fi
     done
@@ -110,7 +110,7 @@ check_modules() {
 
 check_exports() {
   for workspace in $workspaces; do
-    git ls-files -- "$workspace/src" | grep -E '\.(ts|tsx)$' | grep -v -E '\.(unit|test)\.' |
+    git ls-files -- "$workspace/src" | grep -E '\.(ts|tsx)$' | grep -v -E '\.(unit|test|mock)\.' |
       while IFS= read -r module; do
         sed -n -E 's/^export (async )?(function|const|let|class|enum) ([A-Za-z0-9_]+).*/\3/p' "$module" |
           while IFS= read -r name; do
@@ -124,7 +124,7 @@ check_exports() {
             [ "$(grep -c -w -e "$name" "$module")" -gt 1 ] && continue
             used=false
             # shellcheck disable=SC2086 # One pathspec per workspace.
-            for consumer in $(git grep -l -w -e "$name" -- $workspaces ":!$module" ':!*.unit.*' ':!*.test.*'); do
+            for consumer in $(git grep -l -w -e "$name" -- $workspaces ":!$module" ':!*.unit.*' ':!*.test.*' ':!*.mock.*'); do
               if without_reexports "$consumer" | grep -q -w -e "$name"; then
                 used=true
                 break

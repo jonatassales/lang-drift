@@ -1,17 +1,17 @@
 # Book a Demo on microservices
 
-**Status:** ready-for-agent
+**Status:** ready-for-review
 
 ## Tickets
 
-- [ ] 0186: Nest rule and nested-workspace mechanics
-- [ ] 0187: `@langdrift/events`: envelope and demo-request events
-- [ ] 0188: `@langdrift/events/transport`: Redis Streams strategy and client
-- [ ] 0189: demo-requests accepts a request
-- [ ] 0190: demo-requests reads the log
-- [ ] 0191: demo-requests archives every event to MinIO
-- [ ] 0192: mailer sends and records
-- [ ] 0193: website edge: interceptors and forwarding
+- [x] 0186: Nest rule and nested-workspace mechanics
+- [x] 0187: `@langdrift/events`: envelope and demo-request events
+- [x] 0188: `@langdrift/events/transport`: Redis Streams strategy and client
+- [x] 0189: demo-requests accepts a request
+- [x] 0190: demo-requests reads the log
+- [x] 0191: demo-requests archives every event to MinIO
+- [x] 0192: mailer sends and records
+- [x] 0193: website edge: interceptors and forwarding
 
 ## Problem Statement
 
@@ -65,7 +65,7 @@ Every component of the future microruntime has a Dockerfile: the two services, a
 
 ## Implementation Decisions
 
-**Services and package.** Two Nest.js applications on the Express adapter under `apps/microservices/`, `demo-requests` on port 3402 and `mailer` on port 3403, and one capability package `@langdrift/events` under `packages/`, built to CommonJS and consumed through its exports; the package exists because both services consume it from the first day. `redis` and `minio` are folders under `apps/microservices/` holding only a Dockerfile and a README line; pnpm ignores them.
+**Services and package.** Two Nest.js applications on the Express adapter under `apps/microservices/`, `demo-requests` on port 3402 and `mailer` on port 3403, and one capability package `@langdrift/events` under `packages/`, built to ES modules, which Nest 12 requires, and consumed through its exports; the package exists because both services consume it from the first day. `redis` and `minio` are folders under `apps/microservices/` holding only a Dockerfile and a README line; pnpm ignores them.
 
 **Event log.** One Redis Stream, `demo-requests:events`, trimmed approximately at 100,000 entries, with a dead-letter stream beside it. Each entry carries three fields: `type`, `aggregateId` (both flat, so a range read filters without parsing) and `envelope` (JSON). The envelope is `{ id, type, version, aggregate: { type: 'demo-request', id }, occurredAt, correlationId, causationId?, payload }`; `correlationId` is the aggregate id and a mailer event's `causationId` is the id of the received event. Three event types in version 1:
 
@@ -85,9 +85,9 @@ A new version of a type is a new schema and a new member of the discriminated un
 
 **Website edge.** The route keeps its order of checks as one interceptor per concern in an `interceptors/` folder of the domain: method, origin, content type, body size, body (bounded read and strict JSON), schema. Each interceptor answers the refusal itself or yields its value; the route chains them and only then forwards. An adapter under the website's infrastructure folder posts the accepted submission to the service with the bearer token, a bounded timeout, no redirects and no cache, and returns the status. Upstream 202 becomes 200 `OK`; a missing URL or token, a network failure, a timeout or any other status becomes 503 `UNAVAILABLE` with `Retry-After`, the state the form already renders. The `DELIVERY_FAILED` reply code goes. The website's Resend adapters, their tests and the `resend` dependency are deleted; its README documents the two new keys and stops saying the form answers that requests are paused.
 
-**Nest conventions and the rules.** Injection by token on every constructor parameter with decorator metadata off, so Vitest needs no plugin and a missing `@Inject` fails at startup. `nest build` bundles with Nest's own webpack configuration so the app's path alias resolves at runtime; one alias per app. Providers that need the environment are factories that read `process.env` at creation and throw when a value is missing; no configuration module. Catalogs live in each service's `i18n/messages` folder as JSON; loaders hold no copy. These decisions become `.claude/rules/11-nestjs.rule.md`, drafted here for the owner to promote, and the `.interceptor` suffix joins the TypeScript suffix table.
+**Nest conventions and the rules.** Injection by token on every constructor parameter with decorator metadata off, so Vitest needs no plugin and a missing `@Inject` fails at startup. `nest build` compiles with Nest's own TypeScript compiler, whose paths hook rewrites the app's alias to relative imports at emit; one alias per app. Providers that need the environment are factories that read `process.env` at creation and throw when a value is missing; no configuration module. Catalogs live in each service's `i18n/messages` folder as JSON; loaders hold no copy. These decisions become `.claude/rules/11-nestjs.rule.md`, drafted here for the owner to promote, and the `.interceptor` suffix joins the TypeScript suffix table.
 
-**Dockerfiles.** Every component has one with a `HEALTHCHECK`. The services build from the repository root context in four stages with pnpm as a checksum-pinned static binary and Turborepo's `prune --docker`, run as the `node` user and expose their port. `redis` is `redis:7-alpine` with append-only persistence; `minio` is a pinned `minio/minio` release whose root credentials arrive at run time. A root `.dockerignore` bounds the context. CI does not build images.
+**Dockerfiles.** Every component has one with a `HEALTHCHECK`. The services build from the repository root context in four stages with pnpm as a checksum-pinned static binary and Turborepo's `prune --docker`, run as the `node` user and expose their port. `redis` is the current Redis Alpine image at a pinned tag with append-only persistence; `minio` is a pinned `minio/minio` release whose root credentials arrive at run time. A root `.dockerignore` bounds the context. CI does not build images.
 
 **Workspace mechanics.** The workspace globs gain `apps/microservices/*`; the dead-code scan and the localization check learn the nested layout and the Nest catalog path; the launch configurations gain both services; the context document lists the new layout and the "Event log" term.
 

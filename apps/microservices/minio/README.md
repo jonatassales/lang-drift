@@ -1,0 +1,3 @@
+# minio
+
+The archive component of the microservices: MinIO, the object store the `archive` consumer of `demo-requests` writes every event into, so a trimmed stream never loses a request's history. MinIO no longer publishes community images or binaries, so the Dockerfile builds it from its AGPL source at a pinned release. It is only a Dockerfile; pnpm ignores the folder. Build and run it locally with `docker build -t langdrift-minio:local apps/microservices/minio && docker run -d -p 9000:9000 -p 9001:9001 -e MINIO_ROOT_USER=… -e MINIO_ROOT_PASSWORD=… langdrift-minio:local`; the root credentials arrive at run time, never in the image. Under `ex` (spec 0032) it runs as the `minio` component and its `HEALTHCHECK` on `/minio/health/live` is the readiness probe.

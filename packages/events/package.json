@@ -1,0 +1,44 @@
+{
+	"name": "@langdrift/events",
+	"private": true,
+	"type": "module",
+	"main": "./dist/events/index.js",
+	"types": "./dist/events/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/events/index.d.ts",
+			"default": "./dist/events/index.js"
+		},
+		"./transport": {
+			"types": "./dist/transport/index.d.ts",
+			"default": "./dist/transport/index.js"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsc -p tsconfig.build.json",
+		"typecheck": "tsc --noEmit",
+		"test": "vitest run"
+	},
+	"dependencies": {
+		"ioredis": "^6.0.0",
+		"zod": "^4.6.5"
+	},
+	"peerDependencies": {
+		"@nestjs/common": "^12",
+		"@nestjs/microservices": "^12",
+		"reflect-metadata": "^0.2.2",
+		"rxjs": "^7.8"
+	},
+	"devDependencies": {
+		"@nestjs/common": "12.3.2",
+		"@nestjs/microservices": "12.3.2",
+		"@types/node": "^24",
+		"reflect-metadata": "0.2.2",
+		"rxjs": "7.8.2",
+		"typescript": "^5",
+		"vitest": "5.0.5"
+	}
+}

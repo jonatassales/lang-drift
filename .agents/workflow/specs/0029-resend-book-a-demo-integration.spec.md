@@ -2,6 +2,8 @@
 
 **Status:** ready-for-review
 
+**Superseded:** spec 0031 moves email dispatch out of the website into the Nest microservices; the sent page's auto-redirect and the toast introduced here stay.
+
 ## Tickets
 
 - [x] 0172: Resend email adapters for confirmation and notification

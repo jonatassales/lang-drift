@@ -1,0 +1,14 @@
+# A microservice image builds from the repository root, so Turborepo can prune
+# the workspace; only what the services need enters the context.
+*
+!package.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
+!turbo.json
+!apps/microservices
+!packages/events
+**/node_modules
+**/dist
+**/.env
+**/.env.*
+**/Dockerfile

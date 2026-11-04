@@ -1,0 +1,3 @@
+# Next writes its own agent-rules block here when it runs; the repository's
+# agent guidance lives in the root AGENTS.md.
+/AGENTS.md

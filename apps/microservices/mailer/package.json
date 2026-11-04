@@ -1,0 +1,29 @@
+{
+	"name": "mailer",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "nest start --watch --exec \"node --env-file-if-exists=.env.development --env-file-if-exists=.env\"",
+		"build": "nest build",
+		"start": "node --env-file-if-exists=.env.development --env-file-if-exists=.env dist/main.js",
+		"typecheck": "tsc --noEmit",
+		"test": "vitest run"
+	},
+	"dependencies": {
+		"@langdrift/events": "workspace:*",
+		"@nestjs/common": "12.3.2",
+		"@nestjs/core": "12.3.2",
+		"@nestjs/microservices": "12.3.2",
+		"@nestjs/platform-express": "12.3.2",
+		"intl-messageformat": "^12.1.4",
+		"reflect-metadata": "0.2.2",
+		"resend": "6.37.0",
+		"rxjs": "7.8.2"
+	},
+	"devDependencies": {
+		"@nestjs/cli": "12.0.11",
+		"@types/node": "^24",
+		"typescript": "^5",
+		"vitest": "5.0.5"
+	}
+}

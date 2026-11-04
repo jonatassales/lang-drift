@@ -1,0 +1,92 @@
+{
+	"en": {
+		"confirmation": {
+			"subject": "We received your demo request — LangDrift",
+			"greeting": "Hello,",
+			"thanks": "Thank you for requesting a demo of LangDrift for {company}.",
+			"followUp": "Our team will be in touch shortly to schedule your walkthrough.",
+			"signoff": "Best regards,\nThe LangDrift Team\nhttps://langdrift.md"
+		},
+		"leadNotification": {
+			"subject": "[LangDrift] New Demo Request: {company}",
+			"intro": "New demo request submitted on langdrift.md:",
+			"company": "Company: {company}",
+			"contact": "Contact Email: {email}",
+			"position": "Position: {position}",
+			"locale": "Locale: {locale}",
+			"submittedAt": "Submitted At: {submittedAt}"
+		}
+	},
+	"pt-BR": {
+		"confirmation": {
+			"subject": "Recebemos sua solicitação de demo — LangDrift",
+			"greeting": "Olá,",
+			"thanks": "Obrigado por solicitar uma demonstração do LangDrift para a {company}.",
+			"followUp": "Nossa equipe entrará em contato em breve para agendar a sua apresentação.",
+			"signoff": "Atenciosamente,\nEquipe LangDrift\nhttps://langdrift.md"
+		},
+		"leadNotification": {
+			"subject": "[LangDrift] Nova solicitação de demo: {company}",
+			"intro": "Nova solicitação de demo enviada em langdrift.md:",
+			"company": "Empresa: {company}",
+			"contact": "E-mail de contato: {email}",
+			"position": "Cargo: {position}",
+			"locale": "Idioma: {locale}",
+			"submittedAt": "Enviada em: {submittedAt}"
+		}
+	},
+	"zh-Hant": {
+		"confirmation": {
+			"subject": "我們已收到您的展示預約 — LangDrift",
+			"greeting": "您好，",
+			"thanks": "感謝您為 {company} 預約 LangDrift 展示。",
+			"followUp": "我們的團隊將很快與您聯絡以安排展示時段。",
+			"signoff": "祝好，\nLangDrift 團隊\nhttps://langdrift.md"
+		},
+		"leadNotification": {
+			"subject": "[LangDrift] 新的展示預約：{company}",
+			"intro": "langdrift.md 收到新的展示預約：",
+			"company": "公司：{company}",
+			"contact": "聯絡信箱：{email}",
+			"position": "職位：{position}",
+			"locale": "語言：{locale}",
+			"submittedAt": "送出時間：{submittedAt}"
+		}
+	},
+	"ja": {
+		"confirmation": {
+			"subject": "デモリクエストを受け付けました — LangDrift",
+			"greeting": "こんにちは、",
+			"thanks": "{company}様向けLangDriftデモのお申し込みをいただきありがとうございます。",
+			"followUp": "追って担当者よりデモのご案内を差し上げます。",
+			"signoff": "LangDriftチーム\nhttps://langdrift.md"
+		},
+		"leadNotification": {
+			"subject": "[LangDrift] 新しいデモリクエスト: {company}",
+			"intro": "langdrift.md に新しいデモリクエストが届きました:",
+			"company": "会社: {company}",
+			"contact": "連絡先メール: {email}",
+			"position": "役職: {position}",
+			"locale": "言語: {locale}",
+			"submittedAt": "送信日時: {submittedAt}"
+		}
+	},
+	"vi": {
+		"confirmation": {
+			"subject": "Chúng tôi đã nhận yêu cầu demo của bạn — LangDrift",
+			"greeting": "Xin chào,",
+			"thanks": "Cảm ơn bạn đã yêu cầu bản demo LangDrift cho {company}.",
+			"followUp": "Đội ngũ của chúng tôi sẽ sớm liên hệ để lên lịch buổi giới thiệu.",
+			"signoff": "Trân trọng,\nĐội ngũ LangDrift\nhttps://langdrift.md"
+		},
+		"leadNotification": {
+			"subject": "[LangDrift] Yêu cầu demo mới: {company}",
+			"intro": "Yêu cầu demo mới được gửi trên langdrift.md:",
+			"company": "Công ty: {company}",
+			"contact": "Email liên hệ: {email}",
+			"position": "Vị trí: {position}",
+			"locale": "Ngôn ngữ: {locale}",
+			"submittedAt": "Gửi lúc: {submittedAt}"
+		}
+	}
+}

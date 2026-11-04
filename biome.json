@@ -66,6 +66,16 @@
 			}
 		}
 	},
+	"overrides": [
+		{
+			"includes": ["apps/microservices/**"],
+			"javascript": {
+				"parser": {
+					"unsafeParameterDecoratorsEnabled": true
+				}
+			}
+		}
+	],
 	"assist": {
 		"actions": {
 			"source": {

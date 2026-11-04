@@ -28,8 +28,9 @@ const selectControl = `${fieldControl} text-sm`
 const errorText = 'm-0 text-xs text-status-danger'
 
 // The demo request: validated as the visitor leaves each field and again on
-// submit, posted with the locale, and answered with the return-soon notice
-// while requests are paused.
+// submit, posted with the locale to the edge, which forwards it to the
+// demo-requests service, and answered with the return-soon notice while that
+// service is unreachable.
 export function BookDemoForm(props: BookDemoFormProps) {
 	const { copy, locale } = props
 

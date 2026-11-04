@@ -1,65 +1,50 @@
 import 'server-only'
 
 import { reply } from '@components/book-a-demo/book-demo-reply.response'
-import { fieldErrorsOf } from '@components/book-a-demo/field-errors.compute'
-import { bookDemoSubmissionSchema } from '@components/book-a-demo/form.validation'
-import { isForeignRequest } from '@components/book-a-demo/is-foreign-request.validation'
-import { declaresOversizedBody } from '@components/early-access/declares-oversized-body.validation'
-import { isPlainJSON } from '@components/early-access/is-plain-json.validation'
-import { parseSubmissionJSON } from '@components/early-access/parse-submission-json.compute'
-import {
-	BodyError,
-	readBoundedBody,
-} from '@components/early-access/request.body'
-import { sendDemoConfirmation } from '@infra/resend/send-demo-confirmation.adapter'
-import { sendDemoLeadNotification } from '@infra/resend/send-demo-lead-notification.adapter'
+import { forwardDemoRequest } from '@infra/demo-requests/forward-demo-request.adapter'
+
+import { interceptBody } from './interceptors/intercept-body.interceptor'
+import { interceptBodySize } from './interceptors/intercept-body-size.interceptor'
+import { interceptContentType } from './interceptors/intercept-content-type.interceptor'
+import { interceptMethod } from './interceptors/intercept-method.interceptor'
+import { interceptOrigin } from './interceptors/intercept-origin.interceptor'
+import { interceptSchema } from './interceptors/intercept-schema.interceptor'
 
 export const runtime = 'nodejs'
 
-const bodyLimit = 4096
-
-// A demo request is validated against origin, headers, size and payload schema,
-// then dispatches confirmation and notification emails via Resend.
+// A demo request passes the edge's interceptors, one per concern, and only
+// then reaches the demo-requests service. While that service is unreachable
+// or unconfigured, the visitor learns that requests are paused.
 export async function POST(request: Request): Promise<Response> {
-	if (request.method !== 'POST') return reply(405, 'INVALID_REQUEST')
-	if (isForeignRequest(request)) return reply(403, 'INVALID_ORIGIN')
-	if (!isPlainJSON(request)) return reply(415, 'INVALID_REQUEST')
-	if (declaresOversizedBody(request, bodyLimit))
-		return reply(413, 'INVALID_REQUEST')
+	const refused =
+		interceptMethod(request) ??
+		interceptOrigin(request) ??
+		interceptContentType(request) ??
+		interceptBodySize(request)
+	if (refused) return refused
 
-	let body: unknown
+	const read = await interceptBody(request)
+
+	if (read instanceof Response) return read
+
+	const accepted = interceptSchema(read.body)
+	if (accepted instanceof Response) return accepted
+
+	let status: number
 	try {
-		const text = await readBoundedBody(request.body, bodyLimit, request.signal)
-
-		body = parseSubmissionJSON(text)
+		status = await forwardDemoRequest(accepted.submission, request.signal)
 	} catch (error) {
-		const status = error instanceof BodyError ? error.status : 400
+		const reason = error instanceof Error ? error.message : String(error)
+		console.error(`Demo request not forwarded: ${reason}`)
 
-		return reply(status, 'VALIDATION_ERROR')
+		return reply(503, 'UNAVAILABLE')
 	}
 
-	const result = bookDemoSubmissionSchema.safeParse(body)
-	if (!result.success) {
-		return reply(400, 'VALIDATION_ERROR', fieldErrorsOf(result.error))
+	if (status !== 202) {
+		console.error(`Demo request refused upstream with status ${status}`)
+
+		return reply(503, 'UNAVAILABLE')
 	}
 
-	try {
-		await sendDemoConfirmation({
-			company: result.data.company,
-			email: result.data.email,
-			locale: result.data.locale,
-			position: result.data.position,
-		})
-
-		await sendDemoLeadNotification({
-			company: result.data.company,
-			email: result.data.email,
-			locale: result.data.locale,
-			position: result.data.position,
-		})
-
-		return reply(200, 'OK')
-	} catch {
-		return reply(500, 'DELIVERY_FAILED')
-	}
+	return reply(200, 'OK')
 }
