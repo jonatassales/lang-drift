@@ -22,7 +22,7 @@ export function useStubStream(enabled: boolean, productId?: string) {
 			peer = new RTCPeerConnection({
 				iceServers: [],
 			})
-			channel = peer.createDataChannel('extub')
+			channel = peer.createDataChannel('console-stubs')
 		} catch {
 			peer?.close()
 
@@ -88,7 +88,7 @@ export function useStubStream(enabled: boolean, productId?: string) {
 					if (connection.iceGatheringState === 'complete') finish()
 				})
 
-				const response = await fetch('/api/extub/webrtc/offer', {
+				const response = await fetch('/api/console-stubs/webrtc/offer', {
 					method: 'POST',
 					headers: {
 						'content-type': 'application/json',

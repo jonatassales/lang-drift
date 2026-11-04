@@ -4,12 +4,12 @@ Project knowledge for agents working in this repository. [`AGENTS.md`](/AGENTS.m
 
 ## Repository
 
-Monorepo with the internal packages `tokens`, `streaming` and `web`, the published `ex` CLI as `@langdrift/cli` with the Microruntimes contracts in `@langdrift/core`, two Next.js apps and three services. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/microservices/console-stubs` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from extub.
+Monorepo with the internal packages `tokens`, `streaming` and `web`, the published `ex` CLI as `@langdrift/cli` with the Microruntimes contracts in `@langdrift/core`, two Next.js apps and three services. `apps/website` is where the platform site is built; it started as today's langdrift.md, copied from the earlier `langdrift` monorepo under spec 0003, and has grown into the platform site. `apps/microservices/console-stubs` is a local Go API of FinOps console stubs and seeds, copied from Exphere and adapted to this repository. `apps/console` is the console imported from Exphere, reading its data from console-stubs.
 
 Four workspace roots, each with one meaning, and a naming rule that follows it (spec 0044). `pnpm-workspace.yaml` lists them all, and a commit under any of them carries a `Ticket:` trailer.
 
 - `apps/<app>/`: one deployable Next.js app each, `website` and `console`. Picked up through `apps/*`.
-- `apps/microservices/<service>/`: the services, picked up through `apps/microservices/*`: the Nest.js microservices (`demo-requests`, `mailer`), which share the event log through `streaming` (see `.claude/rules/11-nestjs.rule.md`), and `console-stubs`, the Go stub API the console reads (still called extub on its surfaces until ticket 0219).
+- `apps/microservices/<service>/`: the services, picked up through `apps/microservices/*`: the Nest.js microservices (`demo-requests`, `mailer`), which share the event log through `streaming` (see `.claude/rules/11-nestjs.rule.md`), and `console-stubs`, the Go stub API the console reads.
 - `packages/<name>/`: packages internal to the monorepo, shared across apps and never published. Their names are bare, like the apps' (`web`, `tokens`, `streaming`). The scope they carried left under spec 0044. `shell`, `account` and `runtime` are planned.
 - `lib/<name>/`: what LangDrift publishes, and only that, under the `@langdrift/*` scope: `@langdrift/cli` at `lib/cli` (the `ex` CLI) and `@langdrift/core` at `lib/core`, whose Go surface, the Microruntimes contracts, is the module `lib/core/contracts/go`. The scope means "published"; nothing outside `lib/` carries it.
 - `infrastructure/<component>/`: the infrastructure components the products run on, each a Dockerfile, a README and a minimal private manifest: `messaging` (Redis Streams, the event log) and `storage` (MinIO, the archive). A fence names a component after its folder (ADR 0004).
@@ -32,7 +32,7 @@ Run from the repository root:
 | --- | --- |
 | `pnpm install` | Installs dependencies and the Git hooks, then links the `drift` launcher. Fails under another package manager or an unsupported Node version. |
 | `pnpm website` | Builds the packages the website depends on, then starts it in dev mode on port 3000. |
-| `pnpm console` | Builds the packages the console depends on, then starts it in dev mode on `http://127.0.0.1:3001` together with its stub API, extub, on `127.0.0.1:3401`. Extub needs a Go toolchain. |
+| `pnpm console` | Builds the packages the console depends on, then starts it in dev mode on `http://127.0.0.1:3001` together with its stub API, console-stubs, on `127.0.0.1:3401`. The stubs need a Go toolchain. |
 | `pnpm turbo run build` | Builds every package that has a `build` script, upstream packages first. |
 | `pnpm turbo run dev --filter=<package-name>` | Builds the packages an app depends on, then starts the app. |
 | `pnpm turbo run typecheck` | Runs each package's `typecheck` script. |

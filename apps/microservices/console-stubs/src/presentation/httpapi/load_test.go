@@ -39,7 +39,7 @@ func TestLocalBurstMeasures50RequestsAndRejectsTargets(t *testing.T) {
 	if err := json.NewDecoder(response.Body).Decode(&payload); err != nil {
 		t.Fatal(err)
 	}
-	if response.StatusCode != 200 || payload.LoadTest.Target != "extub-loopback" || payload.LoadTest.Requests != 50 || payload.LoadTest.Concurrency != 50 || payload.LoadTest.Succeeded != 50 || payload.LoadTest.Failed != 0 {
+	if response.StatusCode != 200 || payload.LoadTest.Target != "console-stubs-loopback" || payload.LoadTest.Requests != 50 || payload.LoadTest.Concurrency != 50 || payload.LoadTest.Succeeded != 50 || payload.LoadTest.Failed != 0 {
 		t.Fatalf("bad burst result: %+v", payload)
 	}
 	if store.Snapshot().Runtimes[0].LoadTest == nil || store.Snapshot().Runtimes[1].LoadTest != nil {

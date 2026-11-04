@@ -74,7 +74,7 @@ func (hub *Hub) Offer(ctx context.Context, offer application.Description) (appli
 	connection.OnDataChannel(func(channel *webrtc.DataChannel) {
 		item.mu.Lock()
 		defer item.mu.Unlock()
-		if channel.Label() != "extub" || item.channel != nil {
+		if channel.Label() != "console-stubs" || item.channel != nil {
 			_ = channel.Close()
 			return
 		}

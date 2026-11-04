@@ -177,7 +177,7 @@ func requireAPIHeaders(t *testing.T, label string, header http.Header) {
 	}
 }
 
-// localServe sends one request to extub on loopback and decodes its answer,
+// localServe sends one request to console-stubs on loopback and decodes its answer,
 // when it has one.
 func localServe(t *testing.T, handler Handler, request *http.Request) (*httptest.ResponseRecorder, map[string]any) {
 	t.Helper()

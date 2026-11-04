@@ -14,7 +14,7 @@ type Client struct {
 	client *http.Client
 }
 
-// New binds the probe to the same loopback listener as extub. It disables proxies,
+// New binds the probe to the same loopback listener as console-stubs. It disables proxies,
 // redirects and retries, and caps sockets and response headers for the 50 workers.
 func New(port string) *Client {
 	transport := &http.Transport{

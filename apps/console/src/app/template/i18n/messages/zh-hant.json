@@ -151,7 +151,7 @@
 			"provider_endpoint_invalid": "建議服務的端點設定無效。",
 			"provider_request_failed": "建議請求失敗。請稍後再試，或手動輸入設定值。",
 			"provider_response_invalid": "供應商傳回的建議無效。請手動輸入設定值。",
-			"stub_suggestion": "extub 範例的模擬建議，未執行 RAG 檢索或模型請求。"
+			"stub_suggestion": "console-stubs 範例的模擬建議，未執行 RAG 檢索或模型請求。"
 		},
 		"recommendationLimits": {
 			"future_workload_unverified": "樣本來自過往執行；未來相似工作負載的效能尚未驗證。",
@@ -229,7 +229,7 @@
 		"stubBanner": "本機預覽 · 模擬 microruntime。HTTP 突發請求時間於本機 stub 實際量測。",
 		"webrtcConnected": "WebRTC 已連線 · 模擬更新",
 		"webrtcFallback": "HTTP 預覽 · WebRTC 未連線",
-		"topologySynthetic": "extub 範例的模擬容器連線。",
+		"topologySynthetic": "console-stubs 範例的模擬容器連線。",
 		"componentCount": "{count} 個元件",
 		"peakPerExecution": "每次執行所回報的最高值；缺少資料仍顯示為無法取得。",
 		"quickReport": "FinOps 與測試",
@@ -241,7 +241,7 @@
 		"loadTestRunning": "測試中…",
 		"loadTestCooldown": "請等候 10 秒",
 		"runLoadTest": "執行 50 次請求",
-		"loadTestScope": "對本機 extub stub 發出 50 次 HTTP 請求嘗試，最多同時 50 次。執行上限為 3 秒，間隔為 10 秒。不涉及工作負載或外部目標。",
+		"loadTestScope": "對本機 console-stubs 發出 50 次 HTTP 請求嘗試，最多同時 50 次。執行上限為 3 秒，間隔為 10 秒。不涉及工作負載或外部目標。",
 		"loadTestOutcome": "{succeeded}/{requests} 次成功 · {failed} 次失敗",
 		"loadTestDuration": "總耗時",
 		"loadTestMaximum": "最大延遲",
@@ -363,7 +363,7 @@
 		"unsupported_ignore_pattern": "本機探索不支援忽略規則中的字元類別或跳脫。現有檔案已保留。",
 		"invalid_ticket": "請選擇不超過 16,000 字元的 .md 任務單。",
 		"ticket_contains_credentials": "請先移除任務單中的憑證再請求建議。",
-		"extub_unavailable": "無法連線至 extub。請在連接埠 3401 啟動本機 API。",
+		"console_stubs_unavailable": "無法連線至 console-stubs。請在連接埠 3401 啟動本機 API。",
 		"invalid_data_source": "CONSOLE_DATA_SOURCE 必須為 stub 或 local。",
 		"load_test_busy": "突發請求正在執行或冷卻中。請等候 10 秒後再試。",
 		"read_only_preview": "這是唯讀預覽：此處無法進行變更。",

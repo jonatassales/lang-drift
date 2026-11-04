@@ -3,10 +3,10 @@ import test from 'node:test'
 
 import {
 	consoleHostAllowed,
+	consoleStubsBase,
 	crossSite,
-	extubBase,
 	serverRead,
-} from './extub-link.ts'
+} from './console-stubs-link.ts'
 
 function browserCall(headers: Record<string, string>) {
 	return new Request('http://127.0.0.1:3130/api/console/products', {
@@ -32,7 +32,10 @@ test('a token of only whitespace keeps the local contract', () => {
 		consoleHostAllowed('langdrift-console.vercel.app', '  \n'),
 		false,
 	)
-	assert.equal(extubBase('https://langdrift-stubs.vercel.app', ' '), null)
+	assert.equal(
+		consoleStubsBase('https://langdrift-stubs.vercel.app', ' '),
+		null,
+	)
 })
 
 test('with a token the console serves its hosted host', () => {
@@ -42,38 +45,42 @@ test('with a token the console serves its hosted host', () => {
 	)
 })
 
-test('without a token extub must be plain http on loopback', () => {
+test('without a token console-stubs must be plain http on loopback', () => {
 	assert.equal(
-		extubBase('http://127.0.0.1:3401', undefined)?.href,
+		consoleStubsBase('http://127.0.0.1:3401', undefined)?.href,
 		'http://127.0.0.1:3401/',
 	)
 	assert.equal(
-		extubBase('http://localhost:3402', undefined)?.href,
+		consoleStubsBase('http://localhost:3402', undefined)?.href,
 		'http://localhost:3402/',
 	)
-	assert.equal(extubBase('https://langdrift-stubs.vercel.app', undefined), null)
-	assert.equal(extubBase('http://example.com', undefined), null)
+	assert.equal(
+		consoleStubsBase('https://langdrift-stubs.vercel.app', undefined),
+		null,
+	)
+	assert.equal(consoleStubsBase('http://example.com', undefined), null)
 })
 
-test('with a token extub may be https on any host, or http on loopback', () => {
+test('with a token console-stubs may be https on any host, or http on loopback', () => {
 	assert.equal(
-		extubBase('https://langdrift-stubs.vercel.app', 'shared-token')?.href,
+		consoleStubsBase('https://langdrift-stubs.vercel.app', 'shared-token')
+			?.href,
 		'https://langdrift-stubs.vercel.app/',
 	)
 	assert.equal(
-		extubBase('http://127.0.0.1:3489', 'shared-token')?.href,
+		consoleStubsBase('http://127.0.0.1:3489', 'shared-token')?.href,
 		'http://127.0.0.1:3489/',
 	)
-	assert.equal(extubBase('http://example.com', 'shared-token'), null)
+	assert.equal(consoleStubsBase('http://example.com', 'shared-token'), null)
 })
 
-test('extub never carries credentials in its URL', () => {
+test('console-stubs never carries credentials in its URL', () => {
 	assert.equal(
-		extubBase('https://user:secret@example.com', 'shared-token'),
+		consoleStubsBase('https://user:secret@example.com', 'shared-token'),
 		null,
 	)
-	assert.equal(extubBase('http://user@127.0.0.1:3401', undefined), null)
-	assert.throws(() => extubBase('not a url', 'shared-token'))
+	assert.equal(consoleStubsBase('http://user@127.0.0.1:3401', undefined), null)
+	assert.throws(() => consoleStubsBase('not a url', 'shared-token'))
 })
 
 test('a browser call from another site is cross-site', () => {

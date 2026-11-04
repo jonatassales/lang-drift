@@ -1,5 +1,5 @@
 export { consoleHostAllowed } from './console-host-allowed.compute.ts'
+export { consoleStubsBase } from './console-stubs-base.compute.ts'
 export { crossSite } from './cross-site.compute.ts'
-export { extubBase } from './extub-base.compute.ts'
 export { hosted } from './hosted.compute.ts'
 export { serverRead } from './server-read.compute.ts'

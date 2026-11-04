@@ -4,7 +4,7 @@ import test from 'node:test'
 import { isLoadTestResult } from './load-test-result.ts'
 
 const result = {
-	target: 'extub-loopback',
+	target: 'console-stubs-loopback',
 	requests: 50,
 	concurrency: 50,
 	succeeded: 49,

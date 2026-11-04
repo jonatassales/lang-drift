@@ -73,7 +73,7 @@ func (tester *LoadTester) Run(ctx context.Context) (domain.LoadTestResult, error
 		}
 	}
 	return domain.LoadTestResult{
-		Target: "extub-loopback", Requests: count, Concurrency: count,
+		Target: "console-stubs-loopback", Requests: count, Concurrency: count,
 		Succeeded: passed, Failed: count - passed,
 		DurationMs: float64(completed.Sub(started).Microseconds()) / 1000,
 		P50Ms:      durations[24], P95Ms: durations[47], MaxMs: durations[49],

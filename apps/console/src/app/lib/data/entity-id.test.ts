@@ -3,7 +3,7 @@ import test from 'node:test'
 
 import { consolePathSafe, isEntityId } from './entity-id.ts'
 
-test('the ids extub seeds and generates are entity ids', () => {
+test('the ids console-stubs seeds and generates are entity ids', () => {
 	for (const id of [
 		'seed-microruntimes',
 		'seed-product-2',
