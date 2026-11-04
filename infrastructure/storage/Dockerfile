@@ -1,10 +1,10 @@
-# The archive of the microservices: MinIO, built from its AGPL source at a
+# The archive of the products: MinIO, built from its AGPL source at a
 # pinned release, since MinIO no longer publishes community images or
 # binaries. The HEALTHCHECK is what `ex` turns into the component's readiness
 # probe (spec 0032). Root credentials arrive at run time as MINIO_ROOT_USER
 # and MINIO_ROOT_PASSWORD, never here.
 #
-#   docker build -t langdrift-minio:local apps/microservices/minio
+#   docker build -t langdrift-storage:local infrastructure/storage
 
 FROM golang:1.25-alpine AS build
 ARG MINIO_RELEASE=RELEASE.2025-10-15T17-29-55Z
