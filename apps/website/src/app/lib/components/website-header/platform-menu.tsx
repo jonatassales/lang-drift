@@ -128,7 +128,7 @@ export function PlatformMenu() {
 				<div className={cn(panelSurface, 'p-2')}>
 					<ul
 						aria-label={translate('platformMenu')}
-						className="grid gap-1 sm:grid-cols-2"
+						className="relative grid gap-1 sm:grid-cols-2 sm:gap-x-4 sm:before:pointer-events-none sm:before:absolute sm:before:inset-y-4 sm:before:left-1/2 sm:before:w-px sm:before:-translate-x-1/2 sm:before:bg-linear-to-b sm:before:from-transparent sm:before:via-border sm:before:to-transparent"
 					>
 						{platformProducts.map((product) => {
 							const Icon = product.icon

@@ -76,7 +76,10 @@ export default async function CiGatesPage(props: CiGatesPageProps) {
 					title={copy.install.title}
 				>
 					<div className="mt-8">
-						<CommandLine command={copy.install.command} />
+						<CommandLine
+							command={copy.install.command}
+							labels={copy.copyCommand}
+						/>
 					</div>
 				</ProductSection>
 
