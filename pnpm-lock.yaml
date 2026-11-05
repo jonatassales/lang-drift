@@ -349,9 +349,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      immer:
-        specifier: ^11.1.18
-        version: 11.2.9
       jotai:
         specifier: ^2.15.1
         version: 2.20.3(@types/react@19.3.0)(react@19.2.4)
@@ -2833,9 +2830,6 @@ packages:
 
   ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
-
-  immer@11.2.9:
-    resolution: {integrity: sha512-IQ4UEtXjZjyefyWjtLEDXUSrF6T2hwjKPi6BIJl3bY/2XXW24d6cNGdXJSBOA/+KNnuiXkZY6DR0C3efolhitA==}
 
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
@@ -6048,8 +6042,6 @@ snapshots:
       '@formatjs/icu-messageformat-parser': 3.5.22
 
   ieee754@1.2.1: {}
-
-  immer@11.2.9: {}
 
   import-fresh@3.3.1:
     dependencies:
