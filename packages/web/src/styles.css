@@ -1,5 +1,4 @@
 @import 'tailwindcss';
 @import './tokens.css';
-@import './vendors/smoothui/smoothui.css';
 
 @source './';
