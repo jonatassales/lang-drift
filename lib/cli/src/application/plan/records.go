@@ -51,6 +51,7 @@ func (planning *planning) plan() run.Plan {
 			Context: run.Context{SHA256: planning.collected.ContextSHA256, Rule: collection.ContextRule},
 		},
 		Sources: sources,
+		Judge:   judgeRecord(planning.judge),
 		Facts:   nonNil(planning.analysis.facts),
 		Inputs: run.Inputs{
 			CPUMillis:        run.InputValue{Value: planning.resources.CPUMillis, Record: input.Record, SetBy: input.SetBy, Via: input.Via, SetAt: input.SetAt},
@@ -200,7 +201,7 @@ func (planning *planning) ownLedger() finops.Ledger {
 		State:    "provisional",
 		Currency: budget.Currency,
 		Bounded:  finops.LedgerBounds{PerRunCents: budget.Bounded.PerRunCents, TicketAllocationCents: planning.guards.Allocation(planning.ticket), PeriodLeftCents: budget.Bounded.PeriodCents - planning.spent},
-		Planning: finops.PlanningLine{Model: nil, Note: "no collection agent ran; the plan was built by the deterministic shell, nothing paid", Cents: finops.PlanningCents{Billed: number(0)}},
+		Planning: finops.PlanningLine{Model: nil, Note: "no question reached the console, nothing paid", Cents: finops.PlanningCents{Billed: number(0)}},
 		Laps:     []finops.LapLine{},
 		Totals:   finops.LedgerTotals{Cents: finops.TotalCents{Billed: number(0)}, PeriodLeftAfterCents: budget.Bounded.PeriodCents},
 	}
@@ -219,11 +220,23 @@ func (planning *planning) ownLedger() finops.Ledger {
 	judge := planning.judge
 	observed := judge.observed()
 	settlement := finops.Settle(judge.estimate, judge.reserved, observed)
+	note := "the planner's calls: the sources, the episodes and the suggestion, priced by the console; paid work under the same gates"
+
+	if judge.unmeasured {
+		settlement.Recovered = 0
+		note += "; a call was cut off and its cost is unknown, so the reservation is held"
+	}
 
 	ledger.Planning = finops.PlanningLine{
-		Model: text(judge.planner),
-		Note:  "the planner's calls: the sources, the episodes and the suggestion; paid work under the same gates",
-		Cents: finops.PlanningCents{Estimate: judge.estimate, Reserved: judge.reserved, Observed: observed, Billed: nil, Recovered: settlement.Recovered, Overspend: settlement.Overspend},
+		Model:        text(judge.planner),
+		Note:         note,
+		Cents:        finops.PlanningCents{Estimate: judge.estimate, Reserved: judge.reserved, Observed: observed, Billed: nil, Recovered: settlement.Recovered, Overspend: settlement.Overspend},
+		Provenance:   optional(judge.provenance),
+		Illustrative: &judge.illustrative,
+		Usage: &finops.PlanningUsage{
+			InputTokens:  judge.inputTokens,
+			OutputTokens: judge.outputTokens,
+		},
 	}
 	ledger.Totals = finops.LedgerTotals{
 		Cents:                finops.TotalCents{Reserved: judge.reserved, Observed: observed, Billed: nil, Recovered: settlement.Recovered, Overspend: settlement.Overspend},
@@ -340,6 +353,8 @@ func addPlanning(earlier, latest finops.PlanningLine) finops.PlanningLine {
 	if latest.Model == nil {
 		sum.Model = earlier.Model
 	}
+	sum.Provenance, sum.Illustrative = earlierWhenUnset(latest, earlier)
+	sum.Usage = addUsage(earlier.Usage, latest.Usage)
 	if earlier.Cents.Reserved > 0 || earlier.Cents.Observed > 0 {
 		sum.Note = latest.Note + "; the earlier plans of this runtime are added in"
 	}

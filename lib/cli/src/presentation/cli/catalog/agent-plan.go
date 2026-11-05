@@ -59,7 +59,6 @@ func NewAgentPlanCommand(planner Planner, globals *support.Globals) *cobra.Comma
 	flags.IntVar(&request.Limits.MaxDepth, "max-depth", collection.DefaultLimits().MaxDepth, "how many links deep to follow")
 	flags.IntVar(&request.Limits.MaxFiles, "max-files", collection.DefaultLimits().MaxFiles, "how many files to read at most")
 	flags.Int64Var(&maxBytes, "max-bytes", collection.DefaultLimits().MaxBytes, "how many bytes to read at most")
-	flags.BoolVar(&request.NoJudge, "no-judge", false, "plan without a model: verdicts, facts and the suggestion stay the inputs' own")
 	byFlag(command, &request.By)
 
 	return command

@@ -28,10 +28,10 @@ func TestAFailedPlanKeepsTheJudgesSpend(t *testing.T) {
 	}
 
 	ledger := ledgerOf(t, p)
-	if ledger.Planning.Model == nil || ledger.Planning.Cents.Observed != 9 || ledger.Planning.Cents.Reserved != 15 {
+	if ledger.Planning.Model == nil || ledger.Planning.Cents.Observed != 10 || ledger.Planning.Cents.Reserved != 15 {
 		t.Errorf("the planning line after a failed plan = %+v", ledger.Planning)
 	}
-	if spent := mustRead(t, filepath.Join(p.root, ".langdrift", "agent", "state", "runs", "console-microruntime", "planning.json")); !strings.Contains(string(spent), `"observed": 9`) {
+	if spent := mustRead(t, filepath.Join(p.root, ".langdrift", "agent", "state", "runs", "console-microruntime", "planning.json")); !strings.Contains(string(spent), `"observed": 10`) {
 		t.Errorf("planning.json = %s", spent)
 	}
 }
@@ -145,7 +145,7 @@ func TestReadyToMergeNeedsACleanDelivery(t *testing.T) {
 	if status, stdout, stderr := p.dftWith(deps, "harness", "workflow", "set", "--file", workflow); status != 0 {
 		t.Fatalf("dft harness workflow set = %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent); status != 0 {
+	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", consoleComponent); status != 0 {
 		t.Fatalf("dft agent plan = %d: %s\n%s", status, stderr, stdout)
 	}
 
@@ -166,7 +166,7 @@ func TestReadyToMergeNeedsACleanDelivery(t *testing.T) {
 	if status, stdout, stderr := other.dftWith(otherDeps, "harness", "workflow", "set", "--file", workflow); status != 0 {
 		t.Fatalf("dft harness workflow set = %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, stdout, stderr := other.dftWith(otherDeps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent); status != 0 {
+	if status, stdout, stderr := other.dftWith(otherDeps, "agent", "plan", consoleTicket, "--component", consoleComponent); status != 0 {
 		t.Fatalf("dft agent plan = %d: %s\n%s", status, stderr, stdout)
 	}
 	otherDeps.Driver, otherDeps.Lifecycle, otherDeps.Delivery, otherDeps.Poll = websiteDriver(), websiteLifecycle(), websiteDelivery(), time.Millisecond
@@ -194,7 +194,7 @@ func TestTheRunLockRefusesASecondOperation(t *testing.T) {
 	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 3 || !strings.Contains(stderr, "busy") {
 		t.Errorf("a run while the lock is held gave %d: %s", status, stderr)
 	}
-	if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent); status != 3 || !strings.Contains(stderr, "busy") {
+	if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", consoleComponent); status != 3 || !strings.Contains(stderr, "busy") {
 		t.Errorf("a plan while the lock is held gave %d: %s", status, stderr)
 	}
 }

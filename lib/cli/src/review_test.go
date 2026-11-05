@@ -31,7 +31,7 @@ func TestReplanKeepsTheRecordsAndRefusesAnOpenLap(t *testing.T) {
 	if status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 0 {
 		t.Fatalf("dft agent run = %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent); status != 3 || !strings.Contains(stderr, "waiting with a lap open") {
+	if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", consoleComponent); status != 3 || !strings.Contains(stderr, "waiting with a lap open") {
 		t.Errorf("a plan over an open lap gave %d: %s", status, stderr)
 	}
 
@@ -42,7 +42,7 @@ func TestReplanKeepsTheRecordsAndRefusesAnOpenLap(t *testing.T) {
 		t.Fatalf("the run gave %d: %s\n%s", status, stderr, stdout)
 	}
 
-	status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", consoleComponent)
 	if status != 0 {
 		t.Fatalf("a plan over a finished run gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -59,7 +59,7 @@ func TestReplanKeepsTheRecordsAndRefusesAnOpenLap(t *testing.T) {
 	}
 
 	ledger := ledgerOf(t, p)
-	if len(ledger.Laps) != 1 || ledger.Laps[0].Cents.Observed != 980 || ledger.Totals.Cents.Observed != 980 || ledger.Bounded.PeriodLeftCents != 49020 {
+	if len(ledger.Laps) != 1 || ledger.Laps[0].Cents.Observed != 980 || ledger.Totals.Cents.Observed != 1005 || ledger.Bounded.PeriodLeftCents != 49010 {
 		t.Errorf("the replanned ledger = laps %+v, totals %+v, bounded %+v", ledger.Laps, ledger.Totals, ledger.Bounded)
 	}
 
@@ -82,7 +82,7 @@ func TestGatePausesOnTheAllocationAndThePeriod(t *testing.T) {
 	if status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 0 {
 		t.Fatalf("the first run gave %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent, "--runtime", "console-again"); status != 0 {
+	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", consoleComponent, "--runtime", "console-again"); status != 0 {
 		t.Fatalf("the second plan gave %d: %s\n%s", status, stderr, stdout)
 	}
 
@@ -108,7 +108,7 @@ func TestGatePausesOnTheAllocationAndThePeriod(t *testing.T) {
 	if status != 3 || !strings.Contains(stderr, "left of the period") {
 		t.Fatalf("a reservation over the period gave %d: %s\n%s", status, stderr, stdout)
 	}
-	expectLines(t, stdout, "agent › gate       reservation $11.40 exceeds the $10.20 left of the period · paused")
+	expectLines(t, stdout, "agent › gate       reservation $11.40 exceeds the $9.95 left of the period · paused")
 
 	// The planner's own reservation, 15 cents, meets the same gate.
 	budget("985", "985", "985")
@@ -125,7 +125,7 @@ func TestSessionEmitsEventsAsJSON(t *testing.T) {
 
 	p, deps := seedProject(t)
 
-	status, stdout, stderr := p.dftWith(deps, "--json", "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "--json", "agent", "plan", consoleTicket, "--component", consoleComponent)
 	if status != 0 {
 		t.Fatalf("dft --json agent plan = %d: %s\n%s", status, stderr, stdout)
 	}
@@ -173,8 +173,9 @@ func TestSessionEmitsEventsAsJSON(t *testing.T) {
 	}
 }
 
-// An answer that does not fit the question is refused once, and the plan
-// keeps the deterministic shell with what the call cost on the ledger.
+// An answer outside the contract refuses the plan after the one call it
+// cost: nothing is proposed, nothing is retried, and the call stays on the
+// planning line.
 func TestPlanRefusesAnAnswerThatDoesNotFit(t *testing.T) {
 	t.Parallel()
 
@@ -183,13 +184,13 @@ func TestPlanRefusesAnAnswerThatDoesNotFit(t *testing.T) {
 	deps.Judge = judge
 
 	status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", consoleComponent)
-	if status != 0 {
-		t.Fatalf("dft agent plan = %d: %s\n%s", status, stderr, stdout)
+	if status == 0 || !strings.Contains(stderr, "the sources answer is refused") || len(judge.asked) != 1 {
+		t.Fatalf("an answer outside the contract gave %d after %d calls: %s\n%s", status, len(judge.asked), stderr, stdout)
 	}
-	if strings.Count(stdout, "judge      stopped · the sources answer was refused") != 1 || len(judge.asked) != 1 {
-		t.Errorf("the refused answer was not reported once (%d calls):\n%s", len(judge.asked), stdout)
+	if strings.Contains(stdout, "✓ plan") {
+		t.Errorf("a refused plan printed its draft:\n%s", stdout)
 	}
-	expectLines(t, stdout, "✓ suggests   claude-sonnet-5-5 · effort medium", "✓ plan       runtime.md draft, revision 1 · proposed · authorize with dft agent run")
+	assertNoPlanWritten(t, p.root)
 
 	ledger := ledgerOf(t, p)
 	if ledger.Planning.Model == nil || ledger.Planning.Cents.Observed == 0 || ledger.Planning.Cents.Billed != nil {
@@ -203,7 +204,7 @@ func TestPlanWithoutEpisodesSaysSo(t *testing.T) {
 
 	p, deps := seedProject(t)
 
-	status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", consoleComponent)
 	if status != 0 {
 		t.Fatalf("dft agent plan = %d: %s\n%s", status, stderr, stdout)
 	}
@@ -224,7 +225,7 @@ func TestPlanReadsTheDockerfileAndNamesWhatItLacks(t *testing.T) {
 	writeFile(t, filepath.Join(p.root, "apps", "console", "Dockerfile"), "FROM node:24\nEXPOSE 3002\n")
 	writeFile(t, filepath.Join(p.root, "apps", "extub", "Dockerfile.local"), "FROM golang:1.26\nEXPOSE 3401/tcp\n")
 
-	status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge",
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket,
 		"--component", "name=console,path=.",
 		"--component", "name=web,path=apps/console",
 		"--component", "name=extub,path=apps/extub,dockerfile=Dockerfile.local,readiness=tcp")
@@ -269,7 +270,7 @@ func TestPlanRecordsTheComponentsRefinements(t *testing.T) {
 	writeFile(t, filepath.Join(p.root, "apps", "console", "Dockerfile"), "FROM node:24\nEXPOSE 3002\n")
 	writeFile(t, filepath.Join(p.root, "apps", "console", "runtime.env"), "# committed, no secrets\nLOG_URL=http://log:3500\n")
 
-	status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge",
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket,
 		"--component", "name=console,path=.,readiness=http:/icon.svg",
 		"--component", "name=web,path=apps/console,port=3003,readiness=tcp,env-file=apps/console/runtime.env,pass-env=API_TOKEN;MINIO_SECRET_KEY")
 	if status != 0 {
@@ -306,7 +307,7 @@ func TestPlanRefusesAComponentFlagItCannotRead(t *testing.T) {
 	p, deps := seedProject(t)
 
 	for _, component := range []string{"path=.", "name=console", "name=console,path=.,readiness=grpc", "name=console,path=.,image=x:1"} {
-		if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", component); status != 2 {
+		if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", component); status != 2 {
 			t.Errorf("--component %s gave %d: %s", component, status, stderr)
 		}
 	}

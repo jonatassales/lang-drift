@@ -59,7 +59,6 @@ type Connection struct {
 
 // Console scopes every call to one immutable endpoint and credential.
 type Console interface {
-	Bind(context.Context, string, string, string) (Binding, error)
 	Sync(context.Context, Connection, Sync) (Intent, error)
 	Claim(context.Context, Connection, Intent) (Claim, error)
 }
@@ -98,6 +97,8 @@ type Service struct {
 	Console          Console
 	ProjectConsole   ProjectConsole
 	Native           Native
+	Judge            JudgeCheck
+	JudgeConnections JudgeConnections
 	PollInterval     time.Duration
 	OperationTimeout time.Duration
 	Now              func() time.Time

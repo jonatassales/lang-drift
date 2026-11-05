@@ -25,8 +25,10 @@ type Service struct {
 	Index     Index
 	Spend     Spend
 	Embedder  rag.Embedder
-	// Judge answers the planner's questions; nil plans without one.
+	// Judge answers the planner's questions through the connected console.
 	Judge Judge
+	// Connections reads the console the project is connected to.
+	Connections Connections
 
 	// Injectable for tests; nil uses the real sources.
 	IDs   application.IDSource
@@ -57,7 +59,6 @@ type Request struct {
 	CPUMillis  int
 	MemoryMiB  int
 	Limits     collection.Limits
-	NoJudge    bool
 	By         string
 	Session    session.Sink
 }
@@ -127,6 +128,13 @@ func (service Service) Plan(ctx context.Context, request Request) (Result, error
 	if err := planning.loadSpent(); err != nil {
 		return Result{}, err
 	}
+
+	connection, err := service.Connections.Read(owner)
+	if err != nil {
+		return Result{}, err
+	}
+
+	planning.connection = connection
 
 	if err := planning.openJudge(); err != nil {
 		return Result{}, err
@@ -202,7 +210,9 @@ func (planning *planning) judgedSteps(ctx context.Context) error {
 		return err
 	}
 
-	planning.suggest(ctx)
+	if err := planning.suggest(ctx); err != nil {
+		return err
+	}
 
 	if err := planning.resolve(); err != nil {
 		return err

@@ -161,7 +161,7 @@ func TestRunBringsTheRuntimeUpObservesDeliveryAndRemembers(t *testing.T) {
 	if gate := line.Gates[len(line.Gates)-1]; gate.ID != "FG-06" || gate.Result != "keep-provisional" {
 		t.Errorf("the last gate = %+v, want FG-06 keeping the billing provisional", gate)
 	}
-	if ledger.Totals.Cents.Reserved != 1140 || ledger.Totals.Cents.Observed != 980 || ledger.Totals.Cents.Recovered != 160 || ledger.Totals.PeriodLeftAfterCents != 49020 {
+	if ledger.Totals.Cents.Reserved != 1155 || ledger.Totals.Cents.Observed != 990 || ledger.Totals.Cents.Recovered != 165 || ledger.Totals.PeriodLeftAfterCents != 49010 {
 		t.Errorf("totals = %+v", ledger.Totals)
 	}
 
@@ -240,7 +240,7 @@ func TestRunBringsTheRuntimeUpObservesDeliveryAndRemembers(t *testing.T) {
 	// text opens with the title alone, so the key below matches the episode only.
 	_, title, _ := strings.Cut(strings.SplitN(memory, "\n", 2)[0], ": ")
 	deps.Embedder = scriptedEmbedder{similarities: map[string]float64{title + "\n0070-console-microruntime\n": 0.81}}
-	status, stdout, stderr = p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent, "--runtime", "console-again")
+	status, stdout, stderr = p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent, "--runtime", "console-again")
 	if status != 0 {
 		t.Fatalf("the next plan gave %d: %s\n%s", status, stderr, stdout)
 	}

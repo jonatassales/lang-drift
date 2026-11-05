@@ -143,12 +143,6 @@ func (client *MCP) tool(ctx context.Context, url, credential, name string, args,
 	}
 	return client.call(ctx, url, credential, "tools/call", map[string]any{"name": name, "arguments": args}, result)
 }
-func (client *MCP) Bind(ctx context.Context, url, secret, environment string) (app.Binding, error) {
-	var result app.Binding
-
-	err := client.tool(ctx, url, secret, protocol.ToolBind, map[string]any{"environmentId": environment}, &result)
-	return result, err
-}
 func (client *MCP) Sync(ctx context.Context, record app.Connection, request app.Sync) (app.Intent, error) {
 	var result app.Intent
 	err := client.tool(ctx, record.URL, record.Credential, protocol.ToolSync, request, &result)

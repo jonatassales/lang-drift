@@ -21,10 +21,6 @@ type scriptedConsole struct {
 	cancel    context.CancelFunc
 }
 
-func (*scriptedConsole) Bind(context.Context, string, string, string) (Binding, error) {
-	return Binding{}, nil
-}
-
 func (c *scriptedConsole) Sync(_ context.Context, _ Connection, sync Sync) (Intent, error) {
 	index := int(c.calls.Add(1)) - 1
 	c.seen = append(c.seen, sync.Events...)

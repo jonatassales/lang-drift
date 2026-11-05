@@ -50,7 +50,8 @@ func exitCode(
 		return 3
 
 	case errors.Is(executionError, app.ErrNotFound) ||
-		errors.Is(executionError, exec.ErrNotFound):
+		errors.Is(executionError, exec.ErrNotFound) ||
+		errors.Is(executionError, plan.ErrNotConnected):
 		return 4
 
 	default:

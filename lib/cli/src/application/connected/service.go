@@ -34,44 +34,29 @@ func (service Service) identifier() (string, error) {
 	return identifier()
 }
 
-// Connect binds one checkout without changing its native project identity. The
-// runtime credential is never a command argument or returned to presentation.
+// Connect records the console this checkout's planner asks: the deployment
+// secret comes from the environment, the console's judge route must accept
+// it, and both are kept in the project's private state. The secret is never
+// a command argument or returned to presentation.
 func (service Service) Connect(ctx context.Context, request ConnectRequest) (Result, error) {
 	if request.Secret == "" {
 		return Result{}, errors.New("RUNTIME_SECRET must be supplied in the environment")
 	}
+
 	owner, err := service.Projects.Open(request.Project)
 	if err != nil {
 		return Result{}, err
 	}
-	env, err := service.identifier()
-	if err != nil {
+
+	if err := service.Judge.Check(ctx, request.URL, request.Secret); err != nil {
 		return Result{}, err
 	}
-	binding, err := service.Console.Bind(ctx, request.URL, request.Secret, env)
-	if err != nil {
+
+	if err := service.JudgeConnections.Record(ctx, owner, request.URL, request.Secret); err != nil {
 		return Result{}, err
 	}
-	if binding.Credential == "" || binding.RuntimeUID == "" || binding.RuntimeID == "" || binding.EnvironmentID != env {
-		return Result{}, errors.New("console returned an incomplete binding")
-	}
-	if err = service.Native.VerifyRepository(ctx, owner, binding.Repository); err != nil {
-		return Result{}, err
-	}
-	existing, err := service.Store.List(owner)
-	if err != nil {
-		return Result{}, err
-	}
-	for _, record := range existing {
-		if record.RuntimeUID == binding.RuntimeUID {
-			return Result{}, errors.New("runtime is already connected in this checkout")
-		}
-	}
-	record := Connection{URL: request.URL, EnvironmentID: env, RuntimeUID: binding.RuntimeUID, RuntimeID: binding.RuntimeID, ProjectID: binding.ProjectID, Repository: binding.Repository, Credential: binding.Credential, Secret: request.Secret, State: connection.StateStopped, Managed: map[string]string{}, Outbox: []Event{}}
-	if err = service.Store.Bind(ctx, owner, record); err != nil {
-		return Result{}, err
-	}
-	return Result{Runtime: record.RuntimeID, Environment: env, Status: "connected; run dft agent run to synchronize"}, nil
+
+	return Result{Status: "connected to " + request.URL + "; dft agent plan asks its judge"}, nil
 }
 
 // Run owns one worker per connected runtime and joins all workers before exit.

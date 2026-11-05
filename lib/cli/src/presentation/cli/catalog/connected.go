@@ -20,7 +20,7 @@ type ProjectAgent interface {
 }
 
 func NewAgentConnectCommand(agent ProjectAgent, globals *support.Globals) *cobra.Command {
-	return &cobra.Command{Use: "connect <console-url>", Short: "Bind this checkout using RUNTIME_SECRET from the environment", Args: support.ExactArguments(1), RunE: func(command *cobra.Command, args []string) error {
+	return &cobra.Command{Use: "connect <console-url>", Short: "Connect this checkout's planner to a console, with RUNTIME_SECRET from the environment", Args: support.ExactArguments(1), RunE: func(command *cobra.Command, args []string) error {
 		return runFinite(command, globals, func(ctx context.Context, selection application.ProjectSelection) (connected.Result, error) {
 			return agent.Connect(ctx, connected.ConnectRequest{Project: selection, URL: args[0], Secret: os.Getenv("RUNTIME_SECRET")})
 		})

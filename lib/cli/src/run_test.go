@@ -14,7 +14,7 @@ func plannedProject(t *testing.T) (project, dependencies) {
 	t.Helper()
 
 	p, deps := seedProject(t)
-	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 0 {
+	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent); status != 0 {
 		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
 
@@ -86,7 +86,7 @@ func TestRunPausesAtTheGateThenOpensALap(t *testing.T) {
 	if line.Cents.Estimate != 3400 || line.Cents.RequestedReservation != 4080 || line.Cents.Reserved != 0 || !line.NothingPaid || line.Cents.Billed == nil || *line.Cents.Billed != 0 || line.Cents.Variance != nil || len(line.Gates) != 3 || line.Gates[2].ID != "FG-03" || line.Gates[2].Result != "paused" {
 		t.Errorf("lap 0001 line = %+v", line)
 	}
-	if ledger.Totals.Cents.Reserved != 0 || ledger.Totals.PeriodLeftAfterCents != 50000 {
+	if ledger.Totals.Cents.Reserved != 15 || ledger.Totals.PeriodLeftAfterCents != 49990 {
 		t.Errorf("totals = %+v", ledger.Totals)
 	}
 
@@ -122,7 +122,7 @@ func TestRunPausesAtTheGateThenOpensALap(t *testing.T) {
 	}
 
 	decodeStrict(t, mustRead(t, filepath.Join(p.root, ".langdrift", "finops", "ledger", "console-microruntime.ledger.json")), &ledger)
-	if len(ledger.Laps) != 2 || ledger.Laps[1].Cents.Reserved != 1140 || ledger.Laps[1].Cents.Billed != nil || ledger.Totals.Cents.Reserved != 1140 || ledger.Totals.Cents.Billed != nil {
+	if len(ledger.Laps) != 2 || ledger.Laps[1].Cents.Reserved != 1140 || ledger.Laps[1].Cents.Billed != nil || ledger.Totals.Cents.Reserved != 1155 || ledger.Totals.Cents.Billed != nil {
 		t.Errorf("ledger after the second lap = %+v", ledger)
 	}
 
@@ -161,7 +161,7 @@ func TestRunRefusesWhatItCannotRun(t *testing.T) {
 	}
 
 	// A model the price list does not cover blocks at FG-01, nothing paid.
-	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 0 {
+	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent); status != 0 {
 		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
 	status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime", "--model", "claude-mythos-5-1")

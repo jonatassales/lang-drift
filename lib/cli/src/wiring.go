@@ -165,8 +165,11 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 			Spend:     records.LapStore{},
 			Embedder:  deps.Embedder,
 			Judge:     judgeOf(deps),
-			IDs:       deps.IDs,
-			Clock:     deps.Clock,
+			Connections: connectedinfra.JudgeConnections{
+				Runner: runner,
+			},
+			IDs:   deps.IDs,
+			Clock: deps.Clock,
 		},
 		Doctor: application.Diagnose{
 			Prerequisites: tools,
@@ -213,7 +216,17 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 		Create: cases.ClusterCreate, Load: cases.ClusterLoadImage, StartRuntime: native.Up, StopRuntime: native.Down, Inspect: native.Inspect, Executions: executions, Runner: runner,
 	}
 	projectConsole := &connectedinfra.MCP{}
-	cases.ProjectAgent = connectedapp.Service{Projects: projects, Store: connectedinfra.Store{Runner: runner}, Console: projectConsole, ProjectConsole: projectConsole, Native: engine}
+	cases.ProjectAgent = connectedapp.Service{
+		Projects:       projects,
+		Store:          connectedinfra.Store{Runner: runner},
+		Console:        projectConsole,
+		ProjectConsole: projectConsole,
+		Native:         engine,
+		Judge:          judgeinfra.Console{},
+		JudgeConnections: connectedinfra.JudgeConnections{
+			Runner: runner,
+		},
+	}
 	cases.Execution = execution.Service{
 		Projects:   projects,
 		Inputs:     inputsinfra.Store{},
@@ -245,13 +258,14 @@ type lifecycles struct {
 	Hook     application.RunRuntimeHook
 }
 
-// judgeOf is the planner's judge: the scripted one, or Claude.
+// judgeOf is the planner's judge: the scripted one, or the judge route of
+// the console the project is connected to.
 func judgeOf(deps dependencies) plan.Judge {
 	if deps.Judge != nil {
 		return deps.Judge
 	}
 
-	return judgeinfra.Anthropic{}
+	return judgeinfra.Console{}
 }
 
 // driverOf is the stages' driver: the scripted one, or the owner's coding
