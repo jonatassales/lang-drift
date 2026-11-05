@@ -12,6 +12,17 @@
 
 ## Tickets
 
+- [ ] 0326: the session's line format
+- [ ] 0327: the stop rule
+- [ ] 0328: the commands the simulation doesn't show leave
+- [ ] 0329: the fixture `project` and the golden test
+- [ ] 0330: `dft agent plan` takes the bare ticket id
+- [ ] 0331: `dft agent run` applies the authorized intent
+- [ ] 0332: `dft init` writes only the declared files, and the input commands leave
+- [ ] 0333: `agent confirm` and `agent connect` leave, and `dft` has three commands
+
+> **Note, 2026-11-05.** The simulation was played in production (website commit bcb9bde, the same as main) before these tickets were written: phase 1 prints 42 lines under the title `dft — project`; phase 2 prints 25 by default, 25 with Review unchecked, 31 with every stage checked, 25 with Haiku at low and 6 with Opus at high; Planning cannot be unchecked. It matches this spec. One gap goes to spec 0058: "the applied pair reaching every stage call" has no shown line. The owner decided on 2026-11-05 that the fixture keeps the simulation's names under a stated exception to filesystem rules 1 and 2, that the stop rule stands as written, and that the four defaults under Open Questions stand. The tickets run now, then later: 0326 to 0329 change nothing plan and run depend on; 0330 to 0333 remove what plan and run still read, each once the specs that give those values their new source land.
+
 ## Problem Statement
 
 The session on the website's home is the definition of LangDrift's main feature: a person types `dft agent plan 0031-TICKET-book-a-demo-runtime`, then `dft agent run`, and nothing else. The LangDrift CLI that ships today answers to some thirty commands and flag modes (`doctor`, `status`, `reindex`, `confirm`, `cluster …`, `runtime …`, `harness …`, `finops …`, `gates report`, `connect`, `supervise`, `--json` and more), takes a file path where the simulation types a bare ticket id, requires a runtime argument where the simulation types `dft agent run` alone, prints the typed command a second time, names every actor line `agent ›` where the simulation prints `console ›`, and opens with a scope comment that says the planner's calls are paid. A person who watched the session and then types the same commands gets a different tool. `dft init` asks for a monthly budget, a per-run cap, a reserve margin, gates, an artifacts folder and a CI workflow, none of which the session needs, because the envelope and the budget come from the design doc.
