@@ -1,3 +1,4 @@
+import { Provider } from 'jotai'
 import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
@@ -86,11 +87,13 @@ export default async function CliPage(props: CliPageProps) {
 						/>
 					</div>
 					<div className="mt-10">
-						<SessionTerminal
-							className="h-[clamp(280px,48vh,440px)]"
-							control={session.card.control}
-							copy={session.terminal}
-						/>
+						<Provider>
+							<SessionTerminal
+								className="h-[clamp(280px,48vh,440px)]"
+								control={session.card.control}
+								copy={session.terminal}
+							/>
+						</Provider>
 					</div>
 				</ProductSection>
 

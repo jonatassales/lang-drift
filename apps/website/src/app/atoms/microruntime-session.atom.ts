@@ -15,12 +15,14 @@ import type {
 import { phaseOf } from '@routes/platform/microruntimes/content/phase-of.compute'
 import { runSession } from '@routes/platform/microruntimes/content/run-session.compute'
 
-// The Microruntimes hero's simulated session: the plan it types first, then,
+// The Microruntimes session the terminal plays: the plan it types first, then,
 // once the visitor plays the workflow, the run. The session holds how many
 // terminal lines have completed, whether the visitor paused it, a run counter
 // that remounts the terminal, the card the visitor opened by hand, which
 // script plays, and the choices a run was launched with. The terminal writes
-// the count from its own clock; the cards derive every field from it.
+// the count from its own clock; the cards derive every field from it. Each
+// page that plays the session wraps it in its own Jotai Provider, so the
+// session starts fresh there and never follows the visitor to another page.
 export type SessionStage = 'plan' | 'launching' | 'running'
 
 export interface MicroruntimeSession {

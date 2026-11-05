@@ -1,3 +1,4 @@
+import { Provider } from 'jotai'
 import { notFound } from 'next/navigation'
 import { createTranslator, hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
@@ -55,7 +56,9 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 	const { locale } = await params
 
 	if (!hasLocale(routing.locales, locale)) notFound()
+
 	setRequestLocale(locale)
+
 	const copy = microruntimesMessages[locale]
 	const formatEvidence = createTranslator({
 		locale,
@@ -87,17 +90,19 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 					>
 						{copy.hero.title}
 					</ProductHeading>
-					<div
-						aria-describedby="microruntimes-hero-summary"
-						className="mt-8 grid gap-6 lg:grid-cols-[fit-content(50%)_1fr]"
-					>
-						<SessionTerminal
-							className="lg:h-full"
-							control={copy.session.card.control}
-							copy={copy.session.terminal}
-						/>
-						<SessionCards copy={copy.session.card} locale={locale} />
-					</div>
+					<Provider>
+						<div
+							aria-describedby="microruntimes-hero-summary"
+							className="mt-8 grid gap-6 lg:grid-cols-[fit-content(50%)_1fr]"
+						>
+							<SessionTerminal
+								className="lg:h-full"
+								control={copy.session.card.control}
+								copy={copy.session.terminal}
+							/>
+							<SessionCards copy={copy.session.card} locale={locale} />
+						</div>
+					</Provider>
 					<p className="sr-only" id="microruntimes-hero-summary">
 						{copy.hero.summary}
 					</p>

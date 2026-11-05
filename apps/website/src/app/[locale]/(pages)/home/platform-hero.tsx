@@ -1,3 +1,5 @@
+import { Provider } from 'jotai'
+
 import { microruntimesMessages, platformMessages } from '@i18n/messages/index'
 import type { WebsiteLocale } from '@i18n/routing'
 import { SessionCards } from '@routes/platform/microruntimes/sections/session-cards'
@@ -53,18 +55,20 @@ export function PlatformHero(props: PlatformHeroProps) {
 						/>
 					</h1>
 				</div>
-				<ElevatedFrame className="grid w-full min-w-0 gap-2 p-2 lg:min-h-160 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-					<div className="min-h-0 min-w-0">
-						<SessionTerminal
-							className="h-[clamp(220px,34vh,300px)] shadow-none lg:h-full"
-							control={session.card.control}
-							copy={session.terminal}
-						/>
-					</div>
-					<div className="min-h-0 min-w-0">
-						<SessionCards copy={session.card} locale={locale} />
-					</div>
-				</ElevatedFrame>
+				<Provider>
+					<ElevatedFrame className="grid w-full min-w-0 gap-2 p-2 lg:min-h-160 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+						<div className="min-h-0 min-w-0">
+							<SessionTerminal
+								className="h-[clamp(220px,34vh,300px)] shadow-none lg:h-full"
+								control={session.card.control}
+								copy={session.terminal}
+							/>
+						</div>
+						<div className="min-h-0 min-w-0">
+							<SessionCards copy={session.card} locale={locale} />
+						</div>
+					</ElevatedFrame>
+				</Provider>
 			</div>
 			<p className="sr-only" id="platform-hero-summary">
 				{microruntimes.hero.summary}
