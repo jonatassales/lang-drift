@@ -67,6 +67,7 @@ describe('website/lib/components/book-a-demo/form', () => {
 		submit()
 
 		expect(await screen.findByText(copy.errors.emailRequired)).toBeTruthy()
+
 		expect(screen.getByText(copy.errors.companyRequired)).toBeTruthy()
 		expect(screen.getByText(copy.errors.positionRequired)).toBeTruthy()
 		expect(
@@ -85,6 +86,7 @@ describe('website/lib/components/book-a-demo/form', () => {
 		submit()
 
 		expect(await screen.findByText(copy.errors.emailFreeMail)).toBeTruthy()
+
 		expect(transport).not.toHaveBeenCalled()
 	})
 
@@ -164,7 +166,9 @@ describe('website/lib/components/book-a-demo/form', () => {
 		submit()
 
 		const toast = await screen.findByRole('alert')
+
 		expect(toast.textContent).toContain(copy.form.failed)
+
 		await waitFor(() => {
 			expect(
 				(screen.getByLabelText(copy.form.email) as HTMLInputElement).value,

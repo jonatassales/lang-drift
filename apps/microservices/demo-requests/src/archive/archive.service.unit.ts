@@ -73,6 +73,7 @@ describe('demo-requests/archive/archive.service', () => {
 				'1762178700000-0',
 			),
 		).rejects.toThrow(/envelope/)
+
 		expect(store.objects).toEqual([])
 	})
 })
