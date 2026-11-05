@@ -6,7 +6,7 @@
 
 **Blocked by:** 0229, 0239.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: it will not be implemented.
 
 - [ ] Each user event has a `.handler.ts` and each mutation a `.map.ts`, with tests where they hold logic.
 - [ ] `pnpm turbo run check typecheck test build --filter=website` passes.
