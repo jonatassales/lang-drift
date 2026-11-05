@@ -282,7 +282,7 @@ export function WebsiteHeader() {
 							</span>
 						)
 
-						return 'href' in product ? (
+						return (
 							<Link
 								className={`flex items-center gap-3 ${drawerLink}`}
 								href={product.href}
@@ -292,11 +292,6 @@ export function WebsiteHeader() {
 								<Icon className="size-5" />
 								{label}
 							</Link>
-						) : (
-							<span className={drawerItem} key={product.label}>
-								<Icon className="size-5" />
-								{label}
-							</span>
 						)
 					})}
 					<span className={drawerItem}>{translate('docs')}</span>

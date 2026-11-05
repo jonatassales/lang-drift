@@ -1,4 +1,6 @@
 import bookDemoJson from '@i18n/messages/book-a-demo.json'
+import ciGatesJson from '@i18n/messages/ci-gates.json'
+import cliJson from '@i18n/messages/cli.json'
 import conversionJson from '@i18n/messages/conversion.json'
 import finopsJson from '@i18n/messages/finops.json'
 import footerJson from '@i18n/messages/footer.json'
@@ -37,4 +39,6 @@ assertCatalogShape('route-state', routeStateJson)
 assertCatalogShape('finops', finopsJson)
 assertCatalogShape('microruntimes', microruntimesJson)
 assertCatalogShape('safe-seat', safeSeatJson)
+assertCatalogShape('cli', cliJson)
+assertCatalogShape('ci-gates', ciGatesJson)
 assertCatalogShape('book-a-demo', bookDemoJson)

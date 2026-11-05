@@ -13,6 +13,8 @@ export interface HeaderMessages {
 	comingSoon: string
 	finopsDescription: string
 	microruntimesDescription: string
+	cli: string
+	cliDescription: string
 	ciGatesDescription: string
 	safeSeatDescription: string
 	pricing: string

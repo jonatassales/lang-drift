@@ -1,19 +1,14 @@
 import {
 	CiGatesIcon,
+	CliIcon,
 	FinopsIcon,
 	MicroruntimesIcon,
 	SafeSeatIcon,
 } from 'web/ui/icons/platform'
 
-// The products the header's Platform menu lists, by their message keys. Only
-// a product with a page links; the others are named with a line about them.
+// The products the header's Platform menu lists, by their message keys, in
+// the menu's order: the engine first, then what runs on it.
 export const platformProducts = [
-	{
-		label: 'finops',
-		description: 'finopsDescription',
-		icon: FinopsIcon,
-		href: '/platform/finops',
-	},
 	{
 		label: 'microruntimes',
 		description: 'microruntimesDescription',
@@ -21,10 +16,22 @@ export const platformProducts = [
 		href: '/platform/microruntimes',
 	},
 	{
+		label: 'finops',
+		description: 'finopsDescription',
+		icon: FinopsIcon,
+		href: '/platform/finops',
+	},
+	{
+		label: 'cli',
+		description: 'cliDescription',
+		icon: CliIcon,
+		href: '/platform/cli',
+	},
+	{
 		label: 'ciGates',
 		description: 'ciGatesDescription',
 		icon: CiGatesIcon,
-		badge: 'comingSoon',
+		href: '/platform/ci-gates',
 	},
 	{
 		label: 'safeSeat',

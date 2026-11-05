@@ -1,7 +1,11 @@
+import type { CiGatesMessages } from '@app/[locale]/(pages)/platform/ci-gates/ci-gates-messages.types'
+import type { CliMessages } from '@app/[locale]/(pages)/platform/cli/cli-messages.types'
 import type { SafeSeatMessages } from '@app/[locale]/(pages)/platform/safe-seat/safe-seat-messages.types'
 import type { FinopsMessages } from '@data/finops-content'
 import type { MicroruntimesMessages } from '@data/microruntimes-content'
 import bookDemoJson from '@i18n/messages/book-a-demo.json'
+import ciGatesJson from '@i18n/messages/ci-gates.json'
+import cliJson from '@i18n/messages/cli.json'
 import finopsJson from '@i18n/messages/finops.json'
 import footerJson from '@i18n/messages/footer.json'
 import headerJson from '@i18n/messages/header.json'
@@ -31,5 +35,8 @@ export const microruntimesMessages: Record<
 > = microruntimesJson
 export const safeSeatMessages: Record<WebsiteLocale, SafeSeatMessages> =
 	safeSeatJson
+export const cliMessages: Record<WebsiteLocale, CliMessages> = cliJson
+export const ciGatesMessages: Record<WebsiteLocale, CiGatesMessages> =
+	ciGatesJson
 export const bookDemoMessages: Record<WebsiteLocale, BookDemoMessages> =
 	bookDemoJson

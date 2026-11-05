@@ -87,6 +87,50 @@
 			"description": "Sắp có trong LangDrift FinOps: mỗi ticket dành riêng một phần để một người tự tay viết, để đội tiếp tục hiểu và gỡ lỗi những gì tác tử giúp mình giao."
 		}
 	},
+	"cli": {
+		"en": {
+			"title": "LangDrift CLI — plan and run inside a budget | LangDrift",
+			"description": "The LangDrift CLI, ex: plan, run and record agent-assisted delivery from your terminal, inside the team budget, with bounded runtimes and evidence for every run."
+		},
+		"pt-BR": {
+			"title": "LangDrift CLI — planeje e execute dentro do orçamento | LangDrift",
+			"description": "A LangDrift CLI, ex: planeje, execute e registre entregas assistidas por agentes pelo terminal, dentro do orçamento do time, com runtimes delimitados e evidência de cada execução."
+		},
+		"zh-Hant": {
+			"title": "LangDrift CLI — 在預算內規劃與執行 | LangDrift",
+			"description": "LangDrift CLI（ex）：在團隊預算內，從終端機規劃、執行並記錄代理協助的交付，搭配有界限的 runtime 與每次執行的證據。"
+		},
+		"ja": {
+			"title": "LangDrift CLI — 予算内で計画し、実行する | LangDrift",
+			"description": "LangDrift CLI（ex）。チームの予算の範囲内で、エージェント支援のデリバリーをターミナルから計画、実行、記録し、境界のある runtime と実行ごとの証跡を残します。"
+		},
+		"vi": {
+			"title": "LangDrift CLI — lập kế hoạch và chạy trong ngân sách | LangDrift",
+			"description": "LangDrift CLI, lệnh ex: lập kế hoạch, chạy và ghi lại quy trình phát triển có tác tử hỗ trợ từ terminal, trong ngân sách của đội, với runtime có giới hạn và bằng chứng cho mỗi lần chạy."
+		}
+	},
+	"ci-gates": {
+		"en": {
+			"title": "CI Gates — a report on every pull request | LangDrift",
+			"description": "CI Gates: a read-only, pinned GitHub workflow the LangDrift CLI writes, reporting the commits of every pull request with FinOps readings that stay unknown in CI, never zero."
+		},
+		"pt-BR": {
+			"title": "CI Gates — um relatório em cada pull request | LangDrift",
+			"description": "CI Gates: um workflow do GitHub somente leitura e fixado, escrito pela LangDrift CLI, que relata os commits de cada pull request com leituras de FinOps que no CI ficam desconhecidas, nunca zero."
+		},
+		"zh-Hant": {
+			"title": "CI Gates — 每個 pull request 的報告 | LangDrift",
+			"description": "CI Gates：由 LangDrift CLI 寫入、唯讀且固定版本的 GitHub 工作流程，回報每個 pull request 的 commit，FinOps 讀數在 CI 中維持未知，絕不算作零。"
+		},
+		"ja": {
+			"title": "CI Gates — すべての pull request にレポートを | LangDrift",
+			"description": "CI Gates。LangDrift CLI が書く、読み取り専用でバージョン固定の GitHub ワークフローで、すべての pull request のコミットを報告し、FinOps の読み取り値は CI では不明のままで、ゼロにはなりません。"
+		},
+		"vi": {
+			"title": "CI Gates — báo cáo trên mọi pull request | LangDrift",
+			"description": "CI Gates: một workflow GitHub chỉ đọc, cố định phiên bản do LangDrift CLI ghi, báo cáo các commit của mọi pull request với số liệu FinOps vẫn là không xác định trong CI, không bao giờ là số không."
+		}
+	},
 	"pricing": {
 		"en": {
 			"title": "Plans — LangDrift",
