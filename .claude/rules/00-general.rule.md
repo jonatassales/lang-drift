@@ -90,7 +90,7 @@ return runtime, nil
 
 ## Multi-field literals
 
-1. **One field per line.** A literal with more than one field puts every field on its own line: an object literal in JavaScript or TypeScript, a struct or map literal in Go. Break after `{`, put each field on its own line indented one level, and close with `}` on its own line.
+1. **One field per line.** A literal with more than one field puts every field on its own line: an object literal in JavaScript or TypeScript, a struct or map literal in Go. Break after `{`, put each field on its own line indented one level, and close with `}` on its own line. In a Go test, each case of a test table may stay on one line, so the table reads as rows; a literal outside a table follows the rule.
 
 ```ts
 // Do:
@@ -116,7 +116,7 @@ user := User{ID: "usr_123", Name: "Alice"}
 
 ## Readable names
 
-1. **Descriptive names, never one letter.** No one-letter variable, parameter, receiver or loop variable (`x`, `e`, `p`, `t`, `i`).
+1. **Descriptive names, never one letter.** No one-letter variable, parameter, receiver or loop variable (`x`, `e`, `p`, `t`, `i`). In a Go test, the `t *testing.T` parameter keeps the name the toolchain's convention gives it.
 2. **Descriptive type parameters.** Generic type parameters are meaningful words, never single letters and never prefixed with `T`: `Mapper<Input, Output>` in TypeScript, `Map[Input, Output any]` in Go.
 3. **Name a result before using it.** A result that will be consumed lands in a named binding, and a result that can be missing or invalid is handled before dependent values use it.
 

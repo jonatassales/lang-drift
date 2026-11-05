@@ -8,8 +8,8 @@
 
 **Status:** ready-for-agent
 
-- [ ] Readable names item 1 and Multi-field literals item 1 carry the two sentences of the spec's amendment, word for word.
-- [ ] No other rule text changes.
+- [x] Readable names item 1 and Multi-field literals item 1 carry the two sentences of the spec's amendment, word for word.
+- [x] No other rule text changes.
 
 ## Dev part
 

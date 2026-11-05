@@ -4,7 +4,7 @@
 
 ## Tickets
 
-- [ ] 0245: the general rules name the Go test idioms they allow
+- [x] 0245: the general rules name the Go test idioms they allow
 - [ ] 0246: drift measures one unit per Go file, nesting, Go tests and shell functions
 - [ ] 0247: the Microruntimes contracts declare one unit per file
 - [ ] 0248: the microruntime domain declares one unit per file
