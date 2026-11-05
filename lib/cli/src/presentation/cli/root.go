@@ -22,7 +22,7 @@ type application struct {
 // command creates the EX root command.
 func (cliApplication *application) command() *cobra.Command {
 	rootCommand := &cobra.Command{
-		Use:           "ex",
+		Use:           "dft",
 		Short:         "LangDrift CLI",
 		Long:          "LangDrift CLI — project setup and connected console agent",
 		SilenceErrors: true,
@@ -138,7 +138,7 @@ func validateRootArgs(
 
 	return support.UsageError{
 		Cause: fmt.Errorf(
-			"unknown command %q; run 'ex --help'",
+			"unknown command %q; run 'dft --help'",
 			arguments[0],
 		),
 	}

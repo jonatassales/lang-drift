@@ -73,7 +73,7 @@ func reportError(
 		return
 	}
 
-	_, _ = fmt.Fprintf(diagnostics, "ex: %v\n", executionError)
+	_, _ = fmt.Fprintf(diagnostics, "dft: %v\n", executionError)
 	if hint := hintFor(exitStatus); hint != "" {
 		_, _ = fmt.Fprintf(diagnostics, "hint: %s\n", hint)
 	}
@@ -83,11 +83,11 @@ func reportError(
 func hintFor(exitStatus int) string {
 	switch exitStatus {
 	case 2:
-		return "run ex --help for usage"
+		return "run dft --help for usage"
 	case 3:
-		return "ex refused to change what it does not own; inspect the current state before retrying"
+		return "dft refused to change what it does not own; inspect the current state before retrying"
 	case 4:
-		return "a prerequisite is missing; run ex doctor"
+		return "a prerequisite is missing; run dft doctor"
 	default:
 		return ""
 	}

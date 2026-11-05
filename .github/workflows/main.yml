@@ -1,4 +1,4 @@
-# Validates main after every merge, then builds the ex CLI for each platform
+# Validates main after every merge, then builds the LangDrift CLI for each platform
 # with a signed build provenance attestation. Building is not releasing: the
 # binaries stay a workflow artifact until the owner decides on a release.
 name: Main
@@ -15,8 +15,8 @@ jobs:
     name: Validate
     uses: ./.github/workflows/validate.yml
 
-  ex:
-    name: ex binaries
+  dft:
+    name: dft binaries
     needs: validate
     runs-on: ubuntu-24.04
     timeout-minutes: 15
@@ -35,7 +35,7 @@ jobs:
           cache-dependency-path: |
             lib/cli/go.sum
             go.work.sum
-      # ex uses no cgo, so one runner builds every platform.
+      # dft uses no cgo, so one runner builds every platform.
       - name: Build
         working-directory: lib/cli
         env:
@@ -45,15 +45,15 @@ jobs:
           for platform in linux/amd64 linux/arm64 darwin/amd64 darwin/arm64; do
             os=${platform%/*}
             arch=${platform#*/}
-            GOOS=$os GOARCH=$arch go build -trimpath -ldflags='-s -w' -o "dist/platforms/ex-$os-$arch" ./src
+            GOOS=$os GOARCH=$arch go build -trimpath -ldflags='-s -w' -o "dist/platforms/dft-$os-$arch" ./src
           done
-          cd dist/platforms && sha256sum ex-* >SHA256SUMS
+          cd dist/platforms && sha256sum dft-* >SHA256SUMS
       - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
           subject-checksums: lib/cli/dist/platforms/SHA256SUMS
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: ex-${{ github.sha }}
+          name: dft-${{ github.sha }}
           path: lib/cli/dist/platforms/
           retention-days: 30
           if-no-files-found: error

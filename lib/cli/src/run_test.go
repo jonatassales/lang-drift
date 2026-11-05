@@ -14,8 +14,8 @@ func plannedProject(t *testing.T) (project, dependencies) {
 	t.Helper()
 
 	p, deps := seedProject(t)
-	if status, stdout, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 0 {
-		t.Fatalf("ex agent plan = %d\n%s%s", status, stdout, stderr)
+	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 0 {
+		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
 
 	return p, deps
@@ -32,13 +32,13 @@ func TestRunPausesAtTheGateThenOpensALap(t *testing.T) {
 	deps.Lifecycle = lifecycle
 	folder := filepath.Join(p.root, ".langdrift", "microruntimes", "runtimes", "console-microruntime")
 
-	status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime", "--model", "claude-opus-5-5", "--effort", "high")
+	status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime", "--model", "claude-opus-5-5", "--effort", "high")
 	if status != 3 || !strings.Contains(stderr, "FG-03") || !strings.Contains(stderr, "nothing was paid") {
 		t.Fatalf("a paused lap gave %d: %s\n%s", status, stderr, stdout)
 	}
 
 	for _, line := range []string{
-		"ex agent run console-microruntime",
+		"dft agent run console-microruntime",
 		"# run · 0070-console-microruntime · the recorded intent, authorized by owner",
 		"agent › intent     claude-opus-5-5 · effort high · runtime.md revision 1",
 		"agent › estimate   $34.00 · 6M input · 500K output · list prices · FIN-02",
@@ -96,7 +96,7 @@ func TestRunPausesAtTheGateThenOpensALap(t *testing.T) {
 		t.Errorf("run record = %+v", record)
 	}
 
-	status, stdout, stderr = p.exWith(deps, "agent", "run", "console-microruntime")
+	status, stdout, stderr = p.dftWith(deps, "agent", "run", "console-microruntime")
 	if status != 0 {
 		t.Fatalf("the second lap gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -132,17 +132,17 @@ func TestRunPausesAtTheGateThenOpensALap(t *testing.T) {
 	}
 
 	// The status shows the runtime up, by its execution, and the stage waiting.
-	if status, stdout, stderr := p.exWith(deps, "agent", "status", "console-microruntime"); status != 0 || !strings.Contains(stdout, `"number": "0002"`) || !strings.Contains(stdout, `"state": "waiting"`) || !strings.Contains(stdout, `"execution": "exec-`) || stageState(runRecord(t, p), "planning").State != "waiting" || lifecycle.downs != 0 {
-		t.Errorf("ex agent status = %d\n%s%s", status, stdout, stderr)
+	if status, stdout, stderr := p.dftWith(deps, "agent", "status", "console-microruntime"); status != 0 || !strings.Contains(stdout, `"number": "0002"`) || !strings.Contains(stdout, `"state": "waiting"`) || !strings.Contains(stdout, `"execution": "exec-`) || stageState(runRecord(t, p), "planning").State != "waiting" || lifecycle.downs != 0 {
+		t.Errorf("dft agent status = %d\n%s%s", status, stdout, stderr)
 	}
 
 	// With a lap open, a run plays on with it: the first stage waits for the owner.
-	status, stdout, stderr = p.exWith(deps, "agent", "run", "console-microruntime")
+	status, stdout, stderr = p.dftWith(deps, "agent", "run", "console-microruntime")
 	if status != 0 || !strings.Contains(stdout, "agent › lap        0002 open · $11.40 reserved · resumed\n") || !strings.Contains(stdout, "agent › waiting    planning · the owner confirms\n") {
 		t.Errorf("a run over the open lap gave %d: %s\n%s", status, stderr, stdout)
 	}
 
-	if status, _, stderr := p.exWith(deps, "agent", "run", "console-microruntime", "--model", "claude-opus-5-5"); status != 3 || !strings.Contains(stderr, "is open") {
+	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime", "--model", "claude-opus-5-5"); status != 3 || !strings.Contains(stderr, "is open") {
 		t.Errorf("a new choice over the open lap gave %d: %s", status, stderr)
 	}
 }
@@ -152,19 +152,19 @@ func TestRunRefusesWhatItCannotRun(t *testing.T) {
 
 	p, deps := seedProject(t)
 
-	if status, _, stderr := p.exWith(deps, "agent", "run", "console-microruntime"); status != 4 || !strings.Contains(stderr, "runtime.md") {
+	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 4 || !strings.Contains(stderr, "runtime.md") {
 		t.Errorf("an unplanned runtime gave %d: %s", status, stderr)
 	}
 
-	if status, _, stderr := p.exWith(deps, "agent", "run", "console-microruntime", "--effort", "max"); status != 2 {
+	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime", "--effort", "max"); status != 2 {
 		t.Errorf("an unknown effort gave %d: %s", status, stderr)
 	}
 
 	// A model the price list does not cover blocks at FG-01, nothing paid.
-	if status, stdout, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 0 {
-		t.Fatalf("ex agent plan = %d\n%s%s", status, stdout, stderr)
+	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 0 {
+		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
-	status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime", "--model", "claude-mythos-5-1")
+	status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime", "--model", "claude-mythos-5-1")
 	if status != 3 || !strings.Contains(stderr, "FG-01") || !strings.Contains(stdout, "agent › gate       blocked · FG-01") {
 		t.Errorf("an unpriced model gave %d: %s\n%s", status, stderr, stdout)
 	}

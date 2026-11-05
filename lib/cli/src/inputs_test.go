@@ -16,16 +16,16 @@ import (
 	"github.com/jonatassales/tao/lib/cli/src/presentation/cli/support"
 )
 
-// exWith is ex with scripted sources: the ids and the clock of the records,
+// dftWith is dft with scripted sources: the ids and the clock of the records,
 // and the driver that plays the stages.
-func (p project) exWith(deps dependencies, arguments ...string) (int, string, string) {
+func (p project) dftWith(deps dependencies, arguments ...string) (int, string, string) {
 	p.t.Helper()
 
-	return p.exInput(deps, "", arguments...)
+	return p.dftInput(deps, "", arguments...)
 }
 
-// exInput is exWith with what the person types.
-func (p project) exInput(deps dependencies, input string, arguments ...string) (int, string, string) {
+// dftInput is dftWith with what the person types.
+func (p project) dftInput(deps dependencies, input string, arguments ...string) (int, string, string) {
 	p.t.Helper()
 
 	var stdout, stderr bytes.Buffer
@@ -129,8 +129,8 @@ func TestInputsMirrorTheSample(t *testing.T) {
 	}
 
 	for _, arguments := range commands {
-		if status, stdout, stderr := p.exWith(deps, arguments...); status != 0 || (arguments[0] != "init" && !strings.Contains(stdout, `"status": "set"`)) {
-			t.Fatalf("ex %v = %d\n%s%s", arguments, status, stdout, stderr)
+		if status, stdout, stderr := p.dftWith(deps, arguments...); status != 0 || (arguments[0] != "init" && !strings.Contains(stdout, `"status": "set"`)) {
+			t.Fatalf("dft %v = %d\n%s%s", arguments, status, stdout, stderr)
 		}
 	}
 
@@ -157,7 +157,7 @@ func TestInputsRefuseBadValuesAsUsage(t *testing.T) {
 	t.Parallel()
 
 	p := newProject(t)
-	if status, _, stderr := p.ex("", "init"); status != 0 {
+	if status, _, stderr := p.dft("", "init"); status != 0 {
 		t.Fatal(stderr)
 	}
 
@@ -177,8 +177,8 @@ func TestInputsRefuseBadValuesAsUsage(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		if status, _, stderr := p.ex("", tt.arguments...); status != 2 || !strings.Contains(stderr, tt.stderr) {
-			t.Errorf("ex %v = %d, %q; want exit 2 mentioning %q", tt.arguments, status, stderr, tt.stderr)
+		if status, _, stderr := p.dft("", tt.arguments...); status != 2 || !strings.Contains(stderr, tt.stderr) {
+			t.Errorf("dft %v = %d, %q; want exit 2 mentioning %q", tt.arguments, status, stderr, tt.stderr)
 		}
 	}
 }

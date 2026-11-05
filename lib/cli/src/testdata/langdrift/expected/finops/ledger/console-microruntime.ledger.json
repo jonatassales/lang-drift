@@ -2,11 +2,11 @@
 	"mirror": {
 		"of": "cli",
 		"record": "ledger-console-microruntime",
-		"setBy": "ex",
+		"setBy": "dft",
 		"via": "cli",
 		"setAt": "2026-10-28T13:46:50Z",
 		"readOnly": true,
-		"note": "Written by ex from its own record. No gate reads this file; an edit here is shown as an unauthorized change."
+		"note": "Written by dft from its own record. No gate reads this file; an edit here is shown as an unauthorized change."
 	},
 	"version": 1,
 	"run": "console-microruntime",

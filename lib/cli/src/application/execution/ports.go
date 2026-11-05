@@ -119,7 +119,7 @@ var ErrRefused = errors.New("the run refuses")
 var ErrNotStarted = errors.New("the process did not start")
 
 // Confirmer answers whether the owner confirms a human stage now, as an
-// interactive run asks; without one the run waits for ex agent confirm.
+// interactive run asks; without one the run waits for dft agent confirm.
 type Confirmer func(ctx context.Context, stage string) (bool, error)
 
 // StageCall is one skill of one stage, run through the owner's coding agent.

@@ -10,21 +10,21 @@ import (
 	"testing"
 )
 
-// ex init writes the project identity and the Microruntimes execution rules,
+// dft init writes the project identity and the Microruntimes execution rules,
 // and keeps its private state apart. Nothing LangDrift does not prescribe
 // lands in the project: no template, skill, policy text or workflow.
 func TestInitWritesTheIdentityAndTheExecutionRulesOnly(t *testing.T) {
 	t.Parallel()
 
 	p := newProject(t)
-	if status, _, stderr := p.ex("", "init"); status != 0 {
+	if status, _, stderr := p.dft("", "init"); status != 0 {
 		t.Fatal(stderr)
 	}
 
 	folder := filepath.Join(p.root, ".langdrift")
 
 	if got := visibleFiles(t, folder); !slices.Equal(got, []string{"config.json", "microruntimes/AGENTS.md"}) {
-		t.Fatalf("ex init wrote %v outside the private state, want config.json and microruntimes/AGENTS.md", got)
+		t.Fatalf("dft init wrote %v outside the private state, want config.json and microruntimes/AGENTS.md", got)
 	}
 
 	rules, err := os.ReadFile(filepath.Join(folder, "microruntimes", "AGENTS.md"))
@@ -52,12 +52,12 @@ func TestInitWritesTheIdentityAndTheExecutionRulesOnly(t *testing.T) {
 		t.Errorf("private state ignore = %q, %v", ignore, err)
 	}
 
-	if status, stdout, stderr := p.ex("", "init"); status != 0 || !strings.Contains(stdout, "already initialized") {
-		t.Fatalf("second ex init = %d, %s%s", status, stdout, stderr)
+	if status, stdout, stderr := p.dft("", "init"); status != 0 || !strings.Contains(stdout, "already initialized") {
+		t.Fatalf("second dft init = %d, %s%s", status, stdout, stderr)
 	}
 
 	if again, _ := os.ReadFile(filepath.Join(folder, "config.json")); string(again) != string(identity) {
-		t.Error("a second ex init changed the identity")
+		t.Error("a second dft init changed the identity")
 	}
 }
 

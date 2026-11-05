@@ -52,7 +52,7 @@ type StartRequest struct {
 	By                   string
 	Session              session.Sink
 	// Confirm answers a human stage's confirmation on the spot; nil leaves
-	// the run waiting for ex agent confirm.
+	// the run waiting for dft agent confirm.
 	Confirm Confirmer
 	// ChecksWait bounds how long the run follows the pull request's checks.
 	ChecksWait time.Duration
@@ -124,7 +124,7 @@ func (service Service) Start(ctx context.Context, request StartRequest) (StartRe
 	}
 
 	if guards.Workflow == nil {
-		return StartResult{}, application.NotFound("no workflow is recorded; set it with ex harness workflow set")
+		return StartResult{}, application.NotFound("no workflow is recorded; set it with dft harness workflow set")
 	}
 
 	driver, err := driverOf(service.Inputs, owner)
@@ -132,7 +132,7 @@ func (service Service) Start(ctx context.Context, request StartRequest) (StartRe
 		return StartResult{}, err
 	}
 	if driver == nil && needsDriver(*guards.Workflow) {
-		return StartResult{}, application.NotFound("no driver is recorded for the stages; set it with ex harness driver set")
+		return StartResult{}, application.NotFound("no driver is recorded for the stages; set it with dft harness driver set")
 	}
 
 	sink := request.Session
@@ -200,7 +200,7 @@ func (service Service) Start(ctx context.Context, request StartRequest) (StartRe
 
 	forecast, forecasted := guards.Forecast(lap.Choice.Effort)
 	if !forecasted {
-		return StartResult{}, application.NotFound("no forecast is recorded for effort %s; set it with ex finops forecasts set", lap.Choice.Effort)
+		return StartResult{}, application.NotFound("no forecast is recorded for effort %s; set it with dft finops forecasts set", lap.Choice.Effort)
 	}
 	price, priced := guards.Price(lap.Choice.Model)
 	lap.Estimate = forecast

@@ -1,6 +1,6 @@
 // Package judge asks the planner's questions of a Claude model through the
 // official Anthropic SDK. The credential is the SDK's to resolve, from the
-// environment or a saved profile; it never passes through ex. The calls go
+// environment or a saved profile; it never passes through dft. The calls go
 // through the judge's own HTTP client, which follows no redirect, sends
 // nothing to a base URL that is not HTTPS (loopback aside) and reads no
 // response past 4 MiB.

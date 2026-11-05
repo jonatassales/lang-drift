@@ -29,7 +29,7 @@ For agents, FIN-02/03/06 include calls, model/provider, tokens or billable units
 - Verification/observation: FIN-04 through FIN-07 with scoped verification records, distinguishing plans from results.
 - Review: record the criterion, evidence, assessment, and limitations in the review format. The former shared states and exceptions index is unavailable; the format does not replace that contract. A violation or missing mandatory evidence prevents a compliance claim for the affected action; it does not prevent independent research or documentation.
 
-The `ex` CLI does not calculate costs or enforce budgets, quotas, or expiration. Record contracts in the spec and verification plan; do not invent fields accepted by the current schema. A future adapter must demonstrate which control it performs. Stack and composition remain consumer choices.
+The LangDrift CLI does not calculate costs or enforce budgets, quotas, or expiration. Record contracts in the spec and verification plan; do not invent fields accepted by the current schema. A future adapter must demonstrate which control it performs. Stack and composition remain consumer choices.
 
 ## Additional reference
 

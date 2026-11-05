@@ -1,8 +1,8 @@
 # Microruntimes execution rules
 
-Rules every run follows, whoever starts it: a person in the console, which is the primary path, or the `ex` CLI. The Microruntimes engine, the `ex` CLI and the console's server, applies them. Each rule says how it holds today.
+Rules every run follows, whoever starts it: a person in the console, which is the primary path, or the LangDrift CLI. The Microruntimes engine, the LangDrift CLI and the console's server, applies them. Each rule says how it holds today.
 
-- **Code** means the `ex` CLI applies it now.
+- **Code** means the LangDrift CLI applies it now.
 - **Planned** means the engine will apply it; until then it is not a control.
 - **Guidance** means a person or an agent follows it; nothing checks it.
 

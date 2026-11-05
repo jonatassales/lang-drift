@@ -98,9 +98,9 @@ func TestPlanJudgesTheSourcesAndSuggests(t *testing.T) {
 	model := &scriptedJudge{answers: sampleAnswers(t)}
 	deps.Judge = model
 
-	status, stdout, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
 	if status != 0 {
-		t.Fatalf("ex agent plan = %d\n%s%s", status, stdout, stderr)
+		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
 
 	for _, line := range []string{
@@ -172,11 +172,11 @@ func TestPlanPausesAtTheGateBeforeTheJudgeRuns(t *testing.T) {
 	model := &scriptedJudge{answers: sampleAnswers(t)}
 	deps.Judge = model
 
-	if status, _, stderr := p.exWith(deps, "finops", "budget", "set", "--period", "2026-10", "--period-cents", "50000", "--per-run-cents", "10", "--allocate", "0070-console-microruntime=10"); status != 0 {
+	if status, _, stderr := p.dftWith(deps, "finops", "budget", "set", "--period", "2026-10", "--period-cents", "50000", "--per-run-cents", "10", "--allocate", "0070-console-microruntime=10"); status != 0 {
 		t.Fatal(stderr)
 	}
 
-	status, stdout, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
 	if status != 3 || !strings.Contains(stderr, "FG-03 paused") || !strings.Contains(stderr, "nothing was paid") {
 		t.Fatalf("a paused planner gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -198,9 +198,9 @@ func TestPlanContinuesWhenTheJudgeIsUnavailable(t *testing.T) {
 	p, deps := seedProject(t)
 	deps.Judge = &scriptedJudge{fail: plan.ErrModelUnavailable}
 
-	status, stdout, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
 	if status != 0 {
-		t.Fatalf("ex agent plan = %d\n%s%s", status, stdout, stderr)
+		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
 
 	if strings.Count(stdout, "judge      stopped · the planner's model is unavailable") != 1 {
@@ -232,9 +232,9 @@ func TestPlanReportsAProviderFailureByItsStatusAndRequestID(t *testing.T) {
 	p, deps := seedProject(t)
 	deps.Judge = judgeinfra.Anthropic{Options: []option.RequestOption{option.WithBaseURL(api.URL), option.WithAPIKey("test-key"), option.WithMaxRetries(0)}}
 
-	status, stdout, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
 	if status != 0 {
-		t.Fatalf("ex agent plan = %d\n%s%s", status, stdout, stderr)
+		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
 
 	warning := "judge      stopped · the sources call failed · ask claude-sonnet-5-5 about sources: the API answered HTTP 500 · request req_011plan\n"

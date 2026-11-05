@@ -20,7 +20,7 @@ type line struct {
 var catalog = map[string]line{
 	// The plan session.
 	key(session.PlanSession, session.PlanCommand): {session.Command, func(data session.Data) string {
-		return "ex agent plan " + text(data, "ticket")
+		return "dft agent plan " + text(data, "ticket")
 	}},
 	key(session.PlanSession, session.PlanScope): {session.Comment, func(session.Data) string {
 		return "# plan only · nothing is built or started · the planner's calls are paid and gated"
@@ -126,10 +126,10 @@ var catalog = map[string]line{
 		return Actor + "tool call: validate runtime.md draft against the schema · " + strconv.Itoa(number(data, "errors")) + " errors"
 	}},
 	key(session.PlanSession, session.Draft): {session.Success, func(data session.Data) string {
-		return "✓ plan       runtime.md draft, revision " + strconv.Itoa(number(data, "revision")) + " · proposed · authorize with ex agent run"
+		return "✓ plan       runtime.md draft, revision " + strconv.Itoa(number(data, "revision")) + " · proposed · authorize with dft agent run"
 	}},
 	key(session.PlanSession, session.Handoff): {session.Comment, func(session.Data) string {
-		return "# next: once the team authorizes, ex agent run applies the recorded intent"
+		return "# next: once the team authorizes, dft agent run applies the recorded intent"
 	}},
 	key(session.PlanSession, session.JudgeUnavailable): {session.Warning, func(data session.Data) string {
 		return "judge      unavailable · " + text(data, "reason")
@@ -143,7 +143,7 @@ var catalog = map[string]line{
 
 	// The run session.
 	key(session.RunSession, session.RunCommand): {session.Command, func(data session.Data) string {
-		return "ex agent run " + text(data, "runtime")
+		return "dft agent run " + text(data, "runtime")
 	}},
 	key(session.RunSession, session.RunScope): {session.Comment, func(data session.Data) string {
 		return "# run · " + text(data, "ticket") + " · the recorded intent, authorized by " + text(data, "by")

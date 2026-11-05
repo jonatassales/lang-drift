@@ -49,7 +49,7 @@ func executeNativeCatalogs(ctx context.Context, args []string, options support.O
 		if globals.JSON {
 			_ = json.NewEncoder(options.Diagnostics).Encode(map[string]any{"error": err.Error(), "exitCode": status})
 		} else {
-			_, _ = fmt.Fprintln(options.Diagnostics, "ex:", err)
+			_, _ = fmt.Fprintln(options.Diagnostics, "dft:", err)
 		}
 		return status
 	}

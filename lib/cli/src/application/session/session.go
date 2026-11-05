@@ -131,7 +131,7 @@ const GateBlocked = "gateBlocked"
 // an open lap: the reservation is reached, or a call reported no usage.
 const GateExhausted = "gateExhausted"
 
-// LapResumed is the run's own line when ex agent run finds a lap open and
+// LapResumed is the run's own line when dft agent run finds a lap open and
 // plays on from where it stood.
 const LapResumed = "lapResumed"
 

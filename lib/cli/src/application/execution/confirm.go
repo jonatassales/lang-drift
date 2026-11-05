@@ -90,5 +90,5 @@ func (service Service) Confirm(_ context.Context, request ConfirmRequest) (Confi
 	}
 	emit(sink, session.Confirmed, session.Data{"stage": request.Stage, "by": by})
 
-	return ConfirmResult{Runtime: runtime.String(), Stage: request.Stage, By: by, Status: "confirmed; ex agent run " + runtime.String() + " plays on"}, nil
+	return ConfirmResult{Runtime: runtime.String(), Stage: request.Stage, By: by, Status: "confirmed; dft agent run " + runtime.String() + " plays on"}, nil
 }

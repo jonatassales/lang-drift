@@ -116,9 +116,9 @@ func TestRunBringsTheRuntimeUpObservesDeliveryAndRemembers(t *testing.T) {
 	lifecycle, delivery := websiteLifecycle(), websiteDelivery()
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = websiteDriver(), lifecycle, delivery, time.Millisecond
 
-	status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
+	status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
 	if status != 0 {
-		t.Fatalf("ex agent run = %d: %s\n%s", status, stderr, stdout)
+		t.Fatalf("dft agent run = %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout,
 		"agent › code-review 2 findings · fixed",
@@ -228,10 +228,10 @@ func TestRunBringsTheRuntimeUpObservesDeliveryAndRemembers(t *testing.T) {
 		}
 	}
 
-	if status, stdout, stderr := p.exWith(deps, "agent", "reindex"); status != 0 || !strings.Contains(stdout, `"episodes": 1`) {
-		t.Errorf("ex agent reindex = %d: %s\n%s", status, stderr, stdout)
+	if status, stdout, stderr := p.dftWith(deps, "agent", "reindex"); status != 0 || !strings.Contains(stdout, `"episodes": 1`) {
+		t.Errorf("dft agent reindex = %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, _, stderr := p.exWith(deps, "agent", "run", "console-microruntime"); status != 3 || !strings.Contains(stderr, "finished") {
+	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 3 || !strings.Contains(stderr, "finished") {
 		t.Errorf("a run over the finished run gave %d: %s", status, stderr)
 	}
 
@@ -240,7 +240,7 @@ func TestRunBringsTheRuntimeUpObservesDeliveryAndRemembers(t *testing.T) {
 	// text opens with the title alone, so the key below matches the episode only.
 	_, title, _ := strings.Cut(strings.SplitN(memory, "\n", 2)[0], ": ")
 	deps.Embedder = scriptedEmbedder{similarities: map[string]float64{title + "\n0070-console-microruntime\n": 0.81}}
-	status, stdout, stderr = p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent, "--runtime", "console-again")
+	status, stdout, stderr = p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent, "--runtime", "console-again")
 	if status != 0 {
 		t.Fatalf("the next plan gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -264,9 +264,9 @@ func TestRunLeavesWhatItCannotObserveUnknown(t *testing.T) {
 	delivery := &scriptedDelivery{branch: execution.Branch{Name: "feat/local-only", Commit: "abc1234", Reason: "no upstream"}, reason: "gh is not installed"}
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = websiteDriver(), lifecycle, delivery, time.Millisecond
 
-	status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
+	status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
 	if status != 0 {
-		t.Fatalf("ex agent run = %d: %s\n%s", status, stderr, stdout)
+		t.Fatalf("dft agent run = %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout,
 		"pushed     unknown · no upstream",
@@ -304,7 +304,7 @@ func TestRunLeavesWhatItCannotObserveUnknown(t *testing.T) {
 	// brings the runtime up again and ends with the outcome known.
 	lifecycle.cleanup = execution.Cleanup{Confirmed: true, Removed: 4, Total: 4, ClusterKept: true}
 	deps.Delivery = websiteDelivery()
-	status, stdout, stderr = p.exWith(deps, "agent", "run", "console-microruntime")
+	status, stdout, stderr = p.dftWith(deps, "agent", "run", "console-microruntime")
 	if status != 0 {
 		t.Fatalf("the lap after the unknown one gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -332,7 +332,7 @@ func TestRunStopsWhenTheRuntimeDoesNotComeUp(t *testing.T) {
 	driver := websiteDriver()
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, lifecycle, websiteDelivery(), time.Millisecond
 
-	status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
+	status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
 	if status != 1 || !strings.Contains(stderr, "did not come up") || !strings.Contains(stderr, "docker build") {
 		t.Fatalf("a runtime that did not come up gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -341,7 +341,7 @@ func TestRunStopsWhenTheRuntimeDoesNotComeUp(t *testing.T) {
 	}
 
 	lifecycle.failUp = nil
-	status, stdout, stderr = p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
+	status, stdout, stderr = p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
 	if status != 0 {
 		t.Fatalf("the next run gave %d: %s\n%s", status, stderr, stdout)
 	}

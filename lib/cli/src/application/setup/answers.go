@@ -1,4 +1,4 @@
-// Package setup completes ex init: after the project identity, it records the
+// Package setup completes dft init: after the project identity, it records the
 // inputs a team gives on the way in, through the same use cases as their own
 // commands, and never replaces one already recorded.
 package setup

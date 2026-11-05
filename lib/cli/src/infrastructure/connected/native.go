@@ -288,7 +288,7 @@ func (native Native) requireStopped(owner project.Project, id string) error {
 		return err
 	}
 	if err := execution.RequireClosed(); err != nil {
-		return fmt.Errorf("%w; explicitly recover the legacy runtime with ex agent migrate %s --recover", err, id)
+		return fmt.Errorf("%w; explicitly recover the legacy runtime with dft agent migrate %s --recover", err, id)
 	}
 	return nil
 }

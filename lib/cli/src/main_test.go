@@ -31,7 +31,7 @@ func TestCommand(t *testing.T) {
 	}{
 		{name: "help on no args", status: 0, stdout: "LangDrift CLI"},
 		{name: "explicit help", args: []string{"--help"}, status: 0, stdout: "Usage:"},
-		{name: "version", args: []string{"version"}, status: 0, stdout: "ex 0.0.0-dev"},
+		{name: "version", args: []string{"version"}, status: 0, stdout: "dft 0.0.0-dev"},
 		{name: "init initialized", args: []string{"init"}, status: 0, stdout: "initialized"},
 		{name: "unexpected init flags", args: []string{"init", "--force"}, status: 2, stderr: "unknown flag"},
 		{name: "unexpected init arguments", args: []string{"init", "project"}, status: 2, stderr: "requires 0 argument"},
@@ -76,7 +76,7 @@ func TestOutputFailure(t *testing.T) {
 	}
 }
 
-// BenchmarkProcessStartup measures one complete `ex version` process, the
+// BenchmarkProcessStartup measures one complete `dft version` process, the
 // latency floor of every command, after building the executable once.
 func BenchmarkProcessStartup(b *testing.B) {
 	goTool, err := exec.LookPath("go")
@@ -84,7 +84,7 @@ func BenchmarkProcessStartup(b *testing.B) {
 		b.Skip("go is not on PATH")
 	}
 
-	binary := filepath.Join(b.TempDir(), "ex")
+	binary := filepath.Join(b.TempDir(), "dft")
 	if output, err := exec.Command(goTool, "build", "-o", binary, ".").CombinedOutput(); err != nil {
 		b.Fatalf("build: %v\n%s", err, output)
 	}
@@ -116,9 +116,9 @@ func TestLauncherDispatchAndFallback(t *testing.T) {
 		t.Fatalf("getwd: %v", err)
 	}
 	packageDir := filepath.Dir(sourceDir)
-	launcherSource, err := os.ReadFile(filepath.Join(packageDir, "bin", "ex.sh"))
+	launcherSource, err := os.ReadFile(filepath.Join(packageDir, "bin", "dft.sh"))
 	if err != nil {
-		t.Fatalf("read bin/ex.sh: %v", err)
+		t.Fatalf("read bin/dft.sh: %v", err)
 	}
 
 	writeFakeUname := func(t *testing.T, kernel, machine string) string {
@@ -135,14 +135,14 @@ func TestLauncherDispatchAndFallback(t *testing.T) {
 	setupFixture := func(t *testing.T) (string, string) {
 		t.Helper()
 		root := t.TempDir()
-		pkg := filepath.Join(root, "node_modules", "@langdrift", "ex")
+		pkg := filepath.Join(root, "node_modules", "@langdrift", "dft")
 		if err := os.MkdirAll(filepath.Join(pkg, "bin"), 0o755); err != nil {
 			t.Fatalf("mkdir bin: %v", err)
 		}
 		if err := os.MkdirAll(filepath.Join(pkg, "dist"), 0o755); err != nil {
 			t.Fatalf("mkdir dist: %v", err)
 		}
-		launcherPath := filepath.Join(pkg, "bin", "ex.sh")
+		launcherPath := filepath.Join(pkg, "bin", "dft.sh")
 		if err := os.WriteFile(launcherPath, launcherSource, 0o755); err != nil {
 			t.Fatalf("write launcher: %v", err)
 		}
@@ -150,7 +150,7 @@ func TestLauncherDispatchAndFallback(t *testing.T) {
 		if err := os.MkdirAll(dotBin, 0o755); err != nil {
 			t.Fatalf("mkdir .bin: %v", err)
 		}
-		symlinkPath := filepath.Join(dotBin, "ex")
+		symlinkPath := filepath.Join(dotBin, "dft")
 		if err := os.Symlink(launcherPath, symlinkPath); err != nil {
 			t.Fatalf("symlink launcher: %v", err)
 		}
@@ -180,11 +180,11 @@ func TestLauncherDispatchAndFallback(t *testing.T) {
 		target  string
 		status  int
 	}{
-		{kernel: "Darwin", machine: "arm64", target: "ex-darwin-arm64", status: 0},
-		{kernel: "Darwin", machine: "x86_64", target: "ex-darwin-amd64", status: 0},
-		{kernel: "Linux", machine: "x86_64", target: "ex-linux-amd64", status: 0},
-		{kernel: "Linux", machine: "aarch64", target: "ex-linux-arm64", status: 0},
-		{kernel: "Linux", machine: "arm64", target: "ex-linux-arm64", status: 3},
+		{kernel: "Darwin", machine: "arm64", target: "dft-darwin-arm64", status: 0},
+		{kernel: "Darwin", machine: "x86_64", target: "dft-darwin-amd64", status: 0},
+		{kernel: "Linux", machine: "x86_64", target: "dft-linux-amd64", status: 0},
+		{kernel: "Linux", machine: "aarch64", target: "dft-linux-arm64", status: 0},
+		{kernel: "Linux", machine: "arm64", target: "dft-linux-arm64", status: 3},
 	}
 
 	for _, platform := range platforms {
@@ -206,11 +206,11 @@ func TestLauncherDispatchAndFallback(t *testing.T) {
 		})
 	}
 
-	t.Run("falls back to host dist/ex when platform binary is absent", func(t *testing.T) {
+	t.Run("falls back to host dist/dft when platform binary is absent", func(t *testing.T) {
 		pkg, symlinkPath := setupFixture(t)
 		fakeBin := writeFakeUname(t, "Darwin", "arm64")
 
-		hostBinary := filepath.Join(pkg, "dist", "ex")
+		hostBinary := filepath.Join(pkg, "dist", "dft")
 		if err := os.WriteFile(hostBinary, []byte("#!/bin/sh\nprintf 'host-fallback %s\\n' \"$*\"\n"), 0o755); err != nil {
 			t.Fatalf("write host binary: %v", err)
 		}
@@ -266,9 +266,9 @@ func TestLauncherDispatchAndFallback(t *testing.T) {
 		if output, buildErr := exec.Command("sh", filepath.Join(packageDir, "build.sh")).CombinedOutput(); buildErr != nil {
 			t.Fatalf("build.sh: %v\n%s", buildErr, output)
 		}
-		versionOut, runErr := exec.Command(filepath.Join(packageDir, "bin", "ex.sh"), "version").CombinedOutput()
+		versionOut, runErr := exec.Command(filepath.Join(packageDir, "bin", "dft.sh"), "version").CombinedOutput()
 		if runErr != nil {
-			t.Fatalf("bin/ex.sh version: %v\n%s", runErr, versionOut)
+			t.Fatalf("bin/dft.sh version: %v\n%s", runErr, versionOut)
 		}
 
 		// The version is the package's own, so a release bump never edits
@@ -290,10 +290,10 @@ func TestLauncherDispatchAndFallback(t *testing.T) {
 			t.Fatal("package.json names no version")
 		}
 
-		want := "ex " + manifest.Version
+		want := "dft " + manifest.Version
 
 		if strings.TrimSpace(string(versionOut)) != want {
-			t.Fatalf("bin/ex.sh version = %q, want %q", strings.TrimSpace(string(versionOut)), want)
+			t.Fatalf("bin/dft.sh version = %q, want %q", strings.TrimSpace(string(versionOut)), want)
 		}
 	})
 }

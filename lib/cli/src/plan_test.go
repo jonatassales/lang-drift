@@ -47,8 +47,8 @@ func seedProject(t *testing.T) (project, dependencies) {
 		{"finops", "forecasts", "set", "--file", forecasts},
 		{"harness", "driver", "set", "--file", driver},
 	} {
-		if status, stdout, stderr := p.exWith(deps, arguments...); status != 0 {
-			t.Fatalf("ex %v = %d\n%s%s", arguments, status, stdout, stderr)
+		if status, stdout, stderr := p.dftWith(deps, arguments...); status != 0 {
+			t.Fatalf("dft %v = %d\n%s%s", arguments, status, stdout, stderr)
 		}
 	}
 
@@ -92,13 +92,13 @@ func TestPlanReadsTheTicketAndWritesTheRuntimeFile(t *testing.T) {
 
 	p, deps := seedProject(t)
 
-	status, stdout, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent)
 	if status != 0 {
-		t.Fatalf("ex agent plan = %d\n%s%s", status, stdout, stderr)
+		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
 
 	for _, line := range []string{
-		"ex agent plan 0070-console-microruntime.ticket.md",
+		"dft agent plan 0070-console-microruntime.ticket.md",
 		"agent › tool call: read 0070-console-microruntime.ticket.md",
 		"agent › needs-triage · links 0010-exphere-and-the-langdrift-folder.spec.md · ex-microruntimes-capability.research.md · 0002-console-input-is-untrusted.adr.md · 0001-finops.gr.md · package.json · go.mod",
 		"✓ read       7 documents · nothing outside the ticket's links",
@@ -113,8 +113,8 @@ func TestPlanReadsTheTicketAndWritesTheRuntimeFile(t *testing.T) {
 		"limits     gpu and disk are not runtime.md fields · none requested",
 		"estimate   runtime has no price source · cpu and memory stay in millicores and MiB",
 		"agent › tool call: validate runtime.md draft against the schema · 0 errors",
-		"✓ plan       runtime.md draft, revision 1 · proposed · authorize with ex agent run",
-		"# next: once the team authorizes, ex agent run applies the recorded intent",
+		"✓ plan       runtime.md draft, revision 1 · proposed · authorize with dft agent run",
+		"# next: once the team authorizes, dft agent run applies the recorded intent",
 	} {
 		if !strings.Contains(stdout, line+"\n") {
 			t.Errorf("the session did not print %q:\n%s", line, stdout)
@@ -188,7 +188,7 @@ func TestPlanReadsTheTicketAndWritesTheRuntimeFile(t *testing.T) {
 		t.Errorf("ledger = %+v", ledger)
 	}
 
-	status, _, stderr = p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent)
+	status, _, stderr = p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent)
 	if status != 0 {
 		t.Fatalf("replan = %d: %s", status, stderr)
 	}
@@ -203,20 +203,20 @@ func TestPlanRefusesWhatItCannotRead(t *testing.T) {
 
 	p, deps := seedProject(t)
 
-	if status, _, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0099-missing.ticket.md", "--no-judge", "--component", consoleComponent); status != 4 || !strings.Contains(stderr, "no ticket") {
+	if status, _, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0099-missing.ticket.md", "--no-judge", "--component", consoleComponent); status != 4 || !strings.Contains(stderr, "no ticket") {
 		t.Errorf("a missing ticket gave %d: %s", status, stderr)
 	}
 
-	if status, _, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge"); status != 2 || !strings.Contains(stderr, "--component") {
+	if status, _, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge"); status != 2 || !strings.Contains(stderr, "--component") {
 		t.Errorf("a plan without components gave %d: %s", status, stderr)
 	}
 
 	bare := newProject(t)
-	if status, _, stderr := bare.ex("", "init"); status != 0 {
+	if status, _, stderr := bare.dft("", "init"); status != 0 {
 		t.Fatal(stderr)
 	}
 	copyTree(t, projectFixture, bare.root)
-	if status, _, stderr := bare.ex("", "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 4 || !strings.Contains(stderr, "envelope") {
+	if status, _, stderr := bare.dft("", "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 4 || !strings.Contains(stderr, "envelope") {
 		t.Errorf("a plan without inputs gave %d: %s", status, stderr)
 	}
 }
@@ -228,7 +228,7 @@ func TestPlanBlocksADraftThatFailsACheck(t *testing.T) {
 
 	p, deps := seedProject(t)
 
-	status, stdout, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge",
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge",
 		"--component", "name=console,path=.,kind=web,port=3001",
 		"--component", "name=web,path=apps/console,port=3001,env-file=apps/console/runtime.env")
 	if status != 3 || !strings.Contains(stderr, "ports-distinct") || !strings.Contains(stderr, "dockerfiles-exist") {
@@ -281,7 +281,7 @@ func TestPlanBlocksADraftThatFailsACheck(t *testing.T) {
 	}
 
 	// A replan still finds the revision, even though the fence failed validation.
-	if status, _, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 0 {
+	if status, _, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 0 {
 		t.Fatalf("the replan after a blocked draft = %d: %s", status, stderr)
 	}
 	again, err := connection.Parse(string(mustRead(t, runtimePath)))

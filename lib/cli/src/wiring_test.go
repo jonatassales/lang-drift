@@ -38,7 +38,7 @@ func newProject(t *testing.T) project {
 	return project{t: t, root: root}
 }
 
-func (p project) ex(input string, arguments ...string) (int, string, string) {
+func (p project) dft(input string, arguments ...string) (int, string, string) {
 	p.t.Helper()
 
 	var stdout, stderr bytes.Buffer
@@ -86,24 +86,24 @@ func TestGuidedRuntimeGenerationValidates(t *testing.T) {
 
 	p := newProject(t)
 
-	if status, stdout, stderr := p.ex("", "init"); status != 0 || !strings.Contains(stdout, `"status": "initialized"`) {
-		t.Fatalf("ex init = %d, %s%s", status, stdout, stderr)
+	if status, stdout, stderr := p.dft("", "init"); status != 0 || !strings.Contains(stdout, `"status": "initialized"`) {
+		t.Fatalf("dft init = %d, %s%s", status, stdout, stderr)
 	}
 
-	status, stdout, stderr := p.ex(guidedAnswers, "runtime", "init", "demo", "--guided")
+	status, stdout, stderr := p.dft(guidedAnswers, "runtime", "init", "demo", "--guided")
 	if status != 0 || !strings.Contains(stdout, `"guided": true`) || !strings.Contains(stderr, "Runtime namespace: ") {
-		t.Fatalf("ex runtime init --guided = %d, %s%s", status, stdout, stderr)
+		t.Fatalf("dft runtime init --guided = %d, %s%s", status, stdout, stderr)
 	}
 
 	for _, question := range []string{"Dockerfile in the component folder", "Readiness (healthcheck, tcp or http)"} {
 		if !strings.Contains(stderr, question) || strings.Contains(stderr, "Prebuilt image") {
-			t.Fatalf("ex runtime init --guided asked %s; want the Dockerfile and the readiness kind", stderr)
+			t.Fatalf("dft runtime init --guided asked %s; want the Dockerfile and the readiness kind", stderr)
 		}
 	}
 
-	status, stdout, stderr = p.ex("", "runtime", "validate", "demo", "--json")
+	status, stdout, stderr = p.dft("", "runtime", "validate", "demo", "--json")
 	if status != 0 {
-		t.Fatalf("ex runtime validate = %d: %s", status, stderr)
+		t.Fatalf("dft runtime validate = %d: %s", status, stderr)
 	}
 
 	var validation struct {
@@ -119,8 +119,8 @@ func TestGuidedRuntimeGenerationValidates(t *testing.T) {
 		t.Fatalf("validation = %+v, want both units and three native objects", validation)
 	}
 
-	if status, _, stderr := p.ex(guidedAnswers, "runtime", "init", "demo", "--guided"); status != 1 || !strings.Contains(stderr, "already exists") {
-		t.Fatalf("a second ex runtime init = %d, %s; want the existing runtime kept", status, stderr)
+	if status, _, stderr := p.dft(guidedAnswers, "runtime", "init", "demo", "--guided"); status != 1 || !strings.Contains(stderr, "already exists") {
+		t.Fatalf("a second dft runtime init = %d, %s; want the existing runtime kept", status, stderr)
 	}
 
 	workload := filepath.Join(p.root, ".langdrift", "microruntimes", "runtimes", "demo", "units", "web", "kubernetes", "workload.json")
@@ -133,8 +133,8 @@ func TestGuidedRuntimeGenerationValidates(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if status, _, stderr := p.ex("", "runtime", "validate", "demo"); status != 1 || !strings.Contains(stderr, "imagePullPolicy: Never") {
-		t.Fatalf("ex runtime validate after an edit = %d, %s; want the policy violation reported", status, stderr)
+	if status, _, stderr := p.dft("", "runtime", "validate", "demo"); status != 1 || !strings.Contains(stderr, "imagePullPolicy: Never") {
+		t.Fatalf("dft runtime validate after an edit = %d, %s; want the policy violation reported", status, stderr)
 	}
 }
 
@@ -149,8 +149,8 @@ func TestCommandsStopBeforeInfrastructureWithoutAProject(t *testing.T) {
 		{"cluster", "inspect"},
 		{"agent", "status", "demo"},
 	} {
-		if status, _, stderr := p.ex("", arguments...); status != 4 || !strings.Contains(stderr, "no LangDrift project") {
-			t.Errorf("ex %v = %d, %q; want the missing project reported", arguments, status, stderr)
+		if status, _, stderr := p.dft("", arguments...); status != 4 || !strings.Contains(stderr, "no LangDrift project") {
+			t.Errorf("dft %v = %d, %q; want the missing project reported", arguments, status, stderr)
 		}
 	}
 }
@@ -159,11 +159,11 @@ func TestCommandsStopBeforeInfrastructureWithoutACluster(t *testing.T) {
 	t.Parallel()
 
 	p := newProject(t)
-	if status, _, stderr := p.ex("", "init"); status != 0 {
+	if status, _, stderr := p.dft("", "init"); status != 0 {
 		t.Fatal(stderr)
 	}
 
-	if status, _, stderr := p.ex(guidedAnswers, "runtime", "init", "demo", "--guided"); status != 0 {
+	if status, _, stderr := p.dft(guidedAnswers, "runtime", "init", "demo", "--guided"); status != 0 {
 		t.Fatal(stderr)
 	}
 
@@ -179,8 +179,8 @@ func TestCommandsStopBeforeInfrastructureWithoutACluster(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		if status, _, stderr := p.ex("", tt.arguments...); status != 4 || !strings.Contains(stderr, tt.stderr) {
-			t.Errorf("ex %v = %d, %q; want %q", tt.arguments, status, stderr, tt.stderr)
+		if status, _, stderr := p.dft("", tt.arguments...); status != 4 || !strings.Contains(stderr, tt.stderr) {
+			t.Errorf("dft %v = %d, %q; want %q", tt.arguments, status, stderr, tt.stderr)
 		}
 	}
 
