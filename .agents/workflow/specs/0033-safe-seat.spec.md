@@ -222,7 +222,7 @@ Three new gates, with ids that use the word, never the initials:
   - The plan gains the reserved part.
   - No type carries a share.
 - **Skill drift.** A pure compute counts, per month, the applicable tickets (`met` plus `overridden`), the met and the overridden ones, and the share overridden. The FinOps area shows it with the drift colors and leaves `not-applicable` and `unknown` tickets out of the share.
-- **Localization.** The console copy goes into all five catalogs (`en`, `pt-BR`, `zh-Hant`, `ja`, `vi`) with key parity. The name Safe Seat stays untranslated.
+- **Localization.** The console copy goes into all five catalogs (`en`, `pt-BR`, `zh-Hant`, `ja`, `vi`) with key parity. The name Safe Seat stays untranslated. *(Amended 2026-11-05: the console serves four locales, `en`, `pt-BR`, `zh-Hant` and `ja`; the owner closed 0308, `vi` for the console, as won't fix.)*
 
 ### Dogfooding
 
@@ -284,7 +284,7 @@ A good test drives `ex` the way a person does, through its commands, and checks 
 9. **Repository checks:**
    - `pnpm turbo run build test typecheck` for `ex`, the contracts, extub and the console, with Go's race detector;
    - `pnpm turbo run check`, `drift quality check` and `drift check localization`;
-   - a diff of the leaf keys of the five console catalogs.
+   - a diff of the leaf keys of the console catalogs (four since 2026-11-05).
 
 ## Out of Scope
 

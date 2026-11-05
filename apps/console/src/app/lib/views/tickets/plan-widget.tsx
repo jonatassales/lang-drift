@@ -6,6 +6,8 @@ import { cn } from 'web/utilities'
 import { ComponentRow } from './component-row'
 import { componentsLine } from './components-line.compute'
 import { PhaseSummary } from './phase-summary'
+import { ReservedPart } from './reserved-part'
+import { safeSeatView } from './safe-seat-view.map'
 import { useTicketFormat } from './ticket-format.hook'
 import { componentShare, planFigures } from './ticket-phases'
 import { TicketSection } from './ticket-section'
@@ -38,6 +40,7 @@ export function PlanWidget(props: PlanWidgetProps) {
 	const { translate } = format
 	const figures = planFigures(plan)
 	const drafted = plan.suggested !== null
+	const reservedPart = safeSeatView(ticket).reservedPart
 	const bounded = plan.bounded
 	const envelopeRows = [
 		{
@@ -185,6 +188,10 @@ export function PlanWidget(props: PlanWidgetProps) {
 						})}
 					</p>
 				)}
+			</WidgetSection>
+
+			<WidgetSection>
+				<ReservedPart reservedPart={reservedPart} />
 			</WidgetSection>
 
 			<WidgetSection>

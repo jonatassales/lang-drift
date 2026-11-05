@@ -503,6 +503,7 @@
 				"spec": "Spec",
 				"tickets": "チケット",
 				"implement": "実装",
+				"dev-ticket": "開発チケット",
 				"review": "レビュー",
 				"merge": "マージ"
 			},
@@ -534,6 +535,30 @@
 				"waiting": "オーナー待ち",
 				"done": "完了"
 			}
+		},
+		"safeSeat": {
+			"title": "Safe Seat",
+			"illustrative": "例示 · スタブデータ",
+			"states": {
+				"met": "達成",
+				"needs-override": "オーバーライドが必要",
+				"overridden": "オーバーライド済み",
+				"not-applicable": "対象外",
+				"unknown": "不明"
+			},
+			"overrideReason": "オーバーライドの理由：{reason}",
+			"reservedPart": "残しておく部分",
+			"noReservedPart": "残しておく部分はまだありません",
+			"categories": {
+				"core-domain": "コアドメイン",
+				"hard-part": "難しい部分",
+				"new-stack": "最初の接点"
+			},
+			"chosenBy": {
+				"judge": "ジャッジが選択",
+				"lead": "リードが選択"
+			},
+			"personDriven": "人が手で書く · Safe Seat"
 		}
 	},
 	"metadata": {

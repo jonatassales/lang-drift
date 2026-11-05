@@ -8,6 +8,7 @@ import type { TicketDetailSnapshot } from '@data/types'
 
 import { useFragmentLanding } from './fragment-landing.hook'
 import { PhaseWidget } from './phase-widget'
+import { SafeSeatRecord } from './safe-seat-record'
 import { TicketArtifacts } from './ticket-artifacts'
 import { TicketDescription } from './ticket-description'
 import { phaseReached, summaryPhases, ticketSummary } from './ticket-phases'
@@ -52,6 +53,7 @@ export function TicketDetail(props: TicketDetailProps) {
 			<TicketDescription ticket={ticket} />
 			<div className="mt-8 grid gap-10">
 				<TicketArtifacts ticket={ticket} />
+				<SafeSeatRecord ticket={ticket} />
 				{summaryPhases.map((phase) =>
 					phaseReached(ticket, phase) ? (
 						<PhaseWidget key={phase} phase={phase} ticket={ticket} />

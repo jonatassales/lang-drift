@@ -503,6 +503,7 @@
 				"spec": "Spec",
 				"tickets": "工單",
 				"implement": "實作",
+				"dev-ticket": "開發工單",
 				"review": "審查",
 				"merge": "合併"
 			},
@@ -534,6 +535,30 @@
 				"waiting": "等待擁有者",
 				"done": "已完成"
 			}
+		},
+		"safeSeat": {
+			"title": "Safe Seat",
+			"illustrative": "示意 · stub 資料",
+			"states": {
+				"met": "已達成",
+				"needs-override": "需要例外核准",
+				"overridden": "已核准例外",
+				"not-applicable": "不適用",
+				"unknown": "未知"
+			},
+			"overrideReason": "例外理由：{reason}",
+			"reservedPart": "保留部分",
+			"noReservedPart": "尚無保留部分",
+			"categories": {
+				"core-domain": "核心領域",
+				"hard-part": "困難的部分",
+				"new-stack": "第一次接觸"
+			},
+			"chosenBy": {
+				"judge": "由評審選定",
+				"lead": "由負責人選定"
+			},
+			"personDriven": "由人親手撰寫 · Safe Seat"
 		}
 	},
 	"metadata": {

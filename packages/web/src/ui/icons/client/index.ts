@@ -13,6 +13,7 @@ export {
 	List,
 	MagnifyingGlass,
 	Pause,
+	PencilSimple,
 	Play,
 	Plus,
 	SignOut,
