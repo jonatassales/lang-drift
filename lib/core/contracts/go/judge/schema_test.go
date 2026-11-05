@@ -26,8 +26,10 @@ func TestSchemasAndSamplesAgree(t *testing.T) {
 	for _, path := range schemas {
 		schema := readObject(t, path)
 
-		identifier, _ := schema["$id"].(string)
-		if !strings.HasSuffix(identifier, "/"+filepath.Base(path)) {
+		identifier, isText := schema["$id"].(string)
+		namesItself := isText && strings.HasSuffix(identifier, "/"+filepath.Base(path))
+
+		if !namesItself {
 			t.Errorf("%s names itself %q", path, identifier)
 		}
 
