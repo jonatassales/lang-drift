@@ -18,6 +18,8 @@ The issue tracker and triage label vocabulary are defined in the `Spec-driven de
 
 Work from whatever is already in the conversation context. If the user passes a reference (a spec path, an issue number or URL) as an argument, fetch it and read its full body and comments.
 
+For a spec decided by ADR 0005 (Perfect Simulation Alignment), first play the simulation in production at https://langdrift.md/en/. Watch both phases: `dft agent plan` plays on load, and `dft agent run` plays after Play workflow. Change the Workflow choices (checkpoints, model, effort, a reservation over the budget) and expand every card. Compare what it shows with the spec, line by line and field by field. Where they differ, the simulation in production wins: report the difference and write the tickets to the simulation. Write tickets only for the spec whose turn it is in the specs' Execution order, when an agent starts that spec, never for later specs in advance.
+
 ### 2. Explore the codebase (optional)
 
 If you have not already explored the codebase, do so to understand the current state of the code. Ticket titles and descriptions should use the project's domain glossary vocabulary, and respect ADRs in the area you're touching.
@@ -39,6 +41,8 @@ Break the work into **tracer bullet** tickets.
 
 Give each ticket its **blocking edges**: the other tickets that must complete before it can start. A ticket with no blockers can start immediately.
 
+Give each ticket its **simulation alignment**, as ADR 0005 and item 4 of `.claude/rules/12-console.rule.md` require. A ticket that removes what the code does beyond the simulation, builds what the simulation shows and the code lacks, or changes what differs says which of the three it is. Its acceptance criteria quote the exact terminal lines and card fields of the home simulation it must produce.
+
 Give each ticket its **dev part**: the problem in it that the owner writes by hand, as `.agents/policies/safe-seat.policy.md` sets out.
 
 - The problem has its own goal and acceptance criteria.
@@ -59,6 +63,7 @@ Draft the breakdown as a numbered list. For each ticket, note:
 - **Title**: short descriptive name
 - **Blocked by**: which other tickets (if any) must complete first
 - **What it delivers**: the end-to-end behaviour this ticket makes work
+- **Alignment**: remove, build or change, and the simulated lines and fields it produces
 - **Dev part**: its category and paths, or its override
 
 Check it yourself, or with the owner if `.agents/policies/human-in-the-loop.policy.md` puts a checkpoint here:
@@ -93,7 +98,9 @@ Do NOT close or modify any parent issue.
 
 **Status:** ready-for-agent
 
-- [ ] Acceptance criterion 1
+**Alignment:** remove, build or change. Canonical rule (ADR 0005): what is done beyond the simulation is removed; what the simulation shows and the code lacks becomes a new ticket that builds it.
+
+- [ ] Acceptance criterion 1, quoting the exact simulated line or card field
 - [ ] Acceptance criterion 2
 
 ## Dev part
@@ -122,9 +129,13 @@ A reference to the parent issue on the tracker (if the source was an existing is
 
 The end-to-end behaviour this ticket makes work, from the user's perspective, not layer-by-layer implementation.
 
+## Alignment
+
+Remove, build or change, with the canonical rule of ADR 0005: what is done beyond the simulation is removed; what the simulation shows and the code lacks becomes a new ticket that builds it.
+
 ## Acceptance criteria
 
-- [ ] Criterion 1
+- [ ] Criterion 1, quoting the exact simulated line or card field
 - [ ] Criterion 2
 
 ## Dev part
