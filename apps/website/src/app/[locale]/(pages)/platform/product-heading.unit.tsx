@@ -10,7 +10,7 @@ afterEach(() => {
 	cleanup()
 })
 
-describe('website/[locale]/(pages)/platform/product-heading', () => {
+describe('website/platform/product-heading', () => {
 	it('names the product in an h1 opened by its icon tile', () => {
 		render(
 			<ProductHeading icon={FinopsIcon} id="finops-hero-heading">

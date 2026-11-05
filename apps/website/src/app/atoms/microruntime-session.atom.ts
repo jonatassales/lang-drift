@@ -5,7 +5,7 @@ import {
 	type PlanPhaseId,
 	phaseOf,
 	planSession,
-} from '@data/microruntimes-content'
+} from '@routes/platform/microruntimes/content/microruntimes-content'
 import {
 	type HumanStageId,
 	initialWorkflowChoices,
@@ -13,7 +13,7 @@ import {
 	runSession,
 	type WorkflowChoices,
 	type WorkflowModelId,
-} from '@data/microruntimes-workflow'
+} from '@routes/platform/microruntimes/content/microruntimes-workflow'
 
 // The Microruntimes hero's simulated session: the plan it types first, then,
 // once the visitor plays the workflow, the run. The session holds how many

@@ -3,9 +3,9 @@ import { join } from 'node:path'
 import type { Metadata } from 'next'
 import { describe, expect, it } from 'vitest'
 
-import { generateMetadata as notFoundMetadata } from '@app/[locale]/not-found'
 import routeState from '@i18n/messages/route-state.json'
 import { routing } from '@i18n/routing'
+import { generateMetadata as notFoundMetadata } from '@layout/not-found'
 
 import locales from './locales.json'
 import { pageMetadata } from './page-metadata'

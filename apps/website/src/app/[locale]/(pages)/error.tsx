@@ -2,8 +2,8 @@
 
 import { hasLocale, useLocale, useTranslations } from 'next-intl'
 
-import { RouteState } from '@components/route-state'
 import { routing } from '@i18n/routing'
+import { RouteState } from '@layout/route-state'
 
 interface ErrorPageProps {
 	retry: () => void

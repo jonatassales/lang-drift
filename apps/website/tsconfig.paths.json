@@ -2,13 +2,14 @@
 	"compilerOptions": {
 		"paths": {
 			"@app/*": ["./src/app/*"],
-			"@components/*": ["./src/app/lib/components/*"],
+			"@layout/*": ["./src/app/[locale]/*"],
+			"@routes/*": ["./src/app/[locale]/(pages)/*"],
+			"@api/*": ["./src/app/api/*"],
 			"@factories/*": ["./src/factories/*"],
 			"@i18n/*": ["./src/app/template/i18n/*"],
 			"@proxy/*": ["./src/proxy/*"],
 			"@infra/*": ["./src/infra/*"],
 			"@services/*": ["./src/services/*"],
-			"@data/*": ["./src/app/lib/data/*"],
 			"@state": ["./src/app/state/index.ts"]
 		}
 	}

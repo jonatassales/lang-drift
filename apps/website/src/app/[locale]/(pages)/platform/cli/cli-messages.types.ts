@@ -1,4 +1,4 @@
-import type { CommandLineLabels } from '@app/[locale]/(pages)/platform/command-line-labels.type'
+import type { CommandLineLabels } from '@routes/platform/command-line-labels.type'
 
 import type { cliFlowStepIds, cliGovernIds } from './cli-content.data'
 

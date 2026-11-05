@@ -2,16 +2,17 @@ import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
-// Demo requests return with the form below, once demos open again.
-// import { BookDemoForm } from '@components/book-a-demo/form'
-import { DemoNotice } from '@components/book-a-demo/demo-notice'
-import { SkipLink } from '@components/skip-link'
-import { WebsiteFooter } from '@components/website-footer'
-import { WebsiteHeader } from '@components/website-header'
-import { WebsiteStructuredData } from '@components/website-structured-data'
 import { bookDemoMessages } from '@i18n/messages/index'
 import { Link } from '@i18n/navigation'
 import { routing } from '@i18n/routing'
+import { SkipLink } from '@layout/skip-link'
+import { WebsiteFooter } from '@layout/website-footer'
+import { WebsiteHeader } from '@layout/website-header/website-header'
+import { WebsiteStructuredData } from '@layout/website-structured-data'
+
+// Demo requests return with the form below, once demos open again.
+// import { BookDemoForm } from './form'
+import { DemoNotice } from './demo-notice'
 
 export { generateMetadata } from './page.metadata'
 

@@ -1,4 +1,4 @@
-import { reply } from '@components/book-a-demo/book-demo-reply.response'
+import { reply } from '@api/book-a-demo/book-demo-reply.response'
 
 // Only a POST carries a demo request.
 export function interceptMethod(request: Request): Response | undefined {
