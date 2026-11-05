@@ -22,5 +22,5 @@ coverage/
 .agents/workflow/.effort-log/*
 
 
-# The LangDrift folder is machine-local; ex regenerates it (spec 0016)
+# The LangDrift folder is machine-local; dft regenerates it (spec 0016)
 /.langdrift/

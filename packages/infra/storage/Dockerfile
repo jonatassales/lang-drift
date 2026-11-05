@@ -1,6 +1,6 @@
 # The archive of the products: MinIO, built from its AGPL source at a
 # pinned release, since MinIO no longer publishes community images or
-# binaries. The HEALTHCHECK is what `ex` turns into the component's readiness
+# binaries. The HEALTHCHECK is what `dft` turns into the component's readiness
 # probe (spec 0032). Root credentials arrive at run time as MINIO_ROOT_USER
 # and MINIO_ROOT_PASSWORD, never here.
 #

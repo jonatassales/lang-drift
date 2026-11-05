@@ -37,7 +37,7 @@ Bring every tracked path to the filesystem rules and make `drift quality check f
 10. As an implementer of spec 0035, I want the Go rename to wait for my splits, so that I create new files in kebab-case once and the rename covers only what remains.
 11. As a reviewer, I want a `../` in any TypeScript or JavaScript string, in any shell script of the repository and in any Markdown link to be flagged by a detector, so that the rule is checked mechanically rather than by eye.
 12. As a maintainer adding a new kind of document, I want the approved suffix list to live in one place, so that extending it is one line.
-13. As an `ex` user, I want the record format of my `.langdrift/` folder (`runtime.md`, `run.md`, `*.lap.md`, `*.gr.md`) unchanged, so that a repository-internal naming rule never alters the product's contract.
+13. As a `dft` user, I want the record format of my `.langdrift/` folder (`runtime.md`, `run.md`, `*.lap.md`, `*.gr.md`) unchanged, so that a repository-internal naming rule never alters the product's contract.
 14. As an author of another compliance spec, I want the renames here marked as prefactors, so that my tickets reference the new names and never race the moves.
 
 ## Implementation Decisions
@@ -47,10 +47,10 @@ Bring every tracked path to the filesystem rules and make `drift quality check f
 - **The approved suffix list gains `guide`.** The Markdown detector in the quality runner is the enforcement of rule 2; its list is extended, and the rule's own examples may be extended by the owner (Further Notes).
 - **`drift` resolves its root without `../`.** The dispatcher already knows its own absolute directory; the project root is derived from it by `dirname`, three levels up, so the path never contains `..` and the result is the same absolute directory from any working directory and through the symlink `pnpm install` creates. The pre-commit command calls the dispatcher through its absolute `DRIFT_CLI_DIR` instead of climbing to the launcher.
 - **The console proxy test moves beside its owner.** The matcher test becomes a sibling of `proxy.ts` and reads `./proxy.ts`; the console's test glob already covers that location. Its behaviour (the matcher accepts application routes and excludes API, `_next` and static assets) is unchanged.
-- **Markdown links are root-absolute.** The two Nest READMEs link `/.claude/rules/11-nestjs.rule.md`. GitHub resolves a leading slash against the repository root, and the `ex` collection code treats a leading slash the same way, so the link works in both readers.
+- **Markdown links are root-absolute.** The two Nest READMEs link `/.claude/rules/11-nestjs.rule.md`. GitHub resolves a leading slash against the repository root, and the `dft` collection code treats a leading slash the same way, so the link works in both readers.
 - **Go files take kebab-case, keeping the toolchain's suffixes.** `cluster_create.go` becomes `cluster-create.go`, `local_source_test.go` becomes `local-source_test.go`; `_test.go`, `_linux.go` and the like stay. The Go toolchain accepts hyphens in file names, and no `go:embed`, comment or document names a Go file, so the change is `git mv` plus a green build. The rename covers what remains after spec 0035's splits, which create their new files in kebab-case directly.
 - **Detectors.** The `../` detector for TypeScript and JavaScript looks at every quoted `../` string, tests included, not only at imports; the shell detector's roots widen to `.claude`, `apps`, `lib` and `packages`; a new detector flags a `../` inside a Markdown link; the Markdown-suffix detector accepts `guide`. The kebab-case and bucket detectors stay as they are.
-- **No product change.** The `ex` record files under `lib/cli/src/testdata/` keep their names: they are the product's record format, and testdata is outside the detectors' scope by design.
+- **No product change.** The `dft` record files under `lib/cli/src/testdata/` keep their names: they are the product's record format, and testdata is outside the detectors' scope by design.
 
 ## Testing Decisions
 
@@ -64,9 +64,9 @@ Bring every tracked path to the filesystem rules and make `drift quality check f
 
 - The `lib/` directories of the console and the website (spec 0041), and the multi-function `helpers.go` and `common.sh` (spec 0035).
 - Splitting Go files: spec 0035 does it, and this spec's Go rename waits for it.
-- The names of `ex`'s record files and of anything under `testdata/`.
+- The names of `dft`'s record files and of anything under `testdata/`.
 - Rewriting the wording of published specs, tickets and research notes.
-- Renaming the `drift` launcher and the `ex` launcher to `.sh` (spec 0037).
+- Renaming the `drift` launcher and the `dft` launcher to `.sh` (spec 0037).
 - Any change to `.claude/rules/`.
 
 ## Further Notes

@@ -12,7 +12,7 @@ The Nest.js microservices under `apps/microservices/`. Loaded in every session. 
 8. **Scripts call Nest directly.** `dev: nest start --watch …`, `build: nest build`, `start: node dist/main.js`, `typecheck: tsc --noEmit`, `test: vitest run`. `nest build` compiles with Nest's own TypeScript compiler, whose paths hook rewrites the app's alias to relative imports at emit, so no bundler is needed; one alias per app, `@app/*`, in `tsconfig.paths.json`.
 9. **Handlers in the controller, helpers in their own files.** A controller method dispatches; a computation, a mapping, a schema or an adapter lives in its own single-responsibility file, the Nest analog of the route-handler rule.
 10. **Tests never boot Nest.** A unit test constructs the class with fakes: no `@nestjs/testing`, no application bootstrap, nothing reaching Redis, MinIO or a provider. Descriptions name the path (`describe('demo-requests/demo-requests/demo-requests.controller')`).
-11. **Dockerfiles.** Every component has a Dockerfile with a `HEALTHCHECK`; `ex` derives readiness from it. A service builds from the repository root with pnpm as a checksum-pinned static binary and Turborepo's `prune --docker`, runs as the `node` user and exposes its port. CI builds no image.
+11. **Dockerfiles.** Every component has a Dockerfile with a `HEALTHCHECK`; `dft` derives readiness from it. A service builds from the repository root with pnpm as a checksum-pinned static binary and Turborepo's `prune --docker`, runs as the `node` user and exposes its port. CI builds no image.
 
 ```ts
 // Do:

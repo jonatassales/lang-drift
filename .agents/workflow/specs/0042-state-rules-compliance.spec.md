@@ -47,7 +47,7 @@ Every app applies the state rules, with no visible change:
 10. As a visitor, I want a demo request to reach the edge, to show the return-soon notice on 503 and the failure toast otherwise, exactly as today.
 11. As a developer, I want the console's runtime form to seed its state from a defaults file built from the runtime being edited, so that defaults are data.
 12. As a developer, I want the runtime form's configuration changes, component toggles, applied recommendations and submit each in its own handler, with the request body built by a map, so that each can be tested with Node's test runner.
-13. As a console user, I want creating and editing a microruntime to send the same request as today, so that console-stubs and `ex` see no difference.
+13. As a console user, I want creating and editing a microruntime to send the same request as today, so that console-stubs and `dft` see no difference.
 14. As a developer, I want the product creation form's folder selection, drop, browse and submit each in a handler, with the request built by a map, so that registering a project from a folder is testable logic.
 15. As a developer, I want the folder picker's path submission in a handler and its listing request in a map, so that the picker's dialog holds only presentation.
 16. As a developer, I want the login and signup forms to post their credentials through a handler with a schema, so that the two forms read alike and their logic is testable.
@@ -88,7 +88,7 @@ Every app applies the state rules, with no visible change:
 - The dissolution of `src/app/lib/` in both apps, which spec 0041 owns; every app ticket here waits on it and takes the folders where 0041 places them.
 - The React rules inside the forms (effects, scope order, loading flags), which spec 0040 owns, and the translator names and file suffixes, which spec 0039 owns.
 - The SmoothUI class on the book-a-demo button (spec 0038) and the recommendation panel's `reading` flag (spec 0040).
-- console-stubs and `ex`, whose request contracts do not change.
+- console-stubs and `dft`, whose request contracts do not change.
 - Any new shared state: the console has no Jotai today and gains none.
 
 ## Further Notes

@@ -2,7 +2,7 @@
 
 **Spec:** .agents/workflow/specs/0045-the-judge-as-a-platform-service.spec.md
 
-**What to build:** A reader of the CLI README, the context document, spec 0032 and this repository's microruntime folder finds the engine described as it now behaves. The CLI README's command table has `stop`, no `init` under `agent` and no `--no-judge`; its "Configuration" section says planning needs a connected project and names the planning cost the gate reserves; spec 0032's sentence about the run is amended to the new order with a note pointing here; `platform/microruntime/plan.sh` drops `--no-judge`, its README says the project must be connected and how (`ex agent connect` with `RUNTIME_SECRET`), and ticket 0198's run criteria are revisited against 0.5.0. The context document's commands table and glossary name the judge as the platform's service.
+**What to build:** A reader of the CLI README, the context document, spec 0032 and this repository's microruntime folder finds the engine described as it now behaves. The CLI README's command table has `stop`, no `init` under `agent` and no `--no-judge`; its "Configuration" section says planning needs a connected project and names the planning cost the gate reserves; spec 0032's sentence about the run is amended to the new order with a note pointing here; `platform/microruntime/plan.sh` drops `--no-judge`, its README says the project must be connected and how (`dft agent connect` with `RUNTIME_SECRET`), and ticket 0198's run criteria are revisited against 0.5.0. The context document's commands table and glossary name the judge as the platform's service.
 
 **Blocked by:** 0221, 0223, 0224, 0226, and the merge of ticket 0198's plan script (pull request #117).
 

@@ -54,17 +54,19 @@ From the release that carries this change, a person installs `@langdrift/cli` as
   - The website's terminal demos, command lines and catalogs say `dft` in all five locales, with catalog parity kept.
   - The console's connection instructions say `dft`.
   - The five docs READMEs call the tool the LangDrift CLI and show `dft`.
-  - Their screenshots are retaken from the renamed binary and named after the command they show.
+  - Their screenshots are retaken from the renamed binary and named after the command they show. The capture is the owner's own terminal session, so the owner retakes it.
 - **Documents.**
-  - The current documents say `dft`: AGENTS.md, the context guide, the root README and the Safe Seat policy.
+  - The current documents say `dft`: AGENTS.md, the context guide, the Safe Seat policy, `SECURITY.md` and the infrastructure READMEs. The root README is the public landing page, so it ships with the surfaces.
+  - The context guide's row for the root's pinned CLI keeps `ex` while the pin is 0.4.0; ticket 0228 moves the pin.
   - So do the rules that name the command: `10-testing` (the microruntime the CLI generates) and `11-nestjs` (the CLI derives readiness from the `HEALTHCHECK`). This updates a name, not a rule.
   - The glossary gains `dft` (the LangDrift CLI's command), `drift` (this repository's tooling, never shipped) and `ex` (the former name of `dft`, kept in closed specs and tickets).
 - **Open versus closed.**
-  - A ticket is open while its spec's Tickets list leaves it unchecked. A spec is open while any of its tickets is.
-  - Open specs and tickets are rewritten to `dft`. Closed ones are not touched.
+  - A ticket is open while its spec's Tickets list leaves it unchecked and no commit on `main` carries its `Ticket:` trailer, because the lists lag the merges. A spec is open while any of its tickets is.
+  - Open specs and tickets are rewritten to `dft` where they plan work. Where they record history (what 0.4.0 did, a command that only ever existed as `ex`, a ticket already merged), they keep `ex`, and a dated note at the top says so. Closed ones are not touched.
   - Ticket 0228 (release 0.5.0) gains blocking edges on 0313, 0314 and 0315.
 - **The internal `drift` keeps its name.** It is repository tooling, and the glossary separates it from `dft`.
 - **Release.** The change ships with `@langdrift/cli` 0.5.0. Publishing stays the owner's, through ticket 0228.
+- **Timing.** A merge to `main` deploys the site and the console, and npm serves 0.4.0 until 0.5.0 is published. The CLI and the documents (0313, 0315) merge when ready, because nobody types the tree's build. The surfaces (0314) go in their own pull request, which merges with the release, so that no visitor reads `dft` while npm still ships `ex`.
 
 ## Testing Decisions
 

@@ -2,6 +2,8 @@
 
 **Status:** ready-for-agent
 
+> **Note, 2026-11-05.** From `@langdrift/cli` 0.5.0 the CLI's command is `dft` (spec 0047). This spec names it `ex`, as it was when the launchers took `.sh`.
+
 ## Tickets
 
 - [ ] 0267: the tokens stylesheet is built by shell and jq

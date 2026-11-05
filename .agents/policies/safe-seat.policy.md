@@ -1,6 +1,6 @@
 # Safe Seat
 
-How LangDrift practices Safe Seat on its own work, before the `ex` runtime measures it. Spec 0033 defines the capability. This policy applies it to this repository's spec-driven workflow, beside [`human-in-the-loop.policy.md`](./human-in-the-loop.policy.md), and the skills read it instead of assuming.
+How LangDrift practices Safe Seat on its own work, before the `dft` runtime measures it. Spec 0033 defines the capability. This policy applies it to this repository's spec-driven workflow, beside [`human-in-the-loop.policy.md`](./human-in-the-loop.policy.md), and the skills read it instead of assuming.
 
 ## Floor
 
@@ -40,4 +40,4 @@ A ticket from 0199 on with neither a dev part nor an override stops `implement` 
 
 ## Measurement
 
-Nothing measures the share yet. Commits carry no AI signature, so the repository cannot tell who wrote a line. The ticket's dev part and the review hold the practice until the `ex` runtime of spec 0033 measures it. From then on, this policy follows the runtime's floor, attribution and gates.
+Nothing measures the share yet. Commits carry no AI signature, so the repository cannot tell who wrote a line. The ticket's dev part and the review hold the practice until the `dft` runtime of spec 0033 measures it. From then on, this policy follows the runtime's floor, attribution and gates.
