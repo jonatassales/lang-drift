@@ -9,7 +9,7 @@
 		"install": {
 			"kicker": "Install",
 			"title": "One question at init.",
-			"lead": "ex init asks whether to write .github/workflows/langdrift-gates.yml. Answer yes, or pass --ci-gates. It is the one file ex init may write outside .langdrift/, and it never replaces a workflow that is already there.",
+			"lead": "dft init asks whether to write .github/workflows/langdrift-gates.yml. Answer yes, or pass --ci-gates. It is the one file dft init may write outside .langdrift/, and it never replaces a workflow that is already there.",
 			"command": "npx @langdrift/cli init --ci-gates"
 		},
 		"posture": {
@@ -38,10 +38,10 @@
 		"report": {
 			"kicker": "On a pull request",
 			"title": "What a pull request shows.",
-			"lead": "The first image is what the workflow writes into the job summary: ex gates report on the commits of pull request #122 of the LangDrift repository. The second is LangDrift’s own dashboard on the same pull request, the gates the platform is building toward.",
+			"lead": "The first image is what the workflow writes into the job summary: dft gates report on the commits of pull request #122 of the LangDrift repository. The second is LangDrift’s own dashboard on the same pull request, the gates the platform is building toward.",
 			"summary": {
-				"alt": "The LangDrift CI Gates job summary: the range of three commits with their subjects, and a FinOps table where Budget, Spend and Ledger read unknown because .langdrift/ stays on the machine that ran ex.",
-				"caption": "ex gates report on pull request #122 of the LangDrift repository."
+				"alt": "The LangDrift CI Gates job summary: the range of three commits with their subjects, and a FinOps table where Budget, Spend and Ledger read unknown because .langdrift/ stays on the machine that ran dft.",
+				"caption": "dft gates report on pull request #122 of the LangDrift repository."
 			},
 			"dashboard": {
 				"alt": "The LangDrift CI Gates comment: a table of five gates, Workflow, FinOps, Microruntimes, Code Quality and Agentic, each with its headline metric and status.",
@@ -51,7 +51,7 @@
 		"gates": {
 			"kicker": "Run-time gates",
 			"title": "The gates behind the report.",
-			"lead": "The CLI applies the FinOps gates the team recorded with ex init: before a run is authorized, while it runs and after it.",
+			"lead": "The CLI applies the FinOps gates the team recorded with dft init: before a run is authorized, while it runs and after it.",
 			"items": {
 				"fg-01": {
 					"eyebrow": "FG-01",
@@ -101,7 +101,7 @@
 		"install": {
 			"kicker": "Instalação",
 			"title": "Uma pergunta no init.",
-			"lead": "O ex init pergunta se deve escrever .github/workflows/langdrift-gates.yml. Responda sim ou passe --ci-gates. É o único arquivo que o ex init pode escrever fora de .langdrift/, e ele nunca substitui um workflow que já existe.",
+			"lead": "O dft init pergunta se deve escrever .github/workflows/langdrift-gates.yml. Responda sim ou passe --ci-gates. É o único arquivo que o dft init pode escrever fora de .langdrift/, e ele nunca substitui um workflow que já existe.",
 			"command": "npx @langdrift/cli init --ci-gates"
 		},
 		"posture": {
@@ -130,10 +130,10 @@
 		"report": {
 			"kicker": "Em um pull request",
 			"title": "O que um pull request mostra.",
-			"lead": "A primeira imagem é o que o workflow escreve no resumo do job: o ex gates report nos commits do pull request #122 do repositório do LangDrift. A segunda é o painel do próprio LangDrift no mesmo pull request, os gates que a plataforma está construindo.",
+			"lead": "A primeira imagem é o que o workflow escreve no resumo do job: o dft gates report nos commits do pull request #122 do repositório do LangDrift. A segunda é o painel do próprio LangDrift no mesmo pull request, os gates que a plataforma está construindo.",
 			"summary": {
-				"alt": "O resumo de job do LangDrift CI Gates: o intervalo de três commits com seus assuntos e uma tabela de FinOps em que Budget, Spend e Ledger aparecem como unknown, porque .langdrift/ fica na máquina que rodou o ex.",
-				"caption": "ex gates report no pull request #122 do repositório do LangDrift."
+				"alt": "O resumo de job do LangDrift CI Gates: o intervalo de três commits com seus assuntos e uma tabela de FinOps em que Budget, Spend e Ledger aparecem como unknown, porque .langdrift/ fica na máquina que rodou o dft.",
+				"caption": "dft gates report no pull request #122 do repositório do LangDrift."
 			},
 			"dashboard": {
 				"alt": "O comentário LangDrift CI Gates: uma tabela de cinco gates, Workflow, FinOps, Microruntimes, Code Quality e Agentic, cada um com sua métrica principal e seu status.",
@@ -143,7 +143,7 @@
 		"gates": {
 			"kicker": "Gates em execução",
 			"title": "Os gates por trás do relatório.",
-			"lead": "A CLI aplica os gates de FinOps que o time registrou com o ex init: antes de uma execução ser autorizada, durante e depois dela.",
+			"lead": "A CLI aplica os gates de FinOps que o time registrou com o dft init: antes de uma execução ser autorizada, durante e depois dela.",
 			"items": {
 				"fg-01": {
 					"eyebrow": "FG-01",
@@ -193,7 +193,7 @@
 		"install": {
 			"kicker": "安裝",
 			"title": "init 時只問一個問題。",
-			"lead": "ex init 會詢問是否寫入 .github/workflows/langdrift-gates.yml。回答是，或加上 --ci-gates。這是 ex init 唯一可能寫在 .langdrift/ 之外的檔案，而且絕不會取代已存在的工作流程。",
+			"lead": "dft init 會詢問是否寫入 .github/workflows/langdrift-gates.yml。回答是，或加上 --ci-gates。這是 dft init 唯一可能寫在 .langdrift/ 之外的檔案，而且絕不會取代已存在的工作流程。",
 			"command": "npx @langdrift/cli init --ci-gates"
 		},
 		"posture": {
@@ -222,10 +222,10 @@
 		"report": {
 			"kicker": "在 pull request 上",
 			"title": "pull request 會顯示什麼。",
-			"lead": "第一張圖是工作流程寫入工作摘要的內容：對 LangDrift 儲存庫 pull request #122 的 commit 執行 ex gates report。第二張是 LangDrift 自己在同一個 pull request 上的儀表板，也就是平台正在打造的 gate。",
+			"lead": "第一張圖是工作流程寫入工作摘要的內容：對 LangDrift 儲存庫 pull request #122 的 commit 執行 dft gates report。第二張是 LangDrift 自己在同一個 pull request 上的儀表板，也就是平台正在打造的 gate。",
 			"summary": {
-				"alt": "LangDrift CI Gates 工作摘要：範圍內三個 commit 及其主旨，以及一張 FinOps 表格；因為 .langdrift/ 留在執行 ex 的電腦上，Budget、Spend 與 Ledger 皆顯示為 unknown。",
-				"caption": "在 LangDrift 儲存庫 pull request #122 上執行的 ex gates report。"
+				"alt": "LangDrift CI Gates 工作摘要：範圍內三個 commit 及其主旨，以及一張 FinOps 表格；因為 .langdrift/ 留在執行 dft 的電腦上，Budget、Spend 與 Ledger 皆顯示為 unknown。",
+				"caption": "在 LangDrift 儲存庫 pull request #122 上執行的 dft gates report。"
 			},
 			"dashboard": {
 				"alt": "LangDrift CI Gates 留言：五個 gate 的表格，包含 Workflow、FinOps、Microruntimes、Code Quality 與 Agentic，各自附上主要指標與狀態。",
@@ -235,7 +235,7 @@
 		"gates": {
 			"kicker": "執行期間的 gate",
 			"title": "報告背後的 gate。",
-			"lead": "CLI 會套用團隊以 ex init 記錄的 FinOps gate：在執行獲得授權之前、執行期間以及執行之後。",
+			"lead": "CLI 會套用團隊以 dft init 記錄的 FinOps gate：在執行獲得授權之前、執行期間以及執行之後。",
 			"items": {
 				"fg-01": {
 					"eyebrow": "FG-01",
@@ -285,7 +285,7 @@
 		"install": {
 			"kicker": "インストール",
 			"title": "init での質問はひとつ。",
-			"lead": "ex init が .github/workflows/langdrift-gates.yml を書くかどうかを尋ねます。はいと答えるか、--ci-gates を付けてください。ex init が .langdrift/ の外に書く可能性のある唯一のファイルで、既存のワークフローを置き換えることはありません。",
+			"lead": "dft init が .github/workflows/langdrift-gates.yml を書くかどうかを尋ねます。はいと答えるか、--ci-gates を付けてください。dft init が .langdrift/ の外に書く可能性のある唯一のファイルで、既存のワークフローを置き換えることはありません。",
 			"command": "npx @langdrift/cli init --ci-gates"
 		},
 		"posture": {
@@ -314,10 +314,10 @@
 		"report": {
 			"kicker": "pull request では",
 			"title": "pull request に表示されるもの。",
-			"lead": "1 枚目は、ワークフローがジョブサマリーに書く内容です。LangDrift リポジトリの pull request #122 のコミットに対する ex gates report です。2 枚目は同じ pull request に付いた LangDrift 自身のダッシュボードで、プラットフォームが目指しているゲートです。",
+			"lead": "1 枚目は、ワークフローがジョブサマリーに書く内容です。LangDrift リポジトリの pull request #122 のコミットに対する dft gates report です。2 枚目は同じ pull request に付いた LangDrift 自身のダッシュボードで、プラットフォームが目指しているゲートです。",
 			"summary": {
-				"alt": "LangDrift CI Gates のジョブサマリー。3 つのコミットの範囲と件名、そして .langdrift/ が ex を実行したマシンに残るため Budget、Spend、Ledger が unknown と表示される FinOps の表。",
-				"caption": "LangDrift リポジトリの pull request #122 に対する ex gates report。"
+				"alt": "LangDrift CI Gates のジョブサマリー。3 つのコミットの範囲と件名、そして .langdrift/ が dft を実行したマシンに残るため Budget、Spend、Ledger が unknown と表示される FinOps の表。",
+				"caption": "LangDrift リポジトリの pull request #122 に対する dft gates report。"
 			},
 			"dashboard": {
 				"alt": "LangDrift CI Gates のコメント。Workflow、FinOps、Microruntimes、Code Quality、Agentic の 5 つのゲートの表で、それぞれに主要な指標と状態があります。",
@@ -327,7 +327,7 @@
 		"gates": {
 			"kicker": "実行時のゲート",
 			"title": "レポートの背後にあるゲート。",
-			"lead": "CLI は、チームが ex init で記録した FinOps のゲートを、実行が承認される前、実行中、実行後に適用します。",
+			"lead": "CLI は、チームが dft init で記録した FinOps のゲートを、実行が承認される前、実行中、実行後に適用します。",
 			"items": {
 				"fg-01": {
 					"eyebrow": "FG-01",
@@ -377,7 +377,7 @@
 		"install": {
 			"kicker": "Cài đặt",
 			"title": "Một câu hỏi khi init.",
-			"lead": "ex init hỏi có ghi .github/workflows/langdrift-gates.yml hay không. Trả lời có, hoặc thêm --ci-gates. Đây là tệp duy nhất ex init có thể ghi bên ngoài .langdrift/, và nó không bao giờ thay thế một workflow đã có.",
+			"lead": "dft init hỏi có ghi .github/workflows/langdrift-gates.yml hay không. Trả lời có, hoặc thêm --ci-gates. Đây là tệp duy nhất dft init có thể ghi bên ngoài .langdrift/, và nó không bao giờ thay thế một workflow đã có.",
 			"command": "npx @langdrift/cli init --ci-gates"
 		},
 		"posture": {
@@ -406,10 +406,10 @@
 		"report": {
 			"kicker": "Trên một pull request",
 			"title": "Một pull request hiển thị gì.",
-			"lead": "Ảnh thứ nhất là nội dung workflow ghi vào tóm tắt job: ex gates report trên các commit của pull request #122 trong kho mã LangDrift. Ảnh thứ hai là bảng điều khiển riêng của LangDrift trên cùng pull request đó, những gate mà nền tảng đang hướng tới.",
+			"lead": "Ảnh thứ nhất là nội dung workflow ghi vào tóm tắt job: dft gates report trên các commit của pull request #122 trong kho mã LangDrift. Ảnh thứ hai là bảng điều khiển riêng của LangDrift trên cùng pull request đó, những gate mà nền tảng đang hướng tới.",
 			"summary": {
-				"alt": "Tóm tắt job LangDrift CI Gates: phạm vi ba commit cùng tiêu đề của chúng, và một bảng FinOps trong đó Budget, Spend và Ledger là unknown vì .langdrift/ nằm trên máy đã chạy ex.",
-				"caption": "ex gates report trên pull request #122 của kho mã LangDrift."
+				"alt": "Tóm tắt job LangDrift CI Gates: phạm vi ba commit cùng tiêu đề của chúng, và một bảng FinOps trong đó Budget, Spend và Ledger là unknown vì .langdrift/ nằm trên máy đã chạy dft.",
+				"caption": "dft gates report trên pull request #122 của kho mã LangDrift."
 			},
 			"dashboard": {
 				"alt": "Bình luận LangDrift CI Gates: một bảng gồm năm gate, Workflow, FinOps, Microruntimes, Code Quality và Agentic, mỗi gate có chỉ số chính và trạng thái.",
@@ -419,7 +419,7 @@
 		"gates": {
 			"kicker": "Gate khi chạy",
 			"title": "Các gate phía sau báo cáo.",
-			"lead": "CLI áp dụng các gate FinOps mà đội đã ghi bằng ex init: trước khi một lần chạy được phê duyệt, trong khi chạy và sau đó.",
+			"lead": "CLI áp dụng các gate FinOps mà đội đã ghi bằng dft init: trước khi một lần chạy được phê duyệt, trong khi chạy và sau đó.",
 			"items": {
 				"fg-01": {
 					"eyebrow": "FG-01",

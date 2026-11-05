@@ -14,7 +14,7 @@ export const finopsGateIds = [
 ] as const
 
 // Renderings of pull request #122 of the LangDrift repository, one per color
-// scheme, served from public/: the job summary ex gates report wrote, and the
+// scheme, served from public/: the job summary dft gates report wrote, and the
 // repository's own dashboard comment.
 export const ciGatesScreenshots = {
 	dashboard: {

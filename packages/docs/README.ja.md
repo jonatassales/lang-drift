@@ -41,6 +41,8 @@
 
 ## 使い方
 
+LangDrift CLI は npm で `@langdrift/cli` として公開されており、コマンドは `dft` です。`npx @langdrift/cli` で実行するか、パッケージをインストールして `dft` と入力します。
+
 ### 前提条件
 
 - **macOS** または **Linux**
@@ -56,11 +58,11 @@
 npx @langdrift/cli init
 ```
 
-これにより、`.langdrift/config.json` にプロジェクト設定が作成され、`.langdrift/microruntimes/AGENTS.md` にローカル実行ルールが配置されます。既存のファイルは変更されません。`/.langdrift/` は `ex` が書き込むローカル状態なので、`.gitignore` に追加してください。
+これにより、`.langdrift/config.json` にプロジェクト設定が作成され、`.langdrift/microruntimes/AGENTS.md` にローカル実行ルールが配置されます。既存のファイルは変更されません。`/.langdrift/` は `dft` が書き込むローカル状態なので、`.gitignore` に追加してください。
 
 ### 2. チケットから実行計画を作成
 
-`ex` にチケットや仕様書を指定します。リンクされたドキュメントを読み込み、予算枠内でCPUやメモリのサイズを決定し、最適なモデルと作業強度を提案して境界付き実行計画を出力します:
+`dft` にチケットや仕様書を指定します。リンクされたドキュメントを読み込み、予算枠内でCPUやメモリのサイズを決定し、最適なモデルと作業強度を提案して境界付き実行計画を出力します:
 
 ```sh
 npx @langdrift/cli agent plan <path-to-ticket.md> --component name=console,path=apps/console
@@ -69,7 +71,7 @@ npx @langdrift/cli agent plan <path-to-ticket.md> --component name=console,path=
 > **ヒント:** `--no-judge` を付けると LLM 呼び出しを行わずにヒューリスティックのみで計画を作成できるため、費用はかかりません。
 
 <p align="center">
-  <img src="/packages/docs/assets/images/ex-agent-plan.webp" alt="Terminal running ex agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
+  <img src="/packages/docs/assets/images/dft-agent-plan.webp" alt="Terminal running dft agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
 </p>
 
 計画は `.langdrift/microruntimes/runtimes/<runtime-id>/runtime.md` に出力されます。`langdrift` ブロックに実行可能な設定が含まれます:
@@ -95,7 +97,7 @@ npx @langdrift/cli agent plan <path-to-ticket.md> --component name=console,path=
 }
 ```
 
-コンポーネントはファイルを指します: 名前と、Dockerfile を含むフォルダです。`ex` はプロジェクトのルートからその Dockerfile で `docker build` を実行し、イメージに `langdrift-<runtime-id>-<name>:r<revision>` というタグを付け、最初の `EXPOSE` からポートを、Dockerfile 自身の `HEALTHCHECK` から準備完了の判定を取得します。`--component` には `dockerfile=`、`port=`、`readiness=tcp` または `readiness=http:/path`、シークレットを含まないコミット済みの `env-file=`、起動時に `ex` が自身の環境から読み取る変数の `pass-env=A;B` を追加できます。`ex` はこれらをコンポーネントごとに 1 つの Kubernetes Secret に書き込みます。
+コンポーネントはファイルを指します: 名前と、Dockerfile を含むフォルダです。`dft` はプロジェクトのルートからその Dockerfile で `docker build` を実行し、イメージに `langdrift-<runtime-id>-<name>:r<revision>` というタグを付け、最初の `EXPOSE` からポートを、Dockerfile 自身の `HEALTHCHECK` から準備完了の判定を取得します。`--component` には `dockerfile=`、`port=`、`readiness=tcp` または `readiness=http:/path`、シークレットを含まないコミット済みの `env-file=`、起動時に `dft` が自身の環境から読み取る変数の `pass-env=A;B` を追加できます。`dft` はこれらをコンポーネントごとに 1 つの Kubernetes Secret に書き込みます。
 
 ### 3. 計画を実行
 
@@ -105,7 +107,7 @@ npx @langdrift/cli agent plan <path-to-ticket.md> --component name=console,path=
 npx @langdrift/cli agent run <runtime-id>
 ```
 
-実行中、`ex` は配信ライフサイクル全体を制御します:
+実行中、`dft` は配信ライフサイクル全体を制御します:
 
 1. **ゲート検証:** 定価が実行内容をカバーしているか確認し、チケットの割り当てと期間予算枠に対して試算コストを予約します。
 2. **ワークフローステージ:** 設定されたコーディングエージェントを通じて各ステージを進めます。人間の承認が必要な場合、ターミナルまたは `npx @langdrift/cli agent confirm <runtime-id> <stage>` で確認されるまで停止します。
@@ -213,7 +215,7 @@ npx @langdrift/cli doctor
 ## 参考文献
 
 - [AI for FinOps: Agentic Use Cases in FinOps](https://www.finops.org/insights/ai-for-finops-agentic-use-cases/)、Jonathan Morley、FinOps Foundation、2026 年 3 月 27 日。実務者たちが、支出を予算と照合し、無駄を見つけ、開発ライフサイクルのより早い段階でコストポリシーを適用するエージェントについて語っています。最後のテーマ、つまり FinOps をデリバリーの中へ持ち込むことこそ、LangDrift が取り組む領域です。
-- [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)、Birgitta Böckeler、martinfowler.com、2026 年 4 月 2 日。チームがコーディングエージェントの周りに築く外側のハーネス、つまりエージェントが動く前に方向づけるガイドと、自己修正を可能にするセンサーについて述べています。`ex harness` はそのハーネスをプロジェクトごとに記録し、FinOps のゲートはそれが使える金額を制限します。
+- [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)、Birgitta Böckeler、martinfowler.com、2026 年 4 月 2 日。チームがコーディングエージェントの周りに築く外側のハーネス、つまりエージェントが動く前に方向づけるガイドと、自己修正を可能にするセンサーについて述べています。`dft harness` はそのハーネスをプロジェクトごとに記録し、FinOps のゲートはそれが使える金額を制限します。
 
 ## 謝辞
 

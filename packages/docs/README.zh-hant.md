@@ -41,6 +41,8 @@
 
 ## 如何使用
 
+LangDrift CLI 以 `@langdrift/cli` 發佈於 npm，其指令為 `dft`：以 `npx @langdrift/cli` 執行，或安裝套件後輸入 `dft`。
+
 ### 先決條件
 
 - **macOS** 或 **Linux**
@@ -56,11 +58,11 @@
 npx @langdrift/cli init
 ```
 
-這會在 `.langdrift/config.json` 建立專案識別設定，並在 `.langdrift/microruntimes/AGENTS.md` 建立本機執行規則。既有檔案保持不變。請將 `/.langdrift/` 加入 `.gitignore`：這是 `ex` 所產生的本機狀態。
+這會在 `.langdrift/config.json` 建立專案識別設定，並在 `.langdrift/microruntimes/AGENTS.md` 建立本機執行規則。既有檔案保持不變。請將 `/.langdrift/` 加入 `.gitignore`：這是 `dft` 所產生的本機狀態。
 
 ### 2. 從工單進行規劃
 
-將 `ex` 指向工單或規格文件。它會讀取關聯文件、計算預算額度內的 CPU 與記憶體邊界、建議最佳模型與推理強度，並寫入邊界執行計畫：
+將 `dft` 指向工單或規格文件。它會讀取關聯文件、計算預算額度內的 CPU 與記憶體邊界、建議最佳模型與推理強度，並寫入邊界執行計畫：
 
 ```sh
 npx @langdrift/cli agent plan <path-to-ticket.md> --component name=console,path=apps/console
@@ -69,7 +71,7 @@ npx @langdrift/cli agent plan <path-to-ticket.md> --component name=console,path=
 > **提示：** 使用 `--no-judge` 可純粹透過啟發式規則產生計畫，無需呼叫 LLM，零成本。
 
 <p align="center">
-  <img src="/packages/docs/assets/images/ex-agent-plan.webp" alt="Terminal running ex agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
+  <img src="/packages/docs/assets/images/dft-agent-plan.webp" alt="Terminal running dft agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
 </p>
 
 計畫會儲存於 `.langdrift/microruntimes/runtimes/<runtime-id>/runtime.md`。其中 `langdrift` 區塊包含可執行的設定：
@@ -95,7 +97,7 @@ npx @langdrift/cli agent plan <path-to-ticket.md> --component name=console,path=
 }
 ```
 
-元件指向檔案：它的名稱與資料夾，資料夾中有一個 Dockerfile。`ex` 從專案根目錄以該 Dockerfile 執行 `docker build`，將映像檔標記為 `langdrift-<runtime-id>-<name>:r<revision>`，並從第一個 `EXPOSE` 取得連接埠、從 Dockerfile 自身的 `HEALTHCHECK` 取得就緒判斷。`--component` 可另外指定 `dockerfile=`、`port=`、`readiness=tcp` 或 `readiness=http:/path`、不含機密且已提交的 `env-file=`，以及 `ex` 啟動時從自身環境讀取的變數 `pass-env=A;B`；`ex` 會將兩者寫入每個元件各一個 Kubernetes Secret。
+元件指向檔案：它的名稱與資料夾，資料夾中有一個 Dockerfile。`dft` 從專案根目錄以該 Dockerfile 執行 `docker build`，將映像檔標記為 `langdrift-<runtime-id>-<name>:r<revision>`，並從第一個 `EXPOSE` 取得連接埠、從 Dockerfile 自身的 `HEALTHCHECK` 取得就緒判斷。`--component` 可另外指定 `dockerfile=`、`port=`、`readiness=tcp` 或 `readiness=http:/path`、不含機密且已提交的 `env-file=`，以及 `dft` 啟動時從自身環境讀取的變數 `pass-env=A;B`；`dft` 會將兩者寫入每個元件各一個 Kubernetes Secret。
 
 ### 3. 執行計畫
 
@@ -105,7 +107,7 @@ npx @langdrift/cli agent plan <path-to-ticket.md> --component name=console,path=
 npx @langdrift/cli agent run <runtime-id>
 ```
 
-執行期間，`ex` 會協調整個交付生命週期：
+執行期間，`dft` 會協調整個交付生命週期：
 
 1. **閘門檢查：** 確認標價涵蓋執行內容，並針對工單配額與期間預算保留預估成本。
 2. **工作流程階段：** 驅動程式開發代理執行工作流程中所定義的階段。若需要人工確認，執行會暫停並等待終端機輸入或 `npx @langdrift/cli agent confirm <runtime-id> <stage>`。
@@ -213,7 +215,7 @@ npx @langdrift/cli doctor
 ## 參考資料
 
 - [AI for FinOps: Agentic Use Cases in FinOps](https://www.finops.org/insights/ai-for-finops-agentic-use-cases/)，Jonathan Morley，FinOps Foundation，2026 年 3 月 27 日。實務工作者描述了代理如何將支出與預算對帳、找出浪費，並在開發生命週期更早的階段落實成本政策；最後這個把 FinOps 帶進交付的主題，正是 LangDrift 投入的地方。
-- [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)，Birgitta Böckeler，martinfowler.com，2026 年 4 月 2 日。文章描述團隊圍繞程式開發代理所打造的外層 harness：在代理行動前引導它的指引，以及讓它自我修正的感測器。`ex harness` 為專案記錄這套 harness，而 FinOps 閘門則限制它能花多少錢。
+- [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)，Birgitta Böckeler，martinfowler.com，2026 年 4 月 2 日。文章描述團隊圍繞程式開發代理所打造的外層 harness：在代理行動前引導它的指引，以及讓它自我修正的感測器。`dft harness` 為專案記錄這套 harness，而 FinOps 閘門則限制它能花多少錢。
 
 ## 致謝
 

@@ -57,12 +57,12 @@ export function ConnectionInstructions(props: ConnectionInstructionsProps) {
 			</p>
 			{!local ? (
 				<pre className="mt-4 overflow-x-auto rounded-md border border-border bg-background p-4 text-xs leading-6">
-					<code>{`ex init
+					<code>{`dft init
 read -s RUNTIME_SECRET
 export RUNTIME_SECRET
-ex agent connect ${origin}
+dft agent connect ${origin}
 unset RUNTIME_SECRET
-ex agent run`}</code>
+dft agent run`}</code>
 				</pre>
 			) : null}
 			{error ? <ErrorNotice error={error} /> : null}
