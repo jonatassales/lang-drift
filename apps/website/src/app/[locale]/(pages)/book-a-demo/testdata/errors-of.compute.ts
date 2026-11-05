@@ -1,4 +1,4 @@
-import { fieldErrorsOf } from '@api/book-a-demo/field-errors.compute'
+import { fieldErrorsOf } from '@api/book-a-demo/field-errors-of.compute'
 import { bookDemoSchema } from '@routes/book-a-demo/form.validation'
 
 export function errorsOf(input: Record<string, unknown>) {

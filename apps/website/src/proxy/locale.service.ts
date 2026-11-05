@@ -3,9 +3,11 @@ import createMiddleware from 'next-intl/middleware'
 
 import { cookieServiceFactory } from '@factories/cookie-service.factory'
 import { localePath, routing, type WebsiteLocale } from '@i18n/routing'
+import type { CookieReadResult } from '@services/cookie.service'
 
 const localeCookie = 'langdrift-website-locale'
 const localeTtlSeconds = 15_552_000
+const simplifiedChineseTags = ['zh-cn', 'zh-hans', 'zh-sg']
 
 const intlMiddleware = createMiddleware(routing)
 
@@ -50,13 +52,15 @@ export class LocaleService {
 
 			return NextResponse.redirect(canonical, 308)
 		}
-		if (['zh-cn', 'zh-hans', 'zh-sg'].includes(lowerSegment)) {
+
+		if (simplifiedChineseTags.includes(lowerSegment)) {
 			const fallback = new URL(request.url)
 			fallback.pathname = fallback.pathname.replace(`/${segment}`, '/en')
 			fallback.searchParams.set('availability', 'zh-CN')
 
 			return NextResponse.redirect(fallback, 307)
 		}
+
 		const explicit = this.#explicitLocale(request.nextUrl.pathname)
 		const reader = cookieServiceFactory(request)
 		const saved = reader.get(localeCookie, (value): value is WebsiteLocale =>
@@ -70,6 +74,7 @@ export class LocaleService {
 		const target = this.#localizedUrl(request, locale)
 
 		if (unavailable) target.searchParams.set('availability', 'zh-CN')
+
 		const response = explicit
 			? this.#nextResponse(intlMiddleware(request))
 			: NextResponse.redirect(target, 307)
@@ -93,7 +98,7 @@ export class LocaleService {
 
 	#resolveTargetLocale(
 		explicit: WebsiteLocale | undefined,
-		saved: ReturnType<ReturnType<typeof cookieServiceFactory>['get']>,
+		saved: CookieReadResult<WebsiteLocale>,
 		browser: WebsiteLocale | 'zh-CN' | undefined,
 	): WebsiteLocale {
 		if (explicit) return explicit
@@ -144,7 +149,11 @@ export class LocaleService {
 			.sort((left, right) => right.quality - left.quality)
 
 		for (const range of ranges) {
-			if (/^zh-(cn|hans|sg)(-|$)/.test(range.tag)) return 'zh-CN'
+			const simplifiedChinese = simplifiedChineseTags.some(
+				(base) => range.tag === base || range.tag.startsWith(`${base}-`),
+			)
+
+			if (simplifiedChinese) return 'zh-CN'
 
 			const match = this.#matchLocaleTag(range.tag)
 

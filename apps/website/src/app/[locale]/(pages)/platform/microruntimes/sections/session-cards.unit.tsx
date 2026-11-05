@@ -19,7 +19,7 @@ import {
 
 afterEach(cleanup)
 
-describe('Microruntimes session cards', () => {
+describe('website/platform/microruntimes/sections/session-cards', () => {
 	it('stays hidden with the ticket open until the command is entered', () => {
 		const { expanded, play } = mountSessionCards()
 		const stack = screen.getByText('0031').closest('[aria-hidden]')
@@ -186,9 +186,7 @@ describe('Microruntimes session cards', () => {
 		expect(expanded('Ticket')).toBe(true)
 		expect(expanded('Analysis')).toBe(false)
 	})
-})
 
-describe('Microruntimes Workflow card', () => {
 	it('opens when the plan is handed over, with the suggestion priced against the budget', () => {
 		const { expanded, header, play } = mountSessionCards()
 		expect(workflowPlayButton().getAttribute('aria-disabled')).toBe('true')

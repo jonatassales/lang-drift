@@ -8,7 +8,7 @@ import { selectedLifecycleStageAtom } from '@state'
 
 afterEach(cleanup)
 
-describe('Microruntimes lifecycle steps', () => {
+describe('website/platform/microruntimes/sections/lifecycle-steps', () => {
 	it('moves the current step and the evidence record together', () => {
 		const store = mountLifecycleSteps()
 		const prepare = screen.getByRole('button', { name: /Prepare/ })

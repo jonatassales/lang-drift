@@ -1,7 +1,4 @@
-import type {
-	BookDemoErrorCode,
-	BookDemoField,
-} from '@routes/book-a-demo/form.types'
+import type { BookDemoFieldErrors } from '@routes/book-a-demo/form.types'
 
 export type BookDemoReplyCode =
 	| 'OK'
@@ -10,10 +7,10 @@ export type BookDemoReplyCode =
 	| 'VALIDATION_ERROR'
 	| 'UNAVAILABLE'
 
-export function reply(
+export function bookDemoReply(
 	status: number,
 	code: BookDemoReplyCode,
-	fieldErrors?: Partial<Record<BookDemoField, BookDemoErrorCode>>,
+	fieldErrors?: BookDemoFieldErrors,
 ) {
 	const headers: Record<string, string> = {
 		'Cache-Control': 'no-store',
@@ -21,6 +18,7 @@ export function reply(
 	}
 
 	if (status === 503) headers['Retry-After'] = '30'
+
 	const hasFieldErrors = fieldErrors && Object.keys(fieldErrors).length > 0
 	const ok = status >= 200 && status < 300
 

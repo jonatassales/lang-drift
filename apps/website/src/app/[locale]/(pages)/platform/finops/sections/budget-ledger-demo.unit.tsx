@@ -8,7 +8,7 @@ import { selectedWorkItemAtom } from '@state'
 
 afterEach(cleanup)
 
-describe('FinOps ledger and receipt', () => {
+describe('website/platform/finops/sections/budget-ledger-demo', () => {
 	it('selects a work item and shows its receipt', () => {
 		const store = mountBudgetLedgerDemo()
 		const button = screen.getByRole('button', { name: /Tenant migration/ })

@@ -5,8 +5,6 @@ import { type PageId, pageUrl } from './page-metadata'
 import pages from './pages.json'
 import site from './site.json'
 
-export { serializeJsonLd } from './serialize-json-ld.compute'
-
 const organizationId = `${site.url}/#organization`
 const websiteId = `${site.url}/#website`
 

@@ -19,7 +19,7 @@ import { argumentsOf } from '@i18n/testdata/arguments-of.compute'
 import { leaves } from '@i18n/testdata/leaves.compute'
 import { tagsOf } from '@i18n/testdata/tags-of.compute'
 
-describe('Website production translations', () => {
+describe('website/template/i18n/catalogs', () => {
 	it.each(['en', 'pt-BR', 'zh-Hant', 'ja', 'vi'] as const)(
 		'%s preserves every key, ICU argument and rich-text tag and formats the acceptance counts',
 		(locale) => {

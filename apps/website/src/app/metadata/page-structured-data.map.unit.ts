@@ -5,8 +5,8 @@ import { routing } from '@i18n/routing'
 
 import organization from './organization.json'
 import { pageMetadata } from './page-metadata'
-import { serializeJsonLd } from './page-structured-data.map'
 import pages from './pages.json'
+import { serializeJsonLd } from './serialize-json-ld.compute'
 import site from './site.json'
 
 const pageIds = Object.keys(pages) as Array<keyof typeof pages>

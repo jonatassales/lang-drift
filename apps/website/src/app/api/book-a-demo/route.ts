@@ -8,7 +8,8 @@ import { interceptOrigin } from '@api/book-a-demo/interceptors/intercept-origin.
 import { interceptSchema } from '@api/book-a-demo/interceptors/intercept-schema.interceptor'
 import { forwardDemoRequest } from '@infra/demo-requests/forward-demo-request.adapter'
 
-import { reply } from './book-demo-reply.response'
+import { bookDemoReply } from './book-demo-reply.response'
+import { errorReason } from './error-reason.fmt'
 
 export const runtime = 'nodejs'
 
@@ -33,20 +34,20 @@ export async function POST(request: Request): Promise<Response> {
 	if (accepted instanceof Response) return accepted
 
 	let status: number
+
 	try {
 		status = await forwardDemoRequest(accepted.submission, request.signal)
 	} catch (error) {
-		const reason = error instanceof Error ? error.message : String(error)
-		console.error(`Demo request not forwarded: ${reason}`)
+		console.error(`Demo request not forwarded: ${errorReason(error)}`)
 
-		return reply(503, 'UNAVAILABLE')
+		return bookDemoReply(503, 'UNAVAILABLE')
 	}
 
 	if (status !== 202) {
 		console.error(`Demo request refused upstream with status ${status}`)
 
-		return reply(503, 'UNAVAILABLE')
+		return bookDemoReply(503, 'UNAVAILABLE')
 	}
 
-	return reply(200, 'OK')
+	return bookDemoReply(200, 'OK')
 }

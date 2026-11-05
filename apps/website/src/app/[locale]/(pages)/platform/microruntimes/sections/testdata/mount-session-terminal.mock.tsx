@@ -6,6 +6,7 @@ import { SessionTerminal } from '@routes/platform/microruntimes/sections/session
 
 export function mountSessionTerminal() {
 	const store = createStore()
+
 	render(
 		<Provider store={store}>
 			<SessionTerminal

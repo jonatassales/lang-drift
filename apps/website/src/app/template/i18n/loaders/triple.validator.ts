@@ -5,6 +5,7 @@ export function triple(
 	if (value.length !== 3) {
 		throw new Error(`${label} must contain exactly three strings`)
 	}
+
 	const first = value[0]
 	const second = value[1]
 	const third = value[2]

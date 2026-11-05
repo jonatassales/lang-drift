@@ -13,6 +13,7 @@ type CardLabel = 'Ticket' | 'Analysis' | 'Plan' | 'Workflow'
 
 export function mountSessionCards() {
 	const store = createStore()
+
 	render(
 		<Provider store={store}>
 			<SessionCards copy={microruntimesMessages.en.session.card} locale="en" />

@@ -58,7 +58,7 @@ afterEach(() => {
 	vi.unstubAllGlobals()
 })
 
-describe('Microruntimes session terminal', () => {
+describe('website/platform/microruntimes/sections/session-terminal', () => {
 	it('writes the number of completed lines to the session as it plays', () => {
 		const store = mountSessionTerminal()
 		expect(store.get(microruntimeSessionAtom).playedCount).toBe(0)

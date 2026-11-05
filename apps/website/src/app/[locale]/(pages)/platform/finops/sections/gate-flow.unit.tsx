@@ -7,7 +7,7 @@ import { mountGateFlow } from '@routes/platform/finops/sections/testdata/mount-g
 
 afterEach(cleanup)
 
-describe('FinOps gate flow', () => {
+describe('website/platform/finops/sections/gate-flow', () => {
 	it('walks the three steps in order with the example receipt figures', () => {
 		mountGateFlow()
 		const steps = screen

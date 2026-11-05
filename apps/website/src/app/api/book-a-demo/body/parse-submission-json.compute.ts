@@ -1,10 +1,12 @@
 // JSON.parse silently replaces duplicate properties. Tokenize first to reject
 // duplicate decoded keys, including escaped aliases, at every nesting level.
 interface JsonFrame {
+	expectsKey: boolean
+	isObject: boolean
 	keys: Set<string>
-	key: boolean
-	object: boolean
 }
+
+const maxDepth = 16
 
 export function parseSubmissionJSON(text: string): unknown {
 	const parsed: unknown = JSON.parse(text)
@@ -16,43 +18,47 @@ export function parseSubmissionJSON(text: string): unknown {
 		const closes = token === '}' || token === ']'
 
 		if (opens) {
-			if (stack.length >= 16) throw new Error('invalid_request')
+			if (stack.length >= maxDepth) throw new Error('invalid_request')
 
 			stack.push({
+				expectsKey: token === '{',
+				isObject: token === '{',
 				keys: new Set(),
-				key: token === '{',
-				object: token === '{',
 			})
+
 			continue
 		}
 
 		if (closes) {
 			stack.pop()
+
 			continue
 		}
 
 		const current = stack.at(-1)
 
-		if (!current?.object) continue
+		if (!current?.isObject) continue
 
 		if (token === ',') {
-			current.key = true
+			current.expectsKey = true
+
 			continue
 		}
 
 		if (token === ':') {
-			current.key = false
+			current.expectsKey = false
+
 			continue
 		}
 
-		if (!current.key) continue
+		if (!current.expectsKey) continue
 
 		const key: string = JSON.parse(token)
 
 		if (current.keys.has(key)) throw new Error('invalid_request')
 
 		current.keys.add(key)
-		current.key = false
+		current.expectsKey = false
 	}
 
 	const notAnObject =

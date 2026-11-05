@@ -1,8 +1,6 @@
-import {
-	pageStructuredData,
-	serializeJsonLd,
-} from '@app/metadata/page-structured-data.map'
+import { pageStructuredData } from '@app/metadata/page-structured-data.map'
 import type pages from '@app/metadata/pages.json'
+import { serializeJsonLd } from '@app/metadata/serialize-json-ld.compute'
 import type { routing } from '@i18n/routing'
 
 import type { JsonLdGraph } from './json-ld-graph.types'

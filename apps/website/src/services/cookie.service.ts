@@ -97,6 +97,7 @@ export class CookieService {
 			options?.ttlSeconds ?? this.#defaults.ttlSeconds,
 		)
 		const expiresAt = Date.now() + ttlSeconds * 1_000
+
 		this.#assertExpiry(expiresAt)
 
 		const attributes = this.#resolveWriteAttributes(
@@ -188,14 +189,18 @@ export class CookieService {
 	}
 
 	#assertExpiry(expiresAt: number): void {
-		const supported =
+		if (!this.#isLiveExpiry(expiresAt)) {
+			throw new Error('Cookie expiry is outside the supported range')
+		}
+	}
+
+	#isLiveExpiry(expiresAt: unknown): expiresAt is number {
+		return (
+			typeof expiresAt === 'number' &&
 			Number.isSafeInteger(expiresAt) &&
 			expiresAt > Date.now() &&
 			Math.abs(expiresAt) <= maxDateTime
-
-		if (!supported) {
-			throw new Error('Cookie expiry is outside the supported range')
-		}
+		)
 	}
 
 	#resolveWriteAttributes(
@@ -293,18 +298,7 @@ export class CookieService {
 		}
 
 		if (record.version !== 1) return undefined
-		if (
-			typeof record.expiresAt !== 'number' ||
-			!Number.isSafeInteger(record.expiresAt)
-		) {
-			return undefined
-		}
-		if (
-			Math.abs(record.expiresAt) > maxDateTime ||
-			record.expiresAt <= Date.now()
-		) {
-			return undefined
-		}
+		if (!this.#isLiveExpiry(record.expiresAt)) return undefined
 
 		return { value: record.value }
 	}

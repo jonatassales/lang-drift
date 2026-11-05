@@ -14,7 +14,7 @@ import {
 	workflowModels,
 } from './microruntimes-workflow'
 
-describe('the workflow figures', () => {
+describe('website/platform/microruntimes/content/microruntimes-workflow', () => {
 	it('prices each model and effort at list prices, in cents', () => {
 		const estimates = workflowModels.map((model) =>
 			workflowEfforts.map(
@@ -61,9 +61,7 @@ describe('the workflow figures', () => {
 		expect(over).toEqual(['claude-opus-5-5 high'])
 		expect(budgetCents).toBe(2500)
 	})
-})
 
-describe('the run', () => {
 	it('waits for the owner only at the stages chosen for a person', () => {
 		const ids = runSession(initialWorkflowChoices).map((line) => line.id)
 		expect(ids).toContain('waiting-planning')

@@ -64,7 +64,7 @@ beforeEach(() => {
 
 afterEach(() => vi.unstubAllEnvs())
 
-describe('the website security headers', () => {
+describe('website/next.config', () => {
 	it.each(['/en/', '/api/book-a-demo/', '/robots.txt'])(
 		'answers %s with every header',
 		async (route) => {

@@ -26,7 +26,7 @@ const localizedPages = pageIds.flatMap((page) =>
 
 const sitemap = sitemapEntries(readWebsiteFile('src/app/sitemap.xml'))
 
-describe('Every indexable page in every locale', () => {
+describe('website/metadata/seo-contract', () => {
 	it.each(routing.locales)(
 		'has a unique title and description in %s',
 		(locale) => {
@@ -104,9 +104,7 @@ describe('Every indexable page in every locale', () => {
 			follow: true,
 		})
 	})
-})
 
-describe('The sitemap', () => {
 	it('lists exactly the indexable pages', () => {
 		const canonicals = localizedPages.map(({ metadata }) =>
 			canonicalOf(metadata),
@@ -123,9 +121,7 @@ describe('The sitemap', () => {
 			expect(entry?.alternates).toEqual(languagesOf(metadata))
 		},
 	)
-})
 
-describe('robots.txt', () => {
 	const groups = robotsGroups(readWebsiteFile('src/app/robots.txt'))
 	const trainingAgents = [
 		'GPTBot',
@@ -155,9 +151,7 @@ describe('robots.txt', () => {
 			`Sitemap: ${site.url}/sitemap.xml`,
 		)
 	})
-})
 
-describe('security.txt', () => {
 	const fields = Object.fromEntries(
 		readWebsiteFile('public/.well-known/security.txt')
 			.trim()
@@ -180,9 +174,7 @@ describe('security.txt', () => {
 	it('has not expired', () => {
 		expect(new Date(fields.Expires).getTime()).toBeGreaterThan(Date.now())
 	})
-})
 
-describe('The localized 404', () => {
 	it.each(routing.locales)('has its title in %s', async (locale) => {
 		const metadata = await notFoundMetadata({
 			params: Promise.resolve({ locale }),
