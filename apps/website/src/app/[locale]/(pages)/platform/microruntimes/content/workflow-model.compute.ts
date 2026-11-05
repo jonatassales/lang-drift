@@ -2,7 +2,7 @@ import {
 	type WorkflowModel,
 	type WorkflowModelId,
 	workflowModels,
-} from './microruntimes-workflow'
+} from './microruntimes-workflow.data'
 
 export function workflowModel(id: WorkflowModelId): WorkflowModel {
 	const model = workflowModels.find((candidate) => candidate.id === id)

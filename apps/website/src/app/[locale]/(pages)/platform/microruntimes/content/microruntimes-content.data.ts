@@ -4,7 +4,7 @@ import type {
 	RunMessageId,
 	WorkflowModelId,
 	WorkflowStageId,
-} from './microruntimes-workflow'
+} from './microruntimes-workflow.data'
 
 // Microruntimes content: the ids, limits, identities and times the
 // Microruntimes page and its demos render. Sentences live in the
@@ -302,9 +302,6 @@ export const planSession = [
 
 export type PlanLineId = (typeof planSession)[number]['id']
 
-export { hasPlayed } from './has-played.compute'
-export { planLineIndex } from './plan-line-index.compute'
-
 // The acts of the session, each the concern of one card beside the
 // terminal, and the line that opens each. The workflow opens once the plan
 // is handed to the team, and its card plays the run.
@@ -318,8 +315,6 @@ export const planPhases = {
 	plan: 'planning',
 	workflow: 'handoff',
 } as const satisfies Record<PlanPhaseId, PlanLineId>
-
-export { phaseOf } from './phase-of.compute'
 
 export type PlanEffort = 'low' | 'medium' | 'high'
 export type ComponentKind = 'api' | 'broker' | 'cache' | 'web'
@@ -438,9 +433,6 @@ export const ticketPlan = {
 	draftRevision: 1,
 } as const
 
-export { headroom } from './headroom.compute'
-export { suggestedTotals } from './suggested-totals.compute'
-
 export type EpisodeVerdict = 'kept' | 'dropped'
 export type DropReason = 'otherRuntime' | 'noBroker' | 'docsOnly'
 
@@ -527,8 +519,6 @@ export const planReveals = {
 
 export type PlanRevealId = keyof typeof planReveals
 
-export { revealed } from './revealed.compute'
-
 export const runtimeFilePath = '.langdrift/runtimes/checkout-preview/runtime.md'
 
 // The JSON inside the runtime file's one langdrift fence, as the console
@@ -577,8 +567,6 @@ export const runtimeDescriptor = {
 		},
 	],
 }
-
-export { formatDescriptor } from './format-descriptor.compute'
 
 export const executionLedger = {
 	executionId: 'exec-41b2',

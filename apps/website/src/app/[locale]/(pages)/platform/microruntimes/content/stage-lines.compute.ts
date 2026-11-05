@@ -2,7 +2,7 @@ import {
 	type RunLine,
 	stageWork,
 	type workStageIds,
-} from './microruntimes-workflow'
+} from './microruntimes-workflow.data'
 
 // One stage: the wait for the owner when the stage asks for a person, then
 // the stage's own work.

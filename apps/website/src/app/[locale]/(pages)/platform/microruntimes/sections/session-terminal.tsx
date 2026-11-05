@@ -7,7 +7,7 @@ import { useEffect, useRef } from 'react'
 import {
 	type MicroruntimesMessages,
 	planSession,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+} from '@routes/platform/microruntimes/content/microruntimes-content.data'
 import {
 	microruntimeSessionAtom,
 	recordPlayedCountAtom,

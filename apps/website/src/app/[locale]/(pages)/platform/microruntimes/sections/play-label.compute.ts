@@ -1,6 +1,6 @@
 import type { MicroruntimeSession } from '@app/atoms/microruntime-session.atom'
 
-import type { TicketCardCopy } from './ticket-card-format'
+import type { TicketCardCopy } from './ticket-card-format.factory'
 
 export function playLabel(
 	workflow: TicketCardCopy['workflow'],

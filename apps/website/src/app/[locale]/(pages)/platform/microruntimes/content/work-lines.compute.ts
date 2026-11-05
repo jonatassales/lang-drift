@@ -2,7 +2,7 @@ import {
 	type RunLine,
 	type WorkflowChoices,
 	workStageIds,
-} from './microruntimes-workflow'
+} from './microruntimes-workflow.data'
 import { stageLines } from './stage-lines.compute'
 
 // The dev ticket: the terminal waits while the person writes the reserved

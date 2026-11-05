@@ -2,26 +2,26 @@ import { describe, expect, it } from 'vitest'
 
 import { microruntimesMessages } from '@i18n/messages/index'
 
+import { formatDescriptor } from './format-descriptor.compute'
+import { hasPlayed } from './has-played.compute'
 import {
 	documentIds,
 	documentReads,
 	episodes,
-	formatDescriptor,
-	hasPlayed,
 	lifecycleStageIds,
-	phaseOf,
-	planLineIndex,
 	planPhaseIds,
 	planPhases,
 	planReveals,
 	planSession,
 	runtimeDescriptor,
 	similarityThreshold,
-	suggestedTotals,
 	ticketPlan,
-} from './microruntimes-content'
+} from './microruntimes-content.data'
+import { phaseOf } from './phase-of.compute'
+import { planLineIndex } from './plan-line-index.compute'
+import { suggestedTotals } from './suggested-totals.compute'
 
-describe('website/platform/microruntimes/content/microruntimes-content, the planning session', () => {
+describe('website/platform/microruntimes/content/microruntimes-content.data, the planning session', () => {
 	it('types exactly one command, first, and waits before every other line', () => {
 		const commands = planSession.filter((line) => line.type === 'command')
 		expect(commands).toHaveLength(1)
@@ -121,7 +121,7 @@ describe('website/platform/microruntimes/content/microruntimes-content, the plan
 	})
 })
 
-describe('website/platform/microruntimes/content/microruntimes-content', () => {
+describe('website/platform/microruntimes/content/microruntimes-content.data', () => {
 	it('keeps the six lifecycle stages in order', () => {
 		expect(lifecycleStageIds).toEqual([
 			'configure',

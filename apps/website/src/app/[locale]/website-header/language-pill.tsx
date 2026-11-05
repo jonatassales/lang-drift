@@ -12,7 +12,7 @@ import {
 	type LanguageSwitcherOption,
 } from 'web/ui/language-switcher'
 
-import { drawerFocus } from './drawer-focus'
+import { drawerFocus } from './drawer-focus.state'
 import { persistLanguagePreference } from './persist-language-preference.adapter'
 
 const languages = [

@@ -1,7 +1,7 @@
 import { useLocale } from 'next-intl'
 import { type RefObject, useEffect, useRef, useState } from 'react'
 
-import { drawerFocus } from './drawer-focus'
+import { drawerFocus } from './drawer-focus.state'
 
 const desktopQuery = '(min-width: 64rem)'
 

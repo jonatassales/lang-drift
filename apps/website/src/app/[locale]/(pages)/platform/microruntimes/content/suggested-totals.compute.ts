@@ -1,4 +1,4 @@
-import type { PlanComponent, Resources } from './microruntimes-content'
+import type { PlanComponent, Resources } from './microruntimes-content.data'
 
 // The totals the plan proposes: the sum of the components' shares.
 export function suggestedTotals(

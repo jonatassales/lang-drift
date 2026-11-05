@@ -1,4 +1,4 @@
-import { runHasPlayed } from '@routes/platform/microruntimes/content/microruntimes-workflow'
+import { runHasPlayed } from '@routes/platform/microruntimes/content/run-has-played.compute'
 
 import type { RunOutcome } from './run-outcome.compute'
 

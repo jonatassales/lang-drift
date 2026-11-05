@@ -7,8 +7,8 @@ import type { WebsiteLocale } from '@i18n/routing'
 import {
 	type PlanPhaseId,
 	planPhaseIds,
-	revealed,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+} from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import { revealed } from '@routes/platform/microruntimes/content/revealed.compute'
 import {
 	microruntimeSessionAtom,
 	openCardAtom,
@@ -23,7 +23,10 @@ import { AnalysisCard, analysisSummary } from './analysis-card'
 import { PlanCard, planSummary } from './plan-card'
 import { SessionCard } from './session-card'
 import { TicketCard, ticketSummary } from './ticket-card'
-import { type TicketCardCopy, ticketCardFormat } from './ticket-card-format'
+import {
+	type TicketCardCopy,
+	ticketCardFormat,
+} from './ticket-card-format.factory'
 import {
 	runOutcome,
 	WorkflowCard,

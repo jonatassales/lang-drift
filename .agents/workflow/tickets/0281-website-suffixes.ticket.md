@@ -8,8 +8,17 @@
 
 **Status:** ready-for-agent
 
-- [ ] The file-suffix detector reports nothing in the website.
-- [ ] No import path breaks and no export is renamed beyond the spec's calls.
+- [x] The file-suffix detector reports nothing in the website.
+- [x] No import path breaks and no export is renamed beyond the spec's calls.
+
+> **Note, 2026-11-05.** The file-suffix detector is ticket 0277's. Until it exists, a script applies its definition: a tracked `.ts` file under `src/` that is not a test, an `index.ts`, a declaration or a framework file must carry a suffix from the TypeScript or Nest table. Under that check, the website keeps three files without one: `template/i18n/routing.ts`, `navigation.ts` and `request.ts`. They are next-intl's file conventions, and rule 06's tree names them. The calls this ticket made:
+> - The metadata companions are `page-metadata.map.ts`, `layout-metadata.map.ts` and `not-found-metadata.map.ts`, and `generateStaticParams` is `layout-static-params.compute.ts`.
+> - The response builder is `book-demo-reply.map.ts`.
+> - The four guards that are not Zod schemas, `triple` among them, are `.compute`, and `socialImages`, which awaits the parent metadata, is `.adapter`.
+> - `drawerFocus` is `.state` and `ticketCardFormat` is `.factory`.
+> - `positions`, the three content modules and the book-a-demo error codes are `.data`. The error codes leave `form.types.ts`.
+> - `platform-products` splits into its data and a `platformProduct` lookup.
+> - The content modules and `page-metadata` lose their re-exports, and their consumers import each helper from its own module.
 
 ## Dev part
 

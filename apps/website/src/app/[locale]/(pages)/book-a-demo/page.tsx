@@ -14,7 +14,7 @@ import { WebsiteStructuredData } from '@layout/website-structured-data'
 // import { BookDemoForm } from './book-demo-form'
 import { DemoNotice } from './demo-notice'
 
-export { generateMetadata } from './page.metadata'
+export { generateMetadata } from './page-metadata.map'
 
 interface BookDemoPageProps {
 	params: Promise<{ locale: string }>

@@ -3,7 +3,7 @@ import {
 	type FinopsMessages,
 	failureScenarioIds,
 	failureStatusTones,
-} from '@routes/platform/finops/content/finops-content'
+} from '@routes/platform/finops/content/finops-content.data'
 import { DetailList } from 'web/ui/detail-list'
 
 // The two ways delivery leaves the plan, side by side: each walks the chain

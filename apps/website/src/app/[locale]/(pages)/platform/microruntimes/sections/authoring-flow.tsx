@@ -4,7 +4,7 @@ import {
 	flowGuaranteeIds,
 	flowTargetIds,
 	type MicroruntimesMessages,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+} from '@routes/platform/microruntimes/content/microruntimes-content.data'
 import { LogoMark } from 'web/ui/brand'
 import { Eyebrow } from 'web/ui/eyebrow'
 import { ArrowRightIcon } from 'web/ui/icons/arrow'

@@ -3,7 +3,7 @@ import type { WebsiteLocale } from '@i18n/routing'
 import {
 	type FinopsMessages,
 	sourceIds,
-} from '@routes/platform/finops/content/finops-content'
+} from '@routes/platform/finops/content/finops-content.data'
 import { Eyebrow } from 'web/ui/eyebrow'
 
 // What would feed the ledger, as a plain list under a label that says the

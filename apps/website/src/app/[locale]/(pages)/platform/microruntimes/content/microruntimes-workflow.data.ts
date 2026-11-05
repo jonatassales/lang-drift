@@ -1,6 +1,6 @@
 import type { TerminalLineType } from 'web/vendors/smoothui/mac-terminal'
 
-import type { PlanEffort } from './microruntimes-content'
+import type { PlanEffort } from './microruntimes-content.data'
 
 // The hero's Workflow card and the run it plays: the Claude models the team
 // can choose, their Anthropic list prices, the tokens a run of this ticket is
@@ -47,8 +47,6 @@ export const workflowEfforts = [
 	'high',
 ] as const satisfies readonly PlanEffort[]
 
-export { workflowModel } from './workflow-model.compute'
-
 // Input and output tokens, in thousands.
 export interface Tokens {
 	inputThousands: number
@@ -93,9 +91,7 @@ export const observedTokens: Record<PlanEffort, Tokens> = {
 export const budgetCents = 2500
 export const reserveMarginPercent = 20
 
-export { reserveCents } from './reserve-cents.compute'
 // What the tokens cost at the model's uncached list prices.
-export { spendCents } from './spend-cents.compute'
 
 export const workflowStageIds = [
 	'planning',
@@ -116,8 +112,6 @@ export type HumanStageId = Exclude<WorkflowStageId, 'dev-ticket' | 'merge'>
 // The stages this workflow always gives a person: planning ends only when
 // the owner confirms it, so its checkbox stays checked.
 export const requiredHumanStages: readonly HumanStageId[] = ['planning']
-
-export { isRequiredHumanStage } from './is-required-human-stage.compute'
 
 // The skills each stage runs, as the repository names them.
 export const stageSkills: Record<WorkflowStageId, string | null> = {
@@ -150,19 +144,12 @@ export const initialWorkflowChoices: WorkflowChoices = {
 
 // The run's money in cents: the estimate, the reservation the gate would
 // hold, what the usage record observed and what the reservation releases.
-export {
-	type WorkflowFigures,
-	workflowFigures,
-} from './workflow-figures.compute'
 
 export const workflowDelivery = {
 	branch: 'feat/0031-book-a-demo-runtime',
 	hash: '3f9c2e1',
 	pullRequest: 19,
 }
-
-export { tokenCount } from './token-count.fmt'
-export { workflowDollars } from './workflow-dollars.fmt'
 
 // The run's lines in the catalog, by message. Waiting and confirmed lines
 // repeat per stage, so a line carries its own unique id beside the message.
@@ -257,10 +244,4 @@ export const workStageIds = [
 	'implement',
 ] as const
 
-export { runHasPlayed } from './run-has-played.compute'
-export { runSession } from './run-session.compute'
-export { stageLines } from './stage-lines.compute'
-
 export type StageProgress = 'pending' | 'active' | 'done'
-
-export { stageProgress } from './stage-progress.compute'

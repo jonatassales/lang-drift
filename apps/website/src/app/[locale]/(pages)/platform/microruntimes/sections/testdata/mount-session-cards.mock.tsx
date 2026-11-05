@@ -2,10 +2,8 @@ import { act, render, screen } from '@testing-library/react'
 import { createStore, Provider } from 'jotai'
 
 import { microruntimesMessages } from '@i18n/messages/index'
-import {
-	type PlanLineId,
-	planLineIndex,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+import type { PlanLineId } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import { planLineIndex } from '@routes/platform/microruntimes/content/plan-line-index.compute'
 import { SessionCards } from '@routes/platform/microruntimes/sections/session-cards'
 import { recordPlayedCountAtom } from '@state'
 

@@ -4,12 +4,10 @@ import type { WebsiteLocale } from '@i18n/routing'
 import type {
 	MicroruntimesMessages,
 	Resources,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
-import {
-	priceDate,
-	tokenCount,
-	workflowDollars,
-} from '@routes/platform/microruntimes/content/microruntimes-workflow'
+} from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import { priceDate } from '@routes/platform/microruntimes/content/microruntimes-workflow.data'
+import { tokenCount } from '@routes/platform/microruntimes/content/token-count.fmt'
+import { workflowDollars } from '@routes/platform/microruntimes/content/workflow-dollars.fmt'
 
 export type TicketCardCopy = MicroruntimesMessages['session']['card']
 

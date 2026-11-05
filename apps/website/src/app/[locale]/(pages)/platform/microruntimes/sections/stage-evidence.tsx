@@ -5,7 +5,7 @@ import { useAtomValue } from 'jotai'
 import {
 	type MicroruntimesMessages,
 	stageEvidencePaths,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+} from '@routes/platform/microruntimes/content/microruntimes-content.data'
 import { selectedLifecycleStageAtom } from '@state'
 import { Eyebrow } from 'web/ui/eyebrow'
 

@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import {
 	initialWorkflowChoices,
 	type WorkflowChoices,
-} from './microruntimes-workflow'
+} from './microruntimes-workflow.data'
 import { workLines } from './work-lines.compute'
 
 const everyStageOff: WorkflowChoices = {

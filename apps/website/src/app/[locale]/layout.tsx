@@ -13,8 +13,8 @@ import { routing } from '@i18n/routing'
 import { LocaleAvailabilityNotice } from './locale-availability-notice'
 import { ScrollToTop } from './scroll-to-top'
 
-export { generateMetadata } from './layout.metadata'
-export { generateStaticParams } from './layout.static'
+export { generateMetadata } from './layout-metadata.map'
+export { generateStaticParams } from './layout-static-params.compute'
 
 export const viewport: Viewport = {
 	colorScheme: 'dark light',

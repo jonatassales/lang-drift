@@ -1,4 +1,4 @@
-import type { Envelope, EnvelopeSegmentId } from './finops-content'
+import type { Envelope, EnvelopeSegmentId } from './finops-content.data'
 
 export function envelopeSegments(
 	funding: Envelope,

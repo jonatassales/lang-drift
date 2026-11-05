@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import { Link } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
-import type { PlatformProduct } from '@layout/website-header/platform-products'
+import type { PlatformProduct } from '@layout/website-header/platform-products.data'
 import { ArrowRightIcon } from 'web/ui/icons/arrow'
 
 // One product on the home page: the question and its answer, the demo, and

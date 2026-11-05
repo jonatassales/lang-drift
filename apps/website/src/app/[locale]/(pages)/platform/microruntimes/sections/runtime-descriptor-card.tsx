@@ -1,11 +1,11 @@
 import type { WebsiteLocale } from '@i18n/routing'
+import { formatDescriptor } from '@routes/platform/microruntimes/content/format-descriptor.compute'
 import {
 	descriptorAnnotationIds,
-	formatDescriptor,
 	type MicroruntimesMessages,
 	runtimeDescriptor,
 	runtimeFilePath,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+} from '@routes/platform/microruntimes/content/microruntimes-content.data'
 
 import { RuntimeFileEditor } from './runtime-file-editor'
 

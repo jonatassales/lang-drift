@@ -1,14 +1,14 @@
 import {
 	documentIds,
-	revealed,
 	ticketPlan,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+} from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import { revealed } from '@routes/platform/microruntimes/content/revealed.compute'
 import { DetailList } from 'web/ui/detail-list'
 import { Eyebrow } from 'web/ui/eyebrow'
 
 import { CardSection } from './card-section'
 import { CardValue, revealState } from './card-value'
-import type { TicketCardCopy } from './ticket-card-format'
+import type { TicketCardCopy } from './ticket-card-format.factory'
 
 export { ticketSummary } from './ticket-summary.compute'
 

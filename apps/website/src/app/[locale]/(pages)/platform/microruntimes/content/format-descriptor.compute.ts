@@ -1,4 +1,4 @@
-import type { runtimeDescriptor } from './microruntimes-content'
+import type { runtimeDescriptor } from './microruntimes-content.data'
 
 // Renders the descriptor as the indented JSON a reader would see in the
 // file, with short arrays kept on one line.

@@ -2,7 +2,7 @@ import { unstable_doesMiddlewareMatch } from 'next/experimental/testing/server'
 import { NextRequest } from 'next/server'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { pageMetadata } from '@app/metadata/page-metadata'
+import { pageMetadata } from '@app/metadata/page-metadata.map'
 import pages from '@app/metadata/pages.json'
 import { routing } from '@i18n/routing'
 

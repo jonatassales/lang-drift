@@ -7,7 +7,7 @@ import {
 	type LifecycleStageId,
 	lifecycleStageIds,
 	type MicroruntimesMessages,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+} from '@routes/platform/microruntimes/content/microruntimes-content.data'
 import { ChoiceButton } from '@routes/platform/product-page/choice-button'
 import { selectedLifecycleStageAtom } from '@state'
 import { Eyebrow } from 'web/ui/eyebrow'

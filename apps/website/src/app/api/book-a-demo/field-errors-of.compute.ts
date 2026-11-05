@@ -2,7 +2,7 @@ import type { z } from 'zod'
 
 import type { BookDemoFieldErrors } from '@routes/book-a-demo/form.types'
 
-import { isBookDemoErrorCode } from './is-book-demo-error-code.validation'
+import { isBookDemoErrorCode } from './is-book-demo-error-code.compute'
 
 // The first code of each field that failed.
 export function fieldErrorsOf(error: z.ZodError): BookDemoFieldErrors {

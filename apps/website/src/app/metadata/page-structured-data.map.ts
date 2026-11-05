@@ -1,7 +1,8 @@
 import type { WebsiteLocale } from '@i18n/routing'
 
 import organization from './organization.json'
-import { type PageId, pageUrl } from './page-metadata'
+import type { PageId } from './page-path.compute'
+import { pageUrl } from './page-url.compute'
 import pages from './pages.json'
 import site from './site.json'
 

@@ -9,7 +9,7 @@ vi.mock('@i18n/navigation', () => ({
 	),
 }))
 
-import { platformProduct } from '@layout/website-header/platform-products'
+import { platformProduct } from '@layout/website-header/platform-product.compute'
 
 import { HomeProductSection } from './home-product-section'
 

@@ -4,7 +4,7 @@ import {
 	type RunLine,
 	type WorkflowChoices,
 	workflowDelivery,
-} from './microruntimes-workflow'
+} from './microruntimes-workflow.data'
 import { tokenCount } from './token-count.fmt'
 import { workLines } from './work-lines.compute'
 import { workflowDollars } from './workflow-dollars.fmt'

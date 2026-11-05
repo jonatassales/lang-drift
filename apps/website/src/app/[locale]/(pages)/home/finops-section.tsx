@@ -1,6 +1,6 @@
 import { finopsMessages, platformMessages } from '@i18n/messages/index'
 import type { WebsiteLocale } from '@i18n/routing'
-import { platformProduct } from '@layout/website-header/platform-products'
+import { platformProduct } from '@layout/website-header/platform-product.compute'
 import { BudgetLedgerDemo } from '@routes/platform/finops/sections/budget-ledger-demo'
 import { DeliveryReceipt } from '@routes/platform/finops/sections/delivery-receipt'
 

@@ -15,7 +15,7 @@ import {
 	ownershipRowIds,
 	type StateCardId,
 	stateCardIds,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+} from '@routes/platform/microruntimes/content/microruntimes-content.data'
 import { AuthoringFlow } from '@routes/platform/microruntimes/sections/authoring-flow'
 import { LifecycleSteps } from '@routes/platform/microruntimes/sections/lifecycle-steps'
 import { RuntimeDescriptorCard } from '@routes/platform/microruntimes/sections/runtime-descriptor-card'
@@ -31,7 +31,7 @@ import { Eyebrow } from 'web/ui/eyebrow'
 import { MicroruntimesIcon } from 'web/ui/icons/platform'
 import { cn } from 'web/utilities'
 
-export { generateMetadata } from './page.metadata'
+export { generateMetadata } from './page-metadata.map'
 
 const stateTones: Record<StateCardId, string> = {
 	requested: 'text-foreground',

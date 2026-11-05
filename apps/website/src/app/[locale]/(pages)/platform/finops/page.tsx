@@ -8,10 +8,8 @@ import { SkipLink } from '@layout/skip-link'
 import { WebsiteFooter } from '@layout/website-footer'
 import { WebsiteHeader } from '@layout/website-header/website-header'
 import { WebsiteStructuredData } from '@layout/website-structured-data'
-import {
-	gateExample,
-	gateFigures,
-} from '@routes/platform/finops/content/finops-content'
+import { gateExample } from '@routes/platform/finops/content/finops-content.data'
+import { gateFigures } from '@routes/platform/finops/content/gate-figures.compute'
 import { BudgetLedgerDemo } from '@routes/platform/finops/sections/budget-ledger-demo'
 import { BudgetTerms } from '@routes/platform/finops/sections/budget-terms'
 import { DeliveryReceipt } from '@routes/platform/finops/sections/delivery-receipt'
@@ -23,7 +21,7 @@ import { ProductSection } from '@routes/platform/product-page/product-section'
 import { ProductTagline } from '@routes/platform/product-tagline'
 import { FinopsIcon } from 'web/ui/icons/platform'
 
-export { generateMetadata } from './page.metadata'
+export { generateMetadata } from './page-metadata.map'
 
 interface FinopsPageProps {
 	params: Promise<{ locale: string }>

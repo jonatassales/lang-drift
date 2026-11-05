@@ -1,5 +1,5 @@
 import type { BookDemoErrorCode } from '@routes/book-a-demo/form.types'
-import type { PositionId } from '@routes/book-a-demo/positions'
+import type { PositionId } from '@routes/book-a-demo/positions.data'
 
 export interface HeaderMessages {
 	home: string

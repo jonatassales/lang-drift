@@ -1,5 +1,5 @@
 import { hasPlayed } from './has-played.compute'
-import { type PlanRevealId, planReveals } from './microruntimes-content'
+import { type PlanRevealId, planReveals } from './microruntimes-content.data'
 
 // True once the terminal has completed the line that reveals this part of
 // the cards.

@@ -1,9 +1,5 @@
 import type { DetailTone } from 'web/ui/detail-list'
 
-export { dollars } from './dollars.fmt'
-export { envelopeSegments } from './envelope-segments.compute'
-export { gateFigures } from './gate-figures.compute'
-
 // FinOps content: the ids, amounts and states the FinOps page and
 // its demos render. Sentences live in the finops catalog; this module holds
 // what a reader does not read as prose. Amounts are simulated US dollars, and

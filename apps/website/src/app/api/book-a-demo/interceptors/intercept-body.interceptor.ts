@@ -1,7 +1,7 @@
 import { BodyError } from '@api/book-a-demo/body/body-error.type'
 import { parseSubmissionJSON } from '@api/book-a-demo/body/parse-submission-json.compute'
 import { readBoundedBody } from '@api/book-a-demo/body/read-bounded-body.adapter'
-import { bookDemoReply } from '@api/book-a-demo/book-demo-reply.response'
+import { bookDemoReply } from '@api/book-a-demo/book-demo-reply.map'
 
 import { bodyLimit } from './body-limit.data'
 

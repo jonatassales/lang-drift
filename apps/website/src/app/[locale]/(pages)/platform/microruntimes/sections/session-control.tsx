@@ -1,6 +1,6 @@
 import { useAtomValue, useSetAtom } from 'jotai'
 
-import type { MicroruntimesMessages } from '@routes/platform/microruntimes/content/microruntimes-content'
+import type { MicroruntimesMessages } from '@routes/platform/microruntimes/content/microruntimes-content.data'
 import {
 	microruntimeSessionAtom,
 	replaySessionAtom,

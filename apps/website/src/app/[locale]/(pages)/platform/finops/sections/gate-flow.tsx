@@ -2,13 +2,13 @@ import { createTranslator } from 'next-intl'
 import { Fragment } from 'react'
 
 import type { WebsiteLocale } from '@i18n/routing'
+import { dollars } from '@routes/platform/finops/content/dollars.fmt'
 import {
-	dollars,
 	type FinopsMessages,
 	type GateFigures,
 	type GateStepId,
 	gateStepIds,
-} from '@routes/platform/finops/content/finops-content'
+} from '@routes/platform/finops/content/finops-content.data'
 import { Eyebrow } from 'web/ui/eyebrow'
 import { ArrowRightIcon } from 'web/ui/icons/arrow'
 

@@ -4,17 +4,20 @@ import {
 	budgetCents,
 	type RunLine,
 	type RunMessageId,
-	runHasPlayed,
-	type WorkflowFigures,
 	workflowDelivery,
-} from '@routes/platform/microruntimes/content/microruntimes-workflow'
+} from '@routes/platform/microruntimes/content/microruntimes-workflow.data'
+import { runHasPlayed } from '@routes/platform/microruntimes/content/run-has-played.compute'
+import type { WorkflowFigures } from '@routes/platform/microruntimes/content/workflow-figures.compute'
 import { Eyebrow } from 'web/ui/eyebrow'
 import { GitPullRequest } from 'web/ui/icons/server'
 import { cn } from 'web/utilities'
 
 import { CardValue } from './card-value'
 import { pullRequestState } from './pull-request-state.compute'
-import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
+import type {
+	TicketCardCopy,
+	TicketCardFormat,
+} from './ticket-card-format.factory'
 
 const figure = 'font-mono text-[13px] tabular-nums'
 

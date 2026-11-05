@@ -2,7 +2,7 @@ import type {
 	RunLine,
 	StageProgress,
 	WorkflowStageId,
-} from './microruntimes-workflow'
+} from './microruntimes-workflow.data'
 
 // Where a stage stands in a playing run: pending until its first line
 // prints, active while its lines print, done after its last.

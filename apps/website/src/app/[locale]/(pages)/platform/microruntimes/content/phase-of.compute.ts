@@ -3,7 +3,7 @@ import {
 	type PlanPhaseId,
 	planPhaseIds,
 	planPhases,
-} from './microruntimes-content'
+} from './microruntimes-content.data'
 
 // The act the session is in: the last one whose opening line has played.
 export function phaseOf(playedCount: number): PlanPhaseId {

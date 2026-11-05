@@ -1,4 +1,4 @@
-import type { PlanLineId } from './microruntimes-content'
+import type { PlanLineId } from './microruntimes-content.data'
 import { planLineIndex } from './plan-line-index.compute'
 
 // True once the terminal has completed the line, so the card can show what
