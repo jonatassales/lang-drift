@@ -8,11 +8,11 @@
 
 **Status:** ready-for-agent
 
-- [ ] The manifest is public at 0.2.0, with a description, the Apache-2.0 license, the repository and `publishConfig.access: public`, and installs on every platform.
-- [ ] `pnpm pack --dry-run` lists the twelve files of `contracts/go/judge/schema/`, `README.md`, `LICENSE` and `package.json`, and no Go source.
-- [ ] The tag `lib/core/contracts/go/v0.2.0` exists on GitHub and `proxy.golang.org` serves the module at `v0.2.0` with its `judge` package.
-- [ ] The CLI's `go.mod` requires the contracts at `v0.2.0`, and `GOWORK=off go build ./src` and `go test ./...` pass in `lib/cli`.
-- [ ] The core README and the module README say what each surface carries and how to get it; `SECURITY.md` names both surfaces.
+- [x] The manifest is public at 0.2.0, with a description, the Apache-2.0 license, the repository and `publishConfig.access: public`, and installs on every platform.
+- [x] `pnpm pack --dry-run` lists the twelve files of `contracts/go/judge/schema/`, `README.md`, `LICENSE` and `package.json`, and no Go source.
+- [x] The tag `lib/core/contracts/go/v0.2.0` exists on GitHub and `proxy.golang.org` serves the module at `v0.2.0` with its `judge` package.
+- [x] The CLI's `go.mod` requires the contracts at `v0.2.0`, and `GOWORK=off go build ./src` and `go test ./...` pass in `lib/cli`.
+- [x] The core README and the module README say what each surface carries and how to get it; `SECURITY.md` names both surfaces.
 - [ ] `pnpm view @langdrift/core version` prints `0.2.0` once the owner publishes, and the package installs and loads a schema in a fresh directory.
 
 ## Dev part

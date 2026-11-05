@@ -10,7 +10,7 @@ require (
 	golang.org/x/sys v0.44.0
 )
 
-require github.com/jonatassales/tao/lib/core/contracts/go v0.1.0
+require github.com/jonatassales/tao/lib/core/contracts/go v0.2.0
 
 require (
 	github.com/anthropics/anthropic-sdk-go v1.80.0
