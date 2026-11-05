@@ -43,7 +43,10 @@ func (component Component) DockerfilePath() string {
 // Validate checks the component's own fields. Whether its files exist is
 // the planner's and the runner's check, not a lexical one.
 func (component Component) Validate() error {
-	if err := CheckComponentPath(component.Path); err != nil || IsPlatformPath(component.Path) {
+	pathRefused := CheckComponentPath(component.Path) != nil ||
+		IsPlatformPath(component.Path)
+
+	if pathRefused {
 		return invalid(fmt.Sprintf("component path %q must be a clean relative path inside the checkout and outside .langdrift", component.Path))
 	}
 
@@ -55,7 +58,9 @@ func (component Component) Validate() error {
 		return invalid(fmt.Sprintf("component %s: dockerfile %q must be a file name inside the component folder", component.Name, component.Dockerfile))
 	}
 
-	if component.Port != 0 && !ValidPort(component.Port) {
+	portInvalid := component.Port != 0 && !ValidPort(component.Port)
+
+	if portInvalid {
 		return invalid(fmt.Sprintf("component %s: port %d is outside 1 to 65535", component.Name, component.Port))
 	}
 
@@ -89,7 +94,10 @@ func (component Component) validateEnvFile() error {
 		return nil
 	}
 
-	if err := CheckRelativePath(component.EnvFile); err != nil || IsPlatformPath(component.EnvFile) {
+	envFileRefused := CheckRelativePath(component.EnvFile) != nil ||
+		IsPlatformPath(component.EnvFile)
+
+	if envFileRefused {
 		return invalid(fmt.Sprintf("component %s: envFile %q must be a clean relative path inside the checkout and outside .langdrift", component.Name, component.EnvFile))
 	}
 

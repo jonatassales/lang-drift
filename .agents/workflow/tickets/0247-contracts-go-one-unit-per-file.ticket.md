@@ -8,8 +8,8 @@
 
 **Status:** ready-for-agent
 
-- [ ] `platform/cli/drift quality check general` prints no finding under `lib/core/contracts/go`.
-- [ ] No exported identifier changes and the CLI builds against it unchanged.
+- [x] `platform/cli/drift quality check general` prints no finding under `lib/core/contracts/go`.
+- [x] No exported identifier changes and the CLI builds against it unchanged.
 
 ## Dev part
 
@@ -20,3 +20,5 @@
 - `cd lib/core/contracts/go && GOTOOLCHAIN=local go vet ./... && GOTOOLCHAIN=local go test -race ./...`
 - `cd lib/cli && GOTOOLCHAIN=local go vet ./... && GOTOOLCHAIN=local go test -race ./...`
 - `platform/cli/drift quality check general`
+
+> **Note, 2026-11-05.** `Markdown` no longer discards its encoding error: a budget that is not finite, which `Validate` refuses, now panics instead of rendering an empty fence. The signature stays, so the CLI builds unchanged; the owner decides whether it should return the error instead.

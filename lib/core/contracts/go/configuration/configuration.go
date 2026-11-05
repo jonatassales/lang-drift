@@ -1,5 +1,10 @@
 // Package configuration is the runtime.md contract of Microruntimes: the one
 // langdrift JSON fence a console authors and the connected agent executes.
+//
+// Its lexical rules, the Check and Is functions, hold for every Microruntimes
+// value wherever it is checked: in a runtime.md fence, in the CLI's domain or
+// in the server that authors the fence. They need no filesystem, cluster or
+// network.
 package configuration
 
 import (
@@ -28,14 +33,15 @@ type Configuration struct {
 	Native       *Native     `json:"native,omitempty"`
 }
 
-// Native preserves an existing v2 descriptor and its owned resources on migration.
-type Native struct {
-	RuntimeID string `json:"runtimeId"`
-}
-
 // Markdown renders the portable, editable migration/configuration format.
+// Only a budget that is not finite keeps a configuration from encoding,
+// and Validate refuses one, so a failure here is a caller's broken
+// invariant.
 func (config Configuration) Markdown() string {
-	data, _ := json.MarshalIndent(config, "", "  ")
+	data, err := json.MarshalIndent(config, "", "  ")
+	if err != nil {
+		panic(fmt.Sprintf("configuration: %q cannot be encoded: %v", config.Name, err))
+	}
 
 	return "# " + strings.ReplaceAll(config.Name, "\n", " ") + "\n\nConfiguration is interpreted by the connected project agent. Prose does not execute commands.\n\n```langdrift\n" + string(data) + "\n```\n"
 }
@@ -46,7 +52,12 @@ func (config Configuration) Validate() error {
 		return invalid(fmt.Sprintf("version %d is required; %s", Version, replan))
 	}
 
-	if config.Revision < 1 || config.RuntimeUID == "" || config.ProjectID == "" || strings.TrimSpace(config.Name) == "" {
+	identityMissing := config.Revision < 1 ||
+		config.RuntimeUID == "" ||
+		config.ProjectID == "" ||
+		strings.TrimSpace(config.Name) == ""
+
+	if identityMissing {
 		return invalid("identities, revision and name are required")
 	}
 
@@ -54,27 +65,51 @@ func (config Configuration) Validate() error {
 		return err
 	}
 
-	if config.CPUMillis < 1 || config.CPUMillis > 64_000 || config.MemoryMiB < 1 || config.MemoryMiB > 1_048_576 {
+	resourcesOutOfBounds := config.CPUMillis < 1 ||
+		config.CPUMillis > 64_000 ||
+		config.MemoryMiB < 1 ||
+		config.MemoryMiB > 1_048_576
+
+	if resourcesOutOfBounds {
 		return invalid("CPU and memory must be positive bounded per-execution limits")
 	}
 
-	if config.LLMBudgetUSD != nil && (math.IsNaN(*config.LLMBudgetUSD) || *config.LLMBudgetUSD < 0.01 || *config.LLMBudgetUSD > 1_000_000) {
+	budgetOutOfBounds := config.LLMBudgetUSD != nil &&
+		(math.IsNaN(*config.LLMBudgetUSD) ||
+			*config.LLMBudgetUSD < 0.01 ||
+			*config.LLMBudgetUSD > 1_000_000)
+
+	if budgetOutOfBounds {
 		return invalid("LLM budget must be positive bounded USD")
 	}
 
-	if config.Model == "" || (config.Effort != "low" && config.Effort != "medium" && config.Effort != "high") {
+	effortKnown := config.Effort == "low" ||
+		config.Effort == "medium" ||
+		config.Effort == "high"
+	choiceMissing := config.Model == "" || !effortKnown
+
+	if choiceMissing {
 		return invalid("explicit agent model and low, medium, or high effort are required")
 	}
 
-	if len(config.Components) == 0 || len(config.Components) > 16 {
+	componentCountOutOfBounds := len(config.Components) == 0 ||
+		len(config.Components) > 16
+
+	if componentCountOutOfBounds {
 		return invalid("select between 1 and 16 components")
 	}
 
-	if config.Native != nil && config.Native.RuntimeID != config.RuntimeID {
+	nativeChanged := config.Native != nil &&
+		config.Native.RuntimeID != config.RuntimeID
+
+	if nativeChanged {
 		return invalid("migration must preserve the native runtime ID")
 	}
 
-	if config.CPUMillis < len(config.Components) || config.MemoryMiB < len(config.Components) {
+	envelopeTooSmall := config.CPUMillis < len(config.Components) ||
+		config.MemoryMiB < len(config.Components)
+
+	if envelopeTooSmall {
 		return invalid("resource envelope must allocate at least 1m CPU and 1 MiB per component")
 	}
 

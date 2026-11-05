@@ -18,7 +18,10 @@ func ParseEnvFile(content string) (map[string]string, error) {
 
 	for number, line := range strings.Split(content, "\n") {
 		line = strings.TrimSuffix(line, "\r")
-		if strings.TrimSpace(line) == "" || strings.HasPrefix(strings.TrimSpace(line), "#") {
+		trimmed := strings.TrimSpace(line)
+		blankOrComment := trimmed == "" || strings.HasPrefix(trimmed, "#")
+
+		if blankOrComment {
 			continue
 		}
 

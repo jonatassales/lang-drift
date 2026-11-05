@@ -31,7 +31,11 @@ func (readiness Readiness) Validate() error {
 		return nil
 
 	case ReadinessHTTP:
-		if !IsPlainText(readiness.Path) || !strings.HasPrefix(readiness.Path, "/") || strings.ContainsAny(readiness.Path, " \t") {
+		pathInvalid := !IsPlainText(readiness.Path) ||
+			!strings.HasPrefix(readiness.Path, "/") ||
+			strings.ContainsAny(readiness.Path, " \t")
+
+		if pathInvalid {
 			return errors.New("http readiness requires a path starting with /")
 		}
 

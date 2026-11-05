@@ -34,7 +34,9 @@ func decodeObject(raw json.RawMessage, path string, fields []string, into any) e
 	}
 
 	var typeError *json.UnmarshalTypeError
-	if errors.As(err, &typeError) && typeError.Field != "" {
+	namesItsField := errors.As(err, &typeError) && typeError.Field != ""
+
+	if namesItsField {
 		return refuse(fieldPath(path, typeError.Field), "must be a "+typeError.Type.String()+", not a "+typeError.Value)
 	}
 
