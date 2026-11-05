@@ -12,8 +12,8 @@
 		}
 	},
 	"scripts": {
-		"postinstall": "sh platform/cli/drift setup",
-		"prepare": "husky platform/cli/.husky",
+		"postinstall": "sh packages/drift/drift setup",
+		"prepare": "husky packages/drift/.husky",
 		"website": "turbo run dev --filter=website",
 		"console": "turbo run dev --filter=console",
 		"check": "biome check .",

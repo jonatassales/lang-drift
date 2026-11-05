@@ -35,7 +35,7 @@ require_major() {
 if drift_has node; then require_major Node 24 "$(node --version)"; fi
 if drift_has pnpm; then require_major pnpm 12 "$(pnpm --version)"; fi
 
-required_paths="AGENTS.md apps packages platform/cli/drift $DRIFT_HOOKS_DIR .agents .claude"
+required_paths="AGENTS.md apps packages packages/drift/drift $DRIFT_HOOKS_DIR .agents .claude"
 for path in $required_paths; do
   if [ -e "$DRIFT_PROJECT_ROOT/$path" ]; then drift_print_success "$path"; else fail "Missing $path"; fi
 done
