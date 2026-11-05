@@ -20,6 +20,7 @@ import (
 	"github.com/jonatassales/tao/lib/cli/src/domain/project"
 	"github.com/jonatassales/tao/lib/cli/src/domain/run"
 	"github.com/jonatassales/tao/lib/core/contracts/go/configuration"
+	contract "github.com/jonatassales/tao/lib/core/contracts/go/judge"
 )
 
 // planning is one plan in progress: what each act found, for the acts after it.
@@ -36,6 +37,7 @@ type planning struct {
 	collected collection.Result
 	runtime   microruntime.Identifier
 
+	connection Connection
 	judge      *judge
 	analysis   analysis
 	retrieval  retrieved
@@ -114,47 +116,71 @@ func (planning *planning) collect(ticketPath string) error {
 
 // openJudge decides whether the planner's paid calls may run: the planning
 // forecast priced at the planner's model, reserved with the margin, through
-// FG-01, FG-02 and FG-03. A gate that does not pass refuses the plan before
-// anything is paid; a judge that cannot run leaves the deterministic shell.
+// FG-01, FG-02 and FG-03. JudgeRefusal turns a missing connection or a gate
+// that does not pass into a refused plan before anything is paid.
 func (planning *planning) openJudge() error {
-	reason := planning.judgeUnavailable()
-	if reason != "" {
-		planning.emit(session.JudgeUnavailable, session.Data{"reason": reason})
-
-		return nil
-	}
-
 	planner := planning.guards.Planner()
 	price, priced := planning.guards.Price(planner)
-	estimate := 0
-	if priced {
-		estimate = finops.EstimateCents(*planning.guards.Forecasts.Planning, price)
-	}
+	estimate := planning.planningEstimate(price, priced)
 	reservation := finops.RequestedReservation(estimate, planning.guards.Budget.Bounded.ReserveMarginPercent)
 
-	allocation := planning.guards.Allocation(planning.ticket)
-	gates := finops.BeforeAuthorization(finops.Authorization{Priced: priced, Allocated: allocation > 0}, reservation, planning.bounds())
-	if !finops.Allowed(gates) {
-		return fmt.Errorf("%w: %s; nothing was paid; raise the budget or plan with --no-judge", ErrPaused, gateDetail(gates))
+	if err := JudgeRefusal(planning.connection, planning.openingGate(priced, reservation)); err != nil {
+		return err
 	}
 
-	planning.judge = &judge{client: planning.service.Judge, planner: planner, price: price, estimate: estimate, reserved: reservation}
+	planning.judge = &judge{
+		client:     planning.service.Judge,
+		connection: planning.connection,
+		planner:    planner,
+		estimate:   estimate,
+		reserved:   reservation,
+	}
 
 	return nil
 }
 
-// judgeUnavailable says why the judge cannot run, or nothing when it can.
-func (planning *planning) judgeUnavailable() string {
-	switch {
-	case planning.request.NoJudge:
-		return "--no-judge; verdicts, facts and the suggestion are the inputs' own"
-	case planning.service.Judge == nil:
-		return "no model is configured; verdicts, facts and the suggestion are the inputs' own"
-	case planning.guards.Forecasts == nil || planning.guards.Forecasts.Planning == nil:
-		return "no planning forecast is recorded; set planning with dft finops forecasts set"
+// planningEstimate is the planning forecast priced at the planner's model,
+// or nothing when the forecast or the price is missing.
+func (planning *planning) planningEstimate(price finops.ModelPrice, priced bool) int {
+	forecasts := planning.guards.Forecasts
+	if !priced || forecasts == nil || forecasts.Planning == nil {
+		return 0
 	}
 
-	return ""
+	return finops.EstimateCents(*forecasts.Planning, price)
+}
+
+// openingGate is the verdict before the first question: a missing planning
+// forecast or a gate among FG-01 to FG-03 that does not pass pauses it.
+func (planning *planning) openingGate(priced bool, reservation int) AskOutcome {
+	forecasts := planning.guards.Forecasts
+	if forecasts == nil || forecasts.Planning == nil {
+		return AskOutcome{
+			Kind:   SourcesQuestion,
+			Status: AskPaused,
+			Reason: "no planning forecast is recorded, so nothing can be reserved; nothing was paid; record it with dft finops forecasts set",
+		}
+	}
+
+	allocation := planning.guards.Allocation(planning.ticket)
+	authorization := finops.Authorization{
+		Priced:    priced,
+		Allocated: allocation > 0,
+	}
+	gates := finops.BeforeAuthorization(authorization, reservation, planning.bounds())
+
+	if !finops.Allowed(gates) {
+		return AskOutcome{
+			Kind:   SourcesQuestion,
+			Status: AskPaused,
+			Reason: gateDetail(gates) + "; nothing was paid; raise the budget",
+		}
+	}
+
+	return AskOutcome{
+		Kind:   SourcesQuestion,
+		Status: AskCleared,
+	}
 }
 
 func (planning *planning) bounds() finops.Bounds {
@@ -181,7 +207,10 @@ func gateDetail(gates []finops.GateResult) string {
 // analyze judges the sources and prints the analysis act: lines 5 to 13.
 func (planning *planning) analyze(ctx context.Context) error {
 	planning.emit(session.Analysis, nil)
-	planning.judgeSources(ctx)
+
+	if err := planning.judgeSources(ctx); err != nil {
+		return err
+	}
 
 	for _, source := range planning.collected.Sources[1:] {
 		if source.State != collection.Read && source.State != collection.Binary {
@@ -221,11 +250,8 @@ func (planning *planning) analyze(ctx context.Context) error {
 }
 
 // judgeSources asks the judge about every source read.
-func (planning *planning) judgeSources(ctx context.Context) {
+func (planning *planning) judgeSources(ctx context.Context) error {
 	planning.analysis.sources = map[string]judgedSource{}
-	if planning.judge == nil {
-		return
-	}
 
 	var prompt strings.Builder
 	prompt.WriteString("Ticket: " + planning.ticket.Path + "\n\n")
@@ -240,15 +266,20 @@ func (planning *planning) judgeSources(ctx context.Context) {
 	}
 	prompt.WriteString(sourcesPrompt)
 
-	var answer sourcesAnswer
-	accepted := planning.judge.ask(ctx, Question{Kind: SourcesQuestion, System: judgeSystem, Prompt: prompt.String()}, &answer, func() error {
-		return checkSources(answer, known)
-	})
-	planning.stopIfJudgeStopped()
-
-	if !accepted {
-		return
+	question := Question{
+		Kind:   SourcesQuestion,
+		System: judgeSystem,
+		Prompt: prompt.String(),
 	}
+
+	parsed, err := planning.judge.ask(ctx, question, func(answer contract.Answer) error {
+		return checkSources(*answer.Sources, known)
+	})
+	if err != nil {
+		return err
+	}
+
+	answer := *parsed.Sources
 
 	for _, source := range answer.Sources {
 		planning.analysis.sources[source.Path] = judgedSource{verdict: source.Verdict, reason: source.Reason, confidence: source.Confidence, role: source.Role, summary: source.Summary}
@@ -265,11 +296,13 @@ func (planning *planning) judgeSources(ctx context.Context) {
 	for _, stated := range answer.Figures {
 		planning.analysis.figures = append(planning.analysis.figures, figure{topic: stated.Topic, fact: stated.Fact, source: stated.Source, key: figureKey(stated.CPUMillis, stated.MemoryMiB)})
 	}
+
+	return nil
 }
 
 // checkSources refuses an answer that judges a path it was not given, or
 // gives a verdict or a confidence outside the rules.
-func checkSources(answer sourcesAnswer, known map[string]bool) error {
+func checkSources(answer contract.SourcesAnswer, known map[string]bool) error {
 	for _, source := range answer.Sources {
 		if !known[source.Path] {
 			return fmt.Errorf("it judges %q, which was not read", source.Path)
@@ -290,16 +323,6 @@ func checkSources(answer sourcesAnswer, known map[string]bool) error {
 	}
 
 	return nil
-}
-
-// stopIfJudgeStopped prints, once, why the judge stopped.
-func (planning *planning) stopIfJudgeStopped() {
-	if planning.judge == nil || planning.judge.stopped == "" || planning.judge.printed {
-		return
-	}
-
-	planning.emit(session.JudgeStopped, session.Data{"reason": planning.judge.stopped})
-	planning.judge.printed = true
 }
 
 // envelope is the envelope the run takes: the owner's override, recorded as
@@ -345,17 +368,23 @@ func figureKey(cpuMillis, memoryMiB int) string {
 }
 
 // suggest weighs the effort and the model and prints the suggestion: lines
-// 22 to 24. Without a judge, the suggestion is the recorded choice.
-func (planning *planning) suggest(ctx context.Context) {
-	planning.suggestion = run.Suggestion{By: "input", Model: planning.guards.Choice.Model, Effort: planning.guards.Choice.Effort, Reasons: []string{}, AuthorizedBy: "pending"}
+// 22 to 24. The suggestion is the judge's; the fence keeps the recorded
+// choice.
+func (planning *planning) suggest(ctx context.Context) error {
+	answer, err := planning.askSuggestion(ctx)
+	if err != nil {
+		return err
+	}
 
-	if answer, accepted := planning.askSuggestion(ctx); accepted {
-		planning.emit(session.WeighEffort, session.Data{"reason": answer.EffortReason})
-		planning.emit(session.WeighModel, session.Data{"reason": answer.ModelReason})
-		planning.suggestion.By = "recommendation"
-		planning.suggestion.Model = answer.Model
-		planning.suggestion.Effort = answer.Effort
-		planning.suggestion.Reasons = nonNil(answer.Reasons)
+	planning.emit(session.WeighEffort, session.Data{"reason": answer.EffortReason})
+	planning.emit(session.WeighModel, session.Data{"reason": answer.ModelReason})
+
+	planning.suggestion = run.Suggestion{
+		By:           "judge",
+		Model:        answer.Model,
+		Effort:       answer.Effort,
+		Reasons:      nonNil(answer.Reasons),
+		AuthorizedBy: "pending",
 	}
 
 	if price, found := planning.guards.Price(planning.suggestion.Model); found {
@@ -363,12 +392,15 @@ func (planning *planning) suggest(ctx context.Context) {
 	}
 
 	planning.emit(session.Suggest, session.Data{"model": planning.suggestion.Model, "effort": planning.suggestion.Effort})
+
+	return nil
 }
 
-func (planning *planning) askSuggestion(ctx context.Context) (suggestionAnswer, bool) {
-	var answer suggestionAnswer
-	if planning.judge == nil || planning.guards.Prices == nil {
-		return answer, false
+// askSuggestion asks the judge for the model and the effort, from the price
+// list and the efforts the harness allows.
+func (planning *planning) askSuggestion(ctx context.Context) (contract.SuggestionAnswer, error) {
+	if planning.guards.Prices == nil {
+		return contract.SuggestionAnswer{}, errors.New("no price list is recorded to suggest a model from; set one with dft finops prices set")
 	}
 
 	models := map[string]bool{}
@@ -384,19 +416,28 @@ func (planning *planning) askSuggestion(ctx context.Context) (suggestionAnswer, 
 	}
 	prompt.WriteString("\nEfforts: " + strings.Join(harness.Efforts, ", ") + "\nPer-run budget: " + strconv.Itoa(planning.guards.Budget.Bounded.PerRunCents) + " cents\n\n" + suggestionPrompt)
 
-	accepted := planning.judge.ask(ctx, Question{Kind: SuggestionQuestion, System: judgeSystem, Prompt: prompt.String()}, &answer, func() error {
-		if !models[answer.Model] {
-			return fmt.Errorf("model %q is not on the price list", answer.Model)
+	question := Question{
+		Kind:   SuggestionQuestion,
+		System: judgeSystem,
+		Prompt: prompt.String(),
+	}
+
+	parsed, err := planning.judge.ask(ctx, question, func(answer contract.Answer) error {
+		suggestion := answer.Suggestion
+		if !models[suggestion.Model] {
+			return fmt.Errorf("model %q is not on the price list", suggestion.Model)
 		}
-		if !harness.ValidEffort(answer.Effort) {
-			return fmt.Errorf("effort %q is not low, medium or high", answer.Effort)
+		if !harness.ValidEffort(suggestion.Effort) {
+			return fmt.Errorf("effort %q is not low, medium or high", suggestion.Effort)
 		}
 
 		return nil
 	})
-	planning.stopIfJudgeStopped()
+	if err != nil {
+		return contract.SuggestionAnswer{}, err
+	}
 
-	return answer, accepted
+	return *parsed.Suggestion, nil
 }
 
 // resolve inspects and sizes the components: lines 25 to 38.

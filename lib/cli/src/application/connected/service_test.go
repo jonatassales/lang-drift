@@ -99,9 +99,6 @@ type consoleFake struct {
 	lastSequence   uint64
 }
 
-func (*consoleFake) Bind(context.Context, string, string, string) (Binding, error) {
-	return Binding{}, nil
-}
 func (c *consoleFake) Sync(_ context.Context, _ Connection, sync Sync) (Intent, error) {
 	response := c.intent
 	for _, event := range sync.Events {

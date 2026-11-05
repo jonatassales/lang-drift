@@ -131,12 +131,6 @@ var catalog = map[string]line{
 	key(session.PlanSession, session.Handoff): {session.Comment, func(session.Data) string {
 		return "# next: once the team authorizes, dft agent run applies the recorded intent"
 	}},
-	key(session.PlanSession, session.JudgeUnavailable): {session.Warning, func(data session.Data) string {
-		return "judge      unavailable · " + text(data, "reason")
-	}},
-	key(session.PlanSession, session.JudgeStopped): {session.Warning, func(data session.Data) string {
-		return "judge      stopped · " + text(data, "reason")
-	}},
 	key(session.PlanSession, session.PlanBlocked): {session.Error, func(data session.Data) string {
 		return "✗ plan       runtime.md draft, revision " + strconv.Itoa(number(data, "revision")) + " · blocked · " + joined(data, "checks") + " failed"
 	}},

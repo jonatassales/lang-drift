@@ -16,7 +16,8 @@ import (
 
 // seedProject copies the frozen fixture project, the ticket 0070 and the six
 // sources its links reach, into a disposable project with the sample's
-// inputs recorded, and returns it with its scripted sources.
+// inputs recorded and a console connected, and returns it with its scripted
+// sources, the judge among them.
 func seedProject(t *testing.T) (project, dependencies) {
 	t.Helper()
 
@@ -26,6 +27,7 @@ func seedProject(t *testing.T) (project, dependencies) {
 	deps := dependencies{
 		IDs:   scriptedIDs("a759267ef752f98d6c25c4114ad65d0c", "7c2a0000000000000000000000000000", "3f810000000000000000000000000000", "c0de0000000000000000000000000000", "9d4e0000000000000000000000000000", "51b00000000000000000000000000000", "0000000000000000000000000000ffff", "a6130000000000000000000000000000", "d21f0000000000000000000000000000", "701706be7e70d681d608826d3ad548b9", "e1e10000000000000000000000000000", "e2e20000000000000000000000000000", "e3e30000000000000000000000000000", "e4e40000000000000000000000000000", "e5e50000000000000000000000000000", "e6e60000000000000000000000000000", "e7e70000000000000000000000000000"),
 		Clock: func() time.Time { return time.Date(2026, 10, 28, 13, 46, 50, 0, time.UTC) },
+		Judge: &scriptedJudge{answers: minimalAnswers()},
 	}
 
 	workflow := bodyFile(t, p.root, "workflow.json", "harness/workflow.json", func(body *harness.Workflow) { withoutMirror(body) })
@@ -51,6 +53,8 @@ func seedProject(t *testing.T) (project, dependencies) {
 			t.Fatalf("dft %v = %d\n%s%s", arguments, status, stdout, stderr)
 		}
 	}
+
+	connectProject(t, p.root, "https://console.test")
 
 	return p, deps
 }
@@ -92,7 +96,7 @@ func TestPlanReadsTheTicketAndWritesTheRuntimeFile(t *testing.T) {
 
 	p, deps := seedProject(t)
 
-	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
 	if status != 0 {
 		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
@@ -142,7 +146,7 @@ func TestPlanReadsTheTicketAndWritesTheRuntimeFile(t *testing.T) {
 		t.Errorf("ticket = %+v, want the sample's", written.Ticket)
 	}
 
-	if written.Collection.Agent != nil || written.Collection.Limits != sample.Collection.Limits || written.Collection.Reached != sample.Collection.Reached || written.Collection.Context != sample.Collection.Context {
+	if written.Collection.Agent == nil || !written.Collection.Agent.Paid || written.Collection.Limits != sample.Collection.Limits || written.Collection.Reached != sample.Collection.Reached || written.Collection.Context != sample.Collection.Context {
 		t.Errorf("collection = %+v\nwant %+v", written.Collection, sample.Collection)
 	}
 
@@ -161,7 +165,7 @@ func TestPlanReadsTheTicketAndWritesTheRuntimeFile(t *testing.T) {
 			t.Errorf("source %d syntax %q, want %q", index, source.LinkSyntax, want.LinkSyntax)
 		}
 		if source.Verdict != nil || source.Reason != nil || source.Confidence != nil {
-			t.Errorf("source %d was judged without a judge", index)
+			t.Errorf("source %d has a verdict the judge never gave", index)
 		}
 	}
 
@@ -172,7 +176,7 @@ func TestPlanReadsTheTicketAndWritesTheRuntimeFile(t *testing.T) {
 		t.Errorf("notRuntimeFields = %v, discrepancies = %v", written.Inputs.NotRuntimeFields, written.Discrepancies)
 	}
 
-	if written.State != "proposed" || written.Runtime.Revision != 1 || written.Runtime.SHA256 == "" || len(written.Facts) != 0 || written.Suggestion.By != "input" || *written.Suggestion.ModelName != "Claude Sonnet 5.5" {
+	if written.State != "proposed" || written.Runtime.Revision != 1 || written.Runtime.SHA256 == "" || len(written.Facts) != 0 || written.Suggestion.By != "judge" || *written.Suggestion.ModelName != "Claude Sonnet 5.5" {
 		t.Errorf("plan state = %+v, suggestion = %+v", written.Runtime, written.Suggestion)
 	}
 
@@ -184,11 +188,11 @@ func TestPlanReadsTheTicketAndWritesTheRuntimeFile(t *testing.T) {
 
 	var ledger finops.Ledger
 	decodeStrict(t, mustRead(t, filepath.Join(p.root, ".langdrift", "finops", "ledger", "console-microruntime.ledger.json")), &ledger)
-	if *ledger.Ticket != "0070-console-microruntime" || ledger.Bounded.TicketAllocationCents != 2500 || ledger.Planning.Cents.Observed != 0 || ledger.Planning.Model != nil || *ledger.PriceSource != ".langdrift/finops/prices/0001-illustrative.prices.json" {
+	if *ledger.Ticket != "0070-console-microruntime" || ledger.Bounded.TicketAllocationCents != 2500 || ledger.Planning.Cents.Observed != 10 || ledger.Planning.Model == nil || *ledger.PriceSource != ".langdrift/finops/prices/0001-illustrative.prices.json" {
 		t.Errorf("ledger = %+v", ledger)
 	}
 
-	status, _, stderr = p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent)
+	status, _, stderr = p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
 	if status != 0 {
 		t.Fatalf("replan = %d: %s", status, stderr)
 	}
@@ -203,11 +207,11 @@ func TestPlanRefusesWhatItCannotRead(t *testing.T) {
 
 	p, deps := seedProject(t)
 
-	if status, _, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0099-missing.ticket.md", "--no-judge", "--component", consoleComponent); status != 4 || !strings.Contains(stderr, "no ticket") {
+	if status, _, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0099-missing.ticket.md", "--component", consoleComponent); status != 4 || !strings.Contains(stderr, "no ticket") {
 		t.Errorf("a missing ticket gave %d: %s", status, stderr)
 	}
 
-	if status, _, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge"); status != 2 || !strings.Contains(stderr, "--component") {
+	if status, _, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md"); status != 2 || !strings.Contains(stderr, "--component") {
 		t.Errorf("a plan without components gave %d: %s", status, stderr)
 	}
 
@@ -216,7 +220,7 @@ func TestPlanRefusesWhatItCannotRead(t *testing.T) {
 		t.Fatal(stderr)
 	}
 	copyTree(t, projectFixture, bare.root)
-	if status, _, stderr := bare.dft("", "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 4 || !strings.Contains(stderr, "envelope") {
+	if status, _, stderr := bare.dft("", "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent); status != 4 || !strings.Contains(stderr, "envelope") {
 		t.Errorf("a plan without inputs gave %d: %s", status, stderr)
 	}
 }
@@ -228,7 +232,7 @@ func TestPlanBlocksADraftThatFailsACheck(t *testing.T) {
 
 	p, deps := seedProject(t)
 
-	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge",
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md",
 		"--component", "name=console,path=.,kind=web,port=3001",
 		"--component", "name=web,path=apps/console,port=3001,env-file=apps/console/runtime.env")
 	if status != 3 || !strings.Contains(stderr, "ports-distinct") || !strings.Contains(stderr, "dockerfiles-exist") {
@@ -281,7 +285,7 @@ func TestPlanBlocksADraftThatFailsACheck(t *testing.T) {
 	}
 
 	// A replan still finds the revision, even though the fence failed validation.
-	if status, _, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 0 {
+	if status, _, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent); status != 0 {
 		t.Fatalf("the replan after a blocked draft = %d: %s", status, stderr)
 	}
 	again, err := connection.Parse(string(mustRead(t, runtimePath)))

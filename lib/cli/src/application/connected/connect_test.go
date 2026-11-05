@@ -10,72 +10,92 @@ import (
 	"github.com/jonatassales/tao/lib/cli/src/domain/project"
 )
 
-// bindingConsole returns a configurable binding for Connect tests.
-type bindingConsole struct {
-	consoleFake
-	binding Binding
-	err     error
-}
-
-func (c *bindingConsole) Bind(_ context.Context, _, _, environment string) (Binding, error) {
-	if c.binding.EnvironmentID == "" {
-		c.binding.EnvironmentID = environment
-	}
-	return c.binding, c.err
-}
-
 // emptyStore lists no existing connections.
 type emptyStore struct{ storeFake }
 
 func (*emptyStore) List(project.Project) ([]Connection, error) { return nil, nil }
 
-func TestService_Connect(t *testing.T) {
-	healthy := Binding{Credential: "agent-credential", RuntimeUID: "runtime-uid", RuntimeID: "runtime", ProjectID: "console-project"}
+// judgeCheckFake answers the connection check as the console's judge route
+// would, and remembers what it was asked.
+type judgeCheckFake struct {
+	err    error
+	url    string
+	secret string
+}
 
+func (check *judgeCheckFake) Check(_ context.Context, consoleURL string, secret string) error {
+	check.url, check.secret = consoleURL, secret
+
+	return check.err
+}
+
+// judgeConnectionsFake keeps the recorded console in memory.
+type judgeConnectionsFake struct {
+	url    string
+	secret string
+}
+
+func (connections *judgeConnectionsFake) Record(_ context.Context, _ project.Project, consoleURL string, secret string) error {
+	connections.url, connections.secret = consoleURL, secret
+
+	return nil
+}
+
+func TestService_Connect(t *testing.T) {
 	t.Run("requires the secret", func(t *testing.T) {
 		service := Service{Projects: projectFake{}}
-		if _, err := service.Connect(context.Background(), ConnectRequest{}); err == nil || !strings.Contains(err.Error(), "RUNTIME_SECRET") {
+
+		_, err := service.Connect(context.Background(), ConnectRequest{})
+		if err == nil || !strings.Contains(err.Error(), "RUNTIME_SECRET") {
 			t.Fatalf("err = %v", err)
 		}
 	})
 
-	t.Run("binds and stores a stopped connection", func(t *testing.T) {
-		store := &emptyStore{}
-		service := Service{Projects: projectFake{}, Store: store, Console: &bindingConsole{binding: healthy}, Native: &nativeFake{}}
-		result, err := service.Connect(context.Background(), ConnectRequest{URL: "https://console.example", Secret: "runtime-secret"})
+	t.Run("records the console once the judge route accepts the secret", func(t *testing.T) {
+		check := &judgeCheckFake{}
+		connections := &judgeConnectionsFake{}
+		service := Service{
+			Projects:         projectFake{},
+			Judge:            check,
+			JudgeConnections: connections,
+		}
+
+		result, err := service.Connect(context.Background(), ConnectRequest{
+			URL:    "https://console.example",
+			Secret: "runtime-secret",
+		})
 		if err != nil {
 			t.Fatal(err)
 		}
-		if result.Runtime != "runtime" || result.Environment == "" {
-			t.Fatalf("result = %+v", result)
+
+		if check.url != "https://console.example" || check.secret != "runtime-secret" {
+			t.Fatalf("checked %q with %q", check.url, check.secret)
 		}
-		// The fake persists through the JSON contract, which excludes
-		// credentials by design; identity and state prove the bind.
-		record := store.record
-		if record.State != connection.StateStopped || record.RuntimeUID != "runtime-uid" || record.EnvironmentID != result.Environment {
-			t.Fatalf("record = %+v", record)
+		if connections.url != "https://console.example" || connections.secret != "runtime-secret" {
+			t.Fatalf("recorded %q with %q", connections.url, connections.secret)
+		}
+		if !strings.Contains(result.Status, "https://console.example") || strings.Contains(result.Status, "runtime-secret") {
+			t.Fatalf("status = %q", result.Status)
 		}
 	})
 
-	t.Run("refuses an incomplete binding", func(t *testing.T) {
-		service := Service{Projects: projectFake{}, Store: &emptyStore{}, Console: &bindingConsole{binding: Binding{RuntimeID: "runtime"}}, Native: &nativeFake{}}
-		if _, err := service.Connect(context.Background(), ConnectRequest{URL: "https://console.example", Secret: "s"}); err == nil || !strings.Contains(err.Error(), "incomplete binding") {
+	t.Run("records nothing when the judge route refuses the secret", func(t *testing.T) {
+		connections := &judgeConnectionsFake{}
+		service := Service{
+			Projects:         projectFake{},
+			Judge:            &judgeCheckFake{err: errors.New("the console at https://console.example refused RUNTIME_SECRET")},
+			JudgeConnections: connections,
+		}
+
+		_, err := service.Connect(context.Background(), ConnectRequest{
+			URL:    "https://console.example",
+			Secret: "wrong",
+		})
+		if err == nil || !strings.Contains(err.Error(), "https://console.example") {
 			t.Fatalf("err = %v", err)
 		}
-	})
-
-	t.Run("refuses a binding error", func(t *testing.T) {
-		service := Service{Projects: projectFake{}, Store: &emptyStore{}, Console: &bindingConsole{err: errors.New("offline")}, Native: &nativeFake{}}
-		if _, err := service.Connect(context.Background(), ConnectRequest{URL: "https://console.example", Secret: "s"}); err == nil {
-			t.Fatal("binding failure was swallowed")
-		}
-	})
-
-	t.Run("refuses a runtime that is already connected", func(t *testing.T) {
-		store := &storeFake{record: Connection{RuntimeUID: "runtime-uid"}}
-		service := Service{Projects: projectFake{}, Store: store, Console: &bindingConsole{binding: healthy}, Native: &nativeFake{}}
-		if _, err := service.Connect(context.Background(), ConnectRequest{URL: "https://console.example", Secret: "s"}); err == nil || !strings.Contains(err.Error(), "already connected") {
-			t.Fatalf("err = %v", err)
+		if connections.url != "" {
+			t.Fatalf("a refused connection was recorded: %q", connections.url)
 		}
 	})
 }

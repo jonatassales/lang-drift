@@ -37,7 +37,7 @@ func TestMCP_MalformedURLIsRefusedWithoutBeingQuoted(t *testing.T) {
 			calls := 0
 			client := &MCP{Client: &http.Client{Transport: roundTrip(func(r *http.Request) (*http.Response, error) { calls++; return nil, nil })}}
 
-			_, err := client.Bind(context.Background(), raw, "secret", "env")
+			_, err := client.ProjectSync(context.Background(), raw, "secret")
 			if err == nil || calls != 0 {
 				t.Fatalf("a malformed console URL sent %d requests, error %v", calls, err)
 			}
@@ -141,9 +141,6 @@ func TestMCP_ToolMethodsReachTheWire(t *testing.T) {
 	})}}
 
 	record := app.Connection{URL: "https://console.example", Credential: "private", EnvironmentID: "env"}
-	if _, err := client.Bind(context.Background(), "https://console.example", "secret", "env"); err != nil {
-		t.Fatal(err)
-	}
 	if _, err := client.Claim(context.Background(), record, app.Intent{Revision: 1, IntentVersion: 1}); err != nil {
 		t.Fatal(err)
 	}
@@ -154,7 +151,7 @@ func TestMCP_ToolMethodsReachTheWire(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	want := []string{"langdrift.bind", "langdrift.claim", "langdrift.project.sync", "langdrift.project.bind"}
+	want := []string{"langdrift.claim", "langdrift.project.sync", "langdrift.project.bind"}
 	if !slices.Equal(tools, want) {
 		t.Fatalf("tools = %v, want %v", tools, want)
 	}

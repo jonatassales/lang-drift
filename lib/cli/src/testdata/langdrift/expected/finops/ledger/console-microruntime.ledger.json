@@ -22,14 +22,20 @@
 	},
 	"planning": {
 		"model": "claude-sonnet-5-5",
-		"note": "the planner's calls: the sources, the episodes and the suggestion; paid work under the same gates",
+		"note": "the planner's calls: the sources, the episodes and the suggestion, priced by the console; paid work under the same gates",
 		"cents": {
 			"estimate": 12,
 			"reserved": 15,
-			"observed": 9,
+			"observed": 10,
 			"billed": null,
-			"recovered": 6,
+			"recovered": 5,
 			"overspend": 0
+		},
+		"provenance": "console",
+		"illustrative": true,
+		"usage": {
+			"inputTokens": 30000,
+			"outputTokens": 3000
 		}
 	},
 	"laps": [
@@ -126,11 +132,11 @@
 	"totals": {
 		"cents": {
 			"reserved": 1155,
-			"observed": 989,
+			"observed": 990,
 			"billed": null,
-			"recovered": 166,
+			"recovered": 165,
 			"overspend": 0
 		},
-		"periodLeftAfterCents": 49011
+		"periodLeftAfterCents": 49010
 	}
 }

@@ -16,6 +16,7 @@ type Plan struct {
 	State           string          `json:"state"`
 	Ticket          Ticket          `json:"ticket"`
 	Collection      Collection      `json:"collection"`
+	Judge           *Judge          `json:"judge,omitempty"`
 	Sources         []Source        `json:"sources"`
 	Facts           []Fact          `json:"facts"`
 	Inputs          Inputs          `json:"inputs"`

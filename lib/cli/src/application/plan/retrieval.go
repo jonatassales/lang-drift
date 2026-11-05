@@ -12,6 +12,7 @@ import (
 	"github.com/jonatassales/tao/lib/cli/src/domain/harness"
 	"github.com/jonatassales/tao/lib/cli/src/domain/rag"
 	"github.com/jonatassales/tao/lib/cli/src/domain/run"
+	contract "github.com/jonatassales/tao/lib/core/contracts/go/judge"
 )
 
 // retrieved is what the RAG found for a ticket.
@@ -60,7 +61,10 @@ func (planning *planning) retrieve(ctx context.Context) error {
 		return nil
 	}
 
-	judged := planning.judgeEpisodes(ctx, retrieval.candidates)
+	judged, err := planning.judgeEpisodes(ctx, retrieval.candidates)
+	if err != nil {
+		return err
+	}
 
 	var droppedReasons []string
 	for _, candidate := range retrieval.candidates {
@@ -94,14 +98,10 @@ func (planning *planning) retrieve(ctx context.Context) error {
 	return nil
 }
 
-// judgeEpisodes replaces each candidate's reason with the judge's, when it
-// answers, and says which it judged. The verdict stays the threshold's and
-// the criteria's.
-func (planning *planning) judgeEpisodes(ctx context.Context, candidates []rag.Candidate) map[string]bool {
+// judgeEpisodes replaces each candidate's reason with the judge's and says
+// which it judged. The verdict stays the threshold's and the criteria's.
+func (planning *planning) judgeEpisodes(ctx context.Context, candidates []rag.Candidate) (map[string]bool, error) {
 	judged := map[string]bool{}
-	if planning.judge == nil {
-		return judged
-	}
 
 	known := map[string]int{}
 	var prompt strings.Builder
@@ -113,9 +113,14 @@ func (planning *planning) judgeEpisodes(ctx context.Context, candidates []rag.Ca
 	}
 	prompt.WriteString(episodesPrompt)
 
-	var answer episodesAnswer
-	accepted := planning.judge.ask(ctx, Question{Kind: EpisodesQuestion, System: judgeSystem, Prompt: prompt.String()}, &answer, func() error {
-		for _, episode := range answer.Episodes {
+	question := Question{
+		Kind:   EpisodesQuestion,
+		System: judgeSystem,
+		Prompt: prompt.String(),
+	}
+
+	parsed, err := planning.judge.ask(ctx, question, func(answer contract.Answer) error {
+		for _, episode := range answer.Episodes.Episodes {
 			if _, found := known[episode.Run]; !found {
 				return fmt.Errorf("it names %q, which was not retrieved", episode.Run)
 			}
@@ -123,20 +128,18 @@ func (planning *planning) judgeEpisodes(ctx context.Context, candidates []rag.Ca
 
 		return nil
 	})
-	planning.stopIfJudgeStopped()
-
-	if !accepted {
-		return judged
+	if err != nil {
+		return judged, err
 	}
 
-	for _, episode := range answer.Episodes {
+	for _, episode := range parsed.Episodes.Episodes {
 		if episode.Reason != "" {
 			candidates[known[episode.Run]].Reason = episode.Reason
 			judged[episode.Run] = true
 		}
 	}
 
-	return judged
+	return judged, nil
 }
 
 // measure finds the strongest peak among the cited episodes that measured

@@ -27,11 +27,15 @@ type LedgerBounds struct {
 	PeriodLeftCents       int `json:"periodLeftCents"`
 }
 
-// PlanningLine is what the planner's own calls cost.
+// PlanningLine is what the planner's own calls cost: the amounts, and who
+// priced them, whether the price is illustrative and what the calls used.
 type PlanningLine struct {
-	Model *string       `json:"model"`
-	Note  string        `json:"note"`
-	Cents PlanningCents `json:"cents"`
+	Model        *string        `json:"model"`
+	Note         string         `json:"note"`
+	Cents        PlanningCents  `json:"cents"`
+	Provenance   *string        `json:"provenance,omitempty"`
+	Illustrative *bool          `json:"illustrative,omitempty"`
+	Usage        *PlanningUsage `json:"usage,omitempty"`
 }
 
 // PlanningCents are the planning line's amounts.

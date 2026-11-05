@@ -80,7 +80,7 @@ func TestPlanRetrievesTheWebsitesEpisodes(t *testing.T) {
 	}
 	deps.Embedder = scriptedEmbedder{similarities: similarities}
 
-	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
 	if status != 0 {
 		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
@@ -126,7 +126,7 @@ func TestPlanCitesAMeasuredRun(t *testing.T) {
 		t.Fatalf("dft agent reindex = %d\n%s%s", status, stdout, stderr)
 	}
 
-	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
 	if status != 0 {
 		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}

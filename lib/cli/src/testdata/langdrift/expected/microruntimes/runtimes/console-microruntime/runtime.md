@@ -66,6 +66,12 @@ The planner read the ticket and the files it links, and the owner confirmed the 
       "rule": "sha256 over the sorted path<TAB>sha256 lines of the sources read; byte hashes until canonical hashing lands"
     }
   },
+  "judge": {
+    "version": "console-judge-1",
+    "model": "claude-sonnet-5-5",
+    "promptVersion": "judge-1",
+    "promptHash": "sha256:3e90a135f27030d06abe9e211faadef735220e4427902d4b5b495be3ff4e6aa2"
+  },
   "sources": [
     {
       "path": ".agents/workflow/tickets/0070-console-microruntime.ticket.md",
@@ -271,7 +277,7 @@ The planner read the ticket and the files it links, and the owner confirmed the 
     "note": "no cited episode measured cpu or memory · sizing follows the inputs, not history"
   },
   "suggestion": {
-    "by": "recommendation",
+    "by": "judge",
     "model": "claude-sonnet-5-5",
     "modelName": "Claude Sonnet 5.5",
     "effort": "medium",

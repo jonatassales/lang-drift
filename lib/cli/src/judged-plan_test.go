@@ -1,40 +1,19 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
-	"io"
 	"net/http"
-	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
-
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"time"
 
 	"github.com/jonatassales/tao/lib/cli/src/application/plan"
 	"github.com/jonatassales/tao/lib/cli/src/domain/finops"
 	"github.com/jonatassales/tao/lib/cli/src/domain/run"
 	judgeinfra "github.com/jonatassales/tao/lib/cli/src/infrastructure/judge"
 )
-
-// scriptedJudge answers each kind of question with a prepared text and a
-// fixed usage, or fails as told.
-type scriptedJudge struct {
-	answers map[string]string
-	fail    error
-	asked   []plan.Question
-}
-
-func (model *scriptedJudge) Ask(_ context.Context, question plan.Question) (plan.Answer, error) {
-	model.asked = append(model.asked, question)
-	if model.fail != nil {
-		return plan.Answer{}, model.fail
-	}
-
-	return plan.Answer{Text: model.answers[question.Kind], InputTokens: 15000, OutputTokens: 1500}, nil
-}
 
 // sampleAnswers are the judge's answers that reproduce the sample's
 // analysis: the verdicts, roles and reasons of its sources, its facts, the
@@ -114,12 +93,23 @@ func TestPlanJudgesTheSourcesAndSuggests(t *testing.T) {
 			t.Errorf("the session did not print %q:\n%s", line, stdout)
 		}
 	}
-	if strings.Contains(stdout, "judge      unavailable") || strings.Contains(stdout, "judge      stopped") || strings.Contains(stdout, "discrepancy") {
-		t.Errorf("the judge was reported unavailable or a figure as differing:\n%s", stdout)
+	if strings.Contains(stdout, "discrepancy") {
+		t.Errorf("a figure was reported as differing:\n%s", stdout)
 	}
 
-	if len(model.asked) != 2 || model.asked[0].Kind != plan.SourcesQuestion || model.asked[1].Kind != plan.SuggestionQuestion || model.asked[0].Model != "claude-sonnet-5-5" {
+	judged := strings.Index(stdout, "agent › judging · ")
+	reasoning := strings.Index(stdout, "agent › reasoning · ")
+	if judged < 0 || reasoning < judged {
+		t.Errorf("the reasoning line printed before the judged answer, or not at all:\n%s", stdout)
+	}
+
+	if len(model.asked) != 2 || model.asked[0].Kind != plan.SourcesQuestion || model.asked[1].Kind != plan.SuggestionQuestion || model.asked[0].Model != "claude-sonnet-5-5" || model.asked[0].PromptVersion != "judge-1" {
 		t.Errorf("the judge was asked %+v", model.asked)
+	}
+	for _, connection := range model.connections {
+		if !connection.Recorded || connection.URL != "https://console.test" || connection.Secret != testRuntimeSecret {
+			t.Errorf("the judge was asked through %v", connection)
+		}
 	}
 	if !strings.Contains(model.asked[0].Prompt, "<<<.agents/workflow/tickets/0070-console-microruntime.ticket.md") {
 		t.Error("the sources question did not frame the ticket as material")
@@ -148,17 +138,38 @@ func TestPlanJudgesTheSourcesAndSuggests(t *testing.T) {
 	if written.Collection.Agent == nil || written.Collection.Agent.Model != "claude-sonnet-5-5" || written.Collection.Agent.PromptVersion != "judge-1" || !written.Collection.Agent.Paid || written.Collection.Agent.LedgerLine != "planning" {
 		t.Errorf("collection agent = %+v", written.Collection.Agent)
 	}
-	if written.Suggestion.By != "recommendation" || len(written.Suggestion.Reasons) != 2 || *written.Suggestion.ModelName != "Claude Sonnet 5.5" {
+	if written.Suggestion.By != "judge" || len(written.Suggestion.Reasons) != 2 || *written.Suggestion.ModelName != "Claude Sonnet 5.5" {
 		t.Errorf("suggestion = %+v", written.Suggestion)
+	}
+	judgedBy := run.Judge{
+		Version:       "console-judge-1",
+		Model:         "claude-sonnet-5-5",
+		PromptVersion: "judge-1",
+	}
+	if written.Judge == nil {
+		t.Fatal("the plan names no judge")
+	}
+
+	hashed := strings.HasPrefix(written.Judge.PromptHash, "sha256:") && len(written.Judge.PromptHash) == len("sha256:")+64
+	named := *written.Judge
+	named.PromptHash = ""
+	if named != judgedBy || !hashed {
+		t.Errorf("judge = %+v", written.Judge)
 	}
 
 	var ledger finops.Ledger
 	decodeStrict(t, mustRead(t, filepath.Join(p.root, ".langdrift", "finops", "ledger", "console-microruntime.ledger.json")), &ledger)
 	planning := ledger.Planning
-	if planning.Model == nil || *planning.Model != "claude-sonnet-5-5" || planning.Cents.Estimate != 12 || planning.Cents.Reserved != 15 || planning.Cents.Observed != 9 || planning.Cents.Recovered != 6 || planning.Cents.Billed != nil {
-		t.Errorf("planning line = %+v, want the sample's 12 / 15 / 9 / 6", planning)
+	if planning.Model == nil || *planning.Model != "claude-sonnet-5-5" || planning.Cents.Estimate != 12 || planning.Cents.Reserved != 15 || planning.Cents.Observed != 10 || planning.Cents.Recovered != 5 || planning.Cents.Billed != nil {
+		t.Errorf("planning line = %+v, want 12 estimated, 15 reserved, the console's 10 observed and 5 recovered", planning)
 	}
-	if ledger.Totals.Cents.Observed != 9 || ledger.Totals.PeriodLeftAfterCents != 49991 {
+	if planning.Provenance == nil || *planning.Provenance != "console" || planning.Illustrative == nil || !*planning.Illustrative {
+		t.Errorf("planning line provenance = %v, illustrative %v", planning.Provenance, planning.Illustrative)
+	}
+	if planning.Usage == nil || planning.Usage.InputTokens != 30000 || planning.Usage.OutputTokens != 3000 {
+		t.Errorf("planning usage = %+v", planning.Usage)
+	}
+	if ledger.Totals.Cents.Observed != 10 || ledger.Totals.PeriodLeftAfterCents != 49990 {
 		t.Errorf("totals = %+v", ledger.Totals)
 	}
 }
@@ -190,61 +201,133 @@ func TestPlanPausesAtTheGateBeforeTheJudgeRuns(t *testing.T) {
 	}
 }
 
-// A model that cannot be reached leaves the deterministic shell, says so
-// once, and the plan still lands.
-func TestPlanContinuesWhenTheJudgeIsUnavailable(t *testing.T) {
+// Without a recorded connection there is no judge to ask, so there is no
+// plan: the person is told to connect, and nothing is asked or written.
+func TestPlanIsRefusedWithoutAConnection(t *testing.T) {
 	t.Parallel()
 
 	p, deps := seedProject(t)
-	deps.Judge = &scriptedJudge{fail: plan.ErrModelUnavailable}
+	model := deps.Judge.(*scriptedJudge)
+
+	disconnectProject(t, p.root)
 
 	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
-	if status != 0 {
-		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
+	if status != 4 || !strings.Contains(stderr, "connect") {
+		t.Fatalf("an unconnected plan gave %d: %s\n%s", status, stderr, stdout)
 	}
 
-	if strings.Count(stdout, "judge      stopped · the planner's model is unavailable") != 1 {
-		t.Errorf("the judge's stop was not reported once:\n%s", stdout)
+	if len(model.asked) != 0 {
+		t.Errorf("the judge was asked %d questions without a connection", len(model.asked))
 	}
 
-	runtimePath := filepath.Join(p.root, ".langdrift", "microruntimes", "runtimes", "console-microruntime", "runtime.md")
-	var written run.Plan
-	decodeStrict(t, []byte(fenceBody(t, runtimePath, "langdrift-plan")), &written)
-	if written.Sources[1].Verdict != nil || written.Suggestion.By != "input" || written.State != "proposed" {
-		t.Errorf("an unjudged plan recorded %+v, %+v", written.Sources[1], written.Suggestion)
+	assertNoPlanWritten(t, p.root)
+}
+
+// Each way the judge route can fail refuses the plan with the route's own
+// reason: the secret refused, the judge unavailable, no answer in time, or
+// the model's refusal. No plan is written and the secret never reaches the
+// session. A refusal before the model ran pays nothing; a call cut off holds
+// its reservation, since what it cost is unknown; the model's refusal is on
+// the ledger at what the console charged.
+func TestPlanIsRefusedWhenTheConsoleDoesNotJudge(t *testing.T) {
+	t.Parallel()
+
+	for _, scenario := range []struct {
+		name    string
+		console func(*fakeConsole)
+		reason  string
+		spend   string
+	}{
+		{"the secret refused", func(console *fakeConsole) { console.status = http.StatusUnauthorized }, "the console refused RUNTIME_SECRET", "nothing"},
+		{"the judge unavailable", func(console *fakeConsole) {
+			console.status, console.body = http.StatusServiceUnavailable, `{"code":"UNAVAILABLE","reason":"platform-key-missing"}`
+		}, "the console's judge is unavailable · platform-key-missing", "nothing"},
+		{"no answer in time", func(console *fakeConsole) { console.delay = 2 * time.Second }, "the console did not answer in time", "held"},
+		{"the model's refusal", func(console *fakeConsole) { console.refusal = "the model stopped with refusal, not end_turn" }, "the model stopped with refusal, not end_turn", "charged"},
+	} {
+		t.Run(scenario.name, func(t *testing.T) {
+			t.Parallel()
+
+			console := newFakeConsole(t, minimalAnswers())
+			scenario.console(console)
+
+			p, deps := seedProject(t)
+			connectProject(t, p.root, console.server.URL)
+			deps.Judge = judgeinfra.Console{Timeout: 200 * time.Millisecond}
+
+			status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
+			if status == 0 || !strings.Contains(stderr, scenario.reason) {
+				t.Fatalf("the plan gave %d, want a refusal naming %q: %s\n%s", status, scenario.reason, stderr, stdout)
+			}
+
+			if strings.Contains(stdout+stderr, testRuntimeSecret) {
+				t.Errorf("the session carries the secret:\n%s%s", stdout, stderr)
+			}
+
+			if strings.Contains(stdout, "agent › reasoning") {
+				t.Errorf("a refused plan printed a reasoning line:\n%s", stdout)
+			}
+
+			asked, _ := console.questions()
+			if len(asked) != 1 {
+				t.Errorf("the console was asked %d times; a failed call is never retried", len(asked))
+			}
+
+			assertNoPlanWritten(t, p.root)
+			assertPlanningSpend(t, p, scenario.spend)
+		})
 	}
 }
 
-// A provider failure reaches the session as its status and request id: the
-// provider's body and the URL that was called never reach the judge's stop
-// reason or the line that prints it.
-func TestPlanReportsAProviderFailureByItsStatusAndRequestID(t *testing.T) {
+// assertPlanningSpend checks what a refused plan left on the ledger: nothing,
+// a reservation held for a call whose cost is unknown, or what the console
+// charged.
+func assertPlanningSpend(t *testing.T, p project, spend string) {
+	t.Helper()
+
+	ledgerPath := filepath.Join(p.root, ".langdrift", "finops", "ledger", "console-microruntime.ledger.json")
+	_, err := os.Stat(ledgerPath)
+
+	if spend == "nothing" {
+		if err == nil {
+			t.Error("a refusal before the model ran left a planning line")
+		}
+
+		return
+	}
+
+	planning := ledgerOf(t, p).Planning
+	held := planning.Cents.Recovered == 0 && strings.Contains(planning.Note, "the reservation is held")
+	charged := planning.Cents.Observed == 5 && planning.Cents.Recovered == 10
+
+	if spend == "held" && !held {
+		t.Errorf("a call cut off released its reservation: %+v", planning)
+	}
+
+	if spend == "charged" && !charged {
+		t.Errorf("the model's refusal is not on the planning line at the console's charge: %+v", planning)
+	}
+}
+
+// --no-judge is gone: no plan exists without a judge.
+func TestPlanHasNoFlagToSkipTheJudge(t *testing.T) {
 	t.Parallel()
 
-	api := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-		writer.Header().Set("Content-Type", "application/json")
-		writer.Header().Set("Request-Id", "req_011plan")
-		writer.WriteHeader(http.StatusInternalServerError)
-		_, _ = io.WriteString(writer, `{"type":"error","error":{"type":"api_error","message":"provider body that echoes the ticket"}}`)
-	}))
-	defer api.Close()
-
 	p, deps := seedProject(t)
-	deps.Judge = judgeinfra.Anthropic{Options: []option.RequestOption{option.WithBaseURL(api.URL), option.WithAPIKey("test-key"), option.WithMaxRetries(0)}}
 
-	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
-	if status != 0 {
-		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
+	status, _, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent)
+	if status != 2 || !strings.Contains(stderr, "unknown flag: --no-judge") {
+		t.Fatalf("--no-judge gave %d: %s", status, stderr)
 	}
 
-	warning := "judge      stopped · the sources call failed · ask claude-sonnet-5-5 about sources: the API answered HTTP 500 · request req_011plan\n"
-	if strings.Count(stdout, warning) != 1 {
-		t.Errorf("the session did not print %q once:\n%s", warning, stdout)
-	}
+	assertNoPlanWritten(t, p.root)
+}
 
-	for _, leak := range []string{"provider body", "api_error", api.URL, "test-key"} {
-		if strings.Contains(stdout+stderr, leak) {
-			t.Errorf("the session carries %q:\n%s%s", leak, stdout, stderr)
-		}
+// assertNoPlanWritten fails when a refused plan left a runtime file behind.
+func assertNoPlanWritten(t *testing.T, root string) {
+	t.Helper()
+
+	if _, err := os.Stat(filepath.Join(root, ".langdrift", "microruntimes", "runtimes", "console-microruntime", "runtime.md")); err == nil {
+		t.Error("a refused plan wrote the runtime file")
 	}
 }

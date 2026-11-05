@@ -238,7 +238,7 @@ func TestRunWaitsForTheOwnerThenPlaysTheStages(t *testing.T) {
 	if gate := line.Gates[len(line.Gates)-2]; gate.ID != "FG-04" || gate.Result != "not-reached" {
 		t.Errorf("the gate before the last = %+v, want FG-04 not reached", gate)
 	}
-	if ledger.Totals.Cents.Observed != 980 || ledger.Totals.PeriodLeftAfterCents != 49020 || ledger.Totals.Cents.Billed != nil {
+	if ledger.Totals.Cents.Observed != 990 || ledger.Totals.PeriodLeftAfterCents != 49010 || ledger.Totals.Cents.Billed != nil {
 		t.Errorf("totals = %+v", ledger.Totals)
 	}
 
@@ -334,7 +334,7 @@ func TestRunPausesThePaidCallsAtTheReservation(t *testing.T) {
 	if line := ledger.Laps[0]; line.Cents.Observed != 1400 || line.Cents.Overspend != 260 || line.Cents.Recovered != 0 || line.Cents.Variance == nil || *line.Cents.Variance != 450 || line.NothingPaid || line.Cents.Billed != nil {
 		t.Errorf("lap 0001 line = %+v", line)
 	}
-	if ledger.Totals.Cents.Overspend != 260 || ledger.Totals.PeriodLeftAfterCents != 48600 {
+	if ledger.Totals.Cents.Overspend != 260 || ledger.Totals.PeriodLeftAfterCents != 48590 {
 		t.Errorf("totals = %+v", ledger.Totals)
 	}
 
@@ -372,7 +372,7 @@ func TestRunPausesThePaidCallsAtTheReservation(t *testing.T) {
 	if len(record.Laps) != 3 || record.Laps[1].Outcome != "blocked" || record.Laps[2].Outcome != "completed" || record.Laps[2].ObservedCents != 900 {
 		t.Errorf("laps = %+v", record.Laps)
 	}
-	if ledger := ledgerOf(t, p); ledger.Totals.Cents.Observed != 2300 || ledger.Totals.Cents.Reserved != 2280 || ledger.Totals.PeriodLeftAfterCents != 47700 {
+	if ledger := ledgerOf(t, p); ledger.Totals.Cents.Observed != 2310 || ledger.Totals.Cents.Reserved != 2295 || ledger.Totals.PeriodLeftAfterCents != 47690 {
 		t.Errorf("totals after the laps = %+v", ledger.Totals)
 	}
 }
@@ -445,7 +445,7 @@ func TestRunRunsTheHooksAndReplaysAFailedStage(t *testing.T) {
 	if status, stdout, stderr := p.dftWith(deps, "harness", "workflow", "set", "--file", workflow); status != 0 {
 		t.Fatalf("dft harness workflow set = %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 0 {
+	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent); status != 0 {
 		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
 

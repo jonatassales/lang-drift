@@ -1,46 +1,52 @@
 package plan
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
-	"fmt"
-	"strings"
 
 	"github.com/jonatassales/tao/lib/cli/src/domain/finops"
+	contract "github.com/jonatassales/tao/lib/core/contracts/go/judge"
 )
 
-// Model answers one question of the planner. A credential the provider
-// refuses is ErrModelUnavailable; any other failure is the call's own.
+// Judge answers one question of the planner: the console the project is
+// connected to, which asks the platform's model and prices the call. The
+// outcome says how the question went; the answer is only read when the
+// outcome is answered, though a refused or failed call may still report what
+// it used.
 type Judge interface {
-	Ask(ctx context.Context, question Question) (Answer, error)
+	Ask(ctx context.Context, connection Connection, question Question) (Answer, AskOutcome)
 }
 
 // Question is one call: which model, what it is for, the instructions and
-// the material.
+// the material, the bound on the answer and the version of the prompts.
 type Question struct {
-	Kind      string
-	Model     string
-	System    string
-	Prompt    string
-	MaxTokens int
+	Kind          string
+	Model         string
+	System        string
+	Prompt        string
+	MaxTokens     int
+	PromptVersion string
 }
 
-// Answer is what the model said and what the call used.
+// Answer is what the console said and what the call used and cost, as the
+// console priced it. Unmeasured says the call was cut off after the console
+// had it: the model may have run, and what it cost is unknown.
 type Answer struct {
 	Text         string
 	InputTokens  int64
 	OutputTokens int64
-	// Refused says the model declined; its text is not an answer.
-	Refused bool
+	Cents        int
+	Provenance   string
+	Illustrative bool
+	JudgeVersion string
+	Unmeasured   bool
 }
 
 // The kinds of question the planner asks.
 const (
-	SourcesQuestion    = "sources"
-	EpisodesQuestion   = "episodes"
-	SuggestionQuestion = "suggestion"
+	SourcesQuestion    = string(contract.KindSources)
+	EpisodesQuestion   = string(contract.KindEpisodes)
+	SuggestionQuestion = string(contract.KindSuggestion)
 )
 
 // ErrModelUnavailable says the model cannot be asked at all.
@@ -50,115 +56,121 @@ var ErrModelUnavailable = errors.New("the planner's model is unavailable")
 // first one; nothing was paid.
 var ErrPaused = errors.New("the planner's paid calls are paused at a gate")
 
+// ErrNotConnected says the project has no console to ask: no plan exists
+// without a judge.
+var ErrNotConnected = errors.New("the project is not connected to a console")
+
+// ErrJudgeRefused says the judge answered, but not with a judgment the plan
+// can use: the model refused, or the answer broke the contract.
+var ErrJudgeRefused = errors.New("the judge refused the plan")
+
 // PromptVersion names the prompts below, as the plan records them.
 const PromptVersion = "judge-1"
 
 // judgeMaxTokens bounds one answer.
 const judgeMaxTokens = 8000
 
-// judge is the planner's paid side: its model, price and reservation, what
-// its calls used, and why it stopped, if it did.
+// judge is the planner's paid side: the console it asks, its model, price
+// and reservation, and what its calls used and cost as the console priced
+// them.
 type judge struct {
 	client       Judge
+	connection   Connection
 	planner      string
-	price        finops.ModelPrice
 	estimate     int
 	reserved     int
 	inputTokens  int64
 	outputTokens int64
+	cents        int
+	provenance   string
+	illustrative bool
+	version      string
 	calls        int
-	stopped      string
-	printed      bool
+	unmeasured   bool
 }
 
-// observed is what the calls cost so far, at the planner's list price.
+// observed is what the calls cost so far, as the console priced them.
 func (judge *judge) observed() int {
-	return finops.ObservedCents(judge.inputTokens, judge.outputTokens, judge.price)
+	return judge.cents
 }
 
-// ask runs one question under FG-04 and decodes its answer strictly into
-// the value. It reports whether an answer was accepted; a refusal, a
-// failure or an answer that does not fit is a reason to stop judging,
-// never a retry.
-func (judge *judge) ask(ctx context.Context, question Question, into any, check func() error) bool {
-	if judge.stopped != "" {
-		return false
-	}
-
-	if judge.calls > 0 {
-		gate := finops.DuringRun(judge.observed(), true, judge.reserved)
-		if gate.Result != finops.NotReached {
-			judge.stopped = "paused at FG-04 · " + *gate.Detail
-
-			return false
-		}
+// ask runs one question: JudgeRefusal decides before it, with FG-04's
+// verdict, and after it, with the console's outcome and the contract's
+// reading of the answer. A refusal ends the plan; nothing is retried.
+func (judge *judge) ask(ctx context.Context, question Question, check func(contract.Answer) error) (contract.Answer, error) {
+	if err := JudgeRefusal(judge.connection, judge.gate(question.Kind)); err != nil {
+		return contract.Answer{}, err
 	}
 
 	question.Model = judge.planner
 	question.MaxTokens = judgeMaxTokens
+	question.PromptVersion = PromptVersion
 
-	answer, err := judge.client.Ask(ctx, question)
-	if answered(answer, err) {
-		judge.calls++
-		judge.inputTokens += answer.InputTokens
-		judge.outputTokens += answer.OutputTokens
+	answer, outcome := judge.client.Ask(ctx, judge.connection, question)
+	judge.account(answer, outcome)
+
+	parsed, outcome := parsedAnswer(answer, outcome, check)
+
+	if err := JudgeRefusal(judge.connection, outcome); err != nil {
+		return contract.Answer{}, err
 	}
 
-	switch {
-	case errors.Is(err, ErrModelUnavailable):
-		judge.stopped = err.Error()
+	return parsed, nil
+}
 
-		return false
-
-	case err != nil:
-		judge.stopped = "the " + question.Kind + " call failed · " + err.Error()
-
-		return false
-
-	case answer.Refused:
-		judge.stopped = "the model declined the " + question.Kind + " question"
-
-		return false
+// gate is FG-04 before every question after the first: what the console
+// charged so far against the reservation.
+func (judge *judge) gate(kind string) AskOutcome {
+	cleared := AskOutcome{
+		Kind:   kind,
+		Status: AskCleared,
 	}
 
-	if err := decodeAnswer(answer.Text, into); err != nil {
-		judge.stopped = "the " + question.Kind + " answer was refused · " + err.Error()
-
-		return false
+	if judge.calls == 0 {
+		return cleared
 	}
 
-	if err := check(); err != nil {
-		judge.stopped = "the " + question.Kind + " answer was refused · " + err.Error()
-
-		return false
+	gate := finops.DuringRun(judge.observed(), true, judge.reserved)
+	if gate.Result == finops.NotReached {
+		return cleared
 	}
 
-	return true
+	return AskOutcome{
+		Kind:   kind,
+		Status: AskPaused,
+		Reason: gateDetail([]finops.GateResult{gate}) + "; the calls before it stay on the ledger; raise the budget",
+	}
+}
+
+// account adds what a call used and cost. A question the console answered or
+// relayed the model's refusal of is a call, and so is one cut off whose cost
+// is unknown; one the console refused before asking the model is not.
+func (judge *judge) account(answer Answer, outcome AskOutcome) {
+	reachedTheModel := outcome.Status == AskAnswered || outcome.Status == AskRefused
+	used := answer.InputTokens > 0 || answer.OutputTokens > 0 || answer.Cents > 0
+
+	if !reachedTheModel && !used && !answer.Unmeasured {
+		return
+	}
+
+	judge.calls++
+	judge.unmeasured = judge.unmeasured || answer.Unmeasured
+	judge.inputTokens += answer.InputTokens
+	judge.outputTokens += answer.OutputTokens
+	judge.cents += answer.Cents
+	judge.illustrative = judge.illustrative || answer.Illustrative
+
+	if answer.Provenance != "" {
+		judge.provenance = answer.Provenance
+	}
+
+	if answer.JudgeVersion != "" {
+		judge.version = answer.JudgeVersion
+	}
 }
 
 // paid reports whether any call was made, so the ledger names the planner.
 func (judge *judge) paid() bool { return judge != nil && judge.calls > 0 }
-
-// decodeAnswer reads one JSON object, refusing unknown fields; a fence the
-// model may have wrapped it in is dropped.
-func decodeAnswer(text string, into any) error {
-	body := strings.TrimSpace(text)
-	if strings.HasPrefix(body, "```") {
-		if newline := strings.Index(body, "\n"); newline >= 0 {
-			body = body[newline+1:]
-		}
-		body = strings.TrimSuffix(strings.TrimSpace(body), "```")
-	}
-
-	decoder := json.NewDecoder(bytes.NewReader([]byte(body)))
-	decoder.DisallowUnknownFields()
-
-	if err := decoder.Decode(into); err != nil {
-		return fmt.Errorf("not the requested JSON: %w", err)
-	}
-
-	return nil
-}
 
 // The planner's instructions. Collected text is data: the model reads it as
 // material and never as instructions, and nothing it says sets a limit.
@@ -181,51 +193,6 @@ Answer with exactly this JSON shape:
 {"model":"","effort":"","effortReason":"","modelReason":"","reasons":[""]}`
 )
 
-// sourcesAnswer is the answer to the sources question.
-type sourcesAnswer struct {
-	Sources []struct {
-		Path       string  `json:"path"`
-		Verdict    string  `json:"verdict"`
-		Reason     string  `json:"reason"`
-		Confidence float64 `json:"confidence"`
-		Role       string  `json:"role"`
-		Summary    string  `json:"summary"`
-	} `json:"sources"`
-	Facts []struct {
-		Topic  string `json:"topic"`
-		Text   string `json:"text"`
-		Source string `json:"source"`
-	} `json:"facts"`
-	Criteria []struct {
-		ID      string `json:"id"`
-		Applies string `json:"applies"`
-	} `json:"criteria"`
-	Figures []struct {
-		Topic     string `json:"topic"`
-		Fact      string `json:"fact"`
-		Source    string `json:"source"`
-		CPUMillis int    `json:"cpuMillis"`
-		MemoryMiB int    `json:"memoryMiB"`
-	} `json:"figures"`
-}
-
-// episodesAnswer is the answer to the episodes question.
-type episodesAnswer struct {
-	Episodes []struct {
-		Run    string `json:"run"`
-		Reason string `json:"reason"`
-	} `json:"episodes"`
-}
-
-// suggestionAnswer is the answer to the suggestion question.
-type suggestionAnswer struct {
-	Model        string   `json:"model"`
-	Effort       string   `json:"effort"`
-	EffortReason string   `json:"effortReason"`
-	ModelReason  string   `json:"modelReason"`
-	Reasons      []string `json:"reasons"`
-}
-
 // material frames collected text as data for a prompt, bounded per source.
 func material(label, content string, limit int) string {
 	if len(content) > limit {
@@ -233,10 +200,4 @@ func material(label, content string, limit int) string {
 	}
 
 	return "<<<" + label + "\n" + content + "\n>>>"
-}
-
-// answered reports whether a call reached the model: it answered, or it
-// failed after using tokens. A refused credential uses none and is not paid.
-func answered(answer Answer, err error) bool {
-	return err == nil || answer.InputTokens > 0 || answer.OutputTokens > 0
 }
