@@ -2,13 +2,19 @@
 
 import { useId, useState } from 'react'
 
-import type { ProductFaqItem } from '@components/product-page/product-faq-section'
 import { AnimatedTabs } from 'web/vendors/smoothui/animated-tabs'
 import { BasicAccordion } from 'web/vendors/smoothui/basic-accordion'
 
+// One question of the platform FAQ, as a product catalog states it.
+interface FaqItem {
+	answer: string
+	id: string
+	question: string
+}
+
 interface FaqGroup {
 	id: string
-	items: readonly ProductFaqItem[]
+	items: readonly FaqItem[]
 	label: string
 }
 

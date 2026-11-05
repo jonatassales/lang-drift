@@ -6,11 +6,11 @@ import type {
 	WorkflowStageId,
 } from './microruntimes-workflow'
 
-// Illustrative Microruntimes content: the ids, limits, identities and times
-// the Microruntimes page and its demos render. Sentences live in the
-// microruntimes catalog. The runtime file mirrors the contract of the ex
-// connected agent (one langdrift JSON fence in runtime.md); its values are
-// simulated.
+// Microruntimes content: the ids, limits, identities and times the
+// Microruntimes page and its demos render. Sentences live in the
+// microruntimes catalog. The runtime file mirrors the contract of the
+// connected agent of the LangDrift CLI (one langdrift JSON fence in
+// runtime.md); its values are simulated.
 
 export const lifecycleStageIds = [
 	'configure',
@@ -446,7 +446,7 @@ export type DropReason = 'otherRuntime' | 'noBroker' | 'docsOnly'
 
 // One of the project's episodes the retrieval ranks for the ticket: its
 // similarity to the ticket's intent, and whether the judgment kept it as a
-// precedent or dropped it, with the reason. The slugs are illustrative.
+// precedent or dropped it, with the reason. The slugs are made up.
 export interface Episode {
 	id: string
 	reason?: DropReason
@@ -794,8 +794,6 @@ export interface MicroruntimesMessages {
 		guarantees: Record<FlowGuaranteeId, TitledCopy>
 	}
 	faq: {
-		title: string
-		description: string
 		items: Record<MicroruntimesFaqId, { question: string; answer: string }>
 	}
 }

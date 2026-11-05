@@ -2,7 +2,6 @@
 	"en": {
 		"skip": "Skip to why",
 		"hero": {
-			"eyebrow": "LangDrift FinOps",
 			"comingSoon": "Coming soon",
 			"titleStart": "Agents write most of the code.",
 			"titleEnd": "A person keeps the seat.",
@@ -97,12 +96,12 @@
 		"flow": {
 			"kicker": "Planned flow",
 			"title": "How Safe Seat will work",
-			"lead": "Safe Seat runs inside the LangDrift FinOps harness, through ex and the console. This is the design; it is not available yet.",
+			"lead": "Safe Seat runs inside the LangDrift FinOps harness, through the LangDrift CLI and the console. This is the design; it is not available yet.",
 			"steps": {
 				"plan": {
 					"eyebrow": "Plan",
 					"title": "The plan proposes the reserved part",
-					"description": "When ex plans a ticket, it suggests the part worth writing by hand and why. The lead accepts it or picks another."
+					"description": "When the LangDrift CLI plans a ticket, it suggests the part worth writing by hand and why. The lead accepts it or picks another."
 				},
 				"boundary": {
 					"eyebrow": "Agent",
@@ -112,7 +111,7 @@
 				"dev-ticket": {
 					"eyebrow": "Dev ticket",
 					"title": "The person takes the seat",
-					"description": "During the dev ticket, ex calls no agent. The person writes the solution and its tests."
+					"description": "During the dev ticket, the LangDrift CLI calls no agent. The person writes the solution and its tests."
 				},
 				"attestation": {
 					"eyebrow": "Attestation",
@@ -201,8 +200,6 @@
 			}
 		},
 		"faq": {
-			"title": "Questions about Safe Seat.",
-			"description": "What teams ask before they adopt the practice.",
 			"items": {
 				"quota": {
 					"question": "Is Safe Seat a quota on developers?",
@@ -214,7 +211,7 @@
 				},
 				"ai": {
 					"question": "Can I use AI during the dev ticket?",
-					"answer": "ex calls no agent during the dev ticket. If you use one elsewhere, say so when you close it: those lines then count as unknown rather than yours."
+					"answer": "The LangDrift CLI calls no agent during the dev ticket. If you use one elsewhere, say so when you close it: those lines then count as unknown rather than yours."
 				},
 				"why-five": {
 					"question": "Why 5%?",
@@ -222,11 +219,11 @@
 				},
 				"available": {
 					"question": "Can I use Safe Seat today?",
-					"answer": "Not yet. Safe Seat is in development as part of LangDrift FinOps. This page describes the planned design."
+					"answer": "Not yet. Safe Seat is in development as part of LangDrift FinOps. The Safe Seat page describes the planned design."
 				},
 				"outside": {
-					"question": "Does it see what I do outside ex?",
-					"answer": "No. Safe Seat measures only what ex runs. Work done in other tools is unknown, and unknown never counts as anyone's."
+					"question": "Does it see what I do outside the LangDrift CLI?",
+					"answer": "No. Safe Seat measures only what the LangDrift CLI runs. Work done in other tools is unknown, and unknown never counts as anyone's."
 				}
 			}
 		}
@@ -234,7 +231,6 @@
 	"pt-BR": {
 		"skip": "Pular para o porquê",
 		"hero": {
-			"eyebrow": "LangDrift FinOps",
 			"comingSoon": "Em breve",
 			"titleStart": "Agentes escrevem a maior parte do código.",
 			"titleEnd": "Uma pessoa continua ao volante.",
@@ -329,12 +325,12 @@
 		"flow": {
 			"kicker": "Fluxo planejado",
 			"title": "Como o Safe Seat vai funcionar",
-			"lead": "O Safe Seat roda dentro do harness do LangDrift FinOps, pelo ex e pelo console. Este é o desenho; ainda não está disponível.",
+			"lead": "O Safe Seat roda dentro do harness do LangDrift FinOps, pela LangDrift CLI e pelo console. Este é o desenho; ainda não está disponível.",
 			"steps": {
 				"plan": {
 					"eyebrow": "Plano",
 					"title": "O plano propõe a parte reservada",
-					"description": "Quando o ex planeja um ticket, ele sugere a parte que vale escrever à mão e por quê. O lead aceita ou escolhe outra."
+					"description": "Quando a LangDrift CLI planeja um ticket, ela sugere a parte que vale escrever à mão e por quê. O lead aceita ou escolhe outra."
 				},
 				"boundary": {
 					"eyebrow": "Agente",
@@ -344,7 +340,7 @@
 				"dev-ticket": {
 					"eyebrow": "Dev ticket",
 					"title": "A pessoa assume o assento",
-					"description": "Durante o dev ticket, o ex não chama nenhum agente. A pessoa escreve a solução e os testes."
+					"description": "Durante o dev ticket, a LangDrift CLI não chama nenhum agente. A pessoa escreve a solução e os testes."
 				},
 				"attestation": {
 					"eyebrow": "Atestação",
@@ -433,8 +429,6 @@
 			}
 		},
 		"faq": {
-			"title": "Perguntas sobre o Safe Seat.",
-			"description": "O que os times perguntam antes de adotar a prática.",
 			"items": {
 				"quota": {
 					"question": "O Safe Seat é uma cota para devs?",
@@ -446,7 +440,7 @@
 				},
 				"ai": {
 					"question": "Posso usar IA durante o dev ticket?",
-					"answer": "O ex não chama nenhum agente durante o dev ticket. Se você usar um em outro lugar, diga isso ao fechar: essas linhas passam a contar como desconhecidas, em vez de suas."
+					"answer": "A LangDrift CLI não chama nenhum agente durante o dev ticket. Se você usar um em outro lugar, diga isso ao fechar: essas linhas passam a contar como desconhecidas, em vez de suas."
 				},
 				"why-five": {
 					"question": "Por que 5%?",
@@ -454,11 +448,11 @@
 				},
 				"available": {
 					"question": "Já posso usar o Safe Seat?",
-					"answer": "Ainda não. O Safe Seat está em desenvolvimento como parte do LangDrift FinOps. Esta página descreve o desenho planejado."
+					"answer": "Ainda não. O Safe Seat está em desenvolvimento como parte do LangDrift FinOps. A página do Safe Seat descreve o desenho planejado."
 				},
 				"outside": {
-					"question": "Ele vê o que eu faço fora do ex?",
-					"answer": "Não. O Safe Seat mede só o que o ex executa. Trabalho feito em outras ferramentas é desconhecido, e desconhecido nunca conta como de ninguém."
+					"question": "Ele vê o que eu faço fora da LangDrift CLI?",
+					"answer": "Não. O Safe Seat mede só o que a LangDrift CLI executa. Trabalho feito em outras ferramentas é desconhecido, e desconhecido nunca conta como de ninguém."
 				}
 			}
 		}
@@ -466,7 +460,6 @@
 	"zh-Hant": {
 		"skip": "跳到為什麼",
 		"hero": {
-			"eyebrow": "LangDrift FinOps",
 			"comingSoon": "即將推出",
 			"titleStart": "代理寫下大部分的程式碼。",
 			"titleEnd": "座位上仍然有人。",
@@ -561,12 +554,12 @@
 		"flow": {
 			"kicker": "規劃中的流程",
 			"title": "Safe Seat 將如何運作",
-			"lead": "Safe Seat 在 LangDrift FinOps 的 harness 中運作，透過 ex 與主控台。這是設計，目前尚未推出。",
+			"lead": "Safe Seat 在 LangDrift FinOps 的 harness 中運作，透過 LangDrift CLI 與主控台。這是設計，目前尚未推出。",
 			"steps": {
 				"plan": {
 					"eyebrow": "計畫",
 					"title": "計畫提出保留部分",
-					"description": "ex 規劃工單時，會建議值得親手撰寫的部分及原因。負責人可以接受，或改選另一部分。"
+					"description": "LangDrift CLI 規劃工單時，會建議值得親手撰寫的部分及原因。負責人可以接受，或改選另一部分。"
 				},
 				"boundary": {
 					"eyebrow": "代理",
@@ -576,7 +569,7 @@
 				"dev-ticket": {
 					"eyebrow": "Dev ticket",
 					"title": "由人坐上座位",
-					"description": "在 dev ticket 期間，ex 不呼叫任何代理。由人撰寫解法與測試。"
+					"description": "在 dev ticket 期間，LangDrift CLI 不呼叫任何代理。由人撰寫解法與測試。"
 				},
 				"attestation": {
 					"eyebrow": "聲明",
@@ -665,8 +658,6 @@
 			}
 		},
 		"faq": {
-			"title": "關於 Safe Seat 的問題。",
-			"description": "團隊在採用這項做法之前常問的事。",
 			"items": {
 				"quota": {
 					"question": "Safe Seat 是給開發者的配額嗎？",
@@ -678,7 +669,7 @@
 				},
 				"ai": {
 					"question": "在 dev ticket 期間可以使用 AI 嗎？",
-					"answer": "在 dev ticket 期間，ex 不會呼叫任何代理。如果你在別處使用了代理，關閉時請如實說明：這些程式碼行會改算為未知，而不算作你的。"
+					"answer": "在 dev ticket 期間，LangDrift CLI 不會呼叫任何代理。如果你在別處使用了代理，關閉時請如實說明：這些程式碼行會改算為未知，而不算作你的。"
 				},
 				"why-five": {
 					"question": "為什麼是 5%？",
@@ -686,11 +677,11 @@
 				},
 				"available": {
 					"question": "現在可以使用 Safe Seat 嗎？",
-					"answer": "還不行。Safe Seat 正在作為 LangDrift FinOps 的一部分開發中。本頁描述的是規劃中的設計。"
+					"answer": "還不行。Safe Seat 正在作為 LangDrift FinOps 的一部分開發中。Safe Seat 頁面描述的是規劃中的設計。"
 				},
 				"outside": {
-					"question": "它看得到我在 ex 之外做的事嗎？",
-					"answer": "看不到。Safe Seat 只衡量 ex 執行的部分。在其他工具中完成的工作屬於未知，而未知永遠不會算作任何人的。"
+					"question": "它看得到我在 LangDrift CLI 之外做的事嗎？",
+					"answer": "看不到。Safe Seat 只衡量 LangDrift CLI 執行的部分。在其他工具中完成的工作屬於未知，而未知永遠不會算作任何人的。"
 				}
 			}
 		}
@@ -698,7 +689,6 @@
 	"ja": {
 		"skip": "「なぜ」へスキップ",
 		"hero": {
-			"eyebrow": "LangDrift FinOps",
 			"comingSoon": "近日公開",
 			"titleStart": "コードの大半はエージェントが書く。",
 			"titleEnd": "それでも、席には人がいる。",
@@ -793,12 +783,12 @@
 		"flow": {
 			"kicker": "計画中の流れ",
 			"title": "Safe Seat の仕組み",
-			"lead": "Safe Seat は LangDrift FinOps のハーネスの中で、ex とコンソールを通じて動きます。これは設計であり、まだ提供されていません。",
+			"lead": "Safe Seat は LangDrift FinOps のハーネスの中で、LangDrift CLI とコンソールを通じて動きます。これは設計であり、まだ提供されていません。",
 			"steps": {
 				"plan": {
 					"eyebrow": "計画",
 					"title": "計画が残す部分を提案する",
-					"description": "ex がチケットを計画するとき、手で書く価値のある部分とその理由を提案します。リードはそれを受け入れるか、別の部分を選びます。"
+					"description": "LangDrift CLI がチケットを計画するとき、手で書く価値のある部分とその理由を提案します。リードはそれを受け入れるか、別の部分を選びます。"
 				},
 				"boundary": {
 					"eyebrow": "エージェント",
@@ -808,7 +798,7 @@
 				"dev-ticket": {
 					"eyebrow": "Dev ticket",
 					"title": "人が席に着く",
-					"description": "dev ticket の間、ex はエージェントを一切呼びません。解決策とテストは人が書きます。"
+					"description": "dev ticket の間、LangDrift CLI はエージェントを一切呼びません。解決策とテストは人が書きます。"
 				},
 				"attestation": {
 					"eyebrow": "申告",
@@ -897,8 +887,6 @@
 			}
 		},
 		"faq": {
-			"title": "Safe Seat についての質問。",
-			"description": "チームがこのやり方を取り入れる前によく尋ねること。",
 			"items": {
 				"quota": {
 					"question": "Safe Seat は開発者へのノルマですか？",
@@ -910,7 +898,7 @@
 				},
 				"ai": {
 					"question": "dev ticket の間に AI を使ってもいいですか？",
-					"answer": "dev ticket の間、ex はエージェントを呼びません。ほかの場所で使ったなら、閉じるときにそう申告してください。その行はあなたのものではなく、不明として数えられます。"
+					"answer": "dev ticket の間、LangDrift CLI はエージェントを呼びません。ほかの場所で使ったなら、閉じるときにそう申告してください。その行はあなたのものではなく、不明として数えられます。"
 				},
 				"why-five": {
 					"question": "なぜ 5% なのですか？",
@@ -918,11 +906,11 @@
 				},
 				"available": {
 					"question": "Safe Seat は今使えますか？",
-					"answer": "まだです。Safe Seat は LangDrift FinOps の一部として開発中です。このページは計画中の設計を説明しています。"
+					"answer": "まだです。Safe Seat は LangDrift FinOps の一部として開発中です。Safe Seat のページは計画中の設計を説明しています。"
 				},
 				"outside": {
-					"question": "ex の外での作業も見えるのですか？",
-					"answer": "いいえ。Safe Seat が測るのは ex が実行したものだけです。ほかのツールで行った作業は不明であり、不明が誰かのものとして数えられることはありません。"
+					"question": "LangDrift CLI の外での作業も見えるのですか？",
+					"answer": "いいえ。Safe Seat が測るのは LangDrift CLI が実行したものだけです。ほかのツールで行った作業は不明であり、不明が誰かのものとして数えられることはありません。"
 				}
 			}
 		}
@@ -930,7 +918,6 @@
 	"vi": {
 		"skip": "Chuyển đến lý do",
 		"hero": {
-			"eyebrow": "LangDrift FinOps",
 			"comingSoon": "Sắp ra mắt",
 			"titleStart": "Tác tử viết phần lớn mã nguồn.",
 			"titleEnd": "Một người vẫn giữ ghế lái.",
@@ -1025,12 +1012,12 @@
 		"flow": {
 			"kicker": "Quy trình dự kiến",
 			"title": "Safe Seat sẽ hoạt động thế nào",
-			"lead": "Safe Seat chạy bên trong harness của LangDrift FinOps, qua ex và bảng điều khiển. Đây là thiết kế; hiện chưa có sẵn.",
+			"lead": "Safe Seat chạy bên trong harness của LangDrift FinOps, qua LangDrift CLI và bảng điều khiển. Đây là thiết kế; hiện chưa có sẵn.",
 			"steps": {
 				"plan": {
 					"eyebrow": "Kế hoạch",
 					"title": "Kế hoạch đề xuất phần dành riêng",
-					"description": "Khi ex lập kế hoạch cho một ticket, nó gợi ý phần đáng tự tay viết và lý do. Trưởng nhóm chấp nhận hoặc chọn phần khác."
+					"description": "Khi LangDrift CLI lập kế hoạch cho một ticket, nó gợi ý phần đáng tự tay viết và lý do. Trưởng nhóm chấp nhận hoặc chọn phần khác."
 				},
 				"boundary": {
 					"eyebrow": "Tác tử",
@@ -1040,7 +1027,7 @@
 				"dev-ticket": {
 					"eyebrow": "Dev ticket",
 					"title": "Con người ngồi vào ghế",
-					"description": "Trong dev ticket, ex không gọi tác tử nào. Người đó viết lời giải và các bài kiểm thử."
+					"description": "Trong dev ticket, LangDrift CLI không gọi tác tử nào. Người đó viết lời giải và các bài kiểm thử."
 				},
 				"attestation": {
 					"eyebrow": "Xác nhận",
@@ -1129,8 +1116,6 @@
 			}
 		},
 		"faq": {
-			"title": "Câu hỏi về Safe Seat.",
-			"description": "Những điều các đội hỏi trước khi áp dụng cách làm này.",
 			"items": {
 				"quota": {
 					"question": "Safe Seat có phải là chỉ tiêu áp lên lập trình viên không?",
@@ -1142,7 +1127,7 @@
 				},
 				"ai": {
 					"question": "Tôi có thể dùng AI trong dev ticket không?",
-					"answer": "Trong dev ticket, ex không gọi tác tử nào. Nếu bạn dùng tác tử ở nơi khác, hãy nói rõ khi đóng nó: khi đó những dòng ấy được tính là không xác định thay vì của bạn."
+					"answer": "Trong dev ticket, LangDrift CLI không gọi tác tử nào. Nếu bạn dùng tác tử ở nơi khác, hãy nói rõ khi đóng nó: khi đó những dòng ấy được tính là không xác định thay vì của bạn."
 				},
 				"why-five": {
 					"question": "Tại sao là 5%?",
@@ -1150,11 +1135,11 @@
 				},
 				"available": {
 					"question": "Tôi có thể dùng Safe Seat ngay bây giờ không?",
-					"answer": "Chưa. Safe Seat đang được phát triển như một phần của LangDrift FinOps. Trang này mô tả thiết kế dự kiến."
+					"answer": "Chưa. Safe Seat đang được phát triển như một phần của LangDrift FinOps. Trang Safe Seat mô tả thiết kế dự kiến."
 				},
 				"outside": {
-					"question": "Nó có thấy những gì tôi làm bên ngoài ex không?",
-					"answer": "Không. Safe Seat chỉ đo những gì ex chạy. Công việc làm trong công cụ khác là không xác định, và không xác định thì không bao giờ được tính là của ai."
+					"question": "Nó có thấy những gì tôi làm bên ngoài LangDrift CLI không?",
+					"answer": "Không. Safe Seat chỉ đo những gì LangDrift CLI chạy. Công việc làm trong công cụ khác là không xác định, và không xác định thì không bao giờ được tính là của ai."
 				}
 			}
 		}

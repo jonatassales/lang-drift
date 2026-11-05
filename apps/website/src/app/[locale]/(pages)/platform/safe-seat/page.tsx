@@ -2,17 +2,17 @@ import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
+import { ProductLabel } from '@app/[locale]/(pages)/platform/product-label'
 import { ProductBadge } from '@components/product-badge'
-import { ProductFaqSection } from '@components/product-page/product-faq-section'
 import { ProductSection } from '@components/product-page/product-section'
 import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
 import { WebsiteStructuredData } from '@components/website-structured-data'
-import { safeSeatMessages } from '@i18n/messages/index'
+import { headerMessages, safeSeatMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
 import { DetailList } from 'web/ui/detail-list'
-import { Eyebrow } from 'web/ui/eyebrow'
+import { FinopsIcon } from 'web/ui/icons/platform'
 import { InfoCards } from 'web/ui/info-cards'
 
 import { EvidenceCards } from './evidence-cards'
@@ -21,7 +21,6 @@ import {
 	flowStepIds,
 	limitIds,
 	principleIds,
-	safeSeatFaqIds,
 	whyIds,
 } from './safe-seat-content.data'
 import { SourceCitations } from './source-citations'
@@ -58,9 +57,10 @@ export default async function SafeSeatPage(props: SafeSeatPageProps) {
 					className="mx-auto max-w-[1180px] px-[clamp(18px,3vw,36px)] pt-[58px] pb-[70px] max-md:pt-10 max-md:pb-12"
 				>
 					<div className="flex flex-wrap items-center gap-3">
-						<Eyebrow className="block text-[10px] tracking-[0.11em]">
-							{copy.hero.eyebrow}
-						</Eyebrow>
+						<ProductLabel
+							icon={<FinopsIcon className="size-4" />}
+							name={headerMessages[locale].finops}
+						/>
 						<ProductBadge>{copy.hero.comingSoon}</ProductBadge>
 					</div>
 					<h1
@@ -176,15 +176,6 @@ export default async function SafeSeatPage(props: SafeSeatPageProps) {
 				>
 					<SourceCitations copy={copy.sources} />
 				</ProductSection>
-
-				<ProductFaqSection
-					description={copy.faq.description}
-					items={safeSeatFaqIds.map((id) => ({
-						...copy.faq.items[id],
-						id,
-					}))}
-					title={copy.faq.title}
-				/>
 			</main>
 			<WebsiteFooter locale={locale} />
 		</>

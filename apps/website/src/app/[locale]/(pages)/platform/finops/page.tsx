@@ -2,22 +2,22 @@ import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
+import { ProductLabel } from '@app/[locale]/(pages)/platform/product-label'
 import { BudgetLedgerDemo } from '@components/finops/budget-ledger-demo'
 import { BudgetTerms } from '@components/finops/budget-terms'
 import { DeliveryReceipt } from '@components/finops/delivery-receipt'
 import { FailureScenarios } from '@components/finops/failure-scenarios'
 import { GateFlow } from '@components/finops/gate-flow'
 import { SourceList } from '@components/finops/source-list'
-import { ProductFaqSection } from '@components/product-page/product-faq-section'
 import { ProductSection } from '@components/product-page/product-section'
 import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
 import { WebsiteStructuredData } from '@components/website-structured-data'
-import { finopsFaqIds, gateExample, gateFigures } from '@data/finops-content'
-import { finopsMessages } from '@i18n/messages/index'
+import { gateExample, gateFigures } from '@data/finops-content'
+import { finopsMessages, headerMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
-import { Eyebrow } from 'web/ui/eyebrow'
+import { FinopsIcon } from 'web/ui/icons/platform'
 
 export { generateMetadata } from './page.metadata'
 
@@ -45,9 +45,10 @@ export default async function FinopsPage(props: FinopsPageProps) {
 					aria-labelledby="finops-hero-heading"
 					className="mx-auto max-w-[1280px] px-[clamp(18px,3vw,36px)] pt-[58px] pb-[70px] max-md:pt-10 max-md:pb-12"
 				>
-					<Eyebrow className="block text-[10px] tracking-[0.11em]">
-						{copy.hero.eyebrow}
-					</Eyebrow>
+					<ProductLabel
+						icon={<FinopsIcon className="size-4" />}
+						name={headerMessages[locale].finops}
+					/>
 					<h1
 						className="m-0 mt-4 text-[clamp(28px,3.2vw,43px)] leading-[1.16] font-medium tracking-[-0.045em] text-balance"
 						id="finops-hero-heading"
@@ -114,15 +115,6 @@ export default async function FinopsPage(props: FinopsPageProps) {
 				>
 					<SourceList copy={copy.sources} locale={locale} />
 				</ProductSection>
-
-				<ProductFaqSection
-					description={copy.faq.description}
-					items={finopsFaqIds.map((id) => ({
-						...copy.faq.items[id],
-						id,
-					}))}
-					title={copy.faq.title}
-				/>
 			</main>
 			<WebsiteFooter locale={locale} />
 		</>

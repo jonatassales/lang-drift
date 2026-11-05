@@ -7,9 +7,9 @@
 - [x] 0299: the site loads without console warnings
 - [x] 0300: Early Access leaves and Book a Demo says we will be back soon
 - [x] 0301: pricing reads Starter, Plus and Pro, coming soon
-- [ ] 0302: one FAQ, on the home
-- [ ] 0303: the copy speaks for today's business
-- [ ] 0304: platform headings carry the product icon
+- [x] 0302: one FAQ, on the home
+- [x] 0303: the copy speaks for today's business
+- [x] 0304: platform headings carry the product icon
 - [ ] 0305: the LangDrift CLI has its own page
 - [ ] 0306: CI Gates has its own page
 - [ ] 0307: the Platform menu lists five products in two columns

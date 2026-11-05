@@ -2,15 +2,14 @@
 	"en": {
 		"skip": "Skip to how it works",
 		"hero": {
-			"eyebrow": "LangDrift FinOps",
 			"titleStart": "One team envelope.",
 			"titleEnd": "Every paid call reserved before it runs.",
-			"caption": "Illustrative ledger. Amounts, model names and outcomes are simulated to show how the envelope, the reservations and the receipts relate.",
-			"summary": "An illustrative team budget of 12,000 dollars split into spent, reserved, protected and available, followed by four work items with their estimate, reservation and observed spend. One item's spend is unknown and awaits reconciliation. Selecting an item updates the delivery receipt beside the ledger, or under it on a narrow screen: its estimate, reservation, observed spend, model tier and effort, retries, verification, cleanup and evidence. Every amount is simulated."
+			"caption": "Amounts, model names and outcomes are simulated to show how the envelope, the reservations and the receipts relate.",
+			"summary": "A team budget of 12,000 dollars split into spent, reserved, protected and available, followed by four work items with their estimate, reservation and observed spend. One item's spend is unknown and awaits reconciliation. Selecting an item updates the delivery receipt beside the ledger, or under it on a narrow screen: its estimate, reservation, observed spend, model tier and effort, retries, verification, cleanup and evidence. Every amount is simulated."
 		},
 		"ledger": {
 			"label": "Team envelope",
-			"period": "This month · illustrative",
+			"period": "This month",
 			"authorized": "Authorized",
 			"segments": {
 				"spent": "Spent",
@@ -84,7 +83,7 @@
 			}
 		},
 		"receipt": {
-			"selected": "Selected work item · illustrative",
+			"selected": "Selected work item",
 			"labels": {
 				"estimate": "Estimate",
 				"reserved": "Reserved",
@@ -164,7 +163,7 @@
 				}
 			},
 			"released": "Released to the envelope",
-			"source": "Figures from the {item} receipt at the top of the page. Illustrative, like every amount on this page."
+			"source": "Figures from the {item} receipt at the top of the page."
 		},
 		"sources": {
 			"kicker": "What feeds the ledger",
@@ -193,8 +192,6 @@
 			}
 		},
 		"faq": {
-			"title": "A few things worth knowing.",
-			"description": "What a team budget is, what FinOps does and does not promise, and what the illustrative ledger shows.",
 			"items": {
 				"budget": {
 					"question": "What is a team budget?",
@@ -218,7 +215,7 @@
 				},
 				"availability": {
 					"question": "Can I use LangDrift FinOps today?",
-					"answer": "The pages describe the intended model with illustrative values. The ledger, the gate and the integrations shown here are not available yet, and demo requests are paused for now."
+					"answer": "The FinOps page describes the intended model. The ledger, the gate and the integrations it shows are not available yet, and demo requests are paused for now."
 				}
 			}
 		}
@@ -226,15 +223,14 @@
 	"pt-BR": {
 		"skip": "Pular para como funciona",
 		"hero": {
-			"eyebrow": "LangDrift FinOps",
 			"titleStart": "Um único envelope para o time.",
 			"titleEnd": "Toda chamada paga é reservada antes de rodar.",
-			"caption": "Livro-razão ilustrativo. Valores, nomes de modelos e resultados são simulados para mostrar como o envelope, as reservas e os recibos se relacionam.",
-			"summary": "Um orçamento de time ilustrativo de 12.000 dólares dividido em gasto, reservado, protegido e disponível, seguido de quatro itens de trabalho com estimativa, reserva e gasto observado. O gasto de um item é desconhecido e aguarda reconciliação. Selecionar um item atualiza o recibo de entrega ao lado do livro-razão, ou abaixo dele em telas estreitas: estimativa, reserva, gasto observado, nível do modelo e esforço, retentativas, verificação, limpeza e evidência. Todos os valores são simulados."
+			"caption": "Valores, nomes de modelos e resultados são simulados para mostrar como o envelope, as reservas e os recibos se relacionam.",
+			"summary": "Um orçamento de time de 12.000 dólares dividido em gasto, reservado, protegido e disponível, seguido de quatro itens de trabalho com estimativa, reserva e gasto observado. O gasto de um item é desconhecido e aguarda reconciliação. Selecionar um item atualiza o recibo de entrega ao lado do livro-razão, ou abaixo dele em telas estreitas: estimativa, reserva, gasto observado, nível do modelo e esforço, retentativas, verificação, limpeza e evidência. Todos os valores são simulados."
 		},
 		"ledger": {
 			"label": "Envelope do time",
-			"period": "Este mês · ilustrativo",
+			"period": "Este mês",
 			"authorized": "Autorizado",
 			"segments": {
 				"spent": "Gasto",
@@ -308,7 +304,7 @@
 			}
 		},
 		"receipt": {
-			"selected": "Item de trabalho selecionado · ilustrativo",
+			"selected": "Item de trabalho selecionado",
 			"labels": {
 				"estimate": "Estimativa",
 				"reserved": "Reservado",
@@ -388,7 +384,7 @@
 				}
 			},
 			"released": "Devolvido ao envelope",
-			"source": "Valores do recibo de “{item}”, no topo da página. Ilustrativos, como todos os valores desta página."
+			"source": "Valores do recibo de “{item}”, no topo da página."
 		},
 		"sources": {
 			"kicker": "O que alimenta o livro-razão",
@@ -417,8 +413,6 @@
 			}
 		},
 		"faq": {
-			"title": "Algumas coisas que vale saber.",
-			"description": "O que é um orçamento de time, o que o FinOps promete e o que não promete, e o que o livro-razão ilustrativo mostra.",
 			"items": {
 				"budget": {
 					"question": "O que é um orçamento de time?",
@@ -442,7 +436,7 @@
 				},
 				"availability": {
 					"question": "Posso usar o LangDrift FinOps hoje?",
-					"answer": "As páginas descrevem o modelo pretendido com valores ilustrativos. O livro-razão, o gate e as integrações mostrados aqui ainda não estão disponíveis, e os pedidos de demonstração estão pausados por enquanto."
+					"answer": "A página do FinOps descreve o modelo pretendido. O livro-razão, o gate e as integrações que ela mostra ainda não estão disponíveis, e os pedidos de demonstração estão pausados por enquanto."
 				}
 			}
 		}
@@ -450,15 +444,14 @@
 	"zh-Hant": {
 		"skip": "跳到運作方式",
 		"hero": {
-			"eyebrow": "LangDrift FinOps",
 			"titleStart": "全隊共用一份預算額度。",
 			"titleEnd": "每次付費呼叫，都先保留額度再執行。",
-			"caption": "示意帳本。金額、模型名稱與結果皆為模擬，用來呈現預算額度、保留與收據之間的關係。",
-			"summary": "一份示意的團隊預算，總額 12,000 美元，分為已花費、已保留、受保護與可用四部分；接著是四個工作項目，各自列出估算、保留與觀測到的花費。其中一項花費未知，等待對帳。選取項目後，帳本旁的交付收據會隨之更新（窄螢幕上則在帳本下方）：估算、保留、觀測到的花費、模型層級與推理強度、重試、驗證、清理與證據。所有金額皆為模擬。"
+			"caption": "金額、模型名稱與結果皆為模擬，用來呈現預算額度、保留與收據之間的關係。",
+			"summary": "一份團隊預算，總額 12,000 美元，分為已花費、已保留、受保護與可用四部分；接著是四個工作項目，各自列出估算、保留與觀測到的花費。其中一項花費未知，等待對帳。選取項目後，帳本旁的交付收據會隨之更新（窄螢幕上則在帳本下方）：估算、保留、觀測到的花費、模型層級與推理強度、重試、驗證、清理與證據。所有金額皆為模擬。"
 		},
 		"ledger": {
 			"label": "團隊預算額度",
-			"period": "本月 · 示意",
+			"period": "本月",
 			"authorized": "已授權",
 			"segments": {
 				"spent": "已花費",
@@ -532,7 +525,7 @@
 			}
 		},
 		"receipt": {
-			"selected": "選取的工作項目 · 示意",
+			"selected": "選取的工作項目",
 			"labels": {
 				"estimate": "估算",
 				"reserved": "已保留",
@@ -612,7 +605,7 @@
 				}
 			},
 			"released": "退回預算額度",
-			"source": "數字取自頁面頂端「{item}」的交付收據。與本頁所有金額一樣，僅為示意。"
+			"source": "數字取自頁面頂端「{item}」的交付收據。"
 		},
 		"sources": {
 			"kicker": "帳本的資料來源",
@@ -641,8 +634,6 @@
 			}
 		},
 		"faq": {
-			"title": "幾件值得知道的事。",
-			"description": "什麼是團隊預算、FinOps 承諾與不承諾什麼，以及示意帳本呈現了什麼。",
 			"items": {
 				"budget": {
 					"question": "什麼是團隊預算？",
@@ -666,7 +657,7 @@
 				},
 				"availability": {
 					"question": "我今天可以使用 LangDrift FinOps 嗎？",
-					"answer": "這些頁面以示意數值描述預期中的模型。這裡展示的帳本、閘門與整合尚未可用，示範申請目前暫停。"
+					"answer": "FinOps 頁面描述預期中的模型。頁面展示的帳本、閘門與整合尚未可用，示範申請目前暫停。"
 				}
 			}
 		}
@@ -674,15 +665,14 @@
 	"ja": {
 		"skip": "仕組みへスキップ",
 		"hero": {
-			"eyebrow": "LangDrift FinOps",
 			"titleStart": "チームの予算枠は、ひとつ。",
 			"titleEnd": "有料呼び出しは、実行前に必ず予約。",
-			"caption": "台帳はイメージです。金額、モデル名、結果はシミュレーションで、予算枠・予約・レシートの関係を示すためのものです。",
-			"summary": "12,000 ドルのイメージ上のチーム予算を、消費済み・予約済み・保護分・利用可能に分けて示し、続いて 4 つの作業項目を見積もり・予約・観測された支出とともに示します。1 件は支出が不明で、照合待ちです。項目を選ぶと、台帳の横（狭い画面では下）にある納品レシートが更新されます。見積もり、予約、観測された支出、モデル階層と推論強度、再試行、検証、クリーンアップ、証拠です。金額はすべてシミュレーションです。"
+			"caption": "金額、モデル名、結果はシミュレーションで、予算枠・予約・レシートの関係を示すためのものです。",
+			"summary": "12,000 ドルのチーム予算を、消費済み・予約済み・保護分・利用可能に分けて示し、続いて 4 つの作業項目を見積もり・予約・観測された支出とともに示します。1 件は支出が不明で、照合待ちです。項目を選ぶと、台帳の横（狭い画面では下）にある納品レシートが更新されます。見積もり、予約、観測された支出、モデル階層と推論強度、再試行、検証、クリーンアップ、証拠です。金額はすべてシミュレーションです。"
 		},
 		"ledger": {
 			"label": "チームの予算枠",
-			"period": "今月 · イメージ",
+			"period": "今月",
 			"authorized": "承認額",
 			"segments": {
 				"spent": "消費済み",
@@ -756,7 +746,7 @@
 			}
 		},
 		"receipt": {
-			"selected": "選択中の作業項目 · イメージ",
+			"selected": "選択中の作業項目",
 			"labels": {
 				"estimate": "見積もり",
 				"reserved": "予約済み",
@@ -836,7 +826,7 @@
 				}
 			},
 			"released": "予算枠に戻った額",
-			"source": "数字はページ上部にある「{item}」の納品レシートのものです。このページのすべての金額と同じく、イメージです。"
+			"source": "数字はページ上部にある「{item}」の納品レシートのものです。"
 		},
 		"sources": {
 			"kicker": "台帳の情報源",
@@ -865,8 +855,6 @@
 			}
 		},
 		"faq": {
-			"title": "知っておきたいこと。",
-			"description": "チーム予算とは何か、FinOps が約束すること・しないこと、イメージ上の台帳が示すもの。",
 			"items": {
 				"budget": {
 					"question": "チーム予算とは何ですか？",
@@ -890,7 +878,7 @@
 				},
 				"availability": {
 					"question": "LangDrift FinOps は今日から使えますか？",
-					"answer": "これらのページはイメージ上の値で想定するモデルを説明しています。ここに示した台帳、ゲート、連携はまだ利用できず、デモの申し込みは当面停止しています。"
+					"answer": "FinOps のページは想定するモデルを説明しています。そこに示した台帳、ゲート、連携はまだ利用できず、デモの申し込みは当面停止しています。"
 				}
 			}
 		}
@@ -898,15 +886,14 @@
 	"vi": {
 		"skip": "Chuyển đến cách hoạt động",
 		"hero": {
-			"eyebrow": "LangDrift FinOps",
 			"titleStart": "Một hạn mức cho cả đội.",
 			"titleEnd": "Mọi lần gọi trả phí đều được giữ chỗ trước khi chạy.",
-			"caption": "Sổ cái minh họa. Số tiền, tên mô hình và kết quả đều được mô phỏng để cho thấy hạn mức, khoản giữ chỗ và biên lai liên hệ với nhau ra sao.",
-			"summary": "Một ngân sách đội minh họa 12.000 đô la chia thành đã chi, đã giữ chỗ, được bảo vệ và khả dụng, tiếp theo là bốn hạng mục công việc với ước tính, khoản giữ chỗ và chi tiêu quan sát được. Chi tiêu của một hạng mục chưa rõ và đang chờ đối soát. Chọn một hạng mục sẽ cập nhật biên lai giao hàng bên cạnh sổ cái, hoặc bên dưới trên màn hình hẹp: ước tính, khoản giữ chỗ, chi tiêu quan sát được, hạng mô hình và mức nỗ lực, số lần thử lại, kiểm chứng, dọn dẹp và bằng chứng. Mọi số tiền đều được mô phỏng."
+			"caption": "Số tiền, tên mô hình và kết quả đều được mô phỏng để cho thấy hạn mức, khoản giữ chỗ và biên lai liên hệ với nhau ra sao.",
+			"summary": "Một ngân sách đội 12.000 đô la chia thành đã chi, đã giữ chỗ, được bảo vệ và khả dụng, tiếp theo là bốn hạng mục công việc với ước tính, khoản giữ chỗ và chi tiêu quan sát được. Chi tiêu của một hạng mục chưa rõ và đang chờ đối soát. Chọn một hạng mục sẽ cập nhật biên lai giao hàng bên cạnh sổ cái, hoặc bên dưới trên màn hình hẹp: ước tính, khoản giữ chỗ, chi tiêu quan sát được, hạng mô hình và mức nỗ lực, số lần thử lại, kiểm chứng, dọn dẹp và bằng chứng. Mọi số tiền đều được mô phỏng."
 		},
 		"ledger": {
 			"label": "Hạn mức của đội",
-			"period": "Tháng này · minh họa",
+			"period": "Tháng này",
 			"authorized": "Được phê duyệt",
 			"segments": {
 				"spent": "Đã chi",
@@ -980,7 +967,7 @@
 			}
 		},
 		"receipt": {
-			"selected": "Hạng mục đang chọn · minh họa",
+			"selected": "Hạng mục đang chọn",
 			"labels": {
 				"estimate": "Ước tính",
 				"reserved": "Đã giữ chỗ",
@@ -1060,7 +1047,7 @@
 				}
 			},
 			"released": "Trả lại hạn mức",
-			"source": "Số liệu lấy từ biên lai của “{item}” ở đầu trang. Chỉ mang tính minh họa, như mọi số tiền trên trang này."
+			"source": "Số liệu lấy từ biên lai của “{item}” ở đầu trang."
 		},
 		"sources": {
 			"kicker": "Nguồn nuôi sổ cái",
@@ -1089,8 +1076,6 @@
 			}
 		},
 		"faq": {
-			"title": "Vài điều đáng biết.",
-			"description": "Ngân sách đội là gì, FinOps hứa và không hứa điều gì, và sổ cái minh họa cho thấy gì.",
 			"items": {
 				"budget": {
 					"question": "Ngân sách đội là gì?",
@@ -1114,7 +1099,7 @@
 				},
 				"availability": {
 					"question": "Tôi có thể dùng LangDrift FinOps hôm nay không?",
-					"answer": "Các trang này mô tả mô hình dự kiến với các giá trị minh họa. Sổ cái, cổng kiểm soát và các tích hợp ở đây chưa khả dụng, và yêu cầu demo hiện đang tạm dừng."
+					"answer": "Trang FinOps mô tả mô hình dự kiến. Sổ cái, cổng kiểm soát và các tích hợp trên trang chưa khả dụng, và yêu cầu demo hiện đang tạm dừng."
 				}
 			}
 		}

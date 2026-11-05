@@ -11,7 +11,7 @@ import {
 	workItems,
 } from './finops-content'
 
-describe('illustrative FinOps content', () => {
+describe('website/lib/data/finops-content', () => {
 	it('splits the envelope into segments that sum to the authorized amount', () => {
 		const segments = envelopeSegments(envelope)
 		const total =

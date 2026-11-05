@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { createTranslator, hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
+import { ProductIconTile } from '@app/[locale]/(pages)/platform/product-icon-tile'
 import { AuthoringFlow } from '@components/microruntimes/authoring-flow'
 import { LifecycleSteps } from '@components/microruntimes/lifecycle-steps'
 import { RuntimeDescriptorCard } from '@components/microruntimes/runtime-descriptor-card'
@@ -9,7 +10,6 @@ import { SessionCards } from '@components/microruntimes/session-cards'
 import { SessionTerminal } from '@components/microruntimes/session-terminal'
 import { StageEvidence } from '@components/microruntimes/stage-evidence'
 import { PillarScenarios } from '@components/product-page/pillar-scenarios'
-import { ProductFaqSection } from '@components/product-page/product-faq-section'
 import { ProductSection } from '@components/product-page/product-section'
 import { RecordCard } from '@components/product-page/record-card'
 import { SectionOutro } from '@components/product-page/section-outro'
@@ -21,7 +21,6 @@ import {
 	executionLedger,
 	lifecyclePhaseIds,
 	lifecycleScenarioIds,
-	microruntimesFaqIds,
 	ownershipRowIds,
 	type StateCardId,
 	stateCardIds,
@@ -82,12 +81,9 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 						className="m-0 flex items-center gap-[0.35em] text-[clamp(28px,3.2vw,43px)] leading-[1.16] font-medium tracking-[-0.045em] text-balance"
 						id="microruntimes-hero-heading"
 					>
-						<span
-							aria-hidden="true"
-							className="inline-flex size-[0.74em] shrink-0 items-center justify-center rounded-[0.2em] border border-border bg-card text-foreground"
-						>
+						<ProductIconTile className="size-[0.74em] rounded-[0.2em]">
 							<MicroruntimesIcon className="size-[0.46em]" />
-						</span>
+						</ProductIconTile>
 						{copy.hero.title}
 					</h1>
 					<div
@@ -290,15 +286,6 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 				>
 					<AuthoringFlow copy={copy.flow} />
 				</ProductSection>
-
-				<ProductFaqSection
-					description={copy.faq.description}
-					items={microruntimesFaqIds.map((id) => ({
-						...copy.faq.items[id],
-						id,
-					}))}
-					title={copy.faq.title}
-				/>
 			</main>
 			<WebsiteFooter locale={locale} />
 		</>
