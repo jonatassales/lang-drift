@@ -6,7 +6,7 @@
 
 **Blocked by:** the Exphere server, not yet ticketed.
 
-**Status:** needs-triage
+**Status:** wontfix. The owner closed it on 2026-11-05: it will not be implemented.
 
 - [ ] The runtime reaches ready, and `/en/home` answers through a port-forward.
 - [ ] CPU and memory are observed against the envelope, with their timestamps.
