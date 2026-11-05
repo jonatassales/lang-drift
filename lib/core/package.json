@@ -1,7 +1,7 @@
 {
 	"name": "@langdrift/core",
-	"version": "0.2.0",
-	"description": "LangDrift Microruntimes contracts: the judge's JSON Schemas and samples",
+	"version": "0.3.0",
+	"description": "LangDrift Microruntimes contracts: the JSON Schemas and samples of the runtime.md fence, the judge's answers and the stage reports",
 	"license": "Apache-2.0",
 	"homepage": "https://langdrift.md",
 	"repository": {
@@ -13,10 +13,16 @@
 		"access": "public"
 	},
 	"exports": {
-		"./judge/*": "./contracts/go/judge/schema/*"
+		"./configuration/*": "./contracts/go/configuration/schema/*",
+		"./judge/*": "./contracts/go/judge/schema/*",
+		"./judgment/*": "./contracts/go/judgment/schema/*",
+		"./stages/*": "./contracts/go/stages/schema/*"
 	},
 	"files": [
+		"contracts/go/configuration/schema/*.json",
 		"contracts/go/judge/schema/*.json",
+		"contracts/go/judgment/schema/*.json",
+		"contracts/go/stages/schema/*.json",
 		"LICENSE",
 		"README.md"
 	],
