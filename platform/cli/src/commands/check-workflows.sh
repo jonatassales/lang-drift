@@ -5,7 +5,7 @@ set -eu
 drift_need go
 cd "$DRIFT_PROJECT_ROOT"
 
-# The GitHub Actions conventions in .agents/context.md (Continuous integration).
+# The GitHub Actions conventions in .agents/context.guide.md (Continuous integration).
 # actionlint checks syntax, expressions and, when shellcheck is installed, the
 # shell in run scripts. The checks below it are this repository's own.
 

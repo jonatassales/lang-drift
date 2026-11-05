@@ -27,4 +27,4 @@ _Avoid_: Client, buyer, account
 
 ## Where it lives
 
-One glossary for the whole repository: the `## Glossary` section of `.agents/context.md`. Add that section lazily, when the first term is resolved. Use `###` subheadings for clusters of terms.
+One glossary for the whole repository: the `## Glossary` section of `.agents/context.guide.md`. Add that section lazily, when the first term is resolved. Use `###` subheadings for clusters of terms.

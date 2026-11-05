@@ -13,7 +13,7 @@ Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
 
 Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
 
-The issue tracker is defined in the `Spec-driven development` section of `.agents/context.md`.
+The issue tracker is defined in the `Spec-driven development` section of `.agents/context.guide.md`.
 
 ## Process
 

@@ -4,7 +4,7 @@
 
 ## Tickets
 
-- [ ] 0264: the handbook and the skill references carry the guide suffix
+- [x] 0264: the handbook and the skill references carry the guide suffix
 - [ ] 0265: no path climbs with ../
 - [ ] 0266: the Go files take kebab-case
 

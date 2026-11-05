@@ -8,7 +8,7 @@ metadata:
 
 This skill takes the current conversation context and codebase understanding and produces a spec. Do NOT interview the user; just synthesize what you already know.
 
-The issue tracker and triage label vocabulary are defined in the `Spec-driven development` section of `.agents/context.md`.
+The issue tracker and triage label vocabulary are defined in the `Spec-driven development` section of `.agents/context.guide.md`.
 
 ## Process
 

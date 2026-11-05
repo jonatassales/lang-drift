@@ -8,9 +8,9 @@
 
 **Status:** ready-for-agent
 
-- [ ] Every Markdown document outside the conventional names carries a type suffix.
-- [ ] Every path cited in `AGENTS.md` and under `.claude/skills/` exists, and a grep for the old names outside `.agents/workflow/` returns nothing.
-- [ ] `platform/cli/drift quality check filesystem` reports no unsuffixed document.
+- [x] Every Markdown document outside the conventional names carries a type suffix.
+- [x] Every path cited in `AGENTS.md` and under `.claude/skills/` exists, and a grep for the old names outside `.agents/workflow/` returns nothing.
+- [x] `platform/cli/drift quality check filesystem` reports no unsuffixed document.
 
 ## Dev part
 

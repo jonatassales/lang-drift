@@ -7,9 +7,9 @@ cd "$DRIFT_PROJECT_ROOT"
 
 # Biome carries part of the rules in .claude/rules: imports never climb with
 # ../ (01-filesystem) and imports are grouped as packages, aliases, then
-# relative paths (.agents/context.md). This check runs fixtures against a copy
-# of biome.json and fails when the configuration, or a Biome upgrade, stops
-# enforcing them. The fixtures are written here rather than committed: biome
+# relative paths (.agents/context.guide.md). This check runs fixtures against
+# a copy of biome.json and fails when the configuration, or a Biome upgrade,
+# stops enforcing them. The fixtures are written here rather than committed: biome
 # check . would lint them, and their imports are unsorted on purpose.
 
 biome=$DRIFT_PROJECT_ROOT/node_modules/.bin/biome
@@ -281,7 +281,7 @@ check_comments
 
 if [ -s "$findings" ]; then
   while IFS= read -r finding; do drift_print_error "$finding"; done <"$findings"
-  drift_print_error "biome.json no longer enforces the import rules in .claude/rules/01-filesystem.rule.md and .agents/context.md."
+  drift_print_error "biome.json no longer enforces the import rules in .claude/rules/01-filesystem.rule.md and .agents/context.guide.md."
   exit 1
 fi
 
