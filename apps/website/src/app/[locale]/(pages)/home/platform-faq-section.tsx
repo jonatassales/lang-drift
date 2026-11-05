@@ -6,19 +6,19 @@ import {
 	safeSeatMessages,
 } from '@i18n/messages/index'
 import type { WebsiteLocale } from '@i18n/routing'
-import { finopsFaqIds } from '@routes/platform/finops/content/finops-content'
-import { microruntimesFaqIds } from '@routes/platform/microruntimes/content/microruntimes-content'
+import { finopsFaqIds } from '@routes/platform/finops/content/finops-content.data'
+import { microruntimesFaqIds } from '@routes/platform/microruntimes/content/microruntimes-content.data'
 import { FaqSectionShell } from '@routes/platform/product-page/faq-section-shell'
 import { safeSeatFaqIds } from '@routes/platform/safe-seat/safe-seat-content.data'
 
 import { FaqTabs } from './faq-tabs'
 
+// The platform's one FAQ: each product's questions in a tab of their own,
+// named as the header names the product.
 interface PlatformFaqSectionProps {
 	locale: WebsiteLocale
 }
 
-// The platform's one FAQ: each product's questions in a tab of their own,
-// named as the header names the product.
 export function PlatformFaqSection(props: PlatformFaqSectionProps) {
 	const { locale } = props
 

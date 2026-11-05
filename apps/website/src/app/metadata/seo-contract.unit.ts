@@ -1,21 +1,18 @@
-import { readFileSync } from 'node:fs'
-import { join } from 'node:path'
-import type { Metadata } from 'next'
 import { describe, expect, it } from 'vitest'
 
+import { canonicalOf } from '@app/metadata/testdata/canonical-of.compute'
+import { languagesOf } from '@app/metadata/testdata/languages-of.compute'
+import { readWebsiteFile } from '@app/metadata/testdata/read-website-file.mock'
+import { robotsGroups } from '@app/metadata/testdata/robots-groups.compute'
+import { sitemapEntries } from '@app/metadata/testdata/sitemap-entries.compute'
 import routeState from '@i18n/messages/route-state.json'
 import { routing } from '@i18n/routing'
 import { generateMetadata as notFoundMetadata } from '@layout/not-found'
 
 import locales from './locales.json'
-import { pageMetadata } from './page-metadata'
+import { pageMetadata } from './page-metadata.map'
 import pages from './pages.json'
 import site from './site.json'
-
-interface SitemapEntry {
-	loc: string
-	alternates: Record<string, string>
-}
 
 const pageIds = Object.keys(pages) as Array<keyof typeof pages>
 
@@ -29,49 +26,7 @@ const localizedPages = pageIds.flatMap((page) =>
 
 const sitemap = sitemapEntries(readWebsiteFile('src/app/sitemap.xml'))
 
-function readWebsiteFile(path: string) {
-	return readFileSync(join(process.cwd(), path), 'utf8')
-}
-
-function sitemapEntries(xml: string): SitemapEntry[] {
-	return Array.from(xml.matchAll(/<url>([\s\S]*?)<\/url>/g), ([, body]) => ({
-		loc: body.match(/<loc>(.*?)<\/loc>/)?.[1] ?? '',
-		alternates: Object.fromEntries(
-			Array.from(
-				body.matchAll(/hreflang="([^"]+)" href="([^"]+)"/g),
-				([, language, href]) => [language, href],
-			),
-		),
-	}))
-}
-
-function robotsGroups(text: string) {
-	return text
-		.trim()
-		.split(/\n\s*\n/)
-		.map((block) => block.split('\n'))
-		.filter((lines) => lines[0].startsWith('User-agent:'))
-		.map((lines) => ({
-			agents: lines
-				.filter((line) => line.startsWith('User-agent:'))
-				.map((line) => line.replace('User-agent:', '').trim()),
-			rules: lines.filter((line) => !line.startsWith('User-agent:')),
-		}))
-}
-
-function canonicalOf(metadata: Metadata) {
-	return String(metadata.alternates?.canonical)
-}
-
-function languagesOf(metadata: Metadata) {
-	return Object.fromEntries(
-		Object.entries(metadata.alternates?.languages ?? {}).map(
-			([language, href]) => [language, String(href)],
-		),
-	)
-}
-
-describe('Every indexable page in every locale', () => {
+describe('website/metadata/seo-contract', () => {
 	it.each(routing.locales)(
 		'has a unique title and description in %s',
 		(locale) => {
@@ -149,9 +104,7 @@ describe('Every indexable page in every locale', () => {
 			follow: true,
 		})
 	})
-})
 
-describe('The sitemap', () => {
 	it('lists exactly the indexable pages', () => {
 		const canonicals = localizedPages.map(({ metadata }) =>
 			canonicalOf(metadata),
@@ -168,9 +121,7 @@ describe('The sitemap', () => {
 			expect(entry?.alternates).toEqual(languagesOf(metadata))
 		},
 	)
-})
 
-describe('robots.txt', () => {
 	const groups = robotsGroups(readWebsiteFile('src/app/robots.txt'))
 	const trainingAgents = [
 		'GPTBot',
@@ -200,9 +151,7 @@ describe('robots.txt', () => {
 			`Sitemap: ${site.url}/sitemap.xml`,
 		)
 	})
-})
 
-describe('security.txt', () => {
 	const fields = Object.fromEntries(
 		readWebsiteFile('public/.well-known/security.txt')
 			.trim()
@@ -225,9 +174,7 @@ describe('security.txt', () => {
 	it('has not expired', () => {
 		expect(new Date(fields.Expires).getTime()).toBeGreaterThan(Date.now())
 	})
-})
 
-describe('The localized 404', () => {
 	it.each(routing.locales)('has its title in %s', async (locale) => {
 		const metadata = await notFoundMetadata({
 			params: Promise.resolve({ locale }),

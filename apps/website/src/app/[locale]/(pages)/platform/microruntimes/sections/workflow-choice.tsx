@@ -8,6 +8,9 @@ interface WorkflowChoiceOption<Value extends string> {
 	value: Value
 }
 
+// One labelled choice of the Workflow card, a native select drawn in the
+// cards' roles. Its text is 16px on phones so focusing it does not zoom the
+// page.
 interface WorkflowChoiceProps<Value extends string> {
 	label: string
 	/** True while a run reads the choice; the select keeps focus but no change. */
@@ -20,9 +23,6 @@ interface WorkflowChoiceProps<Value extends string> {
 	value: Value
 }
 
-// One labelled choice of the Workflow card, a native select drawn in the
-// cards' roles. Its text is 16px on phones so focusing it does not zoom the
-// page.
 export function WorkflowChoice<Value extends string>(
 	props: WorkflowChoiceProps<Value>,
 ) {
@@ -32,6 +32,7 @@ export function WorkflowChoice<Value extends string>(
 		const option = options.find(
 			(candidate) => candidate.value === event.target.value,
 		)
+
 		if (option) {
 			onChange(option.value)
 		}

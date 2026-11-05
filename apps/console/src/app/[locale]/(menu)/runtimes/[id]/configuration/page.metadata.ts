@@ -1,7 +1,11 @@
 import { runtimeTitle } from '@data/entity-title'
 
+interface RuntimeRouteParams {
+	id: string
+}
+
 interface PageProps {
-	params: Promise<{ id: string }>
+	params: Promise<RuntimeRouteParams>
 }
 
 export async function generateMetadata(props: PageProps) {

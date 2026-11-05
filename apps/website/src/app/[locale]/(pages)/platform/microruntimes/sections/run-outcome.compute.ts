@@ -2,7 +2,7 @@ import type { MicroruntimeSession } from '@app/atoms/microruntime-session.atom'
 import type {
 	RunLine,
 	WorkflowChoices,
-} from '@routes/platform/microruntimes/content/microruntimes-workflow'
+} from '@routes/platform/microruntimes/content/microruntimes-workflow.types'
 
 export interface RunOutcome {
 	choices: WorkflowChoices
@@ -15,6 +15,7 @@ export function runOutcome(
 	script: readonly RunLine[],
 ): RunOutcome | null {
 	const { ran, stage } = session
+
 	if (stage !== 'running' || !ran) return null
 
 	return {

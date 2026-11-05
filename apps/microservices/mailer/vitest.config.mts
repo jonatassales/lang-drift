@@ -3,10 +3,18 @@ import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitest/config'
 
+interface CompilerPaths {
+	paths: Record<string, string[]>
+}
+
+interface PathsConfiguration {
+	compilerOptions: CompilerPaths
+}
+
 const appRoot = fileURLToPath(new URL('.', import.meta.url))
 const pathsConfiguration = JSON.parse(
 	readFileSync(resolve(appRoot, 'tsconfig.paths.json'), 'utf8'),
-) as { compilerOptions: { paths: Record<string, string[]> } }
+) as PathsConfiguration
 const aliases = Object.fromEntries(
 	Object.entries(pathsConfiguration.compilerOptions.paths).map(
 		([alias, targets]) => [

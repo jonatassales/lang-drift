@@ -3,22 +3,22 @@
 import { useAtom } from 'jotai'
 import type { MouseEvent } from 'react'
 
-import {
-	type LifecycleStageId,
-	lifecycleStageIds,
-	type MicroruntimesMessages,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+import { lifecycleStageIds } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import type {
+	LifecycleStageId,
+	MicroruntimesMessages,
+} from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import { ChoiceButton } from '@routes/platform/product-page/choice-button'
 import { selectedLifecycleStageAtom } from '@state'
 import { Eyebrow } from 'web/ui/eyebrow'
 import { cn } from 'web/utilities'
 
+// The six lifecycle steps and what the selected one does and leaves behind.
+// Selecting a step drives the evidence record right below.
 interface LifecycleStepsProps {
 	copy: MicroruntimesMessages['lifecycle']
 }
 
-// The six lifecycle steps and what the selected one does and leaves behind.
-// Selecting a step drives the evidence record right below.
 export function LifecycleSteps(props: LifecycleStepsProps) {
 	const { copy } = props
 
@@ -28,6 +28,7 @@ export function LifecycleSteps(props: LifecycleStepsProps) {
 		const stageId = event.currentTarget.dataset.id as
 			| LifecycleStageId
 			| undefined
+
 		if (stageId) {
 			setSelectedId(stageId)
 		}

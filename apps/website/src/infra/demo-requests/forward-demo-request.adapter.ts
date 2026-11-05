@@ -11,6 +11,7 @@ export async function forwardDemoRequest(
 ): Promise<number> {
 	const url = process.env.DEMO_REQUESTS_URL
 	const token = process.env.DEMO_REQUESTS_TOKEN
+
 	if (!url) throw new Error('Missing DEMO_REQUESTS_URL')
 	if (!token) throw new Error('Missing DEMO_REQUESTS_TOKEN')
 

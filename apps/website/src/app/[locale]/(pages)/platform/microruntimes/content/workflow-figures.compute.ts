@@ -2,8 +2,8 @@ import {
 	budgetCents,
 	expectedTokens,
 	observedTokens,
-	type WorkflowChoices,
-} from './microruntimes-workflow'
+} from './microruntimes-workflow.data'
+import type { WorkflowChoices } from './microruntimes-workflow.types'
 import { reserveCents } from './reserve-cents.compute'
 import { spendCents } from './spend-cents.compute'
 

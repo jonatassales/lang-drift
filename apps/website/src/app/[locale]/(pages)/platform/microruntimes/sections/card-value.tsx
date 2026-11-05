@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import type { MicroruntimesMessages } from '@routes/platform/microruntimes/content/microruntimes-content'
+import type { MicroruntimesMessages } from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import { cn } from 'web/utilities'
 
 import type { CardValueState } from './reveal-state.compute'
@@ -12,6 +12,9 @@ export type CardValueLabels = Pick<
 	'notSet' | 'resolving'
 >
 
+// One value on the ticket card as the session reveals it: a dash while
+// nothing is set, a pulsing skeleton while the console resolves it, then the
+// value fading in. Screen readers get the state as words.
 interface CardValueProps {
 	children?: ReactNode
 	className?: string
@@ -21,9 +24,6 @@ interface CardValueProps {
 	width?: string
 }
 
-// One value on the ticket card as the session reveals it: a dash while
-// nothing is set, a pulsing skeleton while the console resolves it, then the
-// value fading in. Screen readers get the state as words.
 export function CardValue(props: CardValueProps) {
 	const { children, className, labels, state, width = 'w-24' } = props
 

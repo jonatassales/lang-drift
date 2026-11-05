@@ -26,6 +26,12 @@ const defaultContext = 'value'
 const ivBytes = 12
 const tagBytes = 16
 
+interface TokenParts {
+	authTag: Buffer
+	ciphertext: Buffer
+	initializationVector: Buffer
+}
+
 // V8 serialization drops symbol keys and non-enumerable properties, runs visited
 // getters, and does not keep prototypes, methods, descriptors, or object identity.
 // This token is Node-only. It is not a protocol for Go or browsers.
@@ -40,6 +46,7 @@ export class CryptoService {
 		}
 
 		const decoded = Buffer.from(secretBase64, 'base64')
+
 		if (decoded.length !== 32) {
 			throw new Error('CRYPTO_SECRET must decode to exactly 32 bytes')
 		}
@@ -77,6 +84,7 @@ export class CryptoService {
 		this.#assertContext(context)
 
 		const parsed = this.#parseToken(token)
+
 		if (!parsed) return { ok: false }
 
 		try {
@@ -117,21 +125,17 @@ export class CryptoService {
 		)
 	}
 
-	#parseToken(token: string):
-		| {
-				initializationVector: Buffer
-				ciphertext: Buffer
-				authTag: Buffer
-		  }
-		| undefined {
+	#parseToken(token: string): TokenParts | undefined {
 		if (typeof token !== 'string') return undefined
 
 		const segments = token.split('.')
+
 		if (segments.length !== 5) return undefined
 
 		const [tokenVersion, tokenCodec, encodedIv, encodedCiphertext, encodedTag] =
 			segments
 		const unsupportedVersion = tokenVersion !== version || tokenCodec !== codec
+
 		if (unsupportedVersion) return undefined
 
 		const initializationVector = this.#decodeCanonicalBase64Url(
@@ -141,6 +145,7 @@ export class CryptoService {
 		const ciphertext = this.#decodeCanonicalBase64Url(encodedCiphertext)
 		const authTag = this.#decodeCanonicalBase64Url(encodedTag, tagBytes)
 		const malformedSegments = !initializationVector || !ciphertext || !authTag
+
 		if (malformedSegments) return undefined
 
 		return {
@@ -155,13 +160,16 @@ export class CryptoService {
 		expectedLength?: number,
 	): Buffer | undefined {
 		const invalidBase64Url = segment !== '' && !/^[A-Za-z0-9_-]+$/.test(segment)
+
 		if (invalidBase64Url) return undefined
 
 		const decoded = Buffer.from(segment, 'base64url')
+
 		if (decoded.toString('base64url') !== segment) return undefined
 
 		const lengthMismatch =
 			expectedLength !== undefined && decoded.length !== expectedLength
+
 		if (lengthMismatch) return undefined
 
 		return decoded

@@ -1,15 +1,13 @@
-import {
-	budgetTermIds,
-	type FinopsMessages,
-} from '@routes/platform/finops/content/finops-content'
+import { budgetTermIds } from '@routes/platform/finops/content/finops-content.data'
+import type { FinopsMessages } from '@routes/platform/finops/content/finops-content.types'
 import { DetailList } from 'web/ui/detail-list'
 
+// The three words the funding model rests on, as definitions: the envelope,
+// the allocation and the reservation.
 interface BudgetTermsProps {
 	copy: FinopsMessages['budget']['terms']
 }
 
-// The three words the funding model rests on, as definitions: the envelope,
-// the allocation and the reservation.
 export function BudgetTerms(props: BudgetTermsProps) {
 	const { copy } = props
 

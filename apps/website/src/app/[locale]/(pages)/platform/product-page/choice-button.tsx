@@ -4,6 +4,8 @@ import type { MouseEvent, ReactNode } from 'react'
 
 import { cn } from 'web/utilities'
 
+// A choice in a product-page demo: a work item to read, a step to inspect.
+// A toggle reports aria-pressed; a step reports aria-current="step".
 interface ChoiceButtonProps {
 	children: ReactNode
 	className?: string
@@ -13,8 +15,6 @@ interface ChoiceButtonProps {
 	selected: boolean
 }
 
-// A choice in a product-page demo: a work item to read, a step to inspect.
-// A toggle reports aria-pressed; a step reports aria-current="step".
 export function ChoiceButton(props: ChoiceButtonProps) {
 	const {
 		children,

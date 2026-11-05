@@ -2,9 +2,13 @@ import type { ReactNode } from 'react'
 
 import { Link } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
-import type { PlatformProduct } from '@layout/website-header/platform-products'
+import type { PlatformProduct } from '@layout/website-header/platform-products.data'
 import { ArrowRightIcon } from 'web/ui/icons/arrow'
+import { TextLink } from 'web/ui/text-link'
 
+// One product on the home page: the question and its answer, the demo, and
+// the way to the product page last. Every section shares the heading and
+// lead type.
 interface HomeProductSectionProps {
 	/** The note under the demo. */
 	caption?: string
@@ -22,9 +26,6 @@ interface HomeProductSectionProps {
 	summary?: string
 }
 
-// One product on the home page: the question and its answer, the demo, and
-// the way to the product page last. Every section shares the heading and
-// lead type.
 export function HomeProductSection(props: HomeProductSectionProps) {
 	const {
 		caption,
@@ -78,14 +79,12 @@ export function HomeProductSection(props: HomeProductSectionProps) {
 			) : null}
 			{link && href ? (
 				<p className="mt-8 mb-0">
-					<Link
-						className="smooth-text-link inline-flex min-h-11 items-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
-						href={href}
-						locale={locale}
-					>
-						{link}
-						<ArrowRightIcon />
-					</Link>
+					<TextLink asChild className="inline-flex min-h-11 items-center gap-2">
+						<Link href={href} locale={locale}>
+							{link}
+							<ArrowRightIcon />
+						</Link>
+					</TextLink>
 				</p>
 			) : null}
 		</section>

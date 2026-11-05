@@ -1,18 +1,18 @@
 import { finopsMessages, platformMessages } from '@i18n/messages/index'
 import type { WebsiteLocale } from '@i18n/routing'
-import { platformProduct } from '@layout/website-header/platform-products'
+import { platformProduct } from '@layout/website-header/platform-product.compute'
 import { BudgetLedgerDemo } from '@routes/platform/finops/sections/budget-ledger-demo'
 import { DeliveryReceipt } from '@routes/platform/finops/sections/delivery-receipt'
 
 import { HomeProductSection } from './home-product-section'
 
+// The FinOps page's opening on the home: the envelope statement, each
+// sentence on its own line, over the budget ledger with the delivery receipt
+// docked beside it from `lg`, the receipt following the selected work item.
 interface FinopsSectionProps {
 	locale: WebsiteLocale
 }
 
-// The FinOps page's opening on the home: the envelope statement, each
-// sentence on its own line, over the budget ledger with the delivery receipt
-// docked beside it from `lg`, the receipt following the selected work item.
 export function FinopsSection(props: FinopsSectionProps) {
 	const { locale } = props
 

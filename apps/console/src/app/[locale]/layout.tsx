@@ -11,9 +11,13 @@ import { isLocale, languageTags } from '@i18n/config'
 
 export { generateMetadata } from './layout.metadata'
 
+interface LocaleRouteParams {
+	locale: string
+}
+
 interface LocaleLayoutProps {
 	children: ReactNode
-	params: Promise<{ locale: string }>
+	params: Promise<LocaleRouteParams>
 }
 
 // Dark is the console's default scheme; the theme color is its dark

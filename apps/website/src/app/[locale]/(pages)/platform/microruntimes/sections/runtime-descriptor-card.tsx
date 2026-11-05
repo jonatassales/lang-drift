@@ -1,21 +1,21 @@
 import type { WebsiteLocale } from '@i18n/routing'
+import { formatDescriptor } from '@routes/platform/microruntimes/content/format-descriptor.compute'
 import {
 	descriptorAnnotationIds,
-	formatDescriptor,
-	type MicroruntimesMessages,
 	runtimeDescriptor,
 	runtimeFilePath,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+} from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import type { MicroruntimesMessages } from '@routes/platform/microruntimes/content/microruntimes-content.types'
 
 import { RuntimeFileEditor } from './runtime-file-editor'
 
+// The runtime file's langdrift JSON fence in the editor, beside numbered notes
+// on what each part decides.
 interface RuntimeDescriptorCardProps {
 	copy: MicroruntimesMessages['descriptor']
 	locale: WebsiteLocale
 }
 
-// The runtime file's langdrift JSON fence in the editor, beside numbered notes
-// on what each part decides.
 export function RuntimeDescriptorCard(props: RuntimeDescriptorCardProps) {
 	const { copy, locale } = props
 

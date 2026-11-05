@@ -1,19 +1,17 @@
 // @vitest-environment jsdom
 
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { createStore, Provider } from 'jotai'
+import { act, cleanup, fireEvent, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { microruntimesMessages } from '@i18n/messages/index'
-import { planSession } from '@routes/platform/microruntimes/content/microruntimes-content'
+import { planSession } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import { advanceTerminal } from '@routes/platform/microruntimes/sections/testdata/advance-terminal.mock'
+import { mountSessionTerminal } from '@routes/platform/microruntimes/sections/testdata/mount-session-terminal.mock'
 import {
 	initialMicroruntimeSession,
 	microruntimeSessionAtom,
 	playWorkflowAtom,
 	recordPlayedCountAtom,
 } from '@state'
-
-import { SessionTerminal } from './session-terminal'
 
 class IntersectingObserver {
 	callback: IntersectionObserverCallback
@@ -60,51 +58,29 @@ afterEach(() => {
 	vi.unstubAllGlobals()
 })
 
-function advance(milliseconds: number) {
-	for (let elapsed = 0; elapsed < milliseconds; elapsed += 40) {
-		act(() => {
-			vi.advanceTimersByTime(40)
-		})
-	}
-}
-
-function mount() {
-	const store = createStore()
-	render(
-		<Provider store={store}>
-			<SessionTerminal
-				control={microruntimesMessages.en.session.card.control}
-				copy={microruntimesMessages.en.session.terminal}
-			/>
-		</Provider>,
-	)
-
-	return store
-}
-
-describe('Microruntimes session terminal', () => {
+describe('website/platform/microruntimes/sections/session-terminal', () => {
 	it('writes the number of completed lines to the session as it plays', () => {
-		const store = mount()
+		const store = mountSessionTerminal()
 		expect(store.get(microruntimeSessionAtom).playedCount).toBe(0)
 
-		advance(2000)
+		advanceTerminal(2000)
 		expect(store.get(microruntimeSessionAtom).playedCount).toBe(1)
 
-		advance(600)
+		advanceTerminal(600)
 		expect(store.get(microruntimeSessionAtom).playedCount).toBe(2)
 	})
 
 	it('pauses and resumes the session from its title bar, and replays it once it has ended', () => {
-		const store = mount()
-		advance(2600)
+		const store = mountSessionTerminal()
+		advanceTerminal(2600)
 		fireEvent.click(screen.getByRole('button', { name: 'Pause' }))
 		expect(store.get(microruntimeSessionAtom).paused).toBe(true)
 
-		advance(2000)
+		advanceTerminal(2000)
 		expect(store.get(microruntimeSessionAtom).playedCount).toBe(2)
 
 		fireEvent.click(screen.getByRole('button', { name: 'Resume' }))
-		advance(1000)
+		advanceTerminal(1000)
 		expect(store.get(microruntimeSessionAtom).playedCount).toBeGreaterThan(2)
 
 		act(() => {
@@ -120,7 +96,7 @@ describe('Microruntimes session terminal', () => {
 	it('scrolls up to the window when the workflow plays, starts the run a second later and records its lines', () => {
 		const scrollIntoView = vi.fn()
 		Element.prototype.scrollIntoView = scrollIntoView
-		const store = mount()
+		const store = mountSessionTerminal()
 		act(() => {
 			store.set(recordPlayedCountAtom, planSession.length)
 			store.set(playWorkflowAtom)
@@ -130,10 +106,10 @@ describe('Microruntimes session terminal', () => {
 			expect.objectContaining({ block: 'start' }),
 		)
 
-		advance(960)
+		advanceTerminal(960)
 		expect(store.get(microruntimeSessionAtom).stage).toBe('launching')
 
-		advance(80)
+		advanceTerminal(80)
 		expect(store.get(microruntimeSessionAtom)).toMatchObject({
 			playedCount: 0,
 			run: 1,
@@ -141,7 +117,7 @@ describe('Microruntimes session terminal', () => {
 		})
 		expect(scrollIntoView).toHaveBeenCalledOnce()
 
-		advance(1500)
+		advanceTerminal(1500)
 		expect(store.get(microruntimeSessionAtom).playedCount).toBeGreaterThan(0)
 		expect(screen.getByRole('button', { name: 'Pause' })).toBeTruthy()
 	})

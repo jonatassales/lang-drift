@@ -4,25 +4,22 @@ import { useAtom } from 'jotai'
 import type { MouseEvent } from 'react'
 
 import type { WebsiteLocale } from '@i18n/routing'
+import { dollars } from '@routes/platform/finops/content/dollars.fmt'
+import { envelopeSegments } from '@routes/platform/finops/content/envelope-segments.compute'
 import {
-	dollars,
-	type EnvelopeSegmentId,
 	envelope,
 	envelopeSegmentIds,
-	envelopeSegments,
-	type FinopsMessages,
-	type WorkItemId,
 	workItems,
-} from '@routes/platform/finops/content/finops-content'
+} from '@routes/platform/finops/content/finops-content.data'
+import type {
+	EnvelopeSegmentId,
+	FinopsMessages,
+	WorkItemId,
+} from '@routes/platform/finops/content/finops-content.types'
 import { ChoiceButton } from '@routes/platform/product-page/choice-button'
 import { selectedWorkItemAtom } from '@state'
 import { Eyebrow } from 'web/ui/eyebrow'
 import { cn } from 'web/utilities'
-
-interface BudgetLedgerDemoProps {
-	copy: FinopsMessages['ledger']
-	locale: WebsiteLocale
-}
 
 const segmentColors: Record<EnvelopeSegmentId, string> = {
 	spent: 'bg-primary',
@@ -36,6 +33,11 @@ const amountColumn = 'font-mono text-[13px] tabular-nums sm:text-right'
 // The FinOps hero demo: a simulated team envelope as a stacked bar, then
 // the work items drawing on it. Selecting an item drives the receipt docked
 // beside it.
+interface BudgetLedgerDemoProps {
+	copy: FinopsMessages['ledger']
+	locale: WebsiteLocale
+}
+
 export function BudgetLedgerDemo(props: BudgetLedgerDemoProps) {
 	const { copy, locale } = props
 
@@ -43,6 +45,7 @@ export function BudgetLedgerDemo(props: BudgetLedgerDemoProps) {
 
 	function selectWorkItem(event: MouseEvent<HTMLButtonElement>) {
 		const targetId = event.currentTarget.dataset.id as WorkItemId | undefined
+
 		if (targetId) {
 			setSelectedId(targetId)
 		}

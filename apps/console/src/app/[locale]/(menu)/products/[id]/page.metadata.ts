@@ -1,7 +1,11 @@
 import { projectTitle } from '@data/entity-title'
 
+interface ProductRouteParams {
+	id: string
+}
+
 interface ProductPageProps {
-	params: Promise<{ id: string }>
+	params: Promise<ProductRouteParams>
 }
 
 export async function generateMetadata(props: ProductPageProps) {

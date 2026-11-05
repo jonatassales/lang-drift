@@ -4,30 +4,29 @@ import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { PageHeading } from '@components/page-heading/page-heading'
+import type { ProductEnvelope } from '@data/product-envelopes.types'
 import { useResource } from '@data/resource.hook'
-import type { Execution, Product, Runtime } from '@data/types'
+import type { RuntimeExecutionsEnvelope } from '@data/runtime-envelopes.types'
 import { useRouter } from '@i18n/navigation'
 
 import { RuntimeForm } from './runtime-form'
 
 interface RuntimeEditProps {
-	initial: Promise<{
-		runtime: Runtime
-		executions: Execution[]
-	}>
+	initial: Promise<RuntimeExecutionsEnvelope>
 	id: string
-	productInitial: Promise<{ product: Product }>
+	productInitial: Promise<ProductEnvelope>
 }
 
 export function RuntimeEdit(props: RuntimeEditProps) {
 	const { id, initial, productInitial } = props
 
 	const router = useRouter()
-	const resource = useResource<{
-		runtime: Runtime
-		executions: Execution[]
-	}>(`runtimes/${id}`, 0, initial)
-	const product = useResource<{ product: Product }>(
+	const resource = useResource<RuntimeExecutionsEnvelope>(
+		`runtimes/${id}`,
+		0,
+		initial,
+	)
+	const product = useResource<ProductEnvelope>(
 		resource.data ? `products/${resource.data.runtime.productId}` : null,
 		0,
 		productInitial,

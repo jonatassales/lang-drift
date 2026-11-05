@@ -9,16 +9,20 @@ import { WebsiteFooter } from '@layout/website-footer'
 import { WebsiteHeader } from '@layout/website-header/website-header'
 import { WebsiteStructuredData } from '@layout/website-structured-data'
 
-export { generateMetadata } from './page.metadata'
+export { generateMetadata } from './page-metadata.map'
 
 // Provider URLs verified against Cloudflare's published pages on 2026-09-30.
 
-interface PrivacyPageProps {
-	params: Promise<{ locale: string }>
-}
-
 const link =
 	'focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary'
+
+interface LocaleRouteParams {
+	locale: string
+}
+
+interface PrivacyPageProps {
+	params: Promise<LocaleRouteParams>
+}
 
 export default async function PrivacyPage(props: PrivacyPageProps) {
 	const { params } = props

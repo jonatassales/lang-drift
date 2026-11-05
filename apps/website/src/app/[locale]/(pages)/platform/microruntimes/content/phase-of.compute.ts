@@ -1,9 +1,6 @@
 import { hasPlayed } from './has-played.compute'
-import {
-	type PlanPhaseId,
-	planPhaseIds,
-	planPhases,
-} from './microruntimes-content'
+import { planPhaseIds, planPhases } from './microruntimes-content.data'
+import type { PlanPhaseId } from './microruntimes-content.types'
 
 // The act the session is in: the last one whose opening line has played.
 export function phaseOf(playedCount: number): PlanPhaseId {

@@ -3,13 +3,13 @@ import { useId } from 'react'
 import type { CommandLineLabels } from './command-line-labels.type'
 import { CopyCommandButton } from './copy-command-button'
 
+// One command to type, set as code on a card so it reads as a terminal line,
+// with a button that copies it and names the command it copies.
 interface CommandLineProps {
 	command: string
 	labels: CommandLineLabels
 }
 
-// One command to type, set as code on a card so it reads as a terminal line,
-// with a button that copies it and names the command it copies.
 export function CommandLine(props: CommandLineProps) {
 	const { command, labels } = props
 

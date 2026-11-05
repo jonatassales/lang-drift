@@ -1,28 +1,23 @@
 import { type ChangeEvent, useId } from 'react'
 
+import { isRequiredHumanStage } from '@routes/platform/microruntimes/content/is-required-human-stage.compute'
 import {
-	type HumanStageId,
-	isRequiredHumanStage,
-	type RunLine,
-	stageProgress,
 	stageSkills,
-	type WorkflowChoices,
 	workflowStageIds,
-} from '@routes/platform/microruntimes/content/microruntimes-workflow'
+} from '@routes/platform/microruntimes/content/microruntimes-workflow.data'
+import type {
+	HumanStageId,
+	RunLine,
+	WorkflowChoices,
+} from '@routes/platform/microruntimes/content/microruntimes-workflow.types'
+import { stageProgress } from '@routes/platform/microruntimes/content/stage-progress.compute'
 import { cn } from 'web/utilities'
 
 import { ReadMark } from './read-mark'
-import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
-
-interface WorkflowStagesProps {
-	copy: TicketCardCopy
-	format: TicketCardFormat
-	human: WorkflowChoices['human']
-	locked: boolean
-	onToggle: (stage: HumanStageId) => void
-	/** The run's lines and how many have played, while a run is shown. */
-	run: { playedCount: number; script: readonly RunLine[] } | null
-}
+import type {
+	TicketCardCopy,
+	TicketCardFormat,
+} from './ticket-card-format.compute'
 
 const skillText = 'font-mono text-[10px] text-muted-foreground'
 
@@ -33,6 +28,16 @@ const skillText = 'font-mono text-[10px] text-muted-foreground'
 // owner's, so neither has a box. While the run plays, the stage at work
 // takes the primary tone and a finished stage its read mark; a reviewed run
 // ends waiting for the owner.
+interface WorkflowStagesProps {
+	copy: TicketCardCopy
+	format: TicketCardFormat
+	human: WorkflowChoices['human']
+	locked: boolean
+	onToggle: (stage: HumanStageId) => void
+	/** The run's lines and how many have played, while a run is shown. */
+	run: { playedCount: number; script: readonly RunLine[] } | null
+}
+
 export function WorkflowStages(props: WorkflowStagesProps) {
 	const { copy, format, human, locked, onToggle, run } = props
 
@@ -40,6 +45,7 @@ export function WorkflowStages(props: WorkflowStagesProps) {
 
 	function handleToggleStage(event: ChangeEvent<HTMLInputElement>) {
 		const stage = event.currentTarget.dataset.stage as HumanStageId | undefined
+
 		if (stage) {
 			onToggle(stage)
 		}

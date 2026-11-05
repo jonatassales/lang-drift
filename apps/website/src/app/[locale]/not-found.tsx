@@ -5,7 +5,7 @@ import { routing } from '@i18n/routing'
 
 import { RouteState } from './route-state'
 
-export { generateMetadata } from './not-found.metadata'
+export { generateMetadata } from './not-found-metadata.map'
 
 export default async function NotFound() {
 	const locale = await getLocale()

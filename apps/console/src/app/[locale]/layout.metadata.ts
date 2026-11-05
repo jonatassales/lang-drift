@@ -4,8 +4,12 @@ import { getTranslations } from 'next-intl/server'
 
 import { isLocale } from '@i18n/config'
 
+interface LocaleRouteParams {
+	locale: string
+}
+
 interface LocaleMetadataProps {
-	params: Promise<{ locale: string }>
+	params: Promise<LocaleRouteParams>
 }
 
 export async function generateMetadata(

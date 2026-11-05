@@ -7,17 +7,18 @@ import { ErrorNotice } from '@components/error-notice/error-notice'
 import { PageHeading } from '@components/page-heading/page-heading'
 import { ActivityListSkeleton } from '@components/route-state/activity-list-skeleton'
 import { mutation } from '@data/api'
+import type { LifecycleEventsEnvelope } from '@data/history-envelopes.types'
 import { useResource } from '@data/resource.hook'
-import type { LifecycleEvent, Runtime } from '@data/types'
+import type { RuntimeEnvelope } from '@data/runtime-envelopes.types'
 import { RecommendationPanel } from '@views/runtimes/recommendation-panel'
 import { Button } from 'web/ui/button'
 
 import { EventHistory } from './event-history'
 
 interface RuntimeHistoryProps {
-	initial: Promise<{ runtime: Runtime }>
+	initial: Promise<RuntimeEnvelope>
 	id: string
-	events: Promise<{ events: LifecycleEvent[] }>
+	events: Promise<LifecycleEventsEnvelope>
 }
 
 export function RuntimeHistory(props: RuntimeHistoryProps) {
@@ -28,11 +29,7 @@ export function RuntimeHistory(props: RuntimeHistoryProps) {
 	const [error, setError] = useState<unknown>(null)
 	const [pending, startTransition] = useTransition()
 
-	const resource = useResource<{ runtime: Runtime }>(
-		`runtimes/${id}`,
-		0,
-		initial,
-	)
+	const resource = useResource<RuntimeEnvelope>(`runtimes/${id}`, 0, initial)
 	const translate = useTranslations('ui')
 
 	function handlePurge() {

@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] `pnpm turbo run build --filter=tokens` writes a stylesheet identical to the one `build.js` wrote, for every theme.
 - [ ] `build.js` and `style-dictionary` are gone.

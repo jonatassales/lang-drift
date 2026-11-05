@@ -1,7 +1,7 @@
 'use client'
 
 import { useAtom } from 'jotai'
-import { useLocale, useTranslations } from 'next-intl'
+import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
 import { Link } from '@i18n/navigation'
@@ -10,11 +10,11 @@ import { themeAtom } from '@state'
 import { Brand } from 'web/ui/brand'
 
 import { DemoButton } from './demo-button'
-import { drawerFocus } from './drawer-focus'
 import { LanguagePill } from './language-pill'
+import { panelSurface } from './panel-surface.data'
 import { PlatformMenu } from './platform-menu'
-import { platformProducts } from './platform-products'
-import { panelSurface } from './surface'
+import { platformProducts } from './platform-products.data'
+import { useNavigationDrawer } from './use-navigation-drawer.hook'
 
 // Entries without a destination yet read like their neighbors but do not
 // navigate: Docs, and the products without a page.
@@ -41,21 +41,22 @@ const glass =
 
 export function WebsiteHeader() {
 	const [scrolled, setScrolled] = useState(false)
-	const [drawerOpen, setDrawerOpen] = useState(false)
 	const sentinelRef = useRef<HTMLDivElement>(null)
-	const drawerRef = useRef<HTMLDialogElement>(null)
-	const triggerRef = useRef<HTMLButtonElement>(null)
-	const closeRef = useRef<HTMLButtonElement>(null)
 
+	const {
+		closeDrawer,
+		closeRef,
+		drawerRef,
+		open: drawerOpen,
+		openDrawer,
+		triggerRef,
+	} = useNavigationDrawer()
 	const translate = useTranslations('header')
-	const locale = useLocale()
-	const previousLocale = useRef(locale)
 	const [theme, setTheme] = useAtom(themeAtom)
 
-	// Sync document theme classes and meta theme-color with theme state.
+	// Sync the document's dark class and meta theme-color with theme state.
 	useEffect(() => {
 		document.documentElement.classList.toggle('dark', theme === 'dark')
-		document.documentElement.style.colorScheme = theme
 		document
 			.querySelector('meta[name="theme-color"]')
 			?.setAttribute('content', theme === 'dark' ? '#0b0b0c' : '#f7f6f2')
@@ -64,70 +65,17 @@ export function WebsiteHeader() {
 	// Observe scroll sentinel at top of viewport to apply scrolled glass styling.
 	useEffect(() => {
 		const sentinel = sentinelRef.current
+
 		if (!sentinel) return
+
 		const observer = new IntersectionObserver(([entry]) => {
 			setScrolled(!entry.isIntersecting)
 		})
+
 		observer.observe(sentinel)
 
 		return () => observer.disconnect()
 	}, [])
-
-	// Close drawer when the active locale changes.
-	useEffect(() => {
-		if (previousLocale.current !== locale) {
-			previousLocale.current = locale
-			setDrawerOpen(false)
-		}
-	}, [locale])
-
-	// Restore focus to trigger when drawer changes locale.
-	useEffect(() => {
-		if (drawerFocus.locale !== locale) return
-		const frame = requestAnimationFrame(() => {
-			if (drawerFocus.locale !== locale) return
-			triggerRef.current?.focus({ preventScroll: true })
-			drawerFocus.locale = undefined
-		})
-
-		return () => cancelAnimationFrame(frame)
-	}, [locale])
-
-	// Manage modal dialog lifecycle and body scroll lock for navigation drawer.
-	useEffect(() => {
-		if (!drawerOpen) return
-		const drawer = drawerRef.current
-		if (!drawer) return
-		const previousOverflow = document.body.style.overflow
-		drawer.showModal()
-		closeRef.current?.focus()
-		document.body.style.overflow = 'hidden'
-
-		return () => {
-			drawer.close()
-			document.body.style.overflow = previousOverflow
-			triggerRef.current?.focus()
-		}
-	}, [drawerOpen])
-
-	// Close navigation drawer when viewport expands to desktop size.
-	useEffect(() => {
-		const desktop = window.matchMedia('(min-width: 64rem)')
-		const closeOnDesktop = () => {
-			if (desktop.matches) setDrawerOpen(false)
-		}
-		desktop.addEventListener('change', closeOnDesktop)
-
-		return () => desktop.removeEventListener('change', closeOnDesktop)
-	}, [])
-
-	function closeDrawer() {
-		setDrawerOpen(false)
-	}
-
-	function openDrawer() {
-		setDrawerOpen(true)
-	}
 
 	function toggleTheme() {
 		setTheme(theme === 'light' ? 'dark' : 'light')
@@ -149,9 +97,9 @@ export function WebsiteHeader() {
 				<div className="mx-auto grid min-h-17.5 max-w-[1280px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-[clamp(18px,3vw,36px)] md:min-h-20 md:gap-5 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
 					<div className="flex items-center gap-5 justify-self-start">
 						<Link aria-label={translate('home')} className={brandLink} href="/">
-							<Brand className="website-header-brand" compact tone={theme} />
+							<Brand className="text-foreground" compact />
 						</Link>
-						<div className="website-header-language">
+						<div>
 							<LanguagePill />
 						</div>
 					</div>
@@ -244,7 +192,7 @@ export function WebsiteHeader() {
 						href="/"
 						onClick={closeDrawer}
 					>
-						<Brand compact tone={theme} />
+						<Brand className="text-foreground" compact />
 					</Link>
 					<button
 						aria-label={translate('closeNavigation')}

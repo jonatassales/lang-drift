@@ -4,11 +4,9 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import type { MouseEvent, ReactNode } from 'react'
 
 import type { WebsiteLocale } from '@i18n/routing'
-import {
-	type PlanPhaseId,
-	planPhaseIds,
-	revealed,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+import { planPhaseIds } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import type { PlanPhaseId } from '@routes/platform/microruntimes/content/microruntimes-content.types'
+import { revealed } from '@routes/platform/microruntimes/content/revealed.compute'
 import {
 	microruntimeSessionAtom,
 	openCardAtom,
@@ -24,9 +22,9 @@ import { PlanCard, planSummary } from './plan-card'
 import { SessionCard } from './session-card'
 import { TicketCard, ticketSummary } from './ticket-card'
 import {
-	createTicketCardFormat,
 	type TicketCardCopy,
-} from './ticket-card-format'
+	ticketCardFormat,
+} from './ticket-card-format.compute'
 import {
 	runOutcome,
 	WorkflowCard,
@@ -34,9 +32,9 @@ import {
 	workflowSummary,
 } from './workflow-card'
 
-interface SessionCardsProps {
-	copy: TicketCardCopy
-	locale: WebsiteLocale
+interface CardContent {
+	body: ReactNode
+	summary: ReactNode
 }
 
 // The four cards the session fills beside the terminal, one per act: the
@@ -48,6 +46,11 @@ interface SessionCardsProps {
 // ends. The plan cards keep their end while a run plays; one status line
 // announces only how the run ended. Every value derives from how many lines
 // the terminal has completed.
+interface SessionCardsProps {
+	copy: TicketCardCopy
+	locale: WebsiteLocale
+}
+
 export function SessionCards(props: SessionCardsProps) {
 	const { copy, locale } = props
 
@@ -60,15 +63,16 @@ export function SessionCards(props: SessionCardsProps) {
 
 	function handleOpenCard(event: MouseEvent<HTMLButtonElement>) {
 		const phase = event.currentTarget.dataset.phase as PlanPhaseId | undefined
+
 		if (phase) {
 			openCardByHand(phase)
 		}
 	}
 
-	const format = createTicketCardFormat(copy, locale)
+	const format = ticketCardFormat(copy, locale)
 	const visible = revealed(playedCount, 'cards')
 	const outcome = runOutcome(session, script)
-	const cards: Record<PlanPhaseId, { body: ReactNode; summary: ReactNode }> = {
+	const cards: Record<PlanPhaseId, CardContent> = {
 		ticket: {
 			body: <TicketCard copy={copy} playedCount={playedCount} />,
 			summary: ticketSummary(),

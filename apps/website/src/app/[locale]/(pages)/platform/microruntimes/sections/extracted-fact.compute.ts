@@ -1,10 +1,11 @@
-import {
-	type DocumentId,
-	ticketPlan,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
-import { budgetCents } from '@routes/platform/microruntimes/content/microruntimes-workflow'
+import { ticketPlan } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import type { DocumentId } from '@routes/platform/microruntimes/content/microruntimes-content.types'
+import { budgetCents } from '@routes/platform/microruntimes/content/microruntimes-workflow.data'
 
-import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
+import type {
+	TicketCardCopy,
+	TicketCardFormat,
+} from './ticket-card-format.compute'
 
 export function extractedFact(
 	id: DocumentId,

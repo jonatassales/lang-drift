@@ -1,9 +1,9 @@
 'use client'
 import { useFormatter, useTranslations } from 'next-intl'
 
-import { useDateTime } from '@app/template/formatters/date-time.hook'
 import { StatusLabel } from '@components/status-label/status-label'
 import type { Environment, Execution } from '@data/types'
+import { useDateTime } from '@i18n/use-date-time.hook'
 import { Card } from 'web/ui/card'
 
 interface ExecutionTableProps {

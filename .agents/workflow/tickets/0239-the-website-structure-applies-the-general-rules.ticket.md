@@ -9,10 +9,10 @@
 **Status:** ready-for-agent. Its early-access items are superseded by spec 0046, which deletes that code. 2026-11-04.
 
 - [ ] No test file under `apps/website` declares a helper function.
-- [ ] Every website file is named after its export.
-- [ ] No empty or comment-only `catch` and no discarded rejection remains in the website.
-- [ ] The storage adapter answers `false` when `localStorage` throws, with a unit test.
-- [ ] `pnpm turbo run check typecheck test build --filter=website` passes and no page changes in the built-in browser.
+- [x] Every website file is named after its export.
+- [x] No empty or comment-only `catch` and no discarded rejection remains in the website.
+- [x] The storage adapter answers `false` when `localStorage` throws, with a unit test.
+- [x] `pnpm turbo run check typecheck test build --filter=website` passes and no page changes in the built-in browser.
 
 ## Dev part
 
@@ -22,3 +22,5 @@
 
 - `pnpm turbo run check typecheck test build --filter=website`
 - `platform/cli/drift quality check general`
+
+> **Note, 2026-11-05.** Every test helper under `apps/website/src` now lives in a `testdata/` folder, one per file. `next.config.unit.ts` keeps its two helpers, `headersAt` and `policyAt`: it sits at the app root, where no alias reaches, and the filesystem rules forbid both `../` and `./testdata/…` imports, so moving them needs an alias the owner decides on. That criterion stays open. The early-access items are obsolete; the multi-export `.types`, `.data` and metadata files are 0281's.

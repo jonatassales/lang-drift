@@ -3,7 +3,7 @@ import type { ComponentType } from 'react'
 import type {
 	PlanComponent,
 	Technology,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+} from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import {
 	GoIcon,
 	NatsIcon,
@@ -15,18 +15,6 @@ import {
 import { ShareBar } from 'web/ui/share-bar'
 
 import type { CardValueLabels, CardValueState } from './card-value'
-
-interface ComponentRowProps {
-	component: PlanComponent
-	cpu: string
-	/** The kind's label from the catalog. */
-	kind: string
-	labels: CardValueLabels
-	memory: string
-	/** The component's share of the CPU envelope, from 0 to 1. */
-	share: number
-	state: Exclude<CardValueState, 'unset'>
-}
 
 const technologyIcons: Record<
 	Technology,
@@ -48,6 +36,18 @@ const rowGrid =
 // the technology and kind, the figures, and under it a bar with its share
 // of the CPU envelope. The bar stays mounted through both states so its
 // growth is a transition.
+interface ComponentRowProps {
+	component: PlanComponent
+	cpu: string
+	/** The kind's label from the catalog. */
+	kind: string
+	labels: CardValueLabels
+	memory: string
+	/** The component's share of the CPU envelope, from 0 to 1. */
+	share: number
+	state: Exclude<CardValueState, 'unset'>
+}
+
 export function ComponentRow(props: ComponentRowProps) {
 	const { component, cpu, kind, labels, memory, share, state } = props
 

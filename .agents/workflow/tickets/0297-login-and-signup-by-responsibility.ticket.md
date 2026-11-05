@@ -6,7 +6,7 @@
 
 **Blocked by:** 0230, 0295.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] Each submit handler has a test with a fake transport and navigation.
 - [ ] `pnpm turbo run check typecheck test build --filter=console` passes.

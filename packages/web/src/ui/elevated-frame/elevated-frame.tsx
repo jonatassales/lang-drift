@@ -12,7 +12,7 @@ export interface ElevatedFrameProps {
 // light field and the background's black over a dark one, where the lit edge
 // does the lifting.
 const elevated =
-	'rounded-2xl border border-border bg-background/70 backdrop-blur-xl shadow-[inset_0_1px_0_color-mix(in_srgb,var(--foreground)_14%,transparent),0_32px_80px_-20px_color-mix(in_srgb,var(--foreground)_38%,transparent)] dark:shadow-[inset_0_1px_0_color-mix(in_srgb,var(--foreground)_16%,transparent),0_32px_80px_-16px_color-mix(in_srgb,var(--background)_95%,transparent)]'
+	'rounded-2xl border border-border bg-background/70 backdrop-blur-xl inset-shadow-[0_1px_0] inset-shadow-foreground/14 shadow-[0_32px_80px_-20px] shadow-foreground/38 dark:inset-shadow-foreground/16 dark:shadow-[0_32px_80px_-16px] dark:shadow-background/95'
 
 export function ElevatedFrame(props: ElevatedFrameProps) {
 	const { children, className } = props

@@ -8,9 +8,11 @@
 
 **Status:** ready-for-agent
 
-- [ ] The tokens test asserts the two new roles in both schemes.
+- [x] The tokens test asserts the two new roles in both schemes.
 - [ ] No `color-mix(`, `var(--` color or static `style` value remains in `packages/web`.
-- [ ] Captures differ only in the orb's gradient and the wordmark's color, as the spec accepts.
+- [x] Captures differ only in the orb's gradient and the wordmark's color, as the spec accepts.
+
+> **Note, 2026-11-05.** The captures compare the computed styles of the header wordmark, the text links, the pill CTAs, the footer and the footer orb. They cover the home, FinOps, Microruntimes and pricing pages at 1280px and 375px, in dark and light. The only colour that changes is the wordmark in light, which moves to the foreground role. The second criterion stays open on `hero-shader` and `chroma-text`, which wait for the owner.
 
 ## Dev part
 
@@ -19,3 +21,5 @@
 ## Verification
 
 - `pnpm turbo run check typecheck test build --filter=web --filter=tokens`
+
+> **Note, 2026-11-05.** Two components stay outside this ticket: `chroma-text` keeps its five-stop rainbow gradient, which Tailwind's from/via/to utilities cannot express without dropping stops, and `hero-shader` keeps the CSS variables its WebGL program reads and its two-layer fallback gradient. Both still hold `var(--` or `color-mix(`, so the second criterion stays open until the owner decides how they should be expressed; it also gates 0276's detector. Everything else the criterion names is a role or a utility, and `elevated-frame` went with it.

@@ -13,14 +13,14 @@ export interface PillarScenario<PillarId extends string> {
 	tabLabel: string
 }
 
+// Scenario tabs over a row of pillars: each scenario tells one story across
+// the same columns (intent to outcome, compose to clean up).
 interface PillarScenariosProps<PillarId extends string> {
 	pillars: readonly { id: PillarId; label: string }[]
 	scenarios: readonly PillarScenario<PillarId>[]
 	selectorLabel: string
 }
 
-// Scenario tabs over a row of pillars: each scenario tells one story across
-// the same columns (intent to outcome, compose to clean up).
 export function PillarScenarios<PillarId extends string>(
 	props: PillarScenariosProps<PillarId>,
 ) {

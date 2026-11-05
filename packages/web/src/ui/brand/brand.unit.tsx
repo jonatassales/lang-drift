@@ -10,14 +10,15 @@ describe('web/ui/brand/brand', () => {
 
 		expect(html).toContain('LangDrift')
 		expect(html).toContain('viewBox="0 0 64 64"')
+		expect(html).toContain('text-2xl/none')
 	})
 
 	it('renders compact Brand and LogoMark with custom size', () => {
-		const html = renderToString(<Brand compact tone="dark" />)
+		const html = renderToString(<Brand compact />)
 		const logoHtml = renderToString(<LogoMark size={40} />)
 
-		expect(html).toContain('font-size:18px')
-		expect(html).toContain('color:#f5f5f5')
+		expect(html).toContain('text-lg/none')
+		expect(html).not.toContain('style=')
 		expect(logoHtml).toContain('width="40"')
 		expect(logoHtml).toContain('height="40"')
 	})

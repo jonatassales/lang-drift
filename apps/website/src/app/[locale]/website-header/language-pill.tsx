@@ -5,14 +5,15 @@ import type { MouseEvent } from 'react'
 import { useEffect, useState } from 'react'
 
 import languageLabels from '@i18n/messages/language-labels.json'
-import { getPathname, usePathname } from '@i18n/navigation'
+import { Link, usePathname } from '@i18n/navigation'
 import {
 	LanguageSwitcher,
+	type LanguageSwitcherLinkOption,
 	type LanguageSwitcherLinkProps,
-	type LanguageSwitcherOption,
 } from 'web/ui/language-switcher'
 
-import { drawerFocus } from './drawer-focus'
+import { drawerFocus } from './drawer-focus.state'
+import { persistLanguagePreference } from './persist-language-preference.adapter'
 
 const languages = [
 	{
@@ -49,20 +50,19 @@ export function LanguagePill(props: LanguagePillProps) {
 	const locale = useLocale()
 	const translate = useTranslations('header')
 
-	// Sync the active locale to local storage for returning visitors.
+	// Remembers the active locale for returning visitors, after every switch.
+	// A refused write keeps the visitor navigating: the proxy's cookie still
+	// holds the choice, and routing never reads browser storage.
 	useEffect(() => {
-		try {
-			window.localStorage.setItem('langdrift-website-locale', locale)
-		} catch {
-			// Locale routing does not depend on browser storage.
-		}
+		persistLanguagePreference(locale)
 	}, [locale])
 
 	// Listen for hash and popstate changes to preserve query and hash in language links.
 	useEffect(() => {
-		const syncUrlSuffix = () => {
+		function syncUrlSuffix() {
 			setUrlSuffix(`${window.location.search}${window.location.hash}`)
 		}
+
 		syncUrlSuffix()
 		window.addEventListener('hashchange', syncUrlSuffix)
 		window.addEventListener('popstate', syncUrlSuffix)
@@ -74,13 +74,14 @@ export function LanguagePill(props: LanguagePillProps) {
 	}, [])
 
 	function handleLanguageClick(event: MouseEvent<HTMLAnchorElement>) {
-		if (
+		const modifiedClick =
 			event.button !== 0 ||
 			event.metaKey ||
 			event.ctrlKey ||
 			event.shiftKey ||
 			event.altKey
-		) {
+
+		if (modifiedClick) {
 			return
 		}
 
@@ -92,28 +93,21 @@ export function LanguagePill(props: LanguagePillProps) {
 			return
 		}
 
-		try {
-			window.localStorage.setItem('langdrift-website-locale', nextLocale)
-		} catch {
-			// Language navigation works even when browser storage is unavailable.
-		}
-		if (fromDrawer && nextLocale !== locale) {
-			drawerFocus.locale = nextLocale
-		}
+		const switchFromDrawer = fromDrawer && nextLocale !== locale
+
+		if (switchFromDrawer) drawerFocus.locale = nextLocale
 	}
 
 	function renderLanguageLink(
-		language: LanguageSwitcherOption & { href: string },
+		language: LanguageSwitcherLinkOption,
 		linkProps: LanguageSwitcherLinkProps,
 	) {
 		return (
-			<a
+			<Link
 				{...linkProps}
 				data-locale={language.locale}
-				href={`${getPathname({
-					href: pathname,
-					locale: language.locale,
-				}).replace(/\/?$/, '/')}${urlSuffix}`}
+				href={`${pathname.replace(/\/?$/, '/')}${urlSuffix}`}
+				locale={language.locale}
 				onClick={handleLanguageClick}
 			/>
 		)

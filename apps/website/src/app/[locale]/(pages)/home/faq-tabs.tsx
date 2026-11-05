@@ -2,14 +2,13 @@
 
 import { useId, useState } from 'react'
 
+import type { FaqItemCopy } from '@routes/platform/product-page/faq-item-copy.type'
 import { AnimatedTabs } from 'web/vendors/smoothui/animated-tabs'
 import { BasicAccordion } from 'web/vendors/smoothui/basic-accordion'
 
 // One question of the platform FAQ, as a product catalog states it.
-interface FaqItem {
-	answer: string
+interface FaqItem extends FaqItemCopy {
 	id: string
-	question: string
 }
 
 interface FaqGroup {
@@ -18,13 +17,13 @@ interface FaqGroup {
 	label: string
 }
 
+// One accordion switched between the products' questions. The accordion is
+// mounted only inside the active panel, so a switch shows it collapsed.
 interface FaqTabsProps {
 	groups: readonly FaqGroup[]
 	tabsLabel: string
 }
 
-// One accordion switched between the products' questions. The accordion is
-// mounted only inside the active panel, so a switch shows it collapsed.
 export function FaqTabs(props: FaqTabsProps) {
 	const { groups, tabsLabel } = props
 

@@ -2,7 +2,7 @@ import type {
 	RunLine,
 	StageProgress,
 	WorkflowStageId,
-} from './microruntimes-workflow'
+} from './microruntimes-workflow.types'
 
 // Where a stage stands in a playing run: pending until its first line
 // prints, active while its lines print, done after its last.
@@ -18,6 +18,7 @@ export function stageProgress(
 	const last = indexes.at(-1)
 
 	const missingBounds = first === undefined || last === undefined
+
 	if (missingBounds) return 'pending'
 	if (playedCount > last) return 'done'
 	if (playedCount > first) return 'active'

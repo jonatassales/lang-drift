@@ -3,12 +3,12 @@ import { useTranslations } from 'next-intl'
 import { use } from 'react'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
+import type { EpisodesEnvelope } from '@data/history-envelopes.types'
 import type { ReadResult } from '@data/read-result'
-import type { Episode } from '@data/types'
 import { Link } from '@i18n/navigation'
 
 interface EpisodeEvidenceProps {
-	initial: Promise<ReadResult<{ episodes: Episode[] }>>
+	initial: Promise<ReadResult<EpisodesEnvelope>>
 	ids: string[]
 }
 export function EpisodeEvidence(props: EpisodeEvidenceProps) {

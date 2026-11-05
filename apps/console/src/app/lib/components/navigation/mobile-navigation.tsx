@@ -1,6 +1,6 @@
 'use client'
 import { useTranslations } from 'next-intl'
-import { type ReactNode, useEffect, useState } from 'react'
+import { type ReactNode, useState } from 'react'
 
 import { useMobileViewport } from '@components/dialog/use-mobile-viewport.hook'
 import { useReturnFocus } from '@components/dialog/use-return-focus.hook'
@@ -11,6 +11,7 @@ import { List, X } from 'web/ui/icons/client'
 interface MobileNavigationProps {
 	children: ReactNode
 }
+
 export function MobileNavigation(props: MobileNavigationProps) {
 	const { children } = props
 
@@ -19,9 +20,6 @@ export function MobileNavigation(props: MobileNavigationProps) {
 	const focus = useReturnFocus()
 	const translate = useTranslations('ui')
 	const pathname = usePathname()
-	useEffect(() => {
-		if (openPath !== pathname) setOpenPath(null)
-	}, [pathname, openPath])
 
 	function openNavigation() {
 		setOpenPath(pathname)
@@ -35,9 +33,12 @@ export function MobileNavigation(props: MobileNavigationProps) {
 		if (!nextOpen) closeNavigation()
 	}
 
-	// The drawer exists below sm only: growing past it closes the drawer for
-	// good, so it does not reopen when the viewport narrows again.
-	if (!mobile && openPath) setOpenPath(null)
+	// The drawer belongs to the page and the viewport it opened on: a
+	// navigation closes it, and growing past sm closes it for good, so it does
+	// not reopen when the viewport narrows again or the visitor comes back.
+	const stale = openPath !== null && (!mobile || openPath !== pathname)
+
+	if (stale) setOpenPath(null)
 
 	const open = openPath === pathname
 

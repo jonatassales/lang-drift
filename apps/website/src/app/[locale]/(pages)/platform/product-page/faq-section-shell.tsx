@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 
 import { cn } from 'web/utilities'
 
+// The home's FAQ landmark: a heading, a lead and the answers that follow.
 interface FaqSectionShellProps {
 	children: ReactNode
 	/** Overrides the landmark's width where a page sets its own, as the home does. */
@@ -10,7 +11,6 @@ interface FaqSectionShellProps {
 	title: string
 }
 
-// The home's FAQ landmark: a heading, a lead and the answers that follow.
 export function FaqSectionShell(props: FaqSectionShellProps) {
 	const { children, className, description, title } = props
 

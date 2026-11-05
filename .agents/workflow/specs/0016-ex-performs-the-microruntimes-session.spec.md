@@ -2,6 +2,8 @@
 
 **Status:** ready-for-agent
 
+> **Note, 2026-11-05.** The owner closed 0105 as won't fix: 0225 (spec 0045) superseded it by bringing the runtime up before the first stage.
+
 ## Problem Statement
 
 The Microruntimes page opens with a simulated `ex` session: a terminal types `ex agent plan <ticket>` and prints 43 lines, then `ex agent run` and prints 23 more, while four cards beside it, Ticket, Analysis, Plan and Workflow, fill in as the lines print. Spec 0014 brought the same four phases into the console as read-only listings fed by a stub. Nothing performs that session. The `ex` CLI still writes the layout it arrived with (`.langdrift/state/`, `.langdrift/runtimes/<id>/`, evidence outside the folder), `ex init` drops a 103-file scaffold of skills, templates, rules and a workflow proposal that LangDrift no longer prescribes, and no Go code knows a plan, a lap, a ledger, an episode or a judgement. The committed `.langdrift/` sample of ticket 0069 shows the files such a session should leave behind, and no code reads or writes them. A developer who wants to see the product do what the site shows has nothing to run.

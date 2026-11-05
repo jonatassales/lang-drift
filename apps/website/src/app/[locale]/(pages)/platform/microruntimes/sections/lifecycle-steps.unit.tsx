@@ -1,33 +1,16 @@
 // @vitest-environment jsdom
 
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { createStore, Provider } from 'jotai'
+import { cleanup, fireEvent, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
-import { microruntimesMessages } from '@i18n/messages/index'
+import { mountLifecycleSteps } from '@routes/platform/microruntimes/sections/testdata/mount-lifecycle-steps.mock'
 import { selectedLifecycleStageAtom } from '@state'
-
-import { LifecycleSteps } from './lifecycle-steps'
-import { StageEvidence } from './stage-evidence'
 
 afterEach(cleanup)
 
-function mount() {
-	const store = createStore()
-	const copy = microruntimesMessages.en
-	render(
-		<Provider store={store}>
-			<LifecycleSteps copy={copy.lifecycle} />
-			<StageEvidence copy={copy.evidence} stageLabels={copy.lifecycle.stages} />
-		</Provider>,
-	)
-
-	return store
-}
-
-describe('Microruntimes lifecycle steps', () => {
+describe('website/platform/microruntimes/sections/lifecycle-steps', () => {
 	it('moves the current step and the evidence record together', () => {
-		const store = mount()
+		const store = mountLifecycleSteps()
 		const prepare = screen.getByRole('button', { name: /Prepare/ })
 		expect(prepare.getAttribute('aria-current')).toBeNull()
 		fireEvent.click(prepare)

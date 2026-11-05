@@ -2,6 +2,8 @@
 
 **Status:** ready-for-agent
 
+> **Note, 2026-11-05.** The owner closed 0276 as won't fix: the work goes to the published packages, `@langdrift/cli` and `@langdrift/core`, until the runtime runs.
+
 ## Tickets
 
 - [ ] 0272: the pill button and the text link are shared primitives

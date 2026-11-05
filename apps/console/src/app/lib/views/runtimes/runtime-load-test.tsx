@@ -2,10 +2,11 @@
 import { useFormatter, useTranslations } from 'next-intl'
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
 
-import { useDateTime } from '@app/template/formatters/date-time.hook'
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { consoleRequest } from '@data/api'
+import type { LoadTestEnvelope } from '@data/runtime-envelopes.types'
 import type { RuntimeLoadTestResult, RuntimeWidgetSnapshot } from '@data/types'
+import { useDateTime } from '@i18n/use-date-time.hook'
 import { Button } from 'web/ui/button'
 
 import { isLoadTestResult } from './load-test-result'
@@ -61,13 +62,14 @@ export function RuntimeLoadTest(props: RuntimeLoadTestProps) {
 		setError(null)
 		startTransition(async () => {
 			try {
-				const response = await consoleRequest<{
-					loadTest: RuntimeLoadTestResult
-				}>(`runtimes/${snapshot.runtime.id}/load-test`, {
-					method: 'POST',
-					body: '{}',
-					signal: request.signal,
-				})
+				const response = await consoleRequest<LoadTestEnvelope>(
+					`runtimes/${snapshot.runtime.id}/load-test`,
+					{
+						method: 'POST',
+						body: '{}',
+						signal: request.signal,
+					},
+				)
 
 				if (!isLoadTestResult(response.loadTest))
 					throw new Error('invalid_load_test')

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0236.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] The transport parks an unreadable entry through the parse result, with a test.
 - [ ] The orb and the shader expose their fallback in markup, with a test each.

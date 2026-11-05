@@ -114,7 +114,7 @@ check_modules() {
 
 check_exports() {
   for workspace in $workspaces; do
-    git ls-files -- "$workspace/src" | grep -E '\.(ts|tsx)$' | grep -v -E '\.(unit|test|mock)\.' |
+    git ls-files -- "$workspace/src" | grep -E '\.(ts|tsx)$' | grep -v -E '\.(unit|test|mock)\.|/testdata/' |
       while IFS= read -r module; do
         sed -n -E 's/^export (async )?(function|const|let|class|enum) ([A-Za-z0-9_]+).*/\3/p' "$module" |
           while IFS= read -r name; do

@@ -1,3 +1,5 @@
+import type { FaqItemCopy } from '@routes/platform/product-page/faq-item-copy.type'
+
 import type {
 	categoryIds,
 	evidenceIds,
@@ -37,11 +39,6 @@ export interface SafeSeatTermCopy {
 export interface SafeSeatEvidenceItemCopy extends SafeSeatTitledCopy {
 	source: string
 	limit: string
-}
-
-export interface SafeSeatQuestionCopy {
-	question: string
-	answer: string
 }
 
 export interface SafeSeatSectionCopy {
@@ -91,7 +88,7 @@ export interface SafeSeatSourcesCopy extends SafeSeatSectionCopy {
 }
 
 export interface SafeSeatFaqCopy {
-	items: Record<SafeSeatFaqId, SafeSeatQuestionCopy>
+	items: Record<SafeSeatFaqId, FaqItemCopy>
 }
 
 export interface SafeSeatMessages {

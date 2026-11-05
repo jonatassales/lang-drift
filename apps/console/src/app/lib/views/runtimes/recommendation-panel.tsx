@@ -7,10 +7,11 @@ import { ErrorNotice } from '@components/error-notice/error-notice'
 import { fieldClass, labelClass } from '@components/form-styles/form-styles'
 import { EvidenceSkeleton } from '@components/route-state/evidence-skeleton'
 import { ConsoleError, consoleRequest } from '@data/api'
+import type { EpisodesEnvelope } from '@data/history-envelopes.types'
 import { type ReadResult, readResult } from '@data/read-result'
+import type { RecommendationEnvelope } from '@data/runtime-envelopes.types'
 import type {
 	Component,
-	Episode,
 	Recommendation,
 	RuntimeConfiguration,
 } from '@data/types'
@@ -19,6 +20,12 @@ import { Button } from 'web/ui/button'
 import { Card } from 'web/ui/card'
 
 import { RecommendationAccounting } from './recommendation-accounting'
+
+// The ticket file a person dropped on the panel, read as text.
+interface TicketFile {
+	markdown: string
+	name: string
+}
 
 interface RecommendationPanelProps {
 	endpoint: string
@@ -46,15 +53,9 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 		null,
 	)
 	const [evidence, setEvidence] = useState<Promise<
-		ReadResult<{ episodes: Episode[] }>
+		ReadResult<EpisodesEnvelope>
 	> | null>(null)
-	const [ticket, setTicket] = useState<
-		| {
-				name: string
-				markdown: string
-		  }
-		| undefined
-	>()
+	const [ticket, setTicket] = useState<TicketFile | undefined>()
 	const [reading, setReading] = useState(false)
 	const [error, setError] = useState<unknown>(null)
 	const [pending, startTransition] = useTransition()
@@ -111,9 +112,7 @@ export function RecommendationPanel(props: RecommendationPanelProps) {
 		setError(null)
 		startTransition(async () => {
 			try {
-				const result = await consoleRequest<{
-					recommendation: Recommendation
-				}>(endpoint, {
+				const result = await consoleRequest<RecommendationEnvelope>(endpoint, {
 					method: 'POST',
 					signal: controller.signal,
 					body: JSON.stringify({

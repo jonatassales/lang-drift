@@ -6,7 +6,7 @@
 
 **Blocked by:** 0292, 0293, 0294, 0295, 0296, 0297.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] `platform/cli/drift quality check jotai` reports nothing.
 - [ ] `platform/cli/drift quality coverage jotai` stays at 100%.

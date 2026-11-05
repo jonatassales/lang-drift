@@ -1,9 +1,9 @@
+// The sentence a platform product page puts under its heading, in two lines.
 interface ProductTaglineProps {
 	end: string
 	start: string
 }
 
-// The sentence a platform product page puts under its heading, in two lines.
 export function ProductTagline(props: ProductTaglineProps) {
 	const { end, start } = props
 

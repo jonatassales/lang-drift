@@ -6,7 +6,7 @@
 
 **Blocked by:** 0261, 0277.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] The file-suffix detector reports nothing in the packages.
 - [ ] No import path breaks and no export is renamed beyond the spec's calls.

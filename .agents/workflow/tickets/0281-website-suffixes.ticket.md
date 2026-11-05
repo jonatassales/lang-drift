@@ -8,8 +8,18 @@
 
 **Status:** ready-for-agent
 
-- [ ] The file-suffix detector reports nothing in the website.
-- [ ] No import path breaks and no export is renamed beyond the spec's calls.
+- [x] The file-suffix detector reports nothing in the website.
+- [x] No import path breaks and no export is renamed beyond the spec's calls.
+
+> **Note, 2026-11-05.** The file-suffix detector is ticket 0277's. Until it exists, a script applies its definition: a tracked `.ts` file under `src/` that is not a test, an `index.ts`, a declaration or a framework file must carry a suffix from the TypeScript or Nest table. Under that check, the website keeps three files without one: `template/i18n/routing.ts`, `navigation.ts` and `request.ts`. They are next-intl's file conventions, and rule 06's tree names them. The calls this ticket made:
+> - The metadata companions are `page-metadata.map.ts`, `layout-metadata.map.ts` and `not-found-metadata.map.ts`, the spec's call. The rule that a file names its export would want `generate-metadata`, which collides in `[locale]/`; that is the owner's to overturn. `generateStaticParams` is `generate-static-params.compute.ts`, after its export, since rules outrank the spec's `layout-static-params`.
+> - The response builder is `book-demo-reply.map.ts`.
+> - The five guards that are not Zod schemas (`triple`, `declares-oversized-body`, `is-plain-json`, `is-foreign-request` and `is-book-demo-error-code`) are `.compute`. The last moves beside the error codes it guards, in the book-a-demo route. `socialImages`, which awaits the parent metadata, is `.adapter`.
+> - `drawerFocus` is `.state`. `ticketCardFormat` builds locale formatters without side effects, so it is `.compute`.
+> - `position-ids`, the three content modules and the book-a-demo error codes are `.data`, holding only data. The error codes leave `form.types.ts`, and the content modules' types move to sibling `.types.ts` files.
+> - `platform-products` splits into its data and a `platformProduct` lookup.
+> - The content modules and `page-metadata` lose their re-exports, and their consumers import each helper from its own module.
+> - The FAQ copy shape, which finops, microruntimes and safe-seat each named, is one `FaqItemCopy` in `product-page/`.
 
 ## Dev part
 

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0246.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] Each new detector prints exactly the known violations of its class in the tree at its commit.
 - [ ] `platform/cli/drift quality detectors` covers the two new awk programs.

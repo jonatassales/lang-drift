@@ -6,7 +6,7 @@
 
 **Blocked by:** 0263, 0265.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] `drift check commit-rules` passes with accepted and rejected fixtures, each rejection naming its part.
 - [ ] A commit with a capitalized subject, two scopes or a trailing period is refused by the hook.

@@ -1,9 +1,7 @@
-import {
-	headroom,
-	revealed,
-	suggestedTotals,
-	ticketPlan,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+import { headroom } from '@routes/platform/microruntimes/content/headroom.compute'
+import { ticketPlan } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import { revealed } from '@routes/platform/microruntimes/content/revealed.compute'
+import { suggestedTotals } from '@routes/platform/microruntimes/content/suggested-totals.compute'
 import { Eyebrow } from 'web/ui/eyebrow'
 import { ShareBar } from 'web/ui/share-bar'
 import { cn } from 'web/utilities'
@@ -12,15 +10,12 @@ import { CardSection } from './card-section'
 import { CardValue, type CardValueState, revealState } from './card-value'
 import { ComponentsManifest } from './components-manifest'
 import { resolvedComponents } from './resolved-components.compute'
-import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
+import type {
+	TicketCardCopy,
+	TicketCardFormat,
+} from './ticket-card-format.compute'
 
 export { planSummary } from './plan-summary.compute'
-
-interface PlanCardProps {
-	copy: TicketCardCopy
-	format: TicketCardFormat
-	playedCount: number
-}
 
 interface ReportCell {
 	detail: string
@@ -41,6 +36,12 @@ const fade =
 // and the validation it passed, closed by the evidence it leaves. Every
 // figure is a proposal pending the team's authorization, which the card's
 // only live region announces once, when the plan is drafted.
+interface PlanCardProps {
+	copy: TicketCardCopy
+	format: TicketCardFormat
+	playedCount: number
+}
+
 export function PlanCard(props: PlanCardProps) {
 	const { copy, format, playedCount } = props
 

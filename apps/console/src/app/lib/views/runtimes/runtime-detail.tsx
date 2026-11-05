@@ -3,16 +3,17 @@
 import { useFormatter, useTranslations } from 'next-intl'
 import { Suspense, useState, useTransition } from 'react'
 
-import { useDateTime } from '@app/template/formatters/date-time.hook'
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { linkClass } from '@components/form-styles/form-styles'
 import { PageHeading } from '@components/page-heading/page-heading'
 import { FieldSkeleton } from '@components/route-state/field-skeleton'
 import { StatusLabel } from '@components/status-label/status-label'
 import { mutation } from '@data/api'
+import type { ProductEnvelope } from '@data/product-envelopes.types'
 import { useResource } from '@data/resource.hook'
-import type { Product, RuntimeDetailSnapshot } from '@data/types'
+import type { RuntimeDetailSnapshot } from '@data/types'
 import { Link } from '@i18n/navigation'
+import { useDateTime } from '@i18n/use-date-time.hook'
 import { ExecutionTable } from '@views/executions/execution-table'
 import { Button } from 'web/ui/button'
 import { Card } from 'web/ui/card'
@@ -29,7 +30,7 @@ import { useStubStream } from './stub-stream.hook'
 interface RuntimeDetailProps {
 	initial: Promise<RuntimeDetailSnapshot>
 	id: string
-	productInitial: Promise<{ product: Product }>
+	productInitial: Promise<ProductEnvelope>
 }
 
 export function RuntimeDetail(props: RuntimeDetailProps) {

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0104, 0101.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by 0225, which brings the runtime up before the first stage.
 
 - [ ] With a fake lifecycle reporting 410 millicores and 690 MiB peaks and a fake delivery observer returning the website's branch, hash, pull request 19 and four checks, lines 15 and 17 to 23 print with the sample's figures, and the whole `.langdrift/` tree of the reproduced session equals the expected fixture except the private state.
 - [ ] The lap's fence carries the runtime id, revision and markdown hash, and the memory fence's observed peaks and tokens match the ledger.

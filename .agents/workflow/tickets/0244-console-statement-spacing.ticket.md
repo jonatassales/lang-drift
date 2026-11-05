@@ -6,7 +6,7 @@
 
 **Blocked by:** 0242.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] `platform/cli/drift quality check general` prints no finding under `apps/console`.
 - [ ] `pnpm turbo run check typecheck test build --filter=console` passes.

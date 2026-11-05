@@ -1,19 +1,18 @@
 import { Link } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
-import {
-	type FinopsMessages,
-	sourceIds,
-} from '@routes/platform/finops/content/finops-content'
+import { sourceIds } from '@routes/platform/finops/content/finops-content.data'
+import type { FinopsMessages } from '@routes/platform/finops/content/finops-content.types'
 import { Eyebrow } from 'web/ui/eyebrow'
+import { TextLink } from 'web/ui/text-link'
 
+// What would feed the ledger, as a plain list under a label that says the
+// sources are intended, closed by the line that says a missing one stays
+// visible as a gap.
 interface SourceListProps {
 	copy: FinopsMessages['sources']
 	locale: WebsiteLocale
 }
 
-// What would feed the ledger, as a plain list under a label that says the
-// sources are intended, closed by the line that says a missing one stays
-// visible as a gap.
 export function SourceList(props: SourceListProps) {
 	const { copy, locale } = props
 
@@ -33,13 +32,11 @@ export function SourceList(props: SourceListProps) {
 							{copy.items[id].description}
 						</span>
 						{id === 'microruntimes' && (
-							<Link
-								className="smooth-text-link mt-1 justify-self-start focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
-								href="/platform/microruntimes"
-								locale={locale}
-							>
-								{copy.items.microruntimes.link}
-							</Link>
+							<TextLink asChild className="mt-1 justify-self-start">
+								<Link href="/platform/microruntimes" locale={locale}>
+									{copy.items.microruntimes.link}
+								</Link>
+							</TextLink>
 						)}
 					</li>
 				))}

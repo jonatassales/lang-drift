@@ -1,27 +1,27 @@
 import {
 	documentIds,
-	revealed,
 	ticketPlan,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+} from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import { revealed } from '@routes/platform/microruntimes/content/revealed.compute'
 import { DetailList } from 'web/ui/detail-list'
 import { Eyebrow } from 'web/ui/eyebrow'
 
 import { CardSection } from './card-section'
 import { CardValue, revealState } from './card-value'
-import type { TicketCardCopy } from './ticket-card-format'
+import type { TicketCardCopy } from './ticket-card-format.compute'
 
 export { ticketSummary } from './ticket-summary.compute'
-
-interface TicketCardProps {
-	copy: TicketCardCopy
-	playedCount: number
-}
 
 const fileName = 'font-mono text-[12px]'
 
 // The ticket as the agent reads it: its number, slug, status and title,
 // then the artifacts it links, which land once the agent has read the
 // ticket. The reads themselves belong to the analysis card.
+interface TicketCardProps {
+	copy: TicketCardCopy
+	playedCount: number
+}
+
 export function TicketCard(props: TicketCardProps) {
 	const { copy, playedCount } = props
 

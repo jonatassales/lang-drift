@@ -1,48 +1,30 @@
-import type { CSSProperties } from 'react'
+import { cn } from 'web/utilities'
 
 import { LogoMark } from './logo-mark'
 
+// The LangDrift mark and wordmark, in the color of the text around them.
 export interface BrandProps {
 	className?: string
 	compact?: boolean
-	/** A fixed wordmark color; without it the wordmark takes the surrounding text color. */
-	tone?: 'dark' | 'light'
-}
-
-// The fixed wordmark colors a caller can ask for by tone.
-const toneColor: Record<NonNullable<BrandProps['tone']>, string> = {
-	dark: '#f5f5f5',
-	light: '#111111',
-}
-
-const wordmarkStyle: CSSProperties = {
-	letterSpacing: '-0.055em',
-	lineHeight: 1,
 }
 
 export function Brand(props: BrandProps) {
-	const { className, compact = false, tone } = props
-
-	const textColor = tone ? toneColor[tone] : undefined
+	const { className, compact = false } = props
 
 	return (
 		<span
-			className={className}
-			style={{
-				alignItems: 'center',
-				color: textColor,
-				display: 'inline-flex',
-				fontFamily: 'var(--lg-typography-font-body)',
-				fontWeight: 650,
-				gap: compact ? '8px' : '11px',
-			}}
+			className={cn(
+				'inline-flex items-center font-sans font-[650]',
+				compact ? 'gap-2' : 'gap-2.75',
+				className,
+			)}
 		>
 			<LogoMark size={compact ? 23 : 30} />
 			<span
-				style={{
-					...wordmarkStyle,
-					fontSize: compact ? 18 : 24,
-				}}
+				className={cn(
+					'tracking-[-0.055em]',
+					compact ? 'text-lg/none' : 'text-2xl/none',
+				)}
 			>
 				LangDrift
 			</span>
