@@ -11,6 +11,8 @@
 - [ ] No `.css` file holds a selector or element rule.
 - [ ] `platform/cli/drift quality check tailwind` reports nothing.
 
+> **Note, 2026-11-05.** `smoothui.css` and its import left anyway, with the CI fix of #146: once 0275 moved the website to the shared primitives, `drift quality dead-code` reported its three classes as unused. The drift rows this ticket adds stay won't fix.
+
 ## Dev part
 
 **Override:** No part qualifies: detector rows are patterns in the existing table, configuration rather than a problem with its own goal (policy, Categories). 2026-11-04.
