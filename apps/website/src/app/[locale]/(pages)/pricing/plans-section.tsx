@@ -44,7 +44,7 @@ export function PlansSection(props: PlansSectionProps) {
 					{copy.introduction}
 				</p>
 			</div>
-			<div className="mx-auto grid max-w-[640px] grid-cols-[minmax(0,1fr)] justify-center gap-4.5 lg:mx-0 lg:max-w-none lg:grid-cols-[repeat(auto-fit,minmax(280px,390px))]">
+			<div className="mx-auto grid max-w-[640px] grid-cols-[minmax(0,1fr)] justify-center gap-4.5 lg:mx-0 lg:max-w-none lg:grid-cols-3">
 				{planIds.map((id) => {
 					const plan = copy.cards[id]
 
