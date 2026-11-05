@@ -41,8 +41,7 @@ export default async function LocaleLayout(props: LocaleLayoutProps) {
 	return (
 		<html
 			lang={locale}
-			className="dark scroll-pt-24 scroll-smooth bg-background font-sans text-foreground motion-reduce:scroll-auto"
-			style={{ colorScheme: 'dark' }}
+			className="dark scroll-pt-24 scroll-smooth bg-background font-sans text-foreground scheme-light motion-reduce:scroll-auto dark:scheme-dark"
 			suppressHydrationWarning
 		>
 			<body

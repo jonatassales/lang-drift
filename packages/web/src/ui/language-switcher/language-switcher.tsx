@@ -59,7 +59,7 @@ export type LanguageSwitcherProps<Locale extends string = string> =
 	| ActionLanguageSwitcherProps<Locale>
 
 const optionClassName =
-	'inline-flex min-h-[1.7rem] cursor-pointer items-center justify-center whitespace-nowrap rounded-full border-0 bg-transparent px-[0.7rem] text-[0.72rem] font-[650] leading-normal tracking-[0.04em] text-muted-foreground no-underline transition-colors duration-180 hover:text-foreground focus-visible:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-foreground! aria-[current=page]:bg-[color-mix(in_srgb,var(--background)_88%,transparent)] aria-[current=page]:text-foreground aria-pressed:bg-[color-mix(in_srgb,var(--background)_88%,transparent)] aria-pressed:text-foreground disabled:cursor-wait disabled:opacity-60 motion-reduce:transition-none'
+	'inline-flex min-h-[1.7rem] cursor-pointer items-center justify-center whitespace-nowrap rounded-full border-0 bg-transparent px-[0.7rem] text-[0.72rem] font-[650] leading-normal tracking-[0.04em] text-muted-foreground no-underline transition-colors duration-180 hover:text-foreground focus-visible:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-foreground! aria-[current=page]:bg-background/88 aria-[current=page]:text-foreground aria-pressed:bg-background/88 aria-pressed:text-foreground disabled:cursor-wait disabled:opacity-60 motion-reduce:transition-none'
 
 export function LanguageSwitcher<Locale extends string>(
 	props: LanguageSwitcherProps<Locale>,
@@ -186,7 +186,7 @@ export function LanguageSwitcher<Locale extends string>(
 		<Container
 			aria-label={label}
 			className={cn(
-				'inline-flex w-max max-w-full shrink-0 flex-nowrap items-center rounded-full border border-[color-mix(in_srgb,var(--border)_80%,transparent)] bg-[color-mix(in_srgb,var(--card)_72%,transparent)] p-[0.2rem] shadow-[0_8px_32px_color-mix(in_srgb,var(--foreground)_8%,transparent)] backdrop-blur-lg',
+				'inline-flex w-max max-w-full shrink-0 flex-nowrap items-center rounded-full border border-border/80 bg-card/72 p-[0.2rem] shadow-[0_8px_32px] shadow-foreground/8 backdrop-blur-lg',
 				className,
 			)}
 			data-state={open ? 'open' : 'idle'}
@@ -203,7 +203,7 @@ export function LanguageSwitcher<Locale extends string>(
 				aria-label={`${label}: ${currentOption?.name ?? currentLocale}`}
 				className={cn(
 					optionClassName,
-					'shrink-0 bg-[color-mix(in_srgb,var(--background)_88%,transparent)] text-foreground',
+					'shrink-0 bg-background/88 text-foreground',
 				)}
 				disabled={props.disabled}
 				onClick={handleTriggerClick}

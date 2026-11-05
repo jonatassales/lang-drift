@@ -2,16 +2,16 @@ import { conversionMessages } from '@i18n/messages/index'
 import { Link } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
 import { ProductBadge } from '@layout/product-badge'
+import { Button } from 'web/ui/button'
+import { TextLink } from 'web/ui/text-link'
 
 const planIds = ['starter', 'plus', 'pro'] as const
 
-// Transitional: !flex, !min-h-11, !justify-between, !px-[15px], !py-3 beat SmoothUI smooth-primary-button defaults
 const planCtaClass =
-	'smooth-primary-button !flex !min-h-11 !justify-between gap-3 !px-[15px] !py-3 text-[13px] leading-normal no-underline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary'
+	'flex min-h-11 justify-between px-[15px] py-3 leading-normal whitespace-normal'
 
-// Transitional: !text-xs beats SmoothUI smooth-text-link 13px font
 const availabilityLinkClass =
-	'smooth-text-link inline-flex min-h-11 items-center gap-2.5 !text-xs focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary'
+	'inline-flex min-h-11 items-center gap-2.5 text-xs'
 
 interface PlansSectionProps {
 	locale: WebsiteLocale
@@ -82,12 +82,14 @@ export function PlansSection(props: PlansSectionProps) {
 									))}
 								</ul>
 							</div>
-							<Link className={planCtaClass} href="/book-a-demo">
-								{plan.cta}
-								<span aria-hidden="true" className="shrink-0">
-									↗
-								</span>
-							</Link>
+							<Button asChild className={planCtaClass} variant="pill">
+								<Link href="/book-a-demo">
+									{plan.cta}
+									<span aria-hidden="true" className="shrink-0">
+										↗
+									</span>
+								</Link>
+							</Button>
 						</article>
 					)
 				})}
@@ -96,10 +98,12 @@ export function PlansSection(props: PlansSectionProps) {
 				<p className="m-0 max-w-[730px] text-xs leading-[1.65] text-muted-foreground">
 					{copy.availability}
 				</p>
-				<Link className={availabilityLinkClass} href="/#faq">
-					{copy.faqLink}
-					<span aria-hidden="true">→</span>
-				</Link>
+				<TextLink asChild className={availabilityLinkClass}>
+					<Link href="/#faq">
+						{copy.faqLink}
+						<span aria-hidden="true">→</span>
+					</Link>
+				</TextLink>
 			</div>
 		</section>
 	)

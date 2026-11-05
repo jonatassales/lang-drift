@@ -54,10 +54,9 @@ export function WebsiteHeader() {
 	const translate = useTranslations('header')
 	const [theme, setTheme] = useAtom(themeAtom)
 
-	// Sync document theme classes and meta theme-color with theme state.
+	// Sync the document's dark class and meta theme-color with theme state.
 	useEffect(() => {
 		document.documentElement.classList.toggle('dark', theme === 'dark')
-		document.documentElement.style.colorScheme = theme
 		document
 			.querySelector('meta[name="theme-color"]')
 			?.setAttribute('content', theme === 'dark' ? '#0b0b0c' : '#f7f6f2')
@@ -98,9 +97,9 @@ export function WebsiteHeader() {
 				<div className="mx-auto grid min-h-17.5 max-w-[1280px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-[clamp(18px,3vw,36px)] md:min-h-20 md:gap-5 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
 					<div className="flex items-center gap-5 justify-self-start">
 						<Link aria-label={translate('home')} className={brandLink} href="/">
-							<Brand className="website-header-brand" compact tone={theme} />
+							<Brand className="text-foreground" compact />
 						</Link>
-						<div className="website-header-language">
+						<div>
 							<LanguagePill />
 						</div>
 					</div>
@@ -193,7 +192,7 @@ export function WebsiteHeader() {
 						href="/"
 						onClick={closeDrawer}
 					>
-						<Brand compact tone={theme} />
+						<Brand className="text-foreground" compact />
 					</Link>
 					<button
 						aria-label={translate('closeNavigation')}

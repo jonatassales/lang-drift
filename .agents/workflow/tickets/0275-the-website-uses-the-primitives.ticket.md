@@ -8,9 +8,15 @@
 
 **Status:** ready-for-agent
 
-- [ ] No `smooth-` class and no "Transitional" comment remains in the website.
-- [ ] The website manifest lists neither `clsx` nor `tailwind-merge`.
-- [ ] Captures of the affected pages match, recorded under `.audits/`.
+- [x] No `smooth-` class and no "Transitional" comment remains in the website.
+- [x] The website manifest lists neither `clsx` nor `tailwind-merge`.
+- [x] Captures of the affected pages match, recorded under `.audits/`.
+
+> **Note, 2026-11-05.** The captures compare computed styles, not pixels, before and after, in a local audit. They cover every element this ticket moved, the header wordmark and `<html>`, on the home, FinOps, Microruntimes and pricing pages at 1280px and 375px, in dark and light.
+> - Every width and height matches.
+> - Only notations differ: the underline colour as `oklab` instead of `srgb`, the CTA radius as `rounded-full` instead of 999px, and a zero-width border style. The pill CTAs keep SmoothUI's 7px gap and wrapping, and the submit does not dim while submitting.
+> - Hover and focus states and the Book a Demo form, paused, are not measured.
+> - `.audits/` is missing from `.gitignore`, although rule 10 says it is ignored.
 
 ## Dev part
 

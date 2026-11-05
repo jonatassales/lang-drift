@@ -22,6 +22,9 @@ const buttonVariants = cva(
 				ghost:
 					'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
 				link: 'text-primary underline-offset-4 hover:underline',
+				// The site's call to action: a filled pill that lifts on hover and takes
+				// the site's focus outline instead of the shadcn ring.
+				pill: 'gap-1.75 rounded-full bg-primary text-[13px] font-[650] text-primary-foreground transition-[translate,filter] duration-180 ease-[ease] hover:-translate-y-px hover:saturate-118 motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:ring-0 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary',
 			},
 			size: {
 				default: 'h-9 px-4 py-2 has-[>svg]:px-3',
@@ -34,6 +37,13 @@ const buttonVariants = cva(
 				'icon-lg': 'size-10',
 			},
 		},
+		compoundVariants: [
+			{
+				variant: 'pill',
+				size: 'default',
+				className: 'h-auto min-h-9.5 px-4.25 py-0 has-[>svg]:px-4.25',
+			},
+		],
 		defaultVariants: {
 			variant: 'default',
 			size: 'default',
