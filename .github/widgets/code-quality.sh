@@ -9,7 +9,7 @@ set -eu
 # quality coverage measures it. Its detectors are patterns, and the Code Quality
 # check run is an active, required CI gate.
 
-coverage=$("$DRIFT_PROJECT_ROOT/packages/drift/drift" quality coverage) ||
+coverage=$("$DRIFT_PROJECT_ROOT/packages/drift/drift.sh" quality coverage) ||
   drift_die "drift quality coverage could not measure the rules."
 
 cat <<EOF_WIDGET

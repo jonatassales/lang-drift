@@ -39,7 +39,7 @@ Run from the repository root:
 | `pnpm turbo run check` | Runs Biome format, lint and import checks on the whole repository. Read-only. |
 | `pnpm turbo run fix` | Same as `check`, writing safe fixes. Review the diff afterwards. |
 | `pnpm exec ex …` | The pinned `@langdrift/cli` at the root, the same `ex` a consumer installs. |
-| `lib/cli/dist/ex …` | The Microruntimes session in a project (`@langdrift/cli` ships a `bin/ex` launcher and prebuilt binaries on npm for `npx @langdrift/cli …` / `pnpm dlx @langdrift/cli …`): `ex init`, the `ex harness` and `ex finops` inputs, then `ex agent plan`, `ex agent run`, `ex agent confirm`, `ex agent status` and `ex agent reindex`. `lib/cli/README.md` has the command table. |
+| `lib/cli/dist/ex …` | The Microruntimes session in a project (`@langdrift/cli` ships a `bin/ex.sh` launcher and prebuilt binaries on npm for `npx @langdrift/cli …` / `pnpm dlx @langdrift/cli …`): `ex init`, the `ex harness` and `ex finops` inputs, then `ex agent plan`, `ex agent run`, `ex agent confirm`, `ex agent status` and `ex agent reindex`. `lib/cli/README.md` has the command table. |
 
 The website needs `CRYPTO_SECRET` for encrypted locale cookies, in every environment: a developer keeps a local key in the untracked `apps/website/.env`, and deployed environments set a canonical 32-byte key; `apps/website/README.md` says how to generate one for a deployment.
 
@@ -49,7 +49,7 @@ The website needs `CRYPTO_SECRET` for encrypted locale cookies, in every environ
 
 ## Platform CLI
 
-`packages/drift/drift` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `reset`, `check biome|localization|workflows`, `env setup|validate`, `git setup|doctor|pre-commit|commit-msg|lint-history`, `quality check|coverage|dead-code` and `widget check-run|sticky-comment`. The `widget` commands serve the workflows (see Continuous integration) and need `gh` and `jq`.
+`packages/drift/drift.sh` is the repository's POSIX shell CLI. `pnpm install` links it into your bin directory as `drift` (`PNPM_HOME`, `XDG_BIN_HOME` or `~/.local/bin`; skipped in CI), so `drift` runs from anywhere. `drift --help` lists the commands: `setup`, `doctor`, `cleanup`, `reset`, `check biome|localization|workflows`, `env setup|validate`, `git setup|doctor|pre-commit|commit-msg|lint-history`, `quality check|coverage|dead-code` and `widget check-run|sticky-comment`. The `widget` commands serve the workflows (see Continuous integration) and need `gh` and `jq`.
 
 `drift env setup` creates each `.env` from its tracked `.env.development`, and `drift env validate` checks that each `.env.development` has its `.env`.
 
@@ -180,8 +180,8 @@ A job in `pull-request.yml`, whose top-level `permissions:` stays `contents: rea
           WIDGET_SHA: ${{ github.event.pull_request.head.sha }}
           WIDGET_PULL_REQUEST: ${{ github.event.pull_request.number }}
         run: |
-          packages/drift/drift widget check-run 'Validate report' success 'All checks passed' <report.md
-          packages/drift/drift widget sticky-comment validate-report <report.md
+          packages/drift/drift.sh widget check-run 'Validate report' success 'All checks passed' <report.md
+          packages/drift/drift.sh widget sticky-comment validate-report <report.md
 ```
 
 ### Artifacts

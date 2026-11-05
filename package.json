@@ -12,7 +12,7 @@
 		}
 	},
 	"scripts": {
-		"postinstall": "sh packages/drift/drift setup",
+		"postinstall": "sh packages/drift/drift.sh setup",
 		"prepare": "husky packages/drift/.husky",
 		"website": "turbo run dev --filter=website",
 		"console": "turbo run dev --filter=console",

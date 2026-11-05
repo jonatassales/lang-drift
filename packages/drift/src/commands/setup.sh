@@ -27,7 +27,7 @@ drift_queue_scene "$DRIFT_ICON_SETUP" "$DRIFT_SETUP_PHRASE"
 
 [ -n "$bin_dir" ] || bin_dir=$(drift_default_bin_dir) || drift_die "Unable to determine a user bin directory."
 mkdir -p "$bin_dir"
-ln -sfn "$DRIFT_PROJECT_ROOT/packages/drift/drift" "$bin_dir/drift"
+ln -sfn "$DRIFT_PROJECT_ROOT/packages/drift/drift.sh" "$bin_dir/drift"
 drift_log "bin=$bin_dir"
 drift_print_success "drift launcher linked at $bin_dir/drift"
 drift_check_launcher "$bin_dir"

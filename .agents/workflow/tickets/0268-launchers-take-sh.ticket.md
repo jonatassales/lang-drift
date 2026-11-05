@@ -8,9 +8,9 @@
 
 **Status:** ready-for-agent
 
-- [ ] No extensionless automation file remains in `platform/cli/` or a package `bin/`.
-- [ ] `drift` and `ex` run under their old command names; `pnpm pack --dry-run` in `lib/cli` lists `bin/ex.sh`.
-- [ ] Whether the launcher change ships as a patch release is recorded for the owner.
+- [x] No extensionless automation file remains in `platform/cli/` or a package `bin/`.
+- [x] `drift` and `ex` run under their old command names; `pnpm pack --dry-run` in `lib/cli` lists `bin/ex.sh`.
+- [x] Whether the launcher change ships as a patch release is recorded for the owner.
 
 ## Dev part
 
@@ -21,3 +21,5 @@
 - `cd lib/cli && GOTOOLCHAIN=local go vet ./... && GOTOOLCHAIN=local go test -race ./...`
 - `platform/cli/drift.sh doctor`
 - `cd lib/cli && pnpm pack --dry-run`
+
+> **Note, 2026-11-05.** The drift CLI moved to `packages/drift/` after this ticket was written, so `platform/cli/drift` is now `packages/drift/drift.sh`. The hooks in `packages/drift/.husky/` keep their extensionless names, because husky finds each one by its Git hook name. The pre-commit hook used to reach back to the launcher through `../`; it now runs `quality-check.sh` directly. Consumers get the `bin/ex.sh` rename with the next `@langdrift/cli` release. Until then, the root's pinned 0.4.0 still ships `bin/ex`, and the `ex` command does not change. Whether that release is a patch (0.4.1) is the owner's call.
