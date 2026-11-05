@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 
 import type { BookDemoMessages } from '@i18n/messages/messages.types'
 import type { WebsiteLocale } from '@i18n/routing'
+import { Button } from 'web/ui/button'
 import { Toast } from 'web/ui/toast'
 
 import { DemoNotice } from './demo-notice'
@@ -193,13 +194,9 @@ export function BookDemoForm(props: BookDemoFormProps) {
 				) : null}
 			</div>
 			<div className="flex flex-wrap items-center gap-4">
-				<button
-					className="smooth-primary-button whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
-					disabled={formState.isSubmitting}
-					type="submit"
-				>
+				<Button disabled={formState.isSubmitting} type="submit" variant="pill">
 					{formState.isSubmitting ? copy.form.submitting : copy.form.submit}
-				</button>
+				</Button>
 			</div>
 			{errorMessage ? (
 				<Toast onClose={handleDismissError}>{errorMessage}</Toast>

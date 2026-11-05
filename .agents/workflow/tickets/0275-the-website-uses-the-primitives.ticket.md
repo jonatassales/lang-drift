@@ -8,9 +8,14 @@
 
 **Status:** ready-for-agent
 
-- [ ] No `smooth-` class and no "Transitional" comment remains in the website.
-- [ ] The website manifest lists neither `clsx` nor `tailwind-merge`.
-- [ ] Captures of the affected pages match, recorded under `.audits/`.
+- [x] No `smooth-` class and no "Transitional" comment remains in the website.
+- [x] The website manifest lists neither `clsx` nor `tailwind-merge`.
+- [x] Captures of the affected pages match, recorded under `.audits/`.
+
+> **Note, 2026-11-05.** The captures under `.audits/0275/` compare computed styles, not pixels. Every element the ticket moved was read before and after, at 1280px in the dark theme, on the home, FinOps, Microruntimes and pricing pages: the six text links, the three plan calls to action, the footer and `<html>`.
+> - Everything matches except two computed values with no visible effect. The CTA's radius reads `rounded-full` instead of 999px. Its gap is the 12px of `gap-3`, which SmoothUI's 7px used to beat and `justify-between` hides.
+> - The Book a Demo form is not rendered while sign-up is paused, so its unit tests cover the pill submit.
+> - `.audits/` is missing from `.gitignore`, although rule 10 says it is ignored, so it was kept out of the commit by hand.
 
 ## Dev part
 

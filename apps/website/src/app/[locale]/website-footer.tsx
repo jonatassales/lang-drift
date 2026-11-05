@@ -21,7 +21,7 @@ export function WebsiteFooter(props: WebsiteFooterProps) {
 	const copy = footerMessages[locale]
 
 	return (
-		<footer className="smooth-footer text-foreground [overflow-wrap:anywhere] md:[overflow-wrap:normal]">
+		<footer className="mx-auto max-w-[1240px] border-t border-border px-7 pt-13 pb-6 text-foreground [overflow-wrap:anywhere] md:[overflow-wrap:normal]">
 			<div className="flex flex-col items-start justify-between gap-4.5 md:flex-row md:gap-8">
 				<div className="max-w-[460px]">
 					<Link className={brandLink} href="/" locale={locale}>

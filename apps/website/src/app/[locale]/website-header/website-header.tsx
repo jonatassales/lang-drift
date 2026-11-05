@@ -54,10 +54,9 @@ export function WebsiteHeader() {
 	const translate = useTranslations('header')
 	const [theme, setTheme] = useAtom(themeAtom)
 
-	// Sync document theme classes and meta theme-color with theme state.
+	// Sync the document's dark class and meta theme-color with theme state.
 	useEffect(() => {
 		document.documentElement.classList.toggle('dark', theme === 'dark')
-		document.documentElement.style.colorScheme = theme
 		document
 			.querySelector('meta[name="theme-color"]')
 			?.setAttribute('content', theme === 'dark' ? '#0b0b0c' : '#f7f6f2')
