@@ -14,8 +14,12 @@
 		"transit": {
 			"dependsOn": ["^transit"]
 		},
+		"typegen": {
+			"dependsOn": ["transit"],
+			"outputs": [".next/types/**", "next-env.d.ts"]
+		},
 		"typecheck": {
-			"dependsOn": ["transit"]
+			"dependsOn": ["transit", "typegen"]
 		},
 		"test": {
 			"dependsOn": ["transit"]

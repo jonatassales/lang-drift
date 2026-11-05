@@ -35,7 +35,7 @@ Run from the repository root:
 | `pnpm console` | Builds the packages the console depends on, then starts it in dev mode on `http://127.0.0.1:3001` together with its stub API, console-stubs, on `127.0.0.1:3401`. The stubs need a Go toolchain. |
 | `pnpm turbo run build` | Builds every package that has a `build` script, upstream packages first. |
 | `pnpm turbo run dev --filter=<package-name>` | Builds the packages an app depends on, then starts the app. |
-| `pnpm turbo run typecheck` | Runs each package's `typecheck` script. |
+| `pnpm turbo run typecheck` | Runs each package's `typecheck` script, after the Next apps' `typegen` task generates their route types. |
 | `pnpm turbo run test` | Runs each package's `test` script. |
 | `pnpm turbo run check` | Runs Biome format, lint and import checks on the whole repository. Read-only. |
 | `pnpm turbo run fix` | Same as `check`, writing safe fixes. Review the diff afterwards. |

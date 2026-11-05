@@ -6,7 +6,8 @@
 		"dev": "next dev --hostname 127.0.0.1 --port 3001",
 		"build": "next build",
 		"start": "next start --hostname 127.0.0.1 --port 3001",
-		"typecheck": "next typegen && tsc --noEmit",
+		"typecheck": "tsc --noEmit",
+		"typegen": "next typegen",
 		"test": "node --test 'src/**/*.test.ts'"
 	},
 	"dependencies": {
