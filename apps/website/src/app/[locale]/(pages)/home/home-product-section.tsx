@@ -79,10 +79,7 @@ export function HomeProductSection(props: HomeProductSectionProps) {
 			) : null}
 			{link && href ? (
 				<p className="mt-8 mb-0">
-					<TextLink
-						asChild
-						className="inline-flex min-h-11 items-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
-					>
+					<TextLink asChild className="inline-flex min-h-11 items-center gap-2">
 						<Link href={href} locale={locale}>
 							{link}
 							<ArrowRightIcon />

@@ -41,7 +41,7 @@ describe('web/ui/button', () => {
 		expect(html).toContain('bg-primary')
 	})
 
-	it('draws the pill and lets the plans section override it without !', () => {
+	it('draws the pill and lets a caller override its measurements without !', () => {
 		const pill = renderToString(<Button variant="pill">Book a demo</Button>)
 		const plan = renderToString(
 			<Button

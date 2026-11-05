@@ -16,10 +16,7 @@ export function SectionOutro(props: SectionOutroProps) {
 			<p className="m-0 max-w-[640px] text-[13px] leading-[1.6] text-muted-foreground">
 				{text}
 			</p>
-			<TextLink
-				className="focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
-				href={`#${fragment}`}
-			>
+			<TextLink href={`#${fragment}`}>
 				{link}
 				<span aria-hidden="true"> ↗</span>
 			</TextLink>

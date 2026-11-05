@@ -8,10 +8,10 @@ import { TextLink } from 'web/ui/text-link'
 const planIds = ['starter', 'plus', 'pro'] as const
 
 const planCtaClass =
-	'flex min-h-11 justify-between gap-3 px-[15px] py-3 leading-normal'
+	'flex min-h-11 justify-between px-[15px] py-3 leading-normal whitespace-normal'
 
 const availabilityLinkClass =
-	'inline-flex min-h-11 items-center gap-2.5 text-xs focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary'
+	'inline-flex min-h-11 items-center gap-2.5 text-xs'
 
 interface PlansSectionProps {
 	locale: WebsiteLocale

@@ -8,9 +8,11 @@
 
 **Status:** ready-for-agent
 
-- [ ] A `Button` test renders the pill variant with the plans section's overrides and asserts the override wins over the conflicting utility.
-- [ ] A `TextLink` test covers its anchor form and its `asChild` form.
-- [ ] `pnpm turbo run check typecheck test build --filter=web --filter=tokens` passes.
+- [x] A `Button` test renders the pill variant with the plans section's overrides and asserts the override wins over the conflicting utility.
+- [x] A `TextLink` test covers its anchor form and its `asChild` form.
+- [x] `pnpm turbo run check typecheck test build --filter=web --filter=tokens` passes.
+
+> **Note, 2026-11-05.** `TextLink` also carries the site's focus outline, as the pill does, so its callers do not repeat it.
 
 ## Dev part
 

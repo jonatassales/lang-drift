@@ -194,7 +194,12 @@ export function BookDemoForm(props: BookDemoFormProps) {
 				) : null}
 			</div>
 			<div className="flex flex-wrap items-center gap-4">
-				<Button disabled={formState.isSubmitting} type="submit" variant="pill">
+				<Button
+					className="disabled:opacity-100"
+					disabled={formState.isSubmitting}
+					type="submit"
+					variant="pill"
+				>
 					{formState.isSubmitting ? copy.form.submitting : copy.form.submit}
 				</Button>
 			</div>

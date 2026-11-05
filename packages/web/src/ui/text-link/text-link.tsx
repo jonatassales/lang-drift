@@ -4,7 +4,7 @@ import type { ComponentProps } from 'react'
 import { cn } from 'web/utilities'
 
 // An inline link in the color of the text around it, underlined at a quarter
-// of that color.
+// of that color, with the site's focus outline.
 export interface TextLinkProps extends ComponentProps<'a'> {
 	/** Lends the link's look to its one child, a framework link or a button. */
 	asChild?: boolean
@@ -18,7 +18,7 @@ export function TextLink(props: TextLinkProps) {
 	return (
 		<Element
 			className={cn(
-				'text-[13px] text-inherit underline decoration-current/25 underline-offset-5',
+				'text-[13px] text-inherit underline decoration-current/25 underline-offset-5 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary',
 				className,
 			)}
 			data-slot="text-link"

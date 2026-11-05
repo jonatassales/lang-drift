@@ -22,8 +22,8 @@ export function Brand(props: BrandProps) {
 			<LogoMark size={compact ? 23 : 30} />
 			<span
 				className={cn(
-					'leading-none tracking-[-0.055em]',
-					compact ? 'text-lg' : 'text-2xl',
+					'tracking-[-0.055em]',
+					compact ? 'text-lg/none' : 'text-2xl/none',
 				)}
 			>
 				LangDrift

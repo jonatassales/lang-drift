@@ -32,10 +32,7 @@ export function SourceList(props: SourceListProps) {
 							{copy.items[id].description}
 						</span>
 						{id === 'microruntimes' && (
-							<TextLink
-								asChild
-								className="mt-1 justify-self-start focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
-							>
+							<TextLink asChild className="mt-1 justify-self-start">
 								<Link href="/platform/microruntimes" locale={locale}>
 									{copy.items.microruntimes.link}
 								</Link>

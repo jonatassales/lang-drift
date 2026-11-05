@@ -12,10 +12,11 @@
 - [x] The website manifest lists neither `clsx` nor `tailwind-merge`.
 - [x] Captures of the affected pages match, recorded under `.audits/`.
 
-> **Note, 2026-11-05.** The captures under `.audits/0275/` compare computed styles, not pixels. Every element the ticket moved was read before and after, at 1280px in the dark theme, on the home, FinOps, Microruntimes and pricing pages: the six text links, the three plan calls to action, the footer and `<html>`.
-> - Everything matches except two computed values with no visible effect. The CTA's radius reads `rounded-full` instead of 999px. Its gap is the 12px of `gap-3`, which SmoothUI's 7px used to beat and `justify-between` hides.
-> - The Book a Demo form is not rendered while sign-up is paused, so its unit tests cover the pill submit.
-> - `.audits/` is missing from `.gitignore`, although rule 10 says it is ignored, so it was kept out of the commit by hand.
+> **Note, 2026-11-05.** The captures compare computed styles, not pixels, before and after, in a local audit. They cover every element this ticket moved, the header wordmark and `<html>`, on the home, FinOps, Microruntimes and pricing pages at 1280px and 375px, in dark and light.
+> - Every width and height matches.
+> - Only notations differ: the underline colour as `oklab` instead of `srgb`, the CTA radius as `rounded-full` instead of 999px, and a zero-width border style. The pill CTAs keep SmoothUI's 7px gap and wrapping, and the submit does not dim while submitting.
+> - Hover and focus states and the Book a Demo form, paused, are not measured.
+> - `.audits/` is missing from `.gitignore`, although rule 10 says it is ignored.
 
 ## Dev part
 

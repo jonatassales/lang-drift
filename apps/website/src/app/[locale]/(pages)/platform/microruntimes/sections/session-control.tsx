@@ -9,8 +9,7 @@ import {
 } from '@state'
 import { TextLink } from 'web/ui/text-link'
 
-const button =
-	'min-h-11 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary motion-reduce:hidden'
+const button = 'min-h-11 whitespace-nowrap motion-reduce:hidden'
 
 // The one control over the hero's moving content: a text button that pauses
 // and resumes the session while the plan or a run plays, and replays the

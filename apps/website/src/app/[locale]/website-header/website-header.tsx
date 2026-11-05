@@ -97,9 +97,9 @@ export function WebsiteHeader() {
 				<div className="mx-auto grid min-h-17.5 max-w-[1280px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-[clamp(18px,3vw,36px)] md:min-h-20 md:gap-5 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
 					<div className="flex items-center gap-5 justify-self-start">
 						<Link aria-label={translate('home')} className={brandLink} href="/">
-							<Brand className="website-header-brand text-foreground" compact />
+							<Brand className="text-foreground" compact />
 						</Link>
-						<div className="website-header-language">
+						<div>
 							<LanguagePill />
 						</div>
 					</div>
