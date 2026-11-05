@@ -8,9 +8,9 @@
 
 **Status:** ready-for-agent
 
-- [ ] The menu test asserts the order, the five links and one Coming soon badge.
-- [ ] The desktop panel shows two columns at 1280px; the drawer one column at 375px.
-- [ ] `platform/cli/drift check localization` passes.
+- [x] The menu test asserts the order, the five links and one Coming soon badge.
+- [x] The desktop panel shows two columns at 1280px; the drawer one column at 375px.
+- [x] `platform/cli/drift check localization` passes.
 
 ## Dev part
 

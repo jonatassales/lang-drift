@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest'
 
 import {
 	bookDemoMessages,
+	ciGatesMessages,
+	cliMessages,
 	conversionMessages,
 	finopsMessages,
 	footerMessages,
@@ -56,6 +58,8 @@ describe('Website production translations', () => {
 				finopsMessages,
 				microruntimesMessages,
 				safeSeatMessages,
+				cliMessages,
+				ciGatesMessages,
 				bookDemoMessages,
 				routeState,
 			]) {

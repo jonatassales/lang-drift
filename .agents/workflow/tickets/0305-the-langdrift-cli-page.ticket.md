@@ -8,9 +8,9 @@
 
 **Status:** ready-for-agent
 
-- [ ] `/platform/cli` renders in every locale with its icon, install line, flow and image.
-- [ ] The SEO contract test covers its metadata and sitemap entries.
-- [ ] The CLI icon has a row in the platform icons test.
+- [x] `/platform/cli` renders in every locale with its icon, install line, flow and image.
+- [x] The SEO contract test covers its metadata and sitemap entries.
+- [x] The CLI icon has a row in the platform icons test.
 
 ## Dev part
 

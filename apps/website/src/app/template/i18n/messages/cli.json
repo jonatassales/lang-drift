@@ -1,0 +1,387 @@
+{
+	"en": {
+		"skip": "Skip to the install",
+		"hero": {
+			"title": "LangDrift CLI",
+			"lead": "Plan, run and record agent-assisted delivery from your terminal, inside the budget your team set. The LangDrift CLI is open source, and its command is ex.",
+			"requirements": "macOS or Linux · Node.js 24 or later · Docker, kind, kubectl and Terraform for the runtimes · ANTHROPIC_API_KEY for the planner",
+			"command": "npx @langdrift/cli init"
+		},
+		"install": {
+			"kicker": "Install",
+			"title": "Start with one command.",
+			"lead": "Run it with npx or pnpm dlx. ex init sets up the project: the team budget, the per-run cap, the gates and, if you say yes, the CI Gates workflow.",
+			"commands": {
+				"npx": "npx @langdrift/cli init",
+				"pnpm": "pnpm dlx @langdrift/cli init"
+			},
+			"image": {
+				"alt": "A terminal running ex agent plan on a ticket: the agent reads the linked documents, takes the team’s envelope of 2,000 millicores and 3,072 MiB and a budget of $25.00 per run, suggests Claude Sonnet 5.5 at medium effort and proposes runtime.md revision 1.",
+				"caption": "ex agent plan on a ticket of the LangDrift repository."
+			}
+		},
+		"flow": {
+			"kicker": "A run",
+			"title": "From a ticket to evidence.",
+			"lead": "Every paid call waits behind a gate, and every run leaves a record.",
+			"steps": {
+				"init": {
+					"eyebrow": "ex init",
+					"title": "Set up the project",
+					"description": "Records the team budget, the per-run cap, the reserve margin and the FinOps gates under .langdrift/."
+				},
+				"plan": {
+					"eyebrow": "ex agent plan",
+					"title": "Plan a ticket",
+					"description": "Reads the ticket and its linked documents, cites past episodes, suggests a model and an effort, and drafts runtime.md for the team to authorize."
+				},
+				"run": {
+					"eyebrow": "ex agent run",
+					"title": "Run it inside the budget",
+					"description": "Reserves the estimate behind the gates, brings the runtime up, drives your coding agent through the workflow’s stages and settles the lap."
+				},
+				"status": {
+					"eyebrow": "ex agent status",
+					"title": "Read what happened",
+					"description": "Shows the lap, the stage that waits for a person, the spend observed and the reservation released."
+				}
+			}
+		},
+		"governs": {
+			"kicker": "What it governs",
+			"title": "Bounded on every side.",
+			"lead": "The CLI decides what may run and what it may spend; your coding agent does the work.",
+			"items": {
+				"budget": {
+					"title": "Budget and gates",
+					"description": "A reservation comes out of the team envelope before a call is paid. The gates FG-01 to FG-05 block, pause or ask the owner when a price, an allocation or the reservation does not hold, and FG-06 keeps the figures provisional until the provider bills."
+				},
+				"runtime": {
+					"title": "Bounded runtimes",
+					"description": "Each component runs from its own Dockerfile in a local kind cluster, inside the CPU and memory the team set, and is taken down when the run ends."
+				},
+				"driver": {
+					"title": "Your coding agent",
+					"description": "Bring the agent you already use, such as Claude Code: the CLI calls it stage by stage and measures what each call used."
+				},
+				"evidence": {
+					"title": "Evidence",
+					"description": "Every lap writes its plan, its spend and its outcome to the ledger, and spend nobody measured stays unknown, never zero."
+				}
+			}
+		},
+		"links": {
+			"npm": "@langdrift/cli on npm",
+			"github": "Source on GitHub",
+			"license": "Apache License 2.0"
+		}
+	},
+	"pt-BR": {
+		"skip": "Ir para a instalação",
+		"hero": {
+			"title": "LangDrift CLI",
+			"lead": "Planeje, execute e registre entregas assistidas por agentes pelo terminal, dentro do orçamento que o seu time definiu. A LangDrift CLI é de código aberto, e o comando dela é ex.",
+			"requirements": "macOS ou Linux · Node.js 24 ou mais recente · Docker, kind, kubectl e Terraform para os runtimes · ANTHROPIC_API_KEY para o planejador",
+			"command": "npx @langdrift/cli init"
+		},
+		"install": {
+			"kicker": "Instalação",
+			"title": "Comece com um comando.",
+			"lead": "Rode com npx ou pnpm dlx. O ex init prepara o projeto: o orçamento do time, o limite por execução, os gates e, se você disser sim, o workflow do CI Gates.",
+			"commands": {
+				"npx": "npx @langdrift/cli init",
+				"pnpm": "pnpm dlx @langdrift/cli init"
+			},
+			"image": {
+				"alt": "Um terminal rodando ex agent plan em um ticket: o agente lê os documentos vinculados, toma o envelope do time de 2.000 milicores e 3.072 MiB e um orçamento de US$ 25,00 por execução, sugere o Claude Sonnet 5.5 com effort medium e propõe a revisão 1 do runtime.md.",
+				"caption": "ex agent plan em um ticket do repositório do LangDrift."
+			}
+		},
+		"flow": {
+			"kicker": "Uma execução",
+			"title": "Do ticket à evidência.",
+			"lead": "Cada chamada paga espera atrás de um gate, e cada execução deixa um registro.",
+			"steps": {
+				"init": {
+					"eyebrow": "ex init",
+					"title": "Prepare o projeto",
+					"description": "Registra o orçamento do time, o limite por execução, a margem de reserva e os gates de FinOps em .langdrift/."
+				},
+				"plan": {
+					"eyebrow": "ex agent plan",
+					"title": "Planeje um ticket",
+					"description": "Lê o ticket e os documentos vinculados, cita episódios anteriores, sugere um modelo e um effort e rascunha o runtime.md para o time autorizar."
+				},
+				"run": {
+					"eyebrow": "ex agent run",
+					"title": "Execute dentro do orçamento",
+					"description": "Reserva a estimativa atrás dos gates, sobe o runtime, conduz o seu agente de código pelas etapas do workflow e fecha a volta."
+				},
+				"status": {
+					"eyebrow": "ex agent status",
+					"title": "Veja o que aconteceu",
+					"description": "Mostra a volta, a etapa que espera por uma pessoa, o gasto observado e a reserva liberada."
+				}
+			}
+		},
+		"governs": {
+			"kicker": "O que ela controla",
+			"title": "Delimitada por todos os lados.",
+			"lead": "A CLI decide o que pode rodar e quanto pode gastar; o seu agente de código faz o trabalho.",
+			"items": {
+				"budget": {
+					"title": "Orçamento e gates",
+					"description": "Uma reserva sai do envelope do time antes que uma chamada seja paga. Os gates FG-01 a FG-05 bloqueiam, pausam ou consultam o responsável quando um preço, uma alocação ou a reserva não se sustenta, e o FG-06 mantém os valores provisórios até o provedor cobrar."
+				},
+				"runtime": {
+					"title": "Runtimes delimitados",
+					"description": "Cada componente roda a partir do seu próprio Dockerfile em um cluster kind local, dentro da CPU e da memória que o time definiu, e é desligado quando a execução termina."
+				},
+				"driver": {
+					"title": "O seu agente de código",
+					"description": "Use o agente que você já usa, como o Claude Code: a CLI o chama etapa por etapa e mede o que cada chamada consumiu."
+				},
+				"evidence": {
+					"title": "Evidência",
+					"description": "Cada volta grava o plano, o gasto e o resultado no ledger, e o gasto que ninguém mediu fica desconhecido, nunca zero."
+				}
+			}
+		},
+		"links": {
+			"npm": "@langdrift/cli no npm",
+			"github": "Código no GitHub",
+			"license": "Licença Apache 2.0"
+		}
+	},
+	"zh-Hant": {
+		"skip": "跳至安裝",
+		"hero": {
+			"title": "LangDrift CLI",
+			"lead": "在團隊設定的預算內，從終端機規劃、執行並記錄代理協助的交付。LangDrift CLI 是開源軟體，指令為 ex。",
+			"requirements": "macOS 或 Linux · Node.js 24 以上 · runtime 需要 Docker、kind、kubectl 與 Terraform · 規劃器需要 ANTHROPIC_API_KEY",
+			"command": "npx @langdrift/cli init"
+		},
+		"install": {
+			"kicker": "安裝",
+			"title": "一個指令就能開始。",
+			"lead": "以 npx 或 pnpm dlx 執行。ex init 會設定專案：團隊預算、每次執行的上限、各項 gate，若您同意，還有 CI Gates 工作流程。",
+			"commands": {
+				"npx": "npx @langdrift/cli init",
+				"pnpm": "pnpm dlx @langdrift/cli init"
+			},
+			"image": {
+				"alt": "終端機對一張工單執行 ex agent plan：代理讀取連結的文件，採用團隊的額度 2,000 millicores 與 3,072 MiB，以及每次執行 US$25.00 的預算，建議以 medium effort 使用 Claude Sonnet 5.5，並提出 runtime.md 第 1 版。",
+				"caption": "在 LangDrift 儲存庫的一張工單上執行 ex agent plan。"
+			}
+		},
+		"flow": {
+			"kicker": "一次執行",
+			"title": "從工單到證據。",
+			"lead": "每次付費呼叫都要先通過 gate，每次執行都會留下紀錄。",
+			"steps": {
+				"init": {
+					"eyebrow": "ex init",
+					"title": "設定專案",
+					"description": "在 .langdrift/ 下記錄團隊預算、每次執行的上限、保留邊際與 FinOps gate。"
+				},
+				"plan": {
+					"eyebrow": "ex agent plan",
+					"title": "規劃工單",
+					"description": "讀取工單與連結的文件，引用過往案例，建議模型與 effort，並草擬 runtime.md 供團隊授權。"
+				},
+				"run": {
+					"eyebrow": "ex agent run",
+					"title": "在預算內執行",
+					"description": "在 gate 之後保留預估金額，啟動 runtime，帶領您的程式碼代理走完工作流程的各個階段，並結算這一輪。"
+				},
+				"status": {
+					"eyebrow": "ex agent status",
+					"title": "查看發生了什麼",
+					"description": "顯示這一輪、等待人員的階段、觀測到的花費與釋出的保留額。"
+				}
+			}
+		},
+		"governs": {
+			"kicker": "它管控什麼",
+			"title": "每一面都有界限。",
+			"lead": "CLI 決定什麼可以執行、可以花多少；工作由您的程式碼代理完成。",
+			"items": {
+				"budget": {
+					"title": "預算與 gate",
+					"description": "在呼叫付費之前，保留額會先從團隊預算額度中扣出。當價格、分配或保留額不成立時，gate FG-01 至 FG-05 會封鎖、暫停或請負責人決定，FG-06 則在供應商開立帳單前讓數值維持暫定。"
+				},
+				"runtime": {
+					"title": "有界限的 runtime",
+					"description": "每個元件都以自己的 Dockerfile 在本機 kind 叢集中執行，限於團隊設定的 CPU 與記憶體，執行結束時隨即關閉。"
+				},
+				"driver": {
+					"title": "您的程式碼代理",
+					"description": "使用您原本就在用的代理，例如 Claude Code：CLI 會逐階段呼叫它，並測量每次呼叫的用量。"
+				},
+				"evidence": {
+					"title": "證據",
+					"description": "每一輪都會把計畫、花費與結果寫進帳本，沒有人測量到的花費維持未知，絕不算作零。"
+				}
+			}
+		},
+		"links": {
+			"npm": "npm 上的 @langdrift/cli",
+			"github": "GitHub 上的原始碼",
+			"license": "Apache 授權條款 2.0"
+		}
+	},
+	"ja": {
+		"skip": "インストールへスキップ",
+		"hero": {
+			"title": "LangDrift CLI",
+			"lead": "チームが決めた予算の範囲内で、エージェント支援のデリバリーをターミナルから計画、実行、記録します。LangDrift CLI はオープンソースで、コマンドは ex です。",
+			"requirements": "macOS または Linux · Node.js 24 以降 · runtime には Docker、kind、kubectl、Terraform · プランナー用の ANTHROPIC_API_KEY",
+			"command": "npx @langdrift/cli init"
+		},
+		"install": {
+			"kicker": "インストール",
+			"title": "コマンドひとつで始める。",
+			"lead": "npx か pnpm dlx で実行します。ex init がプロジェクトを準備します。チームの予算、実行ごとの上限、ゲート、そして同意すれば CI Gates のワークフローです。",
+			"commands": {
+				"npx": "npx @langdrift/cli init",
+				"pnpm": "pnpm dlx @langdrift/cli init"
+			},
+			"image": {
+				"alt": "チケットに対して ex agent plan を実行するターミナル。エージェントがリンクされた文書を読み、チームの予算枠である 2,000 ミリコアと 3,072 MiB、実行ごとの予算 $25.00 を取り込み、Claude Sonnet 5.5 を effort medium で提案し、runtime.md のリビジョン 1 を提示します。",
+				"caption": "LangDrift リポジトリのチケットに対する ex agent plan。"
+			}
+		},
+		"flow": {
+			"kicker": "1 回の実行",
+			"title": "チケットから証跡まで。",
+			"lead": "有料の呼び出しはすべてゲートの後ろで待ち、実行はすべて記録を残します。",
+			"steps": {
+				"init": {
+					"eyebrow": "ex init",
+					"title": "プロジェクトを準備する",
+					"description": "チームの予算、実行ごとの上限、予約マージン、FinOps のゲートを .langdrift/ に記録します。"
+				},
+				"plan": {
+					"eyebrow": "ex agent plan",
+					"title": "チケットを計画する",
+					"description": "チケットとリンクされた文書を読み、過去の事例を引用し、モデルと effort を提案し、チームが承認する runtime.md の下書きを作ります。"
+				},
+				"run": {
+					"eyebrow": "ex agent run",
+					"title": "予算内で実行する",
+					"description": "ゲートの後ろで見積もりを予約し、runtime を起動し、コーディングエージェントをワークフローの各段階に沿って動かし、ラップを精算します。"
+				},
+				"status": {
+					"eyebrow": "ex agent status",
+					"title": "結果を確かめる",
+					"description": "ラップ、人を待っている段階、観測された支出、解放された予約を表示します。"
+				}
+			}
+		},
+		"governs": {
+			"kicker": "何を管理するか",
+			"title": "あらゆる面に境界を。",
+			"lead": "何を実行し、いくら使ってよいかは CLI が決め、作業はコーディングエージェントが行います。",
+			"items": {
+				"budget": {
+					"title": "予算とゲート",
+					"description": "呼び出しが支払われる前に、予約がチームの予算枠から差し引かれます。価格、配分、予約のいずれかが成り立たないとき、ゲート FG-01 から FG-05 がブロック、一時停止、またはオーナーへの確認を行い、FG-06 はプロバイダーが請求するまで数値を暫定のままにします。"
+				},
+				"runtime": {
+					"title": "境界のある runtime",
+					"description": "各コンポーネントは自分の Dockerfile からローカルの kind クラスターで、チームが決めた CPU とメモリの範囲内で動き、実行が終わると停止します。"
+				},
+				"driver": {
+					"title": "あなたのコーディングエージェント",
+					"description": "Claude Code など、いつものエージェントを使えます。CLI は段階ごとにそれを呼び出し、各呼び出しの使用量を測ります。"
+				},
+				"evidence": {
+					"title": "証跡",
+					"description": "各ラップは計画、支出、結果を台帳に書き込みます。誰も測っていない支出は不明のままで、ゼロにはなりません。"
+				}
+			}
+		},
+		"links": {
+			"npm": "npm の @langdrift/cli",
+			"github": "GitHub のソース",
+			"license": "Apache License 2.0"
+		}
+	},
+	"vi": {
+		"skip": "Chuyển đến phần cài đặt",
+		"hero": {
+			"title": "LangDrift CLI",
+			"lead": "Lập kế hoạch, chạy và ghi lại quy trình phát triển có tác tử hỗ trợ ngay từ terminal, trong ngân sách mà đội bạn đã đặt. LangDrift CLI là phần mềm nguồn mở, và lệnh của nó là ex.",
+			"requirements": "macOS hoặc Linux · Node.js 24 trở lên · Docker, kind, kubectl và Terraform cho các runtime · ANTHROPIC_API_KEY cho bộ lập kế hoạch",
+			"command": "npx @langdrift/cli init"
+		},
+		"install": {
+			"kicker": "Cài đặt",
+			"title": "Bắt đầu bằng một lệnh.",
+			"lead": "Chạy bằng npx hoặc pnpm dlx. ex init thiết lập dự án: ngân sách của đội, giới hạn mỗi lần chạy, các gate và, nếu bạn đồng ý, workflow CI Gates.",
+			"commands": {
+				"npx": "npx @langdrift/cli init",
+				"pnpm": "pnpm dlx @langdrift/cli init"
+			},
+			"image": {
+				"alt": "Một terminal chạy ex agent plan trên một ticket: tác tử đọc các tài liệu được liên kết, lấy hạn mức của đội gồm 2.000 millicore và 3.072 MiB cùng ngân sách 25,00 US$ mỗi lần chạy, đề xuất Claude Sonnet 5.5 với effort medium và đưa ra runtime.md phiên bản 1.",
+				"caption": "ex agent plan trên một ticket của kho mã LangDrift."
+			}
+		},
+		"flow": {
+			"kicker": "Một lần chạy",
+			"title": "Từ ticket đến bằng chứng.",
+			"lead": "Mọi lần gọi trả phí đều chờ sau một gate, và mọi lần chạy đều để lại bản ghi.",
+			"steps": {
+				"init": {
+					"eyebrow": "ex init",
+					"title": "Thiết lập dự án",
+					"description": "Ghi ngân sách của đội, giới hạn mỗi lần chạy, biên dự phòng và các gate FinOps vào .langdrift/."
+				},
+				"plan": {
+					"eyebrow": "ex agent plan",
+					"title": "Lập kế hoạch cho ticket",
+					"description": "Đọc ticket và các tài liệu được liên kết, trích dẫn các trường hợp trước, đề xuất mô hình và effort, rồi soạn runtime.md để đội phê duyệt."
+				},
+				"run": {
+					"eyebrow": "ex agent run",
+					"title": "Chạy trong ngân sách",
+					"description": "Giữ khoản ước tính sau các gate, khởi chạy runtime, dẫn tác tử lập trình của bạn qua các giai đoạn của workflow và quyết toán vòng chạy."
+				},
+				"status": {
+					"eyebrow": "ex agent status",
+					"title": "Xem điều đã xảy ra",
+					"description": "Hiển thị vòng chạy, giai đoạn đang chờ một người, chi tiêu quan sát được và khoản giữ đã được trả lại."
+				}
+			}
+		},
+		"governs": {
+			"kicker": "Nó kiểm soát gì",
+			"title": "Có giới hạn ở mọi phía.",
+			"lead": "CLI quyết định điều gì được chạy và được chi bao nhiêu; tác tử lập trình của bạn làm phần việc.",
+			"items": {
+				"budget": {
+					"title": "Ngân sách và gate",
+					"description": "Một khoản giữ được trừ khỏi hạn mức của đội trước khi một lần gọi được trả phí. Các gate FG-01 đến FG-05 chặn, tạm dừng hoặc hỏi chủ sở hữu khi giá, khoản phân bổ hoặc khoản giữ không còn đứng vững, còn FG-06 giữ số liệu ở mức tạm tính cho đến khi nhà cung cấp lập hóa đơn."
+				},
+				"runtime": {
+					"title": "Runtime có giới hạn",
+					"description": "Mỗi thành phần chạy từ Dockerfile riêng trong một cụm kind cục bộ, trong phạm vi CPU và bộ nhớ đội đã đặt, và được tắt khi lần chạy kết thúc."
+				},
+				"driver": {
+					"title": "Tác tử lập trình của bạn",
+					"description": "Dùng tác tử bạn vẫn dùng, chẳng hạn Claude Code: CLI gọi nó theo từng giai đoạn và đo lượng mỗi lần gọi đã dùng."
+				},
+				"evidence": {
+					"title": "Bằng chứng",
+					"description": "Mỗi vòng chạy ghi kế hoạch, chi tiêu và kết quả vào sổ cái, và chi tiêu chưa ai đo vẫn là không xác định, không bao giờ là số không."
+				}
+			}
+		},
+		"links": {
+			"npm": "@langdrift/cli trên npm",
+			"github": "Mã nguồn trên GitHub",
+			"license": "Giấy phép Apache 2.0"
+		}
+	}
+}

@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 
 import {
 	CiGatesIcon,
+	CliIcon,
 	FinopsIcon,
 	MicroruntimesIcon,
 	SafeSeatIcon,
@@ -11,6 +12,7 @@ import {
 describe('web/ui/icons/platform/platform-icons', () => {
 	it.each([
 		['CiGatesIcon', CiGatesIcon],
+		['CliIcon', CliIcon],
 		['FinopsIcon', FinopsIcon],
 		['MicroruntimesIcon', MicroruntimesIcon],
 		['SafeSeatIcon', SafeSeatIcon],

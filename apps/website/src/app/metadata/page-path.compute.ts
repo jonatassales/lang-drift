@@ -9,6 +9,8 @@ const nestedPagePath: Partial<Record<PageId, string>> = {
 	finops: 'platform/finops/',
 	microruntimes: 'platform/microruntimes/',
 	'safe-seat': 'platform/safe-seat/',
+	cli: 'platform/cli/',
+	'ci-gates': 'platform/ci-gates/',
 }
 
 export function pagePath(page: PageId, locale: WebsiteLocale) {

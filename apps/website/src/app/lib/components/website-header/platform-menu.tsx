@@ -120,13 +120,16 @@ export function PlatformMenu() {
 			</button>
 			<div
 				className={cn(
-					'absolute top-full left-1/2 z-50 w-104 -translate-x-1/2 pt-3',
+					'absolute top-full left-1/2 z-50 w-176 max-w-[calc(100vw-2rem)] -translate-x-1/2 pt-3',
 					panelVisibility(),
 				)}
 				id={panelId}
 			>
 				<div className={cn(panelSurface, 'p-2')}>
-					<ul aria-label={translate('platformMenu')} className="grid gap-1">
+					<ul
+						aria-label={translate('platformMenu')}
+						className="grid gap-1 sm:grid-cols-2"
+					>
 						{platformProducts.map((product) => {
 							const Icon = product.icon
 
@@ -155,21 +158,17 @@ export function PlatformMenu() {
 
 							return (
 								<li key={product.label}>
-									{'href' in product ? (
-										<Link
-											className={cn(
-												item,
-												'inline-flex min-h-11 items-center text-[13px] font-medium whitespace-nowrap text-muted-foreground hover:bg-card hover:text-foreground focus-visible:bg-card focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary',
-											)}
-											href={product.href}
-											onBlur={trackFocusLeaving}
-											onClick={handleItemClick}
-										>
-											{copy}
-										</Link>
-									) : (
-										<div className={item}>{copy}</div>
-									)}
+									<Link
+										className={cn(
+											item,
+											'inline-flex min-h-11 items-center text-[13px] font-medium whitespace-nowrap text-muted-foreground hover:bg-card hover:text-foreground focus-visible:bg-card focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary',
+										)}
+										href={product.href}
+										onBlur={trackFocusLeaving}
+										onClick={handleItemClick}
+									>
+										{copy}
+									</Link>
 								</li>
 							)
 						})}

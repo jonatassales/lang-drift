@@ -181,6 +181,96 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/safe-seat/"/>
   </url>
   <url>
+    <loc>https://langdrift.md/en/platform/cli/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/cli/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/pt-br/platform/cli/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/cli/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/zh-hant/platform/cli/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/cli/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/ja/platform/cli/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/cli/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/vi/platform/cli/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/cli/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/cli/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/en/platform/ci-gates/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/ci-gates/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/pt-br/platform/ci-gates/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/ci-gates/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/zh-hant/platform/ci-gates/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/ci-gates/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/ja/platform/ci-gates/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/ci-gates/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/vi/platform/ci-gates/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/ci-gates/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/ci-gates/"/>
+  </url>
+  <url>
     <loc>https://langdrift.md/en/pricing/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/pricing/"/>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/pricing/"/>

@@ -10,9 +10,9 @@
 - [x] 0302: one FAQ, on the home
 - [x] 0303: the copy speaks for today's business
 - [x] 0304: platform headings carry the product icon
-- [ ] 0305: the LangDrift CLI has its own page
-- [ ] 0306: CI Gates has its own page
-- [ ] 0307: the Platform menu lists five products in two columns
+- [x] 0305: the LangDrift CLI has its own page
+- [x] 0306: CI Gates has its own page
+- [x] 0307: the Platform menu lists five products in two columns
 
 ## Problem Statement
 
@@ -98,7 +98,7 @@ One pass over the website. The console app changes only in the Permissions-Polic
   - the workflow's posture;
   - the report a pull request receives, with FinOps readings that read "unknown" in CI and never zero;
   - the run-time FinOps gates.
-  The screenshots of the "LangDrift CI Gates" comment and its checks are captured from a pull request of this public repository with headless Chrome in light and dark, cropped, and served from `public/ci-gates/`. The page shows the one that matches the theme, through `dark:` utilities.
+  GitHub's pull request page does not render headlessly, so the images are renderings, in light and dark, served from `public/ci-gates/`: the real `ex gates report` output on the commits of pull request #122, and the repository's own CI Gates comment on that pull request, each rendered from its Markdown through GitHub's Markdown API. The comment's FinOps and Agentic figures are set by this repository's dashboard script, and the page says so. The page shows the one that matches the theme, through `dark:` utilities.
 - **New pages, wiring.** Each new page has:
   - a catalog in five locales, registered in the loaders, the shape validator, the barrel and the parity test;
   - an entry in the page metadata with a unique localized title and description;

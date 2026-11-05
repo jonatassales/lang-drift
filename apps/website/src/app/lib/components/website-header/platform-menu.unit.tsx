@@ -28,6 +28,9 @@ vi.mock('next-intl', () => ({
 			microruntimes: 'Microruntimes',
 			microruntimesDescription:
 				'Bounded, consumer-owned execution around the software you already have.',
+			cli: 'LangDrift CLI',
+			cliDescription:
+				'Plan, run and record bounded delivery from your terminal.',
 			ciGates: 'CI Gates',
 			ciGatesDescription:
 				'Pull request reports and delivery evidence in your own CI.',
@@ -48,12 +51,26 @@ afterEach(() => {
 })
 
 describe('website/src/app/lib/components/website-header/platform-menu', () => {
-	it('renders platform products with CI Gates and Safe Seat coming soon badges', () => {
+	it('lists the engine first and links every product, Safe Seat alone coming soon', () => {
 		render(<PlatformMenu />)
 
-		expect(screen.getByText('CI Gates')).toBeDefined()
-		expect(screen.getByText('Safe Seat')).toBeDefined()
-		expect(screen.getAllByText('Coming soon')).toHaveLength(2)
+		const hrefs = screen
+			.getAllByRole('link')
+			.map((link) => link.getAttribute('href'))
+
+		expect(hrefs).toEqual([
+			'/platform/microruntimes',
+			'/platform/finops',
+			'/platform/cli',
+			'/platform/ci-gates',
+			'/platform/safe-seat',
+		])
+		expect(screen.getAllByText('Coming soon')).toHaveLength(1)
+	})
+
+	it('describes CI Gates and Safe Seat', () => {
+		render(<PlatformMenu />)
+
 		expect(
 			screen.getByText(
 				'Pull request reports and delivery evidence in your own CI.',
