@@ -1,3 +1,4 @@
+import { safeSeatFaqIds } from '@app/[locale]/(pages)/platform/safe-seat/safe-seat-content.data'
 import { FaqTabs } from '@components/home/faq-tabs'
 import { FaqSectionShell } from '@components/product-page/faq-section-shell'
 import { finopsFaqIds } from '@data/finops-content'
@@ -7,6 +8,7 @@ import {
 	headerMessages,
 	microruntimesMessages,
 	platformMessages,
+	safeSeatMessages,
 } from '@i18n/messages/index'
 import type { WebsiteLocale } from '@i18n/routing'
 
@@ -14,8 +16,8 @@ interface PlatformFaqSectionProps {
 	locale: WebsiteLocale
 }
 
-// The platform's FAQ: the questions each product page answers, one product
-// per tab, named as the header names them.
+// The platform's one FAQ: each product's questions in a tab of their own,
+// named as the header names the product.
 export function PlatformFaqSection(props: PlatformFaqSectionProps) {
 	const { locale } = props
 
@@ -23,6 +25,7 @@ export function PlatformFaqSection(props: PlatformFaqSectionProps) {
 	const names = headerMessages[locale]
 	const microruntimes = microruntimesMessages[locale].faq.items
 	const finops = finopsMessages[locale].faq.items
+	const safeSeat = safeSeatMessages[locale].faq.items
 	const groups = [
 		{
 			id: 'microruntimes',
@@ -39,6 +42,14 @@ export function PlatformFaqSection(props: PlatformFaqSectionProps) {
 				...finops[id],
 			})),
 			label: names.finops,
+		},
+		{
+			id: 'safe-seat',
+			items: safeSeatFaqIds.map((id) => ({
+				id,
+				...safeSeat[id],
+			})),
+			label: names.safeSeat,
 		},
 	]
 

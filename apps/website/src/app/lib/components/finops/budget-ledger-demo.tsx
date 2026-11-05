@@ -33,7 +33,7 @@ const segmentColors: Record<EnvelopeSegmentId, string> = {
 
 const amountColumn = 'font-mono text-[13px] tabular-nums sm:text-right'
 
-// The FinOps hero demo: an illustrative team envelope as a stacked bar, then
+// The FinOps hero demo: a simulated team envelope as a stacked bar, then
 // the work items drawing on it. Selecting an item drives the receipt docked
 // beside it.
 export function BudgetLedgerDemo(props: BudgetLedgerDemoProps) {

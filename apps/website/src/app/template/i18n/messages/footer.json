@@ -1,6 +1,6 @@
 {
 	"en": {
-		"description": "From vision to reality, and everything in between.",
+		"description": "Agent-assisted delivery, accountable to your team's budget.",
 		"navigation": "Footer navigation",
 		"faq": "Questions & answers",
 		"social": "Follow LangDrift",
@@ -9,7 +9,7 @@
 		"license": "License"
 	},
 	"pt-BR": {
-		"description": "Da visão à realidade, e tudo o que acontece no caminho.",
+		"description": "Entrega assistida por agentes, que presta contas ao orçamento do seu time.",
 		"navigation": "Navegação do rodapé",
 		"faq": "Perguntas frequentes",
 		"social": "Acompanhe o LangDrift",
@@ -18,7 +18,7 @@
 		"license": "Licença"
 	},
 	"zh-Hant": {
-		"description": "從願景到現實，以及其間的每一步。",
+		"description": "代理協助的交付，對您的團隊預算負責。",
 		"navigation": "頁尾導覽",
 		"faq": "常見問題",
 		"social": "追蹤 LangDrift",
@@ -27,7 +27,7 @@
 		"license": "授權條款"
 	},
 	"ja": {
-		"description": "ビジョンから現実へ。その間にあるすべてを。",
+		"description": "エージェント支援の開発に、チーム予算への説明責任を。",
 		"navigation": "フッターナビゲーション",
 		"faq": "よくある質問",
 		"social": "LangDriftをフォロー",
@@ -36,7 +36,7 @@
 		"license": "ライセンス"
 	},
 	"vi": {
-		"description": "Từ định hướng đến thực tế, và mọi điều ở giữa.",
+		"description": "Phát triển phần mềm có tác tử hỗ trợ, chịu trách nhiệm trước ngân sách của đội bạn.",
 		"navigation": "Điều hướng cuối trang",
 		"faq": "Câu hỏi và trả lời",
 		"social": "Theo dõi LangDrift",

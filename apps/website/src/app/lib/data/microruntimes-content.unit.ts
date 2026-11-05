@@ -21,7 +21,7 @@ import {
 	ticketPlan,
 } from './microruntimes-content'
 
-describe('the simulated planning session', () => {
+describe('website/lib/data/microruntimes-content, the planning session', () => {
 	it('types exactly one command, first, and waits before every other line', () => {
 		const commands = planSession.filter((line) => line.type === 'command')
 		expect(commands).toHaveLength(1)
@@ -121,7 +121,7 @@ describe('the simulated planning session', () => {
 	})
 })
 
-describe('illustrative Microruntimes content', () => {
+describe('website/lib/data/microruntimes-content', () => {
 	it('keeps the six lifecycle stages in order', () => {
 		expect(lifecycleStageIds).toEqual([
 			'configure',

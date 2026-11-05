@@ -51,7 +51,6 @@ export interface SafeSeatSectionCopy {
 }
 
 export interface SafeSeatHeroCopy {
-	eyebrow: string
 	comingSoon: string
 	titleStart: string
 	titleEnd: string
@@ -92,8 +91,6 @@ export interface SafeSeatSourcesCopy extends SafeSeatSectionCopy {
 }
 
 export interface SafeSeatFaqCopy {
-	title: string
-	description: string
 	items: Record<SafeSeatFaqId, SafeSeatQuestionCopy>
 }
 

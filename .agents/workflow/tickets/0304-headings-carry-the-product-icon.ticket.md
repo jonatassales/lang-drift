@@ -8,8 +8,8 @@
 
 **Status:** ready-for-agent
 
-- [ ] Microruntimes renders unchanged through the shared tile.
-- [ ] FinOps and Safe Seat show the FinOps icon and "FinOps" above their h1, in every locale.
+- [x] Microruntimes renders unchanged through the shared tile.
+- [x] FinOps and Safe Seat show the FinOps icon and "FinOps" above their h1, in every locale.
 
 ## Dev part
 

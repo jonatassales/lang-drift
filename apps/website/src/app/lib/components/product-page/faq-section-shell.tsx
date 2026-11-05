@@ -10,8 +10,7 @@ interface FaqSectionShellProps {
 	title: string
 }
 
-// The FAQ landmark the product pages and the home share: a heading, a lead
-// and the answers that follow.
+// The home's FAQ landmark: a heading, a lead and the answers that follow.
 export function FaqSectionShell(props: FaqSectionShellProps) {
 	const { children, className, description, title } = props
 

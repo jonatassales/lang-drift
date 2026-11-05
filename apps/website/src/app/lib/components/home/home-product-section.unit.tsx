@@ -20,7 +20,7 @@ afterEach(() => {
 	cleanup()
 })
 
-describe('a home product section', () => {
+describe('website/lib/components/home/home-product-section', () => {
 	it('is labelled by its heading and ends with the link', () => {
 		render(
 			<HomeProductSection
@@ -59,13 +59,13 @@ describe('a home product section', () => {
 	it('is described by its caption and its summary when the section gives them', () => {
 		render(
 			<HomeProductSection
-				caption="Illustrative ledger."
+				caption="A simulated ledger."
 				description="Every paid call is reserved before it runs."
 				headline="One team envelope."
 				id="finops"
 				locale="pt-BR"
 				product={finops}
-				summary="An illustrative team budget."
+				summary="A team budget of 12,000 dollars."
 			>
 				<p>The ledger</p>
 			</HomeProductSection>,
@@ -77,8 +77,8 @@ describe('a home product section', () => {
 			.map((id) => document.getElementById(id)?.textContent)
 
 		expect(describedBy).toEqual([
-			'Illustrative ledger.',
-			'An illustrative team budget.',
+			'A simulated ledger.',
+			'A team budget of 12,000 dollars.',
 		])
 		expect(screen.queryByRole('link')).toBeNull()
 	})

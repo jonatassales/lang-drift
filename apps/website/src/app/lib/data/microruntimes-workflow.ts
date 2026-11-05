@@ -7,7 +7,7 @@ import type { PlanEffort } from './microruntimes-content'
 // expected to use at each effort, the budget the design doc sets, and the
 // delivery stages. Money is integer cents; only the formatter divides. The
 // run is simulated: its usage record, branch, hash and pull request are
-// illustrative data, like the artifact file names.
+// made up, like the artifact file names.
 
 // The date the list prices below were read, for the card's price source.
 export const priceDate = Date.UTC(2026, 9, 6)

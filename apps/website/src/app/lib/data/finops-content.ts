@@ -4,7 +4,7 @@ export { dollars } from './dollars.fmt'
 export { envelopeSegments } from './envelope-segments.compute'
 export { gateFigures } from './gate-figures.compute'
 
-// Illustrative FinOps content: the ids, amounts and states the FinOps page and
+// FinOps content: the ids, amounts and states the FinOps page and
 // its demos render. Sentences live in the finops catalog; this module holds
 // what a reader does not read as prose. Amounts are simulated US dollars, and
 // an observed spend of null is unknown, never zero.
@@ -182,7 +182,6 @@ export interface FailureScenarioCopy extends Record<ChainPillarId, string> {
 export interface FinopsMessages {
 	skip: string
 	hero: {
-		eyebrow: string
 		titleStart: string
 		titleEnd: string
 		caption: string
@@ -259,8 +258,6 @@ export interface FinopsMessages {
 		}
 	}
 	faq: {
-		title: string
-		description: string
 		items: Record<FinopsFaqId, { question: string; answer: string }>
 	}
 }

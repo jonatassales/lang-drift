@@ -3,7 +3,7 @@ export interface LogoMarkProps {
 }
 
 // The drift mark, in black and white: a ring with one segment carried outward.
-// The ring is the vision; the piece that moved is the drift whose why
+// The ring is the plan; the piece that moved is the drift whose evidence
 // LangDrift keeps. Both strokes take the foreground, so the mark reads in
 // either color scheme.
 export function LogoMark(props: LogoMarkProps) {

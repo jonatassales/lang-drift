@@ -6,7 +6,7 @@ import type { WebsiteLocale } from '@i18n/routing'
 import { ArrowRightIcon } from 'web/ui/icons/arrow'
 
 interface HomeProductSectionProps {
-	/** The illustrative note under the demo. */
+	/** The note under the demo. */
 	caption?: string
 	/** The product's demo, with its own grid. */
 	children: ReactNode

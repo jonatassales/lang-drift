@@ -8,9 +8,9 @@
 
 **Status:** ready-for-agent
 
-- [ ] Only the home renders a `#faq` section, with three tabs.
-- [ ] No component left unused, and no catalog key left unread, by the removal.
-- [ ] `platform/cli/drift check localization` passes.
+- [x] Only the home renders a `#faq` section, with three tabs.
+- [x] No component left unused, and no catalog key left unread, by the removal.
+- [x] `platform/cli/drift check localization` passes.
 
 ## Dev part
 
