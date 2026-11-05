@@ -16,6 +16,8 @@
 - [ ] Unknown values decode and encode as `null`, and a record with an unknown field is refused.
 - [ ] Go types only; no JSON Schema is published for the hand-off.
 
+**Note (2026-11-05):** specs 0050 and 0065 keep RESERVED, OBSERVED and RELEASED out of the run's record: they come from the run's entry in the money ledger, `finops/ledger/<run>.ledger.json` (spec 0056), which the record's `run` id names. The record's sections take spec 0065's keys: `run`, `intent`, `stages` (each with its `report`, the dev ticket among them), `effort`, `safeSeat`, `runtime`, `delivery` and `outcome`.
+
 ## Dev part
 
 **Category:** `core-domain`. A recorded intent is what the run applies as the team's authorization; which intents are well formed decides what can ever be run.
@@ -30,3 +32,5 @@
 
 - [ ] The simulation's default intent (Sonnet 5.5, medium, Planning and Review checked, authorized) passes.
 - [ ] Planning unchecked, an unknown status and a revision of 0 are each a problem, and an intent with all three returns three.
+
+**Override:** on 2026-11-05 the owner asked the agent to write this dev part ("You write it"), so the agent wrote `validate-intent.go` and its test.
