@@ -3,6 +3,8 @@ package support
 import (
 	"context"
 	"time"
+
+	"github.com/jonatassales/tao/lib/cli/src/application/session"
 )
 
 // Globals holds the persistent flags every command shares. The root command
@@ -21,6 +23,13 @@ type Globals struct {
 
 	// Timeout is --timeout: the total deadline of one finite operation.
 	Timeout time.Duration
+
+	// Terminal says the output is a terminal, so sessions are toned and title
+	// the window.
+	Terminal bool
+
+	// Observer, when set, sees every session event the output prints.
+	Observer session.Sink
 }
 
 // Bounded applies --timeout to one finite operation.

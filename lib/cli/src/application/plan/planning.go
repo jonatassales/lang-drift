@@ -87,7 +87,6 @@ type judgedSource struct {
 
 // collect reads the ticket and follows its links: lines 1 to 4.
 func (planning *planning) collect(ticketPath string) error {
-	planning.emit(session.PlanCommand, session.Data{"ticket": path.Base(ticketPath)})
 	planning.emit(session.PlanScope, nil)
 	planning.emit(session.ReadTicket, session.Data{"ticket": path.Base(ticketPath)})
 

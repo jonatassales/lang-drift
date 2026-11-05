@@ -8,14 +8,32 @@ import (
 	"github.com/jonatassales/tao/lib/cli/src/application/session"
 )
 
-// Human prints each line as the website's terminal shows it.
+// Human prints each line as the website's terminal shows it. On a terminal
+// each line carries its kind's tone and the window's title names the
+// project; elsewhere the bytes are the plain text.
 type Human struct {
-	Writer io.Writer
+	Writer   io.Writer
+	Terminal bool
 }
 
 // Emit prints one line.
 func (human Human) Emit(event session.Event) {
-	_, _ = io.WriteString(human.Writer, Text(event)+"\n")
+	line := Text(event)
+	if human.Terminal {
+		line = toned(KindOf(event), line)
+	}
+
+	writeTo(human.Writer, line+"\n")
+}
+
+// Opened titles a terminal's window with the tool and the project's
+// folder, "dft — project".
+func (human Human) Opened(project string) {
+	if !human.Terminal {
+		return
+	}
+
+	writeTo(human.Writer, "\x1b]0;dft — "+project+"\x07")
 }
 
 // NDJSON prints one JSON event per line, with the website's line and reveal
@@ -66,11 +84,15 @@ func (ndjson NDJSON) now() time.Time {
 	return time.Now()
 }
 
-// For picks the renderer the global flags ask for.
-func For(writer io.Writer, asJSON bool) session.Sink {
+// For picks the renderer the global flags ask for, toned when the output is
+// a terminal.
+func For(writer io.Writer, asJSON bool, terminal bool) session.Sink {
 	if asJSON {
 		return NDJSON{Writer: writer}
 	}
 
-	return Human{Writer: writer}
+	return Human{
+		Writer:   writer,
+		Terminal: terminal,
+	}
 }

@@ -48,7 +48,6 @@ func (Discard) Emit(Event) {}
 // prints once per document or component carry one generic id here, with
 // the document or component in the data.
 const (
-	PlanCommand     = "plan"
 	PlanScope       = "scope"
 	ReadTicket      = "readTicket"
 	Links           = "links"
@@ -86,7 +85,6 @@ const (
 
 // The run session's line ids.
 const (
-	RunCommand         = "command"
 	RunScope           = "scope"
 	Intent             = "intent"
 	Estimate           = "estimate"

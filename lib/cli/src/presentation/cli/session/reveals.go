@@ -18,7 +18,7 @@ const (
 )
 
 var reveals = map[string]Reveal{
-	key(session.PlanSession, session.PlanCommand):     {TicketCard, "cards"},
+	key(session.PlanSession, session.PlanScope):       {TicketCard, "cards"},
 	key(session.PlanSession, session.Links):           {TicketCard, "links"},
 	key(session.PlanSession, session.Analysis):        {AnalysisCard, "act"},
 	key(session.PlanSession, session.ReadDocument):    {AnalysisCard, "document"},
@@ -43,7 +43,7 @@ var reveals = map[string]Reveal{
 	key(session.PlanSession, session.Validate):        {PlanCard, "validated"},
 	key(session.PlanSession, session.Draft):           {PlanCard, "drafted"},
 	key(session.PlanSession, session.Handoff):         {WorkflowCard, "finished"},
-	key(session.RunSession, session.RunCommand):       {WorkflowCard, "result"},
+	key(session.RunSession, session.RunScope):         {WorkflowCard, "result"},
 	key(session.RunSession, session.GateOpened):       {WorkflowCard, "reserved"},
 	key(session.RunSession, session.GatePaused):       {WorkflowCard, "paused"},
 	key(session.RunSession, session.Waiting):          {WorkflowCard, "stage"},

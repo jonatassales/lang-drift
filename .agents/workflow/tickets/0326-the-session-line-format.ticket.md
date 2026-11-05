@@ -56,3 +56,5 @@ Tests read each printed line's kind from an injected session sink, not from `--j
 - [ ] `Labeled` with `to-tickets` (10 characters) and `code-review` (11) each give exactly one space before the value.
 - [ ] `Result` with `pr #19` and with `read` reach the value at the same column.
 - [ ] `ComponentRow` gives `✓ services/signup-api   Go · api        250m · 256 MiB` and `✓ apps/signup           Next.js · web   500m · 1024 MiB` byte for byte.
+
+**Override:** on 2026-11-05 the owner asked the agent to write this dev part ("You write it"), so the agent wrote `Layout` and its test.

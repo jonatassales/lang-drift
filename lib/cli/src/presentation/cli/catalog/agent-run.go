@@ -6,7 +6,6 @@ import (
 
 	"github.com/jonatassales/tao/lib/cli/src/application"
 	"github.com/jonatassales/tao/lib/cli/src/application/execution"
-	"github.com/jonatassales/tao/lib/cli/src/presentation/cli/session"
 	"github.com/jonatassales/tao/lib/cli/src/presentation/cli/support"
 
 	"github.com/spf13/cobra"
@@ -32,7 +31,7 @@ func NewAgentRunCommand(executor Executor, globals *support.Globals) *cobra.Comm
 		Args:  validateSingleArgument,
 		RunE: func(command *cobra.Command, arguments []string) error {
 			request.Runtime = arguments[0]
-			request.Session = session.For(command.OutOrStdout(), globals.JSON)
+			request.Session = sessionOf(command, globals)
 			if confirmsOnTheTerminal(command, confirm) {
 				prompter := support.NewPrompter(command.InOrStdin(), command.ErrOrStderr())
 				request.Confirm = func(ctx context.Context, stage string) (bool, error) {
@@ -79,7 +78,12 @@ func NewAgentConfirmCommand(executor Executor, globals *support.Globals) *cobra.
 		Short: "Confirm a waiting stage as the owner; the next run plays on from it",
 		Args:  validateTwoArguments,
 		RunE: func(command *cobra.Command, arguments []string) error {
-			request := execution.ConfirmRequest{Runtime: arguments[0], Stage: arguments[1], By: by, Session: session.For(command.OutOrStdout(), globals.JSON)}
+			request := execution.ConfirmRequest{
+				Runtime: arguments[0],
+				Stage:   arguments[1],
+				By:      by,
+				Session: sessionOf(command, globals),
+			}
 
 			return runSession(command, globals, func(ctx context.Context, project application.ProjectSelection) (execution.ConfirmResult, error) {
 				request.Project = project

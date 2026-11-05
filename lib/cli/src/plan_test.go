@@ -101,22 +101,26 @@ func TestPlanReadsTheTicketAndWritesTheRuntimeFile(t *testing.T) {
 		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
 
+	startsOnTheScope := strings.HasPrefix(stdout, "# plan only · nothing is built, started or paid for in this step\n")
+	if !startsOnTheScope || strings.Contains(stdout, "dft agent plan") {
+		t.Errorf("the plan does not open on its scope, or echoes the command:\n%s", stdout)
+	}
+
 	for _, line := range []string{
-		"dft agent plan 0070-console-microruntime.ticket.md",
-		"agent › tool call: read 0070-console-microruntime.ticket.md",
-		"agent › needs-triage · links 0010-exphere-and-the-langdrift-folder.spec.md · ex-microruntimes-capability.research.md · 0002-console-input-is-untrusted.adr.md · 0001-finops.gr.md · package.json · go.mod",
+		"console › tool call: read 0070-console-microruntime.ticket.md",
+		"console › needs-triage · links 0010-exphere-and-the-langdrift-folder.spec.md · ex-microruntimes-capability.research.md · 0002-console-input-is-untrusted.adr.md · 0001-finops.gr.md · package.json · go.mod",
 		"✓ read       7 documents · nothing outside the ticket's links",
 		"reads      .langdrift/harness/guardrails/0001-finops.gr.md · FIN-01 · FIN-02 · FIN-03 · FIN-04 · FIN-05 · FIN-06 · FIN-07 · FIN-08",
 		"bounded    cpuMillis 2000 · memoryMiB 3072 · set by owner in the CLI · record envelope-7c2a",
 		"budget     $25.00 per run for model calls · set by owner in the CLI",
-		"agent › resolving 1 components named in the CLI · paths, images, ports",
-		"agent › tool call: inspect . · Dockerfile · :3001",
+		"console › resolving 1 components named in the CLI · paths, images, ports",
+		"console › tool call: inspect . · Dockerfile · :3001",
 		"✓ .                     Next.js+Go · web 500m · 1024 MiB",
-		"agent › cross-checking · 1 ports distinct · 1 images resolved · no collisions",
+		"console › cross-checking · 1 ports distinct · 1 images resolved · no collisions",
 		"✓ size       500m of 2000m · 1024 of 3072 MiB · 1 one-replica Deployments · proposed shares",
 		"limits     gpu and disk are not runtime.md fields · none requested",
 		"estimate   runtime has no price source · cpu and memory stay in millicores and MiB",
-		"agent › tool call: validate runtime.md draft against the schema · 0 errors",
+		"console › tool call: validate runtime.md draft against the schema · 0 errors",
 		"✓ plan       runtime.md draft, revision 1 · proposed · authorize with dft agent run",
 		"# next: once the team authorizes, dft agent run applies the recorded intent",
 	} {

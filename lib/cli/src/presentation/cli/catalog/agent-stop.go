@@ -5,7 +5,6 @@ import (
 
 	"github.com/jonatassales/tao/lib/cli/src/application"
 	"github.com/jonatassales/tao/lib/cli/src/application/execution"
-	"github.com/jonatassales/tao/lib/cli/src/presentation/cli/session"
 	"github.com/jonatassales/tao/lib/cli/src/presentation/cli/support"
 
 	"github.com/spf13/cobra"
@@ -25,7 +24,7 @@ func NewAgentStopCommand(executor Executor, globals *support.Globals) *cobra.Com
 			request := execution.StopRequest{
 				Runtime: arguments[0],
 				By:      by,
-				Session: session.For(command.OutOrStdout(), globals.JSON),
+				Session: sessionOf(command, globals),
 			}
 
 			return runSession(command, globals, func(ctx context.Context, project application.ProjectSelection) (execution.StopResult, error) {

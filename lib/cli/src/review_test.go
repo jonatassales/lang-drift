@@ -98,7 +98,7 @@ func TestGatePausesOnTheAllocationAndThePeriod(t *testing.T) {
 	if status != 3 || !strings.Contains(stderr, "ticket allocation") {
 		t.Fatalf("a reservation over the allocation gave %d: %s\n%s", status, stderr, stdout)
 	}
-	expectLines(t, stdout, "agent › gate       reservation $11.40 exceeds the $10.00 allocation · paused")
+	expectLines(t, stdout, "console › gate       reservation $11.40 exceeds the $10.00 allocation · paused")
 	if lap := string(mustRead(t, filepath.Join(p.root, ".langdrift", "microruntimes", "runtimes", "console-again", "laps", "0001.lap.md"))); !strings.Contains(lap, "| Paused | 13:46:50 | FG-03: a $11.40 reservation exceeds the $10.00 allocation |") {
 		t.Errorf("lap 0001 of console-again:\n%s", lap)
 	}
@@ -108,7 +108,7 @@ func TestGatePausesOnTheAllocationAndThePeriod(t *testing.T) {
 	if status != 3 || !strings.Contains(stderr, "left of the period") {
 		t.Fatalf("a reservation over the period gave %d: %s\n%s", status, stderr, stdout)
 	}
-	expectLines(t, stdout, "agent › gate       reservation $11.40 exceeds the $9.95 left of the period · paused")
+	expectLines(t, stdout, "console › gate       reservation $11.40 exceeds the $9.95 left of the period · paused")
 
 	// The planner's own reservation, 15 cents, meets the same gate.
 	budget("985", "985", "985")
@@ -155,7 +155,7 @@ func TestSessionEmitsEventsAsJSON(t *testing.T) {
 	}
 
 	joined := strings.Join(ids, " ")
-	for _, want := range []string{"plan scope readTicket links", "bounds budget memory embed vectorSearch candidates", "validate draft handoff"} {
+	for _, want := range []string{"scope readTicket links", "bounds budget memory embed vectorSearch candidates", "validate draft handoff"} {
 		if !strings.Contains(joined, want) {
 			t.Errorf("the events %v lack the sequence %q", ids, want)
 		}
@@ -209,9 +209,9 @@ func TestPlanWithoutEpisodesSaysSo(t *testing.T) {
 		t.Fatalf("dft agent plan = %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout,
-		"agent › 0 candidates · no episode indexed yet",
-		"agent › dropped 0 below 0.55 · kept 0",
-		"agent › 0 episodes cited · none with measured resources",
+		"console › 0 candidates · no episode indexed yet",
+		"console › dropped 0 below 0.55 · kept 0",
+		"console › 0 episodes cited · none with measured resources",
 	)
 }
 
@@ -232,7 +232,7 @@ func TestPlanReadsTheDockerfileAndNamesWhatItLacks(t *testing.T) {
 	if status != 3 || !strings.Contains(stderr, "blocked") {
 		t.Fatalf("a component without readiness gave %d: %s\n%s", status, stderr, stdout)
 	}
-	expectLines(t, stdout, "agent › tool call: inspect apps/console · package.json · :3002")
+	expectLines(t, stdout, "console › tool call: inspect apps/console · package.json · :3002")
 	if !strings.Contains(stdout, "✗ plan       runtime.md draft, revision 1 · blocked · readiness-known failed\n") {
 		t.Errorf("the plan did not say which check blocked it:\n%s", stdout)
 	}

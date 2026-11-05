@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/jonatassales/tao/lib/cli/src/application/session"
 	"github.com/jonatassales/tao/lib/cli/src/presentation/cli/catalog"
 	"github.com/jonatassales/tao/lib/cli/src/presentation/cli/support"
 )
@@ -28,6 +29,9 @@ type UseCases struct {
 	Plan             catalog.PlanOperations
 	Execution        catalog.Executor
 	Gates            catalog.GatesReporter
+	// Observer, when set, sees every session event the output prints, as a
+	// test does.
+	Observer session.Sink
 }
 
 // Execute runs the CLI and returns the appropriate exit code.
@@ -45,7 +49,11 @@ func Execute(
 	cliApplication := &application{
 		options:  options,
 		useCases: useCases,
-		globals:  support.Globals{Fallback: options.Directory},
+		globals: support.Globals{
+			Fallback: options.Directory,
+			Terminal: options.Terminal,
+			Observer: useCases.Observer,
+		},
 	}
 	rootCommand := cliApplication.command()
 
