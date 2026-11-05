@@ -9,6 +9,7 @@ const focusRing =
 	'rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary'
 const brandLink = `inline-flex items-center gap-2 text-lg font-[650] tracking-[-0.055em] text-foreground hover:text-foreground ${focusRing}`
 const footerLink = `inline-flex min-h-11 items-center text-[13px] text-muted-foreground hover:text-foreground ${focusRing}`
+const creditLink = `inline-flex min-h-11 basis-full items-center hover:text-foreground md:basis-auto ${focusRing}`
 const socialLink = `inline-flex size-11 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground ${focusRing}`
 
 interface WebsiteFooterProps {
@@ -70,6 +71,14 @@ export function WebsiteFooter(props: WebsiteFooterProps) {
 					</span>
 					<span>Neongate AI</span>
 					<span className="basis-full md:basis-auto">{copy.copyright}</span>
+					<a
+						className={creditLink}
+						href="https://langwatch.ai/"
+						rel="noopener noreferrer"
+						target="_blank"
+					>
+						{copy.acknowledgment}
+					</a>
 				</div>
 				<nav aria-label={copy.social} className="flex items-center gap-1.5">
 					<a

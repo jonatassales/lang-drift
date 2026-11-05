@@ -59,10 +59,9 @@ describe('website/home/home-product-section', () => {
 		).toBeTruthy()
 	})
 
-	it('is described by its caption and its summary when the section gives them', () => {
+	it('is described by its summary when the section gives one', () => {
 		render(
 			<HomeProductSection
-				caption="A simulated ledger."
 				description="Every paid call is reserved before it runs."
 				headline="One team envelope."
 				id="finops"
@@ -79,10 +78,7 @@ describe('website/home/home-product-section', () => {
 			.split(' ')
 			.map((id) => document.getElementById(id)?.textContent)
 
-		expect(describedBy).toEqual([
-			'A simulated ledger.',
-			'A team budget of 12,000 dollars.',
-		])
+		expect(describedBy).toEqual(['A team budget of 12,000 dollars.'])
 		expect(screen.queryByRole('link')).toBeNull()
 	})
 
