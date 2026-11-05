@@ -14,7 +14,7 @@
 - [ ] The `episodes` answer holds per candidate an `ep-NNNN` id, a `kept` or `dropped` verdict and a reason from a closed set (`shares the stack and scale` when kept; `other runtime`, `no broker` or `docs only` when dropped), so that `console › judging · 3 share the stack and scale · 3 differ: other runtime, no broker, docs only` and the EPISODES rows (`ep-0412 checkout-preview-sizing 0.81 kept`, `ep-0297 docs-search-index 0.52 dropped · docs only`) come from it.
 - [ ] The `suggestion` answer holds `model`, `effort`, `effortReason` and `modelReason`, so that `console › weighing effort · low skips the broker wiring · high is not warranted by 5 components`, `console › weighing model · Haiku 5.5 retries the broker wiring · Opus 5.5 costs more per outcome`, `✓ suggests   claude-sonnet-5-5 · effort medium`, SUGGESTED MODEL `Claude Sonnet 5.5` and SUGGESTED EFFORT `medium` come from it.
 - [ ] No answer carries a cost, usage, provenance or version: the plan prints `# plan only · nothing is built, started or paid for in this step`.
-- [ ] Each kind has a JSON Schema and a sample, published on npm, and the samples parse with Go and agree with the schemas.
+- [ ] Each kind has a JSON Schema and a sample, and the samples parse with Go and agree with the schemas; ticket 0322 publishes them on npm with the other new shapes.
 - [ ] The old `judge` package is untouched, and the CLI and the console keep building and passing.
 
 ## Dev part
@@ -31,3 +31,5 @@
 
 - [ ] The simulation's six verdicts pass.
 - [ ] A malformed id, a repeated id, a kept reason on a dropped entry and a reason outside the set are each refused naming the field.
+
+**Override:** on 2026-11-05 the owner asked the agent to write this dev part ("You write it"), so the agent wrote `checkEpisodes` and its test.

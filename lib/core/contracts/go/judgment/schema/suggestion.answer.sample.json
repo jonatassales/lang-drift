@@ -1,0 +1,6 @@
+{
+	"model": "claude-sonnet-5-5",
+	"effort": "medium",
+	"effortReason": "low skips the broker wiring · high is not warranted by 5 components",
+	"modelReason": "Haiku 5.5 retries the broker wiring · Opus 5.5 costs more per outcome"
+}

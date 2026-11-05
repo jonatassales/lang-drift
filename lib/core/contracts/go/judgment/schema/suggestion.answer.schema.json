@@ -1,0 +1,26 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://langdrift.md/schemas/judgment/suggestion.answer.schema.json",
+	"title": "Suggestion answer",
+	"description": "The model and the effort the judge suggests, and why, as \"weighing effort · …\", \"weighing model · …\" and \"✓ suggests …\" print them. The suggestion is a recommendation; the team authorizes the choice.",
+	"type": "object",
+	"additionalProperties": false,
+	"required": ["model", "effort", "effortReason", "modelReason"],
+	"properties": {
+		"model": {
+			"type": "string",
+			"minLength": 1
+		},
+		"effort": {
+			"enum": ["low", "medium", "high"]
+		},
+		"effortReason": {
+			"type": "string",
+			"minLength": 1
+		},
+		"modelReason": {
+			"type": "string",
+			"minLength": 1
+		}
+	}
+}
