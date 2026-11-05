@@ -1,0 +1,17 @@
+{
+	"paths": [
+		"apps/console/src/domain/reservation.go",
+		"apps/console/src/domain/reservation_test.go"
+	],
+	"goal": "Decide what a run may reserve from the team envelope before its first paid call.",
+	"acceptance": [
+		"A reservation above the per-run cap is refused naming the cap.",
+		"A reservation within the cap and the period's remainder is granted in full."
+	],
+	"category": "core-domain",
+	"plannedLines": 60,
+	"totalPlannedLines": 420,
+	"excludedKind": null,
+	"reason": "the reservation rule is the ticket's one decision with its own acceptance criteria; the handlers around it are boundary",
+	"confidence": 0.8
+}

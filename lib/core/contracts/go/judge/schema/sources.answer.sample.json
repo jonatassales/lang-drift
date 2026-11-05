@@ -1,0 +1,42 @@
+{
+	"sources": [
+		{
+			"path": ".agents/workflow/tickets/0198-book-a-demo-microruntime.ticket.md",
+			"verdict": "kept",
+			"reason": "the ticket being planned",
+			"confidence": 0.98,
+			"role": "ticket",
+			"summary": "four components, every stage human"
+		},
+		{
+			"path": ".agents/workflow/specs/0032-components-by-dockerfile-path.spec.md",
+			"verdict": "kept",
+			"reason": "defines the fence the plan writes",
+			"confidence": 0.9,
+			"role": "spec",
+			"summary": "components by Dockerfile path"
+		}
+	],
+	"facts": [
+		{
+			"topic": "component",
+			"text": "messaging and storage build from their Dockerfiles under infrastructure/",
+			"source": ".agents/workflow/tickets/0198-book-a-demo-microruntime.ticket.md#L5"
+		}
+	],
+	"criteria": [
+		{
+			"id": "FIN-02",
+			"applies": "the run is estimated before any paid call"
+		}
+	],
+	"figures": [
+		{
+			"topic": "resource",
+			"fact": "the run should fit in about 2,000 millicores and 3,072 MiB",
+			"source": ".agents/workflow/tickets/0198-book-a-demo-microruntime.ticket.md#L5",
+			"cpuMillis": 2000,
+			"memoryMiB": 3072
+		}
+	]
+}

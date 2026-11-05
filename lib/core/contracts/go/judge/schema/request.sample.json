@@ -1,0 +1,8 @@
+{
+	"kind": "suggestion",
+	"model": "claude-sonnet-5-5",
+	"system": "You suggest the model and the effort for one ticket. Answer with JSON only.",
+	"prompt": "Ticket 0225: the run brings the runtime up before the first stage.",
+	"maxTokens": 1024,
+	"promptVersion": "judge-1"
+}

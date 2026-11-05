@@ -1,0 +1,56 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://langdrift.md/schemas/judge/response.schema.json",
+	"title": "Judge response",
+	"description": "The console's answer to one question: the validated answer text, or a refusal, with what the judgment used and cost.",
+	"type": "object",
+	"additionalProperties": false,
+	"required": ["text", "usage", "refused", "reason", "cost", "judgeVersion"],
+	"properties": {
+		"text": {
+			"type": "string"
+		},
+		"usage": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["inputTokens", "outputTokens"],
+			"properties": {
+				"inputTokens": {
+					"type": "integer",
+					"minimum": 0
+				},
+				"outputTokens": {
+					"type": "integer",
+					"minimum": 0
+				}
+			}
+		},
+		"refused": {
+			"type": "boolean"
+		},
+		"reason": {
+			"type": "string"
+		},
+		"cost": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["cents", "provenance", "illustrative"],
+			"properties": {
+				"cents": {
+					"type": "integer",
+					"minimum": 0
+				},
+				"provenance": {
+					"const": "console"
+				},
+				"illustrative": {
+					"type": "boolean"
+				}
+			}
+		},
+		"judgeVersion": {
+			"type": "string",
+			"minLength": 1
+		}
+	}
+}
