@@ -17,6 +17,7 @@ import (
 type Executor interface {
 	Start(context.Context, execution.StartRequest) (execution.StartResult, error)
 	Confirm(context.Context, execution.ConfirmRequest) (execution.ConfirmResult, error)
+	Stop(context.Context, execution.StopRequest) (execution.StopResult, error)
 	Status(context.Context, execution.StatusRequest) (execution.StatusResult, error)
 }
 

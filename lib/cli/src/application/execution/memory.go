@@ -47,8 +47,9 @@ func (playing *playing) memory(outcome string) Memory {
 }
 
 func fenceOutcome(outcome string) string {
-	if outcome == Unknown {
-		return Unknown
+	keptAsItIs := outcome == Unknown || outcome == Abandoned
+	if keptAsItIs {
+		return outcome
 	}
 
 	return Completed
@@ -64,6 +65,8 @@ func (playing *playing) outcomeWords(outcome string) string {
 		return "unknown after " + laps + ": the runtime's cleanup was not confirmed"
 	case ReadyToMerge:
 		return "completed in " + laps + ", ready to merge"
+	case Abandoned:
+		return "abandoned after " + laps + " by " + playing.by + ", while it waited for a person"
 	}
 
 	return "completed in " + laps + ", ready for review"
@@ -98,6 +101,8 @@ func (playing *playing) lapSentence(lap run.LapSummary) string {
 		return "Lap " + lap.Number + " followed " + choice + " and finished with " + finops.Dollars(lap.ObservedCents) + " observed of " + finops.Dollars(lap.ReservedCents) + " reserved."
 	case lap.Outcome == Unknown:
 		return "Lap " + lap.Number + " ran " + choice + "; its outcome is unknown because the runtime's cleanup was not confirmed."
+	case lap.Outcome == Abandoned:
+		return "Lap " + lap.Number + " ran " + choice + " until a stage waited for a person, and was abandoned there with " + finops.Dollars(lap.ObservedCents) + " observed of " + finops.Dollars(lap.ReservedCents) + " reserved."
 	}
 
 	return "Lap " + lap.Number + " ran " + choice + "."

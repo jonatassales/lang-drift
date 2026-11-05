@@ -48,8 +48,8 @@ type PlanningCents struct {
 	Overspend int  `json:"overspend"`
 }
 
-// LapLine is one lap's money: the choice, the tokens, the amounts and the
-// gates it passed.
+// LapLine is one lap's money: the choice, the tokens, the amounts, the gates
+// it passed and, once a person closed it, how.
 type LapLine struct {
 	Lap             string       `json:"lap"`
 	Model           string       `json:"model"`
@@ -58,6 +58,7 @@ type LapLine struct {
 	Cents           LapCents     `json:"cents"`
 	Gates           []GateResult `json:"gates"`
 	NothingPaid     bool         `json:"nothingPaid"`
+	Closed          *LapClosing  `json:"closed,omitempty"`
 }
 
 // LapTokens are the tokens a lap expected and the ones it observed.

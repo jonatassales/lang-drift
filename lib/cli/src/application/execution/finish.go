@@ -322,7 +322,7 @@ func (playing *playing) takeDown(ctx context.Context) error {
 
 	now := playing.now()
 	playing.lap.Stopped = &now
-	playing.lap.Steps = append(playing.lap.Steps, Step{Name: "Stopped", At: now, Note: "requested by the run"})
+	playing.lap.Steps = append(playing.lap.Steps, Step{Name: "Stopped", At: now, Note: orDefault(playing.stopRequest, "requested by the run")})
 
 	deployments := 0
 	if playing.lap.Resources != nil {
