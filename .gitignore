@@ -4,6 +4,9 @@ node_modules/
 
 # Build output
 dist/
+# Go binaries built into a bin/ folder; the CLI's tracked launcher is source
+bin/
+!lib/cli/bin/
 .next/
 next-env.d.ts
 *.tsbuildinfo
