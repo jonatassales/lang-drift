@@ -9,7 +9,7 @@ The sidebar opens with an area switcher, after the old LangDrift dashboard's pro
 | Command | Purpose |
 | --- | --- |
 | `pnpm console` | From the repository root: build the shared packages, then start the console on `http://127.0.0.1:3001` with console-stubs alongside it on `127.0.0.1:3401`. |
-| `pnpm --filter console typecheck` | Generate Next.js route types and check TypeScript. |
+| `pnpm turbo run typecheck --filter=console` | Generate Next.js route types, then check TypeScript. |
 | `pnpm --filter console test` | Run the view tests, runtimes and tickets, with Node's test runner. |
 
 The console listens on loopback only and answers only loopback hosts and same-origin requests. `CONSOLE_STUBS_URL` points it at console-stubs, configured in `.env.development` as `http://127.0.0.1:3401`; it must stay plain `http` on loopback. When console-stubs is down, data requests answer `console_stubs_unavailable` and the screens say so.

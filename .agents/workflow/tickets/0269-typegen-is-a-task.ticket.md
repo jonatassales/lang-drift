@@ -8,8 +8,8 @@
 
 **Status:** ready-for-agent
 
-- [ ] No package script chains two tools.
-- [ ] `pnpm turbo run typecheck` passes from a clean clone and replays `typegen` from cache.
+- [x] No package script chains two tools.
+- [x] `pnpm turbo run typecheck` passes from a clean clone and replays `typegen` from cache.
 
 ## Dev part
 

@@ -12,7 +12,7 @@ Actively build and sharpen the project's domain model as you design. This is the
 
 ## Where the domain model lives
 
-- **Glossary**: the `## Glossary` section of `.agents/context.md`. Edit only that section.
+- **Glossary**: the `## Glossary` section of `.agents/context.guide.md`. Edit only that section.
 - **ADRs**: `.agents/workflow/adrs/<NNNN>-<slug>.adr.md`.
 
 Create them lazily: add the glossary section when the first term is resolved, and the `adrs/` folder when the first ADR is needed.
@@ -37,7 +37,7 @@ When the user states how something works, check whether the code agrees. If you 
 
 ### Update the glossary inline
 
-When a term is resolved, update the glossary right there. Don't batch these up: capture them as they happen. Use the format in [glossary-format.md](./glossary-format.md).
+When a term is resolved, update the glossary right there. Don't batch these up: capture them as they happen. Use the format in [glossary-format.guide.md](./glossary-format.guide.md).
 
 The glossary should be totally devoid of implementation details. Do not treat it as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else.
 
@@ -49,4 +49,4 @@ Only offer to create an ADR when all three are true:
 2. **Surprising without context**: a future reader will wonder "why did they do it this way?"
 3. **The result of a real trade-off**: there were genuine alternatives and you picked one for specific reasons
 
-If any of the three is missing, skip the ADR. Use the format in [adr-format.md](./adr-format.md).
+If any of the three is missing, skip the ADR. Use the format in [adr-format.guide.md](./adr-format.guide.md).

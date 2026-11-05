@@ -14,7 +14,7 @@ Run from the repository root:
 | --- | --- |
 | `pnpm turbo run dev --filter=website` | Builds the tokens stylesheet the website depends on, then starts Next.js on port 3000. |
 | `pnpm turbo run test --filter=website` | Runs the unit tests (Vitest; jsdom where a file asks for it). |
-| `pnpm turbo run typecheck --filter=website` | Type-checks the app. |
+| `pnpm turbo run typecheck --filter=website` | Generate Next.js route types, then check TypeScript. |
 | `pnpm turbo run build --filter=website` | Builds the app and the packages it depends on. |
 | `drift check localization` | Checks the translation catalogs after a catalog or loader change. |
 | `drift env setup` | Creates the local `.env` file from `.env.development`. |

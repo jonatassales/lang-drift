@@ -6,7 +6,7 @@
 
 - [ ] 0267: the tokens stylesheet is built by shell and jq
 - [ ] 0268: the drift and ex launchers take .sh
-- [ ] 0269: next typegen runs as its own Turborepo task
+- [x] 0269: next typegen runs as its own Turborepo task
 - [ ] 0270: pre-commit runs the three checks and the commit header has its rules
 - [ ] 0271: drift measures the tooling rules
 

@@ -1,6 +1,6 @@
 # LangDrift
 
-LangDrift is an agentic FinOps platform: one brand, one domain and one console. This repository, code name **Tao**, builds the next LangDrift. This file holds the ideas an agent must carry into any task here; the mechanics live in [`.agents/context.md`](.agents/context.md).
+LangDrift is an agentic FinOps platform: one brand, one domain and one console. This repository, code name **Tao**, builds the next LangDrift. This file holds the ideas an agent must carry into any task here; the mechanics live in [`.agents/context.guide.md`](.agents/context.guide.md).
 
 ## The idea
 
@@ -51,15 +51,15 @@ A pnpm and Turborepo monorepo. `apps/website` is the platform site, one page wit
 
 | When you need | Read |
 | --- | --- |
-| Layout, toolchain, commands, the `drift` CLI, design tokens, CI and Git mechanics | [`.agents/context.md`](.agents/context.md) |
-| The project vocabulary | [`.agents/context.md`](.agents/context.md), `## Glossary` |
+| Layout, toolchain, commands, the `drift` CLI, design tokens, CI and Git mechanics | [`.agents/context.guide.md`](.agents/context.guide.md) |
+| The project vocabulary | [`.agents/context.guide.md`](.agents/context.guide.md), `## Glossary` |
 | Specs, tickets, ADRs and research notes | `.agents/workflow/` |
 | The website's environment contract and sign-up pause | [`apps/website/README.md`](apps/website/README.md) |
 | The `ex` CLI and the Microruntimes contracts | [`lib/cli/README.md`](lib/cli/README.md), [`lib/core/contracts/go/README.md`](lib/core/contracts/go/README.md) |
 
 ## Commands
 
-Run from the repository root. `pnpm website` serves the site on port 3000, `pnpm console` the console on 3001 with its stub API on 3401, so both run at once. [`.agents/context.md`](.agents/context.md) has the full table and what each command touches.
+Run from the repository root. `pnpm website` serves the site on port 3000, `pnpm console` the console on 3001 with its stub API on 3401, so both run at once. [`.agents/context.guide.md`](.agents/context.guide.md) has the full table and what each command touches.
 
 ```bash
 pnpm install
