@@ -4,6 +4,11 @@ import { Eyebrow } from 'web/ui/eyebrow'
 import { CaretDownIcon } from 'web/ui/icons/arrow'
 import { cn } from 'web/utilities'
 
+// One of the cards the session fills: a header that names the act and
+// carries its latest figure, over a body that slides open and shut. The
+// body stays mounted either way, so its values keep their state while the
+// card is collapsed; shut, it is inert and hidden from assistive
+// technology.
 interface SessionCardProps {
 	body: ReactNode
 	expanded: boolean
@@ -14,11 +19,6 @@ interface SessionCardProps {
 	summary: ReactNode
 }
 
-// One of the cards the session fills: a header that names the act and
-// carries its latest figure, over a body that slides open and shut. The
-// body stays mounted either way, so its values keep their state while the
-// card is collapsed; shut, it is inert and hidden from assistive
-// technology.
 export function SessionCard(props: SessionCardProps) {
 	const { body, expanded, label, onOpen, phase, summary } = props
 

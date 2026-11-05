@@ -17,13 +17,8 @@ import type {
 	BookDemoOutcome,
 } from './form.types'
 import { bookDemoSchema } from './form.validation'
-import { initialBookDemoInput } from './form-state.data'
+import { bookDemoFormState } from './form-state.data'
 import { positionIds } from './positions'
-
-interface BookDemoFormProps {
-	copy: BookDemoMessages
-	locale: WebsiteLocale
-}
 
 const label = 'text-sm font-medium text-foreground'
 const fieldControl =
@@ -36,6 +31,11 @@ const errorText = 'm-0 text-xs text-status-danger'
 // submit, posted with the locale to the edge, which forwards it to the
 // demo-requests service, and answered with the return-soon notice while that
 // service is unreachable.
+interface BookDemoFormProps {
+	copy: BookDemoMessages
+	locale: WebsiteLocale
+}
+
 export function BookDemoForm(props: BookDemoFormProps) {
 	const { copy, locale } = props
 
@@ -49,7 +49,7 @@ export function BookDemoForm(props: BookDemoFormProps) {
 		unknown,
 		BookDemoData
 	>({
-		defaultValues: initialBookDemoInput,
+		defaultValues: bookDemoFormState,
 		mode: 'onTouched',
 		resolver: zodResolver(bookDemoSchema),
 	})
@@ -62,6 +62,7 @@ export function BookDemoForm(props: BookDemoFormProps) {
 
 	function errorOf(field: BookDemoField) {
 		const code = formState.errors[field]?.message
+
 		if (!isBookDemoErrorCode(code)) return undefined
 
 		return copy.errors[code]

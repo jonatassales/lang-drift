@@ -1,5 +1,5 @@
 import { declaresOversizedBody } from '@api/book-a-demo/body/declares-oversized-body.validation'
-import { reply } from '@api/book-a-demo/book-demo-reply.response'
+import { bookDemoReply } from '@api/book-a-demo/book-demo-reply.response'
 
 import { bodyLimit } from './body-limit.data'
 
@@ -7,5 +7,5 @@ import { bodyLimit } from './body-limit.data'
 export function interceptBodySize(request: Request): Response | undefined {
 	if (!declaresOversizedBody(request, bodyLimit)) return undefined
 
-	return reply(413, 'INVALID_REQUEST')
+	return bookDemoReply(413, 'INVALID_REQUEST')
 }

@@ -9,7 +9,7 @@ import { FailureScenarios } from './failure-scenarios'
 
 afterEach(cleanup)
 
-describe('FinOps failure scenarios', () => {
+describe('website/platform/finops/sections/failure-scenarios', () => {
 	it('walks both failures through the chain and ends each in the state it leaves', () => {
 		const { container } = render(
 			<FailureScenarios copy={finopsMessages.en.failures} />,

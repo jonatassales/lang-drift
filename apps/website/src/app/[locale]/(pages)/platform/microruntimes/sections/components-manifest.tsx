@@ -11,15 +11,15 @@ import { CardValue, revealState } from './card-value'
 import { ComponentRow } from './component-row'
 import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
 
+// The components the plan resolves from the spec: a dash until the console
+// starts, five skeleton rows while it resolves, then one row per terminal
+// line, under a total that counts and sums the rows as they arrive.
 interface ComponentsManifestProps {
 	copy: TicketCardCopy
 	format: TicketCardFormat
 	playedCount: number
 }
 
-// The components the plan resolves from the spec: a dash until the console
-// starts, five skeleton rows while it resolves, then one row per terminal
-// line, under a total that counts and sums the rows as they arrive.
 export function ComponentsManifest(props: ComponentsManifestProps) {
 	const { copy, format, playedCount } = props
 

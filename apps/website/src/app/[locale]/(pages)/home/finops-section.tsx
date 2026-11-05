@@ -6,13 +6,13 @@ import { DeliveryReceipt } from '@routes/platform/finops/sections/delivery-recei
 
 import { HomeProductSection } from './home-product-section'
 
+// The FinOps page's opening on the home: the envelope statement, each
+// sentence on its own line, over the budget ledger with the delivery receipt
+// docked beside it from `lg`, the receipt following the selected work item.
 interface FinopsSectionProps {
 	locale: WebsiteLocale
 }
 
-// The FinOps page's opening on the home: the envelope statement, each
-// sentence on its own line, over the budget ledger with the delivery receipt
-// docked beside it from `lg`, the receipt following the selected work item.
 export function FinopsSection(props: FinopsSectionProps) {
 	const { locale } = props
 

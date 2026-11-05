@@ -2,13 +2,13 @@ import type { Ref } from 'react'
 
 import type { NoticeCopy } from '@i18n/messages/messages.types'
 
+// What stands in place of the demo form: why there is none, or what happens
+// next. With a heading ref, the heading takes focus so the change is read.
 interface DemoNoticeProps {
 	copy: NoticeCopy
 	headingRef?: Ref<HTMLHeadingElement>
 }
 
-// What stands in place of the demo form: why there is none, or what happens
-// next. With a heading ref, the heading takes focus so the change is read.
 export function DemoNotice(props: DemoNoticeProps) {
 	const { copy, headingRef } = props
 

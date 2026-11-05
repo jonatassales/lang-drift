@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react'
 
+// The first focusable element of a page: hidden until focused, it jumps past
+// the header to the page's first section.
 interface SkipLinkProps {
 	children: ReactNode
 	href: string
 }
 
-// The first focusable element of a page: hidden until focused, it jumps past
-// the header to the page's first section.
 export function SkipLink(props: SkipLinkProps) {
 	const { children, href } = props
 

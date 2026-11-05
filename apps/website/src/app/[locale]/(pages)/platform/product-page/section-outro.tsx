@@ -1,11 +1,11 @@
+// The closing line of a product-page section, with a link to the section it
+// leads to.
 interface SectionOutroProps {
 	fragment: string
 	link: string
 	text: string
 }
 
-// The closing line of a product-page section, with a link to the section it
-// leads to.
 export function SectionOutro(props: SectionOutroProps) {
 	const { fragment, link, text } = props
 

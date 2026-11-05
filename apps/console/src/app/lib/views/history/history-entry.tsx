@@ -2,9 +2,9 @@
 
 import { useTranslations } from 'next-intl'
 
-import { useDateTime } from '@app/template/formatters/date-time.hook'
 import type { ProductEvent } from '@data/types'
 import { Link } from '@i18n/navigation'
+import { useDateTime } from '@i18n/use-date-time.hook'
 
 interface HistoryEntryProps {
 	item: ProductEvent

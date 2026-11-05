@@ -8,10 +8,6 @@ import {
 	toggleSessionPauseAtom,
 } from '@state'
 
-interface SessionControlProps {
-	copy: MicroruntimesMessages['session']['card']['control']
-}
-
 const button =
 	'smooth-text-link min-h-11 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary motion-reduce:hidden'
 
@@ -19,6 +15,10 @@ const button =
 // and resumes the session while the plan or a run plays, and replays the
 // plan once the terminal has ended. Visitors who asked for reduced motion
 // see the session at rest and no control.
+interface SessionControlProps {
+	copy: MicroruntimesMessages['session']['card']['control']
+}
+
 export function SessionControl(props: SessionControlProps) {
 	const { copy } = props
 

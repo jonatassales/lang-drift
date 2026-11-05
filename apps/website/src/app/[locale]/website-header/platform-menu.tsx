@@ -8,8 +8,8 @@ import { Link } from '@i18n/navigation'
 import { ProductBadge } from '@layout/product-badge'
 import { cn } from 'web/utilities'
 
+import { panelSurface } from './panel-surface.data'
 import { platformProducts } from './platform-products'
-import { panelSurface } from './surface'
 
 const item = 'block w-full rounded-xl px-3 py-2.5 text-left'
 
@@ -26,7 +26,33 @@ export function PlatformMenu() {
 
 	const translate = useTranslations('header')
 
+	function handleToggle() {
+		setDismissed(false)
+		setOpen((value) => !value)
+	}
+
+	function handleFocus() {
+		setFocusWithin(true)
+	}
+
+	function handlePointerEnter() {
+		setDismissed(false)
+	}
+
+	function handleItemClick() {
+		setOpen(false)
+	}
+
+	function trackFocusLeaving(event: FocusEvent<HTMLElement>) {
+		if (rootRef.current?.contains(event.relatedTarget)) return
+
+		setFocusWithin(false)
+		setDismissed(false)
+	}
+
 	const visible = (open || focusWithin) && !dismissed
+	const hoverVisibility = dismissed ? 'hidden' : 'hidden group-hover:block'
+	const panelVisibility = visible ? 'block' : hoverVisibility
 
 	// Dismiss pinned platform menu on outside press or Escape key.
 	useEffect(() => {
@@ -57,37 +83,6 @@ export function PlatformMenu() {
 			document.removeEventListener('keydown', dismissOnEscape)
 		}
 	}, [visible])
-
-	function handleToggle() {
-		setDismissed(false)
-		setOpen((value) => !value)
-	}
-
-	function handleFocus() {
-		setFocusWithin(true)
-	}
-
-	function handlePointerEnter() {
-		setDismissed(false)
-	}
-
-	function handleItemClick() {
-		setOpen(false)
-	}
-
-	function trackFocusLeaving(event: FocusEvent<HTMLElement>) {
-		if (rootRef.current?.contains(event.relatedTarget)) return
-
-		setFocusWithin(false)
-		setDismissed(false)
-	}
-
-	function panelVisibility() {
-		if (visible) return 'block'
-		if (dismissed) return 'hidden'
-
-		return 'hidden group-hover:block'
-	}
 
 	return (
 		<div className="group relative" ref={rootRef}>
@@ -121,7 +116,7 @@ export function PlatformMenu() {
 			<div
 				className={cn(
 					'absolute top-full left-1/2 z-50 w-176 max-w-[calc(100vw-2rem)] -translate-x-1/2 pt-3',
-					panelVisibility(),
+					panelVisibility,
 				)}
 				id={panelId}
 			>

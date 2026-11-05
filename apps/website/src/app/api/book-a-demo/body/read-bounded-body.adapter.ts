@@ -1,8 +1,5 @@
-export class BodyError extends Error {
-	constructor(readonly status: number) {
-		super('invalid_request')
-	}
-}
+import { BodyError } from './body-error.type'
+import { reportCancelFailure } from './report-cancel-failure.handler'
 
 export async function readBoundedBody(
 	body: ReadableStream<Uint8Array> | null,
@@ -10,14 +7,18 @@ export async function readBoundedBody(
 	signal: AbortSignal,
 ): Promise<string> {
 	if (!body) throw new BodyError(400)
+
 	const reader = body.getReader()
 	const decoder = new TextDecoder('utf-8', { fatal: true })
 	let size = 0
 	let text = ''
-	const cancel = () => {
-		void reader.cancel().catch(() => undefined)
+
+	function cancel() {
+		void reader.cancel().catch(reportCancelFailure)
 	}
+
 	signal.addEventListener('abort', cancel, { once: true })
+
 	try {
 		for (;;) {
 			signal.throwIfAborted()
@@ -25,11 +26,16 @@ export async function readBoundedBody(
 			const result = await reader.read()
 
 			signal.throwIfAborted()
+
 			if (result.done) break
+
 			size += result.value.byteLength
+
 			if (size > maximum) throw new BodyError(413)
+
 			text += decoder.decode(result.value, { stream: true })
 		}
+
 		text += decoder.decode()
 
 		return text

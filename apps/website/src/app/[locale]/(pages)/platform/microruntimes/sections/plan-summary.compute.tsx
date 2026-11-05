@@ -15,9 +15,11 @@ export function planSummary(
 	playedCount: number,
 ): ReactNode {
 	const resolved = resolvedComponents(playedCount)
+
 	if (resolved.length === 0) return <CardValue labels={copy} state="unset" />
 
 	const figures = format.figures(suggestedTotals(resolved))
+
 	if (!revealed(playedCount, 'drafted')) return figures
 
 	return format.message('plan.summary', {

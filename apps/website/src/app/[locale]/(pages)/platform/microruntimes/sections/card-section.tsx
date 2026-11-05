@@ -2,12 +2,12 @@ import type { ReactNode } from 'react'
 
 import { cn } from 'web/utilities'
 
+// One section of the ticket card, under a hairline rule.
 interface CardSectionProps {
 	children: ReactNode
 	className?: string
 }
 
-// One section of the ticket card, under a hairline rule.
 export function CardSection(props: CardSectionProps) {
 	const { children, className } = props
 

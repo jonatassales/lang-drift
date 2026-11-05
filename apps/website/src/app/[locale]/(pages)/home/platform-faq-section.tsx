@@ -13,12 +13,12 @@ import { safeSeatFaqIds } from '@routes/platform/safe-seat/safe-seat-content.dat
 
 import { FaqTabs } from './faq-tabs'
 
+// The platform's one FAQ: each product's questions in a tab of their own,
+// named as the header names the product.
 interface PlatformFaqSectionProps {
 	locale: WebsiteLocale
 }
 
-// The platform's one FAQ: each product's questions in a tab of their own,
-// named as the header names the product.
 export function PlatformFaqSection(props: PlatformFaqSectionProps) {
 	const { locale } = props
 

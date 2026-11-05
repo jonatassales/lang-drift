@@ -29,7 +29,7 @@ beforeEach(() => {
 
 afterEach(() => vi.unstubAllEnvs())
 
-describe('Website locale routing', () => {
+describe('website/proxy', () => {
 	it.each(['en', 'pt-br', 'zh-hant', 'ja', 'vi'])(
 		'serves the explicit %s prefix without redirecting to itself',
 		(prefix) => {

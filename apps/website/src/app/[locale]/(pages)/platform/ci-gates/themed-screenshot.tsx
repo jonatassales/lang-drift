@@ -9,13 +9,13 @@ interface ScreenshotSources {
 	width: number
 }
 
+// A screenshot captured in both color schemes: the page shows the one that
+// matches the theme, with its caption below.
 interface ThemedScreenshotProps {
 	copy: CiGatesScreenshotCopy
 	screenshot: ScreenshotSources
 }
 
-// A screenshot captured in both color schemes: the page shows the one that
-// matches the theme, with its caption below.
 export function ThemedScreenshot(props: ThemedScreenshotProps) {
 	const { copy, screenshot } = props
 

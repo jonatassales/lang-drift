@@ -8,8 +8,8 @@
 
 **Status:** ready-for-agent
 
-- [ ] `platform/cli/drift quality check general` prints no finding under `apps/website`.
-- [ ] `pnpm turbo run check typecheck test build --filter=website` passes.
+- [x] `platform/cli/drift quality check general` prints no finding under `apps/website`.
+- [x] `pnpm turbo run check typecheck test build --filter=website` passes.
 
 ## Dev part
 

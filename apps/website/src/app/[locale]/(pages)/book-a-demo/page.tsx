@@ -11,7 +11,7 @@ import { WebsiteHeader } from '@layout/website-header/website-header'
 import { WebsiteStructuredData } from '@layout/website-structured-data'
 
 // Demo requests return with the form below, once demos open again.
-// import { BookDemoForm } from './form'
+// import { BookDemoForm } from './book-demo-form'
 import { DemoNotice } from './demo-notice'
 
 export { generateMetadata } from './page.metadata'

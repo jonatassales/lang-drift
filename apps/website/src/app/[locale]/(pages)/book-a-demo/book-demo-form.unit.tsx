@@ -1,18 +1,12 @@
 // @vitest-environment jsdom
-import {
-	cleanup,
-	fireEvent,
-	render,
-	screen,
-	waitFor,
-} from '@testing-library/react'
+import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { bookDemoMessages } from '@i18n/messages/index'
+import { bookDemoCopy } from '@routes/book-a-demo/testdata/book-demo-copy.data'
+import { fillBookDemoForm } from '@routes/book-a-demo/testdata/fill-book-demo-form.mock'
+import { mountBookDemoForm } from '@routes/book-a-demo/testdata/mount-book-demo-form.mock'
+import { submitBookDemoForm } from '@routes/book-a-demo/testdata/submit-book-demo-form.mock'
 
-import { BookDemoForm } from './form'
-
-const copy = bookDemoMessages.en
 let transport: ReturnType<typeof vi.fn>
 
 beforeEach(() => {
@@ -35,57 +29,41 @@ afterEach(() => {
 	vi.unstubAllGlobals()
 })
 
-function mount() {
-	return render(<BookDemoForm copy={copy} locale="en" />)
-}
-
-function fill(fields: { company?: string; email?: string; position?: string }) {
-	if (fields.email !== undefined) {
-		fireEvent.change(screen.getByLabelText(copy.form.email), {
-			target: { value: fields.email },
-		})
-	}
-	if (fields.company !== undefined) {
-		fireEvent.change(screen.getByLabelText(copy.form.company), {
-			target: { value: fields.company },
-		})
-	}
-	if (fields.position !== undefined) {
-		fireEvent.change(screen.getByLabelText(copy.form.position), {
-			target: { value: fields.position },
-		})
-	}
-}
-
-function submit() {
-	fireEvent.click(screen.getByRole('button', { name: copy.form.submit }))
-}
-
-describe('website/book-a-demo/form', () => {
+describe('website/book-a-demo/book-demo-form', () => {
 	it('asks for the three fields and sends nothing when they are empty', async () => {
-		mount()
-		submit()
+		mountBookDemoForm()
+		submitBookDemoForm()
 
-		expect(await screen.findByText(copy.errors.emailRequired)).toBeTruthy()
+		const emailRequired = await screen.findByText(
+			bookDemoCopy.errors.emailRequired,
+		)
 
-		expect(screen.getByText(copy.errors.companyRequired)).toBeTruthy()
-		expect(screen.getByText(copy.errors.positionRequired)).toBeTruthy()
+		expect(emailRequired).toBeTruthy()
+
+		expect(screen.getByText(bookDemoCopy.errors.companyRequired)).toBeTruthy()
+		expect(screen.getByText(bookDemoCopy.errors.positionRequired)).toBeTruthy()
 		expect(
-			screen.getByLabelText(copy.form.email).getAttribute('aria-invalid'),
+			screen
+				.getByLabelText(bookDemoCopy.form.email)
+				.getAttribute('aria-invalid'),
 		).toBe('true')
 		expect(transport).not.toHaveBeenCalled()
 	})
 
 	it('refuses a free-mail address as such', async () => {
-		mount()
-		fill({
+		mountBookDemoForm()
+		fillBookDemoForm({
 			company: 'Acme',
 			email: 'jane@gmail.com',
 			position: 'cto',
 		})
-		submit()
+		submitBookDemoForm()
 
-		expect(await screen.findByText(copy.errors.emailFreeMail)).toBeTruthy()
+		const emailFreeMail = await screen.findByText(
+			bookDemoCopy.errors.emailFreeMail,
+		)
+
+		expect(emailFreeMail).toBeTruthy()
 
 		expect(transport).not.toHaveBeenCalled()
 	})
@@ -100,41 +78,43 @@ describe('website/book-a-demo/form', () => {
 				{ status: 200 },
 			),
 		)
-		mount()
-		fill({
+		mountBookDemoForm()
+		fillBookDemoForm({
 			company: 'Acme',
 			email: 'jane@acme.io',
 			position: 'cto',
 		})
-		submit()
+		submitBookDemoForm()
 
-		expect(
-			await screen.findByRole('heading', {
-				name: copy.form.sent.title,
-			}),
-		).toBeTruthy()
+		const sentHeading = await screen.findByRole('heading', {
+			name: bookDemoCopy.form.sent.title,
+		})
 
-		expect(screen.getByText(copy.form.sent.description)).toBeTruthy()
-		expect(screen.queryByLabelText(copy.form.email)).toBeNull()
+		expect(sentHeading).toBeTruthy()
+
+		expect(screen.getByText(bookDemoCopy.form.sent.description)).toBeTruthy()
+		expect(screen.queryByLabelText(bookDemoCopy.form.email)).toBeNull()
 	})
 
 	it('posts a valid request with the locale and shows the return-soon notice when requests are paused', async () => {
-		mount()
-		fill({
+		mountBookDemoForm()
+		fillBookDemoForm({
 			company: 'Acme',
 			email: 'jane@acme.io',
 			position: 'cto',
 		})
-		submit()
+		submitBookDemoForm()
+
+		const unavailableHeading = await screen.findByRole('heading', {
+			name: bookDemoCopy.form.unavailable.title,
+		})
+
+		expect(unavailableHeading).toBeTruthy()
 
 		expect(
-			await screen.findByRole('heading', {
-				name: copy.form.unavailable.title,
-			}),
+			screen.getByText(bookDemoCopy.form.unavailable.description),
 		).toBeTruthy()
-
-		expect(screen.getByText(copy.form.unavailable.description)).toBeTruthy()
-		expect(screen.queryByLabelText(copy.form.email)).toBeNull()
+		expect(screen.queryByLabelText(bookDemoCopy.form.email)).toBeNull()
 		expect(transport).toHaveBeenCalledTimes(1)
 		const [url, options] = transport.mock.calls[0] as [string, RequestInit]
 		expect(url).toBe('/api/book-a-demo/')
@@ -157,25 +137,28 @@ describe('website/book-a-demo/form', () => {
 				{ status: 500 },
 			),
 		)
-		mount()
-		fill({
+		mountBookDemoForm()
+		fillBookDemoForm({
 			company: 'Acme',
 			email: 'jane@acme.io',
 			position: 'cto',
 		})
-		submit()
+		submitBookDemoForm()
 
 		const toast = await screen.findByRole('alert')
 
-		expect(toast.textContent).toContain(copy.form.failed)
+		expect(toast.textContent).toContain(bookDemoCopy.form.failed)
 
 		await waitFor(() => {
 			expect(
-				(screen.getByLabelText(copy.form.email) as HTMLInputElement).value,
+				(screen.getByLabelText(bookDemoCopy.form.email) as HTMLInputElement)
+					.value,
 			).toBe('jane@acme.io')
 		})
 		expect(
-			screen.queryByRole('heading', { name: copy.form.unavailable.title }),
+			screen.queryByRole('heading', {
+				name: bookDemoCopy.form.unavailable.title,
+			}),
 		).toBeNull()
 
 		const closeButton = screen.getByRole('button', {

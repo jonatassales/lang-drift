@@ -9,12 +9,12 @@ import {
 import { selectedLifecycleStageAtom } from '@state'
 import { Eyebrow } from 'web/ui/eyebrow'
 
+// The record the lifecycle step selected in the hero leaves behind.
 interface StageEvidenceProps {
 	copy: MicroruntimesMessages['evidence']
 	stageLabels: MicroruntimesMessages['lifecycle']['stages']
 }
 
-// The record the lifecycle step selected in the hero leaves behind.
 export function StageEvidence(props: StageEvidenceProps) {
 	const { copy, stageLabels } = props
 

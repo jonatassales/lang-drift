@@ -7,10 +7,6 @@ import { ElevatedFrame } from 'web/ui/elevated-frame'
 import { HeroShader } from 'web/ui/hero-shader'
 import { RotatingText } from 'web/ui/rotating-text'
 
-interface PlatformHeroProps {
-	locale: WebsiteLocale
-}
-
 // The hero is the moving headline alone, centered on the first screen over
 // the shader in its muted tone, with the rainbow flowing through the word
 // "Platform" as the page's one touch of color. Under the headline, one
@@ -21,6 +17,10 @@ interface PlatformHeroProps {
 // grows with the cards, so they never scroll; the terminal stretches to the
 // same height and scrolls its transcript inside; below `lg`, the cards stack
 // under the terminal.
+interface PlatformHeroProps {
+	locale: WebsiteLocale
+}
+
 export function PlatformHero(props: PlatformHeroProps) {
 	const { locale } = props
 

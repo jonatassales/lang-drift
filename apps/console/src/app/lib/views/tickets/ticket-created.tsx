@@ -1,4 +1,4 @@
-import { useDateTime } from '@app/template/formatters/date-time.hook'
+import { useDateTime } from '@i18n/use-date-time.hook'
 
 interface TicketCreatedProps {
 	className?: string

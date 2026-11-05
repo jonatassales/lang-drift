@@ -33,10 +33,6 @@ import { cn } from 'web/utilities'
 
 export { generateMetadata } from './page.metadata'
 
-interface MicroruntimesPageProps {
-	params: Promise<{ locale: string }>
-}
-
 const stateTones: Record<StateCardId, string> = {
 	requested: 'text-foreground',
 	observed: 'text-status-success',
@@ -44,6 +40,10 @@ const stateTones: Record<StateCardId, string> = {
 }
 
 const headerCell = 'px-5 py-3 font-normal'
+
+interface MicroruntimesPageProps {
+	params: Promise<{ locale: string }>
+}
 
 export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 	const { params } = props

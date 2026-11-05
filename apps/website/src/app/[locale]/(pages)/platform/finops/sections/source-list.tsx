@@ -6,14 +6,14 @@ import {
 } from '@routes/platform/finops/content/finops-content'
 import { Eyebrow } from 'web/ui/eyebrow'
 
+// What would feed the ledger, as a plain list under a label that says the
+// sources are intended, closed by the line that says a missing one stays
+// visible as a gap.
 interface SourceListProps {
 	copy: FinopsMessages['sources']
 	locale: WebsiteLocale
 }
 
-// What would feed the ledger, as a plain list under a label that says the
-// sources are intended, closed by the line that says a missing one stays
-// visible as a gap.
 export function SourceList(props: SourceListProps) {
 	const { copy, locale } = props
 

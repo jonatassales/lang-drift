@@ -3,9 +3,11 @@ import createMiddleware from 'next-intl/middleware'
 
 import { cookieServiceFactory } from '@factories/cookie-service.factory'
 import { localePath, routing, type WebsiteLocale } from '@i18n/routing'
+import type { CookieReadResult } from '@services/cookie.service'
 
 const localeCookie = 'langdrift-website-locale'
 const localeTtlSeconds = 15_552_000
+const simplifiedChineseTags = ['zh-cn', 'zh-hans', 'zh-sg']
 
 const intlMiddleware = createMiddleware(routing)
 
@@ -40,6 +42,7 @@ export class LocaleService {
 			(entry) => entry.prefix === `/${lowerSegment}`,
 		)
 		const needsCanonicalRedirect = supported && segment !== lowerSegment
+
 		if (needsCanonicalRedirect) {
 			const canonical = new URL(request.url)
 			canonical.pathname = canonical.pathname.replace(
@@ -49,13 +52,15 @@ export class LocaleService {
 
 			return NextResponse.redirect(canonical, 308)
 		}
-		if (['zh-cn', 'zh-hans', 'zh-sg'].includes(lowerSegment)) {
+
+		if (simplifiedChineseTags.includes(lowerSegment)) {
 			const fallback = new URL(request.url)
 			fallback.pathname = fallback.pathname.replace(`/${segment}`, '/en')
 			fallback.searchParams.set('availability', 'zh-CN')
 
 			return NextResponse.redirect(fallback, 307)
 		}
+
 		const explicit = this.#explicitLocale(request.nextUrl.pathname)
 		const reader = cookieServiceFactory(request)
 		const saved = reader.get(localeCookie, (value): value is WebsiteLocale =>
@@ -67,7 +72,9 @@ export class LocaleService {
 		const unavailable = !explicit && !saved.found && browser === 'zh-CN'
 		const locale = this.#resolveTargetLocale(explicit, saved, browser)
 		const target = this.#localizedUrl(request, locale)
+
 		if (unavailable) target.searchParams.set('availability', 'zh-CN')
+
 		const response = explicit
 			? this.#nextResponse(intlMiddleware(request))
 			: NextResponse.redirect(target, 307)
@@ -79,6 +86,7 @@ export class LocaleService {
 
 		const shouldWrite =
 			!this.#isPrefetch(request) && (!saved.found || saved.value !== locale)
+
 		if (shouldWrite) {
 			const writer = cookieServiceFactory(request, response)
 			writer.set(localeCookie, locale, { ttlSeconds: localeTtlSeconds })
@@ -90,12 +98,14 @@ export class LocaleService {
 
 	#resolveTargetLocale(
 		explicit: WebsiteLocale | undefined,
-		saved: ReturnType<ReturnType<typeof cookieServiceFactory>['get']>,
+		saved: CookieReadResult<WebsiteLocale>,
 		browser: WebsiteLocale | 'zh-CN' | undefined,
 	): WebsiteLocale {
 		if (explicit) return explicit
+
 		const hasValidSavedLocale =
 			saved.found && routing.locales.includes(saved.value as WebsiteLocale)
+
 		if (hasValidSavedLocale) {
 			return saved.value as WebsiteLocale
 		}
@@ -117,6 +127,7 @@ export class LocaleService {
 				let quality = 1
 				for (const parameter of parameters) {
 					const [key, rawQuality] = parameter.trim().split('=')
+
 					if (key !== 'q') continue
 
 					const parsed = Number(rawQuality)
@@ -138,8 +149,14 @@ export class LocaleService {
 			.sort((left, right) => right.quality - left.quality)
 
 		for (const range of ranges) {
-			if (/^zh-(cn|hans|sg)(-|$)/.test(range.tag)) return 'zh-CN'
+			const simplifiedChinese = simplifiedChineseTags.some(
+				(base) => range.tag === base || range.tag.startsWith(`${base}-`),
+			)
+
+			if (simplifiedChinese) return 'zh-CN'
+
 			const match = this.#matchLocaleTag(range.tag)
+
 			if (match) return match
 		}
 
@@ -148,22 +165,24 @@ export class LocaleService {
 
 	#matchLocaleTag(tag: string): WebsiteLocale | undefined {
 		const exact = routing.locales.find((locale) => locale.toLowerCase() === tag)
+
 		if (exact) return exact
-		if (tag === 'pt' || tag === 'pt-br' || tag.startsWith('pt-br-')) {
+
+		const portuguese =
+			tag === 'pt' || tag === 'pt-br' || tag.startsWith('pt-br-')
+
+		if (portuguese) {
 			return 'pt-BR'
 		}
-		if (
-			tag === 'zh-hant' ||
-			tag.startsWith('zh-hant-') ||
-			tag === 'zh-tw' ||
-			tag.startsWith('zh-tw-') ||
-			tag === 'zh-hk' ||
-			tag.startsWith('zh-hk-') ||
-			tag === 'zh-mo' ||
-			tag.startsWith('zh-mo-')
-		) {
+
+		const traditionalChinese = ['zh-hant', 'zh-tw', 'zh-hk', 'zh-mo'].some(
+			(base) => tag === base || tag.startsWith(`${base}-`),
+		)
+
+		if (traditionalChinese) {
 			return 'zh-Hant'
 		}
+
 		if (tag === 'en' || tag.startsWith('en-')) return 'en'
 		if (tag === 'ja' || tag.startsWith('ja-')) return 'ja'
 		if (tag === 'vi' || tag.startsWith('vi-')) return 'vi'
@@ -185,6 +204,7 @@ export class LocaleService {
 	#localizedUrl(request: NextRequest, locale: WebsiteLocale): URL {
 		const url = new URL(request.url)
 		const pathname = request.nextUrl.pathname
+
 		if (pathname === '/') {
 			url.pathname = localePath[locale]
 

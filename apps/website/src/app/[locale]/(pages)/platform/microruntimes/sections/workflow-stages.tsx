@@ -14,6 +14,15 @@ import { cn } from 'web/utilities'
 import { ReadMark } from './read-mark'
 import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
 
+const skillText = 'font-mono text-[10px] text-muted-foreground'
+
+// The delivery stages the workflow runs, each with the skills it uses and a
+// Human in the loop checkbox. Planning always has a person, so its box stays
+// checked and unavailable, with a note on hover or focus saying why; the dev
+// ticket is driven by the person, not approved, and merge is always the
+// owner's, so neither has a box. While the run plays, the stage at work
+// takes the primary tone and a finished stage its read mark; a reviewed run
+// ends waiting for the owner.
 interface WorkflowStagesProps {
 	copy: TicketCardCopy
 	format: TicketCardFormat
@@ -24,15 +33,6 @@ interface WorkflowStagesProps {
 	run: { playedCount: number; script: readonly RunLine[] } | null
 }
 
-const skillText = 'font-mono text-[10px] text-muted-foreground'
-
-// The delivery stages the workflow runs, each with the skills it uses and a
-// Human in the loop checkbox. Planning always has a person, so its box stays
-// checked and unavailable, with a note on hover or focus saying why; the dev
-// ticket is driven by the person, not approved, and merge is always the
-// owner's, so neither has a box. While the run plays, the stage at work
-// takes the primary tone and a finished stage its read mark; a reviewed run
-// ends waiting for the owner.
 export function WorkflowStages(props: WorkflowStagesProps) {
 	const { copy, format, human, locked, onToggle, run } = props
 
@@ -40,6 +40,7 @@ export function WorkflowStages(props: WorkflowStagesProps) {
 
 	function handleToggleStage(event: ChangeEvent<HTMLInputElement>) {
 		const stage = event.currentTarget.dataset.stage as HumanStageId | undefined
+
 		if (stage) {
 			onToggle(stage)
 		}

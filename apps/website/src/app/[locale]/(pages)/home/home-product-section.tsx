@@ -5,6 +5,9 @@ import type { WebsiteLocale } from '@i18n/routing'
 import type { PlatformProduct } from '@layout/website-header/platform-products'
 import { ArrowRightIcon } from 'web/ui/icons/arrow'
 
+// One product on the home page: the question and its answer, the demo, and
+// the way to the product page last. Every section shares the heading and
+// lead type.
 interface HomeProductSectionProps {
 	/** The note under the demo. */
 	caption?: string
@@ -22,9 +25,6 @@ interface HomeProductSectionProps {
 	summary?: string
 }
 
-// One product on the home page: the question and its answer, the demo, and
-// the way to the product page last. Every section shares the heading and
-// lead type.
 export function HomeProductSection(props: HomeProductSectionProps) {
 	const {
 		caption,

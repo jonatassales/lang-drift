@@ -2,10 +2,10 @@
 
 import { useFormatter, useTranslations } from 'next-intl'
 
-import { useDateTime } from '@app/template/formatters/date-time.hook'
 import { StatusLabel } from '@components/status-label/status-label'
 import type { ProductExecution } from '@data/types'
 import { Link } from '@i18n/navigation'
+import { useDateTime } from '@i18n/use-date-time.hook'
 
 interface ExecutionEntryProps {
 	item: ProductExecution

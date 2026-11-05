@@ -97,6 +97,7 @@ export class CookieService {
 			options?.ttlSeconds ?? this.#defaults.ttlSeconds,
 		)
 		const expiresAt = Date.now() + ttlSeconds * 1_000
+
 		this.#assertExpiry(expiresAt)
 
 		const attributes = this.#resolveWriteAttributes(
@@ -126,13 +127,16 @@ export class CookieService {
 		this.#assertCookieName(name)
 
 		const token = this.#store.get(name)
+
 		if (!token) return { found: false }
 		if (Buffer.byteLength(token) > tokenBudget) return { found: false }
 
 		const decrypted = this.#crypto.decrypt(token, this.#cookieContext(name))
+
 		if (!decrypted.ok) return { found: false }
 
 		const envelope = this.#readEnvelope(decrypted.value)
+
 		if (!envelope) return { found: false }
 		if (validate && !validate(envelope.value)) return { found: false }
 
@@ -172,11 +176,12 @@ export class CookieService {
 	}
 
 	#resolveTtl(ttlSeconds: number | undefined): number {
-		if (
-			typeof ttlSeconds !== 'number' ||
-			!Number.isSafeInteger(ttlSeconds) ||
-			ttlSeconds <= 0
-		) {
+		const positiveSeconds =
+			typeof ttlSeconds === 'number' &&
+			Number.isSafeInteger(ttlSeconds) &&
+			ttlSeconds > 0
+
+		if (!positiveSeconds) {
 			throw new Error('Cookie TTL must be a positive integer number of seconds')
 		}
 
@@ -184,13 +189,18 @@ export class CookieService {
 	}
 
 	#assertExpiry(expiresAt: number): void {
-		if (
-			!Number.isSafeInteger(expiresAt) ||
-			expiresAt <= Date.now() ||
-			Math.abs(expiresAt) > maxDateTime
-		) {
+		if (!this.#isLiveExpiry(expiresAt)) {
 			throw new Error('Cookie expiry is outside the supported range')
 		}
+	}
+
+	#isLiveExpiry(expiresAt: unknown): expiresAt is number {
+		return (
+			typeof expiresAt === 'number' &&
+			Number.isSafeInteger(expiresAt) &&
+			expiresAt > Date.now() &&
+			Math.abs(expiresAt) <= maxDateTime
+		)
 	}
 
 	#resolveWriteAttributes(
@@ -201,16 +211,19 @@ export class CookieService {
 	): CookieWriteAttributes {
 		const secure = options?.secure ?? defaults.secure
 		const insecureInProduction = defaults.secure && secure === false
+
 		if (insecureInProduction) {
 			throw new Error('Production cookies cannot disable Secure')
 		}
 
 		const sameSite = options?.sameSite ?? defaults.sameSite
+
 		if (!Object.hasOwn(sameSiteLabels, sameSite)) {
 			throw new Error('Cookie SameSite is not supported')
 		}
 
 		const path = options?.path ?? defaults.path
+
 		if (!path) {
 			throw new Error('Cookie path is required')
 		}
@@ -253,6 +266,7 @@ export class CookieService {
 			`Max-Age=${attributes.maxAge}`,
 			`Expires=${attributes.expires.toUTCString()}`,
 		]
+
 		if (attributes.domain) parts.push(`Domain=${attributes.domain}`)
 		parts.push(`Path=${attributes.path}`)
 		if (attributes.httpOnly) parts.push('HttpOnly')
@@ -265,12 +279,15 @@ export class CookieService {
 	#readEnvelope(value: unknown): { value: unknown } | undefined {
 		const isNonObject =
 			typeof value !== 'object' || value === null || Array.isArray(value)
+
 		if (isNonObject) return undefined
-		if (
-			!Object.hasOwn(value, 'version') ||
-			!Object.hasOwn(value, 'value') ||
-			!Object.hasOwn(value, 'expiresAt')
-		) {
+
+		const hasEnvelopeFields =
+			Object.hasOwn(value, 'version') &&
+			Object.hasOwn(value, 'value') &&
+			Object.hasOwn(value, 'expiresAt')
+
+		if (!hasEnvelopeFields) {
 			return undefined
 		}
 
@@ -279,19 +296,9 @@ export class CookieService {
 			value: unknown
 			expiresAt: unknown
 		}
+
 		if (record.version !== 1) return undefined
-		if (
-			typeof record.expiresAt !== 'number' ||
-			!Number.isSafeInteger(record.expiresAt)
-		) {
-			return undefined
-		}
-		if (
-			Math.abs(record.expiresAt) > maxDateTime ||
-			record.expiresAt <= Date.now()
-		) {
-			return undefined
-		}
+		if (!this.#isLiveExpiry(record.expiresAt)) return undefined
 
 		return { value: record.value }
 	}

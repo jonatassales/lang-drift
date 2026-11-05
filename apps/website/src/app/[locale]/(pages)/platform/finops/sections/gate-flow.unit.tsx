@@ -1,34 +1,15 @@
 // @vitest-environment jsdom
 
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
-import { finopsMessages } from '@i18n/messages/index'
-import {
-	gateExample,
-	gateFigures,
-} from '@routes/platform/finops/content/finops-content'
-
-import { GateFlow } from './gate-flow'
+import { mountGateFlow } from '@routes/platform/finops/sections/testdata/mount-gate-flow.mock'
 
 afterEach(cleanup)
 
-function mount() {
-	const copy = finopsMessages.en
-
-	return render(
-		<GateFlow
-			copy={copy.authorization}
-			exampleTitle={copy.ledger.items[gateExample.id].title}
-			figures={gateFigures(gateExample)}
-			locale="en"
-		/>,
-	)
-}
-
-describe('FinOps gate flow', () => {
+describe('website/platform/finops/sections/gate-flow', () => {
 	it('walks the three steps in order with the example receipt figures', () => {
-		mount()
+		mountGateFlow()
 		const steps = screen
 			.getAllByRole('listitem')
 			.map((step) => step.textContent ?? '')
@@ -43,7 +24,7 @@ describe('FinOps gate flow', () => {
 	})
 
 	it('names the work item the figures come from and never shows zero', () => {
-		const { container } = mount()
+		const { container } = mountGateFlow()
 		expect(
 			screen.getByText(
 				/Figures from the Checkout retries receipt at the top of the page/,

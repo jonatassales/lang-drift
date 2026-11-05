@@ -13,12 +13,12 @@ import { selectedLifecycleStageAtom } from '@state'
 import { Eyebrow } from 'web/ui/eyebrow'
 import { cn } from 'web/utilities'
 
+// The six lifecycle steps and what the selected one does and leaves behind.
+// Selecting a step drives the evidence record right below.
 interface LifecycleStepsProps {
 	copy: MicroruntimesMessages['lifecycle']
 }
 
-// The six lifecycle steps and what the selected one does and leaves behind.
-// Selecting a step drives the evidence record right below.
 export function LifecycleSteps(props: LifecycleStepsProps) {
 	const { copy } = props
 
@@ -28,6 +28,7 @@ export function LifecycleSteps(props: LifecycleStepsProps) {
 		const stageId = event.currentTarget.dataset.id as
 			| LifecycleStageId
 			| undefined
+
 		if (stageId) {
 			setSelectedId(stageId)
 		}

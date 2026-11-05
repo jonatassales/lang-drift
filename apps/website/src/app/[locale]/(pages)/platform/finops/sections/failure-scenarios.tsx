@@ -6,12 +6,12 @@ import {
 } from '@routes/platform/finops/content/finops-content'
 import { DetailList } from 'web/ui/detail-list'
 
+// The two ways delivery leaves the plan, side by side: each walks the chain
+// from intent to outcome and ends in the state it leaves behind.
 interface FailureScenariosProps {
 	copy: FinopsMessages['failures']
 }
 
-// The two ways delivery leaves the plan, side by side: each walks the chain
-// from intent to outcome and ends in the state it leaves behind.
 export function FailureScenarios(props: FailureScenariosProps) {
 	const { copy } = props
 

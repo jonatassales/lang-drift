@@ -40,7 +40,7 @@ afterEach(() => {
 	cleanup()
 })
 
-describe('the FAQ by product', () => {
+describe('website/home/faq-tabs', () => {
 	it('opens on the first product and shows the next one when its tab is selected', () => {
 		render(<FaqTabs groups={groups} tabsLabel="Product" />)
 

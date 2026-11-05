@@ -1,10 +1,10 @@
 'use client'
 import { useTranslations } from 'next-intl'
 
-import { useDateTime } from '@app/template/formatters/date-time.hook'
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { useResource } from '@data/resource.hook'
 import type { LifecycleEvent } from '@data/types'
+import { useDateTime } from '@i18n/use-date-time.hook'
 import { Card } from 'web/ui/card'
 
 interface EventHistoryProps {

@@ -1,9 +1,9 @@
+// The mark the ticket card puts beside an artifact once the agent has read
+// it: read, not approved.
 interface ReadMarkProps {
 	label: string
 }
 
-// The mark the ticket card puts beside an artifact once the agent has read
-// it: read, not approved.
 export function ReadMark(props: ReadMarkProps) {
 	const { label } = props
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 import messages from '@i18n/messages/route-state.json'
 import { localePath, routing, type WebsiteLocale } from '@i18n/routing'
@@ -12,16 +12,11 @@ interface GlobalErrorProps {
 export default function GlobalError(props: GlobalErrorProps) {
 	const { reset } = props
 
-	const [locale, setLocale] = useState<WebsiteLocale>('en')
+	const pathname = usePathname()
 
-	// Determine the active locale from the URL pathname to render error messages.
-	useEffect(() => {
-		const prefix = window.location.pathname.split('/')[1].toLowerCase()
-		setLocale(
-			routing.locales.find((value) => value.toLowerCase() === prefix) ?? 'en',
-		)
-	}, [])
-
+	const prefix = pathname.split('/')[1].toLowerCase()
+	const locale: WebsiteLocale =
+		routing.locales.find((value) => value.toLowerCase() === prefix) ?? 'en'
 	const copy = messages[locale]
 
 	return (

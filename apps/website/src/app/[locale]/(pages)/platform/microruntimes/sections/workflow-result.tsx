@@ -16,14 +16,6 @@ import { CardValue } from './card-value'
 import { pullRequestState } from './pull-request-state.compute'
 import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
 
-interface WorkflowResultProps {
-	copy: TicketCardCopy
-	figures: WorkflowFigures
-	format: TicketCardFormat
-	playedCount: number
-	script: readonly RunLine[]
-}
-
 const figure = 'font-mono text-[13px] tabular-nums'
 
 type HasPlayed = (message: RunMessageId) => boolean
@@ -35,6 +27,14 @@ type HasPlayed = (message: RunMessageId) => boolean
 // gate paused shows the decision it needs and that nothing was paid.
 // Every figure stays a dash until its line has printed. The simulated pull
 // request reads as a link but opens nothing.
+interface WorkflowResultProps {
+	copy: TicketCardCopy
+	figures: WorkflowFigures
+	format: TicketCardFormat
+	playedCount: number
+	script: readonly RunLine[]
+}
+
 export function WorkflowResult(props: WorkflowResultProps) {
 	const { copy, figures, format, playedCount, script } = props
 

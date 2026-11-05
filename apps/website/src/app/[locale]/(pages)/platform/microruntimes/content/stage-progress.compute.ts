@@ -18,6 +18,7 @@ export function stageProgress(
 	const last = indexes.at(-1)
 
 	const missingBounds = first === undefined || last === undefined
+
 	if (missingBounds) return 'pending'
 	if (playedCount > last) return 'done'
 	if (playedCount > first) return 'active'

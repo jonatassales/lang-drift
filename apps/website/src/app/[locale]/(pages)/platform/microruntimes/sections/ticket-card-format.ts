@@ -16,10 +16,7 @@ export type TicketCardCopy = MicroruntimesMessages['session']['card']
 // The cards' figures in the visitor's locale: millicores, MiB, the pair of
 // them, dollars from cents, token counts, the price date, and the cards'
 // ICU messages.
-export function createTicketCardFormat(
-	copy: TicketCardCopy,
-	locale: WebsiteLocale,
-) {
+export function ticketCardFormat(copy: TicketCardCopy, locale: WebsiteLocale) {
 	const message = createTranslator({
 		locale,
 		messages: copy,
@@ -55,4 +52,4 @@ export function createTicketCardFormat(
 	}
 }
 
-export type TicketCardFormat = ReturnType<typeof createTicketCardFormat>
+export type TicketCardFormat = ReturnType<typeof ticketCardFormat>

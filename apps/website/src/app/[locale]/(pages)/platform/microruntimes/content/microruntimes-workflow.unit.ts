@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { microruntimesMessages } from '@i18n/messages/index'
+import { choices } from '@routes/platform/microruntimes/content/testdata/choices.mock'
 
 import {
 	budgetCents,
@@ -8,20 +9,12 @@ import {
 	type RunMessageId,
 	runSession,
 	stageProgress,
-	type WorkflowChoices,
 	workflowEfforts,
 	workflowFigures,
 	workflowModels,
 } from './microruntimes-workflow'
 
-function choices(overrides: Partial<WorkflowChoices>): WorkflowChoices {
-	return {
-		...initialWorkflowChoices,
-		...overrides,
-	}
-}
-
-describe('the workflow figures', () => {
+describe('website/platform/microruntimes/content/microruntimes-workflow', () => {
 	it('prices each model and effort at list prices, in cents', () => {
 		const estimates = workflowModels.map((model) =>
 			workflowEfforts.map(
@@ -68,9 +61,7 @@ describe('the workflow figures', () => {
 		expect(over).toEqual(['claude-opus-5-5 high'])
 		expect(budgetCents).toBe(2500)
 	})
-})
 
-describe('the run', () => {
 	it('waits for the owner only at the stages chosen for a person', () => {
 		const ids = runSession(initialWorkflowChoices).map((line) => line.id)
 		expect(ids).toContain('waiting-planning')

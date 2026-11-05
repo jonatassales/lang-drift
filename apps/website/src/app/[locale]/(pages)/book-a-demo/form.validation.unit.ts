@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { fieldErrorsOf } from '@api/book-a-demo/field-errors.compute'
 import { bookDemoMessages } from '@i18n/messages/index'
+import { errorsOf } from '@routes/book-a-demo/testdata/errors-of.compute'
 
 import { bookDemoErrorCodes } from './form.types'
 import { bookDemoSchema, bookDemoSubmissionSchema } from './form.validation'
@@ -13,14 +13,7 @@ const valid = {
 	position: 'cto',
 }
 
-function errorsOf(input: Record<string, unknown>) {
-	const result = bookDemoSchema.safeParse(input)
-	if (result.success) return {}
-
-	return fieldErrorsOf(result.error)
-}
-
-describe('a demo request', () => {
+describe('website/book-a-demo/form.validation', () => {
 	it('accepts a company address, a company and a position, trimmed and with the domain lowercased', () => {
 		const result = bookDemoSchema.safeParse({
 			company: '  Acme  ',
@@ -111,9 +104,7 @@ describe('a demo request', () => {
 			position: 'positionRequired',
 		})
 	})
-})
 
-describe('a demo submission', () => {
 	it('carries the locale and nothing else', () => {
 		expect(
 			bookDemoSubmissionSchema.safeParse({
@@ -136,9 +127,7 @@ describe('a demo submission', () => {
 		).toBe(false)
 		expect(bookDemoSubmissionSchema.safeParse(valid).success).toBe(false)
 	})
-})
 
-describe('the codes and the catalog', () => {
 	it('names every error code in the English errors, and nothing else', () => {
 		expect([...bookDemoErrorCodes].sort()).toEqual(
 			Object.keys(bookDemoMessages.en.errors).sort(),

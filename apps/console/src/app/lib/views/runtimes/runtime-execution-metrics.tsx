@@ -1,8 +1,8 @@
 'use client'
 import { useTranslations } from 'next-intl'
 
-import { useDateTime } from '@app/template/formatters/date-time.hook'
 import type { RuntimeWidgetSnapshot } from '@data/types'
+import { useDateTime } from '@i18n/use-date-time.hook'
 
 import { RuntimeMeter } from './runtime-meter'
 

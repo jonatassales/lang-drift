@@ -15,6 +15,7 @@ export function runOutcome(
 	script: readonly RunLine[],
 ): RunOutcome | null {
 	const { ran, stage } = session
+
 	if (stage !== 'running' || !ran) return null
 
 	return {
