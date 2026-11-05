@@ -6,7 +6,7 @@
 
 **Blocked by:** 0232, 0239.
 
-**Status:** ready-for-agent
+**Status:** ready-for-agent. Its early-access items are superseded by spec 0046, which deletes that code. 2026-11-04.
 
 - [ ] `read-registry.compute.ts`, `read-turnstile.compute.ts` and `early-access-mode.compute.ts` are gone, and each variable is read with `process.env.NAME` at the operation that uses it.
 - [ ] The cookie factory throws without `CRYPTO_SECRET` in every `NODE_ENV`, with unit tests.

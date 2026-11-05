@@ -6,7 +6,7 @@
 
 **Blocked by:** 0229, 0232, 0234, 0236.
 
-**Status:** ready-for-agent
+**Status:** ready-for-agent. Its early-access items are superseded by spec 0046, which deletes that code. 2026-11-04.
 
 - [ ] No test file under `apps/website` declares a helper function.
 - [ ] Every website file is named after its export.
