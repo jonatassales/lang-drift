@@ -6,18 +6,21 @@ import { Link } from '@i18n/navigation'
 export { generateMetadata } from './not-found.metadata'
 
 export default async function NotFound() {
-	const [t, ui] = await Promise.all([
+	const [translateNotFound, translateUi] = await Promise.all([
 		getTranslations('notFound'),
 		getTranslations('ui'),
 	])
 
 	return (
-		<RouteStateNotice title={t('title')} description={t('description')}>
+		<RouteStateNotice
+			title={translateNotFound('title')}
+			description={translateNotFound('description')}
+		>
 			<Link
 				className="w-fit text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 				href="/home"
 			>
-				{ui('home')}
+				{translateUi('home')}
 			</Link>
 		</RouteStateNotice>
 	)
