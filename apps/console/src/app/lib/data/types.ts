@@ -360,6 +360,18 @@ export interface TicketComponent extends Resources {
 	port: number
 }
 
+export type ReservedPartCategory = 'core-domain' | 'hard-part' | 'new-stack'
+
+export type ReservedPartChooser = 'judge' | 'lead'
+
+/** The part of a ticket a person writes by hand under Safe Seat. */
+export interface TicketReservedPart {
+	paths: string[]
+	goal: string
+	category: ReservedPartCategory
+	chosenBy: ReservedPartChooser
+}
+
 export interface TicketPlan {
 	bounded: Resources
 	components: TicketComponent[]
@@ -367,6 +379,8 @@ export interface TicketPlan {
 	validationErrors: number | null
 	revision: number
 	authorization: 'pending' | 'authorized'
+	/** Null until the plan has sized its components and reserved a part. */
+	reservedPart: TicketReservedPart | null
 }
 
 export type WorkflowStageId =
@@ -374,14 +388,20 @@ export type WorkflowStageId =
 	| 'spec'
 	| 'tickets'
 	| 'implement'
+	| 'dev-ticket'
 	| 'review'
 	| 'merge'
+
+/** Who does a stage's work: the agent, or a person writing by hand. */
+export type StageDriver = 'agent' | 'person'
 
 export interface TicketStage {
 	id: WorkflowStageId
 	/** The harness skills the stage runs; review and merge run none. */
 	skills: string | null
+	/** A person approves the stage's work. */
 	human: boolean
+	drivenBy: StageDriver
 	progress: 'pending' | 'active' | 'waiting' | 'done'
 }
 
@@ -428,6 +448,22 @@ export interface Ticket {
 	analysis: TicketAnalysis | null
 	plan: TicketPlan | null
 	workflow: TicketWorkflow | null
+	/** Null until the ticket's workflow starts. */
+	safeSeat: TicketSafeSeat | null
+}
+
+export type SafeSeatState =
+	| 'met'
+	| 'needs-override'
+	| 'overridden'
+	| 'not-applicable'
+	| 'unknown'
+
+/** A ticket's Safe Seat record. It never holds the person's share. */
+export interface TicketSafeSeat {
+	state: SafeSeatState
+	overrideReason: string | null
+	illustrative: boolean
 }
 
 export interface TicketDetailSnapshot {

@@ -503,6 +503,7 @@
 				"spec": "Spec",
 				"tickets": "Tickets",
 				"implement": "Implement",
+				"dev-ticket": "Dev ticket",
 				"review": "Review",
 				"merge": "Merge"
 			},
@@ -534,6 +535,30 @@
 				"waiting": "waiting for the owner",
 				"done": "done"
 			}
+		},
+		"safeSeat": {
+			"title": "Safe Seat",
+			"illustrative": "illustrative · stub data",
+			"states": {
+				"met": "met",
+				"needs-override": "needs an override",
+				"overridden": "overridden",
+				"not-applicable": "not applicable",
+				"unknown": "unknown"
+			},
+			"overrideReason": "Override reason: {reason}",
+			"reservedPart": "Reserved part",
+			"noReservedPart": "No reserved part yet",
+			"categories": {
+				"core-domain": "core domain",
+				"hard-part": "the hard part",
+				"new-stack": "first contact"
+			},
+			"chosenBy": {
+				"judge": "chosen by the judge",
+				"lead": "chosen by the lead"
+			},
+			"personDriven": "Written by a person · Safe Seat"
 		}
 	},
 	"metadata": {

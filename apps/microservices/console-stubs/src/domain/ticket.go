@@ -73,18 +73,20 @@ type TicketComponent struct {
 }
 
 type TicketPlan struct {
-	Bounded          Resources         `json:"bounded"`
-	Components       []TicketComponent `json:"components"`
-	Suggested        *Resources        `json:"suggested"`
-	ValidationErrors *int              `json:"validationErrors"`
-	Revision         int               `json:"revision"`
-	Authorization    string            `json:"authorization"`
+	Bounded          Resources           `json:"bounded"`
+	Components       []TicketComponent   `json:"components"`
+	Suggested        *Resources          `json:"suggested"`
+	ValidationErrors *int                `json:"validationErrors"`
+	Revision         int                 `json:"revision"`
+	Authorization    string              `json:"authorization"`
+	ReservedPart     *TicketReservedPart `json:"reservedPart"`
 }
 
 type TicketStage struct {
 	ID       string  `json:"id"`
 	Skills   *string `json:"skills"`
 	Human    bool    `json:"human"`
+	DrivenBy string  `json:"drivenBy"`
 	Progress string  `json:"progress"`
 }
 
@@ -124,6 +126,7 @@ type Ticket struct {
 	Analysis  *TicketAnalysis `json:"analysis"`
 	Plan      *TicketPlan     `json:"plan"`
 	Workflow  *TicketWorkflow `json:"workflow"`
+	SafeSeat  *TicketSafeSeat `json:"safeSeat"`
 }
 
 func phaseIndex(phase string) int {
@@ -194,7 +197,7 @@ const priceDate = "2026-10-06"
 
 var ticketEfforts = []string{"medium", "low", "high"}
 
-var workflowStageIDs = []string{"planning", "spec", "tickets", "implement", "review", "merge"}
+var workflowStageIDs = []string{"planning", "spec", "tickets", "implement", "dev-ticket", "review", "merge"}
 
 // The harness skills each stage runs; review and merge run none.
 var stageSkills = map[string]string{"planning": "grilling", "spec": "to-spec", "tickets": "to-tickets", "implement": "implement · tdd · code-review"}
@@ -203,7 +206,12 @@ var stageSkills = map[string]string{"planning": "grilling", "spec": "to-spec", "
 // each one has reached.
 var ticketOutcomes = []string{"readyForReview", "running", "paused", "readyToMerge"}
 
-var outcomeStage = map[string]int{"running": 3, "paused": 0, "readyForReview": 4, "readyToMerge": 5}
+var outcomeStage = map[string]int{
+	"running":        3,
+	"paused":         0,
+	"readyForReview": 5,
+	"readyToMerge":   6,
+}
 
 const ticketCount = 120
 
@@ -327,7 +335,9 @@ func generateTicket(number int, startedAt time.Time) Ticket {
 
 	ticket.Plan.Authorization = "authorized"
 	ticket.Workflow = generateWorkflow(number, suggested, model, effort)
+	ticket.SafeSeat = generateSafeSeat(number, ticket.Workflow.Outcome)
 	ticket.Status = "in-workflow"
+
 	return ticket
 }
 
@@ -370,6 +380,7 @@ func generatePlan(number int, work workTemplate, bounded, suggested Resources, c
 		ValidationErrors: intPointer(0),
 		Revision:         1,
 		Authorization:    "pending",
+		ReservedPart:     generateReservedPart(number, work),
 	}
 	if !current || number%2 == 0 {
 		return plan
@@ -377,6 +388,8 @@ func generatePlan(number int, work workTemplate, bounded, suggested Resources, c
 	plan.Components = work.components[:len(work.components)/2+1]
 	plan.Suggested = nil
 	plan.ValidationErrors = nil
+	plan.ReservedPart = nil
+
 	return plan
 }
 
@@ -419,10 +432,16 @@ func generateWorkflow(number int, suggested Resources, model TicketModel, effort
 		case index == reachedStage:
 			progress = "waiting"
 		}
+		writtenByPerson := id == "dev-ticket"
+		approvedByPerson := id != "tickets" && id != "implement" && !writtenByPerson
 		stage := TicketStage{
 			ID:       id,
-			Human:    id != "tickets" && id != "implement",
+			Human:    approvedByPerson,
+			DrivenBy: "agent",
 			Progress: progress,
+		}
+		if writtenByPerson {
+			stage.DrivenBy = "person"
 		}
 		if skills, ok := stageSkills[id]; ok {
 			stage.Skills = stringPointer(skills)

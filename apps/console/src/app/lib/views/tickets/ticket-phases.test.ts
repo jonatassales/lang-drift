@@ -45,6 +45,7 @@ const plan: TicketPlan = {
 	validationErrors: 0,
 	revision: 1,
 	authorization: 'pending',
+	reservedPart: null,
 }
 
 test('a ticket has reached its own phase and every phase before it', () => {
