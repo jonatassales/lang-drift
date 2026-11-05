@@ -432,7 +432,8 @@ func TestRunPausesWhenACallReportsNoUsage(t *testing.T) {
 }
 
 // A stage's committed hooks run first; a hook or a skill that fails stops
-// the run with the stage failed, and the next run plays the stage again.
+// the run with the stage and its lap failed, and the next run opens a new
+// lap that plays the stage again.
 func TestRunRunsTheHooksAndReplaysAFailedStage(t *testing.T) {
 	t.Parallel()
 
@@ -467,8 +468,8 @@ func TestRunRunsTheHooksAndReplaysAFailedStage(t *testing.T) {
 		t.Fatalf("a failing hook gave %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout, "agent › to-spec    0011-SPEC revised · 3 acceptance criteria", "agent › hook       platform/hooks/lint.sh · exit 1")
-	if record := runRecord(t, p); stageState(record, "implement").State != "failed" || stageState(record, "tickets").State != "done" {
-		t.Errorf("after the failed hook: %+v", record.Stages)
+	if record := runRecord(t, p); stageState(record, "implement").State != "failed" || stageState(record, "tickets").State != "done" || record.Laps[1].Number != "0002" || record.Laps[1].Outcome != "failed" {
+		t.Errorf("after the failed hook: %+v, laps %+v", record.Stages, record.Laps)
 	}
 
 	driver.hookExit = 0
@@ -479,8 +480,12 @@ func TestRunRunsTheHooksAndReplaysAFailedStage(t *testing.T) {
 	expectLines(t, stdout,
 		"agent › hook       platform/hooks/lint.sh · exit 0",
 		"agent › implement  tdd · 5 components · 14 files · 32 tests green",
-		"✓ completed  implementation · $10.90 observed of $11.40 reserved · usage record",
+		"agent › gate       reserved $11.40 of $25.00 · opened",
+		"✓ completed  implementation · $7.10 observed of $11.40 reserved · usage record",
 	)
+	if record := runRecord(t, p); len(record.Laps) != 3 || record.Laps[0].Outcome != "failed" || record.Laps[2].Number != "0003" {
+		t.Errorf("the replay did not run in lap 0003 after two failed laps: %+v", record.Laps)
+	}
 	if len(driver.hooks) != 2 || driver.hooks[1].Stage != "implement" || driver.hooks[1].Script != "platform/hooks/lint.sh" || driver.hooks[1].ProjectRoot != p.root {
 		t.Errorf("hooks = %+v", driver.hooks)
 	}

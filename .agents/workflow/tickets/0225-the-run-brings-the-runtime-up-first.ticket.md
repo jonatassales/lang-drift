@@ -19,8 +19,8 @@
 **Category:** `hard-part`. The order of a run's phases, and what each failure leaves behind, is where this ticket's difficulty sits.
 
 **Paths:**
-- `lib/cli/src/application/execution/run-phases.go`
-- `lib/cli/src/application/execution/run-phases_test.go`
+- `lib/cli/src/application/execution/next-phase.go` (named `run-phases.go` when written; renamed on 2026-11-05 after the file-naming rule)
+- `lib/cli/src/application/execution/next-phase_test.go`
 
 **Boundary:** `execution.NextPhase(run RunState) Phase`, called by the run loop after each phase, where `RunState` (gate, bring-up, stage and finish outcomes so far) and `Phase` (`reserve`, `bringUp`, `play`, `wait`, `finish`, `fail`, `done`) are declared in `phases.go` beside it by the agent, which also writes the loop that executes each phase through the existing ports.
 
@@ -28,6 +28,8 @@
 
 - [ ] Every transition of the table is covered by one test, including a bring-up failure, a stage failure, a human wait and a confirmed resume.
 - [ ] No sequence of outcomes reaches `play` without `bringUp` having succeeded.
+
+**Override:** The owner does not write this part. On 2026-11-05 the owner said "I won't write anything", so the agent writes these paths. The category, boundary, goal and criteria above stand.
 
 ## Verification
 

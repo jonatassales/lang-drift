@@ -42,15 +42,74 @@ type playing struct {
 	now        func() harness.Timestamp
 }
 
-// play runs the stages the run plays, in order, from the first not done: a
-// human stage waits for a person, FG-04 pauses the paid calls, a failed call
-// stops the run, and once the last stage is done the implementation is
-// complete. The owner's stage, and everything after it, is never played.
+// play drives the lap through its phases in the order NextPhase decides:
+// the runtime comes up before the first stage, a stage that waits for a
+// person pauses with the runtime running, the stages play in order from the
+// first not done, and the lap finishes, or fails, from there. The owner's
+// stage, and everything after it, is never played.
 func (playing *playing) play(ctx context.Context) (StartResult, error) {
 	playing.seedStages()
 
-	workflow := playing.guards.Workflow
-	for _, stage := range workflow.Stages {
+	var outcome RunState
+	var failure error
+	for {
+		state := playing.state(outcome)
+		stage, _ := playing.nextStage()
+
+		switch NextPhase(state) {
+		case PhaseReserve:
+			return playing.result(), fmt.Errorf("%w: lap %s of %s holds no reservation", ErrRefused, playing.lap.Number, playing.runtime)
+		case PhaseBringUp:
+			if err := playing.bringUp(ctx); err != nil {
+				outcome.BringUpFailed, failure = true, err
+			}
+		case PhaseWait:
+			confirmed, err := playing.wait(ctx, stage)
+			if err != nil {
+				return playing.result(), err
+			}
+			outcome.Waiting = !confirmed
+		case PhasePlay:
+			err := playing.perform(ctx, stage)
+			if errors.Is(err, ErrGate) {
+				return playing.pausedAtGate(ctx, err)
+			}
+			if err != nil {
+				outcome.StageFailed, failure = true, playing.markFailed(stage, err)
+			}
+		case PhaseFinish:
+			return playing.finish(ctx)
+		case PhaseFail:
+			return playing.failLap(ctx, failure)
+		case PhaseDone:
+			return playing.result(), nil
+		}
+	}
+}
+
+// state is where the lap stands for NextPhase: what its records say, and
+// what the phase the loop just executed returned.
+func (playing *playing) state(outcome RunState) RunState {
+	stage, left := playing.nextStage()
+	waits := left && plan.IsHuman(stage, playing.guards.Workflow.Defaults) && playing.stageState(stage.ID).ConfirmedBy == nil
+
+	reserved := playing.lap.Outcome == Open && playing.lap.Reserved > 0
+
+	return RunState{
+		Reserved:       reserved,
+		RuntimeUp:      playing.lap.Ready != nil,
+		BringUpFailed:  outcome.BringUpFailed,
+		StagesLeft:     left,
+		NextStageWaits: waits,
+		Waiting:        outcome.Waiting,
+		StageFailed:    outcome.StageFailed,
+	}
+}
+
+// nextStage is the first stage the run plays that is not done, before the
+// owner's stage.
+func (playing *playing) nextStage() (harness.Stage, bool) {
+	for _, stage := range playing.guards.Workflow.Stages {
 		if stage.Human == harness.OwnerOnly {
 			break
 		}
@@ -58,19 +117,10 @@ func (playing *playing) play(ctx context.Context) (StartResult, error) {
 			continue
 		}
 
-		if plan.IsHuman(stage, workflow.Defaults) && playing.stageState(stage.ID).ConfirmedBy == nil {
-			confirmed, err := playing.wait(ctx, stage)
-			if err != nil || !confirmed {
-				return playing.result(), err
-			}
-		}
-
-		if err := playing.perform(ctx, stage); err != nil {
-			return playing.result(), err
-		}
+		return stage, true
 	}
 
-	return playing.finish(ctx)
+	return harness.Stage{}, false
 }
 
 // plays reports whether the run has anything to do in a stage.
@@ -289,6 +339,30 @@ func (playing *playing) account(stageID string, result StageResult) {
 		usage.Cents = finops.ObservedCents(usage.InputTokens, usage.OutputTokens, price)
 		state.Usage = &usage
 	})
+}
+
+// markFailed records the stage a failure stopped, once: the loop then fails
+// the lap.
+func (playing *playing) markFailed(stage harness.Stage, cause error) error {
+	if playing.stageState(stage.ID).State == run.StageFailed {
+		return cause
+	}
+
+	return playing.fail(stage, cause)
+}
+
+// pausedAtGate takes the runtime down after FG-04 ended the lap: the lap is
+// paused, not failed, and the next one brings the runtime up again.
+func (playing *playing) pausedAtGate(ctx context.Context, cause error) (StartResult, error) {
+	if playing.lap.Execution == "" {
+		return playing.result(), cause
+	}
+
+	if err := playing.takeDown(ctx); err != nil {
+		return playing.result(), errors.Join(cause, err)
+	}
+
+	return playing.result(), cause
 }
 
 // fail records a stage the run could not finish; the next run plays it again.
