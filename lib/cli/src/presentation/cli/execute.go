@@ -1,4 +1,4 @@
-// Package cli is EX's command-line presentation: the Cobra command tree, the
+// Package cli is the LangDrift CLI's command-line presentation: the Cobra command tree, the
 // global flags, and how failures become diagnostics and exit codes. It maps
 // input to application requests through the catalog and never orchestrates
 // work or reaches infrastructure itself.

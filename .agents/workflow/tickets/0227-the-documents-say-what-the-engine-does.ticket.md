@@ -13,6 +13,8 @@
 - [ ] `sh platform/microruntime/plan.sh` has no `--no-judge`; its header and README say the project must be connected first.
 - [ ] `git grep -n -i 'no-judge\|agent init\|ANTHROPIC_API_KEY' -- lib README.md platform .agents/context.md apps/console/README.md` finds only the driver's pass-through and the console's own provider key.
 
+> **Note, 2026-11-05.** From 0.5.0 the command is `dft` (spec 0047). `ex agent init` keeps its name here: 0221 removed it before the rename.
+
 ## Dev part
 
 **Override:** No part qualifies: documentation and a script flag follow decisions taken in 0224 to 0226; nothing here has a problem of its own to solve (policy, Dev part: a problem with its own goal and acceptance criteria). 2026-11-04.

@@ -2,6 +2,8 @@
 
 **Status:** ready-for-agent
 
+> **Note, 2026-11-05.** From `@langdrift/cli` 0.5.0 the CLI's command is `dft` (spec 0047). This spec says `dft` where it plans work and keeps `ex` for the launcher rename spec 0037 made.
+
 ## Tickets
 
 - [x] 0264: the handbook and the skill references carry the guide suffix
@@ -66,7 +68,7 @@ Bring every tracked path to the filesystem rules and make `drift quality check f
 - Splitting Go files: spec 0035 does it, and this spec's Go rename waits for it.
 - The names of `dft`'s record files and of anything under `testdata/`.
 - Rewriting the wording of published specs, tickets and research notes.
-- Renaming the `drift` launcher and the `dft` launcher to `.sh` (spec 0037).
+- Renaming the `drift` launcher and the `ex` launcher to `.sh` (spec 0037).
 - Any change to `.claude/rules/`.
 
 ## Further Notes

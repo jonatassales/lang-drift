@@ -41,7 +41,7 @@ const (
 const Via = "cli"
 
 // MirrorNote opens every mirror the CLI writes.
-const MirrorNote = "Written by dft from its own record. No gate reads this file; an edit here is shown as an unauthorized change."
+const MirrorNote = "Written by the LangDrift CLI from its own record. No gate reads this file; an edit here is shown as an unauthorized change."
 
 // Record is one input as the store keeps it: what it is, who set it, when,
 // its value as the mirror shows it, and the record it replaced.

@@ -14,7 +14,7 @@ import (
 	"github.com/jonatassales/tao/lib/cli/src/infrastructure/files"
 )
 
-// executionRecordVersion is the only execution record format EX reads.
+// executionRecordVersion is the only execution record format the LangDrift CLI reads.
 const executionRecordVersion = 1
 
 type executionFile struct {

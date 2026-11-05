@@ -14,7 +14,7 @@ import (
 	"github.com/jonatassales/tao/lib/cli/src/infrastructure/files"
 )
 
-// projectMetadataVersion is the only project metadata format EX reads.
+// projectMetadataVersion is the only project metadata format the LangDrift CLI reads.
 const projectMetadataVersion = 1
 
 // Permissions: the identity is the consumer's to read; the state is private.

@@ -27,7 +27,7 @@ func owner(t *testing.T) project.Project {
 	return testProject(t, "0123456789abcdef0123456789abcdef")
 }
 
-// readyRecord is a cluster that EX created, identified, and inventoried.
+// readyRecord is a cluster that the LangDrift CLI created, identified, and inventoried.
 func readyRecord(t *testing.T) cluster.Record {
 	t.Helper()
 

@@ -49,6 +49,7 @@ From the release that carries this change, a person installs `@langdrift/cli` as
   - the widgets' variables and labels ("LangDrift-X (CLI)" becomes "LangDrift CLI");
   - the comments and READMEs of `lib/cli` and `lib/core`.
 - **Generated files.** Whatever the CLI writes into a consumer's project that calls the command (guardrails, harness files, microruntime scripts, record notes) calls `dft`. Fixtures under `testdata/` that hold expected output follow the generator. Fixtures that stand for a project written by an earlier version keep `ex`, and a test reads them.
+- **Cluster names keep `ex-`.** A project's kind cluster is named `ex-<id>`, and its ownership record names that cluster. Renaming the prefix would leave every cluster 0.4.0 created behind, so the prefix stays and a comment says why.
 - **Provenance.** New ledger and harness records set by the tool carry `dft` where they carried `ex`. Readers accept any value there, as they do today; nothing validates the old value, so records from 0.4.0 stay readable.
 - **Surfaces.**
   - The website's terminal demos, command lines and catalogs say `dft` in all five locales, with catalog parity kept.

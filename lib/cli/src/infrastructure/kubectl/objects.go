@@ -14,7 +14,7 @@ import (
 
 const fieldManager = "--field-manager=langdrift"
 
-// plurals maps the kinds EX deletes to their API resource names.
+// plurals maps the kinds the LangDrift CLI deletes to their API resource names.
 var plurals = map[string]string{
 	"Deployment": "deployments",
 	"Service":    "services",

@@ -7,7 +7,7 @@ import (
 	"github.com/jonatassales/tao/lib/cli/src/domain/collection"
 )
 
-const ticketText = "# 0070: Run the console with extub as a microruntime\n\n**Spec:** .agents/workflow/specs/0010-exphere-and-the-langdrift-folder.spec.md\n\n**What to build:** `apps/console` and `apps/extub` run together.\n\n**Blocked by:** the Exphere server, not yet ticketed.\n\n**Status:** needs-triage\n\n### Context\n\n- [What the real `dft` reproduces](/.agents/workflow/research/ex-microruntimes-capability.research.md)\n- [The console's manifest](/apps/console/package.json)\n- [The site](https://langdrift.md/platform)\n- [[notes/sizing]]\n- [Section](#context)\n"
+const ticketText = "# 0070: Run the console with extub as a microruntime\n\n**Spec:** .agents/workflow/specs/0010-exphere-and-the-langdrift-folder.spec.md\n\n**What to build:** `apps/console` and `apps/extub` run together.\n\n**Blocked by:** the Exphere server, not yet ticketed.\n\n**Status:** needs-triage\n\n### Context\n\n- [What the real `ex` reproduces](/.agents/workflow/research/ex-microruntimes-capability.research.md)\n- [The console's manifest](/apps/console/package.json)\n- [The site](https://langdrift.md/platform)\n- [[notes/sizing]]\n- [Section](#context)\n"
 
 func TestParseTicketReadsTheTrackersConvention(t *testing.T) {
 	t.Parallel()

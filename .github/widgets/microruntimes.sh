@@ -8,10 +8,10 @@ set -eu
 base_sha=${1:-${BASE_SHA:-}}
 head_sha=${2:-${HEAD_SHA:-HEAD}}
 
-# Ex package version
+# LangDrift CLI package version
 dft_pkg_version=$(grep -m 1 '"version":' "$DRIFT_PROJECT_ROOT/lib/cli/package.json" 2>/dev/null | sed -E 's/.*"version":[[:space:]]*"([^"]+)".*/\1/' || echo "0.1.0")
 
-# Ex binary version
+# LangDrift CLI binary version
 dft_bin_version="dft 0.0.0-dev"
 if [ -f "$DRIFT_PROJECT_ROOT/lib/cli/bin/dft.sh" ]; then
   raw_bin_ver=$(sh "$DRIFT_PROJECT_ROOT/lib/cli/bin/dft.sh" version 2>/dev/null || true)

@@ -10,7 +10,7 @@ import (
 )
 
 // DeleteCluster removes the project's cluster once every runtime is cleaned
-// up and the cluster holds nothing EX did not create. Configuration and
+// up and the cluster holds nothing the LangDrift CLI did not create. Configuration and
 // evidence stay.
 type DeleteCluster struct {
 	Projects    ProjectOpener

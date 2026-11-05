@@ -15,7 +15,7 @@
 - [x] `GOTOOLCHAIN=local go vet ./...` and `go test -race ./...` pass in `lib/cli` and `lib/core/contracts/go`.
 - [x] `git grep` finds `ex` as the command in `lib/`, `.github/` and the widgets only in 0.4.0 fixtures.
 
-> **Note, 2026-11-05.** Fixtures that stand for a project an earlier version wrote keep `ex`. That covers `testdata/langdrift/project/`, its guardrail, which the expected tree mirrors (the CLI ships no guardrail of its own and leaves the team's in place), and the new `testdata/langdrift/v0.4.0/` ledger that `TestLedgerOfVersion040Decodes` reads. The CI Gates golden copy is generator output and says `dft`. The host fallback is now `dist/dft`, and `LANGDRIFT_SKIP_EX_BUILD` is `LANGDRIFT_SKIP_DFT_BUILD`.
+> **Note, 2026-11-05.** Fixtures that stand for a project an earlier version wrote keep `ex`. That covers `testdata/langdrift/project/`, its guardrail, which the expected tree mirrors (the CLI ships no guardrail of its own and leaves the team's in place), and the new `testdata/langdrift/v0.4.0/` ledger that `TestLedgerOfVersion040Decodes` reads. The CI Gates golden copy is generator output and says `dft`. The host fallback is now `dist/dft`, and `LANGDRIFT_SKIP_EX_BUILD` is `LANGDRIFT_SKIP_DFT_BUILD`; no Vercel project sets either. The review found comments and one error that named the tool `EX` in capitals, which the first grep missed; they now say the LangDrift CLI. `TestCommand` asserts that `--help` prints the `dft` usage lines and that an unknown command points to `dft --help`. Cluster names keep their `ex-` prefix, so `dft` still owns the clusters 0.4.0 created.
 
 ## Dev part
 

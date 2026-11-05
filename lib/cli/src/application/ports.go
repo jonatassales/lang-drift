@@ -237,7 +237,7 @@ type ToolVersions interface {
 	Versions(ctx context.Context) map[string]microruntime.ToolVersion
 }
 
-// Prerequisites checks the native tools EX relies on. It never installs anything.
+// Prerequisites checks the native tools the LangDrift CLI relies on. It never installs anything.
 type Prerequisites interface {
 	Check(ctx context.Context) PrerequisiteReport
 }

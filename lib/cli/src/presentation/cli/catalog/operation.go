@@ -1,4 +1,4 @@
-// Package catalog holds EX's commands, one per file. Each command declares the
+// Package catalog holds the LangDrift CLI's commands, one per file. Each command declares the
 // narrow use-case interface it consumes, maps its arguments and flags to an
 // application request, and renders the result. It never orchestrates work or
 // reaches infrastructure itself.

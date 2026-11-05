@@ -2,6 +2,8 @@
 
 **Status:** ready-for-agent
 
+> **Note, 2026-11-05.** From `@langdrift/cli` 0.5.0 the CLI's command is `dft` (spec 0047). This spec says `dft` where it plans work and keeps `ex` for `ex agent init`, which spec 0045 removed before the rename.
+
 ## Tickets
 
 - [x] 0245: the general rules name the Go test idioms they allow

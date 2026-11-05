@@ -1,8 +1,8 @@
 // Package cluster is the domain model of the one local cluster a project owns.
 //
-// A cluster Record is an ownership ledger. It says which cluster EX created
-// for the project and what existed in it right after creation, so EX can later
-// prove that deleting the cluster only removes what EX itself created.
+// A cluster Record is an ownership ledger. It says which cluster the LangDrift CLI created
+// for the project and what existed in it right after creation, so the LangDrift CLI can later
+// prove that deleting the cluster only removes what the LangDrift CLI itself created.
 package cluster
 
 import (
@@ -29,7 +29,7 @@ const (
 	StatusDeleted     Status = "deleted"
 )
 
-// Domain errors classify why EX refused to act on a cluster.
+// Domain errors classify why the LangDrift CLI refused to act on a cluster.
 var (
 	ErrNotOwned          = errors.New("cluster record does not belong to the project")
 	ErrUnresolved        = errors.New("cluster has an unresolved operation")
@@ -52,7 +52,7 @@ type Inventory struct {
 	ResourceTypes []string
 }
 
-// Baseline is what existed in the cluster right after EX created it.
+// Baseline is what existed in the cluster right after the LangDrift CLI created it.
 type Baseline struct {
 	Namespaces map[string]string
 	Inventory  Inventory
@@ -62,7 +62,7 @@ type Baseline struct {
 }
 
 // Record binds a cluster's observed identity to the project that owns it.
-// Kubeconfig locates the private credentials EX uses to reach the cluster;
+// Kubeconfig locates the private credentials the LangDrift CLI uses to reach the cluster;
 // the domain treats it as opaque.
 type Record struct {
 	ProjectID  project.ID

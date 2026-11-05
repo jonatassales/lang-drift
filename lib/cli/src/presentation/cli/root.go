@@ -19,7 +19,7 @@ type application struct {
 	globals  support.Globals
 }
 
-// command creates the EX root command.
+// command creates the dft root command.
 func (cliApplication *application) command() *cobra.Command {
 	rootCommand := &cobra.Command{
 		Use:           "dft",

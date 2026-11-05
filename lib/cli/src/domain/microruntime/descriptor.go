@@ -12,10 +12,10 @@ package microruntime
 import "sort"
 
 const (
-	// SupportedVersion is the only descriptor version EX accepts.
+	// SupportedVersion is the only descriptor version the LangDrift CLI accepts.
 	SupportedVersion = 2
 
-	// LocalEnvironment is the only environment EX can run in.
+	// LocalEnvironment is the only environment the LangDrift CLI can run in.
 	LocalEnvironment = "local"
 )
 

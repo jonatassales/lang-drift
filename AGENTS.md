@@ -15,7 +15,7 @@ The product carries the brand in its name: **LangDrift FinOps**, with **Microrun
 | Part | The idea it serves |
 | --- | --- |
 | **FinOps** | Make agent-assisted delivery accountable to a team budget. It connects product intent, delivery context, execution evidence and economic outcome in one inspectable chain, on three pillars: FinOps as the economic purpose, the agentic harness as the delivery workflow and its evidence, and microruntimes as bounded, consumer-owned execution around software that already exists. |
-| **Microruntimes** | The engine: plan, run and record a bounded execution around a team's own software. Its Go CLI, `dft`, lives in `lib/cli` beside the Microruntimes contracts in `lib/core`; every plan with Microruntimes includes FinOps. |
+| **Microruntimes** | The engine: plan, run and record a bounded execution around a team's own software. Its Go CLI, the LangDrift CLI (`dft`), lives in `lib/cli` beside the Microruntimes contracts in `lib/core`; every plan with Microruntimes includes FinOps. |
 
 FinOps grew out of the Exphere project. Its value comes from data the platform produces itself.
 

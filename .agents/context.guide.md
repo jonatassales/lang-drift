@@ -286,10 +286,10 @@ _Avoid_: dft
 
 **ex**:
 The former name of `dft`, up to `@langdrift/cli` 0.4.0. Closed specs and tickets keep it, and so does the root's pinned 0.4.0 until 0.5.0.
-_Avoid_: ex, in new writing
+_Avoid_: using it in new writing; write `dft`
 
 **Microruntime**:
-One console-defined workload unit that dft runs on the project's local cluster: its configuration, execution and cleanup.
+One console-defined workload unit that the LangDrift CLI runs on the project's local cluster: its configuration, execution and cleanup.
 _Avoid_: Runtime (alone, in new writing), service
 
 **Connected agent**:
@@ -305,7 +305,7 @@ The on-disk record of what an operation created, written before side effects and
 _Avoid_: State file, journal
 
 **Evidence**:
-The token-free record dft keeps of every lifecycle operation and inspection, for later audit.
+The token-free record the LangDrift CLI keeps of every lifecycle operation and inspection, for later audit.
 _Avoid_: Log, report
 
 **Run**:

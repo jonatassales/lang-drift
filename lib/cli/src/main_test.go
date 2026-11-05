@@ -30,12 +30,12 @@ func TestCommand(t *testing.T) {
 		stderr string
 	}{
 		{name: "help on no args", status: 0, stdout: "LangDrift CLI"},
-		{name: "explicit help", args: []string{"--help"}, status: 0, stdout: "Usage:"},
+		{name: "explicit help names dft", args: []string{"--help"}, status: 0, stdout: "Usage:\n  dft [flags]\n  dft [command]"},
 		{name: "version", args: []string{"version"}, status: 0, stdout: "dft 0.0.0-dev"},
 		{name: "init initialized", args: []string{"init"}, status: 0, stdout: "initialized"},
 		{name: "unexpected init flags", args: []string{"init", "--force"}, status: 2, stderr: "unknown flag"},
 		{name: "unexpected init arguments", args: []string{"init", "project"}, status: 2, stderr: "requires 0 argument"},
-		{name: "invalid command", args: []string{"invalid"}, status: 2, stderr: "unknown command"},
+		{name: "invalid command points to dft help", args: []string{"invalid"}, status: 2, stderr: "unknown command \"invalid\"; run 'dft --help'"},
 		{name: "unexpected version arguments", args: []string{"version", "extra"}, status: 2, stderr: "requires 0 argument"},
 		{name: "unexpected help arguments", args: []string{"help", "extra"}, status: 2, stderr: "unknown help command"},
 	}
