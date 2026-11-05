@@ -5,12 +5,15 @@ import { AgentOrb } from 'web/ui/agent-orb'
 import { LogoMark } from 'web/ui/brand'
 import { GithubLogo, LinkedinLogo } from 'web/ui/icons/server'
 
+import { NpmBadge } from './npm-badge'
+
 const focusRing =
 	'rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary'
 const brandLink = `inline-flex items-center gap-2 text-lg font-[650] tracking-[-0.055em] text-foreground hover:text-foreground ${focusRing}`
 const footerLink = `inline-flex min-h-11 items-center text-[13px] text-muted-foreground hover:text-foreground ${focusRing}`
 const creditLink = `inline-flex min-h-11 basis-full items-center hover:text-foreground md:basis-auto ${focusRing}`
 const socialLink = `inline-flex size-11 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground ${focusRing}`
+const npmLink = `inline-flex h-11 items-center px-1 text-muted-foreground hover:text-foreground ${focusRing}`
 
 interface WebsiteFooterProps {
 	locale: WebsiteLocale
@@ -80,7 +83,10 @@ export function WebsiteFooter(props: WebsiteFooterProps) {
 						{copy.acknowledgment}
 					</a>
 				</div>
-				<nav aria-label={copy.social} className="flex items-center gap-1.5">
+				<nav
+					aria-label={copy.social}
+					className="flex flex-wrap items-center gap-1.5"
+				>
 					<a
 						aria-label="LinkedIn"
 						className={socialLink}
@@ -97,19 +103,8 @@ export function WebsiteFooter(props: WebsiteFooterProps) {
 					>
 						<GithubLogo aria-hidden="true" size={22} weight="fill" />
 					</a>
-					<a
-						aria-label="npm: @langdrift/cli"
-						className={`inline-flex h-11 items-center px-1 text-muted-foreground hover:text-foreground ${focusRing}`}
-						href="https://www.npmjs.com/package/@langdrift/cli"
-						title="npm: @langdrift/cli"
-					>
-						<img
-							alt="npm @langdrift/cli"
-							className="block h-5 w-auto"
-							height={20}
-							src="https://img.shields.io/npm/v/@langdrift/cli?logo=npm&logoColor=white&label=%40langdrift%2Fcli&color=CB3837&labelColor=18181B"
-						/>
-					</a>
+					<NpmBadge className={npmLink} packageName="@langdrift/cli" />
+					<NpmBadge className={npmLink} packageName="@langdrift/core" />
 				</nav>
 			</div>
 		</footer>

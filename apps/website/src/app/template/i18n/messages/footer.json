@@ -6,7 +6,7 @@
 		"social": "Follow LangDrift",
 		"copyright": "© 2026 LangDrift",
 		"security": "Security",
-		"license": "License",
+		"license": "Apache License 2.0",
 		"acknowledgment": "Inspired by LangWatch"
 	},
 	"pt-BR": {
@@ -16,7 +16,7 @@
 		"social": "Acompanhe o LangDrift",
 		"copyright": "© 2026 LangDrift",
 		"security": "Segurança",
-		"license": "Licença",
+		"license": "Apache License 2.0",
 		"acknowledgment": "Inspirado no LangWatch"
 	},
 	"zh-Hant": {
@@ -26,7 +26,7 @@
 		"social": "追蹤 LangDrift",
 		"copyright": "© 2026 LangDrift",
 		"security": "安全性",
-		"license": "授權條款",
+		"license": "Apache License 2.0",
 		"acknowledgment": "靈感來自 LangWatch"
 	},
 	"ja": {
@@ -36,7 +36,7 @@
 		"social": "LangDriftをフォロー",
 		"copyright": "© 2026 LangDrift",
 		"security": "セキュリティ",
-		"license": "ライセンス",
+		"license": "Apache License 2.0",
 		"acknowledgment": "LangWatch に着想を得ています"
 	},
 	"vi": {
@@ -46,7 +46,7 @@
 		"social": "Theo dõi LangDrift",
 		"copyright": "© 2026 LangDrift",
 		"security": "Bảo mật",
-		"license": "Giấy phép",
+		"license": "Apache License 2.0",
 		"acknowledgment": "Lấy cảm hứng từ LangWatch"
 	}
 }
