@@ -6,7 +6,7 @@
 
 **Blocked by:** none.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `next.config.ts` has no Docs redirect or rewrites; `next build` passes with no `DOCS_ORIGIN`.
 - [ ] `next.config.unit.ts` and its vitest `include` entry are gone.

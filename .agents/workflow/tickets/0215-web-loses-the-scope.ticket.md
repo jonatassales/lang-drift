@@ -6,7 +6,7 @@
 
 **Blocked by:** 0214.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `packages/web` is named `web`; the website and the console depend on it through `workspace:*` and transpile `web`.
 - [ ] No source imports `@langdrift/web`; both apps build, typecheck and pass their tests.

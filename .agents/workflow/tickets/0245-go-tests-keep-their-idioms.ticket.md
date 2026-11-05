@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Readable names item 1 and Multi-field literals item 1 carry the two sentences of the spec's amendment, word for word.
 - [x] No other rule text changes.

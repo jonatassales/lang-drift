@@ -6,7 +6,7 @@
 
 **Blocked by:** 0018 (Website token theme in Exphere purple).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] The exports map lists only: styles, utilities, product vision curve, brand, agent orb, server icons, language switcher, AI avatars, target distribution chart and the four SmoothUI components.
 - [x] Its stylesheet imports the tokens stylesheet; the drift-sign rules read the drift colors.

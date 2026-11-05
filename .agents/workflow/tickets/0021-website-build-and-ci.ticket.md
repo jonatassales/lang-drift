@@ -6,7 +6,7 @@
 
 **Blocked by:** 0020 (The website app).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] The website's build declares its environment variables; `dev` depends on upstream builds.
 - [x] The pull-request workflow sets the safe values (local build, early access paused, sign-up disabled, a local Docs origin).

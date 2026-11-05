@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] A fence with `version: 2` and a component `{ name, path }` parses; `dockerfile` defaults to `Dockerfile`, `port` and `readiness` may be absent.
 - [x] `name` must be a unique DNS label; `dockerfile` has no slash; `readiness.kind` is `tcp` or `http`, and `http` requires a path starting with `/`; `envFile` is a clean relative path inside the checkout; env and pass-through names match an uppercase variable name and do not overlap; each rule has a refusing test with its reason.

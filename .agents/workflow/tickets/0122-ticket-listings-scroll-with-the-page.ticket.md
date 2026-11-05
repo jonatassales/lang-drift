@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] A console UI piece renders Load more and, while there are more pages, nothing is loading and the last request has not failed, calls the listing's next page when it comes within reach of the viewport.
 - [x] Each page that lands re-arms it, so a short page on a tall window keeps loading until the screen is filled.

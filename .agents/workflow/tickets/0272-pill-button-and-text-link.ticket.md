@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] A `Button` test renders the pill variant with the plans section's overrides and asserts the override wins over the conflicting utility.
 - [x] A `TextLink` test covers its anchor form and its `asChild` form.

@@ -19,7 +19,7 @@ The page carries its own title, description, canonical, hreflang, structured dat
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `/en/platform/safe-seat/` and the four other locale prefixes render every section in order. The hero shows the "Coming soon" badge, and the page has no call to action.
 - [ ] Every evidence card states its finding, its limit and a link to its primary source. Burnout reads as an association. No clinical or health vocabulary appears in any locale.

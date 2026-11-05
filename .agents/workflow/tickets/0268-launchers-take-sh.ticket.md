@@ -6,7 +6,7 @@
 
 **Blocked by:** 0265.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] No extensionless automation file remains in `platform/cli/` or a package `bin/`.
 - [x] `drift` and `ex` run under their old command names; `pnpm pack --dry-run` in `lib/cli` lists `bin/ex.sh`.

@@ -4,7 +4,7 @@
 
 **Blocked by:** none
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Add the npm badge link on the right of the GitHub icon in `apps/website/src/app/lib/components/website-footer.tsx`.
 - [x] Allow `https://img.shields.io` in `img-src` in `apps/website/next.config.ts`, `apps/website/next.config.unit.ts`, and `apps/website/README.md`.

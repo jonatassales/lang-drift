@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `pnpm-workspace.yaml` lists no `infrastructure/*`, and `pnpm install --frozen-lockfile` passes with `infra` as the services' dependency.
 - [x] `infra` builds, typechecks and runs the streaming tests; `demo-requests` and `mailer` build, typecheck and test against it.

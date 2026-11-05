@@ -6,7 +6,7 @@
 
 **Blocked by:** none.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `apps/website/Dockerfile` and `.dockerignore` are deleted.
 - [ ] AGENTS.md no longer describes a website image; ticket 0021 notes that its Dockerfile criterion is superseded.

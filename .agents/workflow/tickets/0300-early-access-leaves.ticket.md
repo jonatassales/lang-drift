@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `git grep -n -i 'early.access' apps/website` matches nothing outside history.
 - [x] `/book-a-demo` renders the card in every locale and its client bundle holds no zod, so the CSP reports no `eval`.

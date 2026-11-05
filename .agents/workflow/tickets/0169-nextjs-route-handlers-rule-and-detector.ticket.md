@@ -6,7 +6,7 @@
 
 **Blocked by:** none
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `.claude/rules/06-nextjs.rule.md` includes Rule 9 (Route handlers own their implementation).
 - [x] `.claude/rules/00-general.rule.md` clarifies that Next.js route handlers export multiple HTTP method entrypoints directly.

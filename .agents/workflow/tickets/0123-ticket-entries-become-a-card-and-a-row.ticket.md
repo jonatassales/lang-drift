@@ -6,7 +6,7 @@
 
 **Blocked by:** 0122, The ticket listings scroll with the page.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `SummaryPhase` and `listedPhase(ticket, listing)`, test first: none for a Ticket-phase ticket in Tickets, the current phase for the others, and the listing's phase in Analysis, Plans and Workflows.
 - [x] One `PhaseSummary` renders the analysis, plan and workflow summary lines, moved out of their widgets; the widgets' headers render it; the plan's authorization label is shared through the ticket format hook.

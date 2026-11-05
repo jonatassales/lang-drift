@@ -6,7 +6,7 @@
 
 **Blocked by:** none.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] .github/workflows/e2e.yml and the `e2e`-tagged test files are deleted.
 - [x] The ex `typecheck` script runs `go vet ./...` without the `e2e` tag.

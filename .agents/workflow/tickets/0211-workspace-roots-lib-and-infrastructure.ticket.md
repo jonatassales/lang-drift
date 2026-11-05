@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `pnpm install` succeeds with `lib/*` and `infrastructure/*` in the workspace globs and no folder under them.
 - [ ] A commit touching a file under `lib/` or `infrastructure/` without a `Ticket:` trailer is refused by the commit hook with the same message as for `apps/` and `packages/`; the tooling rule says so.

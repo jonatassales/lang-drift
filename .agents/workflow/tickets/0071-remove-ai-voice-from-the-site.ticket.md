@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The home page renders without an AI Voice section, and the voice preview component and its test are gone.
 - [ ] The header menu, the drawer and the hero list no longer contain AI Voice, and the hero's rotating words no longer include the voice word.

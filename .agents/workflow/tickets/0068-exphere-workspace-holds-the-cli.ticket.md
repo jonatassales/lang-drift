@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `packages/ex` no longer exists; `exphere/cli` builds `dist/ex` and its full suite passes unchanged with the race detector.
 - [x] The fence's tests run in the contracts module, and the lexical rules have table tests there.

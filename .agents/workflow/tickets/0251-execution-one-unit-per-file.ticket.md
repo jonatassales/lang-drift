@@ -6,7 +6,7 @@
 
 **Blocked by:** 0246, 0222, 0223, 0224, 0225, 0226, 0227.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `platform/cli/drift quality check general` prints no finding in the package.
 - [ ] No exported identifier or import path changes.

@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] The tree matches spec 0010; only `agent/state/` is ignored.
 - [x] Nothing in it points outside the project's own folder except the workload it runs and the client's artifacts it reads.

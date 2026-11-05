@@ -6,7 +6,7 @@
 
 **Blocked by:** 0222.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `POST /api/judge` without the bearer answers 401; with a body outside the request schema, 400 naming the field; with the platform's key missing or the provider unreachable, 503; with a valid question, 200 with a response that validates against the contract's response schema.
 - [x] The response's answer text validates against the kind's schema; a model text that does not is answered as a refusal, never forwarded.

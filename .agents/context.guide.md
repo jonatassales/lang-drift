@@ -39,7 +39,7 @@ Run from the repository root:
 | `pnpm turbo run check` | Runs Biome format, lint and import checks on the whole repository. Read-only. |
 | `pnpm turbo run fix` | Same as `check`, writing safe fixes. Review the diff afterwards. |
 | `pnpm exec ex …` | The pinned `@langdrift/cli` 0.4.0 at the root, the same CLI a consumer installs. From 0.5.0 its command is `dft`, and ticket 0228 moves the pin. |
-| `lib/cli/dist/dft …` | The Microruntimes session in a project (`@langdrift/cli` ships a `bin/dft.sh` launcher and prebuilt binaries on npm for `npx @langdrift/cli …` / `pnpm dlx @langdrift/cli …`): `dft init`, the `dft harness` and `dft finops` inputs, then `dft agent plan`, `dft agent run`, `dft agent confirm`, `dft agent status` and `dft agent reindex`. `lib/cli/README.md` has the command table. |
+| `lib/cli/dist/dft …` | The Microruntimes session in a project (`@langdrift/cli` ships a `bin/dft.sh` launcher and prebuilt binaries on npm for `npx @langdrift/cli …` / `pnpm dlx @langdrift/cli …`): `dft init`, the `dft harness` and `dft finops` inputs, then `dft agent plan`, `dft agent run`, `dft agent confirm`, `dft agent status` and `dft agent reindex`. ADR 0005 keeps only `dft init`, `dft agent plan` and `dft agent run`; the others are removed as specs 0048 to 0066 are executed. `lib/cli/README.md` has the current command table. |
 
 The website needs `CRYPTO_SECRET` for encrypted locale cookies, in every environment: a developer keeps a local key in the untracked `apps/website/.env`, and deployed environments set a canonical 32-byte key; `apps/website/README.md` says how to generate one for a deployment.
 
@@ -103,10 +103,12 @@ Local Markdown under `.agents/workflow/`:
 | --- | --- |
 | Spec | `specs/<NNNN>-<slug>.spec.md` |
 | Ticket | `tickets/<NNNN>-<slug>.ticket.md` |
-| ADR | `adrs/<NNNN>-<slug>.adr.md` |
+| Technical design doc | `tdds/<NNNN>-<slug>.tdd.md` |
 | Research note | `research/<slug>.research.md` |
 
 - Each kind numbers its own sequence from `0001`; take the next free number. Create `research/` when the first file is written.
+- PRDs and ADRs sit above the workflow, directly under `.agents/`: `.agents/prds/<NNNN>-<slug>.prd.md` states the goal and target that specs serve, and `.agents/adrs/<NNNN>-<slug>.adr.md` records a decision.
+- A technical design doc says how the specs it names are built together: the shared structure, data flow and contracts no single spec owns.
 - "Publish to the issue tracker" means writing the file. "Fetch a ticket" means reading it.
 - A ticket names its spec in a `**Spec:**` line.
 
@@ -116,7 +118,7 @@ A `**Status:**` line near the top of each spec or ticket holds one of `needs-tri
 
 ### Domain docs
 
-Single context. The glossary is the `## Glossary` section of this file, and ADRs live in `.agents/workflow/adrs/`.
+Single context. The glossary is the `## Glossary` section of this file, and ADRs live in `.agents/adrs/`.
 
 ## Continuous integration
 

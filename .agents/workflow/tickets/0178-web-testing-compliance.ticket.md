@@ -19,7 +19,7 @@ Update test descriptions in unit tests under `packages/web/` so every `describe(
 
 **Blocked by:** 0177
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] All `packages/web` test files start their `describe` calls with `web/ui/...` or `web/vendors/...`.
 - [x] `drift quality check 10-testing` reports zero violations in `packages/web`.

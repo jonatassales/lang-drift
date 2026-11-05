@@ -6,7 +6,7 @@
 
 **Blocked by:** none.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `apps/website/package.json` depends on `@langdrift/web` (`workspace:*`); the `@pack/react` alias is gone.
 - [x] Every import, the layout's `styles.css` import and the lazy chart import name `@langdrift/web`, and `transpilePackages` lists `@langdrift/web`.

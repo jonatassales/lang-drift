@@ -6,7 +6,7 @@
 
 **Blocked by:** 0221, 0223, 0224, 0226, and the merge of ticket 0198's plan script (pull request #117).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The CLI README (its connect, plan and stop lines written in 0224 and 0226), the translated READMEs, the context document and the microruntime README name no `--no-judge`, no `ex agent init` and no provider key for planning, and describe connect, plan, run (runtime up first), confirm, stop and status.
 - [ ] Spec 0032's "This repository" paragraph says the run brings the components up and pauses, consistent with spec 0045, with a note of the amendment and its date.

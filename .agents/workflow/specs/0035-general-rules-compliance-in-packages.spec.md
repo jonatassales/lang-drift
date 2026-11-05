@@ -1,6 +1,6 @@
 # The packages and the drift CLI comply with the general rules
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 > **Note, 2026-11-05.** The owner closed 0246, 0261, 0262, 0263 as won't fix: the work goes to the published packages, `@langdrift/cli` and `@langdrift/core`, until the runtime runs.
 

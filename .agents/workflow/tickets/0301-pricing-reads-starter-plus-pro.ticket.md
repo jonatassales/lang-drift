@@ -6,7 +6,7 @@
 
 **Blocked by:** 0300.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Three cards render in every locale, each with "To be announced".
 - [x] No "trial", "15-day", "early adopter" or "early access" text remains in the conversion catalog or the pricing metadata.

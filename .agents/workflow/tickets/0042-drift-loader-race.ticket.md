@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The delayed `ready` writer's process is tracked, and stopped and reaped before the loader restarts or deletes its directory.
 - [ ] A command slower than a second still shows the spinner after the one-second delay.

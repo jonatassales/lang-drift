@@ -6,7 +6,7 @@
 
 **Blocked by:** 0125, The Executions overview scrolls with the page; 0126, The History overview scrolls with the page.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `VirtualList` is deleted.
 - [x] `ActivityRowSkeleton` is deleted.

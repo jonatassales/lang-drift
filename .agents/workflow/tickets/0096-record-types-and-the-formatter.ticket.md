@@ -6,7 +6,7 @@
 
 **Blocked by:** 0093 (the fixtures).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Every JSON file and every JSON fence of the sample fixture decodes with unknown fields refused and re-encodes byte-equal through the formatter.
 - [ ] The formatter's collapse rules are unit-tested, including an empty array, a long scalar array and a nested object, and `pnpm turbo run check` leaves a formatted file unchanged.

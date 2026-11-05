@@ -6,7 +6,7 @@
 
 **Blocked by:** 0123, Ticket entries become a card on mobile and a row on desktop.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `summaryPhases`, `phaseProgress(ticket)` and `ticketPath(ticket, listing)`, test first: the phases without `ticket`; 1 of 4 and 4 of 4; no fragment in Tickets and the phase key in the other three listings.
 - [x] The widget frame becomes a section with an `h2` and the summary line, offset below the sticky header; the Analysis, Plan and Workflow widgets wrap their unchanged bodies in it.

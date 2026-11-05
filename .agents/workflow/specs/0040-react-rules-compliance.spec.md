@@ -1,6 +1,6 @@
 # Every React component complies with the React rules
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 > **Note, 2026-11-05.** The owner closed 0286, 0287, 0288, 0289, 0291 as won't fix: the work goes to the published packages, `@langdrift/cli` and `@langdrift/core`, until the runtime runs.
 

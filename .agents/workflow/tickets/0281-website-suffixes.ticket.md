@@ -6,7 +6,7 @@
 
 **Blocked by:** 0239, 0240, 0279, 0277.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] The file-suffix detector reports nothing in the website.
 - [x] No import path breaks and no export is renamed beyond the spec's calls.

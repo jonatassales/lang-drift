@@ -6,7 +6,7 @@
 
 **Blocked by:** 0211.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `packages/events` no longer exists; `packages/streaming` exports `.` and `./transport` under the name `streaming`.
 - [ ] demo-requests and mailer depend on `streaming` through `workspace:*` and import nothing from `@langdrift/events`; `pnpm turbo run build typecheck test --filter=demo-requests --filter=mailer` passes.

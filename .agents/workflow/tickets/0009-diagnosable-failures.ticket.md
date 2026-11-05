@@ -6,7 +6,7 @@
 
 **Blocked by:** 0005.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] process gains a spill-to-file capture used by build recipes; cap failures disappear for builds.
 - [ ] native.go stops discarding error causes and stderr (build, stop, report paths).

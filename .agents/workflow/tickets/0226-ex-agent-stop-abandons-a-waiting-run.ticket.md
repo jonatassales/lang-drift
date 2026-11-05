@@ -6,7 +6,7 @@
 
 **Blocked by:** 0225.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] After `dft agent stop` on a waiting run, the lap's outcome is `abandoned` with the person and the time, the ledger line shows the reservation released and nothing observed, the lifecycle's stop and cleanup ran for every owned resource, and the evidence folder is intact.
 - [ ] `dft agent plan` on that runtime is accepted afterwards and raises the revision.

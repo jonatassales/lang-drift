@@ -6,7 +6,7 @@
 
 **Blocked by:** 0080
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] A search for Exphere in the console finds nothing.
 - [ ] Every remaining route renders, the console's tests and type check pass, and the dead-code check passes.

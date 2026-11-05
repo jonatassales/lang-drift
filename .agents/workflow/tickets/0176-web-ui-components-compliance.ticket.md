@@ -15,7 +15,7 @@ Refactor UI components under `packages/web/src/ui/`:
 
 **Blocked by:** none
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `packages/web/src/ui/brand/logo-mark.tsx` declares `LogoMark`.
 - [x] `packages/web/src/ui/brand/brand.tsx` declares `Brand`.

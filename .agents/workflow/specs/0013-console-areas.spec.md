@@ -1,6 +1,6 @@
 # The console wears the dashboard's shell, switches between Microruntimes and FinOps, and shows what the stub serves
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 ## Problem Statement
 

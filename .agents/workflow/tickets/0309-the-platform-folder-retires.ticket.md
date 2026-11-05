@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `git grep -E 'platform/(cli|docs|microruntime)'` finds nothing outside the historical workflow records but the context guide's dated note of the removal.
 - [x] `pnpm install` links `drift` from `packages/drift`, and the Git hooks run from `packages/drift/.husky`.

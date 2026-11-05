@@ -1,6 +1,6 @@
 # Published and internal workspaces
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 > **Note, 2026-11-05.** The judge's JSON Schemas (0222) are the non-Go surface this spec waited for, so the owner publishes `@langdrift/core` 0.2.0 on npm together with the Go tag `lib/core/contracts/go/v0.2.0` (ticket 0317). The lines below that keep the manifest private, and Out of scope's npm line, record the decision as it stood.
 

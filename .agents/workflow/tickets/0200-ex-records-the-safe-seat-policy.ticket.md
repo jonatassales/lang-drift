@@ -12,7 +12,7 @@ At a terminal, `ex init` offers Safe Seat, on by default, and records the answer
 
 **Blocked by:** 0199; 0196, the last open ticket changing `ex`'s plan and run, so that two writers never share those files.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `ex harness safe-seat set` records and mirrors the policy:
   - `--by`, the time and the previous record are kept;

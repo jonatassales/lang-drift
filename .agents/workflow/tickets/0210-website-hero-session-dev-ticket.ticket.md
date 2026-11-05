@@ -15,7 +15,7 @@ The gate-pause branch, the plan session and every money figure stay as they are.
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The run's stages are planning, spec, tickets, implement, dev-ticket, review and merge.
 - [ ] `dev-ticket` is not one of the stages a person can switch on or off. Implement's skills read `implement · tdd`, and review's read `code-review`.

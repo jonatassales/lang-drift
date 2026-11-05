@@ -6,7 +6,7 @@
 
 **Blocked by:** 0023 (The website has no Docs zone).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] No mention of the Docs zone, `COOKIE_ENCRYPTION_KEY`, older cookie formats, historical packages, format2 rollback or end-to-end suites elsewhere.
 - [ ] Every link resolves inside this repository, and every command is this repository's own (`pnpm turbo run … --filter=website`, `drift check localization`).

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0094, 0096.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Running the eight commands with the sample's values produces mirrors equal to the sample's `harness/` and `finops/` files except for the source fields, the record ids and the timestamps, which are injected in the test.
 - [ ] Setting a value twice keeps the previous value in the store and the mirror shows only the latest.

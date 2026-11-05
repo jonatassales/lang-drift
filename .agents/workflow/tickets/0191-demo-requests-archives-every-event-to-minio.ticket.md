@@ -6,7 +6,7 @@
 
 **Blocked by:** 0189.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] After a request is posted, the bucket holds `demo-request/<id>/<streamId>.json` with the envelope as its body and the type in its metadata.
 - [x] A mailer event for the same request (0192) lands beside it under the same prefix.

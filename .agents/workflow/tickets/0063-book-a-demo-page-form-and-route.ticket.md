@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The website depends on react-hook-form and the hookform zod resolver, pinned exactly, the newest releases the release-age policy accepts; no exclusion is added.
 - [ ] One zod schema validates the three fields: the email through the early-access email rules plus a free-mail domain refusal, the company trimmed, required and at most 120 characters, the position one of twelve ids held in code. Every issue's message is an error code; a submission schema adds the locale and refuses unknown keys.

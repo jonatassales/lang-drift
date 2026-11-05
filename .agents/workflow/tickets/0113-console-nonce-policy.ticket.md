@@ -20,7 +20,7 @@ next to `nosniff`, `Referrer-Policy: same-origin` and `X-Robots-Tag`. API paths 
 
 **Blocked by:** 0107.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Every console document carries exactly one CSP:
   - its `script-src` holds this response's nonce and `'strict-dynamic'`, and no `'unsafe-inline'`;

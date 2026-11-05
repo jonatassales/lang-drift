@@ -1,6 +1,6 @@
 # `ex` performs the Microruntimes session and writes `.langdrift/`
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 > **Note, 2026-11-05.** The owner closed 0105 as won't fix: 0225 (spec 0045) superseded it by bringing the runtime up before the first stage.
 

@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `git log --follow` reaches the history of the moved files.
 - [ ] The CLI's suite passes under the race detector, the contracts' suite passes, and the build script writes the binary at `packages/ex/dist/ex`.

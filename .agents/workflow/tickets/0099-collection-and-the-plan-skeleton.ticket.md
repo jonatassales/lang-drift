@@ -6,7 +6,7 @@
 
 **Blocked by:** 0097, 0098.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Against the frozen fixture project, the plan prints lines 1 to 13 of the session with the sample's counts and hashes, and the written plan fence's `ticket`, `collection`, `sources`, `inputs` and `discrepancies` equal the expected fixture.
 - [ ] A linked `.env`, a symlink and a path above the project are recorded as refused and never read; a link to nothing is recorded as unresolved; a binary is recorded by hash.

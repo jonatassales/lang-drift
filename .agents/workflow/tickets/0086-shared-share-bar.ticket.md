@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `ShareBar` lives in `packages/web/src/ui/share-bar/`, exported by name and in the package export map.
 - [ ] The website's panels import it from `@langdrift/web/ui/share-bar`; its local copy is gone.

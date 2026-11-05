@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] A ticket carries its number, slug, title, status, phase and artifacts, and an analysis, plan and workflow section once each phase is reached; unknown fields are null, never zero.
 - [ ] The early-access ticket carries the website's figures; every plan stays inside its envelope.

@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `.env.development` holds a 32-byte canonical base64 key, with a comment saying it is development-only and that no deployed environment may reuse it.
 - [ ] The website README and `.agents/context.md` describe the tracked development key instead of saying the file never holds a value or that `.env.local` is required locally.

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0007.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] One mapper in presentation/cli; ErrAdoptionRefused and recipe-policy refusals exit 3; missing tools/cluster exit 4.
 - [ ] cli.Execute tests assert each code through injected streams.

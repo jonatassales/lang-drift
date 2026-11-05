@@ -1,6 +1,6 @@
 # The website speaks for FinOps and its engine
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 ## Tickets
 

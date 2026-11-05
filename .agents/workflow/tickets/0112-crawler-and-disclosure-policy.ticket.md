@@ -20,7 +20,7 @@ The sitemap line stays. `/.well-known/security.txt` follows RFC 9116, with these
 
 **Blocked by:** 0107.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] robots.txt parses into the two groups and the sitemap line.
 - [ ] `/.well-known/security.txt` answers 200 as `text/plain`, with the four fields.

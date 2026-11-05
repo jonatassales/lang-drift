@@ -6,7 +6,7 @@
 
 **Blocked by:** 0155
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `drift quality check general` reports no "More than one function" finding in `apps/website`.
 - [ ] Every route file re-exports the `generateMetadata` or `generateStaticParams` it no longer declares.

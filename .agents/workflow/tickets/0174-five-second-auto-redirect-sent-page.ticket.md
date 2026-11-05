@@ -6,7 +6,7 @@
 
 **Blocked by:** none
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `auto-redirect.tsx` implements 5-second automatic redirection with cleanup on unmount.
 - [x] `apps/website/src/app/[locale]/(pages)/early-access-sent/page.tsx` renders `AutoRedirect`.

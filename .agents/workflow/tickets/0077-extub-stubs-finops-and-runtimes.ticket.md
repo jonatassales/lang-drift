@@ -6,7 +6,7 @@
 
 **Blocked by:** 0076
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The console home reads one product from the stub, and every route answers as before.
 - [ ] The local folder list offers no Vision folder.

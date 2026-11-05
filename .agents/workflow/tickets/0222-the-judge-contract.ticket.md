@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Under the core package, a `judge` folder holds the request, response and four answer schemas and one sample per kind; every sample validates against its schema.
 - [ ] The Go module exposes the request and response types and a parser that turns an answer's text into the typed answer of its kind, refusing text outside the schema with the field that broke it.

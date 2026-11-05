@@ -6,7 +6,7 @@
 
 **Blocked by:** 0082
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] A test proves the totals add only measured costs and count the unknown ones.
 - [ ] The page renders in the four console locales with catalog parity, and an unknown cost never reads as zero.

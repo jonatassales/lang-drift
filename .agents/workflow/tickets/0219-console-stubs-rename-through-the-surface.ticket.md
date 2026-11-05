@@ -6,7 +6,7 @@
 
 **Blocked by:** 0218.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The console and the stubs read only `CONSOLE_STUBS_*` variables; a missing one fails with its new name; the development defaults and both READMEs document the new keys.
 - [ ] `GET /api/console-stubs/<path>` proxies to the stubs and `/api/extub/...` no longer exists; the proxy-matcher, link, entity-id and load-test tests pass with the new names.

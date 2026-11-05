@@ -6,7 +6,7 @@
 
 **Blocked by:** 0157
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] No ternary or conditional nests beyond two levels.
 - [ ] Compound predicates are named.

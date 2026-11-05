@@ -6,7 +6,7 @@
 
 **Blocked by:** 0169
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `apps/console/src/app/api/extub/[...path]/route.ts` implements `GET` and `POST` directly.
 - [x] `apps/console/src/app/api/extub/[...path]/extub-proxy.route.ts` is deleted.

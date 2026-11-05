@@ -18,4 +18,4 @@
 ### Context
 
 - [The spec](/.agents/workflow/specs/0011-finops-single-page-site.spec.md)
-- [The classification and drift colors are shared meaning](/.agents/workflow/adrs/0003-website-adapts-to-the-repository.adr.md)
+- [The classification and drift colors are shared meaning](/.agents/adrs/0003-website-adapts-to-the-repository.adr.md)

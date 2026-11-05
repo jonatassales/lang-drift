@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The platform products' list is in the order Vision, Microruntimes, FinOps, AI Voice; the menu, the drawer and the hero column follow it without a change of their own.
 - [ ] `PlatformFeatures` is deleted and the home page no longer renders it.

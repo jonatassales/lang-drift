@@ -14,7 +14,7 @@ The powered-by header is off. Every page stays statically prerendered. Developme
 
 **Blocked by:** 0107.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] A page, an API route and a static file each carry every header with the spec's value, and no response carries `X-Powered-By`.
 - [ ] The policy has no `upgrade-insecure-requests`.

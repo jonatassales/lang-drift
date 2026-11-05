@@ -6,7 +6,7 @@
 
 **Blocked by:** 0211.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `packages/ex` and `packages/contracts` no longer exist; `lib/cli` and `lib/core/contracts/go` are Go modules named after their paths, both listed in the root Go workspace.
 - [ ] The root Go workspace resolves the core module for `lib/cli`, whose `go.mod` names no version of it until the module is tagged; `go vet ./...` and `go test -race ./...` pass in both modules, and `sh lib/cli/build.sh && lib/cli/dist/ex version` prints the manifest version.

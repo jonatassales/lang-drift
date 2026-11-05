@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `.claude/rules/11-nestjs.rule.md` exists with the decisions above and is written for the owner to promote.
 - [x] The `.interceptor` row is in the suffix table of the TypeScript rules.

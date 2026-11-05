@@ -6,7 +6,7 @@
 
 **Blocked by:** 0072
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The desktop header and the drawer each show a FinOps link and a Microruntimes link that open those pages, and no dropdown exists.
 - [ ] The header catalog has no key that only the dropdown used, and the parity test passes in the five locales.

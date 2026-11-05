@@ -6,7 +6,7 @@
 
 **Blocked by:** 0010.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Refusal stub with guidance preserved and tested.
 - [x] Adjusted during implementation: the UseCases runtime fields, the duplicated execute_catalogs_test harness and every unit test of the retired commands are removed. The catalog command constructors stay as package code because the connected agent and the tests drive the native lifecycle through them.

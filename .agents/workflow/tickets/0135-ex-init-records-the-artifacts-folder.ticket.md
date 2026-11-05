@@ -6,7 +6,7 @@
 
 **Blocked by:** 0134 (ex init asks for the budget and the default gates).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] An existing relative folder is stored as `artifacts` in `config.json`, and the result lists `artifacts` as recorded.
 - [x] An absolute path, a path that climbs with `..` or a missing folder is refused with the reason, and nothing is recorded.

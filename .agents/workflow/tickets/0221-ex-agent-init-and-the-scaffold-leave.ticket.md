@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `ex agent init` is unknown to the CLI, and no template under the scaffold folder mentions LangGraph or LangChain.
 - [x] `ex init` on a fresh project writes no `agents/` folder, and a project holding an old `.langdrift/agents/` is planned and run without reading it.

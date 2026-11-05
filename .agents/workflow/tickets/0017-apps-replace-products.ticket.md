@@ -6,7 +6,7 @@
 
 **Blocked by:** none.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] The pnpm workspace picks up `apps/*` and `packages/*`; `products/` no longer exists.
 - [x] A commit that changes `apps/` or `packages/` without a `Ticket:` trailer is rejected, by the commit-msg hook and by `drift git lint-history`.

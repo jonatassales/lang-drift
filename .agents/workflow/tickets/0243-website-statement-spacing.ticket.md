@@ -6,7 +6,7 @@
 
 **Blocked by:** 0239, 0240.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `platform/cli/drift quality check general` prints no finding under `apps/website`.
 - [x] `pnpm turbo run check typecheck test build --filter=website` passes.

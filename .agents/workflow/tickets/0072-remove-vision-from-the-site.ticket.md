@@ -6,7 +6,7 @@
 
 **Blocked by:** 0071
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The Vision address answers "not found" in every locale, and no sitemap entry or metadata entry names it.
 - [ ] The home page renders the hero, the Microruntimes section, the FinOps section, a FAQ with two tabs and the Book a demo band, and no link on the site leads to a removed address.
@@ -19,5 +19,5 @@
 ### Context
 
 - [The spec](/.agents/workflow/specs/0011-finops-single-page-site.spec.md)
-- [The website adapts to the repository](/.agents/workflow/adrs/0003-website-adapts-to-the-repository.adr.md)
+- [The website adapts to the repository](/.agents/adrs/0003-website-adapts-to-the-repository.adr.md)
 - [The pivot](/.agents/workflow/specs/0010-exphere-and-the-langdrift-folder.spec.md)

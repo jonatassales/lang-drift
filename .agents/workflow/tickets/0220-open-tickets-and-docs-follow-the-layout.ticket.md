@@ -6,7 +6,7 @@
 
 **Blocked by:** 0212, 0213, 0215, 0217, 0219.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Tickets 0070, 0077, 0085, 0091, 0116, 0198 and 0200 to 0205 cite only paths and package names that exist.
 - [x] No closed ticket, spec or CLI fixture changed.

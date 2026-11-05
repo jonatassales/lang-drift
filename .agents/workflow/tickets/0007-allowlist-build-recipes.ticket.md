@@ -6,7 +6,7 @@
 
 **Blocked by:** 0005.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Validation lives in domain/connection with table-driven tests: python3 -c, node -e, sh -c, bare curl all refused; ./build.sh (committed), docker build ., go build, make all pass.
 - [ ] A refused recipe surfaces a typed policy error (exit-code work maps it later).

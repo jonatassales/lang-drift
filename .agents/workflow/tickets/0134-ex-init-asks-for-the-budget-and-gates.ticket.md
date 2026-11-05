@@ -11,7 +11,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Piped answers with `--ask` record a budget whose mirror holds the current month, the amounts in cents and the `--by` value, and the default gates.
 - [x] An amount with more than two decimals, a negative amount or text is refused before anything is recorded. A table test covers the dollars-to-cents conversion.

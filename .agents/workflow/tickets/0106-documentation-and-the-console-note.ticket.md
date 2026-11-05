@@ -6,7 +6,7 @@
 
 **Blocked by:** 0093 to 0105.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The README's command table lists every command the binary registers and no other, and its boundary section matches what the code writes.
 - [ ] The glossary defines the new terms with their avoid-lists, in the file's format.

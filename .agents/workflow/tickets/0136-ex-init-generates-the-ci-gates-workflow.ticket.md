@@ -14,7 +14,7 @@ An existing file is kept byte for byte. An unreleased build refuses to write it.
 
 **Blocked by:** 0133 (ex gates report writes the pull request's report), 0134 (ex init asks for the budget and the default gates).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] A yes writes the workflow, which matches a golden copy under testdata for a fixed version, and the result lists `ci-gates` as recorded.
 - [x] A no, or no answer, writes nothing outside `.langdrift/`.

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0150
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `website-footer.css` and `hero.css` are deleted and nothing imports them.
 - [ ] The footer keeps its look and its hover and focus states.

@@ -13,7 +13,7 @@ The home page's graph keeps its Organization and WebSite nodes, sameAs included,
 
 **Blocked by:** 0110.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Every indexable page holds exactly one `application/ld+json` script, and it parses.
 - [ ] Its WebPage node carries the expected `@id`, url, name, description, `inLanguage` and `isPartOf`.

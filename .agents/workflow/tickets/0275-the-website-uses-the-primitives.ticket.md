@@ -6,7 +6,7 @@
 
 **Blocked by:** 0229, 0272, 0274.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] No `smooth-` class and no "Transitional" comment remains in the website.
 - [x] The website manifest lists neither `clsx` nor `tailwind-merge`.

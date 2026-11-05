@@ -2,7 +2,7 @@
 
 **What to build:** the README banner follows Vercel's restraint, and no color is left in it. A light and a dark variant: pure white or black, a 64 px cell grid fading from the center, a soft spotlight from the top, one framed cell with crosshairs at its corners and a beam along its top edge. In it, the drift mark and the LangDrift wordmark large and centered, over "Agentic FinOps Platform" in the muted tone. Every README (English at the root, pt-BR, zh-Hant, ja and vi under `platform/docs/`) drops the "development candidate" status badge and the languages badge, and the status section no longer calls `ex` a development candidate.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 ### Banner
 

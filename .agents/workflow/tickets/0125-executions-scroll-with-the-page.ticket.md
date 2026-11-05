@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] The Executions overview renders an ordered list named by the page, with no scroll box, fixed height, list-wide border or virtualization; Refresh stays above it, and the loading row, error notice and empty line below.
 - [x] The overview ends with `ListEnd` fed by the paged resource, and its own Load more button is gone.

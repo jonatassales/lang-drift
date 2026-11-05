@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The package builds and tests through the repository's Turborepo `build` and `test` tasks.
 - [ ] Token sources are DTCG JSON. Shared tokens and Vision's product theme live in separate files, the theme in the package's themes folder.

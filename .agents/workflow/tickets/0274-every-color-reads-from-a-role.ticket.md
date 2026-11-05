@@ -6,7 +6,7 @@
 
 **Blocked by:** 0267.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [x] The tokens test asserts the two new roles in both schemes.
 - [ ] No `color-mix(`, `var(--` color or static `style` value remains in `packages/web`.

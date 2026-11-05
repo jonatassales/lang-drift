@@ -6,7 +6,7 @@
 
 **Blocked by:** 0005.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Module path renamed in go.mod and every import; package.json renamed; build.sh env var renamed.
 - [ ] `.exphere` appears nowhere in src (code, scaffold assets, tests); `.langdrift` replaces it.

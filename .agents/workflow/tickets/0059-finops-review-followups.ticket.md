@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The hero summary says the receipt sits beside the ledger, or under it on a narrow screen, in all five locales.
 - [ ] The gate's source line names the receipt at the top of the page as the origin of its figures, in all five locales, keeping the `{item}` placeholder.

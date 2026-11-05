@@ -12,7 +12,7 @@ A same-origin JSON request behaves exactly as it does today.
 
 **Blocked by:** 0107.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Each refused request answers its status without the body being read.
 - [ ] A same-origin JSON request, with the site's own `Origin` or none, still answers 400 for field errors and 503 when valid.

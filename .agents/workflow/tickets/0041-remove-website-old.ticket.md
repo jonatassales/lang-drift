@@ -6,7 +6,7 @@
 
 **Blocked by:** None (0040, which replaced orbz, is merged).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `apps/website-old` is gone, and the lockfile loses its importer and nothing else.
 - [ ] The root `website-old` script, the Biome ignore, the dead-code allowances for its formatters and react-dom, and the `--filter=!website-old` exclusions in the pull-request workflow are gone.

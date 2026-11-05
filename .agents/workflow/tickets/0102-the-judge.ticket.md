@@ -6,7 +6,7 @@
 
 **Blocked by:** 0100, 0101.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] With a fake judge returning the sample's facts, verdicts, reasons and suggestion, the whole plan session prints the 43 lines and the plan fence equals the expected fixture, including the planning line of the ledger.
 - [ ] The adapter is tested against a local test server: a schema-valid answer is accepted, an invalid one is refused without a retry loop, usage is recorded per call, and a refusal stop reason leaves the fields `null`.

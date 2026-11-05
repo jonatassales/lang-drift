@@ -2,7 +2,7 @@
 
 **What to build:** moving between pages keeps the scroll position of the previous page. Each page renders its own header and main, so Next treats the new page's first element as already in view and does not scroll. A `ScrollToTop` Client Component in the locale layout resets the scroll to the top on every pathname change.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 ### Scroll
 

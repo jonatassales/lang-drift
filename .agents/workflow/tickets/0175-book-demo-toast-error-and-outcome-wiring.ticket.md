@@ -6,7 +6,7 @@
 
 **Blocked by:** 0173, 0174
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Toast component created in `packages/web/src/ui/toast/` with props interface, accessible roles, and styling.
 - [x] Exported from `packages/web` exports and index.

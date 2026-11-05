@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `packages/web` depends on `orbo-voice` 1.1.2, pinned exactly like its predecessor, and the lockfile differs from main only by that dependency.
 - [ ] `AgentOrb` imports the package's types and browser runtime and renders the `orb-o` element with the same preset, state, size, speed, paused and reduced-motion attributes; `AgentOrbState` keeps its name.

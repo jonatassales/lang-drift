@@ -6,7 +6,7 @@
 
 **Blocked by:** 0313.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [x] No catalog, content module or console view shows `ex` as the command; the catalogs keep parity in every locale.
 - [ ] The root README and the READMEs under `packages/docs/` name the LangDrift CLI and show `dft`, and their screenshot shows `dft` running and is named after it.

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0065 (Products in the platform order; the features grid goes).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The Vision FAQ's id list moves to a data module the Vision page and the home read; the Vision page's FAQ renders as before.
 - [ ] A `PlatformFaqSection` Server Component builds the three groups from the three product catalogs, labelled with the header's product names, in the product FAQ's shell with the fragment id `faq`, and renders `FaqTabs`.

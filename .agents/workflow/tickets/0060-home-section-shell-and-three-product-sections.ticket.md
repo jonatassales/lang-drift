@@ -6,7 +6,7 @@
 
 **Blocked by:** 0065 (Products in the platform order; the features grid goes).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] A `HomeProductSection` Server Component renders the skeleton: a landmark labelled by its heading and described by its optional caption and summary; the icon chip and the product name from the header catalog aligned right; a level-two heading in the Vision hero's heading style; a lead in its lead style; the demo; an optional text link with the arrow icon. Role utilities only, no stylesheet.
 - [ ] The Vision section reuses the home catalog's hero question (with `ChromaText`, still under reduced motion), description, caption and summary, and renders the curve and the graph in a Tailwind twin of the Vision hero's demo grid; selecting a point or a node on the home moves the other, as on the Vision page. The Vision page and its stylesheet are untouched.

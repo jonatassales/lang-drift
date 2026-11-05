@@ -6,7 +6,7 @@
 
 **Blocked by:** 0133, 0134, 0135, 0136.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [x] `packages/ex/package.json` is at 0.2.0, so `build.sh` injects 0.2.0 into `ex version` and into the CI Gates workflow `ex init` writes.
 - [ ] The tag `packages/ex/v0.2.0` points at the merge commit on `main`.
