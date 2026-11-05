@@ -1,0 +1,99 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://langdrift.md/schemas/configuration/runtime.schema.json",
+	"title": "Runtime fence",
+	"description": "The langdrift fence of runtime.md, version 3: the runtime's id and revision, the bound in millicores and MiB, the suggested model and effort, and per component its path, stack, role, port, image, share and replicas. Shares summing within the bound, distinct ports and images and unique paths are rules JSON Schema cannot express; the Go Validate enforces them.",
+	"type": "object",
+	"additionalProperties": false,
+	"required": [
+		"version",
+		"runtimeId",
+		"revision",
+		"cpuMillis",
+		"memoryMiB",
+		"model",
+		"effort",
+		"components"
+	],
+	"properties": {
+		"version": {
+			"const": 3
+		},
+		"runtimeId": {
+			"type": "string",
+			"pattern": "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$"
+		},
+		"revision": {
+			"type": "integer",
+			"minimum": 1
+		},
+		"cpuMillis": {
+			"type": "integer",
+			"minimum": 1,
+			"maximum": 64000
+		},
+		"memoryMiB": {
+			"type": "integer",
+			"minimum": 1,
+			"maximum": 1048576
+		},
+		"model": {
+			"type": "string",
+			"minLength": 1
+		},
+		"effort": {
+			"enum": ["low", "medium", "high"]
+		},
+		"components": {
+			"type": "array",
+			"minItems": 1,
+			"maxItems": 16,
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": [
+					"path",
+					"stack",
+					"role",
+					"port",
+					"image",
+					"cpuMillis",
+					"memoryMiB",
+					"replicas"
+				],
+				"properties": {
+					"path": {
+						"type": "string",
+						"minLength": 1
+					},
+					"stack": {
+						"enum": ["Go", "Node.js", "NATS", "Redis", "Next.js"]
+					},
+					"role": {
+						"enum": ["api", "broker", "cache", "web"]
+					},
+					"port": {
+						"type": "integer",
+						"minimum": 1,
+						"maximum": 65535
+					},
+					"image": {
+						"type": "string",
+						"minLength": 1
+					},
+					"cpuMillis": {
+						"type": "integer",
+						"minimum": 1
+					},
+					"memoryMiB": {
+						"type": "integer",
+						"minimum": 1
+					},
+					"replicas": {
+						"const": 1
+					}
+				}
+			}
+		}
+	}
+}

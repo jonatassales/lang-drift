@@ -12,6 +12,17 @@
 
 ## Tickets
 
+- [ ] 0318: the runtime.md fence v3, beside v2
+- [ ] 0319: the judge's three answers the simulation shows
+- [ ] 0320: the five stage reports
+- [ ] 0321: the hand-off records
+- [ ] 0322: `@langdrift/core` 0.3.0 publishes the new shapes
+- [ ] 0323: the protocol package leaves
+- [ ] 0324: the fence v3 is the only fence
+- [ ] 0325: the old judge contract leaves
+
+> **Note, 2026-11-05.** The simulation was played in production before these tickets were written, in both phases and the over-budget variant, and matches this spec's tables. One nuance is carried into 0320: the to-spec line prints the spec's short id, `0011-SPEC`, while the report's `spec` field holds its path. The tickets expand then contract: 0318 to 0322 add the new shapes beside the old ones, so the CLI keeps building in the workspace, and 0323 to 0325 remove the old ones once the specs that retire their last consumers land. The judge's answers are a new `judgment` package for that reason.
+
 ## Problem Statement
 
 The LangDrift Core contracts (`lib/core/contracts/go`, published as `@langdrift/core`) are the shapes behind every line and card field of the simulation: the `runtime.md` fence the plan drafts and the run applies, the judge's answers, and what the CLI hands to whoever shows its data. Today they carry the wrong things.

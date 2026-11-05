@@ -17,22 +17,11 @@ type versioned struct {
 // fields, and bounds the document. Markdown never grants execution authority.
 func Parse(markdown string) (Configuration, error) {
 	var config Configuration
-	if len(markdown) > 1<<20 {
-		return config, invalid("Markdown exceeds 1 MiB")
-	}
 
-	const fence = "```langdrift\n"
-	if strings.Count(markdown, fence) != 1 {
-		return config, invalid("Markdown requires exactly one langdrift JSON fence")
+	block, err := langdriftBlock(markdown)
+	if err != nil {
+		return config, err
 	}
-
-	after := strings.SplitN(markdown, fence, 2)[1]
-	end := strings.Index(after, "\n```")
-	if end < 0 {
-		return config, invalid("configuration fence is not closed")
-	}
-
-	block := after[:end]
 
 	var header versioned
 	if err := json.Unmarshal([]byte(block), &header); err != nil {
