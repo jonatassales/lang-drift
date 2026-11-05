@@ -64,7 +64,6 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 		evidence    = storage.Evidence{}
 		files       = configuration.Files{}
 		scaffolder  = configuration.Scaffolder{}
-		agents      = scaffold.Agents{}
 		kubernetes  = kubectl.Client{Runner: runner}
 		provisioner = kind.Provisioner{Runner: runner}
 		preparation = terraform.Preparation{Runner: runner}
@@ -203,10 +202,6 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 			Clusters: clusters,
 			Observer: kubernetes,
 			Images:   provisioner,
-		},
-		AgentInit: application.InitializeAgent{
-			Projects: projects,
-			Agents:   agents,
 		},
 		Gates: gatesapp.Report{
 			History: history.Log{

@@ -15,10 +15,6 @@ func (cliApplication *application) agentCommand() *cobra.Command {
 		RunE:  requireSubcommand,
 	}
 
-	agentRoot.AddCommand(
-		catalog.NewAgentInitCommand(cliApplication.useCases.AgentInit, &cliApplication.globals),
-	)
-
 	if cliApplication.useCases.Plan != nil {
 		agentRoot.AddCommand(
 			catalog.NewAgentPlanCommand(cliApplication.useCases.Plan, &cliApplication.globals),

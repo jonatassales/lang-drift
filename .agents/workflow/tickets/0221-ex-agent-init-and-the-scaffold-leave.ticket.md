@@ -8,10 +8,10 @@
 
 **Status:** ready-for-agent
 
-- [ ] `ex agent init` is unknown to the CLI, and no template under the scaffold folder mentions LangGraph or LangChain.
-- [ ] `ex init` on a fresh project writes no `agents/` folder, and a project holding an old `.langdrift/agents/` is planned and run without reading it.
-- [ ] The CLI's suite passes under the race detector; the composed CLI test's expected tree lists no scaffold file.
-- [ ] The CLI README and the context document name no agent scaffold.
+- [x] `ex agent init` is unknown to the CLI, and no template under the scaffold folder mentions LangGraph or LangChain.
+- [x] `ex init` on a fresh project writes no `agents/` folder, and a project holding an old `.langdrift/agents/` is planned and run without reading it.
+- [x] The CLI's suite passes under the race detector; the composed CLI test's expected tree lists no scaffold file.
+- [x] The CLI README and the context document name no agent scaffold.
 
 ## Dev part
 

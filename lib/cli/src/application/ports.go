@@ -74,12 +74,6 @@ type RuntimeScaffolder interface {
 	Generate(owner project.Project, runtime microruntime.Identifier, blueprint microruntime.Blueprint) (location string, err error)
 }
 
-// AgentScaffolder publishes an editable agent project. It never builds,
-// installs, or runs anything.
-type AgentScaffolder interface {
-	Scaffold(owner project.Project, name microruntime.Identifier) (location string, err error)
-}
-
 // --- Cluster ----------------------------------------------------------------
 
 // ClusterAccess is how to reach a cluster: explicit credentials and context,
