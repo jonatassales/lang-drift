@@ -20,7 +20,7 @@
 	"facts": [
 		{
 			"topic": "component",
-			"text": "messaging and storage build from their Dockerfiles under infrastructure/",
+			"text": "messaging and storage build from their Dockerfiles under packages/infra/",
 			"source": ".agents/workflow/tickets/0198-book-a-demo-microruntime.ticket.md#L5"
 		}
 	],

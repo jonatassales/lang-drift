@@ -17,7 +17,7 @@ const envelope = {
 	payload: {},
 }
 
-describe('events/transport/redis-streams-client.adapter', () => {
+describe('infra/streaming/transport/redis-streams-client.adapter', () => {
 	it('appends an emitted envelope under its type with the flat routing fields and a capped length', async () => {
 		const connection = new FakeStreamConnection({
 			addedIds: ['1762178700000-7'],

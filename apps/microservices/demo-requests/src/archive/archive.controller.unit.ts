@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { RedisStreamsContext } from 'streaming/transport'
+import { RedisStreamsContext } from 'infra/streaming/transport'
 
 import { ArchiveController } from './archive.controller.js'
 import type { ArchiveService } from './archive.service.js'

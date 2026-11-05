@@ -1,10 +1,13 @@
-import type { DemoRequestReceived, DemoRequestSubmission } from 'streaming'
+import type {
+	DemoRequestReceived,
+	DemoRequestSubmission,
+} from 'infra/streaming'
 import {
 	createEnvelope,
 	demoRequestAggregateType,
 	demoRequestEventNames,
 	demoRequestReceivedSchema,
-} from 'streaming'
+} from 'infra/streaming'
 
 // The first event of a demo request: the accepted submission, stamped with
 // the time it arrived, under a fresh aggregate id.

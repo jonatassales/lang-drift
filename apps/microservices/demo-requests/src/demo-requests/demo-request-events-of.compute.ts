@@ -1,6 +1,6 @@
-import type { DemoRequestEvent } from 'streaming'
-import { demoRequestEventSchema } from 'streaming'
-import type { StreamEntry } from 'streaming/transport'
+import type { DemoRequestEvent } from 'infra/streaming'
+import { demoRequestEventSchema } from 'infra/streaming'
+import type { StreamEntry } from 'infra/streaming/transport'
 
 // The demo-request events among a request's entries, in stream order; an
 // envelope of another shape is left out of the fold.

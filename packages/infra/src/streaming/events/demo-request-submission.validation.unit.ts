@@ -9,7 +9,7 @@ const submission = {
 	locale: 'pt-BR',
 }
 
-describe('events/events/demo-request-submission.validation', () => {
+describe('infra/streaming/events/demo-request-submission.validation', () => {
 	it('accepts a company email, a company, a position and a locale', () => {
 		const result = demoRequestSubmissionSchema.safeParse(submission)
 

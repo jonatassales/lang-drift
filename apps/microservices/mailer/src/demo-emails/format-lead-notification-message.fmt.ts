@@ -2,7 +2,7 @@ import type {
 	DemoEmailsCatalog,
 	MailLocale,
 } from '@app/i18n/messages/messages.types.js'
-import type { DemoRequestReceived } from 'streaming'
+import type { DemoRequestReceived } from 'infra/streaming'
 
 import type { EmailMessage } from './email-message.types.js'
 import { formatIcuMessage } from './format-icu-message.fmt.js'

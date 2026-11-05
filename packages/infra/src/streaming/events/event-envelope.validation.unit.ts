@@ -17,7 +17,7 @@ const envelope = {
 	},
 }
 
-describe('events/events/event-envelope.validation', () => {
+describe('infra/streaming/events/event-envelope.validation', () => {
 	it('accepts an envelope with an id, a type, a version, an aggregate, a time, a correlation id and a payload', () => {
 		const result = eventEnvelopeSchema.safeParse(envelope)
 

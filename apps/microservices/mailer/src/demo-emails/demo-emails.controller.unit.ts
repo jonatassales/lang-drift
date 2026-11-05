@@ -2,7 +2,7 @@ import { of } from 'rxjs'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { FakeEmailSender } from '@app/demo-emails/testdata/email-sender.mock.js'
-import { demoRequestEventSchema } from 'streaming'
+import { demoRequestEventSchema } from 'infra/streaming'
 
 import { DemoEmailsController } from './demo-emails.controller.js'
 

@@ -7,8 +7,8 @@ import type {
 	EventLogReaderService,
 	FollowEvent,
 } from '@app/event-log/event-log-reader.service.js'
-import { demoRequestReceivedSchema } from 'streaming'
-import type { StreamEntry } from 'streaming/transport'
+import { demoRequestReceivedSchema } from 'infra/streaming'
+import type { StreamEntry } from 'infra/streaming/transport'
 
 import { DemoRequestsController } from './demo-requests.controller.js'
 

@@ -1,7 +1,7 @@
 import type { OnApplicationShutdown } from '@nestjs/common'
 import { Inject, Module } from '@nestjs/common'
 
-import type { RedisStreamsClient } from 'streaming/transport'
+import type { RedisStreamsClient } from 'infra/streaming/transport'
 
 import { createEventLogConnectionOpener } from './event-log-connection-opener.factory.js'
 import { eventLogConnectionOpenerToken } from './event-log-connection-opener.token.js'

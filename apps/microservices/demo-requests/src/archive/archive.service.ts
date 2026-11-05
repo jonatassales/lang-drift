@@ -1,7 +1,7 @@
 import type { OnModuleInit } from '@nestjs/common'
 import { Inject, Injectable } from '@nestjs/common'
 
-import { eventEnvelopeSchema } from 'streaming'
+import { eventEnvelopeSchema } from 'infra/streaming'
 
 import { archiveBucketToken } from './archive-bucket.token.js'
 import { objectKeyOf } from './object-key.compute.js'

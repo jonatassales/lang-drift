@@ -1,4 +1,4 @@
-import type { DemoRequestEmailKind, DemoRequestReceived } from 'streaming'
+import type { DemoRequestEmailKind, DemoRequestReceived } from 'infra/streaming'
 
 export type DemoRequestState = 'received' | 'confirmed' | 'failed'
 

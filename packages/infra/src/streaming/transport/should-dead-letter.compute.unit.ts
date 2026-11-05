@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { shouldDeadLetter } from './should-dead-letter.compute.js'
 
-describe('events/transport/should-dead-letter.compute', () => {
+describe('infra/streaming/transport/should-dead-letter.compute', () => {
 	it('keeps handling an entry delivered up to the maximum', () => {
 		expect(shouldDeadLetter(1, 5)).toBe(false)
 		expect(shouldDeadLetter(5, 5)).toBe(false)

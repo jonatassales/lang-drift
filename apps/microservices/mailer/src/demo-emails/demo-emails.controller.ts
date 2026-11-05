@@ -5,8 +5,11 @@ import { lastValueFrom } from 'rxjs'
 import type { EventLogProducer } from '@app/event-log/event-log-producer.port.js'
 import { eventLogProducerToken } from '@app/event-log/event-log-producer.token.js'
 import { demoEmailsMessages } from '@app/i18n/messages/index.js'
-import type { DemoRequestEmailKind, DemoRequestReceived } from 'streaming'
-import { demoRequestEventNames, demoRequestReceivedSchema } from 'streaming'
+import type { DemoRequestEmailKind, DemoRequestReceived } from 'infra/streaming'
+import {
+	demoRequestEventNames,
+	demoRequestReceivedSchema,
+} from 'infra/streaming'
 
 import type { DeliveredEmail } from './delivered-email.types.js'
 import type { EmailOutcome } from './email-outcome-envelope.compute.js'

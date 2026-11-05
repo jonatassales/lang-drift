@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common'
 import { describe, expect, it } from 'vitest'
 
-import { demoRequestSubmissionSchema } from 'streaming'
+import { demoRequestSubmissionSchema } from 'infra/streaming'
 
 import { ZodValidationPipe } from './zod-validation.pipe.js'
 

@@ -4,7 +4,7 @@
 # probe (spec 0032). Root credentials arrive at run time as MINIO_ROOT_USER
 # and MINIO_ROOT_PASSWORD, never here.
 #
-#   docker build -t langdrift-storage:local infrastructure/storage
+#   docker build -t langdrift-storage:local packages/infra/storage
 
 FROM golang:1.25-alpine AS build
 ARG MINIO_RELEASE=RELEASE.2025-10-15T17-29-55Z

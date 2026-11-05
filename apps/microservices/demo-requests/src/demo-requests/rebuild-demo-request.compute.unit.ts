@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import type { DemoRequestEvent } from 'streaming'
+import type { DemoRequestEvent } from 'infra/streaming'
 
 import { rebuildDemoRequest } from './rebuild-demo-request.compute.js'
 

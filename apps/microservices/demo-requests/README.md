@@ -1,6 +1,6 @@
 # demo-requests
 
-The service that receives a Book a Demo request from the website, records it as the first event of an event-sourced request on the Redis Stream `demo-requests:events`, exposes the stream over Server-Sent Events, folds a request's events into its state and archives every event into MinIO. It is a Nest.js hybrid application on Express, consuming `streaming` for the event schemas and the Redis Streams transport: the HTTP routes and the `archive` consumer group run in one process. The [Nest rules](../../../.claude/rules/11-nestjs.rule.md) say how it is laid out.
+The service that receives a Book a Demo request from the website, records it as the first event of an event-sourced request on the Redis Stream `demo-requests:events`, exposes the stream over Server-Sent Events, folds a request's events into its state and archives every event into MinIO. It is a Nest.js hybrid application on Express, consuming `infra/streaming` for the event schemas and the Redis Streams transport: the HTTP routes and the `archive` consumer group run in one process. The [Nest rules](../../../.claude/rules/11-nestjs.rule.md) say how it is laid out.
 
 ## Endpoints
 
@@ -34,7 +34,7 @@ Keys, never values. `.env.development` holds the non-secret defaults and is trac
 
 The service becomes ready once Redis answers: its consumer group is created on the first command, so with Redis away the process waits and the health route does not listen yet. Once up, a Redis outage makes `POST` answer 503 at once and queues nothing, so "nothing was stored" stays true.
 
-From the repository root, with Redis listening on the `REDIS_URL` of `.env.development` (the `messaging` component's Dockerfile builds one: `docker build -t langdrift-messaging:local infrastructure/messaging && docker run -d -p 6379:6379 langdrift-messaging:local`):
+From the repository root, with Redis listening on the `REDIS_URL` of `.env.development` (the `messaging` component's Dockerfile builds one: `docker build -t langdrift-messaging:local packages/infra/messaging && docker run -d -p 6379:6379 langdrift-messaging:local`):
 
 ```sh
 pnpm turbo run dev --filter=demo-requests

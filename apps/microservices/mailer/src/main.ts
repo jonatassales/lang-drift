@@ -12,8 +12,8 @@ import {
 	demoRequestDeadLetterStream,
 	demoRequestMailerGroup,
 	demoRequestStream,
-} from 'streaming'
-import { RedisStreamsServer } from 'streaming/transport'
+} from 'infra/streaming'
+import { RedisStreamsServer } from 'infra/streaming/transport'
 
 // A hybrid application: the health route, plus the mailer consumer group on
 // the Redis Streams transport, in one process.

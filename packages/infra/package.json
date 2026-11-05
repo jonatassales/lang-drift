@@ -1,17 +1,15 @@
 {
-	"name": "streaming",
+	"name": "infra",
 	"private": true,
 	"type": "module",
-	"main": "./dist/events/index.js",
-	"types": "./dist/events/index.d.ts",
 	"exports": {
-		".": {
-			"types": "./dist/events/index.d.ts",
-			"default": "./dist/events/index.js"
+		"./streaming": {
+			"types": "./dist/streaming/events/index.d.ts",
+			"default": "./dist/streaming/events/index.js"
 		},
-		"./transport": {
-			"types": "./dist/transport/index.d.ts",
-			"default": "./dist/transport/index.js"
+		"./streaming/transport": {
+			"types": "./dist/streaming/transport/index.d.ts",
+			"default": "./dist/streaming/transport/index.js"
 		}
 	},
 	"files": [

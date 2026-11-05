@@ -10,7 +10,7 @@ const aggregate = {
 
 const now = new Date('2026-11-03T14:05:00.000Z')
 
-describe('events/events/create-envelope.compute', () => {
+describe('infra/streaming/events/create-envelope.compute', () => {
 	it('stamps a new id, the time and the aggregate id as the correlation id', () => {
 		const envelope = createEnvelope({
 			type: 'demo-request.received',

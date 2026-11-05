@@ -1,5 +1,5 @@
-import { demoRequestStream } from 'streaming'
-import { RedisStreamsClient } from 'streaming/transport'
+import { demoRequestStream } from 'infra/streaming'
+import { RedisStreamsClient } from 'infra/streaming/transport'
 
 import type { EventLogConnectionOpener } from './event-log-connection-opener.factory.js'
 

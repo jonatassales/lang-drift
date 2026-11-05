@@ -1,4 +1,4 @@
-import type { StreamItem } from 'streaming/transport'
+import type { StreamItem } from 'infra/streaming/transport'
 
 // The aggregate id an entry carries as a flat field, read without parsing
 // its envelope, so a range over the stream filters cheaply.

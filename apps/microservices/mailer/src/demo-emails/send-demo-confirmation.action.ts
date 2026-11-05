@@ -1,5 +1,5 @@
 import type { DemoEmailsCatalog } from '@app/i18n/messages/messages.types.js'
-import type { DemoRequestReceived } from 'streaming'
+import type { DemoRequestReceived } from 'infra/streaming'
 
 import type { DeliveredEmail } from './delivered-email.types.js'
 import type { EmailSender } from './email-sender.port.js'

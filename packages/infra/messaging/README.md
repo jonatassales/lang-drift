@@ -1,0 +1,3 @@
+# messaging
+
+The event log of the products: a Redis image with append-only persistence, holding the stream `demo-requests:events` that `demo-requests` appends to and `mailer` and the `archive` consumer consume. It is an infrastructure component, not a microservice: a Dockerfile and this README inside the `infra` package, so nothing but Docker builds it. Build and run it locally with `docker build -t langdrift-messaging:local packages/infra/messaging && docker run -d -p 6379:6379 langdrift-messaging:local`, or point `REDIS_URL` at any Redis 7 or later. Under `ex` (spec 0032) it runs as the `messaging` component, named after its folder (ADR 0004), and its `HEALTHCHECK` is the readiness probe.
