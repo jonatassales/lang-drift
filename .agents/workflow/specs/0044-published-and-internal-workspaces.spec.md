@@ -16,7 +16,7 @@
 - [x] 0218: the stub API moves to `apps/microservices/console-stubs`
 - [x] 0219: console-stubs is its name on every visible surface
 - [x] 0220: open tickets and documents follow the new layout
-- [ ] 0317: `@langdrift/core` 0.2.0 is published on npm and as a Go tag
+- [x] 0317: `@langdrift/core` 0.2.0 is published on npm and as a Go tag
 
 ## Problem Statement
 

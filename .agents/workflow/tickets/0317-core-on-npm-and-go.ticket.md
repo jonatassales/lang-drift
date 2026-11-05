@@ -13,7 +13,7 @@
 - [x] The tag `lib/core/contracts/go/v0.2.0` exists on GitHub and `proxy.golang.org` serves the module at `v0.2.0` with its `judge` package.
 - [x] The CLI's `go.mod` requires the contracts at `v0.2.0`, and `GOWORK=off go build ./src` and `go test ./...` pass in `lib/cli`.
 - [x] The core README and the module README say what each surface carries and how to get it; `SECURITY.md` names both surfaces.
-- [ ] `pnpm view @langdrift/core version` prints `0.2.0` once the owner publishes, and the package installs and loads a schema in a fresh directory.
+- [x] `pnpm view @langdrift/core version` prints `0.2.0` once the owner publishes, and the package installs and loads a schema in a fresh directory.
 
 ## Dev part
 
