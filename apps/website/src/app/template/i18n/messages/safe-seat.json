@@ -3,8 +3,8 @@
 		"skip": "Skip to why",
 		"hero": {
 			"comingSoon": "Coming soon",
-			"titleStart": "Agents write most of the code.",
-			"titleEnd": "A person keeps the seat.",
+			"taglineStart": "Agents write most of the code.",
+			"taglineEnd": "A person keeps the seat.",
 			"lead": "Keyboards did not end handwriting, because writing is a way of thinking. Code works the same way. Safe Seat reserves part of every ticket for a person to write by hand, so the team keeps understanding, debugging and owning what it ships.",
 			"note": "Safe Seat is in development. Everything on this page describes the planned design."
 		},
@@ -232,8 +232,8 @@
 		"skip": "Pular para o porquê",
 		"hero": {
 			"comingSoon": "Em breve",
-			"titleStart": "Agentes escrevem a maior parte do código.",
-			"titleEnd": "Uma pessoa continua ao volante.",
+			"taglineStart": "Agentes escrevem a maior parte do código.",
+			"taglineEnd": "Uma pessoa continua ao volante.",
 			"lead": "O teclado não acabou com a escrita à mão, porque escrever é uma forma de pensar. Código funciona do mesmo jeito. O Safe Seat reserva parte de cada ticket para uma pessoa escrever à mão, para que o time continue entendendo, depurando e assumindo o que entrega.",
 			"note": "O Safe Seat está em desenvolvimento. Tudo nesta página descreve o desenho planejado."
 		},
@@ -461,8 +461,8 @@
 		"skip": "跳到為什麼",
 		"hero": {
 			"comingSoon": "即將推出",
-			"titleStart": "代理寫下大部分的程式碼。",
-			"titleEnd": "座位上仍然有人。",
+			"taglineStart": "代理寫下大部分的程式碼。",
+			"taglineEnd": "座位上仍然有人。",
 			"lead": "鍵盤沒有讓手寫消失，因為書寫是一種思考方式。程式碼也是如此。Safe Seat 在每張工單中保留一部分，由人親手撰寫，讓團隊持續理解、除錯並真正擁有自己交付的東西。",
 			"note": "Safe Seat 正在開發中。本頁所有內容描述的是規劃中的設計。"
 		},
@@ -690,8 +690,8 @@
 		"skip": "「なぜ」へスキップ",
 		"hero": {
 			"comingSoon": "近日公開",
-			"titleStart": "コードの大半はエージェントが書く。",
-			"titleEnd": "それでも、席には人がいる。",
+			"taglineStart": "コードの大半はエージェントが書く。",
+			"taglineEnd": "それでも、席には人がいる。",
 			"lead": "キーボードが手書きを終わらせなかったのは、書くことが考えることだからです。コードも同じです。Safe Seat は、どのチケットにも人が手で書く部分を残します。チームが、自分たちの出荷するものを理解し、デバッグし、自分のものとして持ち続けられるように。",
 			"note": "Safe Seat は開発中です。このページの内容はすべて、計画中の設計を説明したものです。"
 		},
@@ -919,8 +919,8 @@
 		"skip": "Chuyển đến lý do",
 		"hero": {
 			"comingSoon": "Sắp ra mắt",
-			"titleStart": "Tác tử viết phần lớn mã nguồn.",
-			"titleEnd": "Một người vẫn giữ ghế lái.",
+			"taglineStart": "Tác tử viết phần lớn mã nguồn.",
+			"taglineEnd": "Một người vẫn giữ ghế lái.",
 			"lead": "Bàn phím không xóa bỏ chữ viết tay, vì viết là một cách suy nghĩ. Mã nguồn cũng vậy. Safe Seat dành riêng một phần của mỗi ticket để một người tự tay viết, để đội tiếp tục hiểu, gỡ lỗi và làm chủ những gì mình giao.",
 			"note": "Safe Seat đang được phát triển. Mọi nội dung trên trang này mô tả thiết kế dự kiến."
 		},

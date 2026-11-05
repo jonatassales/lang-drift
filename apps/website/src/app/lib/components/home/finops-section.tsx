@@ -24,8 +24,8 @@ export function FinopsSection(props: FinopsSectionProps) {
 			description={sections.description}
 			headline={
 				<>
-					<span className="block">{copy.hero.titleStart}</span>{' '}
-					<span className="block">{copy.hero.titleEnd}</span>
+					<span className="block">{copy.hero.taglineStart}</span>{' '}
+					<span className="block">{copy.hero.taglineEnd}</span>
 				</>
 			}
 			id="finops"

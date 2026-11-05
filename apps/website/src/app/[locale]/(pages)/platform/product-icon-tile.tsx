@@ -8,8 +8,8 @@ interface ProductIconTileProps {
 }
 
 // A product's icon on a bordered card tile, the mark a platform page opens
-// with. The caller sizes the tile and its icon: in a heading they scale with
-// the title, on a label line they keep a fixed size.
+// with. The caller sizes the tile and its icon; `ProductHeading` sizes them in
+// em, so they scale with the title.
 export function ProductIconTile(props: ProductIconTileProps) {
 	const { children, className } = props
 

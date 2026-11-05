@@ -52,8 +52,8 @@ export interface SafeSeatSectionCopy {
 
 export interface SafeSeatHeroCopy {
 	comingSoon: string
-	titleStart: string
-	titleEnd: string
+	taglineStart: string
+	taglineEnd: string
 	lead: string
 	note: string
 }

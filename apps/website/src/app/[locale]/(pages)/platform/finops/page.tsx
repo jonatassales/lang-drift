@@ -2,7 +2,8 @@ import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
-import { ProductLabel } from '@app/[locale]/(pages)/platform/product-label'
+import { ProductHeading } from '@app/[locale]/(pages)/platform/product-heading'
+import { ProductTagline } from '@app/[locale]/(pages)/platform/product-tagline'
 import { BudgetLedgerDemo } from '@components/finops/budget-ledger-demo'
 import { BudgetTerms } from '@components/finops/budget-terms'
 import { DeliveryReceipt } from '@components/finops/delivery-receipt'
@@ -45,17 +46,13 @@ export default async function FinopsPage(props: FinopsPageProps) {
 					aria-labelledby="finops-hero-heading"
 					className="mx-auto max-w-[1280px] px-[clamp(18px,3vw,36px)] pt-[58px] pb-[70px] max-md:pt-10 max-md:pb-12"
 				>
-					<ProductLabel
-						icon={<FinopsIcon className="size-4" />}
-						name={headerMessages[locale].finops}
+					<ProductHeading icon={FinopsIcon} id="finops-hero-heading">
+						{headerMessages[locale].finops}
+					</ProductHeading>
+					<ProductTagline
+						end={copy.hero.taglineEnd}
+						start={copy.hero.taglineStart}
 					/>
-					<h1
-						className="m-0 mt-4 text-[clamp(28px,3.2vw,43px)] leading-[1.16] font-medium tracking-[-0.045em] text-balance"
-						id="finops-hero-heading"
-					>
-						<span className="block">{copy.hero.titleStart}</span>{' '}
-						<span className="block">{copy.hero.titleEnd}</span>
-					</h1>
 					<div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
 						<BudgetLedgerDemo copy={copy.ledger} locale={locale} />
 						<DeliveryReceipt

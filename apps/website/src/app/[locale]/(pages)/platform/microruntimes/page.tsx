@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { createTranslator, hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
-import { ProductIconTile } from '@app/[locale]/(pages)/platform/product-icon-tile'
+import { ProductHeading } from '@app/[locale]/(pages)/platform/product-heading'
 import { AuthoringFlow } from '@components/microruntimes/authoring-flow'
 import { LifecycleSteps } from '@components/microruntimes/lifecycle-steps'
 import { RuntimeDescriptorCard } from '@components/microruntimes/runtime-descriptor-card'
@@ -77,15 +77,12 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 					aria-labelledby="microruntimes-hero-heading"
 					className="mx-auto max-w-[1280px] px-[clamp(18px,3vw,36px)] pt-[58px] pb-[70px] max-md:pt-10 max-md:pb-12"
 				>
-					<h1
-						className="m-0 flex items-center gap-[0.35em] text-[clamp(28px,3.2vw,43px)] leading-[1.16] font-medium tracking-[-0.045em] text-balance"
+					<ProductHeading
+						icon={MicroruntimesIcon}
 						id="microruntimes-hero-heading"
 					>
-						<ProductIconTile className="size-[0.74em] rounded-[0.2em]">
-							<MicroruntimesIcon className="size-[0.46em]" />
-						</ProductIconTile>
 						{copy.hero.title}
-					</h1>
+					</ProductHeading>
 					<div
 						aria-describedby="microruntimes-hero-summary"
 						className="mt-8 grid gap-6 lg:grid-cols-[fit-content(50%)_1fr]"

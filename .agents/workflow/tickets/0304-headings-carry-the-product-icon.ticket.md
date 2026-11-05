@@ -18,3 +18,5 @@
 ## Verification
 
 - `pnpm turbo run check typecheck test build --filter=website --filter=web`
+
+> **Note, 2026-11-05.** FinOps and Safe Seat no longer show the FinOps icon and name as a label above a sentence title: every product page now opens with the same heading, its own icon and product name at the Microruntimes size, so Safe Seat takes its own mark, and the sentence follows as a tagline (ticket 0311).
