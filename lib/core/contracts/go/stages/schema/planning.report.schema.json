@@ -1,0 +1,12 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://langdrift.md/schemas/stages/planning.report.schema.json",
+	"title": "Planning report",
+	"description": "The grilling skill's report, for the stage line \"console › grilling   3 open questions settled\".",
+	"type": "object",
+	"additionalProperties": false,
+	"required": ["openQuestionsSettled"],
+	"properties": {
+		"openQuestionsSettled": { "type": "integer", "minimum": 0 }
+	}
+}

@@ -1,0 +1,7 @@
+{
+	"method": "tdd",
+	"components": 5,
+	"files": 14,
+	"boundaryOnly": true,
+	"stoppedAtReservedPart": true
+}
