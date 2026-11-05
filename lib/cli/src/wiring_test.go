@@ -147,7 +147,7 @@ func TestCommandsStopBeforeInfrastructureWithoutAProject(t *testing.T) {
 		{"runtime", "up", "demo"},
 		{"runtime", "down", "demo"},
 		{"cluster", "inspect"},
-		{"agent", "init", "researcher"},
+		{"agent", "status", "demo"},
 	} {
 		if status, _, stderr := p.ex("", arguments...); status != 4 || !strings.Contains(stderr, "no LangDrift project") {
 			t.Errorf("ex %v = %d, %q; want the missing project reported", arguments, status, stderr)
@@ -186,23 +186,5 @@ func TestCommandsStopBeforeInfrastructureWithoutACluster(t *testing.T) {
 
 	if _, err := os.Stat(filepath.Join(p.root, ".langdrift", "agent", "state", "runtimes")); !os.IsNotExist(err) {
 		t.Errorf("a refused command recorded runtime state: %v", err)
-	}
-}
-
-func TestAgentScaffoldIsPublishedInsideTheProject(t *testing.T) {
-	t.Parallel()
-
-	p := newProject(t)
-	if status, _, stderr := p.ex("", "init"); status != 0 {
-		t.Fatal(stderr)
-	}
-
-	status, stdout, stderr := p.ex("", "agent", "init", "researcher")
-	if status != 0 || !strings.Contains(stdout, filepath.Join(p.root, ".langdrift", "agents", "researcher")) {
-		t.Fatalf("ex agent init = %d, %s%s", status, stdout, stderr)
-	}
-
-	if _, err := os.Stat(filepath.Join(p.root, ".langdrift", "agents", "researcher", "Dockerfile")); err != nil {
-		t.Fatalf("the agent scaffold is incomplete: %v", err)
 	}
 }

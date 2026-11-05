@@ -70,7 +70,6 @@ type harness struct {
 	clusterDelete    operation[app.ClusterRequest, app.ClusterResult]
 	clusterInspect   operation[app.ClusterRequest, app.ClusterResult]
 	clusterLoadImage operation[app.LoadClusterImageRequest, app.ImageResult]
-	agentInit        operation[app.InitializeAgentRequest, app.AgentResult]
 	projectAgent     fakeProjectAgent
 	input            string
 }
@@ -79,8 +78,8 @@ func (h *harness) useCases() UseCases {
 	return UseCases{
 		ProjectInit: &h.projectInit, Doctor: &h.doctor,
 		ClusterCreate: &h.clusterCreate, ClusterDelete: &h.clusterDelete, ClusterInspect: &h.clusterInspect,
-		ClusterLoadImage: &h.clusterLoadImage, AgentInit: &h.agentInit,
-		ProjectAgent: &h.projectAgent,
+		ClusterLoadImage: &h.clusterLoadImage,
+		ProjectAgent:     &h.projectAgent,
 	}
 }
 
@@ -125,11 +124,6 @@ func TestExecute_MapsEveryCommandToItsRequest(t *testing.T) {
 			[]string{"cluster", "load-image", "web:dev"},
 			func(h *harness) any { return h.clusterLoadImage.requests },
 			[]app.LoadClusterImageRequest{{Project: discovered, Image: "web:dev"}},
-		},
-		{
-			[]string{"agent", "init", "researcher"},
-			func(h *harness) any { return h.agentInit.requests },
-			[]app.InitializeAgentRequest{{Project: discovered, Name: "researcher"}},
 		},
 		{
 			[]string{"--project", "/elsewhere/project", "cluster", "create"},
@@ -215,7 +209,7 @@ func TestExecute_ClassifiesFailures(t *testing.T) {
 		{name: "command group without a subcommand", arguments: []string{"cluster"}, wantStatus: 2, wantStderr: "ex cluster requires a subcommand"},
 		{name: "unknown subcommand", arguments: []string{"cluster", "resize"}, wantStatus: 2, wantStderr: "unknown command"},
 		{name: "unknown root command", arguments: []string{"deploy"}, wantStatus: 2, wantStderr: `unknown command "deploy"`},
-		{name: "missing argument", arguments: []string{"agent", "init"}, wantStatus: 2, wantStderr: "ex agent init requires 1 argument(s)"},
+		{name: "missing argument", arguments: []string{"cluster", "load-image"}, wantStatus: 2, wantStderr: "ex cluster load-image requires 1 argument(s)"},
 		{name: "extra argument", arguments: []string{"cluster", "create", "now"}, wantStatus: 2, wantStderr: "requires 0 argument(s)"},
 		{name: "unknown flag", arguments: []string{"cluster", "create", "--force"}, wantStatus: 2, wantStderr: "unknown flag: --force"},
 		{name: "zero timeout", arguments: []string{"--timeout", "0s", "cluster", "create"}, wantStatus: 2, wantStderr: "--timeout must be positive"},

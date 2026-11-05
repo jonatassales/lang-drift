@@ -24,7 +24,6 @@ type UseCases struct {
 	ClusterDelete    catalog.ClusterDeleter
 	ClusterInspect   catalog.ClusterInspector
 	ClusterLoadImage catalog.ClusterImageLoader
-	AgentInit        catalog.AgentInitializer
 	Inputs           catalog.Inputs
 	Plan             catalog.PlanOperations
 	Execution        catalog.Executor

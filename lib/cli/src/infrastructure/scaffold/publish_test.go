@@ -92,7 +92,7 @@ func TestPublish_NeverReplacesADestination(t *testing.T) {
 	t.Parallel()
 
 	root := tempDir(t)
-	existing := filepath.Join(root, ".langdrift", "agents", "researcher")
+	existing := filepath.Join(root, ".langdrift", "published", "sample")
 	if err := os.MkdirAll(existing, 0o755); err != nil {
 		t.Fatal(err)
 	}
@@ -102,7 +102,7 @@ func TestPublish_NeverReplacesADestination(t *testing.T) {
 	}
 
 	built := false
-	_, err := scaffold.Publish(root, ".langdrift/agents/researcher", func(stage string) error {
+	_, err := scaffold.Publish(root, ".langdrift/published/sample", func(stage string) error {
 		built = true
 
 		return buildTwoFiles(stage)

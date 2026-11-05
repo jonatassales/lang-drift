@@ -4,7 +4,7 @@
 
 ## Tickets
 
-- [ ] 0221: `ex agent init` and the LangGraph scaffold leave the CLI
+- [x] 0221: `ex agent init` and the LangGraph scaffold leave the CLI
 - [ ] 0222: one judge contract for the CLI and the console
 - [ ] 0223: the console judges at `/api/judge`
 - [ ] 0224: the planner asks the console, and no plan exists without a judge
