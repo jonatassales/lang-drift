@@ -6,6 +6,7 @@ import { useState, useTransition } from 'react'
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { fieldClass, labelClass } from '@components/form-styles/form-styles'
 import { mutation } from '@data/api'
+import type { SavedRuntimeEnvelope } from '@data/read-envelopes.types'
 import type { Component, Runtime, RuntimeConfiguration } from '@data/types'
 import { Button } from 'web/ui/button'
 import { Card } from 'web/ui/card'
@@ -127,10 +128,7 @@ export function RuntimeForm(props: RuntimeFormProps) {
 						: {}),
 				}
 
-				const result = await mutation<{
-					runtime: Runtime
-					secret?: string
-				}>(
+				const result = await mutation<SavedRuntimeEnvelope>(
 					runtime ? `runtimes/${runtime.id}` : 'runtimes',
 					runtime ? 'PATCH' : 'POST',
 					{

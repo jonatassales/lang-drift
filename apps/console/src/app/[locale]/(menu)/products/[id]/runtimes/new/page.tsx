@@ -8,8 +8,12 @@ import { RuntimeCreate } from '@views/runtimes/runtime-create'
 
 export { generateMetadata } from './page.metadata'
 
+interface ProductRouteParams {
+	id: string
+}
+
 interface PageProps {
-	params: Promise<{ id: string }>
+	params: Promise<ProductRouteParams>
 }
 
 export default async function Page(props: PageProps) {

@@ -34,6 +34,11 @@ import {
 	workflowSummary,
 } from './workflow-card'
 
+interface CardContent {
+	body: ReactNode
+	summary: ReactNode
+}
+
 // The four cards the session fills beside the terminal, one per act: the
 // ticket, the analysis of its documents and the project's episodes, the
 // plan, and the workflow that plays the run. The act opens its card and
@@ -69,7 +74,7 @@ export function SessionCards(props: SessionCardsProps) {
 	const format = ticketCardFormat(copy, locale)
 	const visible = revealed(playedCount, 'cards')
 	const outcome = runOutcome(session, script)
-	const cards: Record<PlanPhaseId, { body: ReactNode; summary: ReactNode }> = {
+	const cards: Record<PlanPhaseId, CardContent> = {
 		ticket: {
 			body: <TicketCard copy={copy} playedCount={playedCount} />,
 			summary: ticketSummary(),

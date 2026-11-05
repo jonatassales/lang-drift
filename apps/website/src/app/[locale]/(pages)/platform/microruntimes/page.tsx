@@ -41,8 +41,12 @@ const stateTones: Record<StateCardId, string> = {
 
 const headerCell = 'px-5 py-3 font-normal'
 
+interface LocaleRouteParams {
+	locale: string
+}
+
 interface MicroruntimesPageProps {
-	params: Promise<{ locale: string }>
+	params: Promise<LocaleRouteParams>
 }
 
 export default async function MicroruntimesPage(props: MicroruntimesPageProps) {

@@ -13,8 +13,12 @@ import { PlansSection } from './plans-section'
 
 export { generateMetadata } from './page-metadata.map'
 
+interface LocaleRouteParams {
+	locale: string
+}
+
 interface PricingPageProps {
-	params: Promise<{ locale: string }>
+	params: Promise<LocaleRouteParams>
 }
 
 export default async function PricingPage(props: PricingPageProps) {

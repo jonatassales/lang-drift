@@ -1,7 +1,12 @@
 import { ticketTitle } from '@data/entity-title'
 
+interface TicketRouteParams {
+	id: string
+	'ticket-id': string
+}
+
 interface PageProps {
-	params: Promise<{ id: string; 'ticket-id': string }>
+	params: Promise<TicketRouteParams>
 }
 
 export async function generateMetadata(props: PageProps) {

@@ -592,6 +592,37 @@ export interface TitledCopy {
 	description: string
 }
 
+export interface LifecycleStageCopy {
+	does: string
+	label: string
+	leaves: string
+}
+
+export interface ScenarioCopy extends Record<LifecyclePhaseId, string> {
+	context: string
+	tabLabel: string
+}
+
+export interface OwnershipRowCopy {
+	concern: string
+	consumer: string
+	platform: string
+}
+
+export interface StateCardCopy extends TitledCopy {
+	eyebrow: string
+}
+
+export interface EvidenceStageCopy {
+	kind: string
+	title: string
+}
+
+export interface FaqItemCopy {
+	answer: string
+	question: string
+}
+
 export interface MicroruntimesMessages {
 	skip: string
 	hero: {
@@ -708,10 +739,7 @@ export interface MicroruntimesMessages {
 	}
 	lifecycle: {
 		stepperLabel: string
-		stages: Record<
-			LifecycleStageId,
-			{ label: string; does: string; leaves: string }
-		>
+		stages: Record<LifecycleStageId, LifecycleStageCopy>
 		whatItDoes: string
 		evidenceItLeaves: string
 	}
@@ -720,10 +748,7 @@ export interface MicroruntimesMessages {
 		lead: string
 		selectorLabel: string
 		phases: Record<LifecyclePhaseId, string>
-		items: Record<
-			LifecycleScenarioId,
-			{ tabLabel: string; context: string } & Record<LifecyclePhaseId, string>
-		>
+		items: Record<LifecycleScenarioId, ScenarioCopy>
 		outro: string
 		outroLink: string
 	}
@@ -740,16 +765,13 @@ export interface MicroruntimesMessages {
 		concern: string
 		consumer: string
 		platform: string
-		rows: Record<
-			OwnershipRowId,
-			{ concern: string; consumer: string; platform: string }
-		>
+		rows: Record<OwnershipRowId, OwnershipRowCopy>
 	}
 	state: {
 		kicker: string
 		title: string
 		lead: string
-		cards: Record<StateCardId, TitledCopy & { eyebrow: string }>
+		cards: Record<StateCardId, StateCardCopy>
 	}
 	evidence: {
 		kicker: string
@@ -769,7 +791,7 @@ export interface MicroruntimesMessages {
 		resources: string
 		noLeftovers: string
 		selectedStage: string
-		stages: Record<LifecycleStageId, { kind: string; title: string }>
+		stages: Record<LifecycleStageId, EvidenceStageCopy>
 	}
 	flow: {
 		kicker: string
@@ -782,6 +804,6 @@ export interface MicroruntimesMessages {
 		guarantees: Record<FlowGuaranteeId, TitledCopy>
 	}
 	faq: {
-		items: Record<MicroruntimesFaqId, { question: string; answer: string }>
+		items: Record<MicroruntimesFaqId, FaqItemCopy>
 	}
 }

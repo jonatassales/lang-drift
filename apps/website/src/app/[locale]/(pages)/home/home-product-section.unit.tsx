@@ -3,10 +3,13 @@ import { cleanup, render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
+interface LinkMockProps {
+	children: ReactNode
+	href: string
+}
+
 vi.mock('@i18n/navigation', () => ({
-	Link: (props: { children: ReactNode; href: string }) => (
-		<a href={props.href}>{props.children}</a>
-	),
+	Link: (props: LinkMockProps) => <a href={props.href}>{props.children}</a>,
 }))
 
 import { platformProduct } from '@layout/website-header/platform-product.compute'

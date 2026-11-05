@@ -5,8 +5,8 @@ import { useTranslations } from 'next-intl'
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { linkClass } from '@components/form-styles/form-styles'
 import { PageHeading } from '@components/page-heading/page-heading'
+import type { ProductsEnvelope } from '@data/read-envelopes.types'
 import { useResource } from '@data/resource.hook'
-import type { Product } from '@data/types'
 import { Link } from '@i18n/navigation'
 import { Card } from 'web/ui/card'
 import { GitBranch, Plus } from 'web/ui/icons/client'
@@ -14,14 +14,14 @@ import { GitBranch, Plus } from 'web/ui/icons/client'
 import { ProductCreate } from './product-create'
 
 interface ProductListProps {
-	initial: Promise<{ products: Product[] }>
+	initial: Promise<ProductsEnvelope>
 }
 
 export function ProductList(props: ProductListProps) {
 	const { initial } = props
 
 	const translate = useTranslations('ui')
-	const resource = useResource<{ products: Product[] }>('products', 0, initial)
+	const resource = useResource<ProductsEnvelope>('products', 0, initial)
 
 	if (!resource.error && resource.data?.products.length === 0)
 		return <ProductCreate first />

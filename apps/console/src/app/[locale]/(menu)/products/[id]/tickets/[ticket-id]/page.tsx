@@ -7,8 +7,13 @@ import { TicketDetail } from '@views/tickets/ticket-detail'
 
 export { generateMetadata } from './page.metadata'
 
+interface TicketRouteParams {
+	id: string
+	'ticket-id': string
+}
+
 interface PageProps {
-	params: Promise<{ id: string; 'ticket-id': string }>
+	params: Promise<TicketRouteParams>
 }
 
 export default async function ProductTicketPage(props: PageProps) {

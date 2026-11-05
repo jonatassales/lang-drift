@@ -16,8 +16,12 @@ import { DemoNotice } from './demo-notice'
 
 export { generateMetadata } from './page-metadata.map'
 
+interface LocaleRouteParams {
+	locale: string
+}
+
 interface BookDemoPageProps {
-	params: Promise<{ locale: string }>
+	params: Promise<LocaleRouteParams>
 }
 
 export default async function BookDemoPage(props: BookDemoPageProps) {

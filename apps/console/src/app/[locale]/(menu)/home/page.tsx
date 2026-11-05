@@ -8,8 +8,12 @@ import { AccountHome } from '@views/home/account-home'
 
 export { generateMetadata } from './page.metadata'
 
+interface LocaleRouteParams {
+	locale: string
+}
+
 interface PageProps {
-	params: Promise<{ locale: string }>
+	params: Promise<LocaleRouteParams>
 }
 
 export default async function Page(props: PageProps) {

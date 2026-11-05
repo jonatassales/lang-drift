@@ -175,6 +175,16 @@ export interface FailureScenarioCopy extends Record<ChainPillarId, string> {
 	status: { term: string; detail: string }
 }
 
+export interface WorkItemCopy {
+	owner: string
+	title: string
+}
+
+export interface FinopsFaqItemCopy {
+	answer: string
+	question: string
+}
+
 export interface FinopsMessages {
 	skip: string
 	hero: {
@@ -197,7 +207,7 @@ export interface FinopsMessages {
 		unknown: string
 		awaitingReconciliation: string
 		selectHint: string
-		items: Record<WorkItemId, { title: string; owner: string }>
+		items: Record<WorkItemId, WorkItemCopy>
 	}
 	failures: {
 		kicker: string
@@ -254,6 +264,6 @@ export interface FinopsMessages {
 		}
 	}
 	faq: {
-		items: Record<FinopsFaqId, { question: string; answer: string }>
+		items: Record<FinopsFaqId, FinopsFaqItemCopy>
 	}
 }

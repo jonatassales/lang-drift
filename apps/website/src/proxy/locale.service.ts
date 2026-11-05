@@ -11,7 +11,12 @@ const simplifiedChineseTags = ['zh-cn', 'zh-hans', 'zh-sg']
 
 const intlMiddleware = createMiddleware(routing)
 
-const prefixes: Array<{ locale: WebsiteLocale; prefix: string }> = [
+interface LocalePrefix {
+	locale: WebsiteLocale
+	prefix: string
+}
+
+const prefixes: LocalePrefix[] = [
 	{
 		locale: 'pt-BR',
 		prefix: '/pt-br',

@@ -23,8 +23,12 @@ import { FinopsIcon } from 'web/ui/icons/platform'
 
 export { generateMetadata } from './page-metadata.map'
 
+interface LocaleRouteParams {
+	locale: string
+}
+
 interface FinopsPageProps {
-	params: Promise<{ locale: string }>
+	params: Promise<LocaleRouteParams>
 }
 
 export default async function FinopsPage(props: FinopsPageProps) {

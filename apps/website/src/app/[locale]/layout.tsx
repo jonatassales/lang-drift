@@ -21,9 +21,13 @@ export const viewport: Viewport = {
 	themeColor: '#0b0b0c',
 }
 
+interface LocaleRouteParams {
+	locale: string
+}
+
 interface LocaleLayoutProps {
 	children: ReactNode
-	params: Promise<{ locale: string }>
+	params: Promise<LocaleRouteParams>
 }
 
 export default async function LocaleLayout(props: LocaleLayoutProps) {

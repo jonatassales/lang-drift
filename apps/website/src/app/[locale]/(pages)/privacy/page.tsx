@@ -16,8 +16,12 @@ export { generateMetadata } from './page-metadata.map'
 const link =
 	'focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary'
 
+interface LocaleRouteParams {
+	locale: string
+}
+
 interface PrivacyPageProps {
-	params: Promise<{ locale: string }>
+	params: Promise<LocaleRouteParams>
 }
 
 export default async function PrivacyPage(props: PrivacyPageProps) {

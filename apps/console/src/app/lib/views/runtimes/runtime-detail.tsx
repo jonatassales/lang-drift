@@ -9,8 +9,9 @@ import { PageHeading } from '@components/page-heading/page-heading'
 import { FieldSkeleton } from '@components/route-state/field-skeleton'
 import { StatusLabel } from '@components/status-label/status-label'
 import { mutation } from '@data/api'
+import type { ProductEnvelope } from '@data/read-envelopes.types'
 import { useResource } from '@data/resource.hook'
-import type { Product, RuntimeDetailSnapshot } from '@data/types'
+import type { RuntimeDetailSnapshot } from '@data/types'
 import { Link } from '@i18n/navigation'
 import { useDateTime } from '@i18n/use-date-time.hook'
 import { ExecutionTable } from '@views/executions/execution-table'
@@ -29,7 +30,7 @@ import { useStubStream } from './stub-stream.hook'
 interface RuntimeDetailProps {
 	initial: Promise<RuntimeDetailSnapshot>
 	id: string
-	productInitial: Promise<{ product: Product }>
+	productInitial: Promise<ProductEnvelope>
 }
 
 export function RuntimeDetail(props: RuntimeDetailProps) {

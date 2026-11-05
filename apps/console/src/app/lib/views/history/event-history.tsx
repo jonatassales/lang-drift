@@ -2,13 +2,13 @@
 import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
+import type { LifecycleEventsEnvelope } from '@data/read-envelopes.types'
 import { useResource } from '@data/resource.hook'
-import type { LifecycleEvent } from '@data/types'
 import { useDateTime } from '@i18n/use-date-time.hook'
 import { Card } from 'web/ui/card'
 
 interface EventHistoryProps {
-	initial: Promise<{ events: LifecycleEvent[] }>
+	initial: Promise<LifecycleEventsEnvelope>
 	runtimeId: string
 }
 export function EventHistory(props: EventHistoryProps) {
@@ -18,7 +18,7 @@ export function EventHistory(props: EventHistoryProps) {
 	const translateCause = useTranslations('cause')
 	const translateEvent = useTranslations('event')
 	const dateTime = useDateTime()
-	const resource = useResource<{ events: LifecycleEvent[] }>(
+	const resource = useResource<LifecycleEventsEnvelope>(
 		`runtimes/${runtimeId}/history`,
 		5000,
 		initial,
