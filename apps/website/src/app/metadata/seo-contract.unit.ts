@@ -1,9 +1,8 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import type { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata } from 'next'
 import { describe, expect, it } from 'vitest'
 
-import { generateMetadata as earlyAccessSentMetadata } from '@app/[locale]/(pages)/early-access-sent/page'
 import { generateMetadata as notFoundMetadata } from '@app/[locale]/not-found'
 import routeState from '@i18n/messages/route-state.json'
 import { routing } from '@i18n/routing'
@@ -169,25 +168,6 @@ describe('The sitemap', () => {
 			expect(entry?.alternates).toEqual(languagesOf(metadata))
 		},
 	)
-})
-
-describe('The early-access confirmation page', () => {
-	const parent = Promise.resolve({
-		openGraph: null,
-		twitter: null,
-	}) as unknown as ResolvingMetadata
-
-	it.each(routing.locales)('stays out of search in %s', async (locale) => {
-		const metadata = await earlyAccessSentMetadata(
-			{ params: Promise.resolve({ locale }) },
-			parent,
-		)
-
-		expect(metadata.robots).toMatchObject({ index: false })
-		expect(
-			sitemap.some((entry) => entry.loc.includes('early-access-sent')),
-		).toBe(false)
-	})
 })
 
 describe('robots.txt', () => {

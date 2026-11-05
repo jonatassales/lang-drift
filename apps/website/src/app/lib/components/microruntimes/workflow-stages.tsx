@@ -125,6 +125,7 @@ export function WorkflowStages(props: WorkflowStagesProps) {
 										required && 'cursor-not-allowed opacity-50',
 									)}
 									data-stage={stage}
+									name={`human-${stage}`}
 									onChange={handleToggleStage}
 									type="checkbox"
 								/>

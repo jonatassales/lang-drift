@@ -89,24 +89,24 @@
 	},
 	"pricing": {
 		"en": {
-			"title": "Plans & early access — LangDrift",
-			"description": "Explore LangDrift’s 15-day free trial and the planned Plus and Pro offerings. Your trial begins when access is activated; final pricing will be announced before launch."
+			"title": "Plans — LangDrift",
+			"description": "LangDrift FinOps is coming in three plans, Starter, Plus and Pro, each built on the Microruntimes engine. Features and pricing will be announced before launch."
 		},
 		"pt-BR": {
-			"title": "Planos e acesso antecipado — LangDrift",
-			"description": "Conheça o teste gratuito de 15 dias do LangDrift e as ofertas planejadas Plus e Pro. O teste começa na ativação do acesso; os preços finais serão anunciados antes do lançamento."
+			"title": "Planos — LangDrift",
+			"description": "O LangDrift FinOps chega em três planos, Starter, Plus e Pro, todos construídos sobre o motor Microruntimes. Recursos e preços serão anunciados antes do lançamento."
 		},
 		"zh-Hant": {
-			"title": "方案與搶先體驗 — LangDrift",
-			"description": "探索 LangDrift 的 15 天免費試用，以及規劃中的 Plus 和 Pro 方案。試用從存取權限啟用時開始；最終價格將於正式推出前公布。"
+			"title": "方案 — LangDrift",
+			"description": "LangDrift FinOps 將以 Starter、Plus 與 Pro 三種方案推出，全部建立在 Microruntimes 引擎之上。功能與價格將於上市前公布。"
 		},
 		"ja": {
-			"title": "プランと先行アクセス — LangDrift",
-			"description": "LangDriftの15日間無料トライアルと、計画中のPlus・Proをご案内します。トライアルはアクセス有効化時に開始し、最終料金は正式提供前に発表します。"
+			"title": "プラン — LangDrift",
+			"description": "LangDrift FinOps は Starter、Plus、Pro の 3 つのプランで提供予定で、どれも Microruntimes エンジンの上に構築されています。機能と価格はリリース前にお知らせします。"
 		},
 		"vi": {
-			"title": "Các gói và truy cập sớm — LangDrift",
-			"description": "Khám phá dùng thử miễn phí 15 ngày của LangDrift và các gói Plus, Pro dự kiến. Dùng thử bắt đầu khi quyền truy cập được kích hoạt; giá cuối cùng sẽ được công bố trước khi ra mắt."
+			"title": "Các gói — LangDrift",
+			"description": "LangDrift FinOps sẽ có ba gói Starter, Plus và Pro, tất cả đều xây dựng trên động cơ Microruntimes. Tính năng và giá sẽ được công bố trước khi ra mắt."
 		}
 	},
 	"book-a-demo": {
@@ -134,23 +134,23 @@
 	"privacy": {
 		"en": {
 			"title": "Privacy Policy | LangDrift",
-			"description": "How the LangDrift website handles information and uses Cloudflare Turnstile for bot protection."
+			"description": "How the LangDrift website handles the information it receives."
 		},
 		"pt-BR": {
 			"title": "Política de Privacidade | LangDrift",
-			"description": "Como o site do LangDrift trata informações e usa o Cloudflare Turnstile para proteção contra bots."
+			"description": "Como o site do LangDrift trata as informações que recebe."
 		},
 		"zh-Hant": {
 			"title": "隱私權政策 | LangDrift",
-			"description": "了解 LangDrift 網站如何處理資訊，以及如何使用 Cloudflare Turnstile 防範機器人流量。"
+			"description": "LangDrift 網站如何處理所收到的資訊。"
 		},
 		"ja": {
 			"title": "プライバシーポリシー | LangDrift",
-			"description": "LangDrift のウェブサイトにおける情報の取扱いと、Cloudflare Turnstile によるボット対策について。"
+			"description": "LangDrift のウェブサイトが受け取る情報の取扱いについて。"
 		},
 		"vi": {
 			"title": "Chính sách quyền riêng tư | LangDrift",
-			"description": "Cách trang web LangDrift xử lý thông tin và sử dụng Cloudflare Turnstile để chống bot."
+			"description": "Cách trang web LangDrift xử lý thông tin mà nó nhận được."
 		}
 	}
 }

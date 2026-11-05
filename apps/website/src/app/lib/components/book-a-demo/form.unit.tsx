@@ -8,11 +8,6 @@ import {
 } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-const pushMock = vi.fn()
-vi.mock('@i18n/navigation', () => ({
-	useRouter: () => ({ push: pushMock }),
-}))
-
 import { bookDemoMessages } from '@i18n/messages/index'
 
 import { BookDemoForm } from './form'
@@ -21,7 +16,6 @@ const copy = bookDemoMessages.en
 let transport: ReturnType<typeof vi.fn>
 
 beforeEach(() => {
-	pushMock.mockReset()
 	transport = vi.fn(async () =>
 		Response.json(
 			{
@@ -94,7 +88,7 @@ describe('website/lib/components/book-a-demo/form', () => {
 		expect(transport).not.toHaveBeenCalled()
 	})
 
-	it('navigates to /early-access-sent on successful submission', async () => {
+	it('shows the sent notice in place of the form on successful submission', async () => {
 		transport.mockResolvedValue(
 			Response.json(
 				{
@@ -112,9 +106,14 @@ describe('website/lib/components/book-a-demo/form', () => {
 		})
 		submit()
 
-		await waitFor(() => {
-			expect(pushMock).toHaveBeenCalledWith('/early-access-sent')
-		})
+		expect(
+			await screen.findByRole('heading', {
+				name: copy.form.sent.title,
+			}),
+		).toBeTruthy()
+
+		expect(screen.getByText(copy.form.sent.description)).toBeTruthy()
+		expect(screen.queryByLabelText(copy.form.email)).toBeNull()
 	})
 
 	it('posts a valid request with the locale and shows the return-soon notice when requests are paused', async () => {
@@ -131,6 +130,7 @@ describe('website/lib/components/book-a-demo/form', () => {
 				name: copy.form.unavailable.title,
 			}),
 		).toBeTruthy()
+
 		expect(screen.getByText(copy.form.unavailable.description)).toBeTruthy()
 		expect(screen.queryByLabelText(copy.form.email)).toBeNull()
 		expect(transport).toHaveBeenCalledTimes(1)

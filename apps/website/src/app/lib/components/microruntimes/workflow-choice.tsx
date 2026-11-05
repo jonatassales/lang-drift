@@ -12,6 +12,8 @@ interface WorkflowChoiceProps<Value extends string> {
 	label: string
 	/** True while a run reads the choice; the select keeps focus but no change. */
 	locked: boolean
+	/** The field's name, so the browser can identify it. */
+	name: string
 	note?: string
 	onChange: (value: Value) => void
 	options: readonly WorkflowChoiceOption<Value>[]
@@ -24,7 +26,7 @@ interface WorkflowChoiceProps<Value extends string> {
 export function WorkflowChoice<Value extends string>(
 	props: WorkflowChoiceProps<Value>,
 ) {
-	const { label, locked, note, onChange, options, value } = props
+	const { label, locked, name, note, onChange, options, value } = props
 
 	function handleChange(event: ChangeEvent<HTMLSelectElement>) {
 		const option = options.find(
@@ -42,6 +44,7 @@ export function WorkflowChoice<Value extends string>(
 				<select
 					aria-disabled={locked || undefined}
 					className="w-full cursor-pointer appearance-none rounded-lg border border-border bg-card py-1.5 pr-8 pl-2.5 font-mono text-base text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-disabled:cursor-not-allowed aria-disabled:opacity-60 sm:text-[12px]"
+					name={name}
 					onChange={handleChange}
 					value={value}
 				>

@@ -4,11 +4,11 @@ import { useTranslations } from 'next-intl'
 import type { FocusEvent } from 'react'
 import { useEffect, useId, useRef, useState } from 'react'
 
+import { ProductBadge } from '@components/product-badge'
 import { Link } from '@i18n/navigation'
 import { cn } from 'web/utilities'
 
 import { platformProducts } from './platform-products'
-import { ProductBadge } from './product-badge'
 import { panelSurface } from './surface'
 
 const item = 'block w-full rounded-xl px-3 py-2.5 text-left'

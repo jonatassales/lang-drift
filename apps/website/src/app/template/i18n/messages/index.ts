@@ -2,8 +2,6 @@ import '@i18n/loaders/catalog-shape.validator'
 
 export {
 	bookDemoMessages,
-	earlyAccessMessages,
-	earlyAccessSentMessages,
 	finopsMessages,
 	footerMessages,
 	headerMessages,

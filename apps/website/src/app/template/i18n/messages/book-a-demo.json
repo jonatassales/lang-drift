@@ -1,8 +1,8 @@
 {
 	"en": {
-		"skip": "Skip to the form",
+		"skip": "Skip to demo availability",
 		"title": "Book a demo",
-		"lead": "Tell us where you work and what you do, and we will walk you through the platform: Microruntimes and FinOps, with your questions in mind.",
+		"lead": "We walk teams through the platform, Microruntimes and FinOps, with their questions in mind.",
 		"form": {
 			"email": "Company email",
 			"emailPlaceholder": "you@company.com",
@@ -16,7 +16,16 @@
 			"unavailable": {
 				"title": "We’ll be back soon.",
 				"description": "Demo requests are temporarily paused. Your request was not stored; please check back soon."
+			},
+			"sent": {
+				"title": "Your demo request is in.",
+				"description": "Thank you. We will write to your company email to schedule the walkthrough."
 			}
+		},
+		"paused": {
+			"title": "We’ll be back soon.",
+			"description": "Demo requests are paused while we prepare the next walkthrough of Microruntimes and FinOps. Please check back soon.",
+			"home": "Back to the home page"
 		},
 		"positions": {
 			"founder": "Founder",
@@ -43,9 +52,9 @@
 		}
 	},
 	"pt-BR": {
-		"skip": "Ir para o formulário",
+		"skip": "Ir para a disponibilidade das demos",
 		"title": "Agende uma demo",
-		"lead": "Conte onde você trabalha e o que faz, e mostraremos a plataforma: Microruntimes e FinOps, com as suas perguntas em mente.",
+		"lead": "Apresentamos a plataforma aos times, Microruntimes e FinOps, com as perguntas deles em mente.",
 		"form": {
 			"email": "E-mail corporativo",
 			"emailPlaceholder": "voce@empresa.com",
@@ -59,7 +68,16 @@
 			"unavailable": {
 				"title": "Voltamos em breve.",
 				"description": "Os pedidos de demo estão temporariamente pausados. O seu pedido não foi armazenado; volte em breve."
+			},
+			"sent": {
+				"title": "Recebemos sua solicitação de demonstração.",
+				"description": "Obrigado. Vamos escrever para o seu e-mail corporativo para agendar a apresentação."
 			}
+		},
+		"paused": {
+			"title": "Voltamos em breve.",
+			"description": "As solicitações de demonstração estão pausadas enquanto preparamos a próxima apresentação de Microruntimes e FinOps. Volte em breve.",
+			"home": "Voltar para a página inicial"
 		},
 		"positions": {
 			"founder": "Fundador(a)",
@@ -86,9 +104,9 @@
 		}
 	},
 	"zh-Hant": {
-		"skip": "跳至表單",
+		"skip": "跳至展示開放狀態",
 		"title": "預約展示",
-		"lead": "告訴我們你在哪裡工作、做什麼，我們會帶你看過整個平台：Microruntimes 與 FinOps，並圍繞你的問題。",
+		"lead": "我們會依照團隊的問題，帶大家導覽整個平台：Microruntimes 與 FinOps。",
 		"form": {
 			"email": "公司電子郵件",
 			"emailPlaceholder": "you@company.com",
@@ -102,7 +120,16 @@
 			"unavailable": {
 				"title": "我們很快回來。",
 				"description": "展示預約暫時停止。你的請求未被儲存；請稍後再來。"
+			},
+			"sent": {
+				"title": "我們已收到您的產品展示申請。",
+				"description": "謝謝。我們會寄信到您的公司電子郵件，安排導覽時間。"
 			}
+		},
+		"paused": {
+			"title": "我們很快就會回來。",
+			"description": "我們正在準備 Microruntimes 與 FinOps 的下一場導覽，產品展示申請暫時停止。請稍後再回來查看。",
+			"home": "返回首頁"
 		},
 		"positions": {
 			"founder": "創辦人",
@@ -129,9 +156,9 @@
 		}
 	},
 	"ja": {
-		"skip": "フォームへ移動",
+		"skip": "デモの受付状況へスキップ",
 		"title": "デモを予約",
-		"lead": "所属と役割を教えてください。Microruntimes、FinOps をひとつのプラットフォームとして、あなたの質問に沿ってご案内します。",
+		"lead": "チームの疑問に合わせて、Microruntimes と FinOps を中心にプラットフォームをご案内します。",
 		"form": {
 			"email": "会社のメールアドレス",
 			"emailPlaceholder": "you@company.com",
@@ -145,7 +172,16 @@
 			"unavailable": {
 				"title": "まもなく再開します。",
 				"description": "デモの受付は一時停止しています。リクエストは保存されていません。しばらくしてから再度お試しください。"
+			},
+			"sent": {
+				"title": "デモのリクエストを受け付けました。",
+				"description": "ありがとうございます。デモの日程を調整するため、会社のメールアドレスにご連絡します。"
 			}
+		},
+		"paused": {
+			"title": "まもなく再開します。",
+			"description": "Microruntimes と FinOps の次回デモを準備しているため、デモのリクエストを一時停止しています。しばらくしてからもう一度ご確認ください。",
+			"home": "ホームに戻る"
 		},
 		"positions": {
 			"founder": "創業者",
@@ -172,9 +208,9 @@
 		}
 	},
 	"vi": {
-		"skip": "Chuyển đến biểu mẫu",
+		"skip": "Chuyển đến tình trạng nhận demo",
 		"title": "Đặt lịch demo",
-		"lead": "Cho chúng tôi biết bạn làm việc ở đâu và làm gì, chúng tôi sẽ dẫn bạn đi qua nền tảng: Microruntimes và FinOps, theo những câu hỏi của bạn.",
+		"lead": "Chúng tôi giới thiệu nền tảng cho các nhóm, Microruntimes và FinOps, xoay quanh những câu hỏi của họ.",
 		"form": {
 			"email": "Email công ty",
 			"emailPlaceholder": "ban@congty.com",
@@ -188,7 +224,16 @@
 			"unavailable": {
 				"title": "Chúng tôi sẽ sớm quay lại.",
 				"description": "Yêu cầu demo đang tạm dừng. Yêu cầu của bạn chưa được lưu; vui lòng quay lại sau."
+			},
+			"sent": {
+				"title": "Chúng tôi đã nhận yêu cầu demo của bạn.",
+				"description": "Cảm ơn bạn. Chúng tôi sẽ gửi email đến địa chỉ công ty của bạn để sắp xếp buổi giới thiệu."
 			}
+		},
+		"paused": {
+			"title": "Chúng tôi sẽ sớm quay lại.",
+			"description": "Yêu cầu bản demo đang tạm dừng trong lúc chúng tôi chuẩn bị buổi giới thiệu tiếp theo về Microruntimes và FinOps. Vui lòng quay lại sau.",
+			"home": "Quay lại trang chủ"
 		},
 		"positions": {
 			"founder": "Nhà sáng lập",

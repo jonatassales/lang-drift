@@ -3,7 +3,9 @@
 import type { FocusEvent, KeyboardEvent, MouseEvent, ReactNode } from 'react'
 import { useId, useRef, useState } from 'react'
 
-import './animated-tabs.css'
+import { cn } from 'web/utilities'
+
+export type AnimatedTabsVariant = 'underline' | 'pill' | 'segment'
 
 export interface AnimatedTab {
 	id: string
@@ -17,9 +19,32 @@ export interface AnimatedTabsProps {
 	activeTab?: string
 	defaultTab?: string
 	onChange?: (tabId: string) => void
-	variant?: 'underline' | 'pill' | 'segment'
+	variant?: AnimatedTabsVariant
 	layoutId?: string
 	className?: string
+}
+
+// The list: an underline sits on a bottom border, a pill or a segment on a
+// rounded border filled with the background role.
+const listVariants: Record<AnimatedTabsVariant, string> = {
+	underline: 'border-b',
+	pill: 'rounded-full border bg-background',
+	segment: 'gap-0 rounded-lg border bg-background',
+}
+
+// Each tab's corners follow the list it sits in.
+const tabVariants: Record<AnimatedTabsVariant, string> = {
+	underline: 'rounded-t-md',
+	pill: 'rounded-full',
+	segment: 'rounded-md',
+}
+
+// The selected tab's indicator: a 2px primary bar under an underline tab, a
+// card-filled outline behind a pill or a segment tab.
+const indicatorVariants: Record<AnimatedTabsVariant, string> = {
+	underline: 'inset-x-0 bottom-0 h-0.5 bg-primary',
+	pill: 'inset-0 rounded-[inherit] border border-border bg-card',
+	segment: 'inset-0 rounded-[inherit] border border-border bg-card',
 }
 
 /** SmoothUI Animated Tabs, with localized naming and explicit panel relations. */
@@ -36,7 +61,7 @@ export function AnimatedTabs(props: AnimatedTabsProps) {
 	} = props
 
 	const generatedId = useId()
-	const layoutId = customLayoutId ?? `smooth-tabs-${generatedId}`
+	const layoutId = customLayoutId ?? `animated-tabs-${generatedId}`
 	const [internalActiveTab, setInternalActiveTab] = useState(
 		defaultTab ?? tabs[0]?.id ?? '',
 	)
@@ -113,7 +138,11 @@ export function AnimatedTabs(props: AnimatedTabsProps) {
 	return (
 		<div
 			aria-label={ariaLabel}
-			className={`smooth-animated-tabs ${className}`}
+			className={cn(
+				'relative box-border inline-flex max-w-full min-w-0 gap-1 overflow-x-auto overscroll-x-contain border-border p-1 align-top [scrollbar-width:thin]',
+				listVariants[variant],
+				className,
+			)}
 			data-variant={variant}
 			ref={containerRef}
 			role="tablist"
@@ -125,7 +154,10 @@ export function AnimatedTabs(props: AnimatedTabsProps) {
 					<button
 						aria-controls={`${layoutId}-panel-${tab.id}`}
 						aria-selected={selected}
-						className="smooth-animated-tab"
+						className={cn(
+							'relative inline-flex min-h-11 flex-none cursor-pointer items-center justify-center gap-2 border-0 bg-transparent px-4 py-2.5 font-medium whitespace-nowrap text-muted-foreground transition-colors duration-150 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-foreground aria-selected:text-foreground motion-reduce:transition-none',
+							tabVariants[variant],
+						)}
 						data-tab-id={tab.id}
 						data-tab-index={index}
 						id={`${layoutId}-tab-${tab.id}`}
@@ -142,14 +174,23 @@ export function AnimatedTabs(props: AnimatedTabsProps) {
 						type="button"
 					>
 						{selected ? (
-							<span aria-hidden="true" className="smooth-tab-indicator" />
+							<span
+								aria-hidden="true"
+								className={cn(
+									'pointer-events-none absolute transition-opacity duration-150 motion-reduce:transition-none',
+									indicatorVariants[variant],
+								)}
+							/>
 						) : null}
 						{tab.icon ? (
-							<span aria-hidden="true" className="smooth-tab-icon">
+							<span
+								aria-hidden="true"
+								className="relative inline-flex items-center"
+							>
 								{tab.icon}
 							</span>
 						) : null}
-						<span className="smooth-tab-label">{tab.label}</span>
+						<span className="relative">{tab.label}</span>
 					</button>
 				)
 			})}

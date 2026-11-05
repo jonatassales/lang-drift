@@ -67,7 +67,7 @@ describe('Microruntimes session cards', () => {
 		expect(stack?.getAttribute('aria-hidden')).toBeNull()
 
 		play('links')
-		expect(screen.getAllByText('0002-PRD-early-access.prd.md')).toHaveLength(2)
+		expect(screen.getAllByText('0002-PRD-book-a-demo.prd.md')).toHaveLength(2)
 	})
 
 	it('opens the card of each act as the session reaches it', () => {
@@ -139,9 +139,7 @@ describe('Microruntimes session cards', () => {
 
 	it('carries each act’s latest figure in its collapsed header', () => {
 		const { header, play } = mount()
-		expect(header('Ticket').textContent).toContain(
-			'0031 · early-access-runtime',
-		)
+		expect(header('Ticket').textContent).toContain('0031 · book-a-demo-runtime')
 
 		play('reads')
 		expect(header('Analysis').textContent).toContain('4 documents read')

@@ -4,7 +4,7 @@ import { CaretDown } from '@phosphor-icons/react'
 import type { MouseEvent, ReactNode } from 'react'
 import { useId, useState } from 'react'
 
-import './basic-accordion.css'
+import { cn } from 'web/utilities'
 
 export interface AccordionItem {
 	id: string | number
@@ -33,7 +33,7 @@ export function BasicAccordion(props: BasicAccordionProps) {
 	} = props
 
 	const generatedId = useId()
-	const prefix = `${layoutId ?? 'smooth-accordion'}-${generatedId}`
+	const prefix = `${layoutId ?? 'accordion'}-${generatedId}`
 	const [expandedIds, setExpandedIds] = useState<Array<string | number>>(() =>
 		allowMultiple
 			? [...defaultExpandedIds]
@@ -62,28 +62,28 @@ export function BasicAccordion(props: BasicAccordionProps) {
 	}
 
 	return (
-		<div className={`smooth-basic-accordion ${className}`}>
+		<div className={cn('min-w-0', className)}>
 			{items.map((item, index) => {
 				const expanded = expandedIds.includes(item.id)
 				const triggerId = `${prefix}-trigger-${item.id}`
 				const regionId = `${prefix}-region-${item.id}`
 
 				return (
-					<div className="smooth-accordion-item" key={item.id}>
-						<Heading className="smooth-accordion-heading">
+					<div className="border-border not-first:border-t" key={item.id}>
+						<Heading>
 							<button
 								aria-controls={regionId}
 								aria-expanded={expanded}
-								className="smooth-accordion-trigger"
+								className="flex min-h-11 w-full cursor-pointer items-center justify-between gap-3 rounded-sm border-0 bg-transparent py-2.5 text-start font-medium text-foreground hover:underline hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-foreground"
 								data-item-index={index}
 								id={triggerId}
 								onClick={handleTriggerClick}
 								type="button"
 							>
-								<span>{item.title}</span>
+								<span className="min-w-0 wrap-anywhere">{item.title}</span>
 								<span
 									aria-hidden="true"
-									className="smooth-accordion-chevron"
+									className="inline-flex flex-none items-center transition-transform duration-200 data-[expanded=true]:rotate-180 motion-reduce:transition-none"
 									data-expanded={expanded}
 								>
 									<CaretDown size={16} />
@@ -93,11 +93,11 @@ export function BasicAccordion(props: BasicAccordionProps) {
 						<section
 							aria-hidden={!expanded}
 							aria-labelledby={triggerId}
-							className="smooth-accordion-region"
+							className="overflow-hidden"
 							hidden={!expanded}
 							id={regionId}
 						>
-							<div className="smooth-accordion-content">{item.content}</div>
+							<div className="pt-1 pb-4 wrap-anywhere">{item.content}</div>
 						</section>
 					</div>
 				)

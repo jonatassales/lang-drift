@@ -4,8 +4,6 @@ import { describe, expect, it } from 'vitest'
 import {
 	bookDemoMessages,
 	conversionMessages,
-	earlyAccessMessages,
-	earlyAccessSentMessages,
 	finopsMessages,
 	footerMessages,
 	headerMessages,
@@ -52,8 +50,6 @@ describe('Website production translations', () => {
 			for (const family of [
 				headerMessages,
 				conversionMessages,
-				earlyAccessMessages,
-				earlyAccessSentMessages,
 				footerMessages,
 				platformMessages,
 				privacyMessages,

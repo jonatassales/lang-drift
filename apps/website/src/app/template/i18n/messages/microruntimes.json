@@ -3,19 +3,19 @@
 		"skip": "Skip to the lifecycle",
 		"hero": {
 			"title": "Microruntimes",
-			"summary": "A simulated ex session for the ticket 0031-TICKET-early-access-runtime, \"Run the early-access sign-up use case as a microruntime\", told in four cards. The typed command, ex agent plan, is the intended entry point. The console reads the ticket's PRD, design doc, spec and guardrail, takes the envelope the team set, 2,000 millicores and 3,072 MiB, and a budget of $25.00 per run for model calls, cites three project episodes and suggests Claude Sonnet 5.5 at medium effort, a recommendation the team authorizes. It resolves five components from the spec, a Go API, a Node.js API, a NATS broker, a Redis cache and a Next.js app, 1,450 millicores and 2,304 MiB in total; the runtime itself has no price source, so its figures stay in units. The Workflow card prices the run at Anthropic list prices: Claude Sonnet 5.5 at medium effort is estimated at $9.50 and reserves $11.40 of the $25.00 budget. By default a person confirms the planning and reviews the pull request, and the merge is always the owner's. Playing the workflow runs ex agent run through the console's gate, the stages, the push and pull request #19 with its checks, and ends ready for review; a reservation over the budget pauses the run at the gate with nothing paid for. After implement, the agent stops at the reserved part: a person writes it in a dev ticket, with no agent and no paid call, the agent's code review follows, and the run ends with Safe Seat met. Every step is simulated: nothing is built, started or paid for."
+			"summary": "A simulated ex session for the ticket 0031-TICKET-book-a-demo-runtime, \"Run the book-a-demo request use case as a microruntime\", told in four cards. The typed command, ex agent plan, is the intended entry point. The console reads the ticket's PRD, design doc, spec and guardrail, takes the envelope the team set, 2,000 millicores and 3,072 MiB, and a budget of $25.00 per run for model calls, cites three project episodes and suggests Claude Sonnet 5.5 at medium effort, a recommendation the team authorizes. It resolves five components from the spec, a Go API, a Node.js API, a NATS broker, a Redis cache and a Next.js app, 1,450 millicores and 2,304 MiB in total; the runtime itself has no price source, so its figures stay in units. The Workflow card prices the run at Anthropic list prices: Claude Sonnet 5.5 at medium effort is estimated at $9.50 and reserves $11.40 of the $25.00 budget. By default a person confirms the planning and reviews the pull request, and the merge is always the owner's. Playing the workflow runs ex agent run through the console's gate, the stages, the push and pull request #19 with its checks, and ends ready for review; a reservation over the budget pauses the run at the gate with nothing paid for. After implement, the agent stops at the reserved part: a person writes it in a dev ticket, with no agent and no paid call, the agent's code review follows, and the run ends with Safe Seat met. Every step is simulated: nothing is built, started or paid for."
 		},
 		"session": {
 			"terminal": {
 				"title": "ex — project",
 				"label": "Terminal: a simulated ex session",
 				"lines": {
-					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
+					"plan": "ex agent plan 0031-TICKET-book-a-demo-runtime",
 					"scope": "# plan only · nothing is built, started or paid for in this step",
-					"readTicket": "console › tool call: read 0031-TICKET-early-access-runtime",
+					"readTicket": "console › tool call: read 0031-TICKET-book-a-demo-runtime",
 					"links": "console › ready-for-agent · links 0002-PRD · 0005-DD · 0011-SPEC · guardrail 0001-finops",
 					"analysis": "# analysis · reading the linked documents, then the project's episodes",
-					"readPrd": "console › tool call: read 0002-PRD · use case: early-access sign-up",
+					"readPrd": "console › tool call: read 0002-PRD · use case: book-a-demo request",
 					"readDesignDoc": "console › tool call: read 0005-DD · envelope cpuMillis 2000 · memoryMiB 3072 · set by the team",
 					"readSpec": "console › tool call: read 0011-SPEC · 5 components named · 3 acceptance criteria",
 					"reads": "✓ read       4 documents · nothing outside the ticket's links",
@@ -56,7 +56,7 @@
 				},
 				"run": {
 					"command": "ex agent run",
-					"scope": "# run · 0031-TICKET-early-access-runtime · the recorded intent, authorized by the team",
+					"scope": "# run · 0031-TICKET-book-a-demo-runtime · the recorded intent, authorized by the team",
 					"intent": "console › intent     {model} · effort {effort} · runtime.md revision 1",
 					"estimate": "console › estimate   {estimate} · {input} input · {output} output · list prices · FIN-02",
 					"budget": "console › budget     {budget} per run · set by the team · FIN-03",
@@ -73,10 +73,10 @@
 					"devTicketWaiting": "console › waiting    dev-ticket · the person writes the reserved part",
 					"devTicketClosed": "✓ closed     dev-ticket · written without an agent · no paid call",
 					"codeReview": "console › code-review 2 findings · fixed",
-					"runtimeReady": "runtime    early-access-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
+					"runtimeReady": "runtime    book-a-demo-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
 					"completed": "✓ completed  implementation · {observed} observed of {reserved} reserved · usage record",
 					"pushed": "✓ pushed     {branch} · {hash}",
-					"pullRequest": "✓ pr #{number}     feat(signup): run early access as a microruntime",
+					"pullRequest": "✓ pr #{number}     feat(demo): run book a demo as a microruntime",
 					"checks": "checks     build · check · test · guardrails · running",
 					"checksPassed": "✓ checks     4 of 4 passed",
 					"safeSeatMet": "✓ Safe Seat  met",
@@ -99,7 +99,7 @@
 				},
 				"ticket": {
 					"status": "ready-for-agent",
-					"title": "Run the early-access sign-up use case as a microruntime",
+					"title": "Run the book-a-demo request use case as a microruntime",
 					"links": "Linked artifacts",
 					"artifacts": {
 						"prd": "PRD",
@@ -111,7 +111,7 @@
 				"analysis": {
 					"documents": "Documents",
 					"extracted": {
-						"prd": "use case: early-access sign-up",
+						"prd": "use case: book-a-demo request",
 						"designDoc": "envelope {cpu}m · {memory} MiB · budget {budget} per run · set by the team",
 						"spec": "{components} components · {criteria} acceptance criteria",
 						"guardrail": "{criteria} · review rule, no automatic enforcement"
@@ -527,19 +527,19 @@
 		"skip": "Pular para o ciclo de vida",
 		"hero": {
 			"title": "Microruntimes",
-			"summary": "Uma sessão simulada do ex para o ticket 0031-TICKET-early-access-runtime, \"Rodar o caso de uso de inscrição no early access como um microruntime\", contada em quatro cards. O comando digitado, ex agent plan, é o ponto de entrada pretendido. O console lê o PRD, o design doc, a spec e o guardrail do ticket, toma o envelope definido pelo time, 2.000 milicores e 3.072 MiB, e um orçamento de US$ 25,00 por execução para chamadas de modelo, cita três episódios do projeto e sugere o Claude Sonnet 5.5 com effort medium, uma recomendação que o time autoriza. Ele resolve cinco componentes a partir da spec, uma API em Go, uma API em Node.js, um broker NATS, um cache Redis e um app Next.js, 1.450 milicores e 2.304 MiB no total; o runtime em si não tem fonte de preço, então seus valores ficam em unidades. O card Workflow precifica a execução pelos preços de tabela da Anthropic: o Claude Sonnet 5.5 com effort medium tem estimativa de US$ 9,50 e reserva US$ 11,40 do orçamento de US$ 25,00. Por padrão, uma pessoa confirma o planejamento e revisa o pull request, e o merge é sempre do responsável. Rodar o workflow executa ex agent run pelo gate do console, pelas etapas, pelo push e pelo pull request #19 com seus checks, e termina pronto para revisão; uma reserva acima do orçamento pausa a execução no gate sem nada pago. Depois da implementação, o agente para na parte reservada: uma pessoa a escreve num dev ticket, sem agente e sem chamada paga, a revisão de código do agente vem em seguida, e a execução termina com o Safe Seat cumprido. Cada etapa é simulada: nada é construído, iniciado ou pago."
+			"summary": "Uma sessão simulada do ex para o ticket 0031-TICKET-book-a-demo-runtime, \"Rodar o caso de uso de solicitação de demonstração como um microruntime\", contada em quatro cards. O comando digitado, ex agent plan, é o ponto de entrada pretendido. O console lê o PRD, o design doc, a spec e o guardrail do ticket, toma o envelope definido pelo time, 2.000 milicores e 3.072 MiB, e um orçamento de US$ 25,00 por execução para chamadas de modelo, cita três episódios do projeto e sugere o Claude Sonnet 5.5 com effort medium, uma recomendação que o time autoriza. Ele resolve cinco componentes a partir da spec, uma API em Go, uma API em Node.js, um broker NATS, um cache Redis e um app Next.js, 1.450 milicores e 2.304 MiB no total; o runtime em si não tem fonte de preço, então seus valores ficam em unidades. O card Workflow precifica a execução pelos preços de tabela da Anthropic: o Claude Sonnet 5.5 com effort medium tem estimativa de US$ 9,50 e reserva US$ 11,40 do orçamento de US$ 25,00. Por padrão, uma pessoa confirma o planejamento e revisa o pull request, e o merge é sempre do responsável. Rodar o workflow executa ex agent run pelo gate do console, pelas etapas, pelo push e pelo pull request #19 com seus checks, e termina pronto para revisão; uma reserva acima do orçamento pausa a execução no gate sem nada pago. Depois da implementação, o agente para na parte reservada: uma pessoa a escreve num dev ticket, sem agente e sem chamada paga, a revisão de código do agente vem em seguida, e a execução termina com o Safe Seat cumprido. Cada etapa é simulada: nada é construído, iniciado ou pago."
 		},
 		"session": {
 			"terminal": {
 				"title": "ex — project",
 				"label": "Terminal: uma sessão simulada do ex",
 				"lines": {
-					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
+					"plan": "ex agent plan 0031-TICKET-book-a-demo-runtime",
 					"scope": "# só planejamento · nada é construído, iniciado ou pago nesta etapa",
-					"readTicket": "console › tool call: read 0031-TICKET-early-access-runtime",
+					"readTicket": "console › tool call: read 0031-TICKET-book-a-demo-runtime",
 					"links": "console › ready-for-agent · links 0002-PRD · 0005-DD · 0011-SPEC · guardrail 0001-finops",
 					"analysis": "# análise · lendo os documentos vinculados, depois os episódios do projeto",
-					"readPrd": "console › tool call: read 0002-PRD · use case: early-access sign-up",
+					"readPrd": "console › tool call: read 0002-PRD · use case: book-a-demo request",
 					"readDesignDoc": "console › tool call: read 0005-DD · envelope cpuMillis 2000 · memoryMiB 3072 · set by the team",
 					"readSpec": "console › tool call: read 0011-SPEC · 5 components named · 3 acceptance criteria",
 					"reads": "✓ read       4 documents · nothing outside the ticket's links",
@@ -580,7 +580,7 @@
 				},
 				"run": {
 					"command": "ex agent run",
-					"scope": "# execução · 0031-TICKET-early-access-runtime · a intenção registrada, autorizada pelo time",
+					"scope": "# execução · 0031-TICKET-book-a-demo-runtime · a intenção registrada, autorizada pelo time",
 					"intent": "console › intent     {model} · effort {effort} · runtime.md revision 1",
 					"estimate": "console › estimate   {estimate} · {input} input · {output} output · list prices · FIN-02",
 					"budget": "console › budget     {budget} per run · set by the team · FIN-03",
@@ -597,10 +597,10 @@
 					"devTicketWaiting": "console › waiting    dev-ticket · the person writes the reserved part",
 					"devTicketClosed": "✓ closed     dev-ticket · written without an agent · no paid call",
 					"codeReview": "console › code-review 2 findings · fixed",
-					"runtimeReady": "runtime    early-access-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
+					"runtimeReady": "runtime    book-a-demo-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
 					"completed": "✓ completed  implementation · {observed} observed of {reserved} reserved · usage record",
 					"pushed": "✓ pushed     {branch} · {hash}",
-					"pullRequest": "✓ pr #{number}     feat(signup): run early access as a microruntime",
+					"pullRequest": "✓ pr #{number}     feat(demo): run book a demo as a microruntime",
 					"checks": "checks     build · check · test · guardrails · running",
 					"checksPassed": "✓ checks     4 of 4 passed",
 					"safeSeatMet": "✓ Safe Seat  met",
@@ -623,7 +623,7 @@
 				},
 				"ticket": {
 					"status": "ready-for-agent",
-					"title": "Rodar o caso de uso de inscrição no early access como um microruntime",
+					"title": "Rodar o caso de uso de solicitação de demonstração como um microruntime",
 					"links": "Artefatos vinculados",
 					"artifacts": {
 						"prd": "PRD",
@@ -635,7 +635,7 @@
 				"analysis": {
 					"documents": "Documentos",
 					"extracted": {
-						"prd": "caso de uso: inscrição no early access",
+						"prd": "caso de uso: solicitação de demonstração",
 						"designDoc": "envelope {cpu}m · {memory} MiB · orçamento de {budget} por execução · definido pelo time",
 						"spec": "{components} componentes · {criteria} critérios de aceite",
 						"guardrail": "{criteria} · regra de revisão, sem aplicação automática"
@@ -1051,19 +1051,19 @@
 		"skip": "跳到生命週期",
 		"hero": {
 			"title": "Microruntimes",
-			"summary": "這是針對工單 0031-TICKET-early-access-runtime「以 microruntime 執行 early access 註冊使用案例」的模擬 ex 工作階段，以四張卡片呈現。輸入的指令 ex agent plan 是預期的進入點。主控台讀取工單的 PRD、design doc、spec 與 guardrail，採用團隊設定的額度 2,000 millicores 與 3,072 MiB，以及每次執行 US$25.00 的模型呼叫預算，引用專案的三個過往案例，並建議以 medium effort 使用 Claude Sonnet 5.5，這是建議，須由團隊授權。它從 spec 解析出五個元件：一個 Go API、一個 Node.js API、一個 NATS broker、一個 Redis 快取與一個 Next.js 應用程式，合計 1,450 millicores 與 2,304 MiB；runtime 本身沒有價格來源，因此其數值僅以單位表示。工作流程卡片以 Anthropic 牌價為執行定價：以 medium effort 使用 Claude Sonnet 5.5 預估 US$9.50，並從 US$25.00 的預算中保留 US$11.40。預設由人員確認規劃並審查 pull request，合併一律由負責人決定。執行工作流程時，ex agent run 會依序通過主控台的 gate、各個階段、push，以及含檢查的 pull request #19，最後可供審查；若保留額超出預算，執行會在 gate 暫停，不產生任何費用。實作之後，代理會停在保留部分：由人在 dev ticket 中撰寫，過程中沒有代理、沒有付費呼叫，接著由代理進行程式碼審查，執行最後以 Safe Seat 已達成作結。每個步驟都是模擬：不會建置、啟動，也不會付費。"
+			"summary": "這是針對工單 0031-TICKET-book-a-demo-runtime「以 microruntime 執行產品展示申請使用案例」的模擬 ex 工作階段，以四張卡片呈現。輸入的指令 ex agent plan 是預期的進入點。主控台讀取工單的 PRD、design doc、spec 與 guardrail，採用團隊設定的額度 2,000 millicores 與 3,072 MiB，以及每次執行 US$25.00 的模型呼叫預算，引用專案的三個過往案例，並建議以 medium effort 使用 Claude Sonnet 5.5，這是建議，須由團隊授權。它從 spec 解析出五個元件：一個 Go API、一個 Node.js API、一個 NATS broker、一個 Redis 快取與一個 Next.js 應用程式，合計 1,450 millicores 與 2,304 MiB；runtime 本身沒有價格來源，因此其數值僅以單位表示。工作流程卡片以 Anthropic 牌價為執行定價：以 medium effort 使用 Claude Sonnet 5.5 預估 US$9.50，並從 US$25.00 的預算中保留 US$11.40。預設由人員確認規劃並審查 pull request，合併一律由負責人決定。執行工作流程時，ex agent run 會依序通過主控台的 gate、各個階段、push，以及含檢查的 pull request #19，最後可供審查；若保留額超出預算，執行會在 gate 暫停，不產生任何費用。實作之後，代理會停在保留部分：由人在 dev ticket 中撰寫，過程中沒有代理、沒有付費呼叫，接著由代理進行程式碼審查，執行最後以 Safe Seat 已達成作結。每個步驟都是模擬：不會建置、啟動，也不會付費。"
 		},
 		"session": {
 			"terminal": {
 				"title": "ex — project",
 				"label": "終端機：模擬的 ex 工作階段",
 				"lines": {
-					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
+					"plan": "ex agent plan 0031-TICKET-book-a-demo-runtime",
 					"scope": "# 僅規劃 · 此步驟不建置、不啟動、不付費",
-					"readTicket": "console › tool call: read 0031-TICKET-early-access-runtime",
+					"readTicket": "console › tool call: read 0031-TICKET-book-a-demo-runtime",
 					"links": "console › ready-for-agent · links 0002-PRD · 0005-DD · 0011-SPEC · guardrail 0001-finops",
 					"analysis": "# 分析 · 先讀取連結的文件，再讀取專案的 episodes",
-					"readPrd": "console › tool call: read 0002-PRD · use case: early-access sign-up",
+					"readPrd": "console › tool call: read 0002-PRD · use case: book-a-demo request",
 					"readDesignDoc": "console › tool call: read 0005-DD · envelope cpuMillis 2000 · memoryMiB 3072 · set by the team",
 					"readSpec": "console › tool call: read 0011-SPEC · 5 components named · 3 acceptance criteria",
 					"reads": "✓ read       4 documents · nothing outside the ticket's links",
@@ -1104,7 +1104,7 @@
 				},
 				"run": {
 					"command": "ex agent run",
-					"scope": "# 執行 · 0031-TICKET-early-access-runtime · 已記錄的意圖，由團隊授權",
+					"scope": "# 執行 · 0031-TICKET-book-a-demo-runtime · 已記錄的意圖，由團隊授權",
 					"intent": "console › intent     {model} · effort {effort} · runtime.md revision 1",
 					"estimate": "console › estimate   {estimate} · {input} input · {output} output · list prices · FIN-02",
 					"budget": "console › budget     {budget} per run · set by the team · FIN-03",
@@ -1121,10 +1121,10 @@
 					"devTicketWaiting": "console › waiting    dev-ticket · the person writes the reserved part",
 					"devTicketClosed": "✓ closed     dev-ticket · written without an agent · no paid call",
 					"codeReview": "console › code-review 2 findings · fixed",
-					"runtimeReady": "runtime    early-access-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
+					"runtimeReady": "runtime    book-a-demo-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
 					"completed": "✓ completed  implementation · {observed} observed of {reserved} reserved · usage record",
 					"pushed": "✓ pushed     {branch} · {hash}",
-					"pullRequest": "✓ pr #{number}     feat(signup): run early access as a microruntime",
+					"pullRequest": "✓ pr #{number}     feat(demo): run book a demo as a microruntime",
 					"checks": "checks     build · check · test · guardrails · running",
 					"checksPassed": "✓ checks     4 of 4 passed",
 					"safeSeatMet": "✓ Safe Seat  met",
@@ -1147,7 +1147,7 @@
 				},
 				"ticket": {
 					"status": "ready-for-agent",
-					"title": "以 microruntime 執行 early access 註冊使用案例",
+					"title": "以 microruntime 執行產品展示申請使用案例",
 					"links": "連結的 artifacts",
 					"artifacts": {
 						"prd": "PRD",
@@ -1159,7 +1159,7 @@
 				"analysis": {
 					"documents": "文件",
 					"extracted": {
-						"prd": "使用案例：early access 註冊",
+						"prd": "使用案例：產品展示申請",
 						"designDoc": "envelope {cpu}m · {memory} MiB · 每次執行預算 {budget} · 由團隊設定",
 						"spec": "{components} 個元件 · {criteria} 項驗收準則",
 						"guardrail": "{criteria} · 審查規則，不自動強制執行"
@@ -1575,19 +1575,19 @@
 		"skip": "ライフサイクルへスキップ",
 		"hero": {
 			"title": "Microruntimes",
-			"summary": "これは、チケット 0031-TICKET-early-access-runtime「early access サインアップのユースケースを microruntime として実行する」の ex セッションをシミュレートしたもので、4 枚のカードで示します。入力したコマンド ex agent plan が、想定されているエントリポイントです。コンソールはチケットの PRD、design doc、spec、guardrail を読み取り、チームが設定した枠である 2,000 ミリコアと 3,072 MiB、そしてモデル呼び出しの予算である 1 回の実行あたり $25.00 を取り込み、プロジェクトの過去の事例を 3 件引用して、Claude Sonnet 5.5 を effort medium で提案します。これは推奨であり、承認するのはチームです。コンソールは spec から 5 つのコンポーネントを特定します。内訳は Go API、Node.js API、NATS ブローカー、Redis キャッシュ、Next.js アプリで、合計は 1,450 ミリコアと 2,304 MiB です。runtime 自体には価格ソースがないため、その数値は単位のままです。ワークフローのカードは Anthropic の定価で実行に価格を付けます。effort medium の Claude Sonnet 5.5 は見積もり $9.50 で、$25.00 の予算から $11.40 を確保します。既定では人が計画を確認し、pull request をレビューします。マージは常にオーナーが行います。ワークフローを実行すると、ex agent run がコンソールのゲート、各段階、push、チェック付きの pull request #19 を経て、レビュー待ちで終わります。確保額が予算を超える場合は、ゲートで実行が一時停止し、支払いは発生しません。実装のあと、エージェントは残す部分で止まります。人が dev ticket でそれを書き、エージェントも有料の呼び出しもありません。続いてエージェントがコードレビューを行い、実行は Safe Seat 達成で終わります。すべての段階はシミュレーションです。ビルド、起動、支払いは一切行われません。"
+			"summary": "これは、チケット 0031-TICKET-book-a-demo-runtime「デモリクエストのユースケースを microruntime として実行する」の ex セッションをシミュレートしたもので、4 枚のカードで示します。入力したコマンド ex agent plan が、想定されているエントリポイントです。コンソールはチケットの PRD、design doc、spec、guardrail を読み取り、チームが設定した枠である 2,000 ミリコアと 3,072 MiB、そしてモデル呼び出しの予算である 1 回の実行あたり $25.00 を取り込み、プロジェクトの過去の事例を 3 件引用して、Claude Sonnet 5.5 を effort medium で提案します。これは推奨であり、承認するのはチームです。コンソールは spec から 5 つのコンポーネントを特定します。内訳は Go API、Node.js API、NATS ブローカー、Redis キャッシュ、Next.js アプリで、合計は 1,450 ミリコアと 2,304 MiB です。runtime 自体には価格ソースがないため、その数値は単位のままです。ワークフローのカードは Anthropic の定価で実行に価格を付けます。effort medium の Claude Sonnet 5.5 は見積もり $9.50 で、$25.00 の予算から $11.40 を確保します。既定では人が計画を確認し、pull request をレビューします。マージは常にオーナーが行います。ワークフローを実行すると、ex agent run がコンソールのゲート、各段階、push、チェック付きの pull request #19 を経て、レビュー待ちで終わります。確保額が予算を超える場合は、ゲートで実行が一時停止し、支払いは発生しません。実装のあと、エージェントは残す部分で止まります。人が dev ticket でそれを書き、エージェントも有料の呼び出しもありません。続いてエージェントがコードレビューを行い、実行は Safe Seat 達成で終わります。すべての段階はシミュレーションです。ビルド、起動、支払いは一切行われません。"
 		},
 		"session": {
 			"terminal": {
 				"title": "ex — project",
 				"label": "ターミナル：ex セッションのシミュレーション",
 				"lines": {
-					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
+					"plan": "ex agent plan 0031-TICKET-book-a-demo-runtime",
 					"scope": "# 計画のみ · このステップではビルド、起動、支払いを行いません",
-					"readTicket": "console › tool call: read 0031-TICKET-early-access-runtime",
+					"readTicket": "console › tool call: read 0031-TICKET-book-a-demo-runtime",
 					"links": "console › ready-for-agent · links 0002-PRD · 0005-DD · 0011-SPEC · guardrail 0001-finops",
 					"analysis": "# 分析 · リンクされたドキュメントを読み、次にプロジェクトのエピソードを読みます",
-					"readPrd": "console › tool call: read 0002-PRD · use case: early-access sign-up",
+					"readPrd": "console › tool call: read 0002-PRD · use case: book-a-demo request",
 					"readDesignDoc": "console › tool call: read 0005-DD · envelope cpuMillis 2000 · memoryMiB 3072 · set by the team",
 					"readSpec": "console › tool call: read 0011-SPEC · 5 components named · 3 acceptance criteria",
 					"reads": "✓ read       4 documents · nothing outside the ticket's links",
@@ -1628,7 +1628,7 @@
 				},
 				"run": {
 					"command": "ex agent run",
-					"scope": "# 実行 · 0031-TICKET-early-access-runtime · 記録済みの意図、チームが承認",
+					"scope": "# 実行 · 0031-TICKET-book-a-demo-runtime · 記録済みの意図、チームが承認",
 					"intent": "console › intent     {model} · effort {effort} · runtime.md revision 1",
 					"estimate": "console › estimate   {estimate} · {input} input · {output} output · list prices · FIN-02",
 					"budget": "console › budget     {budget} per run · set by the team · FIN-03",
@@ -1645,10 +1645,10 @@
 					"devTicketWaiting": "console › waiting    dev-ticket · the person writes the reserved part",
 					"devTicketClosed": "✓ closed     dev-ticket · written without an agent · no paid call",
 					"codeReview": "console › code-review 2 findings · fixed",
-					"runtimeReady": "runtime    early-access-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
+					"runtimeReady": "runtime    book-a-demo-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
 					"completed": "✓ completed  implementation · {observed} observed of {reserved} reserved · usage record",
 					"pushed": "✓ pushed     {branch} · {hash}",
-					"pullRequest": "✓ pr #{number}     feat(signup): run early access as a microruntime",
+					"pullRequest": "✓ pr #{number}     feat(demo): run book a demo as a microruntime",
 					"checks": "checks     build · check · test · guardrails · running",
 					"checksPassed": "✓ checks     4 of 4 passed",
 					"safeSeatMet": "✓ Safe Seat  met",
@@ -1671,7 +1671,7 @@
 				},
 				"ticket": {
 					"status": "ready-for-agent",
-					"title": "early access サインアップのユースケースを microruntime として実行する",
+					"title": "デモリクエストのユースケースを microruntime として実行する",
 					"links": "リンクされたアーティファクト",
 					"artifacts": {
 						"prd": "PRD",
@@ -1683,7 +1683,7 @@
 				"analysis": {
 					"documents": "ドキュメント",
 					"extracted": {
-						"prd": "ユースケース：early access サインアップ",
+						"prd": "ユースケース：デモリクエスト",
 						"designDoc": "envelope {cpu}m · {memory} MiB · 1 回の実行の予算 {budget} · チームが設定",
 						"spec": "{components} 個のコンポーネント · {criteria} 件の受け入れ基準",
 						"guardrail": "{criteria} · レビュールール、自動強制なし"
@@ -2099,19 +2099,19 @@
 		"skip": "Chuyển đến vòng đời",
 		"hero": {
 			"title": "Microruntimes",
-			"summary": "Đây là phiên ex mô phỏng cho ticket 0031-TICKET-early-access-runtime, “Chạy trường hợp sử dụng đăng ký early access dưới dạng microruntime”, được trình bày trong bốn thẻ. Lệnh được gõ, ex agent plan, là điểm vào dự kiến. Console đọc PRD, design doc, spec và guardrail của ticket, lấy hạn mức nhóm đã đặt, gồm 2.000 millicore và 3.072 MiB, cùng ngân sách 25,00 US$ mỗi lần chạy cho các lệnh gọi mô hình, trích dẫn ba trường hợp trước đây của dự án và đề xuất Claude Sonnet 5.5 với effort medium, một khuyến nghị cần nhóm phê duyệt. Console xác định năm thành phần từ spec: một API Go, một API Node.js, một broker NATS, một bộ nhớ đệm Redis và một ứng dụng Next.js, tổng cộng 1.450 millicore và 2.304 MiB; bản thân runtime không có nguồn giá, nên các con số của nó được giữ theo đơn vị. Thẻ Quy trình định giá lần chạy theo giá niêm yết của Anthropic: Claude Sonnet 5.5 với effort medium ước tính 9,50 US$ và giữ 11,40 US$ trong ngân sách 25,00 US$. Theo mặc định, một người xác nhận phần lập kế hoạch và rà soát pull request, còn việc merge luôn thuộc về chủ sở hữu. Khi chạy quy trình, ex agent run đi qua gate của console, các giai đoạn, lần push và pull request #19 cùng các kiểm tra, rồi kết thúc ở trạng thái sẵn sàng để rà soát; nếu khoản giữ vượt ngân sách, lần chạy tạm dừng tại gate và chưa chi trả gì. Sau bước triển khai, tác tử dừng ở phần dành riêng: một người viết nó trong một dev ticket, không có tác tử và không có lần gọi trả phí, tiếp theo là bước rà soát mã của tác tử, và lần chạy kết thúc với Safe Seat đạt. Mọi bước đều là mô phỏng: không có gì được build, khởi chạy hay chi trả."
+			"summary": "Đây là phiên ex mô phỏng cho ticket 0031-TICKET-book-a-demo-runtime, “Chạy trường hợp sử dụng yêu cầu demo dưới dạng microruntime”, được trình bày trong bốn thẻ. Lệnh được gõ, ex agent plan, là điểm vào dự kiến. Console đọc PRD, design doc, spec và guardrail của ticket, lấy hạn mức nhóm đã đặt, gồm 2.000 millicore và 3.072 MiB, cùng ngân sách 25,00 US$ mỗi lần chạy cho các lệnh gọi mô hình, trích dẫn ba trường hợp trước đây của dự án và đề xuất Claude Sonnet 5.5 với effort medium, một khuyến nghị cần nhóm phê duyệt. Console xác định năm thành phần từ spec: một API Go, một API Node.js, một broker NATS, một bộ nhớ đệm Redis và một ứng dụng Next.js, tổng cộng 1.450 millicore và 2.304 MiB; bản thân runtime không có nguồn giá, nên các con số của nó được giữ theo đơn vị. Thẻ Quy trình định giá lần chạy theo giá niêm yết của Anthropic: Claude Sonnet 5.5 với effort medium ước tính 9,50 US$ và giữ 11,40 US$ trong ngân sách 25,00 US$. Theo mặc định, một người xác nhận phần lập kế hoạch và rà soát pull request, còn việc merge luôn thuộc về chủ sở hữu. Khi chạy quy trình, ex agent run đi qua gate của console, các giai đoạn, lần push và pull request #19 cùng các kiểm tra, rồi kết thúc ở trạng thái sẵn sàng để rà soát; nếu khoản giữ vượt ngân sách, lần chạy tạm dừng tại gate và chưa chi trả gì. Sau bước triển khai, tác tử dừng ở phần dành riêng: một người viết nó trong một dev ticket, không có tác tử và không có lần gọi trả phí, tiếp theo là bước rà soát mã của tác tử, và lần chạy kết thúc với Safe Seat đạt. Mọi bước đều là mô phỏng: không có gì được build, khởi chạy hay chi trả."
 		},
 		"session": {
 			"terminal": {
 				"title": "ex — project",
 				"label": "Terminal: phiên ex mô phỏng",
 				"lines": {
-					"plan": "ex agent plan 0031-TICKET-early-access-runtime",
+					"plan": "ex agent plan 0031-TICKET-book-a-demo-runtime",
 					"scope": "# chỉ lập kế hoạch · bước này không build, không khởi chạy, không phát sinh chi phí",
-					"readTicket": "console › tool call: read 0031-TICKET-early-access-runtime",
+					"readTicket": "console › tool call: read 0031-TICKET-book-a-demo-runtime",
 					"links": "console › ready-for-agent · links 0002-PRD · 0005-DD · 0011-SPEC · guardrail 0001-finops",
 					"analysis": "# phân tích · đọc các tài liệu được liên kết, rồi đến các episode của dự án",
-					"readPrd": "console › tool call: read 0002-PRD · use case: early-access sign-up",
+					"readPrd": "console › tool call: read 0002-PRD · use case: book-a-demo request",
 					"readDesignDoc": "console › tool call: read 0005-DD · envelope cpuMillis 2000 · memoryMiB 3072 · set by the team",
 					"readSpec": "console › tool call: read 0011-SPEC · 5 components named · 3 acceptance criteria",
 					"reads": "✓ read       4 documents · nothing outside the ticket's links",
@@ -2152,7 +2152,7 @@
 				},
 				"run": {
 					"command": "ex agent run",
-					"scope": "# chạy · 0031-TICKET-early-access-runtime · ý định đã ghi lại, được nhóm phê duyệt",
+					"scope": "# chạy · 0031-TICKET-book-a-demo-runtime · ý định đã ghi lại, được nhóm phê duyệt",
 					"intent": "console › intent     {model} · effort {effort} · runtime.md revision 1",
 					"estimate": "console › estimate   {estimate} · {input} input · {output} output · list prices · FIN-02",
 					"budget": "console › budget     {budget} per run · set by the team · FIN-03",
@@ -2169,10 +2169,10 @@
 					"devTicketWaiting": "console › waiting    dev-ticket · the person writes the reserved part",
 					"devTicketClosed": "✓ closed     dev-ticket · written without an agent · no paid call",
 					"codeReview": "console › code-review 2 findings · fixed",
-					"runtimeReady": "runtime    early-access-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
+					"runtimeReady": "runtime    book-a-demo-runtime · revision 1 · 5 Deployments ready · 1450m · 2304 MiB",
 					"completed": "✓ completed  implementation · {observed} observed of {reserved} reserved · usage record",
 					"pushed": "✓ pushed     {branch} · {hash}",
-					"pullRequest": "✓ pr #{number}     feat(signup): run early access as a microruntime",
+					"pullRequest": "✓ pr #{number}     feat(demo): run book a demo as a microruntime",
 					"checks": "checks     build · check · test · guardrails · running",
 					"checksPassed": "✓ checks     4 of 4 passed",
 					"safeSeatMet": "✓ Safe Seat  met",
@@ -2195,7 +2195,7 @@
 				},
 				"ticket": {
 					"status": "ready-for-agent",
-					"title": "Chạy trường hợp sử dụng đăng ký early access dưới dạng microruntime",
+					"title": "Chạy trường hợp sử dụng yêu cầu demo dưới dạng microruntime",
 					"links": "Artifact được liên kết",
 					"artifacts": {
 						"prd": "PRD",
@@ -2207,7 +2207,7 @@
 				"analysis": {
 					"documents": "Tài liệu",
 					"extracted": {
-						"prd": "trường hợp sử dụng: đăng ký early access",
+						"prd": "trường hợp sử dụng: yêu cầu demo",
 						"designDoc": "envelope {cpu}m · {memory} MiB · ngân sách {budget} mỗi lần chạy · do nhóm thiết lập",
 						"spec": "{components} thành phần · {criteria} tiêu chí chấp nhận",
 						"guardrail": "{criteria} · quy tắc rà soát, không tự động thực thi"

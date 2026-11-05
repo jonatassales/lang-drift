@@ -2,262 +2,260 @@
 	"en": {
 		"plans": {
 			"skip": "Skip to plans",
-			"eyebrow": "Plans & early access",
+			"eyebrow": "Plans",
+			"comingSoon": "Coming soon",
 			"title": "Find your starting point.",
-			"introduction": "Join early access to explore LangDrift with a 15-day trial. Discover the planned options for continuing as your product and team grow.",
+			"introduction": "LangDrift FinOps is coming in three plans, each built on the Microruntimes engine.",
 			"cards": {
-				"trial": {
-					"name": "15-day free trial",
-					"badge": "Early adopter offer",
-					"value": "15 days",
-					"support": "Starts when your access is activated",
-					"description": "Explore how a bounded run keeps agent-assisted delivery inside a team budget.",
-					"listLabel": "Explore the core experience",
+				"starter": {
+					"name": "Starter",
+					"value": "To be announced",
+					"support": "For a developer or a small team getting started",
+					"description": "Run agent-assisted delivery inside a budget, with the LangDrift CLI on your own machine.",
+					"listLabel": "Included",
 					"items": [
-						"Budget → Run → Evidence",
-						"Changes and their context",
-						"Core product review experience"
+						"LangDrift CLI with budget-gated runs",
+						"Bounded microruntimes for your own components",
+						"A ledger and evidence for every run"
 					],
-					"cta": "Join early access"
+					"cta": "Book a demo"
 				},
 				"plus": {
 					"name": "Plus",
-					"badge": "Planned",
-					"value": "Pricing to be announced",
-					"support": "For ongoing product understanding",
-					"description": "For teams that want to keep product changes, decisions, and evidence in view.",
-					"listLabel": "Planned focus",
+					"value": "To be announced",
+					"support": "For teams that share one budget",
+					"description": "Bring the budget and its evidence into every pull request, with one envelope for the whole team.",
+					"listLabel": "Everything in Starter, plus",
 					"items": [
-						"Product changes in context",
-						"Connected decisions and evidence",
-						"Ongoing product reviews"
+						"CI Gates on every pull request",
+						"Team budgets and allocations",
+						"The LangDrift console"
 					],
-					"cta": "Notify me at launch"
+					"cta": "Book a demo"
 				},
 				"pro": {
 					"name": "Pro",
-					"badge": "Planned",
-					"value": "Pricing to be announced",
-					"support": "For deeper review and collaboration",
-					"description": "For teams exploring deeper review, reporting, and collaboration across product decisions.",
-					"listLabel": "Planned focus",
+					"value": "To be announced",
+					"support": "For organizations with several teams",
+					"description": "Keep several teams accountable to their envelopes, while people still write part of the work.",
+					"listLabel": "Everything in Plus, plus",
 					"items": [
-						"Deeper review and reporting",
-						"Broader decision context",
-						"Collaboration around evidence"
+						"Safe Seat on every ticket",
+						"Deeper FinOps reporting",
+						"Envelopes across several teams"
 					],
-					"cta": "Notify me at launch"
+					"cta": "Book a demo"
 				}
 			},
-			"availability": "Plus and Pro are planned offerings. Final features and pricing will be announced before launch.",
+			"availability": "Features and pricing will be announced before launch.",
 			"faqLink": "Questions? Read the FAQ"
 		}
 	},
 	"pt-BR": {
 		"plans": {
 			"skip": "Ir para os planos",
-			"eyebrow": "Planos e acesso antecipado",
+			"eyebrow": "Planos",
+			"comingSoon": "Em breve",
 			"title": "Encontre seu ponto de partida.",
-			"introduction": "Participe do acesso antecipado para explorar o LangDrift com um teste de 15 dias. Conheça as opções planejadas para continuar conforme seu produto e sua equipe crescem.",
+			"introduction": "O LangDrift FinOps chega em três planos, todos construídos sobre o motor Microruntimes.",
 			"cards": {
-				"trial": {
-					"name": "Teste gratuito de 15 dias",
-					"badge": "Oferta para primeiros usuários",
-					"value": "15 dias",
-					"support": "Começa quando seu acesso é ativado",
-					"description": "Explore como uma execução delimitada mantém a entrega assistida por agentes dentro do orçamento do time.",
-					"listLabel": "Explore a experiência principal",
+				"starter": {
+					"name": "Starter",
+					"value": "A anunciar",
+					"support": "Para quem começa sozinho ou em um time pequeno",
+					"description": "Rode entregas assistidas por agentes dentro de um orçamento, com o LangDrift CLI na sua própria máquina.",
+					"listLabel": "Inclui",
 					"items": [
-						"Orçamento → Execução → Evidência",
-						"Mudanças e seu contexto",
-						"Experiência central de revisão do produto"
+						"LangDrift CLI com execuções controladas pelo orçamento",
+						"Microruntimes delimitados para os seus próprios componentes",
+						"Um ledger e evidências de cada execução"
 					],
-					"cta": "Quero acesso antecipado"
+					"cta": "Agende uma demo"
 				},
 				"plus": {
 					"name": "Plus",
-					"badge": "Planejado",
-					"value": "Preços a anunciar",
-					"support": "Para entender seu produto continuamente",
-					"description": "Para equipes que querem manter mudanças, decisões e evidências do produto à vista.",
-					"listLabel": "Foco planejado",
+					"value": "A anunciar",
+					"support": "Para times que compartilham um orçamento",
+					"description": "Leve o orçamento e suas evidências para cada pull request, com um único envelope para o time inteiro.",
+					"listLabel": "Tudo do Starter, mais",
 					"items": [
-						"Mudanças do produto em contexto",
-						"Decisões e evidências conectadas",
-						"Revisões contínuas do produto"
+						"CI Gates em cada pull request",
+						"Orçamentos e alocações do time",
+						"O console do LangDrift"
 					],
-					"cta": "Avise-me no lançamento"
+					"cta": "Agende uma demo"
 				},
 				"pro": {
 					"name": "Pro",
-					"badge": "Planejado",
-					"value": "Preços a anunciar",
-					"support": "Para revisões e colaboração mais aprofundadas",
-					"description": "Para equipes que exploram revisões, relatórios e colaboração mais aprofundados nas decisões de produto.",
-					"listLabel": "Foco planejado",
+					"value": "A anunciar",
+					"support": "Para organizações com vários times",
+					"description": "Mantenha vários times responsáveis pelos seus envelopes, enquanto pessoas continuam escrevendo parte do trabalho.",
+					"listLabel": "Tudo do Plus, mais",
 					"items": [
-						"Revisões e relatórios mais aprofundados",
-						"Contexto mais amplo para decisões",
-						"Colaboração em torno de evidências"
+						"Safe Seat em cada ticket",
+						"Relatórios de FinOps mais aprofundados",
+						"Envelopes entre vários times"
 					],
-					"cta": "Avise-me no lançamento"
+					"cta": "Agende uma demo"
 				}
 			},
-			"availability": "Plus e Pro são ofertas planejadas. Os recursos e preços finais serão anunciados antes do lançamento.",
+			"availability": "Recursos e preços serão anunciados antes do lançamento.",
 			"faqLink": "Dúvidas? Leia as perguntas frequentes"
 		}
 	},
 	"zh-Hant": {
 		"plans": {
 			"skip": "跳至方案",
-			"eyebrow": "方案與搶先體驗",
+			"eyebrow": "方案",
+			"comingSoon": "即將推出",
 			"title": "找到適合您的起點。",
-			"introduction": "參與搶先體驗，以 15 天試用探索 LangDrift。了解隨產品與團隊成長、持續使用的規劃選項。",
+			"introduction": "LangDrift FinOps 將以三種方案推出，全部建立在 Microruntimes 引擎之上。",
 			"cards": {
-				"trial": {
-					"name": "15 天免費試用",
-					"badge": "早期使用者優惠",
-					"value": "15 天",
-					"support": "從存取權限啟用時開始",
-					"description": "探索有邊界的執行如何讓代理協助的交付留在團隊預算之內。",
-					"listLabel": "探索核心體驗",
-					"items": ["預算 → 執行 → 證據", "變更與其脈絡", "核心產品檢視體驗"],
-					"cta": "登記搶先體驗"
+				"starter": {
+					"name": "Starter",
+					"value": "即將公布",
+					"support": "適合個人開發者或小型團隊起步",
+					"description": "在預算內進行代理協助的交付，LangDrift CLI 在您自己的電腦上執行。",
+					"listLabel": "包含",
+					"items": [
+						"以預算把關每次執行的 LangDrift CLI",
+						"為您自己的元件建立有界限的 microruntimes",
+						"每次執行的帳本與證據"
+					],
+					"cta": "預約展示"
 				},
 				"plus": {
 					"name": "Plus",
-					"badge": "規劃中",
-					"value": "價格將另行公布",
-					"support": "持續掌握產品",
-					"description": "適合希望持續掌握產品變更、決策與證據的團隊。",
-					"listLabel": "規劃重點",
-					"items": ["產品變更的脈絡", "相互關聯的決策與證據", "持續的產品檢視"],
-					"cta": "推出時通知我"
+					"value": "即將公布",
+					"support": "適合共用一份預算的團隊",
+					"description": "把預算與證據帶進每個 pull request，全隊共用一份預算額度。",
+					"listLabel": "包含 Starter 全部內容，另加",
+					"items": [
+						"每個 pull request 的 CI Gates",
+						"團隊預算與分配",
+						"LangDrift 主控台"
+					],
+					"cta": "預約展示"
 				},
 				"pro": {
 					"name": "Pro",
-					"badge": "規劃中",
-					"value": "價格將另行公布",
-					"support": "更深入的檢視與協作",
-					"description": "適合探索更深入的產品決策檢視、報告與協作的團隊。",
-					"listLabel": "規劃重點",
+					"value": "即將公布",
+					"support": "適合擁有多個團隊的組織",
+					"description": "讓多個團隊各自對預算額度負責，同時仍由人撰寫部分工作。",
+					"listLabel": "包含 Plus 全部內容，另加",
 					"items": [
-						"更深入的檢視與報告",
-						"更完整的決策脈絡",
-						"圍繞證據展開協作"
+						"每張工單的 Safe Seat",
+						"更深入的 FinOps 報表",
+						"跨多個團隊的預算額度"
 					],
-					"cta": "推出時通知我"
+					"cta": "預約展示"
 				}
 			},
-			"availability": "Plus 與 Pro 是規劃中的方案。最終功能與價格將於正式推出前公布。",
+			"availability": "功能與價格將於上市前公布。",
 			"faqLink": "有疑問？閱讀常見問題"
 		}
 	},
 	"ja": {
 		"plans": {
 			"skip": "プランへ移動",
-			"eyebrow": "プランと先行アクセス",
+			"eyebrow": "プラン",
+			"comingSoon": "近日公開",
 			"title": "あなたに合う出発点を。",
-			"introduction": "先行アクセスに参加して、15日間のトライアルでLangDriftを体験しましょう。プロダクトとチームの成長に合わせて継続するための、計画中の選択肢をご紹介します。",
+			"introduction": "LangDrift FinOps は 3 つのプランで提供予定で、どれも Microruntimes エンジンの上に構築されています。",
 			"cards": {
-				"trial": {
-					"name": "15日間無料トライアル",
-					"badge": "先行ユーザー向けオファー",
-					"value": "15日間",
-					"support": "アクセスが有効になった時点で開始",
-					"description": "境界のある実行が、エージェント支援の開発をチームの予算内に保つ仕組みを確認できます。",
-					"listLabel": "基本の体験を探索",
+				"starter": {
+					"name": "Starter",
+					"value": "近日発表",
+					"support": "個人の開発者や小規模チームの始めの一歩に",
+					"description": "LangDrift CLI を自分のマシンで使い、予算の範囲内でエージェント支援のデリバリーを実行します。",
+					"listLabel": "含まれるもの",
 					"items": [
-						"予算 → 実行 → 根拠",
-						"変更とその背景",
-						"プロダクトレビューの基本体験"
+						"予算でゲートされた実行を行う LangDrift CLI",
+						"自分のコンポーネントのための境界のある microruntimes",
+						"実行ごとの台帳と証跡"
 					],
-					"cta": "先行アクセスに登録"
+					"cta": "デモを予約"
 				},
 				"plus": {
 					"name": "Plus",
-					"badge": "計画中",
-					"value": "料金は後日発表",
-					"support": "プロダクトの継続的な理解に",
-					"description": "プロダクトの変更、意思決定、根拠を継続的に把握したいチーム向けです。",
-					"listLabel": "計画中の重点",
+					"value": "近日発表",
+					"support": "1 つの予算を共有するチームに",
+					"description": "予算とその証跡をすべての pull request に届け、チーム全体で 1 つの予算枠を使います。",
+					"listLabel": "Starter のすべてに加えて",
 					"items": [
-						"背景とともに捉えるプロダクトの変更",
-						"つながる意思決定と根拠",
-						"継続的なプロダクトレビュー"
+						"すべての pull request に CI Gates",
+						"チームの予算と配分",
+						"LangDrift コンソール"
 					],
-					"cta": "提供開始のお知らせを受け取る"
+					"cta": "デモを予約"
 				},
 				"pro": {
 					"name": "Pro",
-					"badge": "計画中",
-					"value": "料金は後日発表",
-					"support": "より深いレビューと共同作業に",
-					"description": "プロダクトの意思決定について、より深いレビュー、レポート、共同作業を求めるチーム向けです。",
-					"listLabel": "計画中の重点",
+					"value": "近日発表",
+					"support": "複数のチームを持つ組織に",
+					"description": "人が作業の一部を書き続けながら、複数のチームがそれぞれの予算枠に責任を持てるようにします。",
+					"listLabel": "Plus のすべてに加えて",
 					"items": [
-						"より深いレビューとレポート",
-						"意思決定の背景を広く把握",
-						"根拠を軸にした共同作業"
+						"すべてのチケットに Safe Seat",
+						"より詳細な FinOps レポート",
+						"複数チームにまたがる予算枠"
 					],
-					"cta": "提供開始のお知らせを受け取る"
+					"cta": "デモを予約"
 				}
 			},
-			"availability": "PlusとProは計画中のプランです。最終的な機能と料金は、正式提供前に発表します。",
+			"availability": "機能と価格はリリース前にお知らせします。",
 			"faqLink": "ご質問はFAQをご覧ください"
 		}
 	},
 	"vi": {
 		"plans": {
 			"skip": "Chuyển đến các gói",
-			"eyebrow": "Các gói và truy cập sớm",
+			"eyebrow": "Gói",
+			"comingSoon": "Sắp ra mắt",
 			"title": "Tìm điểm khởi đầu của bạn.",
-			"introduction": "Đăng ký truy cập sớm để khám phá LangDrift với 15 ngày dùng thử. Tìm hiểu các lựa chọn dự kiến khi sản phẩm và nhóm của bạn phát triển.",
+			"introduction": "LangDrift FinOps sẽ có ba gói, tất cả đều xây dựng trên động cơ Microruntimes.",
 			"cards": {
-				"trial": {
-					"name": "Dùng thử miễn phí 15 ngày",
-					"badge": "Ưu đãi cho người dùng sớm",
-					"value": "15 ngày",
-					"support": "Bắt đầu khi quyền truy cập được kích hoạt",
-					"description": "Khám phá cách một lần chạy có giới hạn giữ việc giao hàng có tác tử hỗ trợ trong ngân sách của đội.",
-					"listLabel": "Khám phá trải nghiệm cốt lõi",
+				"starter": {
+					"name": "Starter",
+					"value": "Sẽ công bố",
+					"support": "Dành cho một lập trình viên hoặc một nhóm nhỏ mới bắt đầu",
+					"description": "Chạy quy trình giao hàng có tác tử hỗ trợ trong một ngân sách, với LangDrift CLI trên máy của bạn.",
+					"listLabel": "Bao gồm",
 					"items": [
-						"Ngân sách → Lần chạy → Bằng chứng",
-						"Thay đổi và bối cảnh",
-						"Trải nghiệm đánh giá sản phẩm cốt lõi"
+						"LangDrift CLI với các lần chạy được kiểm soát theo ngân sách",
+						"Microruntimes có giới hạn cho các thành phần của bạn",
+						"Sổ cái và bằng chứng cho mỗi lần chạy"
 					],
-					"cta": "Đăng ký truy cập sớm"
+					"cta": "Đặt lịch demo"
 				},
 				"plus": {
 					"name": "Plus",
-					"badge": "Dự kiến",
-					"value": "Giá sẽ được công bố",
-					"support": "Để liên tục hiểu rõ sản phẩm",
-					"description": "Dành cho các nhóm muốn luôn theo dõi thay đổi, quyết định và bằng chứng về sản phẩm.",
-					"listLabel": "Trọng tâm dự kiến",
+					"value": "Sẽ công bố",
+					"support": "Dành cho các nhóm dùng chung một ngân sách",
+					"description": "Đưa ngân sách và bằng chứng của nó vào mọi pull request, với một hạn mức cho cả đội.",
+					"listLabel": "Mọi thứ trong Starter, cùng với",
 					"items": [
-						"Thay đổi sản phẩm trong bối cảnh",
-						"Quyết định và bằng chứng liên kết",
-						"Đánh giá sản phẩm thường xuyên"
+						"CI Gates trên mọi pull request",
+						"Ngân sách và phân bổ của nhóm",
+						"Console LangDrift"
 					],
-					"cta": "Thông báo cho tôi khi ra mắt"
+					"cta": "Đặt lịch demo"
 				},
 				"pro": {
 					"name": "Pro",
-					"badge": "Dự kiến",
-					"value": "Giá sẽ được công bố",
-					"support": "Để đánh giá sâu hơn và cộng tác",
-					"description": "Dành cho các nhóm cần tìm hiểu sâu hơn, báo cáo và cộng tác quanh các quyết định sản phẩm.",
-					"listLabel": "Trọng tâm dự kiến",
+					"value": "Sẽ công bố",
+					"support": "Dành cho các tổ chức có nhiều nhóm",
+					"description": "Giữ cho nhiều nhóm chịu trách nhiệm với hạn mức của mình, trong khi con người vẫn viết một phần công việc.",
+					"listLabel": "Mọi thứ trong Plus, cùng với",
 					"items": [
-						"Đánh giá và báo cáo sâu hơn",
-						"Bối cảnh quyết định rộng hơn",
-						"Cộng tác dựa trên bằng chứng"
+						"Safe Seat cho mọi ticket",
+						"Báo cáo FinOps chi tiết hơn",
+						"Hạn mức trên nhiều nhóm"
 					],
-					"cta": "Thông báo cho tôi khi ra mắt"
+					"cta": "Đặt lịch demo"
 				}
 			},
-			"availability": "Plus và Pro là các gói dự kiến. Tính năng và giá cuối cùng sẽ được công bố trước khi ra mắt.",
+			"availability": "Tính năng và giá sẽ được công bố trước khi ra mắt.",
 			"faqLink": "Bạn có câu hỏi? Xem phần hỏi đáp"
 		}
 	}

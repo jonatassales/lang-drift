@@ -20,3 +20,4 @@ export type BookDemoInput = z.input<typeof bookDemoSchema>
 export type BookDemoData = z.output<typeof bookDemoSchema>
 export type BookDemoSubmission = z.output<typeof bookDemoSubmissionSchema>
 export type BookDemoField = keyof BookDemoData
+export type BookDemoOutcome = 'idle' | 'sent' | 'unavailable'

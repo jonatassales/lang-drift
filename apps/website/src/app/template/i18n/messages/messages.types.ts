@@ -1,6 +1,5 @@
 import type { BookDemoErrorCode } from '@components/book-a-demo/form.types'
 import type { PositionId } from '@components/book-a-demo/positions'
-import type { EmailErrorCode } from '@components/early-access/form.types'
 
 export interface HeaderMessages {
 	home: string
@@ -43,13 +42,6 @@ export interface PrivacyMessages {
 	overviewTitle: string
 	overview: string
 	paused: string
-	active: string
-	turnstileTitle: string
-	turnstile: string[]
-	addendumIntroduction: string
-	addendumLabel: string
-	addendumUrl: string
-	providerPolicy: string
 	preferencesTitle: string
 	preferences: string
 	contactTitle: string
@@ -58,64 +50,40 @@ export interface PrivacyMessages {
 	changes: string
 }
 
+export interface PlanCopy {
+	name: string
+	value: string
+	support: string
+	description: string
+	listLabel: string
+	items: [string, string, string]
+	cta: string
+}
+
 export interface ConversionCopy {
 	plans: {
 		skip: string
 		eyebrow: string
+		comingSoon: string
 		title: string
 		introduction: string
 		cards: {
-			trial: {
-				name: string
-				badge: string
-				value: string
-				support: string
-				description: string
-				listLabel: string
-				items: [string, string, string]
-				cta: string
-			}
-			plus: {
-				name: string
-				badge: string
-				value: string
-				support: string
-				description: string
-				listLabel: string
-				items: [string, string, string]
-				cta: string
-			}
-			pro: {
-				name: string
-				badge: string
-				value: string
-				support: string
-				description: string
-				listLabel: string
-				items: [string, string, string]
-				cta: string
-			}
+			starter: PlanCopy
+			plus: PlanCopy
+			pro: PlanCopy
 		}
 		availability: string
 		faqLink: string
 	}
 }
 
-export interface EarlyAccessMessages {
-	pausedHeading: string
-	pausedDescription: string
-	pricingHeading: string
+export interface NoticeCopy {
+	title: string
 	description: string
-	helper: string
-	emailLabel: string
-	placeholder: string
-	submit: string
-	submitting: string
-	success: string
-	unavailable: string
-	rateLimited: string
-	challengeFailed: string
-	errors: Record<EmailErrorCode, string>
+}
+
+export interface PausedNoticeCopy extends NoticeCopy {
+	home: string
 }
 
 export interface BookDemoMessages {
@@ -132,20 +100,12 @@ export interface BookDemoMessages {
 		submit: string
 		submitting: string
 		failed: string
-		unavailable: {
-			title: string
-			description: string
-		}
+		unavailable: NoticeCopy
+		sent: NoticeCopy
 	}
+	paused: PausedNoticeCopy
 	positions: Record<PositionId, string>
 	errors: Record<BookDemoErrorCode, string>
-}
-
-export interface EarlyAccessSentMessages {
-	title: string
-	description: string
-	home: string
-	image: string
 }
 
 export interface FooterMessages {

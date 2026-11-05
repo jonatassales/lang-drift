@@ -1,15 +1,12 @@
+import { ProductBadge } from '@components/product-badge'
 import { conversionMessages } from '@i18n/messages/index'
 import { Link } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
 
-const planIds = [
-	'trial',
-	// 'plus',
-	// 'pro',
-] as const
+const planIds = ['starter', 'plus', 'pro'] as const
 
 // Transitional: !flex, !min-h-11, !justify-between, !px-[15px], !py-3 beat SmoothUI smooth-primary-button defaults
-const trialCtaClass =
+const planCtaClass =
 	'smooth-primary-button !flex !min-h-11 !justify-between gap-3 !px-[15px] !py-3 text-[13px] leading-normal no-underline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary'
 
 // Transitional: !text-xs beats SmoothUI smooth-text-link 13px font
@@ -31,9 +28,12 @@ export function PlansSection(props: PlansSectionProps) {
 			className="mx-auto max-w-[1240px] px-[18px] pt-[38px] pb-5 sm:px-7 sm:pt-12 sm:pb-6 [&_:is(h1,h2,h3,p,strong,li,a)]:[overflow-wrap:anywhere]"
 		>
 			<div className="mx-auto mb-8 max-w-[740px] text-left sm:text-center">
-				<span className="font-mono text-[10px] tracking-[0.11em] uppercase">
-					{copy.eyebrow}
-				</span>
+				<div className="flex flex-wrap items-center gap-2 sm:justify-center">
+					<span className="font-mono text-[10px] tracking-[0.11em] uppercase">
+						{copy.eyebrow}
+					</span>
+					<ProductBadge>{copy.comingSoon}</ProductBadge>
+				</div>
 				<h1
 					className="my-4 text-[clamp(34px,3.6vw,50px)] font-medium leading-[1.12] tracking-[-0.055em] [text-wrap:balance]"
 					id="plans-heading"
@@ -55,19 +55,14 @@ export function PlansSection(props: PlansSectionProps) {
 							data-plan={id}
 							key={id}
 						>
-							<div>
-								<h2
-									className="mb-3 text-[21px] font-medium leading-[1.35] tracking-[-0.03em]"
-									id={`plan-${id}-heading`}
-								>
-									{plan.name}
-								</h2>
-								<span className="inline-block rounded-full border border-primary/25 bg-primary/5 px-[9px] py-1 text-[11px] leading-[1.45] text-foreground">
-									{plan.badge}
-								</span>
-							</div>
+							<h2
+								className="m-0 text-[21px] font-medium leading-[1.35] tracking-[-0.03em]"
+								id={`plan-${id}-heading`}
+							>
+								{plan.name}
+							</h2>
 							<div className="mt-[22px] lg:mt-7">
-								<strong className="block text-[38px] font-medium leading-[1.25] tracking-[-0.04em]">
+								<strong className="block text-3xl font-medium leading-[1.25] tracking-[-0.04em]">
 									{plan.value}
 								</strong>
 								<p className="mt-2.5 text-xs leading-[1.55] text-muted-foreground">
@@ -87,7 +82,7 @@ export function PlansSection(props: PlansSectionProps) {
 									))}
 								</ul>
 							</div>
-							<Link className={trialCtaClass} href="/book-a-demo">
+							<Link className={planCtaClass} href="/book-a-demo">
 								{plan.cta}
 								<span aria-hidden="true" className="shrink-0">
 									↗

@@ -2,15 +2,11 @@ import type { SafeSeatMessages } from '@app/[locale]/(pages)/platform/safe-seat/
 import type { FinopsMessages } from '@data/finops-content'
 import type { MicroruntimesMessages } from '@data/microruntimes-content'
 import bookDemoJson from '@i18n/messages/book-a-demo.json'
-import earlyAccessJson from '@i18n/messages/early-access.json'
-import earlyAccessSentJson from '@i18n/messages/early-access-sent.json'
 import finopsJson from '@i18n/messages/finops.json'
 import footerJson from '@i18n/messages/footer.json'
 import headerJson from '@i18n/messages/header.json'
 import type {
 	BookDemoMessages,
-	EarlyAccessMessages,
-	EarlyAccessSentMessages,
 	FooterMessages,
 	HeaderMessages,
 	PlatformMessages,
@@ -25,12 +21,6 @@ import type { WebsiteLocale } from '@i18n/routing'
 export const headerMessages: Record<WebsiteLocale, HeaderMessages> = headerJson
 export const privacyMessages: Record<WebsiteLocale, PrivacyMessages> =
 	privacyJson
-export const earlyAccessMessages: Record<WebsiteLocale, EarlyAccessMessages> =
-	earlyAccessJson
-export const earlyAccessSentMessages: Record<
-	WebsiteLocale,
-	EarlyAccessSentMessages
-> = earlyAccessSentJson
 export const footerMessages: Record<WebsiteLocale, FooterMessages> = footerJson
 export const platformMessages: Record<WebsiteLocale, PlatformMessages> =
 	platformJson

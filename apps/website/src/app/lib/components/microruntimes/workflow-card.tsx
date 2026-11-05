@@ -84,6 +84,7 @@ export function WorkflowCard(props: WorkflowCardProps) {
 				<WorkflowChoice
 					label={workflow.model}
 					locked={running}
+					name="model"
 					note={format.message('workflow.modelPrice', {
 						date: format.priceMonth,
 						input: format.money(model.inputCents),
@@ -99,6 +100,7 @@ export function WorkflowCard(props: WorkflowCardProps) {
 				<WorkflowChoice
 					label={workflow.effort}
 					locked={running}
+					name="effort"
 					onChange={chooseEffort}
 					options={workflowEfforts.map((effort) => ({
 						label: copy.analysis.efforts[effort],
