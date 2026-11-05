@@ -1,0 +1,36 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://langdrift.md/schemas/judgment/episodes.answer.schema.json",
+	"title": "Episodes answer",
+	"description": "The judge's verdict on every retrieved episode: its ep-NNNN id, kept or dropped, and a reason from a closed set, as the EPISODES rows show them. A kept episode shares the stack and scale; a dropped one runs another runtime, has no broker or is docs only. That the reason matches the verdict and that no id repeats are rules the Go check enforces.",
+	"type": "object",
+	"additionalProperties": false,
+	"required": ["episodes"],
+	"properties": {
+		"episodes": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["id", "verdict", "reason"],
+				"properties": {
+					"id": {
+						"type": "string",
+						"pattern": "^ep-[0-9]{4}$"
+					},
+					"verdict": {
+						"enum": ["kept", "dropped"]
+					},
+					"reason": {
+						"enum": [
+							"shares the stack and scale",
+							"other runtime",
+							"no broker",
+							"docs only"
+						]
+					}
+				}
+			}
+		}
+	}
+}

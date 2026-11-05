@@ -1,0 +1,34 @@
+{
+	"episodes": [
+		{
+			"id": "ep-0412",
+			"verdict": "kept",
+			"reason": "shares the stack and scale"
+		},
+		{
+			"id": "ep-0388",
+			"verdict": "kept",
+			"reason": "shares the stack and scale"
+		},
+		{
+			"id": "ep-0351",
+			"verdict": "kept",
+			"reason": "shares the stack and scale"
+		},
+		{
+			"id": "ep-0297",
+			"verdict": "dropped",
+			"reason": "docs only"
+		},
+		{
+			"id": "ep-0240",
+			"verdict": "dropped",
+			"reason": "other runtime"
+		},
+		{
+			"id": "ep-0188",
+			"verdict": "dropped",
+			"reason": "no broker"
+		}
+	]
+}

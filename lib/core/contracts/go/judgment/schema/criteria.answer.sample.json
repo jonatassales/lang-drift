@@ -1,0 +1,16 @@
+{
+	"criteria": [
+		{
+			"id": "FIN-02",
+			"statement": "estimate before a paid call"
+		},
+		{
+			"id": "FIN-03",
+			"statement": "a budget before a paid run"
+		},
+		{
+			"id": "FIN-04",
+			"statement": "size cpu and memory to the load"
+		}
+	]
+}
