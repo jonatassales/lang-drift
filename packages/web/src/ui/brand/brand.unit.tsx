@@ -13,11 +13,11 @@ describe('web/ui/brand/brand', () => {
 	})
 
 	it('renders compact Brand and LogoMark with custom size', () => {
-		const html = renderToString(<Brand compact tone="dark" />)
+		const html = renderToString(<Brand compact />)
 		const logoHtml = renderToString(<LogoMark size={40} />)
 
-		expect(html).toContain('font-size:18px')
-		expect(html).toContain('color:#f5f5f5')
+		expect(html).toContain('text-lg')
+		expect(html).not.toContain('style=')
 		expect(logoHtml).toContain('width="40"')
 		expect(logoHtml).toContain('height="40"')
 	})

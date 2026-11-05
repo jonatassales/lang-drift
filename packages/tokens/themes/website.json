@@ -5,7 +5,15 @@
 				"$type": "color",
 				"primary": { "$value": "#6D0AD6" },
 				"primary-hover": { "$value": "#5408A5" },
-				"primary-text": { "$value": "#6D0AD6" }
+				"primary-text": { "$value": "#6D0AD6" },
+				"primary-highlight": {
+					"$value": "#CCA9F1",
+					"$description": "The primary mixed 35% with white."
+				},
+				"primary-shade": {
+					"$value": "#410680",
+					"$description": "The primary mixed 60% with black."
+				}
 			}
 		},
 		"lg": {
@@ -13,7 +21,11 @@
 				"$type": "color",
 				"primary": { "$value": "{light.site.color.primary}" },
 				"primary-hover": { "$value": "{light.site.color.primary-hover}" },
-				"primary-text": { "$value": "{light.site.color.primary-text}" }
+				"primary-text": { "$value": "{light.site.color.primary-text}" },
+				"primary-highlight": {
+					"$value": "{light.site.color.primary-highlight}"
+				},
+				"primary-shade": { "$value": "{light.site.color.primary-shade}" }
 			}
 		}
 	},
@@ -23,7 +35,15 @@
 				"$type": "color",
 				"primary": { "$value": "#6D0AD6" },
 				"primary-hover": { "$value": "#8C3BEF" },
-				"primary-text": { "$value": "#A970FF" }
+				"primary-text": { "$value": "#A970FF" },
+				"primary-highlight": {
+					"$value": "#CCA9F1",
+					"$description": "The primary mixed 35% with white."
+				},
+				"primary-shade": {
+					"$value": "#410680",
+					"$description": "The primary mixed 60% with black."
+				}
 			}
 		},
 		"lg": {
@@ -31,7 +51,11 @@
 				"$type": "color",
 				"primary": { "$value": "{dark.site.color.primary}" },
 				"primary-hover": { "$value": "{dark.site.color.primary-hover}" },
-				"primary-text": { "$value": "{dark.site.color.primary-text}" }
+				"primary-text": { "$value": "{dark.site.color.primary-text}" },
+				"primary-highlight": {
+					"$value": "{dark.site.color.primary-highlight}"
+				},
+				"primary-shade": { "$value": "{dark.site.color.primary-shade}" }
 			}
 		}
 	}

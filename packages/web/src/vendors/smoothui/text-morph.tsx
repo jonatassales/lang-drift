@@ -114,6 +114,7 @@ export function TextMorph(props: TextMorphProps) {
 								y: 0,
 							}}
 							aria-hidden="true"
+							className="inline-block whitespace-pre"
 							exit={{
 								opacity: 0,
 								scale: POP_SCALE,
@@ -130,10 +131,6 @@ export function TextMorph(props: TextMorphProps) {
 							}}
 							key={token.key}
 							layout
-							style={{
-								display: 'inline-block',
-								whiteSpace: 'pre',
-							}}
 							transition={{
 								bounce: 0.1,
 								delay: Math.min(index * stagger, MAX_STAGGER_MS) / MS,
@@ -147,12 +144,9 @@ export function TextMorph(props: TextMorphProps) {
 					{suffix ? (
 						<motion.span
 							aria-hidden="true"
+							className="inline-block whitespace-pre"
 							key="suffix"
 							layout="position"
-							style={{
-								display: 'inline-block',
-								whiteSpace: 'pre',
-							}}
 							transition={{
 								bounce: 0.1,
 								duration: duration / MS,

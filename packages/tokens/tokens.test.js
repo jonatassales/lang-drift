@@ -96,10 +96,14 @@ const brandRolesOf = (themePrefix) => [
 	`--${themePrefix}-color-primary`,
 	`--${themePrefix}-color-primary-hover`,
 	`--${themePrefix}-color-primary-text`,
+	`--${themePrefix}-color-primary-highlight`,
+	`--${themePrefix}-color-primary-shade`,
 	...[
 		'primary',
 		'primary-hover',
 		'primary-text',
+		'primary-highlight',
+		'primary-shade',
 		'ring',
 		'sidebar-primary',
 		'sidebar-ring',
@@ -417,9 +421,13 @@ describe('website theme', () => {
 				[`--${prefix}-color-primary`]: primary,
 				[`--${prefix}-color-primary-hover`]: hover,
 				[`--${prefix}-color-primary-text`]: text,
+				[`--${prefix}-color-primary-highlight`]: '#CCA9F1',
+				[`--${prefix}-color-primary-shade`]: '#410680',
 				'--lg-color-primary': `var(--${prefix}-color-primary)`,
 				'--lg-color-primary-hover': `var(--${prefix}-color-primary-hover)`,
 				'--lg-color-primary-text': `var(--${prefix}-color-primary-text)`,
+				'--lg-color-primary-highlight': `var(--${prefix}-color-primary-highlight)`,
+				'--lg-color-primary-shade': `var(--${prefix}-color-primary-shade)`,
 				'--lg-color-ring': 'var(--lg-color-primary)',
 				'--lg-color-sidebar-primary': 'var(--lg-color-primary)',
 				'--lg-color-sidebar-ring': 'var(--lg-color-primary)',
@@ -464,6 +472,11 @@ describe('Tailwind theme', () => {
 		}
 		assert.equal(colors['--color-primary-hover'], 'var(--primary-hover)')
 		assert.equal(colors['--color-primary-text'], 'var(--primary-text)')
+		assert.equal(
+			colors['--color-primary-highlight'],
+			'var(--primary-highlight)',
+		)
+		assert.equal(colors['--color-primary-shade'], 'var(--primary-shade)')
 		for (const status of statuses) {
 			assert.equal(
 				colors[`--color-status-${status}`],
