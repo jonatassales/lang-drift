@@ -5,7 +5,7 @@ import type { MouseEvent } from 'react'
 import { useEffect, useState } from 'react'
 
 import languageLabels from '@i18n/messages/language-labels.json'
-import { getPathname, usePathname } from '@i18n/navigation'
+import { Link, usePathname } from '@i18n/navigation'
 import {
 	LanguageSwitcher,
 	type LanguageSwitcherLinkProps,
@@ -107,13 +107,11 @@ export function LanguagePill(props: LanguagePillProps) {
 		linkProps: LanguageSwitcherLinkProps,
 	) {
 		return (
-			<a
+			<Link
 				{...linkProps}
 				data-locale={language.locale}
-				href={`${getPathname({
-					href: pathname,
-					locale: language.locale,
-				}).replace(/\/?$/, '/')}${urlSuffix}`}
+				href={`${pathname.replace(/\/?$/, '/')}${urlSuffix}`}
+				locale={language.locale}
 				onClick={handleLanguageClick}
 			/>
 		)
