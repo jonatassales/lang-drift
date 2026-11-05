@@ -2,6 +2,8 @@
 
 **Status:** ready-for-agent
 
+> **Note, 2026-11-05.** The judge's JSON Schemas (0222) are the non-Go surface this spec waited for, so the owner publishes `@langdrift/core` 0.2.0 on npm together with the Go tag `lib/core/contracts/go/v0.2.0` (ticket 0317). The lines below that keep the manifest private, and Out of scope's npm line, record the decision as it stood.
+
 ## Tickets
 
 - [x] 0211: the workspace knows `lib/` and `infrastructure/`
@@ -14,6 +16,7 @@
 - [x] 0218: the stub API moves to `apps/microservices/console-stubs`
 - [x] 0219: console-stubs is its name on every visible surface
 - [x] 0220: open tickets and documents follow the new layout
+- [ ] 0317: `@langdrift/core` 0.2.0 is published on npm and as a Go tag
 
 ## Problem Statement
 
