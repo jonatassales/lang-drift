@@ -1,26 +1,21 @@
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
-import { cliMessages } from '@i18n/messages/index'
+import { cliMessages, microruntimesMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
 import { SkipLink } from '@layout/skip-link'
 import { WebsiteFooter } from '@layout/website-footer'
 import { WebsiteHeader } from '@layout/website-header/website-header'
 import { WebsiteStructuredData } from '@layout/website-structured-data'
 import { CommandLine } from '@routes/platform/command-line'
+import { SessionTerminal } from '@routes/platform/microruntimes/sections/session-terminal'
 import { ProductHeading } from '@routes/platform/product-heading'
 import { ProductSection } from '@routes/platform/product-page/product-section'
 import { CliIcon } from 'web/ui/icons/platform'
 import { InfoCards } from 'web/ui/info-cards'
 
-import {
-	cliFlowStepIds,
-	cliGovernIds,
-	cliLinks,
-	cliPlanImage,
-} from './cli-content.data'
+import { cliFlowStepIds, cliGovernIds, cliLinks } from './cli-content.data'
 
 export { generateMetadata } from './page-metadata.map'
 
@@ -45,6 +40,7 @@ export default async function CliPage(props: CliPageProps) {
 	setRequestLocale(locale)
 
 	const copy = cliMessages[locale]
+	const session = microruntimesMessages[locale].session
 
 	return (
 		<>
@@ -89,19 +85,13 @@ export default async function CliPage(props: CliPageProps) {
 							labels={copy.copyCommand}
 						/>
 					</div>
-					<figure className="m-0 mt-10">
-						<Image
-							alt={copy.install.image.alt}
-							className="h-auto w-full rounded-2xl border border-border"
-							height={cliPlanImage.height}
-							sizes="(min-width: 1180px) 1108px, 100vw"
-							src={cliPlanImage.src}
-							width={cliPlanImage.width}
+					<div className="mt-10">
+						<SessionTerminal
+							className="h-[clamp(280px,48vh,440px)]"
+							control={session.card.control}
+							copy={session.terminal}
 						/>
-						<figcaption className="mt-3 text-xs leading-relaxed text-muted-foreground">
-							{copy.install.image.caption}
-						</figcaption>
-					</figure>
+					</div>
 				</ProductSection>
 
 				<ProductSection

@@ -16,6 +16,8 @@
 
 > **Note, 2026-11-05.** The copy, the alt texts and the captions say `dft`, and the screenshot file is now `dft-agent-plan.webp` in `apps/website/public/cli/` and `packages/docs/assets/images/`. It still holds the 0.4.0 capture of `ex agent plan`, made in the owner's own terminal against the repository's local records, and no terminal renderer here can retake it faithfully. The owner replaces both files with a capture of `dft agent plan` before this pull request merges with the release. The CI Gates page's `report-light.png` and `report-dark.png` also show the job summary saying `.langdrift/` stays on the machine that ran `ex`, so the owner retakes them from a `dft gates report` run too. Their alt texts already describe `dft`. Those two criteria stay open until then.
 
+> **Note, 2026-11-05, later.** The website's CLI page no longer shows the screenshot: its install section plays the Microruntimes session terminal, and `apps/website/public/cli/dft-agent-plan.webp` is gone. Only the READMEs' copy in `packages/docs/assets/images/` is left to replace.
+
 ## Dev part
 
 **Override:** No part qualifies: the ticket renames a command in copy and pictures without changing what any surface does, and a rename or a migration is never a dev part (policy, Categories). 2026-11-05.

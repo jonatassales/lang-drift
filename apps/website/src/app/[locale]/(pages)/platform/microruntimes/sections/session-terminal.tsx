@@ -20,19 +20,19 @@ import { SessionControl } from './session-control'
 // The one second the Workflow card shows its loader before the run starts.
 const launchMs = 1000
 
-// The hero's simulated session: the terminal plays the plan, then, once the
-// visitor plays the workflow, the run, on its own clock, and records how
-// many lines it has completed in the session, which the cards beside it
-// read. Its one control, pause and replay, sits in the title bar. Each run
-// remounts it through the run counter, so the finished plan stays on screen
-// through the launch and clears as the run starts. Playing the workflow
-// scrolls the page up to the window at once, since it only plays while
-// visible and the run starts a second later. The window keeps a
-// fixed height where the cards stack under it, so nothing below shifts as
-// it types, and stretches to the cards' height beside them, so the two
-// columns end together whatever card is open.
+// The simulated Microruntimes session: the terminal plays the plan, then,
+// once the visitor plays the workflow from the cards, the run, on its own
+// clock, and records how many lines it has completed in the session, which
+// any cards beside it read. Its one control, pause and replay, sits in the
+// title bar. Each run remounts it through the run counter, so the finished
+// plan stays on screen through the launch and clears as the run starts.
+// Playing the workflow scrolls the page up to the window at once, since it
+// only plays while visible and the run starts a second later. The window
+// keeps a fixed height, so nothing below shifts as it types; a page that
+// sets it beside the cards stretches it to their height with `lg:h-full`,
+// so the two columns end together whatever card is open.
 interface SessionTerminalProps {
-	/** Overrides the window's height where it sits, as the home's hero does. */
+	/** The window's height where it sits, e.g. `lg:h-full` beside the cards. */
 	className?: string
 	control: MicroruntimesMessages['session']['card']['control']
 	copy: MicroruntimesMessages['session']['terminal']
@@ -95,7 +95,7 @@ export function SessionTerminal(props: SessionTerminalProps) {
 			<MacTerminal
 				key={run}
 				action={<SessionControl copy={control} />}
-				className={cn('h-[clamp(240px,40vh,360px)] lg:h-full', className)}
+				className={cn('h-[clamp(240px,40vh,360px)]', className)}
 				label={copy.label}
 				lines={lines}
 				onProgress={recordPlayedCount}

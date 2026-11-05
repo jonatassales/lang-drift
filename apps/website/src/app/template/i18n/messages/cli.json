@@ -14,10 +14,6 @@
 			"commands": {
 				"npx": "npx @langdrift/cli init",
 				"pnpm": "pnpm dlx @langdrift/cli init"
-			},
-			"image": {
-				"alt": "A terminal running dft agent plan on a ticket: the agent reads the linked documents, takes the team’s envelope of 2,000 millicores and 3,072 MiB and a budget of $25.00 per run, suggests Claude Sonnet 5.5 at medium effort and proposes runtime.md revision 1.",
-				"caption": "dft agent plan on a ticket of the LangDrift repository."
 			}
 		},
 		"flow": {
@@ -96,10 +92,6 @@
 			"commands": {
 				"npx": "npx @langdrift/cli init",
 				"pnpm": "pnpm dlx @langdrift/cli init"
-			},
-			"image": {
-				"alt": "Um terminal rodando dft agent plan em um ticket: o agente lê os documentos vinculados, toma o envelope do time de 2.000 milicores e 3.072 MiB e um orçamento de US$ 25,00 por execução, sugere o Claude Sonnet 5.5 com effort medium e propõe a revisão 1 do runtime.md.",
-				"caption": "dft agent plan em um ticket do repositório do LangDrift."
 			}
 		},
 		"flow": {
@@ -178,10 +170,6 @@
 			"commands": {
 				"npx": "npx @langdrift/cli init",
 				"pnpm": "pnpm dlx @langdrift/cli init"
-			},
-			"image": {
-				"alt": "終端機對一張工單執行 dft agent plan：代理讀取連結的文件，採用團隊的額度 2,000 millicores 與 3,072 MiB，以及每次執行 US$25.00 的預算，建議以 medium effort 使用 Claude Sonnet 5.5，並提出 runtime.md 第 1 版。",
-				"caption": "在 LangDrift 儲存庫的一張工單上執行 dft agent plan。"
 			}
 		},
 		"flow": {
@@ -260,10 +248,6 @@
 			"commands": {
 				"npx": "npx @langdrift/cli init",
 				"pnpm": "pnpm dlx @langdrift/cli init"
-			},
-			"image": {
-				"alt": "チケットに対して dft agent plan を実行するターミナル。エージェントがリンクされた文書を読み、チームの予算枠である 2,000 ミリコアと 3,072 MiB、実行ごとの予算 $25.00 を取り込み、Claude Sonnet 5.5 を effort medium で提案し、runtime.md のリビジョン 1 を提示します。",
-				"caption": "LangDrift リポジトリのチケットに対する dft agent plan。"
 			}
 		},
 		"flow": {
@@ -342,10 +326,6 @@
 			"commands": {
 				"npx": "npx @langdrift/cli init",
 				"pnpm": "pnpm dlx @langdrift/cli init"
-			},
-			"image": {
-				"alt": "Một terminal chạy dft agent plan trên một ticket: tác tử đọc các tài liệu được liên kết, lấy hạn mức của đội gồm 2.000 millicore và 3.072 MiB cùng ngân sách 25,00 US$ mỗi lần chạy, đề xuất Claude Sonnet 5.5 với effort medium và đưa ra runtime.md phiên bản 1.",
-				"caption": "dft agent plan trên một ticket của kho mã LangDrift."
 			}
 		},
 		"flow": {

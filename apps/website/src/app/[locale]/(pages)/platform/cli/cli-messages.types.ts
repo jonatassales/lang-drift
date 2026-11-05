@@ -34,14 +34,8 @@ export interface CliCommandsCopy {
 	pnpm: string
 }
 
-export interface CliImageCopy {
-	alt: string
-	caption: string
-}
-
 export interface CliInstallCopy extends CliSectionCopy {
 	commands: CliCommandsCopy
-	image: CliImageCopy
 }
 
 export interface CliFlowCopy extends CliSectionCopy {

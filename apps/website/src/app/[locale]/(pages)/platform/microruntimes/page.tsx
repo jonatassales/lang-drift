@@ -92,6 +92,7 @@ export default async function MicroruntimesPage(props: MicroruntimesPageProps) {
 						className="mt-8 grid gap-6 lg:grid-cols-[fit-content(50%)_1fr]"
 					>
 						<SessionTerminal
+							className="lg:h-full"
 							control={copy.session.card.control}
 							copy={copy.session.terminal}
 						/>

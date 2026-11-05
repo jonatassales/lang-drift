@@ -56,7 +56,7 @@ export function PlatformHero(props: PlatformHeroProps) {
 				<ElevatedFrame className="grid w-full min-w-0 gap-2 p-2 lg:min-h-160 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
 					<div className="min-h-0 min-w-0">
 						<SessionTerminal
-							className="h-[clamp(220px,34vh,300px)] shadow-none"
+							className="h-[clamp(220px,34vh,300px)] shadow-none lg:h-full"
 							control={session.card.control}
 							copy={session.terminal}
 						/>
