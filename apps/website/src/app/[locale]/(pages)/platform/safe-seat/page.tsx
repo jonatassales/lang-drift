@@ -2,7 +2,8 @@ import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
-import { ProductLabel } from '@app/[locale]/(pages)/platform/product-label'
+import { ProductHeading } from '@app/[locale]/(pages)/platform/product-heading'
+import { ProductTagline } from '@app/[locale]/(pages)/platform/product-tagline'
 import { ProductBadge } from '@components/product-badge'
 import { ProductSection } from '@components/product-page/product-section'
 import { SkipLink } from '@components/skip-link'
@@ -12,7 +13,7 @@ import { WebsiteStructuredData } from '@components/website-structured-data'
 import { headerMessages, safeSeatMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
 import { DetailList } from 'web/ui/detail-list'
-import { FinopsIcon } from 'web/ui/icons/platform'
+import { SafeSeatIcon } from 'web/ui/icons/platform'
 import { InfoCards } from 'web/ui/info-cards'
 
 import { EvidenceCards } from './evidence-cards'
@@ -57,19 +58,15 @@ export default async function SafeSeatPage(props: SafeSeatPageProps) {
 					className="mx-auto max-w-[1180px] px-[clamp(18px,3vw,36px)] pt-[58px] pb-[70px] max-md:pt-10 max-md:pb-12"
 				>
 					<div className="flex flex-wrap items-center gap-3">
-						<ProductLabel
-							icon={<FinopsIcon className="size-4" />}
-							name={headerMessages[locale].finops}
-						/>
+						<ProductHeading icon={SafeSeatIcon} id="safe-seat-hero-heading">
+							{headerMessages[locale].safeSeat}
+						</ProductHeading>
 						<ProductBadge>{copy.hero.comingSoon}</ProductBadge>
 					</div>
-					<h1
-						className="m-0 mt-4 text-[clamp(28px,3.2vw,43px)] leading-[1.16] font-medium tracking-[-0.045em] text-balance"
-						id="safe-seat-hero-heading"
-					>
-						<span className="block">{copy.hero.titleStart}</span>{' '}
-						<span className="block">{copy.hero.titleEnd}</span>
-					</h1>
+					<ProductTagline
+						end={copy.hero.taglineEnd}
+						start={copy.hero.taglineStart}
+					/>
 					<p className="mt-6 mb-0 max-w-190 text-[15px] leading-[1.65] text-muted-foreground">
 						{copy.hero.lead}
 					</p>

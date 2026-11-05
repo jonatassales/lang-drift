@@ -145,3 +145,5 @@ One pass over the website. The console app changes only in the Permissions-Polic
 - **A dead end, for now.** The pricing call to action leads to Book a Demo, which says demos are paused, until demos open.
 - **Tabs and accordion.** Redrawn with Tailwind's defaults, they keep every computed style but two: weight 500 instead of 550, and a 4px trigger radius instead of 5px.
 - **Plan copy.** The three cards describe what LangDrift ships or plans. Their exact items are a first draft for the owner to edit at review.
+
+> **Note, 2026-11-05.** FinOps and Safe Seat no longer show the FinOps icon and name as a label above a sentence title: every product page now opens with the same heading, its own icon and product name at the Microruntimes size, so Safe Seat takes its own mark, and the sentence follows as a tagline (ticket 0311).

@@ -4,7 +4,7 @@ import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
 import { CommandLine } from '@app/[locale]/(pages)/platform/command-line'
-import { ProductIconTile } from '@app/[locale]/(pages)/platform/product-icon-tile'
+import { ProductHeading } from '@app/[locale]/(pages)/platform/product-heading'
 import { ProductSection } from '@components/product-page/product-section'
 import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
@@ -56,15 +56,9 @@ export default async function CliPage(props: CliPageProps) {
 					aria-labelledby="cli-hero-heading"
 					className="mx-auto max-w-[1180px] px-[clamp(18px,3vw,36px)] pt-[58px] pb-[70px] max-md:pt-10 max-md:pb-12"
 				>
-					<h1
-						className="m-0 flex items-center gap-[0.35em] text-[clamp(28px,3.2vw,43px)] leading-[1.16] font-medium tracking-[-0.045em] text-balance"
-						id="cli-hero-heading"
-					>
-						<ProductIconTile className="size-[0.74em] rounded-[0.2em]">
-							<CliIcon className="size-[0.46em]" />
-						</ProductIconTile>
+					<ProductHeading icon={CliIcon} id="cli-hero-heading">
 						{copy.hero.title}
-					</h1>
+					</ProductHeading>
 					<p className="mt-6 mb-0 max-w-190 text-[15px] leading-[1.65] text-muted-foreground">
 						{copy.hero.lead}
 					</p>

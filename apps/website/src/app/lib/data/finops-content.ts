@@ -182,8 +182,8 @@ export interface FailureScenarioCopy extends Record<ChainPillarId, string> {
 export interface FinopsMessages {
 	skip: string
 	hero: {
-		titleStart: string
-		titleEnd: string
+		taglineStart: string
+		taglineEnd: string
 		caption: string
 		summary: string
 	}

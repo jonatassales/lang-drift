@@ -2,8 +2,8 @@
 	"en": {
 		"skip": "Skip to how it works",
 		"hero": {
-			"titleStart": "One team envelope.",
-			"titleEnd": "Every paid call reserved before it runs.",
+			"taglineStart": "One team envelope.",
+			"taglineEnd": "Every paid call reserved before it runs.",
 			"caption": "Amounts, model names and outcomes are simulated to show how the envelope, the reservations and the receipts relate.",
 			"summary": "A team budget of 12,000 dollars split into spent, reserved, protected and available, followed by four work items with their estimate, reservation and observed spend. One item's spend is unknown and awaits reconciliation. Selecting an item updates the delivery receipt beside the ledger, or under it on a narrow screen: its estimate, reservation, observed spend, model tier and effort, retries, verification, cleanup and evidence. Every amount is simulated."
 		},
@@ -223,8 +223,8 @@
 	"pt-BR": {
 		"skip": "Pular para como funciona",
 		"hero": {
-			"titleStart": "Um único envelope para o time.",
-			"titleEnd": "Toda chamada paga é reservada antes de rodar.",
+			"taglineStart": "Um único envelope para o time.",
+			"taglineEnd": "Toda chamada paga é reservada antes de rodar.",
 			"caption": "Valores, nomes de modelos e resultados são simulados para mostrar como o envelope, as reservas e os recibos se relacionam.",
 			"summary": "Um orçamento de time de 12.000 dólares dividido em gasto, reservado, protegido e disponível, seguido de quatro itens de trabalho com estimativa, reserva e gasto observado. O gasto de um item é desconhecido e aguarda reconciliação. Selecionar um item atualiza o recibo de entrega ao lado do livro-razão, ou abaixo dele em telas estreitas: estimativa, reserva, gasto observado, nível do modelo e esforço, retentativas, verificação, limpeza e evidência. Todos os valores são simulados."
 		},
@@ -444,8 +444,8 @@
 	"zh-Hant": {
 		"skip": "跳到運作方式",
 		"hero": {
-			"titleStart": "全隊共用一份預算額度。",
-			"titleEnd": "每次付費呼叫，都先保留額度再執行。",
+			"taglineStart": "全隊共用一份預算額度。",
+			"taglineEnd": "每次付費呼叫，都先保留額度再執行。",
 			"caption": "金額、模型名稱與結果皆為模擬，用來呈現預算額度、保留與收據之間的關係。",
 			"summary": "一份團隊預算，總額 12,000 美元，分為已花費、已保留、受保護與可用四部分；接著是四個工作項目，各自列出估算、保留與觀測到的花費。其中一項花費未知，等待對帳。選取項目後，帳本旁的交付收據會隨之更新（窄螢幕上則在帳本下方）：估算、保留、觀測到的花費、模型層級與推理強度、重試、驗證、清理與證據。所有金額皆為模擬。"
 		},
@@ -665,8 +665,8 @@
 	"ja": {
 		"skip": "仕組みへスキップ",
 		"hero": {
-			"titleStart": "チームの予算枠は、ひとつ。",
-			"titleEnd": "有料呼び出しは、実行前に必ず予約。",
+			"taglineStart": "チームの予算枠は、ひとつ。",
+			"taglineEnd": "有料呼び出しは、実行前に必ず予約。",
 			"caption": "金額、モデル名、結果はシミュレーションで、予算枠・予約・レシートの関係を示すためのものです。",
 			"summary": "12,000 ドルのチーム予算を、消費済み・予約済み・保護分・利用可能に分けて示し、続いて 4 つの作業項目を見積もり・予約・観測された支出とともに示します。1 件は支出が不明で、照合待ちです。項目を選ぶと、台帳の横（狭い画面では下）にある納品レシートが更新されます。見積もり、予約、観測された支出、モデル階層と推論強度、再試行、検証、クリーンアップ、証拠です。金額はすべてシミュレーションです。"
 		},
@@ -886,8 +886,8 @@
 	"vi": {
 		"skip": "Chuyển đến cách hoạt động",
 		"hero": {
-			"titleStart": "Một hạn mức cho cả đội.",
-			"titleEnd": "Mọi lần gọi trả phí đều được giữ chỗ trước khi chạy.",
+			"taglineStart": "Một hạn mức cho cả đội.",
+			"taglineEnd": "Mọi lần gọi trả phí đều được giữ chỗ trước khi chạy.",
 			"caption": "Số tiền, tên mô hình và kết quả đều được mô phỏng để cho thấy hạn mức, khoản giữ chỗ và biên lai liên hệ với nhau ra sao.",
 			"summary": "Một ngân sách đội 12.000 đô la chia thành đã chi, đã giữ chỗ, được bảo vệ và khả dụng, tiếp theo là bốn hạng mục công việc với ước tính, khoản giữ chỗ và chi tiêu quan sát được. Chi tiêu của một hạng mục chưa rõ và đang chờ đối soát. Chọn một hạng mục sẽ cập nhật biên lai giao hàng bên cạnh sổ cái, hoặc bên dưới trên màn hình hẹp: ước tính, khoản giữ chỗ, chi tiêu quan sát được, hạng mô hình và mức nỗ lực, số lần thử lại, kiểm chứng, dọn dẹp và bằng chứng. Mọi số tiền đều được mô phỏng."
 		},
