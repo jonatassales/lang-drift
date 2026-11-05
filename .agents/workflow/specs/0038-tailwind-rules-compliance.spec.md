@@ -5,7 +5,7 @@
 ## Tickets
 
 - [ ] 0272: the pill button and the text link are shared primitives
-- [ ] 0273: the vendored tabs and accordion draw with utilities
+- [x] 0273: the vendored tabs and accordion draw with utilities
 - [ ] 0274: every color and static style reads from a role or a utility
 - [ ] 0275: the website uses the shared primitives and one cn
 - [ ] 0276: no hand-written stylesheet remains

@@ -6,11 +6,11 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** ready-for-agent, delivered with ticket 0299 of spec 0046.
 
-- [ ] Both components' tests assert each variant's indicator classes, the selected and focused states and the reduced-motion utilities.
-- [ ] The affected website pages match their capture at 1280px and 375px, light and dark, recorded under `.audits/`.
-- [ ] `pnpm turbo run check typecheck test build --filter=web --filter=tokens` passes.
+- [x] Both components' tests assert each variant's indicator classes, the selected and focused states and the reduced-motion utilities.
+- [x] The affected website pages match their capture at 1280px and 375px, light and dark, recorded under `.audits/`.
+- [x] `pnpm turbo run check typecheck test build --filter=web --filter=tokens` passes.
 
 ## Dev part
 

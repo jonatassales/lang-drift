@@ -61,7 +61,7 @@ const securityHeaders = {
 	'Referrer-Policy': 'strict-origin-when-cross-origin',
 	'X-Frame-Options': 'DENY',
 	'Permissions-Policy':
-		'camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()',
+		'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
 	'Cross-Origin-Opener-Policy': 'same-origin',
 }
 
