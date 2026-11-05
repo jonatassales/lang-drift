@@ -1,0 +1,42 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://langdrift.md/schemas/judge/request.schema.json",
+	"title": "Judge request",
+	"description": "One question the planner of the ex CLI asks the platform's judge.",
+	"type": "object",
+	"additionalProperties": false,
+	"required": [
+		"kind",
+		"model",
+		"system",
+		"prompt",
+		"maxTokens",
+		"promptVersion"
+	],
+	"properties": {
+		"kind": {
+			"enum": ["sources", "episodes", "suggestion", "reserved-part"]
+		},
+		"model": {
+			"type": "string",
+			"minLength": 1
+		},
+		"system": {
+			"type": "string",
+			"minLength": 1
+		},
+		"prompt": {
+			"type": "string",
+			"minLength": 1
+		},
+		"maxTokens": {
+			"type": "integer",
+			"minimum": 1,
+			"maximum": 32000
+		},
+		"promptVersion": {
+			"type": "string",
+			"minLength": 1
+		}
+	}
+}

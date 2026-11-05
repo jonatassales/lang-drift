@@ -1,0 +1,88 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://langdrift.md/schemas/judge/reserved-part.answer.schema.json",
+	"title": "Reserved part answer",
+	"description": "The part of the ticket a person writes by hand under Safe Seat: a problem with its own goal and acceptance criteria, located by project-relative paths. Empty paths mean no part qualifies. Proposed paths come with a goal, at least one acceptance criterion and a category. plannedLines never exceeds totalPlannedLines, a rule JSON Schema cannot express and ParseAnswer enforces.",
+	"type": "object",
+	"additionalProperties": false,
+	"required": [
+		"paths",
+		"goal",
+		"acceptance",
+		"category",
+		"plannedLines",
+		"totalPlannedLines",
+		"excludedKind",
+		"reason",
+		"confidence"
+	],
+	"properties": {
+		"paths": {
+			"type": "array",
+			"items": {
+				"type": "string",
+				"minLength": 1
+			}
+		},
+		"goal": {
+			"type": "string"
+		},
+		"acceptance": {
+			"type": "array",
+			"items": {
+				"type": "string",
+				"minLength": 1
+			}
+		},
+		"category": {
+			"enum": ["core-domain", "hard-part", "new-stack", null]
+		},
+		"plannedLines": {
+			"type": "integer",
+			"minimum": 0
+		},
+		"totalPlannedLines": {
+			"type": "integer",
+			"minimum": 0
+		},
+		"excludedKind": {
+			"enum": [
+				"boilerplate",
+				"configuration",
+				"generated",
+				"rename",
+				"tool-migration",
+				null
+			]
+		},
+		"reason": {
+			"type": "string",
+			"minLength": 1
+		},
+		"confidence": {
+			"type": "number",
+			"minimum": 0,
+			"maximum": 1
+		}
+	},
+	"if": {
+		"properties": {
+			"paths": {
+				"minItems": 1
+			}
+		}
+	},
+	"then": {
+		"properties": {
+			"goal": {
+				"minLength": 1
+			},
+			"acceptance": {
+				"minItems": 1
+			},
+			"category": {
+				"enum": ["core-domain", "hard-part", "new-stack"]
+			}
+		}
+	}
+}

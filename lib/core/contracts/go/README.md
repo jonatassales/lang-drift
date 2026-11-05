@@ -8,6 +8,7 @@ The root `go.work` resolves this module for the CLI. The CLI's `go.mod` names no
 | --- | --- |
 | `configuration` | The `runtime.md` fence: exactly one `langdrift` JSON block, version 2, its fields and bounds, the component env file format, the derived image tag, and the lexical rules for identifiers, paths, ports, images and variable names. |
 | `protocol` | What the connected agent and the server exchange at `<console-url>/api/mcp`: the MCP version, the five tools and their request and response types. |
+| `judge` | What the planner and the platform's judge exchange at `<console-url>/api/judge` (spec 0045): the request, the response with usage and cost, and the typed answer of each kind (`sources`, `episodes`, `suggestion`, and `reserved-part` for the part a person writes under Safe Seat). `schema/` holds the JSON Schemas and one sample per kind; the console tests against the same files. `ParseAnswer` turns an answer's JSON into its typed answer and refuses anything outside the contract. |
 
 ```sh
 GOTOOLCHAIN=local go test ./...

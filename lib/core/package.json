@@ -2,6 +2,9 @@
 	"name": "@langdrift/core",
 	"version": "0.1.0",
 	"private": true,
+	"exports": {
+		"./judge/*": "./contracts/go/judge/schema/*"
+	},
 	"scripts": {
 		"test": "go -C contracts/go test ./...",
 		"typecheck": "go -C contracts/go vet ./..."

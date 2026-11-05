@@ -1,0 +1,7 @@
+{
+	"model": "claude-sonnet-5-5",
+	"effort": "medium",
+	"effortReason": "four known components, no new stack, a bounded workflow",
+	"modelReason": "the cheapest listed model that handles multi-file service work",
+	"reasons": ["no earlier run measured", "the services already have tests"]
+}

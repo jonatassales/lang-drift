@@ -1,0 +1,15 @@
+{
+	"text": "{\"model\":\"claude-sonnet-5-5\",\"effort\":\"medium\",\"effortReason\":\"One state machine in one package.\",\"modelReason\":\"Routine Go with tests at a known seam.\",\"reasons\":[]}",
+	"usage": {
+		"inputTokens": 1840,
+		"outputTokens": 96
+	},
+	"refused": false,
+	"reason": "",
+	"cost": {
+		"cents": 1,
+		"provenance": "console",
+		"illustrative": true
+	},
+	"judgeVersion": "console-judge-1"
+}

@@ -1,0 +1,118 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://langdrift.md/schemas/judge/sources.answer.schema.json",
+	"title": "Sources answer",
+	"description": "The judgment over the sources a plan read: a verdict per source, the facts they state, the guardrail criteria that apply and the figures given for CPU and memory.",
+	"type": "object",
+	"additionalProperties": false,
+	"required": ["sources", "facts", "criteria", "figures"],
+	"properties": {
+		"sources": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": [
+					"path",
+					"verdict",
+					"reason",
+					"confidence",
+					"role",
+					"summary"
+				],
+				"properties": {
+					"path": {
+						"type": "string",
+						"minLength": 1
+					},
+					"verdict": {
+						"enum": ["kept", "discarded"]
+					},
+					"reason": {
+						"type": "string",
+						"minLength": 1
+					},
+					"confidence": {
+						"type": "number",
+						"minimum": 0,
+						"maximum": 1
+					},
+					"role": {
+						"type": "string"
+					},
+					"summary": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"facts": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["topic", "text", "source"],
+				"properties": {
+					"topic": {
+						"enum": ["resource", "component", "acceptance", "budget", "limits"]
+					},
+					"text": {
+						"type": "string",
+						"minLength": 1
+					},
+					"source": {
+						"type": "string",
+						"minLength": 1
+					}
+				}
+			}
+		},
+		"criteria": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["id", "applies"],
+				"properties": {
+					"id": {
+						"type": "string",
+						"minLength": 1
+					},
+					"applies": {
+						"type": "string",
+						"minLength": 1
+					}
+				}
+			}
+		},
+		"figures": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["topic", "fact", "source", "cpuMillis", "memoryMiB"],
+				"properties": {
+					"topic": {
+						"const": "resource"
+					},
+					"fact": {
+						"type": "string",
+						"minLength": 1
+					},
+					"source": {
+						"type": "string",
+						"minLength": 1
+					},
+					"cpuMillis": {
+						"type": "integer",
+						"minimum": 0
+					},
+					"memoryMiB": {
+						"type": "integer",
+						"minimum": 0
+					}
+				}
+			}
+		}
+	}
+}
