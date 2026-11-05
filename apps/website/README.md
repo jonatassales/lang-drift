@@ -18,13 +18,15 @@ Run from the repository root:
 | `drift env setup` | Creates the local `.env` file from `.env.development`. |
 | `drift env validate` | Checks that `.env.development` has its local `.env`. |
 
-`.env.development` holds the shared development defaults and is tracked, so a fresh checkout runs without setup. In development, `CRYPTO_SECRET` is generated on the fly if not set. Git ignores `.env`. Put real and local values in `apps/website/.env` (run `drift env setup` to create it), which Next.js loads. Never put a production secret in a tracked file or in a `NEXT_PUBLIC_` variable.
+`.env.development` holds the shared development defaults and is tracked. `CRYPTO_SECRET` has no default in any environment: a fresh checkout takes it from the developer's untracked `.env`, and the website fails without it. Git ignores `.env`. Put real and local values in `apps/website/.env` (run `drift env setup` to create it), which Next.js loads. Never put a production secret in a tracked file or in a `NEXT_PUBLIC_` variable.
 
 | Variable | Requirement |
 | --- | --- |
-| `CRYPTO_SECRET` | Server-only 32-byte AES key in canonical base64; the locale proxy needs it. In development, it is generated on the fly if unset. In production, provide a 32-byte key from `openssl rand -base64 32`. Every instance of a deploy uses the same key. |
+| `CRYPTO_SECRET` | Server-only 32-byte AES key in canonical base64; the locale proxy needs it in every environment and fails without it. Generate one with `openssl rand -base64 32`: a local key in `apps/website/.env`, the deployment's own in its environment. Every instance of a deploy uses the same key. |
 | `DEMO_REQUESTS_URL` | Origin of the demo-requests service the edge forwards accepted demo requests to; unset, the form answers that requests are paused. |
 | `DEMO_REQUESTS_TOKEN` | Server-only bearer token the demo-requests service expects, at least 32 characters. |
+| `VERCEL_ENV` | Set by Vercel. On a preview build, the content security policy allows the Vercel Toolbar. |
+| `NODE_ENV` | Set by Next.js. Development relaxes the content security policy for the development server; production marks the locale cookie `secure`. |
 
 `next start` serves the website correctly as its script runs it. Do not bind it with `--hostname 127.0.0.1`: Next renames a loopback host `localhost`, mistakes next-intl's rewrite to `/pt-BR` or `/zh-Hant` for an external one, and every `pt-br` and `zh-hant` page loops on 308 (ticket 0121). Vercel is unaffected.
 

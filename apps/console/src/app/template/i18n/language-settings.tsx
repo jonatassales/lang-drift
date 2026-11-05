@@ -3,11 +3,11 @@
 import { useLocale, useTranslations } from 'next-intl'
 import { useState, useTransition } from 'react'
 
+import languages from '@i18n/messages/languages.json'
 import { LanguageSwitcher } from 'web/ui/language-switcher'
 
 import { setLocale } from './actions'
 import { isLocale } from './config'
-import languages from './messages/languages.json'
 import { usePathname, useRouter } from './navigation'
 
 interface LanguageSettingsProps {

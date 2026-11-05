@@ -14,9 +14,9 @@ interface EventHistoryProps {
 export function EventHistory(props: EventHistoryProps) {
 	const { runtimeId, initial } = props
 
-	const translate = useTranslations('ui')
-	const causes = useTranslations('cause')
-	const kinds = useTranslations('event')
+	const translateUi = useTranslations('ui')
+	const translateCause = useTranslations('cause')
+	const translateEvent = useTranslations('event')
 	const dateTime = useDateTime()
 	const resource = useResource<{ events: LifecycleEvent[] }>(
 		`runtimes/${runtimeId}/history`,
@@ -30,7 +30,7 @@ export function EventHistory(props: EventHistoryProps) {
 		<Card className="block min-w-0 py-0">
 			{!resource.data?.events.length ? (
 				<p className="p-6 text-sm text-muted-foreground">
-					{translate('empty')}
+					{translateUi('empty')}
 				</p>
 			) : (
 				<div className="overflow-x-auto">
@@ -49,7 +49,7 @@ export function EventHistory(props: EventHistoryProps) {
 										className="whitespace-nowrap px-4 py-3 font-medium"
 										key={key}
 									>
-										{translate(key)}
+										{translateUi(key)}
 									</th>
 								))}
 							</tr>
@@ -59,25 +59,27 @@ export function EventHistory(props: EventHistoryProps) {
 								<tr key={event.id}>
 									<td className="px-4 py-4">
 										<span className="font-medium">
-											{kinds.has(event.kind) ? kinds(event.kind) : event.kind}
+											{translateEvent.has(event.kind)
+												? translateEvent(event.kind)
+												: event.kind}
 										</span>
 										<p className="mt-1 max-w-44 break-all font-mono text-[10px] text-muted-foreground">
 											{event.id}
 										</p>
 										<details className="mt-2">
 											<summary className="cursor-pointer text-[11px] text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
-												{translate('evidence')}
+												{translateUi('evidence')}
 											</summary>
 											<dl className="mt-2 grid gap-1 text-[10px]">
 												{event.revision !== undefined ? (
 													<>
-														<dt>{translate('revision')}</dt>
+														<dt>{translateUi('revision')}</dt>
 														<dd>{event.revision}</dd>
 													</>
 												) : null}
 												{event.operationId ? (
 													<>
-														<dt>{translate('operation')}</dt>
+														<dt>{translateUi('operation')}</dt>
 														<dd className="break-all font-mono">
 															{event.operationId}
 														</dd>
@@ -85,13 +87,13 @@ export function EventHistory(props: EventHistoryProps) {
 												) : null}
 												{event.requestedBy ? (
 													<>
-														<dt>{translate('actor')}</dt>
+														<dt>{translateUi('actor')}</dt>
 														<dd className="break-all">{event.requestedBy}</dd>
 													</>
 												) : null}
 												{event.sourceRevision ? (
 													<>
-														<dt>{translate('sourceRevision')}</dt>
+														<dt>{translateUi('sourceRevision')}</dt>
 														<dd className="break-all font-mono">
 															{event.sourceRevision}
 														</dd>
@@ -99,7 +101,7 @@ export function EventHistory(props: EventHistoryProps) {
 												) : null}
 												{event.concreteHash ? (
 													<>
-														<dt>{translate('configurationHash')}</dt>
+														<dt>{translateUi('configurationHash')}</dt>
 														<dd className="break-all font-mono">
 															{event.concreteHash}
 														</dd>
@@ -107,7 +109,7 @@ export function EventHistory(props: EventHistoryProps) {
 												) : null}
 												{event.markdownHash ? (
 													<>
-														<dt>{translate('markdownHash')}</dt>
+														<dt>{translateUi('markdownHash')}</dt>
 														<dd className="break-all font-mono">
 															{event.markdownHash}
 														</dd>
@@ -122,8 +124,8 @@ export function EventHistory(props: EventHistoryProps) {
 										) : null}
 									</td>
 									<td className="px-4 py-4">
-										{causes.has(event.cause)
-											? causes(event.cause)
+										{translateCause.has(event.cause)
+											? translateCause(event.cause)
 											: event.cause}
 									</td>
 									<td className="max-w-36 break-all px-4 py-4 text-[10px]">

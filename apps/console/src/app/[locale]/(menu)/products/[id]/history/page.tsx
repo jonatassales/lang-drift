@@ -17,13 +17,16 @@ interface PageProps {
 export default async function Page(props: PageProps) {
 	const { params } = props
 
-	const [{ id }, t] = await Promise.all([params, getTranslations('ui')])
+	const [{ id }, translate] = await Promise.all([params, getTranslations('ui')])
 
 	if (!isEntityId(id)) notFound()
 
 	return (
 		<>
-			<PageHeading title={t('history')} description={t('activityIntro')} />
+			<PageHeading
+				title={translate('history')}
+				description={translate('activityIntro')}
+			/>
 			<Suspense fallback={<ActivityOverviewSkeleton />}>
 				<HistoryOverview
 					productId={id}

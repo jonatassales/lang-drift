@@ -3,11 +3,10 @@ import createMiddleware from 'next-intl/middleware'
 
 import { localeCookie } from '@i18n/config'
 import { routing } from '@i18n/routing'
-
-import { createNonce, documentPolicy } from './proxy/content-security-policy'
-import { missingScreen } from './proxy/missing-screen.compute'
-import { namesNoScreen } from './proxy/names-no-screen.compute'
-import { policyEnvironment } from './proxy/policy-environment.compute'
+import { createNonce, documentPolicy } from '@proxy/content-security-policy'
+import { missingScreen } from '@proxy/missing-screen.compute'
+import { namesNoScreen } from '@proxy/names-no-screen.compute'
+import { policyEnvironment } from '@proxy/policy-environment.compute'
 
 const handleLocale = createMiddleware(routing)
 

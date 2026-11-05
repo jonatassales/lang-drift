@@ -22,21 +22,27 @@ import privacyJson from '@i18n/messages/privacy.json'
 import safeSeatJson from '@i18n/messages/safe-seat.json'
 import type { WebsiteLocale } from '@i18n/routing'
 
-export const headerMessages: Record<WebsiteLocale, HeaderMessages> = headerJson
+import { assertCatalogShape } from './assert-catalog-shape.compute'
+
+export const headerMessages: Record<WebsiteLocale, HeaderMessages> =
+	assertCatalogShape('header', headerJson)
 export const privacyMessages: Record<WebsiteLocale, PrivacyMessages> =
-	privacyJson
-export const footerMessages: Record<WebsiteLocale, FooterMessages> = footerJson
+	assertCatalogShape('privacy', privacyJson)
+export const footerMessages: Record<WebsiteLocale, FooterMessages> =
+	assertCatalogShape('footer', footerJson)
 export const platformMessages: Record<WebsiteLocale, PlatformMessages> =
-	platformJson
-export const finopsMessages: Record<WebsiteLocale, FinopsMessages> = finopsJson
+	assertCatalogShape('platform', platformJson)
+export const finopsMessages: Record<WebsiteLocale, FinopsMessages> =
+	assertCatalogShape('finops', finopsJson)
 export const microruntimesMessages: Record<
 	WebsiteLocale,
 	MicroruntimesMessages
-> = microruntimesJson
+> = assertCatalogShape('microruntimes', microruntimesJson)
 export const safeSeatMessages: Record<WebsiteLocale, SafeSeatMessages> =
-	safeSeatJson
-export const cliMessages: Record<WebsiteLocale, CliMessages> = cliJson
+	assertCatalogShape('safe-seat', safeSeatJson)
+export const cliMessages: Record<WebsiteLocale, CliMessages> =
+	assertCatalogShape('cli', cliJson)
 export const ciGatesMessages: Record<WebsiteLocale, CiGatesMessages> =
-	ciGatesJson
+	assertCatalogShape('ci-gates', ciGatesJson)
 export const bookDemoMessages: Record<WebsiteLocale, BookDemoMessages> =
-	bookDemoJson
+	assertCatalogShape('book-a-demo', bookDemoJson)

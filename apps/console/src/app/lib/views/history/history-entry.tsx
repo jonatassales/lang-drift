@@ -13,9 +13,9 @@ interface HistoryEntryProps {
 export function HistoryEntry(props: HistoryEntryProps) {
 	const { item } = props
 
-	const translate = useTranslations('ui')
-	const kinds = useTranslations('event')
-	const causes = useTranslations('cause')
+	const translateUi = useTranslations('ui')
+	const translateEvent = useTranslations('event')
+	const translateCause = useTranslations('cause')
 	const dateTime = useDateTime()
 	const { event } = item
 
@@ -29,21 +29,29 @@ export function HistoryEntry(props: HistoryEntryProps) {
 				>
 					{item.runtimeName}
 				</Link>
-				<span>{kinds.has(event.kind) ? kinds(event.kind) : event.kind}</span>
+				<span>
+					{translateEvent.has(event.kind)
+						? translateEvent(event.kind)
+						: event.kind}
+				</span>
 			</header>
 			<p className="break-words text-muted-foreground">
-				{causes.has(event.cause) ? causes(event.cause) : event.cause} ·{' '}
-				{event.actor}
+				{translateCause.has(event.cause)
+					? translateCause(event.cause)
+					: event.cause}{' '}
+				· {event.actor}
 			</p>
 			<dl className="grid grid-cols-1 gap-2 sm:grid-cols-3">
 				<div>
-					<dt className="text-muted-foreground">{translate('environments')}</dt>
+					<dt className="text-muted-foreground">
+						{translateUi('environments')}
+					</dt>
 					<dd className="break-all">
 						{item.environmentName ?? event.environmentId ?? '—'}
 					</dd>
 				</div>
 				<div>
-					<dt className="text-muted-foreground">{translate('occurredAt')}</dt>
+					<dt className="text-muted-foreground">{translateUi('occurredAt')}</dt>
 					<dd>
 						{dateTime(new Date(event.occurredAt), {
 							dateStyle: 'short',
@@ -52,7 +60,7 @@ export function HistoryEntry(props: HistoryEntryProps) {
 					</dd>
 				</div>
 				<div>
-					<dt className="text-muted-foreground">{translate('receivedAt')}</dt>
+					<dt className="text-muted-foreground">{translateUi('receivedAt')}</dt>
 					<dd>
 						{dateTime(new Date(event.receivedAt), {
 							dateStyle: 'short',

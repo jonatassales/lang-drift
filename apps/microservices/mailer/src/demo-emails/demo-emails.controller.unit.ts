@@ -136,6 +136,7 @@ describe('mailer/demo-emails/demo-emails.controller', () => {
 				type: 'demo-request.email-sent',
 			}),
 		).rejects.toThrow()
+
 		expect(sender.sends).toEqual([])
 		expect(producer.emitted).toEqual([])
 	})

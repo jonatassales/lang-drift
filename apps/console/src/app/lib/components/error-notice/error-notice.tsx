@@ -12,8 +12,8 @@ interface ErrorNoticeProps {
 export function ErrorNotice(props: ErrorNoticeProps) {
 	const { error, retry } = props
 
-	const translate = useTranslations('ui')
-	const messages = useTranslations('errors')
+	const translateUi = useTranslations('ui')
+	const translateErrors = useTranslations('errors')
 	const code = error instanceof ConsoleError ? error.code : 'operation_failed'
 
 	return (
@@ -21,17 +21,21 @@ export function ErrorNotice(props: ErrorNoticeProps) {
 			role="alert"
 			className="flex flex-wrap items-center gap-3 rounded-lg border border-status-danger/30 bg-status-danger/5 p-4 text-sm text-status-danger"
 		>
-			<span>{messages.has(code) ? messages(code) : translate('error')}</span>
+			<span>
+				{translateErrors.has(code)
+					? translateErrors(code)
+					: translateUi('error')}
+			</span>
 			{code === 'authentication_required' ? (
 				<Link
 					href="/login"
 					className="underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
 				>
-					{translate('login')}
+					{translateUi('login')}
 				</Link>
 			) : retry ? (
 				<Button onClick={retry} type="button" variant="outline">
-					{translate('retry')}
+					{translateUi('retry')}
 				</Button>
 			) : null}
 		</div>

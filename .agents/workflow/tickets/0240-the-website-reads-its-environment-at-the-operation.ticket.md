@@ -21,3 +21,5 @@
 
 - `pnpm turbo run check typecheck test build --filter=website`
 - `platform/cli/drift env validate`
+
+> **Note, 2026-11-05.** The criteria on the early-access registry, Turnstile and mode readers are obsolete: spec 0046 deleted that code. What remained was the cookie factory's invented development secret and the documentation that described it.

@@ -75,6 +75,7 @@ describe('website/infra/demo-requests/forward-demo-request.adapter', () => {
 			await expect(
 				forwardDemoRequest(submission, new AbortController().signal),
 			).rejects.toThrow(new RegExp(key))
+
 			expect(transport).not.toHaveBeenCalled()
 		},
 	)

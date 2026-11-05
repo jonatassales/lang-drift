@@ -111,6 +111,7 @@ describe('website/api/book-a-demo/route', () => {
 			},
 			ok: false,
 		})
+
 		expect(transport).not.toHaveBeenCalled()
 	})
 
@@ -136,6 +137,7 @@ describe('website/api/book-a-demo/route', () => {
 			code: 'OK',
 			ok: true,
 		})
+
 		expect(transport).toHaveBeenCalledTimes(1)
 		const [url, init] = transport.mock.calls[0] as [string, RequestInit]
 		expect(url).toBe('http://127.0.0.1:3402/v1/demo-requests')

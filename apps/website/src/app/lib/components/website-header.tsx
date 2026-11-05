@@ -5,16 +5,15 @@ import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
 import { ProductBadge } from '@components/product-badge'
+import { DemoButton } from '@components/website-header/demo-button'
+import { drawerFocus } from '@components/website-header/drawer-focus'
+import { LanguagePill } from '@components/website-header/language-pill'
+import { PlatformMenu } from '@components/website-header/platform-menu'
+import { platformProducts } from '@components/website-header/platform-products'
+import { panelSurface } from '@components/website-header/surface'
 import { Link } from '@i18n/navigation'
 import { themeAtom } from '@state'
 import { Brand } from 'web/ui/brand'
-
-import { DemoButton } from './website-header/demo-button'
-import { drawerFocus } from './website-header/drawer-focus'
-import { LanguagePill } from './website-header/language-pill'
-import { PlatformMenu } from './website-header/platform-menu'
-import { platformProducts } from './website-header/platform-products'
-import { panelSurface } from './website-header/surface'
 
 // Entries without a destination yet read like their neighbors but do not
 // navigate: Docs, and the products without a page.

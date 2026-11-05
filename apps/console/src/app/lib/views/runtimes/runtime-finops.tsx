@@ -9,28 +9,28 @@ interface RuntimeFinopsProps {
 export function RuntimeFinops(props: RuntimeFinopsProps) {
 	const { snapshot } = props
 
-	const translate = useTranslations('ui')
-	const status = useTranslations('status')
+	const translateUi = useTranslations('ui')
+	const translateStatus = useTranslations('status')
 	const format = useFormatter()
 	const { runtime } = snapshot
 
 	return (
 		<section className="rounded-lg border border-border p-4">
-			<h2 className="text-sm font-medium">{translate('finopsReport')}</h2>
+			<h2 className="text-sm font-medium">{translateUi('finopsReport')}</h2>
 			<div className="mt-4 grid gap-4 text-xs">
 				<p className="leading-relaxed text-muted-foreground">
-					{translate('finopsBasis')}
+					{translateUi('finopsBasis')}
 				</p>
 				<dl className="grid gap-2 sm:grid-cols-2">
-					<dt>{translate('configuredLimits')}</dt>
+					<dt>{translateUi('configuredLimits')}</dt>
 					<dd>
 						{format.number(runtime.configuration.cpu)} CPU ·{' '}
 						{format.number(runtime.configuration.memoryMiB)} MiB
 					</dd>
-					<dt>{translate('llmBudget')}</dt>
+					<dt>{translateUi('llmBudget')}</dt>
 					<dd>
 						{runtime.configuration.llmBudgetUsd === undefined
-							? translate('unknown')
+							? translateUi('unknown')
 							: format.number(runtime.configuration.llmBudgetUsd, {
 									style: 'currency',
 									currency: 'USD',
@@ -46,20 +46,20 @@ export function RuntimeFinops(props: RuntimeFinopsProps) {
 							{execution.environmentId} / {execution.id}
 						</p>
 						<p>
-							{translate('measurementWindow')}:{' '}
-							{execution.measuredFrom ?? translate('unknown')} →{' '}
-							{execution.observedAt ?? translate('unknown')}
+							{translateUi('measurementWindow')}:{' '}
+							{execution.measuredFrom ?? translateUi('unknown')} →{' '}
+							{execution.observedAt ?? translateUi('unknown')}
 						</p>
 						<p>
-							{translate('downtime')}:{' '}
+							{translateUi('downtime')}:{' '}
 							{execution.downtimeMilliseconds === null
-								? translate('unknown')
-								: translate('downtimeReport', {
+								? translateUi('unknown')
+								: translateUi('downtimeReport', {
 										milliseconds: execution.downtimeMilliseconds,
 										quality:
 											execution.downtimeQuality === 'unknown'
-												? translate('unknown')
-												: status(execution.downtimeQuality),
+												? translateUi('unknown')
+												: translateStatus(execution.downtimeQuality),
 									})}
 						</p>
 					</section>

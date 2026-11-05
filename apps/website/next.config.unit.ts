@@ -71,6 +71,7 @@ describe('the website security headers', () => {
 			const headers = await headersAt(route)
 
 			expect(await policyAt(route)).toEqual(productionPolicy)
+
 			for (const [name, value] of Object.entries(otherHeaders)) {
 				expect(headers.get(name)).toBe(value)
 			}

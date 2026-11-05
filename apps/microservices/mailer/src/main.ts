@@ -1,5 +1,4 @@
 import 'reflect-metadata'
-
 import { hostname } from 'node:os'
 import { NestFactory } from '@nestjs/core'
 import type { MicroserviceOptions } from '@nestjs/microservices'
