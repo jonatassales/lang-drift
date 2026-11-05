@@ -20,6 +20,7 @@ import { cn } from 'web/utilities'
 import { AnalysisCard, analysisSummary } from './analysis-card'
 import { PlanCard, planSummary } from './plan-card'
 import { SessionCard } from './session-card'
+import { SessionCardsSkeleton } from './session-cards-skeleton'
 import { TicketCard, ticketSummary } from './ticket-card'
 import {
 	type TicketCardCopy,
@@ -41,11 +42,11 @@ interface CardContent {
 // ticket, the analysis of its documents and the project's episodes, the
 // plan, and the workflow that plays the run. The act opens its card and
 // collapses the others to their summary line; a click opens a card by hand
-// until the next act. The stack is absent until the command is entered,
-// and its height is the row's, so the terminal ends where the open card
-// ends. The plan cards keep their end while a run plays; one status line
-// announces only how the run ended. Every value derives from how many lines
-// the terminal has completed.
+// until the next act. The stack is hidden behind a skeleton until the
+// command is entered, and its height is the row's, so the terminal ends
+// where the open card ends. The plan cards keep their end while a run plays;
+// one status line announces only how the run ended. Every value derives from
+// how many lines the terminal has completed.
 interface SessionCardsProps {
 	copy: TicketCardCopy
 	locale: WebsiteLocale
@@ -94,27 +95,30 @@ export function SessionCards(props: SessionCardsProps) {
 	}
 
 	return (
-		<div
-			aria-hidden={visible ? undefined : 'true'}
-			className={cn(
-				'grid min-w-0 content-start gap-3 motion-safe:transition-opacity motion-safe:duration-500',
-				visible ? 'visible opacity-100' : 'invisible opacity-0',
-			)}
-		>
-			{planPhaseIds.map((phase) => (
-				<SessionCard
-					body={cards[phase].body}
-					expanded={openCard === phase}
-					key={phase}
-					label={copy.labels[phase]}
-					onOpen={handleOpenCard}
-					phase={phase}
-					summary={cards[phase].summary}
-				/>
-			))}
-			<p className="sr-only" role="status">
-				{workflowStatus(copy, format, outcome)}
-			</p>
+		<div className="relative min-w-0">
+			<SessionCardsSkeleton pending={!visible} />
+			<div
+				aria-hidden={visible ? undefined : 'true'}
+				className={cn(
+					'grid min-w-0 content-start gap-3 motion-safe:transition-opacity motion-safe:duration-500',
+					visible ? 'visible opacity-100' : 'invisible opacity-0',
+				)}
+			>
+				{planPhaseIds.map((phase) => (
+					<SessionCard
+						body={cards[phase].body}
+						expanded={openCard === phase}
+						key={phase}
+						label={copy.labels[phase]}
+						onOpen={handleOpenCard}
+						phase={phase}
+						summary={cards[phase].summary}
+					/>
+				))}
+				<p className="sr-only" role="status">
+					{workflowStatus(copy, format, outcome)}
+				</p>
+			</div>
 		</div>
 	)
 }

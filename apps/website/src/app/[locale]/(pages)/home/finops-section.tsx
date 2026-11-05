@@ -21,7 +21,6 @@ export function FinopsSection(props: FinopsSectionProps) {
 
 	return (
 		<HomeProductSection
-			caption={copy.hero.caption}
 			description={sections.description}
 			headline={
 				<>

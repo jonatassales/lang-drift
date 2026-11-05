@@ -221,6 +221,8 @@ You can customize workflow stages, coding agent drivers, and cost parameters usi
 
 Thanks to [Matt Pocock](https://x.com/mattpocockuk). The agent skills this repository works with, from grilling to to-spec, to-tickets, implement, tdd and code-review, are adapted from [mattpocock/skills](https://github.com/mattpocock/skills) under the MIT License, and the example workflow above runs several of them.
 
+The LangDrift website is inspired by [LangWatch](https://langwatch.ai/).
+
 ## License
 
 LangDrift is open-source software licensed under the [Apache License, Version 2.0](/LICENSE).

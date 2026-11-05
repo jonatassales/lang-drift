@@ -10,8 +10,6 @@ import { TextLink } from 'web/ui/text-link'
 // the way to the product page last. Every section shares the heading and
 // lead type.
 interface HomeProductSectionProps {
-	/** The note under the demo. */
-	caption?: string
 	/** The product's demo, with its own grid. */
 	children: ReactNode
 	description: string
@@ -28,7 +26,6 @@ interface HomeProductSectionProps {
 
 export function HomeProductSection(props: HomeProductSectionProps) {
 	const {
-		caption,
 		children,
 		description,
 		headline,
@@ -40,16 +37,12 @@ export function HomeProductSection(props: HomeProductSectionProps) {
 	} = props
 
 	const headingId = `${id}-heading`
-	const captionId = `${id}-caption`
 	const summaryId = `${id}-summary`
 	const href = 'href' in product ? product.href : undefined
-	const describedBy = [caption && captionId, summary && summaryId]
-		.filter(Boolean)
-		.join(' ')
 
 	return (
 		<section
-			aria-describedby={describedBy || undefined}
+			aria-describedby={summary ? summaryId : undefined}
 			aria-labelledby={headingId}
 			className="mx-auto max-w-[1280px] scroll-mt-24 border-t border-border px-[clamp(18px,3vw,36px)] py-16 sm:py-20"
 			id={id}
@@ -64,14 +57,6 @@ export function HomeProductSection(props: HomeProductSectionProps) {
 				{description}
 			</p>
 			<div className="mt-12">{children}</div>
-			{caption ? (
-				<p
-					className="mt-5 mb-0 max-w-[880px] text-xs leading-[1.65] text-muted-foreground"
-					id={captionId}
-				>
-					{caption}
-				</p>
-			) : null}
 			{summary ? (
 				<p className="sr-only" id={summaryId}>
 					{summary}

@@ -91,7 +91,6 @@ export interface FinopsMessages {
 	hero: {
 		taglineStart: string
 		taglineEnd: string
-		caption: string
 		summary: string
 	}
 	ledger: {

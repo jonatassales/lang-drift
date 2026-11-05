@@ -47,7 +47,7 @@ export default async function FinopsPage(props: FinopsPageProps) {
 			<WebsiteHeader />
 			<main id="top">
 				<section
-					aria-describedby="finops-hero-caption finops-hero-summary"
+					aria-describedby="finops-hero-summary"
 					aria-labelledby="finops-hero-heading"
 					className="mx-auto max-w-[1280px] px-[clamp(18px,3vw,36px)] pt-[58px] pb-[70px] max-md:pt-10 max-md:pb-12"
 				>
@@ -66,12 +66,6 @@ export default async function FinopsPage(props: FinopsPageProps) {
 							locale={locale}
 						/>
 					</div>
-					<p
-						className="mt-5 mb-0 max-w-[880px] text-xs leading-[1.65] text-muted-foreground"
-						id="finops-hero-caption"
-					>
-						{copy.hero.caption}
-					</p>
 					<p className="sr-only" id="finops-hero-summary">
 						{copy.hero.summary}
 					</p>
