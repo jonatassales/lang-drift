@@ -8,10 +8,10 @@
 
 **Status:** ready-for-agent
 
-- [ ] `apps/website/src/app/lib/` no longer exists and no file imports through a removed alias.
-- [ ] Every moved module sits under the segment the spec's website owners list names, and the early-access environment computes move unchanged with their route.
-- [ ] The import matcher in `biome.json` names exactly the aliases the two apps declare.
-- [ ] `pnpm turbo run check typecheck test build --filter=website` and `platform/cli/drift check localization` pass; a move changed imports and nothing else.
+- [x] `apps/website/src/app/lib/` no longer exists and no file imports through a removed alias.
+- [x] Every moved module sits under the segment the spec's website owners list names, and the early-access environment computes move unchanged with their route.
+- [x] The import matcher in `biome.json` names exactly the aliases the two apps declare.
+- [x] `pnpm turbo run check typecheck test build --filter=website` and `platform/cli/drift check localization` pass; a move changed imports and nothing else.
 
 ## Dev part
 
@@ -22,3 +22,5 @@
 - `pnpm turbo run check typecheck test build --filter=website`
 - `platform/cli/drift check localization`
 - `platform/cli/drift check biome`
+
+> **Note, 2026-11-05.** Two items are obsolete: spec 0046 already removed `@event-testdata/*` with the early-access route, and since then only the book-a-demo route reads a JSON body, so its body modules stay in `api/book-a-demo/body/` rather than a shared folder. The early-access modules the owners list names no longer exist. `product-badge`, which the list does not place, goes to the locale layout, the nearest segment holding its importers: the header and its Platform menu, the pricing plans section and the Safe Seat page.

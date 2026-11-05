@@ -6,7 +6,7 @@
 
 **Blocked by:** 0229.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: it will not be implemented.
 
 - [ ] A unit test drives the write atoms through a Jotai store and reads the derived atoms.
 - [ ] The session-cards and session-terminal tests pass.

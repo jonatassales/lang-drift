@@ -1,8 +1,9 @@
 import { hasLocale } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
 
-import { RouteState } from '@components/route-state'
 import { routing } from '@i18n/routing'
+
+import { RouteState } from './route-state'
 
 export { generateMetadata } from './not-found.metadata'
 

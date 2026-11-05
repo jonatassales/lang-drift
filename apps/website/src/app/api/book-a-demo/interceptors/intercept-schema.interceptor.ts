@@ -1,7 +1,7 @@
-import { reply } from '@components/book-a-demo/book-demo-reply.response'
-import { fieldErrorsOf } from '@components/book-a-demo/field-errors.compute'
-import type { BookDemoSubmission } from '@components/book-a-demo/form.types'
-import { bookDemoSubmissionSchema } from '@components/book-a-demo/form.validation'
+import { reply } from '@api/book-a-demo/book-demo-reply.response'
+import { fieldErrorsOf } from '@api/book-a-demo/field-errors.compute'
+import type { BookDemoSubmission } from '@routes/book-a-demo/form.types'
+import { bookDemoSubmissionSchema } from '@routes/book-a-demo/form.validation'
 
 export interface AcceptedSubmission {
 	submission: BookDemoSubmission

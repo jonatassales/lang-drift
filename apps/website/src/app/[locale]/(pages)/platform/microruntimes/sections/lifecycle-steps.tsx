@@ -1,0 +1,88 @@
+'use client'
+
+import { useAtom } from 'jotai'
+import type { MouseEvent } from 'react'
+
+import {
+	type LifecycleStageId,
+	lifecycleStageIds,
+	type MicroruntimesMessages,
+} from '@routes/platform/microruntimes/content/microruntimes-content'
+import { ChoiceButton } from '@routes/platform/product-page/choice-button'
+import { selectedLifecycleStageAtom } from '@state'
+import { Eyebrow } from 'web/ui/eyebrow'
+import { cn } from 'web/utilities'
+
+interface LifecycleStepsProps {
+	copy: MicroruntimesMessages['lifecycle']
+}
+
+// The six lifecycle steps and what the selected one does and leaves behind.
+// Selecting a step drives the evidence record right below.
+export function LifecycleSteps(props: LifecycleStepsProps) {
+	const { copy } = props
+
+	const [selectedId, setSelectedId] = useAtom(selectedLifecycleStageAtom)
+
+	function selectStage(event: MouseEvent<HTMLButtonElement>) {
+		const stageId = event.currentTarget.dataset.id as
+			| LifecycleStageId
+			| undefined
+		if (stageId) {
+			setSelectedId(stageId)
+		}
+	}
+
+	const stage = copy.stages[selectedId]
+
+	return (
+		<div className="@container mt-8 grid gap-5">
+			<ol
+				aria-label={copy.stepperLabel}
+				className="m-0 grid list-none grid-cols-2 gap-2 p-0 @md:grid-cols-3 @4xl:grid-cols-6"
+			>
+				{lifecycleStageIds.map((id, index) => {
+					const selected = id === selectedId
+
+					return (
+						<li key={id}>
+							<ChoiceButton
+								className="flex items-center gap-2.5 border-border px-3 py-2.5"
+								data-id={id}
+								kind="step"
+								onSelect={selectStage}
+								selected={selected}
+							>
+								<span
+									className={cn(
+										'inline-flex size-6 shrink-0 items-center justify-center rounded-full border border-border font-mono text-[10px] text-muted-foreground',
+										selected &&
+											'border-primary bg-primary text-primary-foreground',
+									)}
+								>
+									{index + 1}
+								</span>
+								{copy.stages[id].label}
+							</ChoiceButton>
+						</li>
+					)
+				})}
+			</ol>
+
+			<div
+				aria-atomic="true"
+				aria-live="polite"
+				className="grid gap-4 rounded-xl bg-foreground/[0.03] p-4 @lg:grid-cols-2 sm:p-5"
+			>
+				<div className="grid content-start gap-1.5">
+					<Eyebrow>{copy.whatItDoes}</Eyebrow>
+					<p className="m-0 text-[13px] leading-[1.6]">{stage.does}</p>
+				</div>
+				<div className="grid content-start gap-1.5">
+					<Eyebrow>{copy.evidenceItLeaves}</Eyebrow>
+					<p className="m-0 text-[13px] leading-[1.6]">{stage.leaves}</p>
+				</div>
+			</div>
+		</div>
+	)
+}

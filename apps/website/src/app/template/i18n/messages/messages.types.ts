@@ -1,5 +1,5 @@
-import type { BookDemoErrorCode } from '@components/book-a-demo/form.types'
-import type { PositionId } from '@components/book-a-demo/positions'
+import type { BookDemoErrorCode } from '@routes/book-a-demo/form.types'
+import type { PositionId } from '@routes/book-a-demo/positions'
 
 export interface HeaderMessages {
 	home: string

@@ -43,7 +43,7 @@ Run from the repository root:
 
 The website needs `CRYPTO_SECRET` for encrypted locale cookies, in every environment: a developer keeps a local key in the untracked `apps/website/.env`, and deployed environments set a canonical 32-byte key; `apps/website/README.md` says how to generate one for a deployment.
 
-`biome.json` owns formatting and import order: tabs, lines up to 80 columns, single quotes (double in JSX attributes), no semicolons, and imports grouped as packages, then aliases (`@/`, `#`, `~` and the website's `@app/*`, `@components/*`, `@i18n/*`, `@state`, …), then relative paths, separated by blank lines.
+`biome.json` owns formatting and import order: tabs, lines up to 80 columns, single quotes (double in JSX attributes), no semicolons, and imports grouped as packages, then aliases (`@/`, `#`, `~` and the website's `@app/*`, `@layout/*`, `@routes/*`, `@api/*`, `@i18n/*`, `@state`, …), then relative paths, separated by blank lines.
 
 `check` and `fix` are root tasks with caching off on purpose: their inputs span every package, which a root task's cache key does not reliably cover, and Biome is fast enough without it.
 

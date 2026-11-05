@@ -7,10 +7,11 @@ import { type ReactNode, Suspense } from 'react'
 
 import 'web/styles.css'
 import '@app/template/tailwind/app.css'
-import { LocaleAvailabilityNotice } from '@components/locale-availability-notice'
-import { ScrollToTop } from '@components/scroll-to-top'
 import { getWebsiteMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
+
+import { LocaleAvailabilityNotice } from './locale-availability-notice'
+import { ScrollToTop } from './scroll-to-top'
 
 export { generateMetadata } from './layout.metadata'
 export { generateStaticParams } from './layout.static'

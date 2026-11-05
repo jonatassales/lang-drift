@@ -2,12 +2,12 @@ import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
-import { SkipLink } from '@components/skip-link'
-import { WebsiteFooter } from '@components/website-footer'
-import { WebsiteHeader } from '@components/website-header'
-import { WebsiteStructuredData } from '@components/website-structured-data'
 import { privacyMessages } from '@i18n/messages/index'
 import { routing } from '@i18n/routing'
+import { SkipLink } from '@layout/skip-link'
+import { WebsiteFooter } from '@layout/website-footer'
+import { WebsiteHeader } from '@layout/website-header/website-header'
+import { WebsiteStructuredData } from '@layout/website-structured-data'
 
 export { generateMetadata } from './page.metadata'
 

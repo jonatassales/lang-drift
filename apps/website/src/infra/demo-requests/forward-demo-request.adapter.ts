@@ -1,4 +1,4 @@
-import type { BookDemoSubmission } from '@components/book-a-demo/form.types'
+import type { BookDemoSubmission } from '@routes/book-a-demo/form.types'
 
 const timeoutMs = 3500
 

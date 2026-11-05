@@ -1,4 +1,4 @@
-import type { CommandLineLabels } from '@app/[locale]/(pages)/platform/command-line-labels.type'
+import type { CommandLineLabels } from '@routes/platform/command-line-labels.type'
 
 import type { finopsGateIds, postureIds } from './ci-gates-content.data'
 
