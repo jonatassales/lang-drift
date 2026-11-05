@@ -63,7 +63,10 @@ export default async function CliPage(props: CliPageProps) {
 						{copy.hero.lead}
 					</p>
 					<div className="mt-8">
-						<CommandLine command={copy.hero.command} />
+						<CommandLine
+							command={copy.hero.command}
+							labels={copy.copyCommand}
+						/>
 					</div>
 					<p className="mt-4 mb-0 max-w-190 text-xs leading-[1.65] text-muted-foreground">
 						{copy.hero.requirements}
@@ -77,8 +80,14 @@ export default async function CliPage(props: CliPageProps) {
 					title={copy.install.title}
 				>
 					<div className="mt-8 grid gap-3">
-						<CommandLine command={copy.install.commands.npx} />
-						<CommandLine command={copy.install.commands.pnpm} />
+						<CommandLine
+							command={copy.install.commands.npx}
+							labels={copy.copyCommand}
+						/>
+						<CommandLine
+							command={copy.install.commands.pnpm}
+							labels={copy.copyCommand}
+						/>
 					</div>
 					<figure className="m-0 mt-10">
 						<Image

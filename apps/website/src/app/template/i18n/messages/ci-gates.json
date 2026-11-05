@@ -84,6 +84,11 @@
 					"description": "Keeps the figures provisional until the provider bills."
 				}
 			}
+		},
+		"copyCommand": {
+			"copy": "Copy command",
+			"copied": "Copied",
+			"failed": "Copy failed"
 		}
 	},
 	"pt-BR": {
@@ -171,6 +176,11 @@
 					"description": "Mantém os valores provisórios até o provedor cobrar."
 				}
 			}
+		},
+		"copyCommand": {
+			"copy": "Copiar comando",
+			"copied": "Copiado",
+			"failed": "Não foi possível copiar"
 		}
 	},
 	"zh-Hant": {
@@ -258,6 +268,11 @@
 					"description": "在供應商開立帳單之前，數值維持暫定。"
 				}
 			}
+		},
+		"copyCommand": {
+			"copy": "複製指令",
+			"copied": "已複製",
+			"failed": "無法複製"
 		}
 	},
 	"ja": {
@@ -345,6 +360,11 @@
 					"description": "プロバイダーが請求するまで、数値を暫定のままにします。"
 				}
 			}
+		},
+		"copyCommand": {
+			"copy": "コマンドをコピー",
+			"copied": "コピーしました",
+			"failed": "コピーできませんでした"
 		}
 	},
 	"vi": {
@@ -432,6 +452,11 @@
 					"description": "Giữ số liệu ở mức tạm tính cho đến khi nhà cung cấp lập hóa đơn."
 				}
 			}
+		},
+		"copyCommand": {
+			"copy": "Sao chép lệnh",
+			"copied": "Đã sao chép",
+			"failed": "Không sao chép được"
 		}
 	}
 }

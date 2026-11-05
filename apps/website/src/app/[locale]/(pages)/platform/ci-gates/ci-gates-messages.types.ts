@@ -1,3 +1,5 @@
+import type { CommandLineLabels } from '@app/[locale]/(pages)/platform/command-line-labels.type'
+
 import type { finopsGateIds, postureIds } from './ci-gates-content.data'
 
 // The shape of the ci-gates catalog, keyed by the page's ids.
@@ -55,4 +57,5 @@ export interface CiGatesMessages {
 	posture: CiGatesPostureCopy
 	report: CiGatesReportCopy
 	gates: CiGatesGatesCopy
+	copyCommand: CommandLineLabels
 }

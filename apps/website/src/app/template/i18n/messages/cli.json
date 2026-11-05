@@ -4,7 +4,7 @@
 		"hero": {
 			"title": "LangDrift CLI",
 			"lead": "Plan, run and record agent-assisted delivery from your terminal, inside the budget your team set. The LangDrift CLI is open source, and its command is ex.",
-			"requirements": "macOS or Linux · Node.js 24 or later · Docker, kind, kubectl and Terraform for the runtimes · ANTHROPIC_API_KEY for the planner",
+			"requirements": "macOS or Linux · Node.js 24 or later · Docker, kind, kubectl and Terraform for the runtimes",
 			"command": "npx @langdrift/cli init"
 		},
 		"install": {
@@ -74,6 +74,11 @@
 			"npm": "@langdrift/cli on npm",
 			"github": "Source on GitHub",
 			"license": "Apache License 2.0"
+		},
+		"copyCommand": {
+			"copy": "Copy command",
+			"copied": "Copied",
+			"failed": "Copy failed"
 		}
 	},
 	"pt-BR": {
@@ -81,7 +86,7 @@
 		"hero": {
 			"title": "LangDrift CLI",
 			"lead": "Planeje, execute e registre entregas assistidas por agentes pelo terminal, dentro do orçamento que o seu time definiu. A LangDrift CLI é de código aberto, e o comando dela é ex.",
-			"requirements": "macOS ou Linux · Node.js 24 ou mais recente · Docker, kind, kubectl e Terraform para os runtimes · ANTHROPIC_API_KEY para o planejador",
+			"requirements": "macOS ou Linux · Node.js 24 ou mais recente · Docker, kind, kubectl e Terraform para os runtimes",
 			"command": "npx @langdrift/cli init"
 		},
 		"install": {
@@ -151,6 +156,11 @@
 			"npm": "@langdrift/cli no npm",
 			"github": "Código no GitHub",
 			"license": "Licença Apache 2.0"
+		},
+		"copyCommand": {
+			"copy": "Copiar comando",
+			"copied": "Copiado",
+			"failed": "Não foi possível copiar"
 		}
 	},
 	"zh-Hant": {
@@ -158,7 +168,7 @@
 		"hero": {
 			"title": "LangDrift CLI",
 			"lead": "在團隊設定的預算內，從終端機規劃、執行並記錄代理協助的交付。LangDrift CLI 是開源軟體，指令為 ex。",
-			"requirements": "macOS 或 Linux · Node.js 24 以上 · runtime 需要 Docker、kind、kubectl 與 Terraform · 規劃器需要 ANTHROPIC_API_KEY",
+			"requirements": "macOS 或 Linux · Node.js 24 以上 · runtime 需要 Docker、kind、kubectl 與 Terraform",
 			"command": "npx @langdrift/cli init"
 		},
 		"install": {
@@ -228,6 +238,11 @@
 			"npm": "npm 上的 @langdrift/cli",
 			"github": "GitHub 上的原始碼",
 			"license": "Apache 授權條款 2.0"
+		},
+		"copyCommand": {
+			"copy": "複製指令",
+			"copied": "已複製",
+			"failed": "無法複製"
 		}
 	},
 	"ja": {
@@ -235,7 +250,7 @@
 		"hero": {
 			"title": "LangDrift CLI",
 			"lead": "チームが決めた予算の範囲内で、エージェント支援のデリバリーをターミナルから計画、実行、記録します。LangDrift CLI はオープンソースで、コマンドは ex です。",
-			"requirements": "macOS または Linux · Node.js 24 以降 · runtime には Docker、kind、kubectl、Terraform · プランナー用の ANTHROPIC_API_KEY",
+			"requirements": "macOS または Linux · Node.js 24 以降 · runtime には Docker、kind、kubectl、Terraform",
 			"command": "npx @langdrift/cli init"
 		},
 		"install": {
@@ -305,6 +320,11 @@
 			"npm": "npm の @langdrift/cli",
 			"github": "GitHub のソース",
 			"license": "Apache License 2.0"
+		},
+		"copyCommand": {
+			"copy": "コマンドをコピー",
+			"copied": "コピーしました",
+			"failed": "コピーできませんでした"
 		}
 	},
 	"vi": {
@@ -312,7 +332,7 @@
 		"hero": {
 			"title": "LangDrift CLI",
 			"lead": "Lập kế hoạch, chạy và ghi lại quy trình phát triển có tác tử hỗ trợ ngay từ terminal, trong ngân sách mà đội bạn đã đặt. LangDrift CLI là phần mềm nguồn mở, và lệnh của nó là ex.",
-			"requirements": "macOS hoặc Linux · Node.js 24 trở lên · Docker, kind, kubectl và Terraform cho các runtime · ANTHROPIC_API_KEY cho bộ lập kế hoạch",
+			"requirements": "macOS hoặc Linux · Node.js 24 trở lên · Docker, kind, kubectl và Terraform cho các runtime",
 			"command": "npx @langdrift/cli init"
 		},
 		"install": {
@@ -382,6 +402,11 @@
 			"npm": "@langdrift/cli trên npm",
 			"github": "Mã nguồn trên GitHub",
 			"license": "Giấy phép Apache 2.0"
+		},
+		"copyCommand": {
+			"copy": "Sao chép lệnh",
+			"copied": "Đã sao chép",
+			"failed": "Không sao chép được"
 		}
 	}
 }

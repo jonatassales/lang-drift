@@ -1,3 +1,5 @@
+import type { CommandLineLabels } from '@app/[locale]/(pages)/platform/command-line-labels.type'
+
 import type { cliFlowStepIds, cliGovernIds } from './cli-content.data'
 
 // The shape of the cli catalog, keyed by the page's ids.
@@ -63,4 +65,5 @@ export interface CliMessages {
 	flow: CliFlowCopy
 	governs: CliGovernsCopy
 	links: CliLinksCopy
+	copyCommand: CommandLineLabels
 }
