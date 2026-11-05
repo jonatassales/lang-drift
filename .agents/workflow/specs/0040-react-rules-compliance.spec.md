@@ -2,6 +2,8 @@
 
 **Status:** ready-for-agent
 
+> **Note, 2026-11-05.** The owner closed 0286, 0287, 0288, 0289, 0291 as won't fix: the work goes to the published packages, `@langdrift/cli` and `@langdrift/core`, until the runtime runs.
+
 ## Tickets
 
 - [ ] 0286: the web package's components apply the React rules

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0229.
 
-**Status:** superseded by spec 0046, which removes the early-access code this ticket reshapes. 2026-11-04.
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] `POST` answers the paused 503 while the pause value is on, and runs the pipeline when it is off.
 - [ ] Each interceptor lives in its own file under the route's `interceptors/` folder, and the registry calls in one adapter under `src/infra/`.

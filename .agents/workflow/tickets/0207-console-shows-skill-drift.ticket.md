@@ -6,7 +6,7 @@
 
 **Blocked by:** 0206.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] The FinOps area shows skill drift for the current month from the stub, with the drift colors and the illustrative label.
 - [ ] The reading is computed from the seeded tickets' states. console-stubs serves no skill drift figure.

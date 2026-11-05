@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] `platform/cli/drift quality check general` prints no finding under `apps/microservices/console-stubs`.
 - [ ] Every file declares one free function or one type with its methods, as spec 0035 reads the rule, so the wider Go detector of 0246 finds nothing here later.

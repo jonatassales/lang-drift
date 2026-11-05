@@ -6,7 +6,7 @@
 
 **Blocked by:** 0230, 0231, 0236.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] The console's types file is split by concern and no file declares types of two concerns.
 - [ ] The stub-frame test keeps refusing every malformed frame it pins today.

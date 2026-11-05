@@ -6,7 +6,7 @@
 
 **Blocked by:** 0273, 0275.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] No `.css` file holds a selector or element rule.
 - [ ] `platform/cli/drift quality check tailwind` reports nothing.

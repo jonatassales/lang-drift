@@ -2,6 +2,8 @@
 
 **Status:** ready-for-agent
 
+> **Note, 2026-11-05.** The owner closed 0236, 0237, 0238, 0241, 0242, 0244 as won't fix: the work goes to the published packages, `@langdrift/cli` and `@langdrift/core`, until the runtime runs.
+
 ## Tickets
 
 - [ ] 0236: drift sees the general-rule violations in the apps

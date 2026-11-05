@@ -6,7 +6,7 @@
 
 **Blocked by:** 0229, 0230.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] No app draws an inline `<svg>` icon.
 - [ ] Captures differ only in the four technologies that take the shared artwork.

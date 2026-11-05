@@ -6,7 +6,7 @@
 
 **Blocked by:** 0233, 0241.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] The panel's upload, request and view live in three files, each with one reason to change.
 - [ ] No empty or comment-only `catch` remains in the console, and the storage adapter answers `false` when `localStorage` throws, with a unit test.

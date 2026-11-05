@@ -6,7 +6,7 @@
 
 **Blocked by:** 0233, 0263.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] `platform/cli/drift quality check filesystem` reports no `../` anywhere.
 - [ ] `drift --help` and `drift quality check filesystem` give the same result from the root, a nested directory and the installed symlink.
