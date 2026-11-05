@@ -1,0 +1,13 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://langdrift.md/schemas/stages/tickets.report.schema.json",
+	"title": "Tickets report",
+	"description": "The to-tickets skill's report, for the stage line \"console › to-tickets 3 tickets · blocking edges recorded\".",
+	"type": "object",
+	"additionalProperties": false,
+	"required": ["tickets", "blockingEdgesRecorded"],
+	"properties": {
+		"tickets": { "type": "integer", "minimum": 0 },
+		"blockingEdgesRecorded": { "type": "boolean" }
+	}
+}

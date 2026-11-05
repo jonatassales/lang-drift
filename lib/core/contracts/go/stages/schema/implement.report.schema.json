@@ -1,0 +1,22 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://langdrift.md/schemas/stages/implement.report.schema.json",
+	"title": "Implement report",
+	"description": "The implement skill's report, for the stage line \"console › implement  tdd · 5 components · 14 files · boundary only · stops at the reserved part\".",
+	"type": "object",
+	"additionalProperties": false,
+	"required": [
+		"method",
+		"components",
+		"files",
+		"boundaryOnly",
+		"stoppedAtReservedPart"
+	],
+	"properties": {
+		"method": { "const": "tdd" },
+		"components": { "type": "integer", "minimum": 0 },
+		"files": { "type": "integer", "minimum": 0 },
+		"boundaryOnly": { "type": "boolean" },
+		"stoppedAtReservedPart": { "type": "boolean" }
+	}
+}

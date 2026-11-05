@@ -1,0 +1,14 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://langdrift.md/schemas/stages/spec.report.schema.json",
+	"title": "Spec report",
+	"description": "The to-spec skill's report, for the stage line \"console › to-spec    0011-SPEC revised · 3 acceptance criteria\". spec is the spec's project-relative path; the line prints the first two dash-separated parts of its file name. A clean path that never climbs is a rule JSON Schema cannot fully express; the Go check enforces it.",
+	"type": "object",
+	"additionalProperties": false,
+	"required": ["spec", "revised", "acceptanceCriteria"],
+	"properties": {
+		"spec": { "type": "string", "minLength": 1 },
+		"revised": { "type": "boolean" },
+		"acceptanceCriteria": { "type": "integer", "minimum": 0 }
+	}
+}

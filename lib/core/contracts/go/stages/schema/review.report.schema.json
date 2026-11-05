@@ -1,0 +1,13 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://langdrift.md/schemas/stages/review.report.schema.json",
+	"title": "Review report",
+	"description": "The code-review skill's report, for the stage line \"console › code-review 2 findings · fixed\".",
+	"type": "object",
+	"additionalProperties": false,
+	"required": ["findings", "fixed"],
+	"properties": {
+		"findings": { "type": "integer", "minimum": 0 },
+		"fixed": { "type": "boolean" }
+	}
+}
