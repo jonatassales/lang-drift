@@ -24,7 +24,7 @@ import { playLabel } from './play-label.compute'
 import type {
 	TicketCardCopy,
 	TicketCardFormat,
-} from './ticket-card-format.factory'
+} from './ticket-card-format.compute'
 import { WorkflowChoice } from './workflow-choice'
 import { WorkflowResult } from './workflow-result'
 import { WorkflowSpend } from './workflow-spend'

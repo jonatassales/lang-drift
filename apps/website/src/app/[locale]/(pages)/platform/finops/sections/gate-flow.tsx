@@ -3,12 +3,12 @@ import { Fragment } from 'react'
 
 import type { WebsiteLocale } from '@i18n/routing'
 import { dollars } from '@routes/platform/finops/content/dollars.fmt'
-import {
-	type FinopsMessages,
-	type GateFigures,
-	type GateStepId,
-	gateStepIds,
-} from '@routes/platform/finops/content/finops-content.data'
+import { gateStepIds } from '@routes/platform/finops/content/finops-content.data'
+import type {
+	FinopsMessages,
+	GateFigures,
+	GateStepId,
+} from '@routes/platform/finops/content/finops-content.types'
 import { Eyebrow } from 'web/ui/eyebrow'
 import { ArrowRightIcon } from 'web/ui/icons/arrow'
 

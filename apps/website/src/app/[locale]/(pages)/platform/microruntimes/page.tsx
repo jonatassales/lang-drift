@@ -13,9 +13,9 @@ import {
 	lifecyclePhaseIds,
 	lifecycleScenarioIds,
 	ownershipRowIds,
-	type StateCardId,
 	stateCardIds,
 } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import type { StateCardId } from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import { AuthoringFlow } from '@routes/platform/microruntimes/sections/authoring-flow'
 import { LifecycleSteps } from '@routes/platform/microruntimes/sections/lifecycle-steps'
 import { RuntimeDescriptorCard } from '@routes/platform/microruntimes/sections/runtime-descriptor-card'

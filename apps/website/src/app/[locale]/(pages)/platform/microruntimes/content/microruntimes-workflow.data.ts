@@ -1,6 +1,11 @@
-import type { TerminalLineType } from 'web/vendors/smoothui/mac-terminal'
-
-import type { PlanEffort } from './microruntimes-content.data'
+import type { PlanEffort } from './microruntimes-content.types'
+import type {
+	HumanStageId,
+	RunLine,
+	Tokens,
+	WorkflowChoices,
+	WorkflowStageId,
+} from './microruntimes-workflow.types'
 
 // The hero's Workflow card and the run it plays: the Claude models the team
 // can choose, their Anthropic list prices, the tokens a run of this ticket is
@@ -36,9 +41,6 @@ export const workflowModels = [
 	},
 ] as const
 
-export type WorkflowModel = (typeof workflowModels)[number]
-export type WorkflowModelId = WorkflowModel['id']
-
 // runtime.md's own effort tokens; the API's levels above high are not
 // offered.
 export const workflowEfforts = [
@@ -46,12 +48,6 @@ export const workflowEfforts = [
 	'medium',
 	'high',
 ] as const satisfies readonly PlanEffort[]
-
-// Input and output tokens, in thousands.
-export interface Tokens {
-	inputThousands: number
-	outputThousands: number
-}
 
 // What a run of this ticket is expected to use, from the spec's five
 // components; no episode measured tokens.
@@ -91,8 +87,6 @@ export const observedTokens: Record<PlanEffort, Tokens> = {
 export const budgetCents = 2500
 export const reserveMarginPercent = 20
 
-// What the tokens cost at the model's uncached list prices.
-
 export const workflowStageIds = [
 	'planning',
 	'spec',
@@ -102,12 +96,6 @@ export const workflowStageIds = [
 	'review',
 	'merge',
 ] as const
-
-export type WorkflowStageId = (typeof workflowStageIds)[number]
-
-// The stages a person can be asked to confirm. The dev ticket is the
-// person's own work, never switched off, and merge is always the owner's.
-export type HumanStageId = Exclude<WorkflowStageId, 'dev-ticket' | 'merge'>
 
 // The stages this workflow always gives a person: planning ends only when
 // the owner confirms it, so its checkbox stays checked.
@@ -124,12 +112,6 @@ export const stageSkills: Record<WorkflowStageId, string | null> = {
 	merge: null,
 }
 
-export interface WorkflowChoices {
-	effort: PlanEffort
-	human: Record<HumanStageId, boolean>
-	model: WorkflowModelId
-}
-
 export const initialWorkflowChoices: WorkflowChoices = {
 	effort: 'medium',
 	human: {
@@ -141,9 +123,6 @@ export const initialWorkflowChoices: WorkflowChoices = {
 	},
 	model: 'claude-sonnet-5-5',
 }
-
-// The run's money in cents: the estimate, the reservation the gate would
-// hold, what the usage record observed and what the reservation releases.
 
 export const workflowDelivery = {
 	branch: 'feat/0031-book-a-demo-runtime',
@@ -185,17 +164,6 @@ export const runMessageIds = [
 	'nextReview',
 	'nextMerge',
 ] as const
-
-export type RunMessageId = (typeof runMessageIds)[number]
-
-export interface RunLine {
-	delay: number
-	id: string
-	message: RunMessageId
-	stage?: WorkflowStageId
-	type: TerminalLineType
-	values?: Record<string, string>
-}
 
 // The lines a stage's own work prints once it is allowed to run.
 export const stageWork: Record<
@@ -243,5 +211,3 @@ export const workStageIds = [
 	'tickets',
 	'implement',
 ] as const
-
-export type StageProgress = 'pending' | 'active' | 'done'

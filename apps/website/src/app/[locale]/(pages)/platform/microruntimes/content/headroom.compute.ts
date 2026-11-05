@@ -1,4 +1,4 @@
-import type { Resources } from './microruntimes-content.data'
+import type { Resources } from './microruntimes-content.types'
 
 // What the envelope leaves once the plan's totals are taken from it.
 export function headroom(bounded: Resources, suggested: Resources): Resources {

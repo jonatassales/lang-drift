@@ -13,7 +13,7 @@ import { resolvedComponents } from './resolved-components.compute'
 import type {
 	TicketCardCopy,
 	TicketCardFormat,
-} from './ticket-card-format.factory'
+} from './ticket-card-format.compute'
 
 export { planSummary } from './plan-summary.compute'
 

@@ -1,8 +1,8 @@
 import {
 	budgetCents,
-	type WorkflowChoices,
 	workflowDelivery,
 } from '@routes/platform/microruntimes/content/microruntimes-workflow.data'
+import type { WorkflowChoices } from '@routes/platform/microruntimes/content/microruntimes-workflow.types'
 import { workflowFigures } from '@routes/platform/microruntimes/content/workflow-figures.compute'
 import { workflowModel } from '@routes/platform/microruntimes/content/workflow-model.compute'
 
@@ -11,7 +11,7 @@ import type { RunOutcome } from './run-outcome.compute'
 import type {
 	TicketCardCopy,
 	TicketCardFormat,
-} from './ticket-card-format.factory'
+} from './ticket-card-format.compute'
 
 export function workflowSummary(
 	copy: TicketCardCopy,

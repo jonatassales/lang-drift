@@ -18,7 +18,7 @@ import { extractedFact } from './extracted-fact.compute'
 import type {
 	TicketCardCopy,
 	TicketCardFormat,
-} from './ticket-card-format.factory'
+} from './ticket-card-format.compute'
 
 export { analysisSummary } from './analysis-summary.compute'
 

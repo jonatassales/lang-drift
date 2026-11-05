@@ -1,17 +1,17 @@
 import { atom } from 'jotai'
 
 import { isRequiredHumanStage } from '@routes/platform/microruntimes/content/is-required-human-stage.compute'
-import {
-	type PlanEffort,
-	type PlanPhaseId,
-	planSession,
-} from '@routes/platform/microruntimes/content/microruntimes-content.data'
-import {
-	type HumanStageId,
-	initialWorkflowChoices,
-	type WorkflowChoices,
-	type WorkflowModelId,
-} from '@routes/platform/microruntimes/content/microruntimes-workflow.data'
+import { planSession } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import type {
+	PlanEffort,
+	PlanPhaseId,
+} from '@routes/platform/microruntimes/content/microruntimes-content.types'
+import { initialWorkflowChoices } from '@routes/platform/microruntimes/content/microruntimes-workflow.data'
+import type {
+	HumanStageId,
+	WorkflowChoices,
+	WorkflowModelId,
+} from '@routes/platform/microruntimes/content/microruntimes-workflow.types'
 import { phaseOf } from '@routes/platform/microruntimes/content/phase-of.compute'
 import { runSession } from '@routes/platform/microruntimes/content/run-session.compute'
 

@@ -9,7 +9,7 @@ import type { RunOutcome } from './run-outcome.compute'
 import type {
 	TicketCardCopy,
 	TicketCardFormat,
-} from './ticket-card-format.factory'
+} from './ticket-card-format.compute'
 
 export function workflowStatus(
 	copy: TicketCardCopy,

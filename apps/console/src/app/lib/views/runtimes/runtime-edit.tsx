@@ -4,11 +4,9 @@ import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { PageHeading } from '@components/page-heading/page-heading'
-import type {
-	ProductEnvelope,
-	RuntimeExecutionsEnvelope,
-} from '@data/read-envelopes.types'
+import type { ProductEnvelope } from '@data/product-envelopes.types'
 import { useResource } from '@data/resource.hook'
+import type { RuntimeExecutionsEnvelope } from '@data/runtime-envelopes.types'
 import { useRouter } from '@i18n/navigation'
 
 import { RuntimeForm } from './runtime-form'

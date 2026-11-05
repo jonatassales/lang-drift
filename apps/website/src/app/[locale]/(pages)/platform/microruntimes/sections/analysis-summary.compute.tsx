@@ -12,7 +12,7 @@ import { CardValue } from './card-value'
 import type {
 	TicketCardCopy,
 	TicketCardFormat,
-} from './ticket-card-format.factory'
+} from './ticket-card-format.compute'
 
 const suggestedModel = workflowModel(ticketPlan.model)
 const keptCount = episodes.filter(

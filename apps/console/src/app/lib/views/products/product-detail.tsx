@@ -1,7 +1,7 @@
 'use client'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
-import type { ProductEnvelope } from '@data/read-envelopes.types'
+import type { ProductEnvelope } from '@data/product-envelopes.types'
 import { useResource } from '@data/resource.hook'
 import type { RuntimeListSnapshot } from '@data/types'
 import { RuntimeList } from '@views/runtimes/runtime-list'

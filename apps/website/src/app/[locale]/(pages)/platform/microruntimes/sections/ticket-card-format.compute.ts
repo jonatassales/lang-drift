@@ -4,7 +4,7 @@ import type { WebsiteLocale } from '@i18n/routing'
 import type {
 	MicroruntimesMessages,
 	Resources,
-} from '@routes/platform/microruntimes/content/microruntimes-content.data'
+} from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import { priceDate } from '@routes/platform/microruntimes/content/microruntimes-workflow.data'
 import { tokenCount } from '@routes/platform/microruntimes/content/token-count.fmt'
 import { workflowDollars } from '@routes/platform/microruntimes/content/workflow-dollars.fmt'

@@ -2,7 +2,7 @@
 import { useTranslations } from 'next-intl'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
-import type { LifecycleEventsEnvelope } from '@data/read-envelopes.types'
+import type { LifecycleEventsEnvelope } from '@data/history-envelopes.types'
 import { useResource } from '@data/resource.hook'
 import { useDateTime } from '@i18n/use-date-time.hook'
 import { Card } from 'web/ui/card'

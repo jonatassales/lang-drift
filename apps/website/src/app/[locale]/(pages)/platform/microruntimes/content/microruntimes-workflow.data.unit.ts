@@ -6,10 +6,10 @@ import { choices } from '@routes/platform/microruntimes/content/testdata/choices
 import {
 	budgetCents,
 	initialWorkflowChoices,
-	type RunMessageId,
 	workflowEfforts,
 	workflowModels,
 } from './microruntimes-workflow.data'
+import type { RunMessageId } from './microruntimes-workflow.types'
 import { runSession } from './run-session.compute'
 import { stageProgress } from './stage-progress.compute'
 import { workflowFigures } from './workflow-figures.compute'

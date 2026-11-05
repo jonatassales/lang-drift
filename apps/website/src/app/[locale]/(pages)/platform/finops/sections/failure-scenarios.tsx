@@ -1,9 +1,9 @@
 import {
 	chainPillarIds,
-	type FinopsMessages,
 	failureScenarioIds,
 	failureStatusTones,
 } from '@routes/platform/finops/content/finops-content.data'
+import type { FinopsMessages } from '@routes/platform/finops/content/finops-content.types'
 import { DetailList } from 'web/ui/detail-list'
 
 // The two ways delivery leaves the plan, side by side: each walks the chain

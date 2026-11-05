@@ -3,8 +3,8 @@ import { Fragment } from 'react'
 import {
 	flowGuaranteeIds,
 	flowTargetIds,
-	type MicroruntimesMessages,
 } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import type { MicroruntimesMessages } from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import { LogoMark } from 'web/ui/brand'
 import { Eyebrow } from 'web/ui/eyebrow'
 import { ArrowRightIcon } from 'web/ui/icons/arrow'

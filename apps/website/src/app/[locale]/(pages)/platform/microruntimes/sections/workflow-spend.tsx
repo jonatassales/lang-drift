@@ -1,4 +1,4 @@
-import type { PlanEffort } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import type { PlanEffort } from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import {
 	budgetCents,
 	expectedTokens,
@@ -11,7 +11,7 @@ import { cn } from 'web/utilities'
 import type {
 	TicketCardCopy,
 	TicketCardFormat,
-} from './ticket-card-format.factory'
+} from './ticket-card-format.compute'
 
 // What the chosen run is expected to cost and what the gate would reserve
 // of the budget the design doc set, with the tokens behind the estimate.

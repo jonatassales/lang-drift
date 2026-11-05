@@ -3,7 +3,7 @@ import type { ComponentType } from 'react'
 import type {
 	PlanComponent,
 	Technology,
-} from '@routes/platform/microruntimes/content/microruntimes-content.data'
+} from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import {
 	GoIcon,
 	NatsIcon,

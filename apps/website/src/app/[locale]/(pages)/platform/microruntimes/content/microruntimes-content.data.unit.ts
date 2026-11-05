@@ -21,7 +21,7 @@ import { phaseOf } from './phase-of.compute'
 import { planLineIndex } from './plan-line-index.compute'
 import { suggestedTotals } from './suggested-totals.compute'
 
-describe('website/platform/microruntimes/content/microruntimes-content.data, the planning session', () => {
+describe('website/platform/microruntimes/content/microruntimes-content.data', () => {
 	it('types exactly one command, first, and waits before every other line', () => {
 		const commands = planSession.filter((line) => line.type === 'command')
 		expect(commands).toHaveLength(1)
@@ -119,9 +119,7 @@ describe('website/platform/microruntimes/content/microruntimes-content.data, the
 		expect(hasPlayed(1, 'scope')).toBe(false)
 		expect(hasPlayed(planSession.length, 'handoff')).toBe(true)
 	})
-})
 
-describe('website/platform/microruntimes/content/microruntimes-content.data', () => {
 	it('keeps the six lifecycle stages in order', () => {
 		expect(lifecycleStageIds).toEqual([
 			'configure',

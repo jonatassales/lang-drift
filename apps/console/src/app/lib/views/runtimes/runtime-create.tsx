@@ -6,11 +6,9 @@ import { useState } from 'react'
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { linkClass } from '@components/form-styles/form-styles'
 import { PageHeading } from '@components/page-heading/page-heading'
-import type {
-	ProductEnvelope,
-	SavedRuntimeEnvelope,
-} from '@data/read-envelopes.types'
+import type { ProductEnvelope } from '@data/product-envelopes.types'
 import { useResource } from '@data/resource.hook'
+import type { SavedRuntimeEnvelope } from '@data/runtime-envelopes.types'
 import type { Runtime } from '@data/types'
 import { Link } from '@i18n/navigation'
 

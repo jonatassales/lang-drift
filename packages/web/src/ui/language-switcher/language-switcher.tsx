@@ -24,10 +24,10 @@ export interface LanguageSwitcherLinkOption<Locale extends string = string>
 	href: string
 }
 
-export type LanguageSwitcherLinkProps = Omit<
-	ComponentPropsWithoutRef<'a'>,
-	'href'
-> & { href: string }
+export interface LanguageSwitcherLinkProps
+	extends Omit<ComponentPropsWithoutRef<'a'>, 'href'> {
+	href: string
+}
 
 export interface BaseLanguageSwitcherProps {
 	className?: string

@@ -1,7 +1,7 @@
 import { getLocale } from 'next-intl/server'
 
 import { RegionRetry } from '@components/route-state/region-retry'
-import type { SessionEnvelope } from '@data/read-envelopes.types'
+import type { SessionEnvelope } from '@data/console-envelopes.types'
 import { readConsole } from '@data/server'
 import type { User } from '@data/types'
 import { redirect } from '@i18n/navigation'

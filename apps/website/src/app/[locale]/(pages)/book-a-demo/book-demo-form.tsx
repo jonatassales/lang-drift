@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useId, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { isBookDemoErrorCode } from '@api/book-a-demo/is-book-demo-error-code.compute'
 import type { BookDemoMessages } from '@i18n/messages/messages.types'
 import type { WebsiteLocale } from '@i18n/routing'
 import { Toast } from 'web/ui/toast'
@@ -18,7 +17,8 @@ import type {
 } from './form.types'
 import { bookDemoSchema } from './form.validation'
 import { bookDemoFormState } from './form-state.data'
-import { positionIds } from './positions.data'
+import { isBookDemoErrorCode } from './is-book-demo-error-code.compute'
+import { positionIds } from './position-ids.data'
 
 const label = 'text-sm font-medium text-foreground'
 const fieldControl =

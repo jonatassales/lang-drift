@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl'
 import { use } from 'react'
 
 import { ErrorNotice } from '@components/error-notice/error-notice'
-import type { EpisodesEnvelope } from '@data/read-envelopes.types'
+import type { EpisodesEnvelope } from '@data/history-envelopes.types'
 import type { ReadResult } from '@data/read-result'
 import { Link } from '@i18n/navigation'
 

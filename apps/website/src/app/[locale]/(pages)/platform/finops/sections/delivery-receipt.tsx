@@ -5,10 +5,8 @@ import { createTranslator } from 'next-intl'
 
 import type { WebsiteLocale } from '@i18n/routing'
 import { dollars } from '@routes/platform/finops/content/dollars.fmt'
-import {
-	type FinopsMessages,
-	workItems,
-} from '@routes/platform/finops/content/finops-content.data'
+import { workItems } from '@routes/platform/finops/content/finops-content.data'
+import type { FinopsMessages } from '@routes/platform/finops/content/finops-content.types'
 import { selectedWorkItemAtom } from '@state'
 import { DetailList } from 'web/ui/detail-list'
 import { Eyebrow } from 'web/ui/eyebrow'

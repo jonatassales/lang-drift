@@ -1,4 +1,4 @@
-import type { Tokens, WorkflowModelId } from './microruntimes-workflow.data'
+import type { Tokens, WorkflowModelId } from './microruntimes-workflow.types'
 import { workflowModel } from './workflow-model.compute'
 
 // What the tokens cost at the model's uncached list prices.

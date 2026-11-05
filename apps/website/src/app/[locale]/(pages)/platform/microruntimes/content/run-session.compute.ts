@@ -1,10 +1,9 @@
 import {
 	budgetCents,
 	expectedTokens,
-	type RunLine,
-	type WorkflowChoices,
 	workflowDelivery,
 } from './microruntimes-workflow.data'
+import type { RunLine, WorkflowChoices } from './microruntimes-workflow.types'
 import { tokenCount } from './token-count.fmt'
 import { workLines } from './work-lines.compute'
 import { workflowDollars } from './workflow-dollars.fmt'

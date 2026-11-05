@@ -2,7 +2,7 @@
 
 import { use } from 'react'
 
-import type { ProductEnvelope } from '@data/read-envelopes.types'
+import type { ProductEnvelope } from '@data/product-envelopes.types'
 
 import { ConnectionInstructions } from './connection-instructions'
 

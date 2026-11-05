@@ -7,13 +7,15 @@ import type { WebsiteLocale } from '@i18n/routing'
 import { dollars } from '@routes/platform/finops/content/dollars.fmt'
 import { envelopeSegments } from '@routes/platform/finops/content/envelope-segments.compute'
 import {
-	type EnvelopeSegmentId,
 	envelope,
 	envelopeSegmentIds,
-	type FinopsMessages,
-	type WorkItemId,
 	workItems,
 } from '@routes/platform/finops/content/finops-content.data'
+import type {
+	EnvelopeSegmentId,
+	FinopsMessages,
+	WorkItemId,
+} from '@routes/platform/finops/content/finops-content.types'
 import { ChoiceButton } from '@routes/platform/product-page/choice-button'
 import { selectedWorkItemAtom } from '@state'
 import { Eyebrow } from 'web/ui/eyebrow'

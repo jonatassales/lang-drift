@@ -11,10 +11,11 @@
 - [x] The inline-object-type detector reports nothing.
 - [x] `pnpm turbo run check typecheck test` passes.
 
-> **Note, 2026-11-05.** The inline-object-type detector is ticket 0277's. Until it exists, a TypeScript-AST scan stands in for it, over every TypeScript file in `apps/` and `packages/`, tests and configurations included. It looks for an object type literal used as a type argument, an assertion, a return type, a parameter type or a variable annotation, and it reports none after this ticket (97 before).
+> **Note, 2026-11-05.** The inline-object-type detector is ticket 0277's. Until it exists, a TypeScript-AST scan stands in for it, over every TypeScript file in `apps/` and `packages/`, tests and configurations included. It looks for an object type literal used as a type argument, an assertion (`as` or `satisfies`, through `readonly` arrays), a return type, a parameter type or a variable annotation, and it reports none after this ticket (97 before).
 > - Route params are named per route: `LocaleRouteParams`, `ProductRouteParams`, `RuntimeRouteParams`, `TicketRouteParams` and `BreadcrumbRouteParams`.
-> - The console's read envelopes live in `lib/data/read-envelopes.types.ts`, one concern, until spec 0034 splits the data layer's types.
-> - The web package exports `LanguageSwitcherLinkOption`.
+> - The console's envelopes live in the data layer by concern: `product-envelopes.types.ts`, `runtime-envelopes.types.ts`, `history-envelopes.types.ts` and `console-envelopes.types.ts`.
+> - The unions of object shapes (`ReadResult`, `AnalysisSummary`, `WorkflowSummary`) are type aliases over named interfaces.
+> - The web package exports `LanguageSwitcherLinkOption`, and `LanguageSwitcherLinkProps` is an interface.
 > - The catalog shapes, the cookie and crypto services, the locale prefixes, the test mocks and the three Vitest configurations name their shapes above their use.
 
 ## Dev part

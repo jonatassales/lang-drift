@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { routing } from '@i18n/routing'
 
 import { emailSchema } from './email.validation'
-import { positionIds } from './positions.data'
+import { positionIds } from './position-ids.data'
 
 // Providers that hand out addresses to anyone; a demo request names a company.
 const freeMailDomains = new Set([

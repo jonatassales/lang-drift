@@ -2,10 +2,12 @@ import type { MouseEvent } from 'react'
 
 import {
 	budgetCents,
-	type RunLine,
-	type RunMessageId,
 	workflowDelivery,
 } from '@routes/platform/microruntimes/content/microruntimes-workflow.data'
+import type {
+	RunLine,
+	RunMessageId,
+} from '@routes/platform/microruntimes/content/microruntimes-workflow.types'
 import { runHasPlayed } from '@routes/platform/microruntimes/content/run-has-played.compute'
 import type { WorkflowFigures } from '@routes/platform/microruntimes/content/workflow-figures.compute'
 import { Eyebrow } from 'web/ui/eyebrow'
@@ -17,7 +19,7 @@ import { pullRequestState } from './pull-request-state.compute'
 import type {
 	TicketCardCopy,
 	TicketCardFormat,
-} from './ticket-card-format.factory'
+} from './ticket-card-format.compute'
 
 const figure = 'font-mono text-[13px] tabular-nums'
 

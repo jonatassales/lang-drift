@@ -2,10 +2,10 @@ import type { WebsiteLocale } from '@i18n/routing'
 import { formatDescriptor } from '@routes/platform/microruntimes/content/format-descriptor.compute'
 import {
 	descriptorAnnotationIds,
-	type MicroruntimesMessages,
 	runtimeDescriptor,
 	runtimeFilePath,
 } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import type { MicroruntimesMessages } from '@routes/platform/microruntimes/content/microruntimes-content.types'
 
 import { RuntimeFileEditor } from './runtime-file-editor'
 

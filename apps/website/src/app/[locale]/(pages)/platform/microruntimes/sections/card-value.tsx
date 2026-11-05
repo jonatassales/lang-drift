@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import type { MicroruntimesMessages } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import type { MicroruntimesMessages } from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import { cn } from 'web/utilities'
 
 import type { CardValueState } from './reveal-state.compute'

@@ -7,11 +7,9 @@ import { ErrorNotice } from '@components/error-notice/error-notice'
 import { PageHeading } from '@components/page-heading/page-heading'
 import { ActivityListSkeleton } from '@components/route-state/activity-list-skeleton'
 import { mutation } from '@data/api'
-import type {
-	LifecycleEventsEnvelope,
-	RuntimeEnvelope,
-} from '@data/read-envelopes.types'
+import type { LifecycleEventsEnvelope } from '@data/history-envelopes.types'
 import { useResource } from '@data/resource.hook'
+import type { RuntimeEnvelope } from '@data/runtime-envelopes.types'
 import { RecommendationPanel } from '@views/runtimes/recommendation-panel'
 import { Button } from 'web/ui/button'
 

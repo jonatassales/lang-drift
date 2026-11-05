@@ -4,10 +4,8 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import type { MouseEvent, ReactNode } from 'react'
 
 import type { WebsiteLocale } from '@i18n/routing'
-import {
-	type PlanPhaseId,
-	planPhaseIds,
-} from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import { planPhaseIds } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import type { PlanPhaseId } from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import { revealed } from '@routes/platform/microruntimes/content/revealed.compute'
 import {
 	microruntimeSessionAtom,
@@ -26,7 +24,7 @@ import { TicketCard, ticketSummary } from './ticket-card'
 import {
 	type TicketCardCopy,
 	ticketCardFormat,
-} from './ticket-card-format.factory'
+} from './ticket-card-format.compute'
 import {
 	runOutcome,
 	WorkflowCard,

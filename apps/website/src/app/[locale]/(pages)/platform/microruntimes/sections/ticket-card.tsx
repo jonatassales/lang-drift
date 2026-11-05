@@ -8,7 +8,7 @@ import { Eyebrow } from 'web/ui/eyebrow'
 
 import { CardSection } from './card-section'
 import { CardValue, revealState } from './card-value'
-import type { TicketCardCopy } from './ticket-card-format.factory'
+import type { TicketCardCopy } from './ticket-card-format.compute'
 
 export { ticketSummary } from './ticket-summary.compute'
 

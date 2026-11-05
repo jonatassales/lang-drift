@@ -22,11 +22,32 @@ export const summaryPhases: readonly SummaryPhase[] = [
 	'workflow',
 ]
 
+export interface AnalysisSuggestionSummary {
+	effort: string
+	kind: 'suggestion'
+	model: string
+}
+
+export interface AnalysisEpisodesSummary {
+	kept: number
+	kind: 'episodes'
+	total: number
+}
+
+export interface AnalysisDocumentsSummary {
+	count: number
+	kind: 'documents'
+}
+
+export interface AnalysisUnknownSummary {
+	kind: 'unknown'
+}
+
 export type AnalysisSummary =
-	| { kind: 'suggestion'; model: string; effort: string }
-	| { kind: 'episodes'; kept: number; total: number }
-	| { kind: 'documents'; count: number }
-	| { kind: 'unknown' }
+	| AnalysisSuggestionSummary
+	| AnalysisEpisodesSummary
+	| AnalysisDocumentsSummary
+	| AnalysisUnknownSummary
 
 export interface PlanFigures {
 	suggested: Resources | null
@@ -35,12 +56,22 @@ export interface PlanFigures {
 	memoryShare: number
 }
 
+export interface WorkflowDoneSummary {
+	kind: 'done'
+	number: number
+	observedCents: number
+	state: 'readyForReview' | 'readyToMerge'
+}
+
+export interface WorkflowPausedSummary {
+	kind: 'paused'
+}
+
+export interface WorkflowEstimateSummary {
+	kind: 'estimate'
+}
+
 export type WorkflowSummary =
-	| {
-			kind: 'done'
-			number: number
-			observedCents: number
-			state: 'readyForReview' | 'readyToMerge'
-	  }
-	| { kind: 'paused' }
-	| { kind: 'estimate' }
+	| WorkflowDoneSummary
+	| WorkflowPausedSummary
+	| WorkflowEstimateSummary

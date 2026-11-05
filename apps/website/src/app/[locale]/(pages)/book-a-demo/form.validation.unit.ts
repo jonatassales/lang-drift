@@ -5,7 +5,7 @@ import { errorsOf } from '@routes/book-a-demo/testdata/errors-of.compute'
 
 import { bookDemoErrorCodes } from './book-demo-error-codes.data'
 import { bookDemoSchema, bookDemoSubmissionSchema } from './form.validation'
-import { positionIds } from './positions.data'
+import { positionIds } from './position-ids.data'
 
 const valid = {
 	company: 'Acme',

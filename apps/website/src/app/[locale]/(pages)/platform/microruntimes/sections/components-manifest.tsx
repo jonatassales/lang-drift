@@ -10,7 +10,7 @@ import { ComponentRow } from './component-row'
 import type {
 	TicketCardCopy,
 	TicketCardFormat,
-} from './ticket-card-format.factory'
+} from './ticket-card-format.compute'
 
 // The components the plan resolves from the spec: a dash until the console
 // starts, five skeleton rows while it resolves, then one row per terminal

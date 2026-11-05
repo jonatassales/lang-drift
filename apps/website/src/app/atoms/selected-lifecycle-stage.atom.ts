@@ -1,9 +1,7 @@
 import { atom } from 'jotai'
 
-import {
-	initialStageId,
-	type LifecycleStageId,
-} from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import { initialStageId } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import type { LifecycleStageId } from '@routes/platform/microruntimes/content/microruntimes-content.types'
 
 // The lifecycle step selected in the Microruntimes hero; the evidence section
 // follows it.

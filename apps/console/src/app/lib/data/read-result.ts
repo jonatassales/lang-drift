@@ -1,9 +1,17 @@
 import { consoleRequest } from './api'
 
 /** Action-created promises are consumed by use() within their local Suspense boundary. */
-export type ReadResult<Result> =
-	| { data: Result; error?: never }
-	| { data?: never; error: unknown }
+export interface ReadSuccess<Result> {
+	data: Result
+	error?: never
+}
+
+export interface ReadFailure {
+	data?: never
+	error: unknown
+}
+
+export type ReadResult<Result> = ReadSuccess<Result> | ReadFailure
 
 export async function readResult<Result>(
 	path: string,

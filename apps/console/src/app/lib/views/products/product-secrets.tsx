@@ -9,7 +9,7 @@ import { mutation } from '@data/api'
 import type {
 	IssuedSecretEnvelope,
 	ProductSecretsEnvelope,
-} from '@data/read-envelopes.types'
+} from '@data/product-envelopes.types'
 import { useResource } from '@data/resource.hook'
 import { Button } from 'web/ui/button'
 import { Card } from 'web/ui/card'

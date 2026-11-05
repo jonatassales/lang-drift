@@ -1,4 +1,4 @@
-import type { GateFigures, ObservedWorkItem } from './finops-content.data'
+import type { GateFigures, ObservedWorkItem } from './finops-content.types'
 
 export function gateFigures(item: ObservedWorkItem): GateFigures {
 	return {
