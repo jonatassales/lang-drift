@@ -27,11 +27,6 @@ import { WorkflowResult } from './workflow-result'
 import { WorkflowSpend } from './workflow-spend'
 import { WorkflowStages } from './workflow-stages'
 
-interface WorkflowCardProps {
-	copy: TicketCardCopy
-	format: TicketCardFormat
-}
-
 const playButton =
 	'inline-flex min-h-[38px] cursor-pointer items-center gap-[7px] rounded-full bg-primary px-[17px] whitespace-nowrap text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary motion-safe:transition-[transform,filter] motion-safe:duration-200 hover:saturate-[1.18] motion-safe:hover:-translate-y-px aria-disabled:cursor-not-allowed aria-disabled:opacity-60 aria-disabled:hover:translate-y-0'
 
@@ -40,6 +35,11 @@ const playButton =
 // expected spend against the budget the team set, and plays the workflow.
 // The card then follows the run the terminal plays, from the gate to the
 // pull request.
+interface WorkflowCardProps {
+	copy: TicketCardCopy
+	format: TicketCardFormat
+}
+
 export function WorkflowCard(props: WorkflowCardProps) {
 	const { copy, format } = props
 

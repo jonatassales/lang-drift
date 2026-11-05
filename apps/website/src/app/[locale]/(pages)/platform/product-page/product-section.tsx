@@ -2,6 +2,8 @@ import type { ReactNode } from 'react'
 
 import { SectionHeading } from 'web/ui/section-heading'
 
+// One section of a product page: the shell every section shares (width,
+// top border, padding, scroll margin for the header) around its heading.
 interface ProductSectionProps {
 	children: ReactNode
 	id: string
@@ -10,8 +12,6 @@ interface ProductSectionProps {
 	title: string
 }
 
-// One section of a product page: the shell every section shares (width,
-// top border, padding, scroll margin for the header) around its heading.
 export function ProductSection(props: ProductSectionProps) {
 	const { children, id, kicker, lead, title } = props
 

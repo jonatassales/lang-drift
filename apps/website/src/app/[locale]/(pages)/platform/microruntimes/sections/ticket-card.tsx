@@ -12,16 +12,16 @@ import type { TicketCardCopy } from './ticket-card-format'
 
 export { ticketSummary } from './ticket-summary.compute'
 
-interface TicketCardProps {
-	copy: TicketCardCopy
-	playedCount: number
-}
-
 const fileName = 'font-mono text-[12px]'
 
 // The ticket as the agent reads it: its number, slug, status and title,
 // then the artifacts it links, which land once the agent has read the
 // ticket. The reads themselves belong to the analysis card.
+interface TicketCardProps {
+	copy: TicketCardCopy
+	playedCount: number
+}
+
 export function TicketCard(props: TicketCardProps) {
 	const { copy, playedCount } = props
 

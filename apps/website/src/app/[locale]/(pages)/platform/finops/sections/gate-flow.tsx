@@ -12,13 +12,6 @@ import {
 import { Eyebrow } from 'web/ui/eyebrow'
 import { ArrowRightIcon } from 'web/ui/icons/arrow'
 
-interface GateFlowProps {
-	copy: FinopsMessages['authorization']
-	exampleTitle: string
-	figures: GateFigures
-	locale: WebsiteLocale
-}
-
 interface GateAmount {
 	amount: number
 	label: string
@@ -39,6 +32,13 @@ const arrow = (
 // How a paid call is admitted, as one flow: the agent recommends, the gate
 // reserves, the evidence closes. Each step carries the amount one work item
 // had at that point, so the amounts move across the row.
+interface GateFlowProps {
+	copy: FinopsMessages['authorization']
+	exampleTitle: string
+	figures: GateFigures
+	locale: WebsiteLocale
+}
+
 export function GateFlow(props: GateFlowProps) {
 	const { copy, exampleTitle, figures, locale } = props
 

@@ -23,21 +23,13 @@ import { AnalysisCard, analysisSummary } from './analysis-card'
 import { PlanCard, planSummary } from './plan-card'
 import { SessionCard } from './session-card'
 import { TicketCard, ticketSummary } from './ticket-card'
-import {
-	createTicketCardFormat,
-	type TicketCardCopy,
-} from './ticket-card-format'
+import { type TicketCardCopy, ticketCardFormat } from './ticket-card-format'
 import {
 	runOutcome,
 	WorkflowCard,
 	workflowStatus,
 	workflowSummary,
 } from './workflow-card'
-
-interface SessionCardsProps {
-	copy: TicketCardCopy
-	locale: WebsiteLocale
-}
 
 // The four cards the session fills beside the terminal, one per act: the
 // ticket, the analysis of its documents and the project's episodes, the
@@ -48,6 +40,11 @@ interface SessionCardsProps {
 // ends. The plan cards keep their end while a run plays; one status line
 // announces only how the run ended. Every value derives from how many lines
 // the terminal has completed.
+interface SessionCardsProps {
+	copy: TicketCardCopy
+	locale: WebsiteLocale
+}
+
 export function SessionCards(props: SessionCardsProps) {
 	const { copy, locale } = props
 
@@ -66,7 +63,7 @@ export function SessionCards(props: SessionCardsProps) {
 		}
 	}
 
-	const format = createTicketCardFormat(copy, locale)
+	const format = ticketCardFormat(copy, locale)
 	const visible = revealed(playedCount, 'cards')
 	const outcome = runOutcome(session, script)
 	const cards: Record<PlanPhaseId, { body: ReactNode; summary: ReactNode }> = {

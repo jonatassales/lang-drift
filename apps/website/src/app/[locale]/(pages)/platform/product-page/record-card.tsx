@@ -1,14 +1,14 @@
 import { DetailList, type DetailListItem } from 'web/ui/detail-list'
 import { Eyebrow } from 'web/ui/eyebrow'
 
+// A titled record on a product page, such as a weekly report or an execution
+// ledger: its title, the period it covers when it has one, and its rows.
 interface RecordCardProps {
 	items: readonly DetailListItem[]
 	period?: string
 	title: string
 }
 
-// A titled record on a product page, such as a weekly report or an execution
-// ledger: its title, the period it covers when it has one, and its rows.
 export function RecordCard(props: RecordCardProps) {
 	const { items, period, title } = props
 

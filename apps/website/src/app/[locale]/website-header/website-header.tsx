@@ -1,7 +1,7 @@
 'use client'
 
 import { useAtom } from 'jotai'
-import { useLocale, useTranslations } from 'next-intl'
+import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
 import { Link } from '@i18n/navigation'
@@ -10,11 +10,11 @@ import { themeAtom } from '@state'
 import { Brand } from 'web/ui/brand'
 
 import { DemoButton } from './demo-button'
-import { drawerFocus } from './drawer-focus'
 import { LanguagePill } from './language-pill'
 import { panelSurface } from './panel-surface.data'
 import { PlatformMenu } from './platform-menu'
 import { platformProducts } from './platform-products'
+import { useNavigationDrawer } from './use-navigation-drawer.hook'
 
 // Entries without a destination yet read like their neighbors but do not
 // navigate: Docs, and the products without a page.
@@ -41,15 +41,17 @@ const glass =
 
 export function WebsiteHeader() {
 	const [scrolled, setScrolled] = useState(false)
-	const [drawerOpen, setDrawerOpen] = useState(false)
 	const sentinelRef = useRef<HTMLDivElement>(null)
-	const drawerRef = useRef<HTMLDialogElement>(null)
-	const triggerRef = useRef<HTMLButtonElement>(null)
-	const closeRef = useRef<HTMLButtonElement>(null)
 
+	const {
+		closeDrawer,
+		closeRef,
+		drawerRef,
+		open: drawerOpen,
+		openDrawer,
+		triggerRef,
+	} = useNavigationDrawer()
 	const translate = useTranslations('header')
-	const locale = useLocale()
-	const previousLocale = useRef(locale)
 	const [theme, setTheme] = useAtom(themeAtom)
 
 	// Sync document theme classes and meta theme-color with theme state.
@@ -70,71 +72,11 @@ export function WebsiteHeader() {
 		const observer = new IntersectionObserver(([entry]) => {
 			setScrolled(!entry.isIntersecting)
 		})
+
 		observer.observe(sentinel)
 
 		return () => observer.disconnect()
 	}, [])
-
-	// Close drawer when the active locale changes.
-	useEffect(() => {
-		if (previousLocale.current !== locale) {
-			previousLocale.current = locale
-			setDrawerOpen(false)
-		}
-	}, [locale])
-
-	// Restore focus to trigger when drawer changes locale.
-	useEffect(() => {
-		if (drawerFocus.locale !== locale) return
-
-		const frame = requestAnimationFrame(() => {
-			if (drawerFocus.locale !== locale) return
-
-			triggerRef.current?.focus({ preventScroll: true })
-			drawerFocus.locale = undefined
-		})
-
-		return () => cancelAnimationFrame(frame)
-	}, [locale])
-
-	// Manage modal dialog lifecycle and body scroll lock for navigation drawer.
-	useEffect(() => {
-		if (!drawerOpen) return
-
-		const drawer = drawerRef.current
-
-		if (!drawer) return
-
-		const previousOverflow = document.body.style.overflow
-		drawer.showModal()
-		closeRef.current?.focus()
-		document.body.style.overflow = 'hidden'
-
-		return () => {
-			drawer.close()
-			document.body.style.overflow = previousOverflow
-			triggerRef.current?.focus()
-		}
-	}, [drawerOpen])
-
-	// Close navigation drawer when viewport expands to desktop size.
-	useEffect(() => {
-		const desktop = window.matchMedia('(min-width: 64rem)')
-		const closeOnDesktop = () => {
-			if (desktop.matches) setDrawerOpen(false)
-		}
-		desktop.addEventListener('change', closeOnDesktop)
-
-		return () => desktop.removeEventListener('change', closeOnDesktop)
-	}, [])
-
-	function closeDrawer() {
-		setDrawerOpen(false)
-	}
-
-	function openDrawer() {
-		setDrawerOpen(true)
-	}
 
 	function toggleTheme() {
 		setTheme(theme === 'light' ? 'dark' : 'light')

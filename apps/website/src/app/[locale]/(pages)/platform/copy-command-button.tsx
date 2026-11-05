@@ -11,14 +11,14 @@ type CopyState = 'idle' | 'copied' | 'failed'
 
 const resetAfterMs = 2000
 
+// Copies a command to the clipboard and says so for a moment: a check when
+// the copy took, the failure label when the browser refused it.
 interface CopyCommandButtonProps {
 	command: string
 	commandId?: string
 	labels: CommandLineLabels
 }
 
-// Copies a command to the clipboard and says so for a moment: a check when
-// the copy took, the failure label when the browser refused it.
 export function CopyCommandButton(props: CopyCommandButtonProps) {
 	const { command, commandId, labels } = props
 

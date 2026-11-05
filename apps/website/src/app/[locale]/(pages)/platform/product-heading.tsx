@@ -4,15 +4,15 @@ import type { PlatformIconProps } from 'web/ui/icons/platform'
 
 import { ProductIconTile } from './product-icon-tile'
 
+// The heading every platform product page opens with: the product's icon on
+// its tile, then the product's name. Tile and icon are sized in em, so they
+// scale with the title on every page alike.
 interface ProductHeadingProps {
 	children: ReactNode
 	icon: ComponentType<PlatformIconProps>
 	id: string
 }
 
-// The heading every platform product page opens with: the product's icon on
-// its tile, then the product's name. Tile and icon are sized in em, so they
-// scale with the title on every page alike.
 export function ProductHeading(props: ProductHeadingProps) {
 	const { children, icon: Icon, id } = props
 

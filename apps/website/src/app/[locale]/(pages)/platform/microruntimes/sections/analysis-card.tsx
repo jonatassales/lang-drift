@@ -19,12 +19,6 @@ import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
 
 export { analysisSummary } from './analysis-summary.compute'
 
-interface AnalysisCardProps {
-	copy: TicketCardCopy
-	format: TicketCardFormat
-	playedCount: number
-}
-
 const aside = 'font-mono text-[11px] text-muted-foreground'
 const suggestedModel = workflowModel(ticketPlan.model)
 
@@ -32,6 +26,12 @@ const suggestedModel = workflowModel(ticketPlan.model)
 // its read extracted, the project's episodes ranked by similarity and
 // judged against the threshold, the resources none of them measured, and
 // the model and effort it suggests from all of that.
+interface AnalysisCardProps {
+	copy: TicketCardCopy
+	format: TicketCardFormat
+	playedCount: number
+}
+
 export function AnalysisCard(props: AnalysisCardProps) {
 	const { copy, format, playedCount } = props
 

@@ -50,17 +50,19 @@ export function LanguagePill(props: LanguagePillProps) {
 	const locale = useLocale()
 	const translate = useTranslations('header')
 
-	// Remembers the active locale for returning visitors; the browser may
-	// refuse, and routing never depends on it.
+	// Remembers the active locale for returning visitors, after every switch.
+	// A refused write keeps the visitor navigating: the proxy's cookie still
+	// holds the choice, and routing never reads browser storage.
 	useEffect(() => {
 		persistLanguagePreference(locale)
 	}, [locale])
 
 	// Listen for hash and popstate changes to preserve query and hash in language links.
 	useEffect(() => {
-		const syncUrlSuffix = () => {
+		function syncUrlSuffix() {
 			setUrlSuffix(`${window.location.search}${window.location.hash}`)
 		}
+
 		syncUrlSuffix()
 		window.addEventListener('hashchange', syncUrlSuffix)
 		window.addEventListener('popstate', syncUrlSuffix)
@@ -91,10 +93,9 @@ export function LanguagePill(props: LanguagePillProps) {
 			return
 		}
 
-		persistLanguagePreference(nextLocale)
-		if (fromDrawer && nextLocale !== locale) {
-			drawerFocus.locale = nextLocale
-		}
+		const switchFromDrawer = fromDrawer && nextLocale !== locale
+
+		if (switchFromDrawer) drawerFocus.locale = nextLocale
 	}
 
 	function renderLanguageLink(

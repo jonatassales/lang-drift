@@ -13,12 +13,12 @@ export { generateMetadata } from './page.metadata'
 
 // Provider URLs verified against Cloudflare's published pages on 2026-09-30.
 
+const link =
+	'focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary'
+
 interface PrivacyPageProps {
 	params: Promise<{ locale: string }>
 }
-
-const link =
-	'focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary'
 
 export default async function PrivacyPage(props: PrivacyPageProps) {
 	const { params } = props

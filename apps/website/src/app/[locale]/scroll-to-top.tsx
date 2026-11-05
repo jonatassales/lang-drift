@@ -8,15 +8,18 @@ import { useEffect, useRef } from 'react'
 // pathname change therefore resets the scroll to the top, unless the URL
 // targets a fragment. The initial load is left to the browser.
 export function ScrollToTop() {
+	const previous = useRef<string | null>(null)
+
 	const pathname = usePathname()
-	const previous = useRef(pathname)
 
 	// Reset window scroll to top on navigation unless navigating to an anchor hash.
 	useEffect(() => {
-		if (previous.current === pathname) return
+		const initialLoad = previous.current === null
+		const samePath = previous.current === pathname
 
 		previous.current = pathname
 
+		if (initialLoad || samePath) return
 		if (window.location.hash) return
 
 		window.scrollTo({

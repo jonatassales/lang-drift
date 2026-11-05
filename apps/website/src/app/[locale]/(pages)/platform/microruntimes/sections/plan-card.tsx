@@ -16,12 +16,6 @@ import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
 
 export { planSummary } from './plan-summary.compute'
 
-interface PlanCardProps {
-	copy: TicketCardCopy
-	format: TicketCardFormat
-	playedCount: number
-}
-
 interface ReportCell {
 	detail: string
 	id: string
@@ -41,6 +35,12 @@ const fade =
 // and the validation it passed, closed by the evidence it leaves. Every
 // figure is a proposal pending the team's authorization, which the card's
 // only live region announces once, when the plan is drafted.
+interface PlanCardProps {
+	copy: TicketCardCopy
+	format: TicketCardFormat
+	playedCount: number
+}
+
 export function PlanCard(props: PlanCardProps) {
 	const { copy, format, playedCount } = props
 

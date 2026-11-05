@@ -18,13 +18,13 @@ interface FaqGroup {
 	label: string
 }
 
+// One accordion switched between the products' questions. The accordion is
+// mounted only inside the active panel, so a switch shows it collapsed.
 interface FaqTabsProps {
 	groups: readonly FaqGroup[]
 	tabsLabel: string
 }
 
-// One accordion switched between the products' questions. The accordion is
-// mounted only inside the active panel, so a switch shows it collapsed.
 export function FaqTabs(props: FaqTabsProps) {
 	const { groups, tabsLabel } = props
 

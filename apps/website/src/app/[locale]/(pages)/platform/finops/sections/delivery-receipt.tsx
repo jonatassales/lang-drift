@@ -13,6 +13,10 @@ import { selectedWorkItemAtom } from '@state'
 import { DetailList } from 'web/ui/detail-list'
 import { Eyebrow } from 'web/ui/eyebrow'
 
+// The receipt of the work item selected in the ledger: what it was estimated,
+// what was reserved, what it consumed, and how it was verified and cleaned up.
+// Its head stacks at every width, so it reads the same docked beside the
+// ledger and under it.
 interface DeliveryReceiptProps {
 	copy: FinopsMessages['receipt']
 	/** 2 under the FinOps page's title, 3 under a home section's heading. */
@@ -21,16 +25,12 @@ interface DeliveryReceiptProps {
 	locale: WebsiteLocale
 }
 
-// The receipt of the work item selected in the ledger: what it was estimated,
-// what was reserved, what it consumed, and how it was verified and cleaned up.
-// Its head stacks at every width, so it reads the same docked beside the
-// ledger and under it.
 export function DeliveryReceipt(props: DeliveryReceiptProps) {
 	const { copy, headingLevel = 2, items, locale } = props
 
-	const Heading = headingLevel === 3 ? 'h3' : 'h2'
-
 	const selectedId = useAtomValue(selectedWorkItemAtom)
+
+	const Heading = headingLevel === 3 ? 'h3' : 'h2'
 	const item = workItems.find((workItem) => workItem.id === selectedId)
 
 	if (!item) return null

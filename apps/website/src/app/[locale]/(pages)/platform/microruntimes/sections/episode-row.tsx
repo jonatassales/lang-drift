@@ -7,16 +7,6 @@ import { cn } from 'web/utilities'
 
 import type { CardValueLabels, CardValueState } from './card-value'
 
-interface EpisodeRowProps {
-	episode: Episode
-	labels: CardValueLabels
-	/** The similarity in the visitor's locale. */
-	similarity: string
-	state: Exclude<CardValueState, 'unset'>
-	/** The judgment of the episode, once the agent has made it. */
-	verdict?: { kind: EpisodeVerdict; label: string; reason?: string }
-}
-
 const skeletonBar = 'h-2.5 rounded bg-foreground/10'
 const rowGrid =
 	'grid grid-cols-[auto_minmax(0,1fr)_4rem_auto_minmax(6rem,auto)] items-center gap-x-3'
@@ -31,6 +21,16 @@ const verdictTones: Record<EpisodeVerdict, string> = {
 // figure, and once judged, kept in the success role or dropped with the
 // reason. A dropped episode fades back so the kept ones read as the
 // precedents.
+interface EpisodeRowProps {
+	episode: Episode
+	labels: CardValueLabels
+	/** The similarity in the visitor's locale. */
+	similarity: string
+	state: Exclude<CardValueState, 'unset'>
+	/** The judgment of the episode, once the agent has made it. */
+	verdict?: { kind: EpisodeVerdict; label: string; reason?: string }
+}
+
 export function EpisodeRow(props: EpisodeRowProps) {
 	const { episode, labels, similarity, state, verdict } = props
 

@@ -20,11 +20,6 @@ import { bookDemoSchema } from './form.validation'
 import { bookDemoFormState } from './form-state.data'
 import { positionIds } from './positions'
 
-interface BookDemoFormProps {
-	copy: BookDemoMessages
-	locale: WebsiteLocale
-}
-
 const label = 'text-sm font-medium text-foreground'
 const fieldControl =
 	'min-h-11 w-full rounded-lg border border-border bg-background px-3.5 text-foreground aria-[invalid=true]:border-status-danger'
@@ -36,6 +31,11 @@ const errorText = 'm-0 text-xs text-status-danger'
 // submit, posted with the locale to the edge, which forwards it to the
 // demo-requests service, and answered with the return-soon notice while that
 // service is unreachable.
+interface BookDemoFormProps {
+	copy: BookDemoMessages
+	locale: WebsiteLocale
+}
+
 export function BookDemoForm(props: BookDemoFormProps) {
 	const { copy, locale } = props
 

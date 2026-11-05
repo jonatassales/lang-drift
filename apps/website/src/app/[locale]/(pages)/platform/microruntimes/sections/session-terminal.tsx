@@ -19,13 +19,6 @@ import { MacTerminal } from 'web/vendors/smoothui/mac-terminal'
 
 import { SessionControl } from './session-control'
 
-interface SessionTerminalProps {
-	/** Overrides the window's height where it sits, as the home's hero does. */
-	className?: string
-	control: MicroruntimesMessages['session']['card']['control']
-	copy: MicroruntimesMessages['session']['terminal']
-}
-
 // The one second the Workflow card shows its loader before the run starts.
 const launchMs = 1000
 
@@ -40,15 +33,24 @@ const launchMs = 1000
 // fixed height where the cards stack under it, so nothing below shifts as
 // it types, and stretches to the cards' height beside them, so the two
 // columns end together whatever card is open.
+interface SessionTerminalProps {
+	/** Overrides the window's height where it sits, as the home's hero does. */
+	className?: string
+	control: MicroruntimesMessages['session']['card']['control']
+	copy: MicroruntimesMessages['session']['terminal']
+}
+
 export function SessionTerminal(props: SessionTerminalProps) {
 	const { className, control, copy } = props
+
+	const windowRef = useRef<HTMLDivElement>(null)
 
 	const session = useAtomValue(microruntimeSessionAtom)
 	const script = useAtomValue(runScriptAtom)
 	const recordPlayedCount = useSetAtom(recordPlayedCountAtom)
 	const startRun = useSetAtom(startRunAtom)
-	const windowRef = useRef<HTMLDivElement>(null)
-	const { run, stage } = session
+
+	const { paused, run, stage } = session
 
 	// Launch the workflow run after the visual launch delay.
 	useEffect(() => {
@@ -66,6 +68,7 @@ export function SessionTerminal(props: SessionTerminalProps) {
 		const reducedMotion = window.matchMedia(
 			'(prefers-reduced-motion: reduce)',
 		).matches
+
 		windowRef.current?.scrollIntoView({
 			behavior: reducedMotion ? 'auto' : 'smooth',
 			block: 'start',
@@ -98,7 +101,7 @@ export function SessionTerminal(props: SessionTerminalProps) {
 				label={copy.label}
 				lines={lines}
 				onProgress={recordPlayedCount}
-				paused={session.paused}
+				paused={paused}
 				prompt="~/project %"
 				title={copy.title}
 			/>

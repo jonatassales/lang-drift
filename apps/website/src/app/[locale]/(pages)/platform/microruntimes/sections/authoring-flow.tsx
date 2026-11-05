@@ -11,10 +11,6 @@ import { ArrowRightIcon } from 'web/ui/icons/arrow'
 import { MicroruntimesIcon } from 'web/ui/icons/platform'
 import { InfoCards } from 'web/ui/info-cards'
 
-interface AuthoringFlowProps {
-	copy: MicroruntimesMessages['flow']
-}
-
 const flowCard =
 	'flex flex-col gap-2 rounded-2xl border border-border bg-card p-6'
 const flowArrow = (
@@ -28,6 +24,10 @@ const flowArrow = (
 
 // Console → connected agent → local execution, then the three rules that
 // keep a request from becoming an unbounded action.
+interface AuthoringFlowProps {
+	copy: MicroruntimesMessages['flow']
+}
+
 export function AuthoringFlow(props: AuthoringFlowProps) {
 	const { copy } = props
 

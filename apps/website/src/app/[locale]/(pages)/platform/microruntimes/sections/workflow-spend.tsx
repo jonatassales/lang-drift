@@ -10,6 +10,10 @@ import { cn } from 'web/utilities'
 
 import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
 
+// What the chosen run is expected to cost and what the gate would reserve
+// of the budget the design doc set, with the tokens behind the estimate.
+// A reservation over the budget takes the warning role: the gate would
+// pause the run before any paid call.
 interface WorkflowSpendProps {
 	copy: TicketCardCopy
 	effort: PlanEffort
@@ -17,10 +21,6 @@ interface WorkflowSpendProps {
 	format: TicketCardFormat
 }
 
-// What the chosen run is expected to cost and what the gate would reserve
-// of the budget the design doc set, with the tokens behind the estimate.
-// A reservation over the budget takes the warning role: the gate would
-// pause the run before any paid call.
 export function WorkflowSpend(props: WorkflowSpendProps) {
 	const { copy, effort, figures, format } = props
 
