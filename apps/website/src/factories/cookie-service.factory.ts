@@ -1,6 +1,4 @@
 import 'server-only'
-
-import { randomBytes } from 'node:crypto'
 import type { NextRequest, NextResponse } from 'next/server'
 
 import { type CookieDefaults, CookieService } from '@services/cookie.service'
@@ -8,21 +6,13 @@ import { CryptoService } from '@services/crypto.service'
 
 import { cookieStore } from './cookie-store.compute'
 
-let developmentSecret: string | undefined
-
+// The cookie service the locale proxy encrypts its cookies with. Without
+// CRYPTO_SECRET it fails in every environment rather than invent a key.
 export function cookieServiceFactory(
 	request: NextRequest,
 	response?: NextResponse,
 ): CookieService {
-	let secret = process.env.CRYPTO_SECRET
-
-	if (
-		!secret &&
-		(process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test')
-	) {
-		developmentSecret ??= randomBytes(32).toString('base64')
-		secret = developmentSecret
-	}
+	const secret = process.env.CRYPTO_SECRET
 
 	if (!secret) {
 		throw new Error('Missing required environment variable: CRYPTO_SECRET')
