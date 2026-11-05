@@ -53,7 +53,8 @@ A pnpm and Turborepo monorepo. `apps/website` is the platform site, one page wit
 | --- | --- |
 | Layout, toolchain, commands, the `drift` CLI, design tokens, CI and Git mechanics | [`.agents/context.guide.md`](.agents/context.guide.md) |
 | The project vocabulary | [`.agents/context.guide.md`](.agents/context.guide.md), `## Glossary` |
-| Specs, tickets, ADRs and research notes | `.agents/workflow/` |
+| PRDs and ADRs | `.agents/prds/`, `.agents/adrs/` |
+| Specs, tickets, technical design docs and research notes | `.agents/workflow/` |
 | The website's environment contract and sign-up pause | [`apps/website/README.md`](apps/website/README.md) |
 | The LangDrift CLI and the Microruntimes contracts | [`lib/cli/README.md`](lib/cli/README.md), [`lib/core/contracts/go/README.md`](lib/core/contracts/go/README.md) |
 

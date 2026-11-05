@@ -15,7 +15,7 @@
 ### Context
 
 - [What the real `ex` reproduces of the Microruntimes page](/.agents/workflow/research/ex-microruntimes-capability.research.md)
-- [The console's build recipes are allowlisted](/.agents/workflow/adrs/0002-console-input-is-untrusted.adr.md)
+- [The console's build recipes are allowlisted](/.agents/adrs/0002-console-input-is-untrusted.adr.md)
 - [FinOps guardrails](/.langdrift/harness/guardrails/0001-finops.gr.md)
 - [The console's manifest](/apps/console/package.json)
 - [the console-stubs module](/apps/microservices/console-stubs/go.mod)

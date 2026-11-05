@@ -1,8 +1,8 @@
 # ADR Format
 
-ADRs live in `.agents/workflow/adrs/` and use sequential numbering: `0001-slug.adr.md`, `0002-slug.adr.md`, etc.
+ADRs live in `.agents/adrs/` and use sequential numbering: `0001-slug.adr.md`, `0002-slug.adr.md`, etc.
 
-Create the `.agents/workflow/adrs/` directory lazily: only when the first ADR is needed.
+Create the `.agents/adrs/` directory lazily: only when the first ADR is needed.
 
 ## Template
 
@@ -24,7 +24,7 @@ Only include these when they add genuine value. Most ADRs won't need them.
 
 ## Numbering
 
-Scan `.agents/workflow/adrs/` for the highest existing number and increment by one.
+Scan `.agents/adrs/` for the highest existing number and increment by one.
 
 ## When to offer an ADR
 

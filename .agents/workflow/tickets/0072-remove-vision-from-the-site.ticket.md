@@ -19,5 +19,5 @@
 ### Context
 
 - [The spec](/.agents/workflow/specs/0011-finops-single-page-site.spec.md)
-- [The website adapts to the repository](/.agents/workflow/adrs/0003-website-adapts-to-the-repository.adr.md)
+- [The website adapts to the repository](/.agents/adrs/0003-website-adapts-to-the-repository.adr.md)
 - [The pivot](/.agents/workflow/specs/0010-exphere-and-the-langdrift-folder.spec.md)
