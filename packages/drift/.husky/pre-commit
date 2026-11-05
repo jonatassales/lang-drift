@@ -1,2 +1,2 @@
 # Biome checks the staged files through drift (see packages/drift).
-packages/drift/drift git pre-commit
+packages/drift/drift.sh git pre-commit

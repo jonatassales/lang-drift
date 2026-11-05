@@ -13,8 +13,8 @@ ex_pkg_version=$(grep -m 1 '"version":' "$DRIFT_PROJECT_ROOT/lib/cli/package.jso
 
 # Ex binary version
 ex_bin_version="ex 0.0.0-dev"
-if [ -f "$DRIFT_PROJECT_ROOT/lib/cli/bin/ex" ]; then
-  raw_bin_ver=$(sh "$DRIFT_PROJECT_ROOT/lib/cli/bin/ex" version 2>/dev/null || true)
+if [ -f "$DRIFT_PROJECT_ROOT/lib/cli/bin/ex.sh" ]; then
+  raw_bin_ver=$(sh "$DRIFT_PROJECT_ROOT/lib/cli/bin/ex.sh" version 2>/dev/null || true)
   [ -z "$raw_bin_ver" ] || ex_bin_version="$raw_bin_ver"
 fi
 

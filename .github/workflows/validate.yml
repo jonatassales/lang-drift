@@ -38,13 +38,13 @@ jobs:
       - name: Types
         run: pnpm turbo run typecheck
       - name: Biome configuration
-        run: packages/drift/drift check biome
+        run: packages/drift/drift.sh check biome
       - name: Localization
-        run: packages/drift/drift check localization
+        run: packages/drift/drift.sh check localization
       - name: Dead code
-        run: packages/drift/drift quality dead-code
+        run: packages/drift/drift.sh quality dead-code
       - name: Repository rules
-        run: packages/drift/drift quality check
+        run: packages/drift/drift.sh quality check
 
   test:
     name: Test

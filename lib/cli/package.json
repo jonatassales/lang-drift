@@ -13,10 +13,10 @@
 		"access": "public"
 	},
 	"bin": {
-		"ex": "./bin/ex"
+		"ex": "./bin/ex.sh"
 	},
 	"files": [
-		"bin/ex",
+		"bin/ex.sh",
 		"dist/ex-darwin-arm64",
 		"dist/ex-darwin-amd64",
 		"dist/ex-linux-amd64",

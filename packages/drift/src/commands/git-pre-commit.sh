@@ -9,4 +9,4 @@ cd "$DRIFT_PROJECT_ROOT"
 pnpm exec lint-staged
 
 # Enforce repository rules (.claude/rules/*.rule.md) on every commit.
-exec "$DRIFT_CLI_DIR/../drift" quality check
+exec "$DRIFT_CLI_DIR/commands/quality-check.sh"

@@ -116,9 +116,9 @@ func TestLauncherDispatchAndFallback(t *testing.T) {
 		t.Fatalf("getwd: %v", err)
 	}
 	packageDir := filepath.Dir(sourceDir)
-	launcherSource, err := os.ReadFile(filepath.Join(packageDir, "bin", "ex"))
+	launcherSource, err := os.ReadFile(filepath.Join(packageDir, "bin", "ex.sh"))
 	if err != nil {
-		t.Fatalf("read bin/ex: %v", err)
+		t.Fatalf("read bin/ex.sh: %v", err)
 	}
 
 	writeFakeUname := func(t *testing.T, kernel, machine string) string {
@@ -142,7 +142,7 @@ func TestLauncherDispatchAndFallback(t *testing.T) {
 		if err := os.MkdirAll(filepath.Join(pkg, "dist"), 0o755); err != nil {
 			t.Fatalf("mkdir dist: %v", err)
 		}
-		launcherPath := filepath.Join(pkg, "bin", "ex")
+		launcherPath := filepath.Join(pkg, "bin", "ex.sh")
 		if err := os.WriteFile(launcherPath, launcherSource, 0o755); err != nil {
 			t.Fatalf("write launcher: %v", err)
 		}
@@ -266,9 +266,9 @@ func TestLauncherDispatchAndFallback(t *testing.T) {
 		if output, buildErr := exec.Command("sh", filepath.Join(packageDir, "build.sh")).CombinedOutput(); buildErr != nil {
 			t.Fatalf("build.sh: %v\n%s", buildErr, output)
 		}
-		versionOut, runErr := exec.Command(filepath.Join(packageDir, "bin", "ex"), "version").CombinedOutput()
+		versionOut, runErr := exec.Command(filepath.Join(packageDir, "bin", "ex.sh"), "version").CombinedOutput()
 		if runErr != nil {
-			t.Fatalf("bin/ex version: %v\n%s", runErr, versionOut)
+			t.Fatalf("bin/ex.sh version: %v\n%s", runErr, versionOut)
 		}
 
 		// The version is the package's own, so a release bump never edits
@@ -293,7 +293,7 @@ func TestLauncherDispatchAndFallback(t *testing.T) {
 		want := "ex " + manifest.Version
 
 		if strings.TrimSpace(string(versionOut)) != want {
-			t.Fatalf("bin/ex version = %q, want %q", strings.TrimSpace(string(versionOut)), want)
+			t.Fatalf("bin/ex.sh version = %q, want %q", strings.TrimSpace(string(versionOut)), want)
 		}
 	})
 }
