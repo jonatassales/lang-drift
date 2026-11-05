@@ -12,6 +12,9 @@ next-env.d.ts
 .turbo/
 coverage/
 
+# Local experiment and diagnostic output (testing rules, item 3)
+.audits/
+
 # Environment: shared development defaults are tracked; only .env is ignored
 .env
 
