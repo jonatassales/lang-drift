@@ -1,14 +1,13 @@
 import 'server-only'
 
+import { interceptBody } from '@app/api/book-a-demo/interceptors/intercept-body.interceptor'
+import { interceptBodySize } from '@app/api/book-a-demo/interceptors/intercept-body-size.interceptor'
+import { interceptContentType } from '@app/api/book-a-demo/interceptors/intercept-content-type.interceptor'
+import { interceptMethod } from '@app/api/book-a-demo/interceptors/intercept-method.interceptor'
+import { interceptOrigin } from '@app/api/book-a-demo/interceptors/intercept-origin.interceptor'
+import { interceptSchema } from '@app/api/book-a-demo/interceptors/intercept-schema.interceptor'
 import { reply } from '@components/book-a-demo/book-demo-reply.response'
 import { forwardDemoRequest } from '@infra/demo-requests/forward-demo-request.adapter'
-
-import { interceptBody } from './interceptors/intercept-body.interceptor'
-import { interceptBodySize } from './interceptors/intercept-body-size.interceptor'
-import { interceptContentType } from './interceptors/intercept-content-type.interceptor'
-import { interceptMethod } from './interceptors/intercept-method.interceptor'
-import { interceptOrigin } from './interceptors/intercept-origin.interceptor'
-import { interceptSchema } from './interceptors/intercept-schema.interceptor'
 
 export const runtime = 'nodejs'
 

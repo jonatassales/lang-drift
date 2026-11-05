@@ -1,10 +1,11 @@
 import { getRequestConfig } from 'next-intl/server'
 
+import en from '@i18n/messages/en.json'
+import ja from '@i18n/messages/ja.json'
+import pt from '@i18n/messages/pt-br.json'
+import zh from '@i18n/messages/zh-hant.json'
+
 import { isLocale } from './config'
-import en from './messages/en.json'
-import ja from './messages/ja.json'
-import pt from './messages/pt-br.json'
-import zh from './messages/zh-hant.json'
 
 const catalogs = {
 	en,

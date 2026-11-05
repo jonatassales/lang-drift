@@ -3,7 +3,6 @@
 import { usePathname } from 'next/navigation'
 
 import '@app/template/tailwind/app.css'
-
 import { RouteStateNotice } from '@components/route-state/route-state-notice'
 import { isLocale, languageTags } from '@i18n/config'
 import messages from '@i18n/messages/global-error.json'

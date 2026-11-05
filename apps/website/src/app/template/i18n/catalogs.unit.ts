@@ -13,8 +13,8 @@ import {
 	platformMessages,
 	privacyMessages,
 	safeSeatMessages,
-} from './messages'
-import routeState from './messages/route-state.json'
+} from '@i18n/messages/index'
+import routeState from '@i18n/messages/route-state.json'
 
 function leaves(value: unknown, prefix = ''): Record<string, string> {
 	if (typeof value === 'string') return { [prefix]: value }

@@ -5,6 +5,7 @@
 			"@components/*": ["./src/app/lib/components/*"],
 			"@factories/*": ["./src/factories/*"],
 			"@i18n/*": ["./src/app/template/i18n/*"],
+			"@proxy/*": ["./src/proxy/*"],
 			"@infra/*": ["./src/infra/*"],
 			"@services/*": ["./src/services/*"],
 			"@data/*": ["./src/app/lib/data/*"],
