@@ -11,6 +11,7 @@ engineStrict: true
 allowBuilds:
   "@parcel/watcher": false
   "@swc/core": false
+  esbuild: false
 
 # sinapsi 0.4.0 pins zod 4.6.5, which carries GHSA-mrhx-c7xc-m3w5. Remove this
 # override once sinapsi depends on a patched zod itself.

@@ -46,3 +46,29 @@ On Vercel's `langdrift-console` project the console reads the hosted preview of 
 | `CONSOLE_STUBS_URL` | The stub's production URL, over `https`, without credentials. |
 
 The owner's steps on Vercel, which no agent takes, are in [the stubs' README](/apps/microservices/console-stubs/README.md#hosted-preview). They set the token on both projects and `CONSOLE_STUBS_URL` on the console, and keep the console behind Deployment Protection for production and preview.
+
+## The judge
+
+`/api/judge` is the platform's judge for the LangDrift CLI (spec 0045). `dft agent plan` posts each of its questions there: the sources, the episodes, the suggestion and the reserved part. The console asks the platform's model with LangDrift's own key, so no consumer brings a provider. The question and the answer follow the contract in `@langdrift/core` (`lib/core/contracts/go/judge/schema/`).
+
+- **`GET`** is the connection check `dft agent connect` runs. It answers 204 with the deployment's secret and 401 without it.
+- **`POST`** takes one question as JSON, with the secret as `Authorization: Bearer`.
+  - 401 without the secret.
+  - 400 for a question outside the contract, naming the field. 400 for a model the console does not offer, with the offered set.
+  - 413 over a mebibyte, and 415 for anything but plain JSON.
+  - 503 while the judge is not configured, the platform key is missing or the provider cannot be reached.
+  - 200 with the contract's response: the answer text the console validated against the kind's schema, or a refusal with its reason. It carries the tokens used, a cost in cents with provenance `console` marked illustrative (the list price of the tokens, until the owner prices a plan), and the judge's version.
+
+The console stores no question. It logs one line per judgment with the kind, the model, the tokens and the cost, never the prompt or the answer.
+
+It needs three variables on Vercel, documented here by name:
+
+| Variable | Requirement |
+| --- | --- |
+| `RUNTIME_SECRET` | The deployment's secret. `dft agent connect` records it, and the route accepts only it. One per deployment until the account issues one per project. |
+| `ANTHROPIC_API_KEY` | The platform's provider key, read at each call. Without it no call starts. |
+| `JUDGE_MODELS` | The models the console offers, comma-separated, each one with a list price in `model-prices.data.ts`, for example `claude-sonnet-5-5,claude-opus-5-5`. |
+
+The owner's steps on Vercel, which no agent takes:
+- Set `RUNTIME_SECRET`, `ANTHROPIC_API_KEY` and `JUDGE_MODELS` on `langdrift-console` for production and preview.
+- Let the CLI reach `/api/judge` through Deployment Protection, which otherwise answers its requests before the route does.
