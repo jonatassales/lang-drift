@@ -6,7 +6,7 @@
 
 **Blocked by:** 0172
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `apps/website/src/app/api/book-a-demo/route.ts` calls `sendDemoConfirmation` and `sendDemoLeadNotification`.
 - [x] `apps/website/src/app/lib/components/book-a-demo/book-demo-reply.response.ts` handles success and error responses.

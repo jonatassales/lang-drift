@@ -1,6 +1,6 @@
 # The judge as a platform service, and a run that brings the runtime up first
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 > **Note, 2026-11-05.** From 0.5.0 the CLI's command is `dft` (spec 0047). The commands this spec plans are written as `dft`; what 0.4.0 did keeps the `ex` it ran under.
 

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0156
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] No translator is named `t`.
 - [ ] No object shape is a `type` alias, and no signature carries a non-trivial inline object type.

@@ -14,7 +14,7 @@
 
 **Blocked by:** 0113.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] A navigation that carries `Sec-Fetch-Site: cross-site`, and a render with an HTTPS `Origin`, both read extub normally.
 - [ ] A cross-site browser call to `/api/console/*` still answers 403.

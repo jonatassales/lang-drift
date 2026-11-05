@@ -6,7 +6,7 @@
 
 **Blocked by:** 0103.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] With a fake driver returning the website's summaries and 3.7M input and 240K output tokens, lines 7 to 14 and 16 print with the sample's figures, and the run record's `stages` and the ledger's observed figures equal the expected fixture.
 - [ ] A human stage on a terminal prompts and continues on confirmation; without a terminal the run exits 0 as waiting, `ex agent confirm` records the confirmation, and a second run resumes at the next stage.

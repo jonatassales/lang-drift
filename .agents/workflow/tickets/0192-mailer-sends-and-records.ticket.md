@@ -6,7 +6,7 @@
 
 **Blocked by:** 0186, 0188.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `pnpm turbo run dev --filter=mailer` starts the service on port 3403; `GET /health` answers `{ "status": "ok" }`.
 - [x] A received event on the stream produces one confirmation to the visitor's address in the request's locale and one notification to the configured team address, each with an idempotency key, and two sent events with the provider's message ids.

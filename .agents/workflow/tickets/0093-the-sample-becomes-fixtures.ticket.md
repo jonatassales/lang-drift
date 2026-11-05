@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `git ls-files .langdrift` prints nothing, and a file created under `.langdrift/` is ignored while the fixtures under the CLI package are not.
 - [ ] The fixture copy of the sample is byte-identical to the sample at the commit before this ticket, checked with `git show`.

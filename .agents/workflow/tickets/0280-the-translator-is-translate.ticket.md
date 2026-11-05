@@ -6,7 +6,7 @@
 
 **Blocked by:** 0229, 0230, 0277.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The translator-name detector reports nothing.
 - [ ] `platform/cli/drift check localization` passes.

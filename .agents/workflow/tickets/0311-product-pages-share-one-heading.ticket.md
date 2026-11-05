@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] One `ProductHeading` component renders the icon tile and the name on the five product pages, with a unit test.
 - [x] The h1, the tile and the icon measure the same on the five pages at 1280px and 375px, equal to Microruntimes, with no horizontal overflow.

@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] No file, script or document names the docs app or its port.
 - [ ] The tokens package builds and tests without a docs theme, and the dead-code check passes.

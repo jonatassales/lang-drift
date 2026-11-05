@@ -12,7 +12,7 @@
 
 **Blocked by:** 0113.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] In each of the four locales, every route's title is unique for what it shows, and entity pages name their entity.
 - [ ] No title or site-name string remains in TypeScript.

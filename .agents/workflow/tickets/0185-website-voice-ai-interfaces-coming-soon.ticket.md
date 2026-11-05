@@ -4,7 +4,7 @@
 
 **Blocked by:** none
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Create `VoiceAiInterfacesIcon` in `packages/web/src/ui/icons/platform/voice-ai-interfaces-icon.tsx` and export from `index.ts`.
 - [x] Add unit test in `packages/web/src/ui/icons/platform/platform-icons.unit.tsx`.

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0019 (The web package).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] The website's tree is copied from langdrift `e518dac` and reformatted to this repository's Biome style.
 - [x] `@pack/react` imports resolve to `@langdrift/web` through a pnpm workspace alias; the source's imports are unchanged.

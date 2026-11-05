@@ -6,7 +6,7 @@
 
 **Blocked by:** 0012.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] No application file assigns an aggregate field directly; transitions return errors on misuse.
 - [ ] One definition each for port-range and source-location rules; duplicates deleted.

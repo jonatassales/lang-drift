@@ -6,7 +6,7 @@
 
 **Blocked by:** 0086, 0087.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `products/[id]/analysis` with page, loading, error and template, reading `reached=` the phase.
 - [ ] `AnalysiWidget` with the panel's eyebrow and summary line over its full body; unknown values are a dash.

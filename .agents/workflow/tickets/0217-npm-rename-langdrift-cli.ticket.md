@@ -6,7 +6,7 @@
 
 **Blocked by:** 0216.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `lib/cli/package.json` is `@langdrift/cli` 0.4.0 with bin `ex`; `pnpm pack --dry-run` in `lib/cli` lists the launcher, the four binaries, LICENSE and README under the new name, and `dist/ex version` prints `ex 0.4.0`.
 - [x] `ex init` writes a CI gates workflow that runs `@langdrift/cli@0.4.0`, and the CLI's scaffold test still matches its fixture.

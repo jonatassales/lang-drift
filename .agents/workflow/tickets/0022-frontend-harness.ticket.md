@@ -6,7 +6,7 @@
 
 **Blocked by:** 0020 (The website app).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] The new rules exist with this repository's paths and are listed in AGENTS.md.
 - [x] The frontend and Tailwind rules carry `cn()`, role utilities only, no component classes and the scoped exception that names the existing CSS files.

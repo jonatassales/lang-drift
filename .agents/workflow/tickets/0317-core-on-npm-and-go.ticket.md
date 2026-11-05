@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [x] The manifest is public at 0.2.0, with a description, the Apache-2.0 license, the repository and `publishConfig.access: public`, and installs on every platform.
 - [x] `pnpm pack --dry-run` lists the twelve files of `contracts/go/judge/schema/`, `README.md`, `LICENSE` and `package.json`, and no Go source.

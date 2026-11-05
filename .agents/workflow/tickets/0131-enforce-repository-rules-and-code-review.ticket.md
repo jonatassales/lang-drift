@@ -4,7 +4,7 @@
 
 **What to build:** Add mandatory two-axis `code-review` before every commit to `.claude/rules/00-general.rule.md`, update `code-review` and `implement` skills to explicitly evaluate all 10 rule files, and implement `drift check rules` in `platform/cli/src/commands/check-rules.sh` to mechanically enforce general, filesystem, frontend CSS whitelist/ratchet, Next.js, and Jotai rules. Wire `check rules` and `check biome` into `platform/cli/src/commands/git-pre-commit.sh` and `.github/workflows/validate.yml`.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `.claude/rules/00-general.rule.md` adds Rule 4 mandating two-axis `code-review` before every commit.
 - [x] `.claude/skills/code-review/SKILL.md` mandates `.claude/rules/*.rule.md` as the authoritative source of standards.

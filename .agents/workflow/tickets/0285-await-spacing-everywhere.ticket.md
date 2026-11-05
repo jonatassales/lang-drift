@@ -6,7 +6,7 @@
 
 **Blocked by:** 0284.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The await-spacing detector, now in the `all` scope, reports nothing.
 - [ ] `platform/cli/drift quality coverage 04-typescript` shows 100%.

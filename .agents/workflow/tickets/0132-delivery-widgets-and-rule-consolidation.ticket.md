@@ -4,7 +4,7 @@
 
 **What to build:** Consolidate repository rules into V3 structure, relocate dead-code allowlist to platform CLI exceptions, configure lint-staged in package.json, implement the 5 delivery widgets (Workflow, FinOps, Microruntimes, Code Quality, Agentic) in .github/widgets, and update CI with Harness - Guardrails, Harness - Score, and Delivery - Dashboard.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Consolidate repository rules into `.claude/rules/*.rule.md` V3.
 - [x] Relocate `dead-code.allow` to `platform/cli/src/exceptions/dead-code.allow`.

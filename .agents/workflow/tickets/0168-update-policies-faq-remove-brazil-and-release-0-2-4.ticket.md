@@ -10,7 +10,7 @@
 
 **Blocked by:** none
 
-**Status:** in_progress
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [x] packages/ex/README.md matches root README.md Apache License 2.0 declarations.
 - [x] packages/ex/package.json version bumped to 0.2.4.

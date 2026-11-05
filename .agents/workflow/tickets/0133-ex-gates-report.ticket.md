@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] In a git repository without `.langdrift/`, `ex gates report` exits 0 and prints the range, the commit count and each commit's short SHA and subject.
 - [x] Every FinOps reading is marked unknown, with the reason that no committed FinOps source exists. None reads as zero.

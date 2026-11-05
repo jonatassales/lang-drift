@@ -6,7 +6,7 @@
 
 **Blocked by:** 0128 (`@langdrift/ex` packages prebuilt binaries and runs through `npx`).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `packages/ex/README.md` documents running `@langdrift/ex` via `npx @langdrift/ex`, the `bin/ex` launcher and prebuilt `darwin`/`linux` (`arm64`/`amd64`) binaries, and `sh build.sh --release` alongside local source builds.
 - [x] `README.md` and `platform/docs/README.{pt-br,zh-hant,ja,vi}.md` update Project status and Get started with `ex` so readers can run `npx @langdrift/ex` directly or build from source.

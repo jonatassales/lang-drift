@@ -6,7 +6,7 @@
 
 **Blocked by:** 0305, 0306.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] The menu test asserts the order, the five links and one Coming soon badge.
 - [x] The desktop panel shows two columns at 1280px; the drawer one column at 375px.

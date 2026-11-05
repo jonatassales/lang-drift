@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] At 1024, 1120 and 1440px the three cards share one row, with equal widths and heights and no horizontal scroll.
 - [x] Below `lg` the cards stack as before.

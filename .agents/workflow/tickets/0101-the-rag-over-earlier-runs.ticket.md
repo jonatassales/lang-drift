@@ -6,7 +6,7 @@
 
 **Blocked by:** 0099.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] With an index of the website's six episodes, lines 14 to 21 print with the sample's scores, kept and dropped counts and the threshold, and the plan fence's `retrieval` and `sizing` equal the expected fixture.
 - [ ] The embedder is deterministic across runs and platforms, and cosine similarity of a text with itself is 1.

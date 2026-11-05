@@ -6,7 +6,7 @@
 
 **Blocked by:** 0035, 0037.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The platform product model carries `href` for FinOps and Microruntimes, which links the dropdown, the drawer and the home hero list through the existing model.
 - [ ] `FeaturesGrid` accepts an optional `href` per item and makes the whole card the link, with a visible focus ring; the home features section passes localized paths for the products that have a page.

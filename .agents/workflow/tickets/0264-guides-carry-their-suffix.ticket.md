@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Every Markdown document outside the conventional names carries a type suffix.
 - [x] Every path cited in `AGENTS.md` and under `.claude/skills/` exists, and a grep for the old names outside `.agents/workflow/` returns nothing.

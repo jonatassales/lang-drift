@@ -25,7 +25,7 @@ The checklist:
 
 **Blocked by:** 0108, 0109, 0110, 0111, 0112, 0113, 0114, 0115, 0116, 0117, 0118, 0121.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Each README describes what its app now does, and nothing it does not.
 - [ ] The checklist lists every step that code cannot verify.

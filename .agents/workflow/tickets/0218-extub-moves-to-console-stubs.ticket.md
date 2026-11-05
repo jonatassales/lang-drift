@@ -6,7 +6,7 @@
 
 **Blocked by:** 0211.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `apps/extub` no longer exists; `apps/microservices/console-stubs` is the workspace `console-stubs` and the Go module named after its path, listed in the root Go workspace.
 - [ ] `pnpm console` starts the console on 3001 and the stubs on 3401; `go vet ./...` and `go test -race ./...` pass in the module.

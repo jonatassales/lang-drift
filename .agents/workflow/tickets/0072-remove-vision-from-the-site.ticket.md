@@ -6,7 +6,7 @@
 
 **Blocked by:** 0071
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The Vision address answers "not found" in every locale, and no sitemap entry or metadata entry names it.
 - [ ] The home page renders the hero, the Microruntimes section, the FinOps section, a FAQ with two tabs and the Book a demo band, and no link on the site leads to a removed address.

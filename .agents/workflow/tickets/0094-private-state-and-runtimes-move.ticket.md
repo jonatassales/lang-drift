@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately; parallel with 0093).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] After `ex init`, `ex cluster create` and a connected start in a disposable project, no file is written under `.langdrift/state`, `.langdrift/runtimes` or `.audits`; the paths above hold them.
 - [ ] An inspection with no planned run creates `microruntimes/runtimes/<id>/run.json` of kind `execution` and writes its evidence under that folder.

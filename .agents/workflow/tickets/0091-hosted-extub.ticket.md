@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `main.go` and the composition root live in `cmd/server/`; the package scripts build and run `./cmd/server`.
 - [ ] Hosted mode, decided once from `CONSOLE_STUBS_TOKEN`, listens on all interfaces at `PORT` (default 3000); local mode keeps `127.0.0.1:CONSOLE_STUBS_PORT`.

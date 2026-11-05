@@ -6,7 +6,7 @@
 
 **Blocked by:** 0150
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `website-header.css` is deleted and nothing imports it.
 - [ ] The header, the drawer and the Platform menu keep their look and behavior, reduced motion included.

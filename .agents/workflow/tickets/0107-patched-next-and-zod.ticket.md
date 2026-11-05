@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `pnpm audit --prod` reports no high or critical advisory.
 - [ ] The lockfile resolves `next` 16.4.3 for both apps, and zod 4.6.7 under sinapsi.

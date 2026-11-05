@@ -19,7 +19,7 @@ Every agent call before the dev ticket receives the reserved paths through a `{{
 
 **Blocked by:** 0201.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] With Safe Seat on, a run reaches the dev ticket, waits, prints the reserved part, and the scripted driver records no call for that stage.
 - [ ] A scripted driver call before the dev ticket receives the reserved paths in its argument and its environment.

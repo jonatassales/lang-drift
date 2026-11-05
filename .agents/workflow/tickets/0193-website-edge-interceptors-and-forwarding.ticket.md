@@ -6,7 +6,7 @@
 
 **Blocked by:** 0186.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Every existing refusal (405, 403, 415, 413, oversized or malformed body, 400 with field errors) answers exactly as before, each from its own interceptor.
 - [x] An accepted submission is posted to `<DEMO_REQUESTS_URL>/v1/demo-requests` with `Authorization: Bearer <DEMO_REQUESTS_TOKEN>` and the submission as JSON, and the route answers 200 `OK` on 202.

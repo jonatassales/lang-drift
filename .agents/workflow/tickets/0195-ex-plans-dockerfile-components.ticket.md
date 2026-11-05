@@ -6,7 +6,7 @@
 
 **Blocked by:** 0194.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `ex agent plan <ticket> --component name=web,path=apps/web` on the test project writes a fence whose component has the derived image, the `EXPOSE` port and the `HEALTHCHECK` probe.
 - [x] `HEALTHCHECK` in shell and exec form, with and without interval, timeout, retries and start period, maps to the probe fields; `HEALTHCHECK NONE` and no `HEALTHCHECK` fail the `readiness-known` check with the file named.

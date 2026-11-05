@@ -18,7 +18,7 @@ No type and no view carries a share. The copy goes into the five console catalog
 
 **Blocked by:** 0199.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] console-stubs serves the Safe Seat fields for LangDrift Studio, and its catalog test checks that the seeded tickets cover every state.
 - [x] `TicketStage` carries `drivenBy`. The ticket carries its Safe Seat state and override reason. The plan carries the reserved part. No field holds a share.

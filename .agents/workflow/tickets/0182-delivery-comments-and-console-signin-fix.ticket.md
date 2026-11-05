@@ -11,7 +11,7 @@
 
 **Blocked by:** none
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Remove LangDrift logo and emojis from `.github/widgets/dashboard.sh` and gate widgets.
 - [x] Add `https://console.langdrift.md/sign-in` links to all status column cells across all tables.

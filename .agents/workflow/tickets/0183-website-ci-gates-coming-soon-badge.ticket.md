@@ -4,7 +4,7 @@
 
 **Blocked by:** none
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Add `comingSoon` translation keys to `header.json` for all 5 locales (`en`, `pt-BR`, `zh-Hant`, `ja`, `vi`).
 - [x] Update `HeaderMessages` interface in `apps/website/src/app/template/i18n/messages/messages.types.ts`.

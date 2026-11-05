@@ -6,7 +6,7 @@
 
 **Blocked by:** 0246, 0222, 0223, 0224, 0225, 0226, 0227.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The supervisor scenarios and service tests pass before and after the split, with the three new scenarios added first.
 - [ ] No method of the supervision type is longer than one screen, and none nests beyond two conditional levels.

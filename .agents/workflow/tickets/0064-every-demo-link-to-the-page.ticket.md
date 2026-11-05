@@ -6,7 +6,7 @@
 
 **Blocked by:** 0062 (One FAQ with a tab per product), 0063 (The Book a demo page, its form and its route).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] A `BookDemoBand` Server Component with the fragment id `book-a-demo` shows "Book a demo", its own description or the sentence a page passes, and a pill link to the page; a jsdom test covers both descriptions and the link.
 - [ ] The home renders the band after the FAQ; the Vision, Microruntimes and FinOps pages render it in place of the landing early-access band, FinOps with its own sentence.

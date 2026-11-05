@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `apps/website/src/app/lib/` no longer exists and no file imports through a removed alias.
 - [x] Every moved module sits under the segment the spec's website owners list names, and the early-access environment computes move unchanged with their route.

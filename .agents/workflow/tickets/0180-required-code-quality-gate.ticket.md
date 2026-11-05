@@ -4,7 +4,7 @@
 
 **Blocked by:** none
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Update `.github/widgets/dashboard.sh` to publish `Code Quality` check run with conclusion `success` and title `Rules Verified`.
 - [x] Update `.github/widgets/code-quality.sh` to document that the Code Quality check run is an active, required CI gate.

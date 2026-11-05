@@ -6,7 +6,7 @@
 
 **Blocked by:** 0186, 0188.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `pnpm turbo run dev --filter=demo-requests` starts the service on port 3402 with its environment loaded from the app's `.env`, and `GET /health` answers `{ "status": "ok" }`.
 - [x] `POST /v1/demo-requests` without the bearer token answers 401; with it and a valid body answers 202 with `{ id }` and a `Location` header; with an invalid body answers 400 with field errors; with the log down answers 503.

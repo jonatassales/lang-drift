@@ -6,7 +6,7 @@
 
 **Blocked by:** 0076
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The three commands run at the same time, and each app answers on its port.
 - [ ] The console shows the stub's data without starting the stub separately.

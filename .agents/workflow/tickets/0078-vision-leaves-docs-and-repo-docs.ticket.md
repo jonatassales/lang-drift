@@ -6,7 +6,7 @@
 
 **Blocked by:** 0076
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The docs build has no Vision route, and its navigation lists no Vision entry.
 - [ ] A whole-word search for Vision outside historical records finds only the shared classification colors, the website's brand line, the logo comment and AGENTS.md's record of the pivot.

@@ -1,6 +1,6 @@
 # Resend Book a Demo Integration
 
-**Status:** ready-for-review
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 **Superseded:** spec 0031 moves email dispatch out of the website into the Nest microservices; the sent page's auto-redirect and the toast introduced here stay.
 

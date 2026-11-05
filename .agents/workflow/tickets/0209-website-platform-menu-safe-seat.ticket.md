@@ -6,7 +6,7 @@
 
 **Blocked by:** 0208.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `SafeSeatIcon` is in the platform icon family, monochrome in `currentColor` on the CI Gates pattern, and exported from the barrel. The icon test has a Safe Seat row and no Voice row.
 - [ ] The menu entry is `safeSeat`, with its description, the icon, `href` set to `/platform/safe-seat` and the `comingSoon` badge.

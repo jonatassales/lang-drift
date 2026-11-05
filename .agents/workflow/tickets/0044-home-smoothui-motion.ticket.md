@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The Features Grid's cards glow in the brand purple inside a circle that follows the pointer; the glowing copy of the grid is inert, so no link is focusable or announced twice. Reduced motion shows no glow.
 - [ ] The hero's products drop in one after another and stay. Each name has a one-line description beneath it, translated in every locale, in solid foreground (white in the dark scheme, black in the light one) with no transparency and no hover effect.

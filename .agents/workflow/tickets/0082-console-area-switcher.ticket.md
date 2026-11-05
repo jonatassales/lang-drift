@@ -6,7 +6,7 @@
 
 **Blocked by:** 0081
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The switcher shows the current area, switches with mouse and keyboard, closes with Escape and returns focus.
 - [ ] A pathname test proves routes under `/finops` are FinOps and every other route is Microruntimes.

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0099.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Against the fixture project, lines 25 to 43 print with the sample's component, totals, checks and revision, and the plan fence's `components`, `totals`, `materialization`, `price`, `checks` and `runtime` equal the expected fixture.
 - [ ] The manifest inspector is unit-tested on each manifest kind, including the port sources, and a path with no manifest is recorded as unknown technology.

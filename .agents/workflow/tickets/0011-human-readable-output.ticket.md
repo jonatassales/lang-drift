@@ -6,7 +6,7 @@
 
 **Blocked by:** 0005.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] A presentation renderer over the same data the JSON path emits; no logic in templates.
 - [ ] Golden-style tests for the four commands in both modes.

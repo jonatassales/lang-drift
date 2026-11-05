@@ -6,7 +6,7 @@
 
 **Blocked by:** 0237, 0247, 0248, 0249, 0250, 0251, 0252, 0253, 0254, 0255, 0256, 0257, 0258, 0259, 0260.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `platform/cli/drift quality check filesystem` reports no snake_case Go file.
 - [x] `go vet` and `go test -race` pass in the three modules.

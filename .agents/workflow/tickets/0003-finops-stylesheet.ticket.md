@@ -6,7 +6,7 @@
 
 **Blocked by:** 0002 (Shadcn bridge and Tailwind theme).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] FinOps's product theme has its own source file in the themes folder, with primary and primary hover in both color schemes.
 - [ ] `@langdrift/tokens/finops.css` is a public, self-contained export.

@@ -4,7 +4,7 @@
 
 **Blocked by:** none
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Remove `CRYPTO_SECRET` from `apps/website/.env.development`.
 - [x] Update `apps/website/src/factories/cookie-service.factory.ts` to generate `CRYPTO_SECRET` on the fly in development/test when unset.

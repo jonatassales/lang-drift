@@ -16,7 +16,7 @@ Both record who and when in the lap's evidence and resume the run. The seeded te
 
 **Blocked by:** 0202.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] A run records its base commit. Each scripted agent call has before and after tree ids, and its changed paths with line counts, in the stage evidence. The dev ticket has opening and closing tree ids.
 - [ ] After a run, `git status`, the index, `HEAD` and every ref of the person's repository are unchanged, apart from the agent's own edits to the working tree.

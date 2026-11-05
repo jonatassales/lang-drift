@@ -6,7 +6,7 @@
 
 **Blocked by:** 0211.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `apps/microservices/` holds no `redis` and no `minio`; `infrastructure/messaging` and `infrastructure/storage` hold the Dockerfile, the README and a manifest named `messaging` and `storage`.
 - [ ] `pnpm ls -r --depth -1` lists `messaging` and `storage`.

@@ -11,7 +11,7 @@ The workflow skills follow the policy:
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The Safe Seat policy exists beside the human-in-the-loop policy and covers:
   - the 5% floor;

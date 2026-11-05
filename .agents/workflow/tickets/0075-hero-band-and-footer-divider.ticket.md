@@ -6,7 +6,7 @@
 
 **Blocked by:** 0073
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The hero renders the headline centered on the first screen over a grayscale shader, and under it one frame with the terminal and the session cards side by side, whose top peeks at the bottom of the first screen; there is no sun, no product column and no call to action.
 - [ ] From `lg` the frame grows with the cards so they never scroll, and the terminal matches their height; on a phone the cards stack under the terminal.

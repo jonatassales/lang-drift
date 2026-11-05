@@ -4,7 +4,7 @@
 
 **Blocked by:** none
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Add `config.matcher` to `apps/console/src/proxy.ts` excluding `/api`, `/_next`, root assets, and dotted files.
 - [x] Add test suite in `apps/console/src/proxy/proxy-matcher.test.ts` verifying path matching and exclusion contracts.

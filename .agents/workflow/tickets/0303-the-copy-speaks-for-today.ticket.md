@@ -6,7 +6,7 @@
 
 **Blocked by:** 0302.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `git grep -n -i -E 'illustrativ|ilustrativ|示意|イメージ上|イメージです|minh họa'` over `apps/website/src` and `packages/web/src` matches nothing; イメージ alone also means a container image and stays.
 - [x] No catalog says "vision" in the product sense, and the footer line is the new tagline.

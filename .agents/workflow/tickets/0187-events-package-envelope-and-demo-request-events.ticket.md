@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `@langdrift/events` is a workspace package with `build`, `typecheck` and `test` scripts that call `tsc` and `vitest` directly, and its exports resolve from the built output.
 - [x] The envelope schema accepts `{ id, type, version, aggregate: { type, id }, occurredAt, correlationId, causationId?, payload }` and refuses a missing or malformed field with a reason.

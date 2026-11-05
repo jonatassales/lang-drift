@@ -6,7 +6,7 @@
 
 **Blocked by:** 0221, 0223, 0227, 0313, 0315, 0317.
 
-**Status:** ready-for-human
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `@langdrift/cli@0.5.0` is on npm; `pnpm dlx @langdrift/cli@0.5.0 --version` prints `dft 0.5.0`; the tag `lib/cli/v0.5.0` and the GitHub Release exist.
 - [ ] `RUNTIME_SECRET` and the platform's provider key exist on `langdrift-console` for production and preview, and `POST /api/judge` on the deployed console answers 401 without the secret and 200 with a sample question.

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0005.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] States/causes are declared types in the domain; illegal transitions return errors; tests cover the table.
 - [ ] connected/service.go's runOne shrinks to orchestration over the model.

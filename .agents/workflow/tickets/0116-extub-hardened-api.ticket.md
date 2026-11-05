@@ -24,7 +24,7 @@
 
 **Blocked by:** 0107.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Every response, in both modes, carries the four headers next to today's three.
 - [ ] A missing or wrong token answers 401 with `WWW-Authenticate`, and `bearer <token>` is admitted.

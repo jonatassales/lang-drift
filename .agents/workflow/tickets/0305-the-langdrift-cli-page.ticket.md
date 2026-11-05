@@ -6,7 +6,7 @@
 
 **Blocked by:** 0304.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `/platform/cli` renders in every locale with its icon, install line, flow and image.
 - [x] The SEO contract test covers its metadata and sitemap entries.

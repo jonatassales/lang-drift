@@ -4,7 +4,7 @@
 
 **What to build:** a fourth card, Workflow, opens when the plan session ends. It summarizes the session as money: the run's expected spend for a real Claude model and effort against the $25.00 per-run budget the design doc sets. It lists the delivery stages with their skills and a Human in the loop checkbox each, and a Play workflow button. Play shows a one-second loader, then the terminal clears and plays `ex agent run` through the console's gate, the stages, the microruntime, the push, `#19`, the checks and ready for review. A reservation over the budget pauses the run at the gate instead.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 ### Plan session
 

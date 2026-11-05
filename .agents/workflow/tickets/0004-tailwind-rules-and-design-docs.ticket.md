@@ -10,7 +10,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The Tailwind rule exists with the text approved during grilling.
 - [ ] Rule 2 of the frontend rule names the product tokens import instead of declaring `--lg-*` tokens.

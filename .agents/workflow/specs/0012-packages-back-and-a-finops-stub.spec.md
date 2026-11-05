@@ -1,6 +1,6 @@
 # The CLI and its contracts return to packages, extub stubs FinOps alone, and every app runs on its own port
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 ## Problem Statement
 

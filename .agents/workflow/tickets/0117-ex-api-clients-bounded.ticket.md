@@ -13,7 +13,7 @@ The console client reports a malformed console URL without quoting it. The CLI R
 
 **Blocked by:** 0107.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] A redirecting endpoint never receives the key on the second host.
 - [ ] A response over the bound fails with a bounded read.

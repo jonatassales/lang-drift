@@ -6,7 +6,7 @@
 
 **Blocked by:** 0100.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Against the fixture runtime, a run with Opus at high prints lines 1 to 6 of the pause variant and leaves lap `0001` and the ledger line with the sample's figures (3400, 4080, nothing paid), exit code 3.
 - [ ] A run with the suggestion prints the opened gate with 950 reserved as 1140 and leaves lap `0002` open, with the run record's lap entry and the ledger line.

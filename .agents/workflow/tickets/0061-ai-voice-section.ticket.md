@@ -6,7 +6,7 @@
 
 **Blocked by:** 0060 (The home section shell and the Vision, Microruntimes and FinOps sections).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `VoicePreview` is trimmed to the orb, the question row and the answer card; its kicker, heading and paragraph leave, since the section renders the voice title and description from the home catalog.
 - [ ] Its styling is role utilities: borders in the border role, muted text in the muted role, the button in the primary role, the answer card's fade and slide still under reduced motion; its stylesheet is deleted and its line leaves the frontend rule's shrink-only list.

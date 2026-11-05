@@ -6,7 +6,7 @@
 
 **Blocked by:** 0197, 0189, 0190, 0191, 0192.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [x] The root `package.json` pins `@langdrift/cli` to `0.4.0` in `devDependencies` and `pnpm exec ex --version` prints `0.4.0` (resolved from the registry, not linked from the workspace).
 - [x] `sh platform/microruntime/plan.sh` is idempotent and ends with a `runtime.md` under `.langdrift/` whose fence lists the four components with derived images, ports and probes.

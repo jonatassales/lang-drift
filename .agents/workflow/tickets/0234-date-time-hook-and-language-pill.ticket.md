@@ -6,7 +6,7 @@
 
 **Blocked by:** 0229, 0230.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `useDateTime` lives at `template/i18n/use-date-time.hook.ts` in its app and every import follows.
 - [x] The language links render the i18n `Link`; their `href` values, query strings and hashes are unchanged.

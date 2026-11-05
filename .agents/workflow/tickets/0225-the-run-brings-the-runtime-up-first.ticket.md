@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] In the composed test with the fake lifecycle, the transcript prints the runtime-ready line before the first `waiting` line, and the written tree holds the execution's evidence before any stage record.
 - [ ] A run whose every stage waits for a person ends its first lap `waiting` at the first stage with the execution started and the ledger's reservation held; `ex agent status` shows the runtime up and the stage waiting.

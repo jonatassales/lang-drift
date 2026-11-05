@@ -6,7 +6,7 @@
 
 **Blocked by:** 0017 (Apps replace products).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] The package exports only `website.css`, with the `--site-*` theme behind `primary` and `primary-hover` (`#6D0AD6`; hover `#5408A5` light, `#8C3BEF` dark) and a white primary foreground.
 - [x] Background, card, popover, foreground, muted foreground and border take the website's light and dark values.

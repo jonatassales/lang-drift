@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The catalog has an entry for every plan line id and every run message id the website defines, and the test fails when one is missing.
 - [ ] `--json` on a session prints NDJSON events whose ids and reveal ids match the website's, in order.

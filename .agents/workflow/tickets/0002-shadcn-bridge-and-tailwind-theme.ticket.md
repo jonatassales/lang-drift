@@ -6,7 +6,7 @@
 
 **Blocked by:** 0001 (Vision stylesheet with shared tokens and its product theme).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Every shadcn variable, from `--background` to `--sidebar-ring`, is declared and references the matching `--lg-*` role.
 - [ ] `--radius` is not declared.

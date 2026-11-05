@@ -13,7 +13,7 @@ The judge suggests a part only if it qualifies: its planned share reaches the te
 
 **Blocked by:** 0200.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] A scripted judge's qualifying suggestion lands in the plan fence with every field. A suggestion below the team's percentage is not offered, and the plan says why.
 - [ ] The lead's own pick replaces the suggestion, is recorded with `chosenBy` set to the lead, and shows its planned-share check.

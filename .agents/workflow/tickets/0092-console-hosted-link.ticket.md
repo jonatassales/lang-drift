@@ -6,7 +6,7 @@
 
 **Blocked by:** 0091.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] One pure rule decides whether a host and an `EXTUB_URL` are allowed, from whether a token is set; `extubRequest` and the server reads use it.
 - [ ] In hosted mode the proxy sends `Authorization: Bearer <token>` and never forwards browser credentials.

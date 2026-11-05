@@ -2,7 +2,7 @@
 
 **What to build:** the blurred bottom band (`ScrollHint`) is half as tall and is rendered by a shared `platform/layout.tsx`, so every `platform/*` product page shows it without wiring it page by page.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 ### Scroll hint
 

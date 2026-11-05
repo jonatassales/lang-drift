@@ -4,7 +4,7 @@
 
 **Blocked by:** none
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Add `CiGatesIcon` to `@langdrift/web/ui/icons/platform` and export it.
 - [x] Restore `platform-menu.tsx` and integrate `<PlatformMenu />` in `website-header.tsx`.

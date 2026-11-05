@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `package.json` maps `bin` to `dft` alone; `pnpm pack --dry-run` lists `bin/dft.sh` and no `bin/ex.sh`.
 - [x] `dft --help` names `dft` in its usage; the launcher test runs `bin/dft.sh`.

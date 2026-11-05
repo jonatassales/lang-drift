@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Login and sign-up show the muted shader and the elevated frame in both color schemes, on desktop and on a phone, and still sign in against the stub.
 - [ ] The website's hero looks the same, now built from the shared pieces.

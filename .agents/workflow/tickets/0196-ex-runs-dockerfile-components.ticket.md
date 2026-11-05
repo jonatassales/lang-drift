@@ -6,7 +6,7 @@
 
 **Blocked by:** 0195.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] The blueprint names workloads and Services by component name and carries the derived image; the three probe kinds render as Kubernetes expects.
 - [x] The process fake records `docker build --file <folder>/<dockerfile> --tag <image> .` with the minimal environment and nothing else as the build.

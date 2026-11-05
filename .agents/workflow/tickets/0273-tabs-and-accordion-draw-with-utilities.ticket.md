@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent, delivered with ticket 0299 of spec 0046.
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05. Before: ready-for-agent, delivered with ticket 0299 of spec 0046.
 
 - [x] Both components' tests assert each variant's indicator classes, the selected and focused states and the reduced-motion utilities.
 - [x] The affected website pages match their capture at 1280px and 375px, light and dark, recorded under `.audits/`.

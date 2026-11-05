@@ -6,7 +6,7 @@
 
 **Blocked by:** 0246, 0254.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `native.go` no longer exists; each concern is a file of `Native`'s methods.
 - [ ] The native tests pass at every step of the split.

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0012.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Kill-between-steps tests: every interleaving of Bind/Materialize leaves a state the next run repairs.
 - [ ] Forward uses one synchronized writer per stream; race detector clean.

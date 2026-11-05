@@ -21,7 +21,7 @@ Refactor vendor components under `packages/web/src/vendors/smoothui/`:
 
 **Blocked by:** 0176
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `packages/web/src/vendors/smoothui/animated-tabs.tsx` complies with 00-general and 05-react.
 - [x] `packages/web/src/vendors/smoothui/basic-accordion.tsx` complies with 00-general and 05-react.

@@ -23,7 +23,7 @@ The person's share is person lines over all counted lines, with unknown lines in
 
 **Blocked by:** 0203.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] One scenario covers all four sources of a line:
   - the scripted agent writes the boundary and other files;

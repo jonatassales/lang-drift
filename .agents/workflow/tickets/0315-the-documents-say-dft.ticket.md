@@ -6,7 +6,7 @@
 
 **Blocked by:** 0313.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] The glossary defines `dft`, `drift` and `ex` (former name of `dft`).
 - [x] AGENTS.md, the context guide, the Safe Seat policy, `SECURITY.md`, the infrastructure READMEs and rules 10 and 11 name the command `dft`; the rules change only the name.

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0221, 0222.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] In a connected project, `dft agent plan` with the composed test's fake console answers writes a proposed plan whose fence records `judge.version`, `judge.promptHash` and a suggestion `by: judge`; the ledger's planning line, which gains these fields, carries the console's cost, its provenance `console` and whether it is illustrative.
 - [ ] Before the first question the planner reserves the planning forecast at the planner model's list price against the ticket's allocation and the per-run cap; when it does not fit, the gate pauses before any question and nothing is paid, as today. Every answer is parsed against the contract before use; an answer outside it is a refusal.

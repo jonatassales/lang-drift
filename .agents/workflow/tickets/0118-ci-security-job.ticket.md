@@ -12,7 +12,7 @@ The context file's CI table lists the job.
 
 **Blocked by:** 0107.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] The job runs on every pull request into `main`, and fails on a high or critical npm advisory or on a reachable Go vulnerability.
 - [ ] Its commands pass on this branch.

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0093 (the fixture the rules are compared with), 0094 (the moved paths).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `ex init` in an empty directory leaves exactly `config.json`, `microruntimes/AGENTS.md` and `agent/state/.gitignore` under `.langdrift/`.
 - [ ] The written `AGENTS.md` equals the fixture byte for byte and `config.json` equals the sample's layout with a fresh id.

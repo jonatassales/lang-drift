@@ -6,7 +6,7 @@
 
 **Blocked by:** 0300.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Only the home renders a `#faq` section, with three tabs.
 - [x] No component left unused, and no catalog key left unread, by the removal.

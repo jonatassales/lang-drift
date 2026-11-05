@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `src/app/state/index.ts` holds the barrel and `src/app/lib/state` is gone.
 - [ ] `@state` resolves to the new path, and every importer still uses `@state`.

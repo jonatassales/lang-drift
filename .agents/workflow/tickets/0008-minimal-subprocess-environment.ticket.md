@@ -6,7 +6,7 @@
 
 **Blocked by:** 0005.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] One environment-builder helper in infrastructure/process, used by hooks, terraform, kind, kubectl, git and build recipes.
 - [ ] Recorded-runner tests assert PROJECT_SECRET and AWS_SECRET_ACCESS_KEY never reach a child that did not declare them.

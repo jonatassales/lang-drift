@@ -17,7 +17,7 @@ The run and the README say plainly that `ex` records a merge without an override
 
 **Blocked by:** 0204.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] Below the floor at delivery, the run prints `SEAT-03` and `needs-override`, and the committed run record holds that state.
 - [ ] `ex agent safe-seat override` prints the measured share and the floor, records the reason, the `--by` and the time, and turns the state to `overridden`. An override without a reason is refused.

@@ -6,7 +6,7 @@
 
 **Blocked by:** none.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `@langdrift/tokens` builds `docs.css` from a `docs` app theme, and its test covers it.
 - [x] `apps/docs` is copied from Exphere `bf0133e`, without the homepage, reformatted to this repository's Biome style, with colors only from token roles and `.dark` instead of `data-theme`.

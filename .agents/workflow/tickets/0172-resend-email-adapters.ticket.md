@@ -6,7 +6,7 @@
 
 **Blocked by:** none
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `resend` package installed in `apps/website`.
 - [x] `apps/website/src/infra/resend/send-demo-confirmation.adapter.ts` sends confirmation from `no-reply@langdrift.md` to applicant.

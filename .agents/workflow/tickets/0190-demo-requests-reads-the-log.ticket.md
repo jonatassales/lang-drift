@@ -6,7 +6,7 @@
 
 **Blocked by:** 0189.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `curl -N` with the bearer token and `Last-Event-ID: 0-0` prints every entry of the stream as an SSE event with `id`, `event` and `data`, then keeps the connection open with pings.
 - [x] Without `Last-Event-ID` the stream shows only entries appended after the connection opened.

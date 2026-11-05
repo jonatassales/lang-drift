@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] `packages/ex/package.json` is version `0.1.0`, not private, with `"publishConfig": { "access": "public" }`, `"license": "MIT"`, `"bin": { "ex": "./bin/ex" }`, `"os": ["darwin", "linux"]`, `"cpu": ["x64", "arm64"]`, `"homepage"`, `"repository"`, `"prepack": "sh build.sh --release"`, `"@langdrift/contracts": "workspace:*"` in `"devDependencies"`, and `"files"` limited to `bin/ex`, the four `dist/ex-*` binaries, `LICENSE`, and `README.md`.
 - [x] `LICENSE` and `packages/ex/LICENSE` carry the MIT license (`Copyright (c) 2026 LangDrift`).

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0187.
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] The strategy implements Nest's custom transport contract and is constructed with the connection URL, the stream, the group, the consumer name and bounded options (block, batch, claim idle, claim interval, maximum deliveries).
 - [x] An entry whose handler completes is acknowledged; an entry whose handler throws stays pending and is claimed on the next claim pass.

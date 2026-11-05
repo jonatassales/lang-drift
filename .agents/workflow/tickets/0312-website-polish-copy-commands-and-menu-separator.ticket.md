@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Every `CommandLine` shows a copy button; a unit test covers the copied and the failed states.
 - [x] The copy labels exist in the five locales of `cli.json` and `ci-gates.json`, with key parity.

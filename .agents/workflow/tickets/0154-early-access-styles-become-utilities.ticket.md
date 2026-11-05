@@ -6,7 +6,7 @@
 
 **Blocked by:** 0150
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `early-access.css` is deleted and nothing imports it.
 - [ ] The form's label, input, button, feedback and error carry their former styles as utilities, hover, placeholder, invalid and disabled states included.

@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** completed. Its acceptance criteria were all checked when ADR 0005 (Perfect Simulation Alignment) reset the backlog on 2026-11-05.
 
 - [x] Both apps send `Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()`, asserted by the website's Next configuration test; the README follows.
 - [x] Every `select` and checkbox of the Microruntimes workflow card has a `name`.

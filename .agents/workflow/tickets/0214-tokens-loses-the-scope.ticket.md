@@ -6,7 +6,7 @@
 
 **Blocked by:** 0211.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: superseded by ADR 0005 (Perfect Simulation Alignment).
 
 - [ ] `packages/tokens` is named `tokens`; the website, the console and `packages/web` depend on it through `workspace:*`.
 - [ ] Every Tailwind entry and the web package's tokens stylesheet import `tokens/website.css`; both apps build and their pages render with the same colors.
