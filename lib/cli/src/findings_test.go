@@ -22,7 +22,7 @@ func TestAFailedPlanKeepsTheJudgesSpend(t *testing.T) {
 	p, deps := seedProject(t)
 	deps.Judge = &scriptedJudge{answers: sampleAnswers(t)}
 
-	status, stdout, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--component", "name=missing,path=services/missing,port=80,readiness=tcp")
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", "name=missing,path=services/missing,port=80,readiness=tcp")
 	if status == 0 || !strings.Contains(stderr, "services/missing") {
 		t.Fatalf("a plan over a missing component gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -76,7 +76,7 @@ func TestAnInterruptedCallLeavesTheSpendUnknown(t *testing.T) {
 	lifecycle := websiteLifecycle()
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, lifecycle, websiteDelivery(), time.Millisecond
 
-	if status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 1 || !strings.Contains(stderr, "interrupted") {
+	if status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 1 || !strings.Contains(stderr, "interrupted") {
 		t.Fatalf("an interrupted call gave %d: %s\n%s", status, stderr, stdout)
 	}
 	if record := runRecord(t, p); record.State != "failed" || record.Laps[0].Outcome != "failed" || lifecycle.downs != 1 {
@@ -91,7 +91,7 @@ func TestAnInterruptedCallLeavesTheSpendUnknown(t *testing.T) {
 	}
 
 	driver.cutOff = map[string]bool{}
-	status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
+	status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
 	if status != 0 {
 		t.Fatalf("the next run after an interrupted one gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -112,7 +112,7 @@ func TestARuntimeThatIsNotReadyFailsTheLap(t *testing.T) {
 	driver := websiteDriver()
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, lifecycle, websiteDelivery(), time.Millisecond
 
-	if status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 1 || !strings.Contains(stderr, "not ready") {
+	if status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 1 || !strings.Contains(stderr, "not ready") {
 		t.Fatalf("a runtime that was not ready gave %d: %s\n%s", status, stderr, stdout)
 	}
 	if record := runRecord(t, p); record.State != "failed" || record.Laps[0].Outcome != "failed" || len(driver.calls) != 0 || lifecycle.downs != 1 {
@@ -122,7 +122,7 @@ func TestARuntimeThatIsNotReadyFailsTheLap(t *testing.T) {
 		t.Errorf("the failed lap released nothing:\n%s", lap)
 	}
 
-	status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
+	status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
 	if status != 0 {
 		t.Fatalf("the next run gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -142,20 +142,20 @@ func TestReadyToMergeNeedsACleanDelivery(t *testing.T) {
 		withoutMirror(body)
 		body.Defaults.HumanAt = []string{"planning", "merge"}
 	})
-	if status, stdout, stderr := p.exWith(deps, "harness", "workflow", "set", "--file", workflow); status != 0 {
-		t.Fatalf("ex harness workflow set = %d: %s\n%s", status, stderr, stdout)
+	if status, stdout, stderr := p.dftWith(deps, "harness", "workflow", "set", "--file", workflow); status != 0 {
+		t.Fatalf("dft harness workflow set = %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, stdout, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent); status != 0 {
-		t.Fatalf("ex agent plan = %d: %s\n%s", status, stderr, stdout)
+	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent); status != 0 {
+		t.Fatalf("dft agent plan = %d: %s\n%s", status, stderr, stdout)
 	}
 
 	delivery := websiteDelivery()
 	delivery.checks[1][2].Result = "failed"
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = websiteDriver(), websiteLifecycle(), delivery, time.Millisecond
 
-	status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
+	status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
 	if status != 0 {
-		t.Fatalf("ex agent run = %d: %s\n%s", status, stderr, stdout)
+		t.Fatalf("dft agent run = %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout, "✗ checks     3 of 4 passed · test failed", "✓ ready      #19 for review · $1.60 released to the envelope")
 	if record := runRecord(t, p); *record.Outcome != "readyForReview" {
@@ -163,16 +163,16 @@ func TestReadyToMergeNeedsACleanDelivery(t *testing.T) {
 	}
 
 	other, otherDeps := seedProject(t)
-	if status, stdout, stderr := other.exWith(otherDeps, "harness", "workflow", "set", "--file", workflow); status != 0 {
-		t.Fatalf("ex harness workflow set = %d: %s\n%s", status, stderr, stdout)
+	if status, stdout, stderr := other.dftWith(otherDeps, "harness", "workflow", "set", "--file", workflow); status != 0 {
+		t.Fatalf("dft harness workflow set = %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, stdout, stderr := other.exWith(otherDeps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent); status != 0 {
-		t.Fatalf("ex agent plan = %d: %s\n%s", status, stderr, stdout)
+	if status, stdout, stderr := other.dftWith(otherDeps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent); status != 0 {
+		t.Fatalf("dft agent plan = %d: %s\n%s", status, stderr, stdout)
 	}
 	otherDeps.Driver, otherDeps.Lifecycle, otherDeps.Delivery, otherDeps.Poll = websiteDriver(), websiteLifecycle(), websiteDelivery(), time.Millisecond
-	status, stdout, stderr = other.exInput(otherDeps, "y\n", "agent", "run", "console-microruntime", "--confirm")
+	status, stdout, stderr = other.dftInput(otherDeps, "y\n", "agent", "run", "console-microruntime", "--confirm")
 	if status != 0 {
-		t.Fatalf("ex agent run = %d: %s\n%s", status, stderr, stdout)
+		t.Fatalf("dft agent run = %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout, "✓ ready      #19 to merge · $1.60 released to the envelope", "# next: the merge stays the owner's")
 }
@@ -191,10 +191,10 @@ func TestTheRunLockRefusesASecondOperation(t *testing.T) {
 	}
 	defer unlock()
 
-	if status, _, stderr := p.exWith(deps, "agent", "run", "console-microruntime"); status != 3 || !strings.Contains(stderr, "busy") {
+	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 3 || !strings.Contains(stderr, "busy") {
 		t.Errorf("a run while the lock is held gave %d: %s", status, stderr)
 	}
-	if status, _, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent); status != 3 || !strings.Contains(stderr, "busy") {
+	if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent); status != 3 || !strings.Contains(stderr, "busy") {
 		t.Errorf("a plan while the lock is held gave %d: %s", status, stderr)
 	}
 }
@@ -208,7 +208,7 @@ func TestAStagePausedHalfwayPlaysOnFromTheNextSkill(t *testing.T) {
 	driver.usage["implement"] = [2]int64{5_000_000, 300_000}
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, websiteLifecycle(), websiteDelivery(), time.Millisecond
 
-	if status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 3 || !strings.Contains(stderr, "FG-04") {
+	if status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 3 || !strings.Contains(stderr, "FG-04") {
 		t.Fatalf("the exhausted lap gave %d: %s\n%s", status, stderr, stdout)
 	}
 	if implement := stageState(runRecord(t, p), "implement"); strings.Join(implement.SkillsDone, ",") != "implement" {
@@ -216,7 +216,7 @@ func TestAStagePausedHalfwayPlaysOnFromTheNextSkill(t *testing.T) {
 	}
 
 	before := len(driver.calls)
-	if status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime", "--acknowledge-overspend"); status != 0 {
+	if status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime", "--acknowledge-overspend"); status != 0 {
 		t.Fatalf("the next lap gave %d: %s\n%s", status, stderr, stdout)
 	}
 	var replayed []string

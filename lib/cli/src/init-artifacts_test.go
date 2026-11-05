@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-// ex init asks for the folder that holds the team's tickets and specs, or
+// dft init asks for the folder that holds the team's tickets and specs, or
 // takes --artifacts, and stores it in config.json as a path relative to the
 // project root. A path that leaves the project, or names no folder, is
 // refused before it is stored.
@@ -44,13 +44,13 @@ func TestInitRecordsTheArtifactsFolder(test *testing.T) {
 
 		consumer := withArtifacts(test)
 
-		status, stdout, stderr := consumer.ex("\nn\n.agents/workflow\n", "init", "--ask")
+		status, stdout, stderr := consumer.dft("\nn\n.agents/workflow\n", "init", "--ask")
 		if status != 0 {
-			test.Fatalf("ex init --ask = %d, %s", status, stderr)
+			test.Fatalf("dft init --ask = %d, %s", status, stderr)
 		}
 
 		if !strings.Contains(stderr, "Artifacts folder") {
-			test.Errorf("ex init did not ask for the artifacts folder:\n%s", stderr)
+			test.Errorf("dft init did not ask for the artifacts folder:\n%s", stderr)
 		}
 
 		if got := artifactsOf(test, consumer.root); got != ".agents/workflow" {
@@ -64,9 +64,9 @@ func TestInitRecordsTheArtifactsFolder(test *testing.T) {
 			test.Errorf("result = %s, want artifacts recorded", stdout)
 		}
 
-		status, _, stderr = consumer.ex("", "init", "--ask")
+		status, _, stderr = consumer.dft("", "init", "--ask")
 		if status != 0 || strings.Contains(stderr, "Artifacts folder") {
-			test.Errorf("a second ex init --ask = %d, asked again:\n%s", status, stderr)
+			test.Errorf("a second dft init --ask = %d, asked again:\n%s", status, stderr)
 		}
 	})
 
@@ -75,8 +75,8 @@ func TestInitRecordsTheArtifactsFolder(test *testing.T) {
 
 		consumer := withArtifacts(test)
 
-		if status, _, stderr := consumer.ex("", "init", "--artifacts", "./.agents/workflow/"); status != 0 {
-			test.Fatalf("ex init --artifacts = %d, %s", status, stderr)
+		if status, _, stderr := consumer.dft("", "init", "--artifacts", "./.agents/workflow/"); status != 0 {
+			test.Fatalf("dft init --artifacts = %d, %s", status, stderr)
 		}
 
 		if got := artifactsOf(test, consumer.root); got != ".agents/workflow" {
@@ -89,9 +89,9 @@ func TestInitRecordsTheArtifactsFolder(test *testing.T) {
 
 		consumer := withArtifacts(test)
 
-		status, _, stderr := consumer.ex("", "init", "--budget", "10", "--per-run", "100", "--reserve-margin", "5", "--artifacts", ".agents/workflow")
+		status, _, stderr := consumer.dft("", "init", "--budget", "10", "--per-run", "100", "--reserve-margin", "5", "--artifacts", ".agents/workflow")
 		if status != 2 {
-			test.Fatalf("ex init with a per-run cap above the budget = %d, %s", status, stderr)
+			test.Fatalf("dft init with a per-run cap above the budget = %d, %s", status, stderr)
 		}
 
 		if got := artifactsOf(test, consumer.root); got != "" {
@@ -108,13 +108,13 @@ func TestInitRecordsTheArtifactsFolder(test *testing.T) {
 				test.Fatal(err)
 			}
 
-			status, _, stderr := consumer.ex("", "init", "--artifacts", path)
+			status, _, stderr := consumer.dft("", "init", "--artifacts", path)
 			if status != 2 || !strings.Contains(stderr, "artifacts") {
-				test.Errorf("ex init --artifacts %s = %d, %s", path, status, stderr)
+				test.Errorf("dft init --artifacts %s = %d, %s", path, status, stderr)
 			}
 
 			if _, err := os.Stat(filepath.Join(consumer.root, ".langdrift", "config.json")); err == nil && artifactsOf(test, consumer.root) != "" {
-				test.Errorf("ex init stored the artifacts folder %s", path)
+				test.Errorf("dft init stored the artifacts folder %s", path)
 			}
 		}
 	})

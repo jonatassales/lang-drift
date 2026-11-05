@@ -28,7 +28,7 @@ type tool struct {
 	versionField []string
 }
 
-// tools are the native tools EX relies on.
+// tools are the native tools the LangDrift CLI relies on.
 var tools = []tool{
 	{
 		name:      "docker",

@@ -10,7 +10,7 @@
 
 - [x] The root `package.json` pins `@langdrift/cli` to `0.4.0` in `devDependencies` and `pnpm exec ex --version` prints `0.4.0` (resolved from the registry, not linked from the workspace).
 - [x] `sh platform/microruntime/plan.sh` is idempotent and ends with a `runtime.md` under `.langdrift/` whose fence lists the four components with derived images, ports and probes.
-- [ ] `pnpm exec ex agent run <runtime-id>` with the pass-through secrets exported shows four Ready pods in the runtime's namespace and pauses at the first human stage.
+- [ ] `pnpm exec dft agent run <runtime-id>` with the pass-through secrets exported shows four Ready pods in the runtime's namespace and pauses at the first human stage.
   Open on 2026-11-04: `@langdrift/cli` 0.4.0 brings the runtime up in `finish()`, after every stage has been played, so a workflow whose stages all wait for a person pauses at `planning` with no image built and no pod. Observed with `--confirm=false`: the gate opened, $17.10 reserved, state `waiting`. The owner decides between a CLI change that brings the runtime up before the first pause (its own spec) and rewording this criterion.
 - [ ] Through a port forward, posting a request to `demo-requests` appends the received event, the mailer's sent events follow, and the MinIO objects exist.
 - [x] `platform/microruntime/README.md` documents the prerequisites, the commands and each file; the context document names the folder.

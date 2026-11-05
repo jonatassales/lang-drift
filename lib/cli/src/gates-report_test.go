@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-// ex gates report turns a pull request's commit range into the CI Gates
+// dft gates report turns a pull request's commit range into the CI Gates
 // report with no project: it reads git alone, and every FinOps reading stays
 // unknown because CI has no committed FinOps source. It changes environment
 // variables, so it never runs in parallel.
@@ -40,8 +40,8 @@ func TestGatesReport(test *testing.T) {
 	git("init", "--quiet")
 	git("commit", "--quiet", "--allow-empty", "--message", "chore: start")
 	base := git("rev-parse", "HEAD")
-	git("commit", "--quiet", "--allow-empty", "--message", "feat(ex): ask on init")
-	git("commit", "--quiet", "--allow-empty", "--message", "fix(ex): keep a | in the subject")
+	git("commit", "--quiet", "--allow-empty", "--message", "feat(dft): ask on init")
+	git("commit", "--quiet", "--allow-empty", "--message", "fix(dft): keep a | in the subject")
 	head := git("rev-parse", "HEAD")
 	first := git("rev-parse", "--short", "HEAD~1")
 	second := git("rev-parse", "--short", "HEAD")
@@ -56,16 +56,16 @@ func TestGatesReport(test *testing.T) {
 		test.Setenv("HEAD_SHA", head)
 		test.Setenv("GITHUB_STEP_SUMMARY", "")
 
-		status, stdout, stderr := consumer.ex("", "gates", "report")
+		status, stdout, stderr := consumer.dft("", "gates", "report")
 		if status != 0 {
-			test.Fatalf("ex gates report = %d, %s", status, stderr)
+			test.Fatalf("dft gates report = %d, %s", status, stderr)
 		}
 
 		for _, want := range []string{
 			"## LangDrift CI Gates",
 			"`" + base + ".." + head + "`: 2 commits",
-			"| `" + first + "` | feat(ex): ask on init |",
-			"| `" + second + "` | fix(ex): keep a \\| in the subject |",
+			"| `" + first + "` | feat(dft): ask on init |",
+			"| `" + second + "` | fix(dft): keep a \\| in the subject |",
 			"| Budget | unknown |",
 			"| Spend | unknown |",
 			"| Ledger | unknown |",
@@ -81,7 +81,7 @@ func TestGatesReport(test *testing.T) {
 		}
 
 		if _, err := os.Stat(filepath.Join(root, ".langdrift")); err == nil {
-			test.Error("ex gates report created .langdrift")
+			test.Error("dft gates report created .langdrift")
 		}
 	})
 
@@ -95,9 +95,9 @@ func TestGatesReport(test *testing.T) {
 		test.Setenv("HEAD_SHA", head)
 		test.Setenv("GITHUB_STEP_SUMMARY", summary)
 
-		status, stdout, stderr := consumer.ex("", "gates", "report")
+		status, stdout, stderr := consumer.dft("", "gates", "report")
 		if status != 0 || stdout != "" {
-			test.Fatalf("ex gates report = %d, stdout %q, %s", status, stdout, stderr)
+			test.Fatalf("dft gates report = %d, stdout %q, %s", status, stdout, stderr)
 		}
 
 		written, err := os.ReadFile(summary)
@@ -114,9 +114,9 @@ func TestGatesReport(test *testing.T) {
 		test.Setenv("BASE_SHA", "")
 		test.Setenv("HEAD_SHA", head)
 
-		status, _, stderr := consumer.ex("", "gates", "report")
+		status, _, stderr := consumer.dft("", "gates", "report")
 		if status != 2 || !strings.Contains(stderr, "BASE_SHA") {
-			test.Errorf("ex gates report without BASE_SHA = %d, %s", status, stderr)
+			test.Errorf("dft gates report without BASE_SHA = %d, %s", status, stderr)
 		}
 	})
 
@@ -125,9 +125,9 @@ func TestGatesReport(test *testing.T) {
 		test.Setenv("HEAD_SHA", head)
 		test.Setenv("GITHUB_STEP_SUMMARY", "")
 
-		status, stdout, stderr := consumer.ex("", "gates", "report")
+		status, stdout, stderr := consumer.dft("", "gates", "report")
 		if status != 1 || stdout != "" || !strings.Contains(stderr, "commit range") {
-			test.Errorf("ex gates report on an unknown SHA = %d, stdout %q, %s", status, stdout, stderr)
+			test.Errorf("dft gates report on an unknown SHA = %d, stdout %q, %s", status, stdout, stderr)
 		}
 	})
 }

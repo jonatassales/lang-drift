@@ -13,14 +13,14 @@
 		"access": "public"
 	},
 	"bin": {
-		"ex": "./bin/ex.sh"
+		"dft": "./bin/dft.sh"
 	},
 	"files": [
-		"bin/ex.sh",
-		"dist/ex-darwin-arm64",
-		"dist/ex-darwin-amd64",
-		"dist/ex-linux-amd64",
-		"dist/ex-linux-arm64",
+		"bin/dft.sh",
+		"dist/dft-darwin-arm64",
+		"dist/dft-darwin-amd64",
+		"dist/dft-linux-amd64",
+		"dist/dft-linux-arm64",
 		"LICENSE",
 		"README.md"
 	],

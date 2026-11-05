@@ -2,7 +2,7 @@
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
 	"$id": "https://langdrift.md/schemas/judge/request.schema.json",
 	"title": "Judge request",
-	"description": "One question the planner of the ex CLI asks the platform's judge.",
+	"description": "One question the planner of the LangDrift CLI asks the platform's judge.",
 	"type": "object",
 	"additionalProperties": false,
 	"required": [

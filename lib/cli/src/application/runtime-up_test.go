@@ -152,7 +152,7 @@ func TestStartRuntime_RefusesBeforeRecording(t *testing.T) {
 			wantErr: microruntime.ErrInconsistentExecution,
 		},
 		{
-			name: "namespace that EX did not create",
+			name: "namespace that the LangDrift CLI did not create",
 			arrange: func(_ *testing.T, w *world) {
 				w.kubernetes.put(microruntime.Object{"apiVersion": "v1", "kind": "Namespace", "metadata": map[string]any{"name": namespaceName, "uid": "uid-foreign"}})
 			},

@@ -2,7 +2,7 @@
 
 **Spec:** .agents/workflow/specs/0035-general-rules-compliance-in-packages.spec.md
 
-**What to build:** `lib/cli/src/presentation/cli` applies the general rules; the seven discarded `MarkFlagRequired` errors go through one function that panics with the flag's name. `lib/cli/README.md` lists, by key and purpose and never by value, every environment variable `ex` reads when the ticket runs, each read staying at its operation.
+**What to build:** `lib/cli/src/presentation/cli` applies the general rules; the seven discarded `MarkFlagRequired` errors go through one function that panics with the flag's name. `lib/cli/README.md` lists, by key and purpose and never by value, every environment variable `dft` reads when the ticket runs, each read staying at its operation.
 
 **Blocked by:** 0246, 0222, 0223, 0224, 0225, 0226, 0227.
 

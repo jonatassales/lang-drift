@@ -52,7 +52,7 @@ func TestCatalogRendersTheWebsiteWordsWithTrueFigures(t *testing.T) {
 		event app.Event
 		want  string
 	}{
-		{app.Event{Session: app.PlanSession, ID: app.PlanCommand, Data: app.Data{"ticket": "0070-console-microruntime"}}, "ex agent plan 0070-console-microruntime"},
+		{app.Event{Session: app.PlanSession, ID: app.PlanCommand, Data: app.Data{"ticket": "0070-console-microruntime"}}, "dft agent plan 0070-console-microruntime"},
 		{app.Event{Session: app.PlanSession, ID: app.Links, Data: app.Data{"status": "needs-triage", "links": []string{"0010-SPEC", "guardrail 0001-finops"}}}, "agent › needs-triage · links 0010-SPEC · guardrail 0001-finops"},
 		{app.Event{Session: app.PlanSession, ID: app.Reads, Data: app.Data{"count": 4, "refused": 0}}, "✓ read       4 documents · nothing outside the ticket's links"},
 		{app.Event{Session: app.PlanSession, ID: app.Budget, Data: app.Data{"perRunCents": 2500, "by": "owner"}}, "budget     $25.00 per run for model calls · set by owner in the CLI"},
@@ -60,7 +60,7 @@ func TestCatalogRendersTheWebsiteWordsWithTrueFigures(t *testing.T) {
 		{app.Event{Session: app.PlanSession, ID: app.Suggest, Data: app.Data{"model": "claude-sonnet-5-5", "effort": "medium"}}, "✓ suggests   claude-sonnet-5-5 · effort medium"},
 		{app.Event{Session: app.PlanSession, ID: app.Component, Data: app.Data{"path": "services/signup-api", "technology": "Go", "kind": "api", "cpuMillis": 250, "memoryMiB": 256}}, "✓ services/signup-api   Go · api        250m · 256 MiB"},
 		{app.Event{Session: app.PlanSession, ID: app.Size, Data: app.Data{"cpuMillis": 1450, "boundedCpuMillis": 2000, "memoryMiB": 2304, "boundedMemoryMiB": 3072, "deployments": 5}}, "✓ size       1450m of 2000m · 2304 of 3072 MiB · 5 one-replica Deployments · proposed shares"},
-		{app.Event{Session: app.PlanSession, ID: app.Draft, Data: app.Data{"revision": 1}}, "✓ plan       runtime.md draft, revision 1 · proposed · authorize with ex agent run"},
+		{app.Event{Session: app.PlanSession, ID: app.Draft, Data: app.Data{"revision": 1}}, "✓ plan       runtime.md draft, revision 1 · proposed · authorize with dft agent run"},
 		{app.Event{Session: app.RunSession, ID: app.Estimate, Data: app.Data{"estimateCents": 950, "inputThousands": 3500, "outputThousands": 250}}, "agent › estimate   $9.50 · 3.5M input · 250K output · list prices · FIN-02"},
 		{app.Event{Session: app.RunSession, ID: app.GateOpened, Data: app.Data{"reservedCents": 1140, "perRunCents": 2500}}, "agent › gate       reserved $11.40 of $25.00 · opened"},
 		{app.Event{Session: app.RunSession, ID: app.GatePaused, Data: app.Data{"reservedCents": 4080, "perRunCents": 2500}}, "agent › gate       reservation $40.80 exceeds the $25.00 budget · paused"},

@@ -18,7 +18,7 @@ func (cliApplication *application) registerVersion(root *cobra.Command) {
 			if cliApplication.globals.JSON {
 				return support.Render(command.OutOrStdout(), map[string]string{"version": cliApplication.options.Version}, true)
 			}
-			_, err := fmt.Fprintf(command.OutOrStdout(), "ex %s\n", cliApplication.options.Version)
+			_, err := fmt.Fprintf(command.OutOrStdout(), "dft %s\n", cliApplication.options.Version)
 			return err
 		},
 	}

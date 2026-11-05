@@ -32,13 +32,13 @@ func TestSessionWritesTheExpectedTree(t *testing.T) {
 	deps.Judge = &scriptedJudge{answers: sampleAnswers(t)}
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = websiteDriver(), websiteLifecycle(), websiteDelivery(), time.Millisecond
 
-	if status, stdout, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--component", consoleComponent); status != 0 {
-		t.Fatalf("ex agent plan = %d: %s\n%s", status, stderr, stdout)
+	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", consoleComponent); status != 0 {
+		t.Fatalf("dft agent plan = %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime", "--model", "claude-opus-5-5", "--effort", "high"); status != 3 {
+	if status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime", "--model", "claude-opus-5-5", "--effort", "high"); status != 3 {
 		t.Fatalf("the first lap gave %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 0 {
+	if status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 0 {
 		t.Fatalf("the second lap gave %d: %s\n%s", status, stderr, stdout)
 	}
 

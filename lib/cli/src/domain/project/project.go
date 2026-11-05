@@ -1,4 +1,4 @@
-// Package project is the domain model of a consumer workspace that EX manages.
+// Package project is the domain model of a consumer workspace that the LangDrift CLI manages.
 package project
 
 import (
@@ -7,7 +7,7 @@ import (
 	"regexp"
 )
 
-// ErrInvalidID reports project metadata whose identity EX cannot trust.
+// ErrInvalidID reports project metadata whose identity the LangDrift CLI cannot trust.
 var ErrInvalidID = errors.New("invalid project ID")
 
 const clusterNamePrefixLength = 12
@@ -41,7 +41,9 @@ type Project struct {
 
 // ClusterName is the name of the one local cluster this project may own.
 // It derives from the ID, so two projects never claim the same cluster.
-// The project's ID must come from ParseID.
+// The project's ID must come from ParseID. The prefix keeps the name 0.4.0
+// gave, when the command was ex, so a cluster it created stays this
+// project's and is never left behind.
 func (project Project) ClusterName() string {
 	return "ex-" + project.ID.value[:clusterNamePrefixLength]
 }

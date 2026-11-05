@@ -2,6 +2,8 @@
 
 **Status:** ready-for-agent
 
+> **Note, 2026-11-05.** From 0.5.0 the CLI's command is `dft` (spec 0047). The commands this spec plans are written as `dft`; what 0.4.0 did keeps the `ex` it ran under.
+
 ## Tickets
 
 - [x] 0221: `ex agent init` and the LangGraph scaffold leave the CLI
@@ -9,7 +11,7 @@
 - [ ] 0223: the console judges at `/api/judge`
 - [ ] 0224: the planner asks the console, and no plan exists without a judge
 - [ ] 0225: the run brings the runtime up before the first stage
-- [ ] 0226: `ex agent stop` abandons a waiting run
+- [ ] 0226: `dft agent stop` abandons a waiting run
 - [ ] 0227: the documents say what the engine does
 - [ ] 0228: release `@langdrift/cli` 0.5.0 and deploy the judge (owner)
 
@@ -24,26 +26,26 @@ The owner ran this repository's own microruntime with the published CLI (ticket 
 
 ## Solution
 
-The agent of `ex` is its judge: always present, part of every plan, and a service of the platform rather than a call the consumer pays a provider for.
+The agent of `dft` is its judge: always present, part of every plan, and a service of the platform rather than a call the consumer pays a provider for.
 
-- **The judge runs on the platform.** `ex agent plan` sends its three structured questions, the facts and verdicts over the sources it read, the relevance of the episodes the RAG retrieved, and the suggestion of model and effort, to the console at `/api/judge`. The console calls the model with LangDrift's own key, validates the answer against the question's schema and returns it with what the call used and what it cost. The consumer configures no provider, exports no key and does not choose the judge's model.
+- **The judge runs on the platform.** `dft agent plan` sends its three structured questions, the facts and verdicts over the sources it read, the relevance of the episodes the RAG retrieved, and the suggestion of model and effort, to the console at `/api/judge`. The console calls the model with LangDrift's own key, validates the answer against the question's schema and returns it with what the call used and what it cost. The consumer configures no provider, exports no key and does not choose the judge's model.
 - **Planning requires a connected project, and a plan without a judge does not exist.** `--no-judge` is removed. A project that is not connected, a console that cannot be reached, or a judge that refuses, refuses the plan with the reason; no suggestion "from the inputs" stands in for a judgment.
 - **The judge's spend passes the gates, with no way around them.** Before the first question the planner reserves the planning forecast against the ticket's allocation and the per-run cap, as today; the ledger's planning line records what the console charged, with its provenance. Until the owner prices a plan, the console charges the list cost of the tokens it spent, marked illustrative.
 - **The judge is the platform's.** Its prompts are versioned in the CLI; each plan records the prompt version and hash it was judged with. The consumer configures only the planner model through the harness, as today, within what the platform offers.
-- **The RAG stays as it is.** Deterministic, local, rebuilt by `ex` from the runs' memories; the judge reasons over what it retrieves.
-- **The run brings the runtime up first.** `ex agent run` creates the cluster, builds the images, applies the workloads and Secrets and waits for readiness before the first stage; a stage that waits for a person pauses with the runtime running; the stages work against it. The end of the run observes delivery, stops, cleans up and remembers, as today, but no longer brings anything up.
-- **A waiting run can be abandoned.** `ex agent stop <runtime>` closes the open lap as abandoned, releases the reservation, tears the runtime down through the execution ledger and keeps the evidence; a new plan is allowed afterwards.
+- **The RAG stays as it is.** Deterministic, local, rebuilt by `dft` from the runs' memories; the judge reasons over what it retrieves.
+- **The run brings the runtime up first.** `dft agent run` creates the cluster, builds the images, applies the workloads and Secrets and waits for readiness before the first stage; a stage that waits for a person pauses with the runtime running; the stages work against it. The end of the run observes delivery, stops, cleans up and remembers, as today, but no longer brings anything up.
+- **A waiting run can be abandoned.** `dft agent stop <runtime>` closes the open lap as abandoned, releases the reservation, tears the runtime down through the execution ledger and keeps the evidence; a new plan is allowed afterwards.
 - **The scaffold leaves.** `ex agent init` and the LangGraph templates are removed; the `agent` word stays in the commands and in the session's `agent ›` lines, meaning the judge and the deterministic shell around it.
-- **Connection until the account exists.** The console's deployment holds one `RUNTIME_SECRET` the owner sets; `ex agent connect` records the console URL and that secret in the project's private state, and `/api/judge` accepts that secret. The account, when it comes, issues one secret per project behind the same route.
+- **Connection until the account exists.** The console's deployment holds one `RUNTIME_SECRET` the owner sets; `dft agent connect` records the console URL and that secret in the project's private state, and `/api/judge` accepts that secret. The account, when it comes, issues one secret per project behind the same route.
 - **Stages stay the consumer's.** The workflow's stages keep running through the driver the consumer configured, their own coding tool, with the environment it names.
 
 This is `@langdrift/cli` 0.5.0 and the console's first route that is not a stub. Ticket 0198 stays open until both exist; its `plan.sh` then drops `--no-judge` and requires the project to be connected.
 
 ## User Stories
 
-1. As an operator running a microruntime, I want `ex agent run` to bring the components up before the first stage, so that a workflow that waits for a person pauses with the runtime running.
+1. As an operator running a microruntime, I want `dft agent run` to bring the components up before the first stage, so that a workflow that waits for a person pauses with the runtime running.
 2. As an operator, I want a stage that waits for a person to find the runtime ready, so that confirming it plays the stage against live software.
-3. As an operator, I want `ex agent stop <runtime>` to abandon a run that waits, so that I can plan again without deleting local state by hand.
+3. As an operator, I want `dft agent stop <runtime>` to abandon a run that waits, so that I can plan again without deleting local state by hand.
 4. As an operator, I want an abandoned run recorded as such, with who and when, its reservation released and its evidence kept, so that nothing disappears in silence.
 5. As a team member planning a ticket, I want every plan judged, so that the suggestion of model and effort is reasoning over my ticket and my history, never an input repeated back.
 6. As a team member, I want to configure no model provider and export no key to plan, so that planning asks nothing of me beyond a connected project.
@@ -60,7 +62,7 @@ This is `@langdrift/cli` 0.5.0 and the console's first route that is not a stub.
 17. As the owner, I want the price of a plan to stay my decision, so that the spec does not fix pricing.
 18. As the owner, I want the console to charge the list cost of the tokens it spent, marked illustrative, until I price a plan, so that the gate and the ledger work from the first release.
 19. As the owner, I want one `RUNTIME_SECRET` per console deployment until the account exists, set by me on the Vercel project, so that connecting a project needs no feature that is not built.
-20. As a consumer who connects a project, I want `ex agent connect` to record the console URL and the secret in the private state, so that `plan` finds them without flags.
+20. As a consumer who connects a project, I want `dft agent connect` to record the console URL and the secret in the private state, so that `plan` finds them without flags.
 21. As a consumer, I want the stages of my workflow to keep running through my own coding tool via the driver, so that the platform judges and measures without choosing how I deliver.
 22. As a maintainer, I want `ex agent init` and the LangGraph scaffold gone, so that no retired flow ships as a feature.
 23. As a maintainer, I want `--no-judge` gone from the CLI, its tests and its documentation, so that no path plans without a judge.
@@ -79,9 +81,9 @@ This is `@langdrift/cli` 0.5.0 and the console's first route that is not a stub.
 - **No plan without a judge.** The `--no-judge` flag, the "inputs' own" suggestion path and the `by: input` suggestion are removed from the planner. A project without a recorded connection, an unreachable console, a route that refuses the secret or a model that refuses all refuse the plan with a message naming the cause; a blocked plan is not written as proposed.
 - **Money as today, closed.** The planner reserves the planning forecast at the planner model's list price before the first question (FG gates), watches spend during, and writes the planning line of the ledger with the cost the console returned, its provenance (`console`, illustrative or priced) and the usage; the ledger's planning line gains those provenance fields. The CLI parses and validates every answer against the contract again before using it; the planner's existing errors for an unavailable model and a gate pause stay, and the new refusals join them. The console computes the illustrative cost from the list prices it holds for its own model until the owner prices a plan; that price is an open decision recorded in the spec, not in code.
 - **The route.** `apps/console` gains `/api/judge` as a route handler that owns its methods, with one interceptor per concern beside it (method, bearer secret in constant time, content type, body size, schema of the question kind) and a provider adapter under the console's infrastructure folder. It answers 401 without the secret, 400 for a question outside the contract, 503 when the model is unavailable, 200 with the validated answer. It stores no source text; it logs usage and cost through the console's observability path.
-- **Connection.** `ex agent connect` records the console URL and the `RUNTIME_SECRET` it reads from the environment in the project's private state and verifies them with one authenticated connection check against the judge route (a `GET` that answers 204 with the secret and 401 without), instead of the console's MCP route, which the console does not serve; `plan` reads the connection from there and refuses without it. The console's deployment-level secret is set by the owner on the Vercel project; when the account exists it issues one secret per project behind the same route and the CLI does not change.
+- **Connection.** `dft agent connect` records the console URL and the `RUNTIME_SECRET` it reads from the environment in the project's private state and verifies them with one authenticated connection check against the judge route (a `GET` that answers 204 with the secret and 401 without), instead of the console's MCP route, which the console does not serve; `plan` reads the connection from there and refuses without it. The console's deployment-level secret is set by the owner on the Vercel project; when the account exists it issues one secret per project behind the same route and the CLI does not change.
 - **Bring-up before the first stage.** The run's order becomes: open the gate and reserve; materialize the runtime from the fence through the native lifecycle, build the images, claim an execution, start, wait for readiness and print the runtime-ready line; then play the stages, pausing at the first that waits for a person with the runtime running; at the end observe delivery, stop and clean up by the ledger, release the unused reservation, settle the lap and write the memory. The bring-up timeout is the run's own, long enough for four image builds, and the README names it.
-- **`ex agent stop`.** A new command on a runtime whose run is waiting: it closes the open lap with the outcome `abandoned`, who and when, releases the reservation in the ledger, stops and cleans up the runtime through the execution ledger as the end of a run does, keeps the evidence and the memory, and leaves the runtime plannable again. A run that is not waiting is refused with its state.
+- **`dft agent stop`.** A new command on a runtime whose run is waiting: it closes the open lap with the outcome `abandoned`, who and when, releases the reservation in the ledger, stops and cleans up the runtime through the execution ledger as the end of a run does, keeps the evidence and the memory, and leaves the runtime plannable again. A run that is not waiting is refused with its state.
 - **Removals.** `ex agent init`, the agent scaffolder port, the LangGraph templates and their tests leave the CLI; the README and the context document stop naming them. The session catalog keeps `agent ›` as the actor, and the lines about reasoning print only when the judge answered.
 - **This repository.** `platform/microruntime/plan.sh` drops `--no-judge`; its README says the project must be connected and names the planning cost the gate reserves; ticket 0198 is revisited once 0.5.0 and the route are deployed. Spec 0032's sentence about the run is amended to this order.
 - **Release.** `@langdrift/cli` 0.5.0, published by the owner as 0.4.0 was, with the tag and the GitHub Release; the core module gains a tag for its judge surface, which the CLI requires by version; this repository's root pin moves to 0.5.0 so its `plan.sh` runs the new engine; the console route ships with the console's deployment and the owner sets `RUNTIME_SECRET` and the platform's provider key on the Vercel project.

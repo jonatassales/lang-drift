@@ -2,6 +2,8 @@
 
 **Status:** ready-for-agent
 
+> **Note, 2026-11-05.** From `@langdrift/cli` 0.5.0 the CLI's command is `dft` (spec 0047). This spec says `dft` where it plans work and keeps `ex` for `ex agent init`, which spec 0045 removed before the rename.
+
 ## Tickets
 
 - [x] 0245: the general rules name the Go test idioms they allow
@@ -33,7 +35,7 @@
 - **Statement spacing.** 101 Go source returns, 3 shell returns and 7 in `packages/tokens/build.js` follow another statement without a blank line; 61 Go functions of ten lines or more have no blank line at all between their phases, `runOne` and the 131-line function in `application/connected/project.go` among them.
 - **Multi-field literals.** 370 of the 569 multi-field literals in Go source sit on one line, such as the 11-field `Event` literal inside `runOne`, the struct in `application/cluster.go` and the map in `application/execution/finish.go`. The Go tests hold 1,056 more, most of them the rows of test tables.
 - **Readable names.** Go source uses `c`, `e`, `m`, `i` in `native.go` and `b` in `connected/service.go`; the tests use `t` 719 times, as the toolchain's convention wants, and other one-letter names such as the receiver `w` in `application/cluster_create_test.go`. 13 results are discarded with `_` before being needed: `cpu, _ := ParseQuantity(...)` in `native.go`, `data, _ := json.MarshalIndent(...)` in `lib/core/contracts/go/configuration/configuration.go`, `strconv.Atoi` in `infrastructure/records/mirrors.go`.
-- **External input and errors.** `ex` reads `RUNTIME_SECRET`, `PROJECT_SECRET`, `BASE_SHA`, `HEAD_SHA`, `GITHUB_STEP_SUMMARY` and `ANTHROPIC_BASE_URL`, and `lib/cli/README.md` documents only `ANTHROPIC_API_KEY`. 39 errors are discarded: `_ = command.MarkFlagRequired(...)` seven times in `presentation/cli/catalog/inputs.go`, the unlock and close in `infrastructure/files/lock.go`, `_ = save()` in `runOne`; `packages/web/src/ui/agent-orb/agent-orb.tsx` and `hero-shader/hero-shader.tsx` end a dynamic import with `.catch(() => {})`. `packages/streaming/src/transport/redis-streams.strategy.ts` wraps the pure `parseStreamEntry` in `try/catch`.
+- **External input and errors.** `dft` reads `RUNTIME_SECRET`, `PROJECT_SECRET`, `BASE_SHA`, `HEAD_SHA`, `GITHUB_STEP_SUMMARY` and `ANTHROPIC_BASE_URL`, and `lib/cli/README.md` documents only `ANTHROPIC_API_KEY`. 39 errors are discarded: `_ = command.MarkFlagRequired(...)` seven times in `presentation/cli/catalog/inputs.go`, the unlock and close in `infrastructure/files/lock.go`, `_ = save()` in `runOne`; `packages/web/src/ui/agent-orb/agent-orb.tsx` and `hero-shader/hero-shader.tsx` end a dynamic import with `.catch(() => {})`. `packages/streaming/src/transport/redis-streams.strategy.ts` wraps the pure `parseStreamEntry` in `try/catch`.
 
 The rule file itself has one gap the owner closed on 2026-11-04: idiomatic Go tests. The `t *testing.T` parameter and the one-line rows of a test table are what every Go reader expects, and the rule's Readable names and Multi-field literals sections forbid them as written. The owner approved an amendment that exempts exactly those two forms in `_test.go` files; every other rule keeps applying to Go tests, and spec 0027's decision to keep tests out of the one-function-per-file rule is withdrawn, since rules outrank specs.
 
@@ -41,7 +43,7 @@ The rule file itself has one gap the owner closed on 2026-11-04: idiomatic Go te
 
 ## Solution
 
-Bring every file under `lib/` (the Go of `ex` in `lib/cli` and of the contracts in `lib/core/contracts/go`), `packages/` (the TypeScript of `streaming`, `web` and `tokens`) and `platform/cli` to full compliance with `00-general`, with no change in behavior: every Go test, vitest suite, `go vet`, Biome check and `drift` command stays green, and the `ex` CLI, the events transport and the web components behave as before.
+Bring every file under `lib/` (the Go of `dft` in `lib/cli` and of the contracts in `lib/core/contracts/go`), `packages/` (the TypeScript of `streaming`, `web` and `tokens`) and `platform/cli` to full compliance with `00-general`, with no change in behavior: every Go test, vitest suite, `go vet`, Biome check and `drift` command stays green, and the LangDrift CLI, the events transport and the web components behave as before.
 
 First, the rule gets its approved amendment and the detectors learn the same exemption and the violation classes they miss today. Then the Go code is split one unit per file, layer by layer, with `runOne` and `native.go` decomposed by hand where their difficulty sits; the Go tests follow their layers; the TypeScript packages close their few findings; the drift CLI's shell is laid out one function per file and sourced by name. At the end `drift quality check general` reports zero findings under `lib/`, `packages/` and `platform/`, and the classes no detector can catch are listed for review.
 
@@ -57,8 +59,8 @@ First, the rule gets its approved amendment and the detectors learn the same exe
 8. As a reader, I want a blank line before every return and between the phases of a function, in Go, TypeScript and shell alike, so that the shape of a function is visible before its text.
 9. As a reader, I want every multi-field literal on several lines, so that a diff to one field shows one line.
 10. As a reader, I want no one-letter name outside the Go test parameter, so that `cluster`, `event` and `manifest` say what `c`, `e` and `m` did not.
-11. As an `ex` user, I want `lib/cli/README.md` to list every environment variable the CLI reads, by key, so that I know what to set before `ex agent connect` or `ex gates report`.
-12. As an operator, I want no error discarded in `ex`, so that a lock that fails to release or a flag that fails to register is reported instead of silent.
+11. As a `dft` user, I want `lib/cli/README.md` to list every environment variable the CLI reads, by key, so that I know what to set before `dft agent connect` or `dft gates report`.
+12. As an operator, I want no error discarded in `dft`, so that a lock that fails to release or a flag that fails to register is reported instead of silent.
 13. As a microservice maintainer, I want the events transport to park an unreadable entry through a result it inspects, not an exception it catches, so that the boundary between the stream and the parser is explicit.
 14. As a website visitor, I want the agent orb and the hero shader to keep their fallback when their runtime fails to load, and as a maintainer I want that fallback to be a named decision in the component, not an empty catch.
 15. As a drift contributor, I want each shell function in its own file, sourced by name, so that I can read `drift_print_error` without scrolling past seventeen others.
@@ -109,7 +111,7 @@ Each awk detector ships with fixtures under `platform/cli/src/quality/testdata/<
 
 ### Go: external input
 
-- `lib/cli/README.md` documents every environment variable `ex` reads, by key and purpose, never by value: `ANTHROPIC_API_KEY`, `ANTHROPIC_BASE_URL`, `RUNTIME_SECRET`, `PROJECT_SECRET`, `BASE_SHA`, `HEAD_SHA`, `GITHUB_STEP_SUMMARY`. Each read stays at the operation that uses it, and a missing value fails there.
+- `lib/cli/README.md` documents every environment variable `dft` reads, by key and purpose, never by value: `ANTHROPIC_API_KEY`, `ANTHROPIC_BASE_URL`, `RUNTIME_SECRET`, `PROJECT_SECRET`, `BASE_SHA`, `HEAD_SHA`, `GITHUB_STEP_SUMMARY`. Each read stays at the operation that uses it, and a missing value fails there.
 
 ### The TypeScript packages
 
@@ -128,7 +130,7 @@ Each awk detector ships with fixtures under `platform/cli/src/quality/testdata/<
 ## Testing Decisions
 
 - **The detectors are the rules seam.** `platform/cli/drift quality check general` reports zero findings under `lib/`, `packages/` and `platform/` at the end, and each ticket runs it on its own paths. A new awk detector ships with fixtures under `platform/cli/src/quality/testdata/<detector>/` that it must report and must not report, and `platform/cli/drift quality detectors` holds them, in the manner of `check-biome.sh`'s fixture-driven self-check; a detector is reliable when its fixtures hold, and a class it cannot catch is listed as review-enforced above.
-- **The existing suites are the behavior seam.** `pnpm turbo run test typecheck check --filter=@langdrift/cli --filter=@langdrift/core --filter=streaming --filter=web --filter=tokens` passes after every ticket (`go test -race ./...` and `go vet ./...` for Go, vitest for events and web, `node --test` for tokens), and `drift doctor`, `drift check biome`, `drift check localization`, `drift quality check`, `drift quality coverage` and `drift quality dead-code` run as before after each shell ticket. A good test asserts external behavior: what `ex` writes and prints, what the supervisor does to a record for a given sync response, what the transport parks; a test that only mirrors a file's internals moves with the code it covers.
+- **The existing suites are the behavior seam.** `pnpm turbo run test typecheck check --filter=@langdrift/cli --filter=@langdrift/core --filter=streaming --filter=web --filter=tokens` passes after every ticket (`go test -race ./...` and `go vet ./...` for Go, vitest for events and web, `node --test` for tokens), and `drift doctor`, `drift check biome`, `drift check localization`, `drift quality check`, `drift quality coverage` and `drift quality dead-code` run as before after each shell ticket. A good test asserts external behavior: what `dft` writes and prints, what the supervisor does to a record for a given sync response, what the transport parks; a test that only mirrors a file's internals moves with the code it covers.
 - **The two decompositions are pinned before they move.** The supervisor scenarios and service tests in `application/connected`, and the native tests in `infrastructure/connected`, are run and kept green at every step of the split; where a scenario is missing for a branch the split touches (a lease lost with an active stop, a purge epoch advance, a migration with a Job unit), it is added before the split, at the service's public methods, not on the new internal methods.
 - **The two-axis `code-review`** runs before every commit, against this spec and every rule file, and checks the review-enforced classes on every change.
 - **Prior art:** the Go table tests across `lib/cli`, the awk detectors with `drift quality coverage`, the vitest suites of `packages/streaming` and `packages/web`, and the fixture-driven self-checks of `check-biome.sh`.
@@ -140,11 +142,11 @@ Each awk detector ships with fixtures under `platform/cli/src/quality/testdata/<
 - `platform/cli/drift` and `lib/cli/bin/ex` without `.sh`, `lib/cli/build.sh`, `packages/tokens/build.js`, the commit-message hook and the pre-commit's localization check: spec 0037.
 - Test descriptions and bare `test()`: the testing compliance spec, not yet written. The Nest microservices: the Nest compliance spec, not yet written.
 - Whether `drift quality check` fails on findings: today it prints and exits 0; see Further Notes.
-- Any change to what `ex`, the transport or the components do.
+- Any change to what `dft`, the transport or the components do.
 
 ## Further Notes
 
-**Coordination with spec 0045.** Spec 0045's tickets (0222 to 0227) rewrite parts of `lib/cli` and `lib/core/contracts/go`: the judge adapter, the planner's judge calls, the run loop and its phases, `ex agent stop`, and the removal of `ex agent init` and its scaffold. The Go tickets of this spec wait for them, so no file is split while another branch rewrites it, and each Go ticket re-measures its layer before it starts. The judge transport's `ANTHROPIC_BASE_URL` and `ANTHROPIC_API_KEY` reads leave `ex` with spec 0045, so the README lists what `ex` reads when the ticket runs.
+**Coordination with spec 0045.** Spec 0045's tickets (0222 to 0227) rewrite parts of `lib/cli` and `lib/core/contracts/go`: the judge adapter, the planner's judge calls, the run loop and its phases, `dft agent stop`, and the removal of `ex agent init` and its scaffold. The Go tickets of this spec wait for them, so no file is split while another branch rewrites it, and each Go ticket re-measures its layer before it starts. The judge transport's `ANTHROPIC_BASE_URL` and `ANTHROPIC_API_KEY` reads leave `dft` with spec 0045, so the README lists what `dft` reads when the ticket runs.
 
 
 Strict readings taken, for the owner to overturn at pull request review:

@@ -43,7 +43,7 @@ func (resources Resources) isComplete() bool {
 		!resources.MemoryLimit.IsZero()
 }
 
-// QuotaResource names a namespace quota that EX supports.
+// QuotaResource names a namespace quota that the LangDrift CLI supports.
 type QuotaResource string
 
 const (
@@ -59,7 +59,7 @@ const (
 	QuotaServices                 QuotaResource = "services"
 )
 
-// Supported reports whether EX can enforce this quota.
+// Supported reports whether the LangDrift CLI can enforce this quota.
 func (resource QuotaResource) Supported() bool {
 	switch resource {
 	case QuotaRequestsCPU, QuotaLimitsCPU,

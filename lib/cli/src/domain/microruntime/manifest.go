@@ -19,7 +19,7 @@ const (
 	EnvironmentRunID     = "LANGDRIFT_RUN_ID"
 )
 
-// apiVersions lists the kinds EX creates and the one API version accepted for
+// apiVersions lists the kinds the LangDrift CLI creates and the one API version accepted for
 // each: stateless Deployments, ClusterIP Services, and finite Jobs.
 var apiVersions = map[string]string{
 	"Deployment": "apps/v1",

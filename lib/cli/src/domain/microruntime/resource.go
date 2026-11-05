@@ -28,7 +28,7 @@ func (resource Resource) IsWorkload() bool {
 	return resource.Kind == "Deployment" || resource.Kind == "Job"
 }
 
-// isSupported reports whether the resource is one EX creates, in namespace,
+// isSupported reports whether the resource is one the LangDrift CLI creates, in namespace,
 // and may therefore delete.
 func (resource Resource) isSupported(namespace Identifier) bool {
 	expected, supported := apiVersions[resource.Kind]

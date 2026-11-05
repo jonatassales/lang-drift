@@ -1,12 +1,12 @@
 package microruntime
 
-// secretKind is the one kind EX creates that no manifest declares: a
+// secretKind is the one kind the LangDrift CLI creates that no manifest declares: a
 // unit's environment, written at start from values that never reach a file.
 const secretKind = "Secret"
 
 // Environment is what one unit's container receives as its environment:
 // the component's env file and the variables it passes through from the
-// agent. EX writes it into one Secret at start and records the Secret, never
+// agent. the LangDrift CLI writes it into one Secret at start and records the Secret, never
 // its values.
 type Environment struct {
 	Unit      Identifier

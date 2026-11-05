@@ -19,7 +19,7 @@ import (
 	"github.com/jonatassales/tao/lib/cli/src/infrastructure/storage"
 )
 
-// Input variables every preparation root declares. EX supplies them on each
+// Input variables every preparation root declares. the LangDrift CLI supplies them on each
 // run through a private variable file, never the command line or environment.
 const (
 	VariableContext        = "context"

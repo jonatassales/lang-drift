@@ -12,9 +12,9 @@ import (
 	"github.com/jonatassales/tao/lib/cli/src/domain/finops"
 )
 
-// ex init asks, at a terminal or with --ask, for the month's budget in
+// dft init asks, at a terminal or with --ask, for the month's budget in
 // dollars and the default gates, and records them through the same use cases
-// as ex finops budget set and ex finops gates set. Flags answer without a
+// as dft finops budget set and dft finops gates set. Flags answer without a
 // terminal, an empty budget skips it, and a second init asks only for what is
 // not recorded yet.
 func TestInitAsksForTheBudgetAndGates(test *testing.T) {
@@ -49,20 +49,20 @@ func TestInitAsksForTheBudgetAndGates(test *testing.T) {
 
 		consumer := newProject(test)
 
-		status, stdout, stderr := consumer.exInput(october, "1500\n25.50\n20\ny\n", "init", "--ask", "--by", "lead")
+		status, stdout, stderr := consumer.dftInput(october, "1500\n25.50\n20\ny\n", "init", "--ask", "--by", "lead")
 		if status != 0 {
-			test.Fatalf("ex init --ask = %d, %s", status, stderr)
+			test.Fatalf("dft init --ask = %d, %s", status, stderr)
 		}
 
 		for _, question := range []string{"Monthly budget for 2026-10", "Per-run cap", "Reserve margin", "Apply the default gates"} {
 			if !strings.Contains(stderr, question) {
-				test.Errorf("ex init did not ask %q:\n%s", question, stderr)
+				test.Errorf("dft init did not ask %q:\n%s", question, stderr)
 			}
 		}
 
 		budget, found := budgetOf(test, consumer.root)
 		if !found {
-			test.Fatal("ex init recorded no budget")
+			test.Fatal("dft init recorded no budget")
 		}
 
 		want := finops.BudgetBounds{
@@ -91,23 +91,23 @@ func TestInitAsksForTheBudgetAndGates(test *testing.T) {
 			test.Fatalf("result %q: %v", stdout, err)
 		}
 
-		wantNext := []string{"ex harness envelope set", "ex harness model set", "ex harness driver set"}
+		wantNext := []string{"dft harness envelope set", "dft harness model set", "dft harness driver set"}
 
 		if result.Status != "initialized" || !reflect.DeepEqual(result.Recorded, []string{"budget", "gates"}) || !reflect.DeepEqual(result.Next, wantNext) {
 			test.Errorf("result = %+v, want initialized, budget and gates recorded, %v next", result, wantNext)
 		}
 
-		status, stdout, stderr = consumer.exInput(october, "", "init", "--ask")
+		status, stdout, stderr = consumer.dftInput(october, "", "init", "--ask")
 		if status != 0 || strings.Contains(stderr, "Monthly budget") || strings.Contains(stderr, "default gates") {
-			test.Fatalf("a second ex init --ask = %d, asked again:\n%s", status, stderr)
+			test.Fatalf("a second dft init --ask = %d, asked again:\n%s", status, stderr)
 		}
 
 		if strings.Contains(stdout, "recorded") {
-			test.Errorf("a second ex init recorded again: %s", stdout)
+			test.Errorf("a second dft init recorded again: %s", stdout)
 		}
 
 		if again, _ := budgetOf(test, consumer.root); again.Mirror.Record != budget.Mirror.Record {
-			test.Error("a second ex init replaced the budget")
+			test.Error("a second dft init replaced the budget")
 		}
 	})
 
@@ -116,17 +116,17 @@ func TestInitAsksForTheBudgetAndGates(test *testing.T) {
 
 		consumer := newProject(test)
 
-		status, _, stderr := consumer.exInput(october, "\nn\n", "init", "--ask")
+		status, _, stderr := consumer.dftInput(october, "\nn\n", "init", "--ask")
 		if status != 0 {
-			test.Fatalf("ex init --ask = %d, %s", status, stderr)
+			test.Fatalf("dft init --ask = %d, %s", status, stderr)
 		}
 
 		if strings.Contains(stderr, "Per-run cap") {
-			test.Errorf("ex init asked for the per-run cap of a skipped budget:\n%s", stderr)
+			test.Errorf("dft init asked for the per-run cap of a skipped budget:\n%s", stderr)
 		}
 
 		if _, found := budgetOf(test, consumer.root); found {
-			test.Error("ex init recorded a skipped budget")
+			test.Error("dft init recorded a skipped budget")
 		}
 	})
 
@@ -136,13 +136,13 @@ func TestInitAsksForTheBudgetAndGates(test *testing.T) {
 		for _, amount := range []string{"abc", "-5", "12.345", "0"} {
 			consumer := newProject(test)
 
-			status, _, stderr := consumer.exInput(october, amount+"\n", "init", "--ask")
+			status, _, stderr := consumer.dftInput(october, amount+"\n", "init", "--ask")
 			if status != 2 || !strings.Contains(stderr, "dollars") {
-				test.Errorf("ex init with a budget of %q = %d, %s", amount, status, stderr)
+				test.Errorf("dft init with a budget of %q = %d, %s", amount, status, stderr)
 			}
 
 			if _, found := budgetOf(test, consumer.root); found {
-				test.Errorf("ex init recorded a budget of %q", amount)
+				test.Errorf("dft init recorded a budget of %q", amount)
 			}
 		}
 	})
@@ -152,9 +152,9 @@ func TestInitAsksForTheBudgetAndGates(test *testing.T) {
 
 		consumer := newProject(test)
 
-		status, _, stderr := consumer.exInput(october, "", "init", "--budget", "1500", "--per-run", "25", "--reserve-margin", "10", "--default-gates")
+		status, _, stderr := consumer.dftInput(october, "", "init", "--budget", "1500", "--per-run", "25", "--reserve-margin", "10", "--default-gates")
 		if status != 0 || stderr != "" {
-			test.Fatalf("ex init with flags = %d, %q", status, stderr)
+			test.Fatalf("dft init with flags = %d, %q", status, stderr)
 		}
 
 		budget, found := budgetOf(test, consumer.root)
@@ -163,7 +163,7 @@ func TestInitAsksForTheBudgetAndGates(test *testing.T) {
 		}
 
 		if _, err := os.Stat(filepath.Join(consumer.root, ".langdrift", "finops", "gates.json")); err != nil {
-			test.Errorf("ex init --default-gates recorded no gates: %v", err)
+			test.Errorf("dft init --default-gates recorded no gates: %v", err)
 		}
 	})
 
@@ -172,9 +172,9 @@ func TestInitAsksForTheBudgetAndGates(test *testing.T) {
 
 		consumer := newProject(test)
 
-		status, _, stderr := consumer.exInput(october, "", "init", "--budget", "1500")
+		status, _, stderr := consumer.dftInput(october, "", "init", "--budget", "1500")
 		if status != 2 || !strings.Contains(stderr, "--per-run") {
-			test.Errorf("ex init --budget alone = %d, %s", status, stderr)
+			test.Errorf("dft init --budget alone = %d, %s", status, stderr)
 		}
 	})
 
@@ -183,9 +183,9 @@ func TestInitAsksForTheBudgetAndGates(test *testing.T) {
 
 		consumer := newProject(test)
 
-		status, stdout, stderr := consumer.exInput(october, "1500\n25\n20\ny\n", "init", "--json", "--ask")
+		status, stdout, stderr := consumer.dftInput(october, "1500\n25\n20\ny\n", "init", "--json", "--ask")
 		if status != 0 || stderr != "" || strings.Contains(stdout, "recorded") {
-			test.Errorf("ex init --json --ask = %d, stdout %q, stderr %q", status, stdout, stderr)
+			test.Errorf("dft init --json --ask = %d, stdout %q, stderr %q", status, stdout, stderr)
 		}
 	})
 }

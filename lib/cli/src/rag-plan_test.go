@@ -80,9 +80,9 @@ func TestPlanRetrievesTheWebsitesEpisodes(t *testing.T) {
 	}
 	deps.Embedder = scriptedEmbedder{similarities: similarities}
 
-	status, stdout, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent)
 	if status != 0 {
-		t.Fatalf("ex agent plan = %d\n%s%s", status, stdout, stderr)
+		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
 
 	for _, line := range []string{
@@ -122,13 +122,13 @@ func TestPlanCitesAMeasuredRun(t *testing.T) {
 	p, deps := seedProject(t)
 	writeMemory(t, p.root, "console-preview", "Run the console with extub as a microruntime", `"nextjs", "go"`, `"."`, true, 410, 690)
 
-	if status, stdout, stderr := p.exWith(deps, "agent", "reindex"); status != 0 || !strings.Contains(stdout, `"episodes": 1`) {
-		t.Fatalf("ex agent reindex = %d\n%s%s", status, stdout, stderr)
+	if status, stdout, stderr := p.dftWith(deps, "agent", "reindex"); status != 0 || !strings.Contains(stdout, `"episodes": 1`) {
+		t.Fatalf("dft agent reindex = %d\n%s%s", status, stdout, stderr)
 	}
 
-	status, stdout, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent)
 	if status != 0 {
-		t.Fatalf("ex agent plan = %d\n%s%s", status, stdout, stderr)
+		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
 
 	for _, line := range []string{

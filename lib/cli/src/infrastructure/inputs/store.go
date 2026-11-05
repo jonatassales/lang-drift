@@ -40,7 +40,7 @@ func (Store) Load(owner project.Project, kind string) (app.Record, error) {
 
 	switch {
 	case errors.Is(err, fs.ErrNotExist):
-		return app.Record{}, application.NotFound("no %s input is recorded; set it with ex harness or ex finops", kind)
+		return app.Record{}, application.NotFound("no %s input is recorded; set it with dft harness or dft finops", kind)
 
 	case err != nil:
 		return app.Record{}, err

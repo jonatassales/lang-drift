@@ -15,7 +15,7 @@ const (
 	JobWorkload        WorkloadKind = "Job"
 )
 
-// IsSupported reports whether EX can run workloads of this kind.
+// IsSupported reports whether the LangDrift CLI can run workloads of this kind.
 func (kind WorkloadKind) IsSupported() bool {
 	return kind == DeploymentWorkload || kind == JobWorkload
 }

@@ -21,7 +21,7 @@ func TestHumanPrintsOneLinePerEvent(t *testing.T) {
 	sink.Emit(app.Event{Session: app.PlanSession, ID: app.PlanCommand, Data: app.Data{"ticket": "0070-console-microruntime"}})
 	sink.Emit(app.Event{Session: app.PlanSession, ID: app.PlanScope})
 
-	want := "ex agent plan 0070-console-microruntime\n# plan only · nothing is built or started · the planner's calls are paid and gated\n"
+	want := "dft agent plan 0070-console-microruntime\n# plan only · nothing is built or started · the planner's calls are paid and gated\n"
 	if out.String() != want {
 		t.Fatalf("printed %q, want %q", out.String(), want)
 	}

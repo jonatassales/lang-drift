@@ -10,10 +10,10 @@ import (
 	"path/filepath"
 )
 
-// maxDocumentBytes bounds every JSON document EX reads.
+// maxDocumentBytes bounds every JSON document the LangDrift CLI reads.
 const maxDocumentBytes = 4 << 20
 
-// Permissions for EX's private files and the directories that hold them.
+// Permissions for the LangDrift CLI's private files and the directories that hold them.
 const (
 	privateFileMode      = 0o600
 	privateDirectoryMode = 0o700

@@ -14,9 +14,9 @@ import (
 	"github.com/jonatassales/tao/lib/cli/src/presentation/cli/support"
 )
 
-// ex init asks whether to generate CI Gates, or takes --ci-gates, and on a yes
+// dft init asks whether to generate CI Gates, or takes --ci-gates, and on a yes
 // writes the one file it may write outside .langdrift/: a workflow pinned to
-// the ex version that generated it. An existing workflow is kept byte for
+// the dft version that generated it. An existing workflow is kept byte for
 // byte, and an unreleased build, which npx could not resolve, writes none.
 func TestInitGeneratesTheCIGatesWorkflow(test *testing.T) {
 	test.Parallel()
@@ -53,11 +53,11 @@ func TestInitGeneratesTheCIGatesWorkflow(test *testing.T) {
 
 		status, stdout, stderr := released(test, consumer, "\nn\n\ny\n", "init", "--ask")
 		if status != 0 {
-			test.Fatalf("ex init --ask = %d, %s", status, stderr)
+			test.Fatalf("dft init --ask = %d, %s", status, stderr)
 		}
 
 		if !strings.Contains(stderr, "Generate the CI Gates workflow") {
-			test.Errorf("ex init did not ask for CI Gates:\n%s", stderr)
+			test.Errorf("dft init did not ask for CI Gates:\n%s", stderr)
 		}
 
 		written, err := os.ReadFile(workflowOf(consumer))
@@ -83,11 +83,11 @@ func TestInitGeneratesTheCIGatesWorkflow(test *testing.T) {
 		consumer := newProject(test)
 
 		if status, _, stderr := released(test, consumer, "\nn\n\n\n", "init", "--ask"); status != 0 {
-			test.Fatalf("ex init --ask = %d, %s", status, stderr)
+			test.Fatalf("dft init --ask = %d, %s", status, stderr)
 		}
 
 		if _, err := os.Stat(filepath.Join(consumer.root, ".github")); err == nil {
-			test.Error("ex init wrote .github without a yes")
+			test.Error("dft init wrote .github without a yes")
 		}
 	})
 
@@ -107,11 +107,11 @@ func TestInitGeneratesTheCIGatesWorkflow(test *testing.T) {
 
 		status, stdout, stderr := released(test, consumer, "", "init", "--ci-gates")
 		if status != 0 {
-			test.Fatalf("ex init --ci-gates = %d, %s", status, stderr)
+			test.Fatalf("dft init --ci-gates = %d, %s", status, stderr)
 		}
 
 		if kept, _ := os.ReadFile(workflowOf(consumer)); string(kept) != string(edited) {
-			test.Errorf("ex init replaced the existing workflow with:\n%s", kept)
+			test.Errorf("dft init replaced the existing workflow with:\n%s", kept)
 		}
 
 		if !strings.Contains(stdout, `"kept": [`) || !strings.Contains(stdout, `"ci-gates"`) {
@@ -124,9 +124,9 @@ func TestInitGeneratesTheCIGatesWorkflow(test *testing.T) {
 
 		consumer := newProject(test)
 
-		status, _, stderr := consumer.ex("", "init", "--ci-gates")
+		status, _, stderr := consumer.dft("", "init", "--ci-gates")
 		if status != 2 || !strings.Contains(stderr, "unreleased") {
-			test.Errorf("ex init --ci-gates on 0.0.0-dev = %d, %s", status, stderr)
+			test.Errorf("dft init --ci-gates on 0.0.0-dev = %d, %s", status, stderr)
 		}
 
 		if _, err := os.Stat(workflowOf(consumer)); err == nil {

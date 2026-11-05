@@ -1,4 +1,4 @@
-// Package application holds EX's use cases: what a user can ask EX to do, and
+// Package application holds the LangDrift CLI's use cases: what a user can ask the LangDrift CLI to do, and
 // the order in which the domain and the outside world are consulted to do it.
 //
 // It depends on the domain and on nothing concrete. Every capability it needs
@@ -24,7 +24,7 @@ var (
 
 // Application errors classify refusals that span several domain objects.
 var (
-	ErrAdoptionRefused      = errors.New("refusing to adopt what EX did not create")
+	ErrAdoptionRefused      = errors.New("refusing to adopt what the LangDrift CLI did not create")
 	ErrTargetMismatch       = errors.New("target differs from the recorded one")
 	ErrConfigurationChanged = errors.New("configuration changed since execution")
 )

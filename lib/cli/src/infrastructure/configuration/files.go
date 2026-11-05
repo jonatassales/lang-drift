@@ -29,7 +29,7 @@ const (
 	maxNativeFileBytes = 1 << 20
 )
 
-// manifestExtensions are the native manifest formats EX reads.
+// manifestExtensions are the native manifest formats the LangDrift CLI reads.
 var manifestExtensions = map[string]bool{".json": true, ".yaml": true, ".yml": true}
 
 // Files reads the configuration consumers author under .langdrift/microruntimes/runtimes.

@@ -71,7 +71,7 @@ func (service Service) Connect(ctx context.Context, request ConnectRequest) (Res
 	if err = service.Store.Bind(ctx, owner, record); err != nil {
 		return Result{}, err
 	}
-	return Result{Runtime: record.RuntimeID, Environment: env, Status: "connected; run ex agent run to synchronize"}, nil
+	return Result{Runtime: record.RuntimeID, Environment: env, Status: "connected; run dft agent run to synchronize"}, nil
 }
 
 // Run owns one worker per connected runtime and joins all workers before exit.
@@ -91,7 +91,7 @@ func (service Service) Run(ctx context.Context, request RunRequest) error {
 		return err
 	}
 	if len(records) == 0 {
-		return errors.New("no connected runtimes; run ex agent connect <console-url>")
+		return errors.New("no connected runtimes; run dft agent connect <console-url>")
 	}
 	child, cancel := context.WithCancel(ctx)
 	defer cancel()

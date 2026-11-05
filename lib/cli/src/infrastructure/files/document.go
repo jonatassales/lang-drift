@@ -11,7 +11,7 @@ import (
 // Directories that hold the documents a consumer reads: the folder is theirs.
 const documentDirectoryMode = 0o755
 
-// WriteDocument replaces one of the documents EX writes for the consumer and a
+// WriteDocument replaces one of the documents the LangDrift CLI writes for the consumer and a
 // console to read, records and mirrors, with the given bytes and mode. The
 // content is synced before the rename and the directory after it, as with
 // private JSON, and missing directories are created readable. Existing links

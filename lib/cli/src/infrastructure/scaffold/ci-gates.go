@@ -13,7 +13,7 @@ import (
 	"github.com/jonatassales/tao/lib/cli/src/infrastructure/files"
 )
 
-// ciGatesTemplate is the workflow as ex ships it, with {{version}} where the
+// ciGatesTemplate is the workflow as dft ships it, with {{version}} where the
 // generating version goes.
 const ciGatesTemplate = "assets/github/langdrift-gates.yml"
 
@@ -21,7 +21,7 @@ const ciGatesTemplate = "assets/github/langdrift-gates.yml"
 var ciGatesAssets embed.FS
 
 // ciGatesWorkflow is where the CI Gates workflow lands in the project: the
-// one file ex init may write outside .langdrift/, after an explicit yes.
+// one file dft init may write outside .langdrift/, after an explicit yes.
 const ciGatesWorkflow = ".github/workflows/langdrift-gates.yml"
 
 // CIGates writes the CI Gates workflow into the project. It is additive: an

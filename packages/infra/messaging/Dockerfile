@@ -1,5 +1,5 @@
 # The event log of the products: Redis with append-only persistence, so
-# the stream survives a restart. The HEALTHCHECK is what `ex` turns into the
+# the stream survives a restart. The HEALTHCHECK is what `dft` turns into the
 # component's readiness probe (spec 0032).
 #
 #   docker build -t langdrift-messaging:local packages/infra/messaging

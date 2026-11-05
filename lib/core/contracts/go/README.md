@@ -1,6 +1,6 @@
 # Microruntimes contracts
 
-The contracts of LangDrift Microruntimes, and only of Microruntimes. The `ex` CLI and the planned server both depend on them; they depend on nothing but the Go standard library. Money formats belong to FinOps and artifact formats to the team's tracker; neither lives here. It is the Go surface of the `@langdrift/core` package, at `lib/core/contracts/go`.
+The contracts of LangDrift Microruntimes, and only of Microruntimes. The LangDrift CLI and the planned server both depend on them; they depend on nothing but the Go standard library. Money formats belong to FinOps and artifact formats to the team's tracker; neither lives here. It is the Go surface of the `@langdrift/core` package, at `lib/core/contracts/go`.
 
 The root `go.work` resolves this module for the CLI. The CLI's `go.mod` names no version of it yet: a `require` of a version that is not tagged makes Go fetch it, even inside the workspace. The module is published by git tag, `lib/core/contracts/go/vX.Y.Z`, the form Go expects of a module in a subdirectory. Once the first tag exists, the CLI's `go.mod` requires that version, and the CLI builds outside this repository.
 

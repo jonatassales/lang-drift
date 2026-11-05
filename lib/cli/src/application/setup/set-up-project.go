@@ -44,7 +44,7 @@ type Request struct {
 	By        string
 	Answers   Answers
 	Guide     Guide
-	// Version is the ex version the CI Gates workflow pins.
+	// Version is the dft version the CI Gates workflow pins.
 	Version string
 }
 
@@ -70,15 +70,15 @@ var nextInputs = []struct {
 }{
 	{
 		kind:    inputs.KindEnvelope,
-		command: "ex harness envelope set",
+		command: "dft harness envelope set",
 	},
 	{
 		kind:    inputs.KindChoice,
-		command: "ex harness model set",
+		command: "dft harness model set",
 	},
 	{
 		kind:    inputs.KindDriver,
-		command: "ex harness driver set",
+		command: "dft harness driver set",
 	},
 }
 
@@ -132,7 +132,7 @@ func (useCase SetUpProject) Execute(ctx context.Context, request Request) (Resul
 	// refused before any input is recorded.
 	writesUnpinnableWorkflow := answers.CIGates && pending.CIGates && unreleased(request.Version)
 	if writesUnpinnableWorkflow {
-		return Result{}, fmt.Errorf("%w: ex %s is an unreleased build, and the CI Gates workflow pins a published @langdrift/cli; run a released ex to generate it", inputs.ErrInvalid, request.Version)
+		return Result{}, fmt.Errorf("%w: dft %s is an unreleased build, and the CI Gates workflow pins a published @langdrift/cli; run a released dft to generate it", inputs.ErrInvalid, request.Version)
 	}
 
 	if err := useCase.checkArtifacts(owner, pending, answers); err != nil {

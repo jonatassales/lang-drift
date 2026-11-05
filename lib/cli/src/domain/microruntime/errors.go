@@ -7,7 +7,7 @@ import (
 	"github.com/jonatassales/tao/lib/core/contracts/go/configuration"
 )
 
-// Domain errors classify why EX rejected a definition or refused an action.
+// Domain errors classify why the LangDrift CLI rejected a definition or refused an action.
 // Callers match them with errors.Is; the wrapped message carries the detail.
 var (
 	ErrInvalidIdentifier     = configuration.ErrInvalidIdentifier

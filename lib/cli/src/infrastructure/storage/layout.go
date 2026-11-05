@@ -1,4 +1,4 @@
-// Package storage keeps EX's records inside the consumer project: the project
+// Package storage keeps the LangDrift CLI's records inside the consumer project: the project
 // identity, the private state under .langdrift/agent/state (cluster and
 // execution ledgers, the project lock, preparation state), and the runtimes
 // under .langdrift/microruntimes with their evidence. Records are versioned
@@ -12,7 +12,7 @@ import (
 	"github.com/jonatassales/tao/lib/cli/src/domain/project"
 )
 
-// Layout names EX's files inside one project.
+// Layout names the LangDrift CLI's files inside one project.
 type Layout struct{ root string }
 
 // LayoutOf returns the layout of owner's project.

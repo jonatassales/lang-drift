@@ -28,25 +28,25 @@ func TestReplanKeepsTheRecordsAndRefusesAnOpenLap(t *testing.T) {
 	p, deps := plannedProject(t)
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = websiteDriver(), websiteLifecycle(), websiteDelivery(), time.Millisecond
 
-	if status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime"); status != 0 {
-		t.Fatalf("ex agent run = %d: %s\n%s", status, stderr, stdout)
+	if status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 0 {
+		t.Fatalf("dft agent run = %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, _, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent); status != 3 || !strings.Contains(stderr, "waiting with a lap open") {
+	if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent); status != 3 || !strings.Contains(stderr, "waiting with a lap open") {
 		t.Errorf("a plan over an open lap gave %d: %s", status, stderr)
 	}
 
-	if status, stdout, stderr := p.exWith(deps, "agent", "confirm", "console-microruntime", "planning"); status != 0 {
-		t.Fatalf("ex agent confirm = %d: %s\n%s", status, stderr, stdout)
+	if status, stdout, stderr := p.dftWith(deps, "agent", "confirm", "console-microruntime", "planning"); status != 0 {
+		t.Fatalf("dft agent confirm = %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime"); status != 0 {
+	if status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 0 {
 		t.Fatalf("the run gave %d: %s\n%s", status, stderr, stdout)
 	}
 
-	status, stdout, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent)
 	if status != 0 {
 		t.Fatalf("a plan over a finished run gave %d: %s\n%s", status, stderr, stdout)
 	}
-	expectLines(t, stdout, "✓ plan       runtime.md draft, revision 2 · proposed · authorize with ex agent run")
+	expectLines(t, stdout, "✓ plan       runtime.md draft, revision 2 · proposed · authorize with dft agent run")
 
 	record := runRecord(t, p)
 	if record.State != "planned" || record.Outcome != nil || len(record.Laps) != 1 || record.Laps[0].Outcome != "completed" || record.Delivery.PullRequest == nil || record.Delivery.PullRequest.Number != 19 || record.Window.Started == nil || record.Window.Finished != nil {
@@ -79,22 +79,22 @@ func TestGatePausesOnTheAllocationAndThePeriod(t *testing.T) {
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = websiteDriver(), websiteLifecycle(), websiteDelivery(), time.Millisecond
 
 	// One run spends $9.80 of the period first.
-	if status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 0 {
+	if status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 0 {
 		t.Fatalf("the first run gave %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, stdout, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent, "--runtime", "console-again"); status != 0 {
+	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent, "--runtime", "console-again"); status != 0 {
 		t.Fatalf("the second plan gave %d: %s\n%s", status, stderr, stdout)
 	}
 
 	budget := func(periodCents, perRunCents, allocation string) {
 		t.Helper()
-		if status, stdout, stderr := p.exWith(deps, "finops", "budget", "set", "--period", "2026-10", "--period-cents", periodCents, "--per-run-cents", perRunCents, "--reserve-margin-percent", "20", "--allocate", "0070-console-microruntime="+allocation); status != 0 {
-			t.Fatalf("ex finops budget set = %d: %s\n%s", status, stderr, stdout)
+		if status, stdout, stderr := p.dftWith(deps, "finops", "budget", "set", "--period", "2026-10", "--period-cents", periodCents, "--per-run-cents", perRunCents, "--reserve-margin-percent", "20", "--allocate", "0070-console-microruntime="+allocation); status != 0 {
+			t.Fatalf("dft finops budget set = %d: %s\n%s", status, stderr, stdout)
 		}
 	}
 
 	budget("50000", "2500", "1000")
-	status, stdout, stderr := p.exWith(deps, "agent", "run", "console-again")
+	status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-again")
 	if status != 3 || !strings.Contains(stderr, "ticket allocation") {
 		t.Fatalf("a reservation over the allocation gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -104,7 +104,7 @@ func TestGatePausesOnTheAllocationAndThePeriod(t *testing.T) {
 	}
 
 	budget("2000", "2000", "2000")
-	status, stdout, stderr = p.exWith(deps, "agent", "run", "console-again")
+	status, stdout, stderr = p.dftWith(deps, "agent", "run", "console-again")
 	if status != 3 || !strings.Contains(stderr, "left of the period") {
 		t.Fatalf("a reservation over the period gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -113,7 +113,7 @@ func TestGatePausesOnTheAllocationAndThePeriod(t *testing.T) {
 	// The planner's own reservation, 15 cents, meets the same gate.
 	budget("985", "985", "985")
 	deps.Judge = &scriptedJudge{answers: sampleAnswers(t)}
-	if status, _, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--runtime", "console-third", "--component", consoleComponent); status != 3 || !strings.Contains(stderr, "left of the period") || !strings.Contains(stderr, "nothing was paid") {
+	if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--runtime", "console-third", "--component", consoleComponent); status != 3 || !strings.Contains(stderr, "left of the period") || !strings.Contains(stderr, "nothing was paid") {
 		t.Errorf("a planning reservation over the period gave %d: %s", status, stderr)
 	}
 }
@@ -125,9 +125,9 @@ func TestSessionEmitsEventsAsJSON(t *testing.T) {
 
 	p, deps := seedProject(t)
 
-	status, stdout, stderr := p.exWith(deps, "--json", "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "--json", "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent)
 	if status != 0 {
-		t.Fatalf("ex --json agent plan = %d: %s\n%s", status, stderr, stdout)
+		t.Fatalf("dft --json agent plan = %d: %s\n%s", status, stderr, stdout)
 	}
 
 	type event struct {
@@ -182,14 +182,14 @@ func TestPlanRefusesAnAnswerThatDoesNotFit(t *testing.T) {
 	judge := &scriptedJudge{answers: map[string]string{plan.SourcesQuestion: "I would rather talk about the weather."}}
 	deps.Judge = judge
 
-	status, stdout, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", consoleComponent)
 	if status != 0 {
-		t.Fatalf("ex agent plan = %d: %s\n%s", status, stderr, stdout)
+		t.Fatalf("dft agent plan = %d: %s\n%s", status, stderr, stdout)
 	}
 	if strings.Count(stdout, "judge      stopped · the sources answer was refused") != 1 || len(judge.asked) != 1 {
 		t.Errorf("the refused answer was not reported once (%d calls):\n%s", len(judge.asked), stdout)
 	}
-	expectLines(t, stdout, "✓ suggests   claude-sonnet-5-5 · effort medium", "✓ plan       runtime.md draft, revision 1 · proposed · authorize with ex agent run")
+	expectLines(t, stdout, "✓ suggests   claude-sonnet-5-5 · effort medium", "✓ plan       runtime.md draft, revision 1 · proposed · authorize with dft agent run")
 
 	ledger := ledgerOf(t, p)
 	if ledger.Planning.Model == nil || ledger.Planning.Cents.Observed == 0 || ledger.Planning.Cents.Billed != nil {
@@ -203,9 +203,9 @@ func TestPlanWithoutEpisodesSaysSo(t *testing.T) {
 
 	p, deps := seedProject(t)
 
-	status, stdout, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent)
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", consoleComponent)
 	if status != 0 {
-		t.Fatalf("ex agent plan = %d: %s\n%s", status, stderr, stdout)
+		t.Fatalf("dft agent plan = %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout,
 		"agent › 0 candidates · no episode indexed yet",
@@ -224,7 +224,7 @@ func TestPlanReadsTheDockerfileAndNamesWhatItLacks(t *testing.T) {
 	writeFile(t, filepath.Join(p.root, "apps", "console", "Dockerfile"), "FROM node:24\nEXPOSE 3002\n")
 	writeFile(t, filepath.Join(p.root, "apps", "extub", "Dockerfile.local"), "FROM golang:1.26\nEXPOSE 3401/tcp\n")
 
-	status, stdout, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--no-judge",
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge",
 		"--component", "name=console,path=.",
 		"--component", "name=web,path=apps/console",
 		"--component", "name=extub,path=apps/extub,dockerfile=Dockerfile.local,readiness=tcp")
@@ -269,11 +269,11 @@ func TestPlanRecordsTheComponentsRefinements(t *testing.T) {
 	writeFile(t, filepath.Join(p.root, "apps", "console", "Dockerfile"), "FROM node:24\nEXPOSE 3002\n")
 	writeFile(t, filepath.Join(p.root, "apps", "console", "runtime.env"), "# committed, no secrets\nLOG_URL=http://log:3500\n")
 
-	status, stdout, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--no-judge",
+	status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge",
 		"--component", "name=console,path=.,readiness=http:/icon.svg",
 		"--component", "name=web,path=apps/console,port=3003,readiness=tcp,env-file=apps/console/runtime.env,pass-env=API_TOKEN;MINIO_SECRET_KEY")
 	if status != 0 {
-		t.Fatalf("ex agent plan = %d: %s\n%s", status, stderr, stdout)
+		t.Fatalf("dft agent plan = %d: %s\n%s", status, stderr, stdout)
 	}
 
 	config, err := connection.Parse(string(mustRead(t, filepath.Join(runtimeFolder(p), "runtime.md"))))
@@ -306,7 +306,7 @@ func TestPlanRefusesAComponentFlagItCannotRead(t *testing.T) {
 	p, deps := seedProject(t)
 
 	for _, component := range []string{"path=.", "name=console", "name=console,path=.,readiness=grpc", "name=console,path=.,image=x:1"} {
-		if status, _, stderr := p.exWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", component); status != 2 {
+		if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--no-judge", "--component", component); status != 2 {
 			t.Errorf("--component %s gave %d: %s", component, status, stderr)
 		}
 	}
@@ -319,7 +319,7 @@ func TestSuperviseIsTheConnectedLoop(t *testing.T) {
 	var stdout, stderr bytes.Buffer
 	status := cli.Execute(context.Background(), []string{"agent", "supervise", "--help"}, support.Options{Version: version, Directory: t.TempDir(), Output: &stdout, Diagnostics: &stderr}, mainUseCases())
 	if status != 0 || !strings.Contains(stdout.String(), "Supervise the connected runtimes") {
-		t.Errorf("ex agent supervise --help = %d\n%s%s", status, stdout.String(), stderr.String())
+		t.Errorf("dft agent supervise --help = %d\n%s%s", status, stdout.String(), stderr.String())
 	}
 }
 

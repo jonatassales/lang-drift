@@ -147,9 +147,9 @@ func TestRunWaitsForTheOwnerThenPlaysTheStages(t *testing.T) {
 	driver := websiteDriver()
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, websiteLifecycle(), websiteDelivery(), time.Millisecond
 
-	status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime")
+	status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime")
 	if status != 0 {
-		t.Fatalf("ex agent run = %d: %s\n%s", status, stderr, stdout)
+		t.Fatalf("dft agent run = %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout, "agent › gate       reserved $11.40 of $25.00 · opened", "agent › waiting    planning · the owner confirms")
 	if len(driver.calls) != 0 {
@@ -161,27 +161,27 @@ func TestRunWaitsForTheOwnerThenPlaysTheStages(t *testing.T) {
 		t.Errorf("run record while waiting = %+v", record)
 	}
 
-	status, stdout, _ = p.exWith(deps, "agent", "run", "console-microruntime")
+	status, stdout, _ = p.dftWith(deps, "agent", "run", "console-microruntime")
 	if status != 0 {
 		t.Fatalf("a run over the waiting lap gave %d:\n%s", status, stdout)
 	}
 	expectLines(t, stdout, "agent › lap        0001 open · $11.40 reserved · resumed", "agent › waiting    planning · the owner confirms")
 
-	status, stdout, stderr = p.exWith(deps, "agent", "confirm", "console-microruntime", "planning")
+	status, stdout, stderr = p.dftWith(deps, "agent", "confirm", "console-microruntime", "planning")
 	if status != 0 || !strings.Contains(stdout, "✓ confirmed  planning · by owner\n") {
-		t.Fatalf("ex agent confirm = %d: %s\n%s", status, stderr, stdout)
+		t.Fatalf("dft agent confirm = %d: %s\n%s", status, stderr, stdout)
 	}
 	if planning := stageState(runRecord(t, p), "planning"); planning.State != "active" || planning.ConfirmedBy == nil || *planning.ConfirmedBy != "owner" {
 		t.Errorf("planning after the confirmation = %+v", planning)
 	}
-	if status, _, stderr := p.exWith(deps, "agent", "confirm", "console-microruntime", "planning"); status != 3 || !strings.Contains(stderr, "not waiting") {
+	if status, _, stderr := p.dftWith(deps, "agent", "confirm", "console-microruntime", "planning"); status != 3 || !strings.Contains(stderr, "not waiting") {
 		t.Errorf("a second confirmation gave %d: %s", status, stderr)
 	}
-	if status, _, stderr := p.exWith(deps, "agent", "confirm", "console-microruntime", "deploy"); status != 2 {
+	if status, _, stderr := p.dftWith(deps, "agent", "confirm", "console-microruntime", "deploy"); status != 2 {
 		t.Errorf("confirming an unknown stage gave %d: %s", status, stderr)
 	}
 
-	status, stdout, stderr = p.exWith(deps, "agent", "run", "console-microruntime")
+	status, stdout, stderr = p.dftWith(deps, "agent", "run", "console-microruntime")
 	if status != 0 {
 		t.Fatalf("the resumed run gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -264,12 +264,12 @@ func TestRunWaitsForTheOwnerThenPlaysTheStages(t *testing.T) {
 		t.Errorf("stage evidence = %d files, %v; want one per call", len(entries), err)
 	}
 
-	if status, _, stderr := p.exWith(deps, "agent", "run", "console-microruntime"); status != 3 || !strings.Contains(stderr, "finished") || len(driver.calls) != 6 {
+	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 3 || !strings.Contains(stderr, "finished") || len(driver.calls) != 6 {
 		t.Errorf("a run after the run finished gave %d with %d calls: %s", status, len(driver.calls), stderr)
 	}
 
-	if status, stdout, _ := p.exWith(deps, "agent", "status", "console-microruntime"); status != 0 || !strings.Contains(stdout, `"observedCents": 980`) {
-		t.Errorf("ex agent status = %d:\n%s", status, stdout)
+	if status, stdout, _ := p.dftWith(deps, "agent", "status", "console-microruntime"); status != 0 || !strings.Contains(stdout, `"observedCents": 980`) {
+		t.Errorf("dft agent status = %d:\n%s", status, stdout)
 	}
 }
 
@@ -280,13 +280,13 @@ func TestRunConfirmsOnTheTerminal(t *testing.T) {
 	p, deps := plannedProject(t)
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = websiteDriver(), websiteLifecycle(), websiteDelivery(), time.Millisecond
 
-	status, stdout, stderr := p.exInput(deps, "n\n", "agent", "run", "console-microruntime", "--confirm")
+	status, stdout, stderr := p.dftInput(deps, "n\n", "agent", "run", "console-microruntime", "--confirm")
 	if status != 0 || !strings.Contains(stderr, "Confirm planning? [y/N]: ") || strings.Contains(stdout, "confirmed") {
 		t.Fatalf("a declined confirmation gave %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout, "agent › waiting    planning · the owner confirms")
 
-	status, stdout, stderr = p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm", "--by", "jonatas")
+	status, stdout, stderr = p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm", "--by", "jonatas")
 	if status != 0 {
 		t.Fatalf("a confirmed run gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -309,14 +309,14 @@ func TestRunPausesThePaidCallsAtTheReservation(t *testing.T) {
 	driver.usage["grilling"] = [2]int64{5_000_000, 400_000}
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, websiteLifecycle(), websiteDelivery(), time.Millisecond
 
-	if status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime"); status != 0 {
-		t.Fatalf("ex agent run = %d: %s\n%s", status, stderr, stdout)
+	if status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 0 {
+		t.Fatalf("dft agent run = %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, stdout, stderr := p.exWith(deps, "agent", "confirm", "console-microruntime", "planning"); status != 0 {
-		t.Fatalf("ex agent confirm = %d: %s\n%s", status, stderr, stdout)
+	if status, stdout, stderr := p.dftWith(deps, "agent", "confirm", "console-microruntime", "planning"); status != 0 {
+		t.Fatalf("dft agent confirm = %d: %s\n%s", status, stderr, stdout)
 	}
 
-	status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime")
+	status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime")
 	if status != 3 || !strings.Contains(stderr, "FG-04") || len(driver.calls) != 1 {
 		t.Fatalf("the exhausted lap gave %d with %d calls: %s\n%s", status, len(driver.calls), stderr, stdout)
 	}
@@ -349,13 +349,13 @@ func TestRunPausesThePaidCallsAtTheReservation(t *testing.T) {
 		}
 	}
 
-	status, stdout, stderr = p.exWith(deps, "agent", "run", "console-microruntime")
+	status, stdout, stderr = p.dftWith(deps, "agent", "run", "console-microruntime")
 	if status != 3 || !strings.Contains(stderr, "FG-05") {
 		t.Fatalf("a lap over an unacknowledged overspend gave %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout, "agent › gate       blocked · FG-05 · FG-05 require-owner")
 
-	status, stdout, stderr = p.exWith(deps, "agent", "run", "console-microruntime", "--acknowledge-overspend")
+	status, stdout, stderr = p.dftWith(deps, "agent", "run", "console-microruntime", "--acknowledge-overspend")
 	if status != 0 {
 		t.Fatalf("the acknowledged lap gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -388,14 +388,14 @@ func TestRunPausesWhenACallReportsNoUsage(t *testing.T) {
 	driver.unmeasured["grilling"] = true
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, websiteLifecycle(), websiteDelivery(), time.Millisecond
 
-	if status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime"); status != 0 {
-		t.Fatalf("ex agent run = %d: %s\n%s", status, stderr, stdout)
+	if status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 0 {
+		t.Fatalf("dft agent run = %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, stdout, stderr := p.exWith(deps, "agent", "confirm", "console-microruntime", "planning"); status != 0 {
-		t.Fatalf("ex agent confirm = %d: %s\n%s", status, stderr, stdout)
+	if status, stdout, stderr := p.dftWith(deps, "agent", "confirm", "console-microruntime", "planning"); status != 0 {
+		t.Fatalf("dft agent confirm = %d: %s\n%s", status, stderr, stdout)
 	}
 
-	status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime")
+	status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime")
 	if status != 3 || !strings.Contains(stderr, "FG-04") {
 		t.Fatalf("an unmeasured call gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -412,12 +412,12 @@ func TestRunPausesWhenACallReportsNoUsage(t *testing.T) {
 		t.Errorf("lap 0001 does not say its spend is a floor:\n%s", lap)
 	}
 
-	if status, stdout, stderr := p.exWith(deps, "harness", "driver", "set", "--file", driverFile(t, p.root, "allow")); status != 0 {
-		t.Fatalf("ex harness driver set = %d: %s\n%s", status, stderr, stdout)
+	if status, stdout, stderr := p.dftWith(deps, "harness", "driver", "set", "--file", driverFile(t, p.root, "allow")); status != 0 {
+		t.Fatalf("dft harness driver set = %d: %s\n%s", status, stderr, stdout)
 	}
 	driver.unmeasured["to-spec"] = true
 
-	status, stdout, stderr = p.exWith(deps, "agent", "run", "console-microruntime")
+	status, stdout, stderr = p.dftWith(deps, "agent", "run", "console-microruntime")
 	if status != 0 {
 		t.Fatalf("the allowed lap gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -442,18 +442,18 @@ func TestRunRunsTheHooksAndReplaysAFailedStage(t *testing.T) {
 		withoutMirror(body)
 		body.Stages[3].Hooks = []string{"platform/hooks/lint.sh"}
 	})
-	if status, stdout, stderr := p.exWith(deps, "harness", "workflow", "set", "--file", workflow); status != 0 {
-		t.Fatalf("ex harness workflow set = %d: %s\n%s", status, stderr, stdout)
+	if status, stdout, stderr := p.dftWith(deps, "harness", "workflow", "set", "--file", workflow); status != 0 {
+		t.Fatalf("dft harness workflow set = %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, stdout, stderr := p.exWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 0 {
-		t.Fatalf("ex agent plan = %d\n%s%s", status, stdout, stderr)
+	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent); status != 0 {
+		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
 
 	driver := websiteDriver()
 	driver.exits["to-spec"] = 1
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, websiteLifecycle(), websiteDelivery(), time.Millisecond
 
-	if status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 1 || !strings.Contains(stderr, "to-spec of stage spec exited 1") {
+	if status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 1 || !strings.Contains(stderr, "to-spec of stage spec exited 1") {
 		t.Fatalf("a failing skill gave %d: %s\n%s", status, stderr, stdout)
 	}
 	record := runRecord(t, p)
@@ -463,7 +463,7 @@ func TestRunRunsTheHooksAndReplaysAFailedStage(t *testing.T) {
 
 	driver.exits = map[string]int{}
 	driver.hookExit = 1
-	status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime")
+	status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime")
 	if status != 1 || !strings.Contains(stderr, "hook platform/hooks/lint.sh of stage implement exited 1") {
 		t.Fatalf("a failing hook gave %d: %s\n%s", status, stderr, stdout)
 	}
@@ -473,7 +473,7 @@ func TestRunRunsTheHooksAndReplaysAFailedStage(t *testing.T) {
 	}
 
 	driver.hookExit = 0
-	status, stdout, stderr = p.exWith(deps, "agent", "run", "console-microruntime")
+	status, stdout, stderr = p.dftWith(deps, "agent", "run", "console-microruntime")
 	if status != 0 {
 		t.Fatalf("the replayed stage gave %d: %s\n%s", status, stderr, stdout)
 	}

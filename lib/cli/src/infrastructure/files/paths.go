@@ -1,4 +1,4 @@
-// Package files performs the local file operations EX trusts: path resolution
+// Package files performs the local file operations the LangDrift CLI trusts: path resolution
 // that never follows symlinks, bounded reads, atomic private writes, and
 // cross-process locks. It is not a sandbox against a hostile workspace; the
 // consumer must not change the workspace while an operation runs.

@@ -48,4 +48,4 @@ pnpm turbo run test typecheck --filter=demo-requests
 
 ## Image
 
-The Dockerfile builds from the repository root (`docker build -f apps/microservices/demo-requests/Dockerfile .`): pnpm arrives as a checksum-pinned static binary, Turborepo prunes the workspace to this app, the app is built and deployed with its production dependencies, and the runtime image runs as `node`, exposes 3402 and declares a `HEALTHCHECK` on `/health`, which `ex` turns into the microruntime's readiness probe (spec 0032). CI builds no image.
+The Dockerfile builds from the repository root (`docker build -f apps/microservices/demo-requests/Dockerfile .`): pnpm arrives as a checksum-pinned static binary, Turborepo prunes the workspace to this app, the app is built and deployed with its production dependencies, and the runtime image runs as `node`, exposes 3402 and declares a `HEALTHCHECK` on `/health`, which `dft` turns into the microruntime's readiness probe (spec 0032). CI builds no image.

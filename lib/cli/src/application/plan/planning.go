@@ -151,7 +151,7 @@ func (planning *planning) judgeUnavailable() string {
 	case planning.service.Judge == nil:
 		return "no model is configured; verdicts, facts and the suggestion are the inputs' own"
 	case planning.guards.Forecasts == nil || planning.guards.Forecasts.Planning == nil:
-		return "no planning forecast is recorded; set planning with ex finops forecasts set"
+		return "no planning forecast is recorded; set planning with dft finops forecasts set"
 	}
 
 	return ""

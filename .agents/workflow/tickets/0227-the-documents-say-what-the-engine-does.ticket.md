@@ -2,7 +2,7 @@
 
 **Spec:** .agents/workflow/specs/0045-the-judge-as-a-platform-service.spec.md
 
-**What to build:** A reader of the CLI README, the context document, spec 0032 and this repository's microruntime folder finds the engine described as it now behaves. The CLI README's command table has `stop`, no `init` under `agent` and no `--no-judge`; its "Configuration" section says planning needs a connected project and names the planning cost the gate reserves; spec 0032's sentence about the run is amended to the new order with a note pointing here; `platform/microruntime/plan.sh` drops `--no-judge`, its README says the project must be connected and how (`ex agent connect` with `RUNTIME_SECRET`), and ticket 0198's run criteria are revisited against 0.5.0. The context document's commands table and glossary name the judge as the platform's service.
+**What to build:** A reader of the CLI README, the context document, spec 0032 and this repository's microruntime folder finds the engine described as it now behaves. The CLI README's command table has `stop`, no `init` under `agent` and no `--no-judge`; its "Configuration" section says planning needs a connected project and names the planning cost the gate reserves; spec 0032's sentence about the run is amended to the new order with a note pointing here; `platform/microruntime/plan.sh` drops `--no-judge`, its README says the project must be connected and how (`dft agent connect` with `RUNTIME_SECRET`), and ticket 0198's run criteria are revisited against 0.5.0. The context document's commands table and glossary name the judge as the platform's service.
 
 **Blocked by:** 0221, 0223, 0224, 0226, and the merge of ticket 0198's plan script (pull request #117).
 
@@ -12,6 +12,8 @@
 - [ ] Spec 0032's "This repository" paragraph says the run brings the components up and pauses, consistent with spec 0045, with a note of the amendment and its date.
 - [ ] `sh platform/microruntime/plan.sh` has no `--no-judge`; its header and README say the project must be connected first.
 - [ ] `git grep -n -i 'no-judge\|agent init\|ANTHROPIC_API_KEY' -- lib README.md platform .agents/context.md apps/console/README.md` finds only the driver's pass-through and the console's own provider key.
+
+> **Note, 2026-11-05.** From 0.5.0 the command is `dft` (spec 0047). `ex agent init` keeps its name here: 0221 removed it before the rename.
 
 ## Dev part
 

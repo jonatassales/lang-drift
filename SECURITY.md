@@ -63,7 +63,7 @@ rather stay anonymous, that is fine too.
   crafted prompt, or malicious payload to bypass pre-execution budget reservations,
   trigger unauthorized model spend, manipulate list price tables, or evade
   deterministic human-in-the-loop approval gates (*"Recommendation is not authorization"*).
-- **Microruntime isolation & execution bounds**: vulnerabilities in the `ex` CLI
+- **Microruntime isolation & execution bounds**: vulnerabilities in the LangDrift CLI
   or Microruntimes harness allowing container escapes (Docker, kind, Terraform),
   arbitrary host filesystem traversal, command injection outside intended task bounds,
   or unauthorized network egress.

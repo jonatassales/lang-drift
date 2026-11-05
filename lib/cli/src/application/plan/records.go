@@ -193,7 +193,7 @@ func (planning *planning) ownLedger() finops.Ledger {
 	runtime := planning.runtime.String()
 
 	ledger := finops.Ledger{
-		Mirror:   harness.Mirror{Of: inputs.Via, Record: "ledger-" + runtime, SetBy: "ex", Via: inputs.Via, SetAt: planning.now, ReadOnly: true, Note: inputs.MirrorNote},
+		Mirror:   harness.Mirror{Of: inputs.Via, Record: "ledger-" + runtime, SetBy: "dft", Via: inputs.Via, SetAt: planning.now, ReadOnly: true, Note: inputs.MirrorNote},
 		Version:  1,
 		Run:      runtime,
 		Ticket:   text(planning.ticket.Reference()),

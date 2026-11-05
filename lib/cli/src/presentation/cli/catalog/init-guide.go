@@ -10,7 +10,7 @@ import (
 	"github.com/jonatassales/tao/lib/cli/src/presentation/cli/support"
 )
 
-// initGuide asks ex init's questions on the terminal, for the pending inputs
+// initGuide asks dft init's questions on the terminal, for the pending inputs
 // the flags left unanswered.
 type initGuide struct {
 	prompter *support.Prompter

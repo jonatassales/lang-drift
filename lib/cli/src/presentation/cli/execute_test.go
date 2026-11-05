@@ -206,18 +206,18 @@ func TestExecute_ClassifiesFailures(t *testing.T) {
 		wantStderr string
 	}{
 		{name: "retired runtime tree refuses with guidance", arguments: []string{"runtime", "up", "demo"}, wantStatus: 1, wantStderr: "runtime operations moved to the console"},
-		{name: "command group without a subcommand", arguments: []string{"cluster"}, wantStatus: 2, wantStderr: "ex cluster requires a subcommand"},
+		{name: "command group without a subcommand", arguments: []string{"cluster"}, wantStatus: 2, wantStderr: "dft cluster requires a subcommand"},
 		{name: "unknown subcommand", arguments: []string{"cluster", "resize"}, wantStatus: 2, wantStderr: "unknown command"},
 		{name: "unknown root command", arguments: []string{"deploy"}, wantStatus: 2, wantStderr: `unknown command "deploy"`},
-		{name: "missing argument", arguments: []string{"cluster", "load-image"}, wantStatus: 2, wantStderr: "ex cluster load-image requires 1 argument(s)"},
+		{name: "missing argument", arguments: []string{"cluster", "load-image"}, wantStatus: 2, wantStderr: "dft cluster load-image requires 1 argument(s)"},
 		{name: "extra argument", arguments: []string{"cluster", "create", "now"}, wantStatus: 2, wantStderr: "requires 0 argument(s)"},
 		{name: "unknown flag", arguments: []string{"cluster", "create", "--force"}, wantStatus: 2, wantStderr: "unknown flag: --force"},
 		{name: "zero timeout", arguments: []string{"--timeout", "0s", "cluster", "create"}, wantStatus: 2, wantStderr: "--timeout must be positive"},
 		{name: "invalid timeout", arguments: []string{"--timeout", "soon", "cluster", "create"}, wantStatus: 2, wantStderr: "invalid argument"},
 		{name: "unknown help topic", arguments: []string{"help", "deploy"}, wantStatus: 2, wantStderr: "unknown help command"},
-		{name: "agent connect without URL", arguments: []string{"agent", "connect"}, wantStatus: 2, wantStderr: "ex agent connect requires 1 argument(s)"},
-		{name: "agent migrate without runtime", arguments: []string{"agent", "migrate"}, wantStatus: 2, wantStderr: "ex agent migrate requires 1 argument(s)"},
-		{name: "operational failure", arguments: []string{"cluster", "create"}, failure: errors.New("cluster is not ready"), wantStatus: 1, wantStderr: "ex: cluster is not ready\n"},
+		{name: "agent connect without URL", arguments: []string{"agent", "connect"}, wantStatus: 2, wantStderr: "dft agent connect requires 1 argument(s)"},
+		{name: "agent migrate without runtime", arguments: []string{"agent", "migrate"}, wantStatus: 2, wantStderr: "dft agent migrate requires 1 argument(s)"},
+		{name: "operational failure", arguments: []string{"cluster", "create"}, failure: errors.New("cluster is not ready"), wantStatus: 1, wantStderr: "dft: cluster is not ready\n"},
 		{name: "adoption refused", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("namespace exists: %w", app.ErrAdoptionRefused), wantStatus: 3, wantStderr: "refusing to adopt"},
 		{name: "target mismatch refused", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("guard: %w", app.ErrTargetMismatch), wantStatus: 3, wantStderr: "target differs"},
 		{name: "pass-through variable missing", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("component api: %w", connection.ErrPassEnvMissing), wantStatus: 3, wantStderr: "not set in the agent's environment"},
@@ -317,7 +317,7 @@ func TestExecute_PrintsTheVersionWithoutAProject(t *testing.T) {
 
 	for _, arguments := range [][]string{{"version"}, {"--version"}, {"-V"}} {
 		h := &harness{}
-		if status, stdout, _ := h.run(arguments...); status != 0 || stdout != "ex 1.2.3\n" {
+		if status, stdout, _ := h.run(arguments...); status != 0 || stdout != "dft 1.2.3\n" {
 			t.Errorf("%v = %d, %q", arguments, status, stdout)
 		}
 	}
@@ -429,7 +429,7 @@ func TestExecute_ErrorsCarryAHint(t *testing.T) {
 		wantHint string
 	}{
 		{"refusal points at inspection", fmt.Errorf("x: %w", app.ErrAdoptionRefused), "refused to change what it does not own"},
-		{"missing prerequisite points at doctor", app.NotFound("no cluster"), "run ex doctor"},
+		{"missing prerequisite points at doctor", app.NotFound("no cluster"), "run dft doctor"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

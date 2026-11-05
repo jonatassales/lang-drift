@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/pflag"
 )
 
-// initFlags are the answers ex init takes on its command line.
+// initFlags are the answers dft init takes on its command line.
 type initFlags struct {
 	budget        string
 	perRun        string
