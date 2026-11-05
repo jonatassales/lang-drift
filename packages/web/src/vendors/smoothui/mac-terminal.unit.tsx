@@ -7,7 +7,7 @@ import { MacTerminal } from './mac-terminal'
 const lines: TerminalLine[] = [
 	{
 		id: 'doctor',
-		text: 'ex doctor',
+		text: 'dft doctor',
 		type: 'command',
 	},
 	{
@@ -95,7 +95,7 @@ describe('web/vendors/smoothui/mac-terminal', () => {
 				label="Terminal"
 				lines={lines}
 				onProgress={onProgress}
-				title="ex"
+				title="dft"
 			/>,
 		)
 
@@ -112,7 +112,7 @@ describe('web/vendors/smoothui/mac-terminal', () => {
 				label="Terminal"
 				lines={lines}
 				onProgress={onProgress}
-				title="ex"
+				title="dft"
 			/>,
 		)
 
@@ -125,7 +125,7 @@ describe('web/vendors/smoothui/mac-terminal', () => {
 				lines={lines}
 				onProgress={onProgress}
 				paused
-				title="ex"
+				title="dft"
 			/>,
 		)
 		advance(5000)
@@ -137,7 +137,7 @@ describe('web/vendors/smoothui/mac-terminal', () => {
 				lines={lines}
 				onProgress={onProgress}
 				paused={false}
-				title="ex"
+				title="dft"
 			/>,
 		)
 		advance(1000)
@@ -152,7 +152,7 @@ describe('web/vendors/smoothui/mac-terminal', () => {
 				label="Terminal"
 				lines={lines}
 				onProgress={onProgress}
-				title="ex"
+				title="dft"
 			/>,
 		)
 

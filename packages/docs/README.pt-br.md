@@ -41,6 +41,8 @@
 
 ## Como usar
 
+A LangDrift CLI é publicada no npm como `@langdrift/cli`, e o seu comando é `dft`: rode com `npx @langdrift/cli` ou instale o pacote e digite `dft`.
+
 ### Pré-requisitos
 
 - **macOS** ou **Linux**
@@ -56,11 +58,11 @@ Execute o inicializador na raiz do seu repositório:
 npx @langdrift/cli init
 ```
 
-Isso cria a configuração de identidade do projeto em `.langdrift/config.json` e as regras locais de execução em `.langdrift/microruntimes/AGENTS.md`. Os arquivos existentes permanecem inalterados. Adicione `/.langdrift/` ao seu `.gitignore`: essa pasta armazena o estado gerado pelo `ex`.
+Isso cria a configuração de identidade do projeto em `.langdrift/config.json` e as regras locais de execução em `.langdrift/microruntimes/AGENTS.md`. Os arquivos existentes permanecem inalterados. Adicione `/.langdrift/` ao seu `.gitignore`: essa pasta armazena o estado gerado pelo `dft`.
 
 ### 2. Planejar a partir de uma issue ou ticket
 
-Aponte o `ex` para um ticket ou especificação. Ele lê os documentos vinculados, dimensiona limites de CPU e memória dentro do envelope do seu time, escolhe o modelo ideal e escreve um plano de execução delimitado:
+Aponte o `dft` para um ticket ou especificação. Ele lê os documentos vinculados, dimensiona limites de CPU e memória dentro do envelope do seu time, escolhe o modelo ideal e escreve um plano de execução delimitado:
 
 ```sh
 npx @langdrift/cli agent plan <caminho-do-ticket.md> --component name=console,path=apps/console
@@ -69,7 +71,7 @@ npx @langdrift/cli agent plan <caminho-do-ticket.md> --component name=console,pa
 > **Dica:** Use `--no-judge` para gerar o plano por heurística sem realizar chamadas de LLM, sem nenhum custo.
 
 <p align="center">
-  <img src="/packages/docs/assets/images/ex-agent-plan.webp" alt="Terminal executando ex agent plan no ticket 0070. Ele lê sete documentos vinculados, aplica o envelope de 2000 milicores e 3072 MiB do time e o orçamento de $25.00 por execução, sugere claude-sonnet-5-5 com esforço médio, dimensiona apps/console para 500m e 1024 MiB e encerra com uma proposta de plano, revisão 1." width="820">
+  <img src="/packages/docs/assets/images/dft-agent-plan.webp" alt="Terminal executando dft agent plan no ticket 0070. Ele lê sete documentos vinculados, aplica o envelope de 2000 milicores e 3072 MiB do time e o orçamento de $25.00 por execução, sugere claude-sonnet-5-5 com esforço médio, dimensiona apps/console para 500m e 1024 MiB e encerra com uma proposta de plano, revisão 1." width="820">
 </p>
 
 O plano é salvo em `.langdrift/microruntimes/runtimes/<runtime-id>/runtime.md`. O bloco `langdrift` contém a configuração executável:
@@ -95,7 +97,7 @@ O plano é salvo em `.langdrift/microruntimes/runtimes/<runtime-id>/runtime.md`.
 }
 ```
 
-Um componente aponta para arquivos: seu nome e sua pasta, que contém um Dockerfile. O `ex` o constrói com `docker build` a partir da raiz do projeto usando esse Dockerfile, nomeia a imagem `langdrift-<runtime-id>-<nome>:r<revisão>` e usa a porta do primeiro `EXPOSE` e a prontidão do próprio `HEALTHCHECK`. Um `--component` pode acrescentar `dockerfile=`, `port=`, `readiness=tcp` ou `readiness=http:/caminho`, um `env-file=` versionado sem segredos e `pass-env=A;B` para variáveis que o `ex` lê do próprio ambiente ao iniciar; ele grava ambos em um Secret do Kubernetes por componente.
+Um componente aponta para arquivos: seu nome e sua pasta, que contém um Dockerfile. O `dft` o constrói com `docker build` a partir da raiz do projeto usando esse Dockerfile, nomeia a imagem `langdrift-<runtime-id>-<nome>:r<revisão>` e usa a porta do primeiro `EXPOSE` e a prontidão do próprio `HEALTHCHECK`. Um `--component` pode acrescentar `dockerfile=`, `port=`, `readiness=tcp` ou `readiness=http:/caminho`, um `env-file=` versionado sem segredos e `pass-env=A;B` para variáveis que o `dft` lê do próprio ambiente ao iniciar; ele grava ambos em um Secret do Kubernetes por componente.
 
 ### 3. Executar o plano
 
@@ -105,7 +107,7 @@ Executar o runtime autoriza o plano e inicia o ciclo de entrega:
 npx @langdrift/cli agent run <runtime-id>
 ```
 
-Durante a execução, o `ex` coordena todo o ciclo de entrega:
+Durante a execução, o `dft` coordena todo o ciclo de entrega:
 
 1. **Checagem de portão:** Valida se os preços cobrem a execução e reserva o custo estimado contra a alocação do ticket e o envelope do período.
 2. **Estágios do workflow:** Guia o agente de código pelos estágios definidos no workflow. Quando a aprovação humana é exigida, a execução pausa até ser confirmada no terminal ou com `npx @langdrift/cli agent confirm <runtime-id> <estagio>`.
@@ -213,7 +215,7 @@ Você pode personalizar estágios de workflow, drivers de agentes e parâmetros 
 ## Referências
 
 - [AI for FinOps: Agentic Use Cases in FinOps](https://www.finops.org/insights/ai-for-finops-agentic-use-cases/), Jonathan Morley, FinOps Foundation, 27 de março de 2026. Praticantes descrevem agentes que reconciliam gastos com orçamentos, encontram desperdício e aplicam políticas de custo mais cedo no ciclo de desenvolvimento; esse último tema, levar o FinOps para dentro da entrega, é onde o LangDrift trabalha.
-- [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html), Birgitta Böckeler, martinfowler.com, 2 de abril de 2026. O artigo descreve o harness externo que um time constrói em volta de um agente de código: guias que orientam o agente antes de ele agir e sensores que permitem que ele se corrija. O `ex harness` registra esse harness para um projeto, e os gates de FinOps limitam o que ele pode gastar.
+- [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html), Birgitta Böckeler, martinfowler.com, 2 de abril de 2026. O artigo descreve o harness externo que um time constrói em volta de um agente de código: guias que orientam o agente antes de ele agir e sensores que permitem que ele se corrija. O `dft harness` registra esse harness para um projeto, e os gates de FinOps limitam o que ele pode gastar.
 
 ## Agradecimentos
 

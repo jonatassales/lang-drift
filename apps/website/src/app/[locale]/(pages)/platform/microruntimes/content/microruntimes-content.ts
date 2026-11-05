@@ -358,7 +358,7 @@ export const documentReads = {
 } as const satisfies Record<DocumentId, PlanLineId>
 
 // The ticket the session plans, as the agent reads it from the project's
-// artifacts: the numbers follow the scaffold ex init produces. The envelope
+// artifacts: the numbers follow the scaffold dft init produces. The envelope
 // is the team's, from the design doc; the components' shares are the plan's
 // proposal and must stay inside it.
 export const ticketPlan = {

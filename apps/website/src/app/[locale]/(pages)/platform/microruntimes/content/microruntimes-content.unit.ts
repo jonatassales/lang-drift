@@ -133,7 +133,7 @@ describe('website/platform/microruntimes/content/microruntimes-content', () => {
 		])
 	})
 
-	it('keeps the runtime file within the limits the ex agent accepts', () => {
+	it('keeps the runtime file within the limits the dft agent accepts', () => {
 		const { components, cpuMillis, memoryMiB } = runtimeDescriptor
 		expect(components.length).toBeGreaterThanOrEqual(1)
 		expect(components.length).toBeLessThanOrEqual(16)

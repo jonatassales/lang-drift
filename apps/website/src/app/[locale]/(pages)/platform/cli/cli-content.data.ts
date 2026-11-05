@@ -12,9 +12,9 @@ export const cliLinks = {
 	npm: 'https://www.npmjs.com/package/@langdrift/cli',
 } as const
 
-// The terminal screenshot of ex agent plan, served from public/.
+// The terminal screenshot of dft agent plan, served from public/.
 export const cliPlanImage = {
 	height: 1479,
-	src: '/cli/ex-agent-plan.webp',
+	src: '/cli/dft-agent-plan.webp',
 	width: 2000,
 } as const

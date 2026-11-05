@@ -41,6 +41,8 @@
 
 ## How to use it
 
+The LangDrift CLI ships on npm as `@langdrift/cli`, and its command is `dft`: run it with `npx @langdrift/cli`, or install the package and type `dft`.
+
 ### Prerequisites
 
 - **macOS** or **Linux**
@@ -69,7 +71,7 @@ npx @langdrift/cli agent plan <path-to-ticket.md> --component name=console,path=
 > **Tip:** Use `--no-judge` to produce a plan purely from heuristics without making an LLM call, ensuring zero spend.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/jonatassales/lang-drift/main/packages/docs/assets/images/ex-agent-plan.webp" alt="Terminal running dft agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
+  <img src="https://raw.githubusercontent.com/jonatassales/lang-drift/main/packages/docs/assets/images/dft-agent-plan.webp" alt="Terminal running dft agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
 </p>
 
 The plan is written to `.langdrift/microruntimes/runtimes/<runtime-id>/runtime.md`. The `langdrift` fence contains the executable configuration:

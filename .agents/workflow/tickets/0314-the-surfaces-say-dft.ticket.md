@@ -8,10 +8,13 @@
 
 **Status:** ready-for-agent
 
-- [ ] No catalog, content module or console view shows `ex` as the command; the catalogs keep parity in every locale.
-- [ ] The root README and the READMEs under `packages/docs/` show `dft`, and their screenshot shows `dft` running and is named after it.
-- [ ] `drift check localization` and the website's catalog test pass.
-- [ ] `pnpm turbo run check typecheck test build --filter=website --filter=console` passes.
+- [x] No catalog, content module or console view shows `ex` as the command; the catalogs keep parity in every locale.
+- [ ] The root README and the READMEs under `packages/docs/` name the LangDrift CLI and show `dft`, and their screenshot shows `dft` running and is named after it.
+- [ ] The CI Gates page's two screenshots (`report-light.png`, `report-dark.png`) show a summary that says `dft`.
+- [x] `drift check localization` and the website's catalog test pass.
+- [x] `pnpm turbo run check typecheck test build --filter=website --filter=console` passes.
+
+> **Note, 2026-11-05.** The copy, the alt texts and the captions say `dft`, and the screenshot file is now `dft-agent-plan.webp` in `apps/website/public/cli/` and `packages/docs/assets/images/`. It still holds the 0.4.0 capture of `ex agent plan`, made in the owner's own terminal against the repository's local records, and no terminal renderer here can retake it faithfully. The owner replaces both files with a capture of `dft agent plan` before this pull request merges with the release. The CI Gates page's `report-light.png` and `report-dark.png` also show the job summary saying `.langdrift/` stays on the machine that ran `ex`, so the owner retakes them from a `dft gates report` run too. Their alt texts already describe `dft`. Those two criteria stay open until then.
 
 ## Dev part
 

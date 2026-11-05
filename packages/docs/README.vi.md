@@ -41,6 +41,8 @@
 
 ## Cách sử dụng
 
+LangDrift CLI được phát hành trên npm dưới tên `@langdrift/cli`, và lệnh của nó là `dft`: chạy bằng `npx @langdrift/cli`, hoặc cài gói rồi gõ `dft`.
+
 ### Điều kiện tiên quyết
 
 - **macOS** hoặc **Linux**
@@ -56,11 +58,11 @@ Chạy lệnh khởi tạo từ thư mục gốc của kho lưu trữ:
 npx @langdrift/cli init
 ```
 
-Lệnh này tạo cấu hình định danh dự án trong `.langdrift/config.json` và các quy tắc thực thi cục bộ trong `.langdrift/microruntimes/AGENTS.md`. Các tệp hiện có không bị thay đổi. Hãy thêm `/.langdrift/` vào `.gitignore` của bạn: thư mục này chứa trạng thái cục bộ do `ex` tạo ra.
+Lệnh này tạo cấu hình định danh dự án trong `.langdrift/config.json` và các quy tắc thực thi cục bộ trong `.langdrift/microruntimes/AGENTS.md`. Các tệp hiện có không bị thay đổi. Hãy thêm `/.langdrift/` vào `.gitignore` của bạn: thư mục này chứa trạng thái cục bộ do `dft` tạo ra.
 
 ### 2. Lập kế hoạch từ một ticket
 
-Trỏ `ex` tới một ticket hoặc bản đặc tả. Công cụ sẽ đọc các tài liệu liên kết, xác định giới hạn CPU và bộ nhớ trong hạn mức của bạn, đề xuất mô hình và mức độ nỗ lực tối ưu, đồng thời ghi lại kế hoạch thực thi có giới hạn:
+Trỏ `dft` tới một ticket hoặc bản đặc tả. Công cụ sẽ đọc các tài liệu liên kết, xác định giới hạn CPU và bộ nhớ trong hạn mức của bạn, đề xuất mô hình và mức độ nỗ lực tối ưu, đồng thời ghi lại kế hoạch thực thi có giới hạn:
 
 ```sh
 npx @langdrift/cli agent plan <đường-dẫn-đến-ticket.md> --component name=console,path=apps/console
@@ -69,7 +71,7 @@ npx @langdrift/cli agent plan <đường-dẫn-đến-ticket.md> --component nam
 > **Mẹo:** Sử dụng `--no-judge` để tạo kế hoạch thuần túy theo kinh nghiệm heuristics mà không cần gọi LLM, hoàn toàn không phát sinh chi phí.
 
 <p align="center">
-  <img src="/packages/docs/assets/images/ex-agent-plan.webp" alt="Terminal running ex agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
+  <img src="/packages/docs/assets/images/dft-agent-plan.webp" alt="Terminal running dft agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
 </p>
 
 Kế hoạch được lưu trong `.langdrift/microruntimes/runtimes/<runtime-id>/runtime.md`. Khối `langdrift` chứa cấu hình có thể thực thi:
@@ -95,7 +97,7 @@ Kế hoạch được lưu trong `.langdrift/microruntimes/runtimes/<runtime-id>
 }
 ```
 
-Một thành phần trỏ tới các tệp: tên và thư mục của nó, nơi chứa một Dockerfile. `ex` build thành phần bằng `docker build` với Dockerfile đó từ thư mục gốc của dự án, gắn thẻ image `langdrift-<runtime-id>-<name>:r<revision>`, lấy cổng từ `EXPOSE` đầu tiên và trạng thái sẵn sàng từ chính `HEALTHCHECK` của nó. Một `--component` có thể thêm `dockerfile=`, `port=`, `readiness=tcp` hoặc `readiness=http:/path`, một `env-file=` đã commit không chứa bí mật, và `pass-env=A;B` cho các biến mà `ex` đọc từ môi trường của chính nó khi khởi chạy; `ex` ghi cả hai vào một Kubernetes Secret cho mỗi thành phần.
+Một thành phần trỏ tới các tệp: tên và thư mục của nó, nơi chứa một Dockerfile. `dft` build thành phần bằng `docker build` với Dockerfile đó từ thư mục gốc của dự án, gắn thẻ image `langdrift-<runtime-id>-<name>:r<revision>`, lấy cổng từ `EXPOSE` đầu tiên và trạng thái sẵn sàng từ chính `HEALTHCHECK` của nó. Một `--component` có thể thêm `dockerfile=`, `port=`, `readiness=tcp` hoặc `readiness=http:/path`, một `env-file=` đã commit không chứa bí mật, và `pass-env=A;B` cho các biến mà `dft` đọc từ môi trường của chính nó khi khởi chạy; `dft` ghi cả hai vào một Kubernetes Secret cho mỗi thành phần.
 
 ### 3. Chạy kế hoạch
 
@@ -105,7 +107,7 @@ Thực thi runtime đồng nghĩa với việc phê duyệt kế hoạch và kh�
 npx @langdrift/cli agent run <runtime-id>
 ```
 
-Trong quá trình thực thi, `ex` điều phối toàn bộ vòng đời bàn giao:
+Trong quá trình thực thi, `dft` điều phối toàn bộ vòng đời bàn giao:
 
 1. **Kiểm tra cổng chi phí:** Xác minh giá niêm yết bao quát lượt chạy và bảo lưu chi phí ước tính theo phân bổ của ticket và hạn mức kỳ hạn.
 2. **Các giai đoạn quy trình:** Điều khiển tác tử viết mã qua các giai đoạn được định nghĩa trong quy trình làm việc của bạn. Khi cần con người phê duyệt, quá trình thực thi sẽ tạm dừng cho đến khi được xác nhận qua terminal hoặc `npx @langdrift/cli agent confirm <runtime-id> <giai-đoạn>`.
@@ -213,7 +215,7 @@ Bạn có thể tùy chỉnh các giai đoạn quy trình làm việc, trình đ
 ## Tài liệu tham khảo
 
 - [AI for FinOps: Agentic Use Cases in FinOps](https://www.finops.org/insights/ai-for-finops-agentic-use-cases/), Jonathan Morley, FinOps Foundation, ngày 27 tháng 3 năm 2026. Những người thực hành mô tả các tác tử đối soát chi tiêu với ngân sách, tìm ra lãng phí và áp dụng chính sách chi phí sớm hơn trong vòng đời phát triển; chủ đề cuối cùng đó, đưa FinOps vào ngay trong quá trình bàn giao, chính là nơi LangDrift hoạt động.
-- [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html), Birgitta Böckeler, martinfowler.com, ngày 2 tháng 4 năm 2026. Bài viết mô tả lớp harness bên ngoài mà một đội xây quanh tác tử lập trình: các chỉ dẫn định hướng tác tử trước khi nó hành động và các cảm biến giúp nó tự sửa lỗi. `ex harness` ghi lại harness đó cho từng dự án, còn các cổng kiểm soát FinOps giới hạn số tiền nó được chi.
+- [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html), Birgitta Böckeler, martinfowler.com, ngày 2 tháng 4 năm 2026. Bài viết mô tả lớp harness bên ngoài mà một đội xây quanh tác tử lập trình: các chỉ dẫn định hướng tác tử trước khi nó hành động và các cảm biến giúp nó tự sửa lỗi. `dft harness` ghi lại harness đó cho từng dự án, còn các cổng kiểm soát FinOps giới hạn số tiền nó được chi.
 
 ## Lời cảm ơn
 
