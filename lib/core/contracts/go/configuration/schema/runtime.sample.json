@@ -1,0 +1,61 @@
+{
+	"version": 3,
+	"runtimeId": "book-a-demo-runtime",
+	"revision": 1,
+	"cpuMillis": 2000,
+	"memoryMiB": 3072,
+	"model": "claude-sonnet-5-5",
+	"effort": "medium",
+	"components": [
+		{
+			"path": "services/signup-api",
+			"stack": "Go",
+			"role": "api",
+			"port": 8080,
+			"image": "book-a-demo-runtime/signup-api:r1",
+			"cpuMillis": 250,
+			"memoryMiB": 256,
+			"replicas": 1
+		},
+		{
+			"path": "services/notify-api",
+			"stack": "Node.js",
+			"role": "api",
+			"port": 8081,
+			"image": "book-a-demo-runtime/notify-api:r1",
+			"cpuMillis": 300,
+			"memoryMiB": 512,
+			"replicas": 1
+		},
+		{
+			"path": "platform/nats",
+			"stack": "NATS",
+			"role": "broker",
+			"port": 4222,
+			"image": "book-a-demo-runtime/nats:r1",
+			"cpuMillis": 200,
+			"memoryMiB": 256,
+			"replicas": 1
+		},
+		{
+			"path": "platform/redis",
+			"stack": "Redis",
+			"role": "cache",
+			"port": 6379,
+			"image": "book-a-demo-runtime/redis:r1",
+			"cpuMillis": 200,
+			"memoryMiB": 256,
+			"replicas": 1
+		},
+		{
+			"path": "apps/signup",
+			"stack": "Next.js",
+			"role": "web",
+			"port": 3000,
+			"image": "book-a-demo-runtime/signup:r1",
+			"cpuMillis": 500,
+			"memoryMiB": 1024,
+			"replicas": 1
+		}
+	]
+}
