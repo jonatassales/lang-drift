@@ -2,6 +2,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('server-only', () => ({}))
 
+import { acceptedSubmission } from '@api/book-a-demo/testdata/accepted-submission.mock'
+import { demoRequest } from '@api/book-a-demo/testdata/demo-request.mock'
+import { postDemoRequest } from '@api/book-a-demo/testdata/post-demo-request.mock'
+
 import { POST } from './route'
 
 const valid = {
@@ -19,41 +23,9 @@ const sameOrigin = {
 	'sec-fetch-site': 'same-origin',
 }
 
-function request(
-	body: string,
-	headers: Record<string, string> = {},
-	method = 'POST',
-) {
-	return new Request('http://localhost:3000/api/book-a-demo/', {
-		body,
-		headers: {
-			'content-type': 'application/json',
-			...headers,
-		},
-		method,
-	})
-}
-
-function post(body: string, headers?: Record<string, string>) {
-	return POST(request(body, headers))
-}
-
-function accepted() {
-	return Promise.resolve(
-		Response.json(
-			{
-				id: '701706be-7e70-4681-9608-826d3ad548b9',
-			},
-			{
-				status: 202,
-			},
-		),
-	)
-}
-
 let transport: ReturnType<typeof vi.fn>
 beforeEach(() => {
-	transport = vi.fn(accepted)
+	transport = vi.fn(acceptedSubmission)
 	vi.stubGlobal('fetch', transport)
 	vi.stubEnv('DEMO_REQUESTS_URL', 'http://127.0.0.1:3402')
 	vi.stubEnv('DEMO_REQUESTS_TOKEN', token)
@@ -65,7 +37,7 @@ afterEach(() => {
 
 describe('website/api/book-a-demo/route', () => {
 	it('refuses a body that is not a JSON object', async () => {
-		const response = await post('[1, 2]')
+		const response = await postDemoRequest('[1, 2]')
 
 		expect(response.status).toBe(400)
 
@@ -76,13 +48,13 @@ describe('website/api/book-a-demo/route', () => {
 	})
 
 	it('refuses malformed JSON', async () => {
-		const response = await post('{"email": ')
+		const response = await postDemoRequest('{"email": ')
 
 		expect(response.status).toBe(400)
 	})
 
 	it('refuses a body over four kibibytes', async () => {
-		const response = await post(
+		const response = await postDemoRequest(
 			JSON.stringify({
 				...valid,
 				company: 'x'.repeat(5000),
@@ -93,7 +65,7 @@ describe('website/api/book-a-demo/route', () => {
 	})
 
 	it('names the field that failed', async () => {
-		const response = await post(
+		const response = await postDemoRequest(
 			JSON.stringify({
 				...valid,
 				email: 'jane@gmail.com',
@@ -116,7 +88,7 @@ describe('website/api/book-a-demo/route', () => {
 	})
 
 	it('refuses a submission with a key it does not know', async () => {
-		const response = await post(
+		const response = await postDemoRequest(
 			JSON.stringify({
 				...valid,
 				source: 'home',
@@ -127,7 +99,7 @@ describe('website/api/book-a-demo/route', () => {
 	})
 
 	it('forwards an accepted submission to the demo-requests service with the bearer token and answers OK on 202', async () => {
-		const response = await post(JSON.stringify(valid))
+		const response = await postDemoRequest(JSON.stringify(valid))
 
 		expect(response.status).toBe(200)
 		expect(response.headers.get('Cache-Control')).toBe('no-store')
@@ -163,7 +135,7 @@ describe('website/api/book-a-demo/route', () => {
 			),
 		)
 
-		const response = await post(JSON.stringify(valid))
+		const response = await postDemoRequest(JSON.stringify(valid))
 
 		expect(response.status).toBe(503)
 		expect(response.headers.get('Retry-After')).toBe('30')
@@ -179,7 +151,7 @@ describe('website/api/book-a-demo/route', () => {
 			Promise.reject(new Error('fetch failed')),
 		)
 
-		const response = await post(JSON.stringify(valid))
+		const response = await postDemoRequest(JSON.stringify(valid))
 
 		expect(response.status).toBe(503)
 
@@ -194,7 +166,7 @@ describe('website/api/book-a-demo/route', () => {
 		async (key) => {
 			vi.stubEnv(key, '')
 
-			const response = await post(JSON.stringify(valid))
+			const response = await postDemoRequest(JSON.stringify(valid))
 
 			expect(response.status).toBe(503)
 			expect(transport).not.toHaveBeenCalled()
@@ -202,7 +174,7 @@ describe('website/api/book-a-demo/route', () => {
 	)
 
 	it('processes a valid request from the site itself', async () => {
-		const invalid = await post(
+		const invalid = await postDemoRequest(
 			JSON.stringify({
 				...valid,
 				email: 'jane@gmail.com',
@@ -210,7 +182,7 @@ describe('website/api/book-a-demo/route', () => {
 			sameOrigin,
 		)
 
-		const submitted = request(JSON.stringify(valid), sameOrigin)
+		const submitted = demoRequest(JSON.stringify(valid), sameOrigin)
 
 		const accepted = await POST(submitted)
 
@@ -252,7 +224,7 @@ describe('website/api/book-a-demo/route', () => {
 			{ 'content-length': '4097' },
 		],
 	])('answers %s with %i', async (_refusal, status, headers) => {
-		const refused = request(JSON.stringify(valid), headers)
+		const refused = demoRequest(JSON.stringify(valid), headers)
 
 		const response = await POST(refused)
 
@@ -264,7 +236,7 @@ describe('website/api/book-a-demo/route', () => {
 	})
 
 	it('answers any method but POST with 405', async () => {
-		const refused = request(JSON.stringify(valid), sameOrigin, 'PUT')
+		const refused = demoRequest(JSON.stringify(valid), sameOrigin, 'PUT')
 
 		const response = await POST(refused)
 

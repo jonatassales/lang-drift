@@ -1,65 +1,27 @@
 // @vitest-environment jsdom
 
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { createStore, Provider } from 'jotai'
+import { act, cleanup, fireEvent, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
-import { microruntimesMessages } from '@i18n/messages/index'
-import {
-	type PlanLineId,
-	planLineIndex,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+import { launchWorkflowRun } from '@routes/platform/microruntimes/sections/testdata/launch-workflow-run.mock'
+import { mountSessionCards } from '@routes/platform/microruntimes/sections/testdata/mount-session-cards.mock'
+import { playRunTo } from '@routes/platform/microruntimes/sections/testdata/play-run-to.mock'
+import { workflowPlayButton } from '@routes/platform/microruntimes/sections/testdata/workflow-play-button.mock'
+import { workflowSelects } from '@routes/platform/microruntimes/sections/testdata/workflow-selects.mock'
 import {
 	initialMicroruntimeSession,
 	microruntimeSessionAtom,
-	recordPlayedCountAtom,
 	replaySessionAtom,
 	runScriptAtom,
 	startRunAtom,
 	workflowChoicesAtom,
 } from '@state'
 
-import { SessionCards } from './session-cards'
-
 afterEach(cleanup)
-
-type CardLabel = 'Ticket' | 'Analysis' | 'Plan' | 'Workflow'
-
-function mount() {
-	const store = createStore()
-	render(
-		<Provider store={store}>
-			<SessionCards copy={microruntimesMessages.en.session.card} locale="en" />
-		</Provider>,
-	)
-
-	// Records the count the way the terminal does, so an act change takes
-	// the cards back from the visitor.
-	const play = (lineId: PlanLineId) =>
-		act(() => {
-			store.set(recordPlayedCountAtom, planLineIndex(lineId) + 1)
-		})
-
-	const header = (label: CardLabel) =>
-		screen.getByRole('button', {
-			hidden: true,
-			name: new RegExp(`^${label}`),
-		})
-
-	const expanded = (label: CardLabel) =>
-		header(label).getAttribute('aria-expanded') === 'true'
-
-	return {
-		expanded,
-		header,
-		play,
-		store,
-	}
-}
 
 describe('Microruntimes session cards', () => {
 	it('stays hidden with the ticket open until the command is entered', () => {
-		const { expanded, play } = mount()
+		const { expanded, play } = mountSessionCards()
 		const stack = screen.getByText('0031').closest('[aria-hidden]')
 		expect(stack?.getAttribute('aria-hidden')).toBe('true')
 		expect(expanded('Ticket')).toBe(true)
@@ -74,7 +36,7 @@ describe('Microruntimes session cards', () => {
 	})
 
 	it('opens the card of each act as the session reaches it', () => {
-		const { expanded, play } = mount()
+		const { expanded, play } = mountSessionCards()
 		play('links')
 		expect(expanded('Ticket')).toBe(true)
 
@@ -88,7 +50,7 @@ describe('Microruntimes session cards', () => {
 	})
 
 	it('lets the visitor open a card by hand until the next act takes it back', () => {
-		const { expanded, header, play, store } = mount()
+		const { expanded, header, play, store } = mountSessionCards()
 		play('readPrd')
 		fireEvent.click(header('Ticket'))
 		expect(expanded('Ticket')).toBe(true)
@@ -104,7 +66,7 @@ describe('Microruntimes session cards', () => {
 	})
 
 	it('reads the documents and judges the episodes line by line', () => {
-		const { play } = mount()
+		const { play } = mountSessionCards()
 		expect(screen.queryAllByText('Read')).toHaveLength(0)
 
 		play('readSpec')
@@ -141,7 +103,7 @@ describe('Microruntimes session cards', () => {
 	})
 
 	it('carries each act’s latest figure in its collapsed header', () => {
-		const { header, play } = mount()
+		const { header, play } = mountSessionCards()
 		expect(header('Ticket').textContent).toContain('0031 · book-a-demo-runtime')
 
 		play('reads')
@@ -165,7 +127,7 @@ describe('Microruntimes session cards', () => {
 	})
 
 	it('steps the plan’s figures up with the components and closes the report', () => {
-		const { play } = mount()
+		const { play } = mountSessionCards()
 		play('bounds')
 		expect(screen.getByText('2,000m · 3,072 MiB')).toBeTruthy()
 
@@ -209,7 +171,7 @@ describe('Microruntimes session cards', () => {
 	})
 
 	it('opens the ticket again when the session replays', () => {
-		const { expanded, header, play, store } = mount()
+		const { expanded, header, play, store } = mountSessionCards()
 		play('handoff')
 		fireEvent.click(header('Analysis'))
 		expect(expanded('Analysis')).toBe(true)
@@ -227,33 +189,9 @@ describe('Microruntimes session cards', () => {
 })
 
 describe('Microruntimes Workflow card', () => {
-	const playButton = () =>
-		screen.getByRole('button', {
-			hidden: true,
-			name: /workflow|Starting|Playing|Play again/,
-		})
-
-	const selects = () => screen.getAllByRole('combobox', { hidden: true })
-
-	// Plays the launched run to a line, the way the terminal records it.
-	function playRunTo(store: ReturnType<typeof createStore>, count: number) {
-		act(() => {
-			store.set(recordPlayedCountAtom, count)
-		})
-	}
-
-	function launch(store: ReturnType<typeof createStore>) {
-		fireEvent.click(playButton())
-		act(() => {
-			store.set(startRunAtom)
-		})
-
-		return store.get(runScriptAtom)
-	}
-
 	it('opens when the plan is handed over, with the suggestion priced against the budget', () => {
-		const { expanded, header, play } = mount()
-		expect(playButton().getAttribute('aria-disabled')).toBe('true')
+		const { expanded, header, play } = mountSessionCards()
+		expect(workflowPlayButton().getAttribute('aria-disabled')).toBe('true')
 		expect(screen.getByText('available once the plan is drafted')).toBeTruthy()
 
 		play('handoff')
@@ -266,11 +204,11 @@ describe('Microruntimes Workflow card', () => {
 		expect(
 			screen.getByText('reserves $11.40 of the $25.00 budget'),
 		).toBeTruthy()
-		expect(playButton().getAttribute('aria-disabled')).toBeNull()
+		expect(workflowPlayButton().getAttribute('aria-disabled')).toBeNull()
 	})
 
 	it('keeps planning checked for a person and says why', () => {
-		const { play, store } = mount()
+		const { play, store } = mountSessionCards()
 		play('handoff')
 		const planning = screen.getByRole('checkbox', {
 			hidden: true,
@@ -289,9 +227,9 @@ describe('Microruntimes Workflow card', () => {
 	})
 
 	it('reprices the run as the visitor chooses and warns over the budget', () => {
-		const { header, play } = mount()
+		const { header, play } = mountSessionCards()
 		play('handoff')
-		const [model, effort] = selects()
+		const [model, effort] = workflowSelects()
 
 		fireEvent.change(model, { target: { value: 'claude-haiku-5-5' } })
 		expect(header('Workflow').textContent).toContain(
@@ -307,12 +245,12 @@ describe('Microruntimes Workflow card', () => {
 	})
 
 	it('launches with a snapshot, locks the choices and plays to a reviewed pull request', () => {
-		const { header, play, store } = mount()
+		const { header, play, store } = mountSessionCards()
 		play('handoff')
 
-		fireEvent.click(playButton())
+		fireEvent.click(workflowPlayButton())
 		expect(store.get(microruntimeSessionAtom).stage).toBe('launching')
-		expect(playButton().textContent).toContain('Starting…')
+		expect(workflowPlayButton().textContent).toContain('Starting…')
 
 		fireEvent.click(
 			screen.getByRole('checkbox', {
@@ -363,17 +301,17 @@ describe('Microruntimes Workflow card', () => {
 		expect(screen.getByRole('status', { hidden: true }).textContent).toBe(
 			'The simulated run ended: pull request #19 is ready for review, $9.80 observed of $11.40 reserved.',
 		)
-		expect(playButton().textContent).toContain('Play again')
+		expect(workflowPlayButton().textContent).toContain('Play again')
 	})
 
 	it('pauses at the gate when the reservation breaks the budget', () => {
-		const { header, play, store } = mount()
+		const { header, play, store } = mountSessionCards()
 		play('handoff')
-		const [model, effort] = selects()
+		const [model, effort] = workflowSelects()
 		fireEvent.change(model, { target: { value: 'claude-opus-5-5' } })
 		fireEvent.change(effort, { target: { value: 'high' } })
 
-		const script = launch(store)
+		const script = launchWorkflowRun(store)
 		expect(script.some((line) => line.id === 'pullRequest')).toBe(false)
 
 		playRunTo(store, script.length)
@@ -387,7 +325,7 @@ describe('Microruntimes Workflow card', () => {
 	})
 
 	it('ends ready to merge when the review is left out of the loop, and keeps the choices on replay', () => {
-		const { header, play, store } = mount()
+		const { header, play, store } = mountSessionCards()
 		play('handoff')
 		fireEvent.click(
 			screen.getByRole('checkbox', {
@@ -402,7 +340,7 @@ describe('Microruntimes Workflow card', () => {
 			}),
 		).toBeNull()
 
-		const script = launch(store)
+		const script = launchWorkflowRun(store)
 		playRunTo(store, script.length)
 		expect(header('Workflow').textContent).toContain('#19 · ready to merge')
 

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { fieldErrorsOf } from '@api/book-a-demo/field-errors.compute'
 import { bookDemoMessages } from '@i18n/messages/index'
+import { errorsOf } from '@routes/book-a-demo/testdata/errors-of.compute'
 
 import { bookDemoErrorCodes } from './form.types'
 import { bookDemoSchema, bookDemoSubmissionSchema } from './form.validation'
@@ -11,13 +11,6 @@ const valid = {
 	company: 'Acme',
 	email: 'jane@acme.io',
 	position: 'cto',
-}
-
-function errorsOf(input: Record<string, unknown>) {
-	const result = bookDemoSchema.safeParse(input)
-	if (result.success) return {}
-
-	return fieldErrorsOf(result.error)
 }
 
 describe('a demo request', () => {

@@ -149,21 +149,22 @@ export class LocaleService {
 	#matchLocaleTag(tag: string): WebsiteLocale | undefined {
 		const exact = routing.locales.find((locale) => locale.toLowerCase() === tag)
 		if (exact) return exact
-		if (tag === 'pt' || tag === 'pt-br' || tag.startsWith('pt-br-')) {
+
+		const portuguese =
+			tag === 'pt' || tag === 'pt-br' || tag.startsWith('pt-br-')
+
+		if (portuguese) {
 			return 'pt-BR'
 		}
-		if (
-			tag === 'zh-hant' ||
-			tag.startsWith('zh-hant-') ||
-			tag === 'zh-tw' ||
-			tag.startsWith('zh-tw-') ||
-			tag === 'zh-hk' ||
-			tag.startsWith('zh-hk-') ||
-			tag === 'zh-mo' ||
-			tag.startsWith('zh-mo-')
-		) {
+
+		const traditionalChinese = ['zh-hant', 'zh-tw', 'zh-hk', 'zh-mo'].some(
+			(base) => tag === base || tag.startsWith(`${base}-`),
+		)
+
+		if (traditionalChinese) {
 			return 'zh-Hant'
 		}
+
 		if (tag === 'en' || tag.startsWith('en-')) return 'en'
 		if (tag === 'ja' || tag.startsWith('ja-')) return 'ja'
 		if (tag === 'vi' || tag.startsWith('vi-')) return 'vi'

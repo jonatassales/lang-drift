@@ -172,11 +172,12 @@ export class CookieService {
 	}
 
 	#resolveTtl(ttlSeconds: number | undefined): number {
-		if (
-			typeof ttlSeconds !== 'number' ||
-			!Number.isSafeInteger(ttlSeconds) ||
-			ttlSeconds <= 0
-		) {
+		const positiveSeconds =
+			typeof ttlSeconds === 'number' &&
+			Number.isSafeInteger(ttlSeconds) &&
+			ttlSeconds > 0
+
+		if (!positiveSeconds) {
 			throw new Error('Cookie TTL must be a positive integer number of seconds')
 		}
 
@@ -184,11 +185,12 @@ export class CookieService {
 	}
 
 	#assertExpiry(expiresAt: number): void {
-		if (
-			!Number.isSafeInteger(expiresAt) ||
-			expiresAt <= Date.now() ||
-			Math.abs(expiresAt) > maxDateTime
-		) {
+		const supported =
+			Number.isSafeInteger(expiresAt) &&
+			expiresAt > Date.now() &&
+			Math.abs(expiresAt) <= maxDateTime
+
+		if (!supported) {
 			throw new Error('Cookie expiry is outside the supported range')
 		}
 	}
@@ -266,11 +268,13 @@ export class CookieService {
 		const isNonObject =
 			typeof value !== 'object' || value === null || Array.isArray(value)
 		if (isNonObject) return undefined
-		if (
-			!Object.hasOwn(value, 'version') ||
-			!Object.hasOwn(value, 'value') ||
-			!Object.hasOwn(value, 'expiresAt')
-		) {
+
+		const hasEnvelopeFields =
+			Object.hasOwn(value, 'version') &&
+			Object.hasOwn(value, 'value') &&
+			Object.hasOwn(value, 'expiresAt')
+
+		if (!hasEnvelopeFields) {
 			return undefined
 		}
 

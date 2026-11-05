@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { microruntimesMessages } from '@i18n/messages/index'
+import { choices } from '@routes/platform/microruntimes/content/testdata/choices.mock'
 
 import {
 	budgetCents,
@@ -8,18 +9,10 @@ import {
 	type RunMessageId,
 	runSession,
 	stageProgress,
-	type WorkflowChoices,
 	workflowEfforts,
 	workflowFigures,
 	workflowModels,
 } from './microruntimes-workflow'
-
-function choices(overrides: Partial<WorkflowChoices>): WorkflowChoices {
-	return {
-		...initialWorkflowChoices,
-		...overrides,
-	}
-}
 
 describe('the workflow figures', () => {
 	it('prices each model and effort at list prices, in cents', () => {

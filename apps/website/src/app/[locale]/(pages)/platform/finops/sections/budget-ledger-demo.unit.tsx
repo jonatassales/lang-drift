@@ -1,37 +1,16 @@
 // @vitest-environment jsdom
 
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { createStore, Provider } from 'jotai'
+import { cleanup, fireEvent, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
-import { finopsMessages } from '@i18n/messages/index'
+import { mountBudgetLedgerDemo } from '@routes/platform/finops/sections/testdata/mount-budget-ledger-demo.mock'
 import { selectedWorkItemAtom } from '@state'
-
-import { BudgetLedgerDemo } from './budget-ledger-demo'
-import { DeliveryReceipt } from './delivery-receipt'
 
 afterEach(cleanup)
 
-function mount() {
-	const store = createStore()
-	const copy = finopsMessages.en
-	render(
-		<Provider store={store}>
-			<BudgetLedgerDemo copy={copy.ledger} locale="en" />
-			<DeliveryReceipt
-				copy={copy.receipt}
-				items={copy.ledger.items}
-				locale="en"
-			/>
-		</Provider>,
-	)
-
-	return store
-}
-
 describe('FinOps ledger and receipt', () => {
 	it('selects a work item and shows its receipt', () => {
-		const store = mount()
+		const store = mountBudgetLedgerDemo()
 		const button = screen.getByRole('button', { name: /Tenant migration/ })
 		fireEvent.click(button)
 		expect(store.get(selectedWorkItemAtom)).toBe('tenant-migration')
@@ -45,7 +24,7 @@ describe('FinOps ledger and receipt', () => {
 	})
 
 	it('shows unknown spend as unknown, never as zero', () => {
-		mount()
+		mountBudgetLedgerDemo()
 		fireEvent.click(screen.getByRole('button', { name: /Invoice export job/ }))
 		const receipt = screen
 			.getByRole('heading', {
@@ -58,12 +37,12 @@ describe('FinOps ledger and receipt', () => {
 	})
 
 	it('formats the model tier and effort through the catalog', () => {
-		mount()
+		mountBudgetLedgerDemo()
 		expect(screen.getByText('Deep reasoning · High')).toBeTruthy()
 	})
 
 	it('counts retries with the plural copy', () => {
-		mount()
+		mountBudgetLedgerDemo()
 		fireEvent.click(screen.getByRole('button', { name: /Onboarding copy/ }))
 		expect(screen.getByText('No retries')).toBeTruthy()
 		fireEvent.click(screen.getByRole('button', { name: /Checkout retries/ }))

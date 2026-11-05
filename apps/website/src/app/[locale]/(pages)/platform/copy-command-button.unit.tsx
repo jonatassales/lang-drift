@@ -2,6 +2,8 @@
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
+import { stubClipboard } from '@routes/platform/testdata/stub-clipboard.mock'
+
 import { CopyCommandButton } from './copy-command-button'
 
 const labels = {
@@ -11,15 +13,6 @@ const labels = {
 }
 
 const command = 'npx @langdrift/cli init'
-
-function stubClipboard(writeText: (text: string) => Promise<void>) {
-	Object.defineProperty(navigator, 'clipboard', {
-		configurable: true,
-		value: {
-			writeText,
-		},
-	})
-}
 
 afterEach(() => {
 	cleanup()

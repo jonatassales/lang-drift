@@ -8,11 +8,12 @@ export function triple(
 	const first = value[0]
 	const second = value[1]
 	const third = value[2]
-	if (
-		typeof first !== 'string' ||
-		typeof second !== 'string' ||
-		typeof third !== 'string'
-	) {
+	const allStrings =
+		typeof first === 'string' &&
+		typeof second === 'string' &&
+		typeof third === 'string'
+
+	if (!allStrings) {
 		throw new Error(`${label} must contain exactly three strings`)
 	}
 

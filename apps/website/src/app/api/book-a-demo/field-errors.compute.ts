@@ -14,10 +14,16 @@ export function fieldErrorsOf(
 	const errors: Partial<Record<BookDemoField, BookDemoErrorCode>> = {}
 	for (const issue of error.issues) {
 		const field = issue.path[0]
-		if (field !== 'email' && field !== 'company' && field !== 'position') {
-			continue
-		}
-		if (errors[field] || !isBookDemoErrorCode(issue.message)) continue
+		const knownField =
+			field === 'email' || field === 'company' || field === 'position'
+
+		if (!knownField) continue
+
+		const firstCodeOfField =
+			!errors[field] && isBookDemoErrorCode(issue.message)
+
+		if (!firstCodeOfField) continue
+
 		errors[field] = issue.message
 	}
 

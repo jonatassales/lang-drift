@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server'
 
-import { LocaleService } from '@proxy/locale'
+import { LocaleService } from '@proxy/locale.service'
 
 const localeService = new LocaleService()
 

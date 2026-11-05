@@ -17,7 +17,7 @@ import type {
 	BookDemoOutcome,
 } from './form.types'
 import { bookDemoSchema } from './form.validation'
-import { initialBookDemoInput } from './form-state.data'
+import { bookDemoFormState } from './form-state.data'
 import { positionIds } from './positions'
 
 interface BookDemoFormProps {
@@ -49,7 +49,7 @@ export function BookDemoForm(props: BookDemoFormProps) {
 		unknown,
 		BookDemoData
 	>({
-		defaultValues: initialBookDemoInput,
+		defaultValues: bookDemoFormState,
 		mode: 'onTouched',
 		resolver: zodResolver(bookDemoSchema),
 	})

@@ -12,9 +12,9 @@ import { Brand } from 'web/ui/brand'
 import { DemoButton } from './demo-button'
 import { drawerFocus } from './drawer-focus'
 import { LanguagePill } from './language-pill'
+import { panelSurface } from './panel-surface.data'
 import { PlatformMenu } from './platform-menu'
 import { platformProducts } from './platform-products'
-import { panelSurface } from './surface'
 
 // Entries without a destination yet read like their neighbors but do not
 // navigate: Docs, and the products without a page.

@@ -13,6 +13,7 @@ import {
 } from 'web/ui/language-switcher'
 
 import { drawerFocus } from './drawer-focus'
+import { persistLanguagePreference } from './persist-language-preference.adapter'
 
 const languages = [
 	{
@@ -49,13 +50,10 @@ export function LanguagePill(props: LanguagePillProps) {
 	const locale = useLocale()
 	const translate = useTranslations('header')
 
-	// Sync the active locale to local storage for returning visitors.
+	// Remembers the active locale for returning visitors; the browser may
+	// refuse, and routing never depends on it.
 	useEffect(() => {
-		try {
-			window.localStorage.setItem('langdrift-website-locale', locale)
-		} catch {
-			// Locale routing does not depend on browser storage.
-		}
+		persistLanguagePreference(locale)
 	}, [locale])
 
 	// Listen for hash and popstate changes to preserve query and hash in language links.
@@ -74,13 +72,14 @@ export function LanguagePill(props: LanguagePillProps) {
 	}, [])
 
 	function handleLanguageClick(event: MouseEvent<HTMLAnchorElement>) {
-		if (
+		const modifiedClick =
 			event.button !== 0 ||
 			event.metaKey ||
 			event.ctrlKey ||
 			event.shiftKey ||
 			event.altKey
-		) {
+
+		if (modifiedClick) {
 			return
 		}
 
@@ -92,11 +91,7 @@ export function LanguagePill(props: LanguagePillProps) {
 			return
 		}
 
-		try {
-			window.localStorage.setItem('langdrift-website-locale', nextLocale)
-		} catch {
-			// Language navigation works even when browser storage is unavailable.
-		}
+		persistLanguagePreference(nextLocale)
 		if (fromDrawer && nextLocale !== locale) {
 			drawerFocus.locale = nextLocale
 		}

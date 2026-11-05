@@ -2,7 +2,7 @@ import type { PageId } from '@app/metadata/page-metadata'
 import {
 	pageStructuredData,
 	serializeJsonLd,
-} from '@app/metadata/structured-data'
+} from '@app/metadata/page-structured-data.map'
 import type { WebsiteLocale } from '@i18n/routing'
 
 interface WebsiteStructuredDataProps {

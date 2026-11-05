@@ -1,23 +1,13 @@
 import { describe, expect, it } from 'vitest'
 
+import { renderedGraph } from '@app/metadata/testdata/rendered-graph.compute'
 import { routing } from '@i18n/routing'
 
 import organization from './organization.json'
 import { pageMetadata } from './page-metadata'
+import { serializeJsonLd } from './page-structured-data.map'
 import pages from './pages.json'
 import site from './site.json'
-import { pageStructuredData, serializeJsonLd } from './structured-data'
-
-interface GraphNode {
-	'@id': string
-	'@type': string
-	[property: string]: unknown
-}
-
-interface JsonLdGraph {
-	'@context': string
-	'@graph': GraphNode[]
-}
 
 const pageIds = Object.keys(pages) as Array<keyof typeof pages>
 
@@ -28,14 +18,7 @@ const localizedPages = pageIds.flatMap((page) =>
 	})),
 )
 
-function renderedGraph(
-	page: keyof typeof pages,
-	locale: (typeof routing.locales)[number],
-): JsonLdGraph {
-	return JSON.parse(serializeJsonLd(pageStructuredData(page, locale)))
-}
-
-describe('The structured data of every indexable page', () => {
+describe('website/metadata/page-structured-data.map', () => {
 	it.each(localizedPages)(
 		'describes $page in $locale as one WebPage of the website',
 		({ page, locale }) => {

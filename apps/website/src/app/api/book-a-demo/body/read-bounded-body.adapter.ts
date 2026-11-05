@@ -1,8 +1,5 @@
-export class BodyError extends Error {
-	constructor(readonly status: number) {
-		super('invalid_request')
-	}
-}
+import { BodyError } from './body-error.type'
+import { reportCancelFailure } from './report-cancel-failure.handler'
 
 export async function readBoundedBody(
 	body: ReadableStream<Uint8Array> | null,
@@ -14,9 +11,10 @@ export async function readBoundedBody(
 	const decoder = new TextDecoder('utf-8', { fatal: true })
 	let size = 0
 	let text = ''
-	const cancel = () => {
-		void reader.cancel().catch(() => undefined)
+	function cancel() {
+		void reader.cancel().catch(reportCancelFailure)
 	}
+
 	signal.addEventListener('abort', cancel, { once: true })
 	try {
 		for (;;) {

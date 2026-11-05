@@ -15,35 +15,9 @@ import {
 	safeSeatMessages,
 } from '@i18n/messages/index'
 import routeState from '@i18n/messages/route-state.json'
-
-function leaves(value: unknown, prefix = ''): Record<string, string> {
-	if (typeof value === 'string') return { [prefix]: value }
-	if (!value || typeof value !== 'object') return {}
-	return Object.fromEntries(
-		Object.entries(value).flatMap(([key, child]) =>
-			Object.entries(leaves(child, prefix ? `${prefix}.${key}` : key)),
-		),
-	)
-}
-
-function argumentsOf(message: string): string[] {
-	return Array.from(
-		new Set(
-			Array.from(
-				message.matchAll(/\{([A-Za-z]\w*)\s*(?:,|\})/g),
-				(match) => match[1],
-			),
-		),
-	).sort()
-}
-
-function tagsOf(message: string): string[] {
-	return Array.from(
-		new Set(
-			Array.from(message.matchAll(/<([A-Za-z]\w*)>/g), (match) => match[1]),
-		),
-	).sort()
-}
+import { argumentsOf } from '@i18n/testdata/arguments-of.compute'
+import { leaves } from '@i18n/testdata/leaves.compute'
+import { tagsOf } from '@i18n/testdata/tags-of.compute'
 
 describe('Website production translations', () => {
 	it.each(['en', 'pt-BR', 'zh-Hant', 'ja', 'vi'] as const)(
