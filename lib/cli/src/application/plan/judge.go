@@ -109,7 +109,7 @@ func (judge *judge) ask(ctx context.Context, question Question, check func(contr
 	answer, outcome := judge.client.Ask(ctx, judge.connection, question)
 	judge.account(answer, outcome)
 
-	parsed, outcome := parsedAnswer(answer, outcome, check)
+	parsed, outcome := parsedAnswer(question.Kind, answer, outcome, check)
 
 	if err := JudgeRefusal(judge.connection, outcome); err != nil {
 		return contract.Answer{}, err

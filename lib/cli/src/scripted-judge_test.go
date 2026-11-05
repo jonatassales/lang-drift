@@ -8,7 +8,8 @@ import (
 
 // scriptedJudge answers each kind of question with a prepared text, the usage
 // and the console's price of one call, or with the outcome it is told to
-// give; it remembers the connection and the questions it was asked.
+// give and the text of that outcome's kind; it remembers the connection and
+// the questions it was asked.
 type scriptedJudge struct {
 	answers     map[string]string
 	outcome     plan.AskOutcome
@@ -21,7 +22,7 @@ func (scripted *scriptedJudge) Ask(_ context.Context, connection plan.Connection
 	scripted.connections = append(scripted.connections, connection)
 
 	if scripted.outcome.Status != "" {
-		return plan.Answer{}, scripted.outcome
+		return plan.Answer{Text: scripted.answers[scripted.outcome.Kind]}, scripted.outcome
 	}
 
 	answer := plan.Answer{

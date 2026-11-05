@@ -309,6 +309,57 @@ func assertPlanningSpend(t *testing.T, p project, spend string) {
 	}
 }
 
+// The gates' statuses only come before a question. A judge that reports one
+// after it gave no answer, so the plan is refused as outside the contract,
+// and nothing is proposed.
+func TestPlanRefusesAGateStatusFromTheJudge(t *testing.T) {
+	t.Parallel()
+
+	for _, status := range []plan.AskStatus{plan.AskCleared, plan.AskPaused} {
+		t.Run(string(status), func(t *testing.T) {
+			t.Parallel()
+
+			p, deps := seedProject(t)
+			deps.Judge = &scriptedJudge{outcome: plan.AskOutcome{
+				Kind:   plan.SourcesQuestion,
+				Status: status,
+			}}
+
+			code, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
+			refusedAsOutsideTheContract := code == 1 && strings.Contains(stderr, "outside the contract") && strings.Contains(stderr, string(status))
+			if !refusedAsOutsideTheContract {
+				t.Fatalf("a judge reporting %s gave %d: %s\n%s", status, code, stderr, stdout)
+			}
+
+			assertNoPlanWritten(t, p.root)
+		})
+	}
+}
+
+// An answer is read as the question that was asked, whatever kind the judge
+// says it answered: a suggestion given to the sources question is outside the
+// contract, and nothing is proposed.
+func TestPlanReadsAnAnswerAsTheQuestionAsked(t *testing.T) {
+	t.Parallel()
+
+	p, deps := seedProject(t)
+	deps.Judge = &scriptedJudge{
+		answers: minimalAnswers(),
+		outcome: plan.AskOutcome{
+			Kind:   plan.SuggestionQuestion,
+			Status: plan.AskAnswered,
+		},
+	}
+
+	code, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
+	refusedAsTheSourcesAnswer := code == 1 && strings.Contains(stderr, "the sources answer is refused")
+	if !refusedAsTheSourcesAnswer {
+		t.Fatalf("a suggestion given to the sources question gave %d: %s\n%s", code, stderr, stdout)
+	}
+
+	assertNoPlanWritten(t, p.root)
+}
+
 // --no-judge is gone: no plan exists without a judge.
 func TestPlanHasNoFlagToSkipTheJudge(t *testing.T) {
 	t.Parallel()
