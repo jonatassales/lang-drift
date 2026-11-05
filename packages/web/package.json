@@ -34,6 +34,7 @@
 		"./ui/section-heading": "./src/ui/section-heading/index.ts",
 		"./ui/share-bar": "./src/ui/share-bar/index.ts",
 		"./ui/skeleton": "./src/ui/skeleton/index.ts",
+		"./ui/text-link": "./src/ui/text-link/index.ts",
 		"./ui/theme-toggle": "./src/ui/theme-toggle/index.ts",
 		"./ui/toast": "./src/ui/toast/index.ts",
 		"./vendors/smoothui/animated-tabs": "./src/vendors/smoothui/animated-tabs.tsx",
