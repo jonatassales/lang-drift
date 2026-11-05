@@ -62,6 +62,7 @@ export function BookDemoForm(props: BookDemoFormProps) {
 
 	function errorOf(field: BookDemoField) {
 		const code = formState.errors[field]?.message
+
 		if (!isBookDemoErrorCode(code)) return undefined
 
 		return copy.errors[code]

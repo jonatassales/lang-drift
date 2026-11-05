@@ -7,7 +7,9 @@ import { addressedOrigin } from './addressed-origin.compute'
 // browser request.
 export function isForeignRequest(request: Request): boolean {
 	if (request.headers.get('sec-fetch-site') === 'cross-site') return true
+
 	const origin = request.headers.get('origin')
+
 	if (origin === null) return false
 
 	return origin !== addressedOrigin(request)

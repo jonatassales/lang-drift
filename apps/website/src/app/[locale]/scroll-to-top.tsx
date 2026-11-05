@@ -14,6 +14,7 @@ export function ScrollToTop() {
 	// Reset window scroll to top on navigation unless navigating to an anchor hash.
 	useEffect(() => {
 		if (previous.current === pathname) return
+
 		previous.current = pathname
 
 		if (window.location.hash) return

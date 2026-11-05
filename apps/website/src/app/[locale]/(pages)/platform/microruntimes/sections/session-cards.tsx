@@ -60,6 +60,7 @@ export function SessionCards(props: SessionCardsProps) {
 
 	function handleOpenCard(event: MouseEvent<HTMLButtonElement>) {
 		const phase = event.currentTarget.dataset.phase as PlanPhaseId | undefined
+
 		if (phase) {
 			openCardByHand(phase)
 		}

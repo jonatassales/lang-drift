@@ -43,6 +43,7 @@ export function BudgetLedgerDemo(props: BudgetLedgerDemoProps) {
 
 	function selectWorkItem(event: MouseEvent<HTMLButtonElement>) {
 		const targetId = event.currentTarget.dataset.id as WorkItemId | undefined
+
 		if (targetId) {
 			setSelectedId(targetId)
 		}

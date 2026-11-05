@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl'
 export function LocaleAvailabilityNotice() {
 	const params = useSearchParams()
 	const translate = useTranslations('routeState')
+
 	if (params.get('availability') !== 'zh-CN') return null
 
 	return (

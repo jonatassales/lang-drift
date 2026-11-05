@@ -40,6 +40,7 @@ export function WorkflowStages(props: WorkflowStagesProps) {
 
 	function handleToggleStage(event: ChangeEvent<HTMLInputElement>) {
 		const stage = event.currentTarget.dataset.stage as HumanStageId | undefined
+
 		if (stage) {
 			onToggle(stage)
 		}

@@ -41,7 +41,9 @@ describe('website/api/book-a-demo/route', () => {
 
 		expect(response.status).toBe(400)
 
-		expect(await response.json()).toEqual({
+		const reply = await response.json()
+
+		expect(reply).toEqual({
 			code: 'VALIDATION_ERROR',
 			ok: false,
 		})
@@ -75,7 +77,9 @@ describe('website/api/book-a-demo/route', () => {
 
 		expect(response.status).toBe(400)
 
-		expect(await response.json()).toEqual({
+		const reply = await response.json()
+
+		expect(reply).toEqual({
 			code: 'VALIDATION_ERROR',
 			fieldErrors: {
 				email: 'emailFreeMail',
@@ -105,7 +109,9 @@ describe('website/api/book-a-demo/route', () => {
 		expect(response.headers.get('Cache-Control')).toBe('no-store')
 		expect(response.headers.get('X-Content-Type-Options')).toBe('nosniff')
 
-		expect(await response.json()).toEqual({
+		const reply = await response.json()
+
+		expect(reply).toEqual({
 			code: 'OK',
 			ok: true,
 		})
@@ -140,7 +146,9 @@ describe('website/api/book-a-demo/route', () => {
 		expect(response.status).toBe(503)
 		expect(response.headers.get('Retry-After')).toBe('30')
 
-		expect(await response.json()).toEqual({
+		const reply = await response.json()
+
+		expect(reply).toEqual({
 			code: 'UNAVAILABLE',
 			ok: false,
 		})
@@ -155,7 +163,9 @@ describe('website/api/book-a-demo/route', () => {
 
 		expect(response.status).toBe(503)
 
-		expect(await response.json()).toEqual({
+		const reply = await response.json()
+
+		expect(reply).toEqual({
 			code: 'UNAVAILABLE',
 			ok: false,
 		})

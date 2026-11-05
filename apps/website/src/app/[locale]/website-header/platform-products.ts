@@ -46,6 +46,7 @@ export type PlatformProduct = (typeof platformProducts)[number]
 
 export function platformProduct(label: PlatformProduct['label']) {
 	const product = platformProducts.find((entry) => entry.label === label)
+
 	if (!product) throw new Error(`Unknown platform product: ${label}`)
 
 	return product

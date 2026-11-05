@@ -19,6 +19,7 @@ export function reply(
 		'Cache-Control': 'no-store',
 		'X-Content-Type-Options': 'nosniff',
 	}
+
 	if (status === 503) headers['Retry-After'] = '30'
 	const hasFieldErrors = fieldErrors && Object.keys(fieldErrors).length > 0
 	const ok = status >= 200 && status < 300

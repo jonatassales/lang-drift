@@ -34,9 +34,11 @@ describe('website/book-a-demo/book-demo-form', () => {
 		mountBookDemoForm()
 		submitBookDemoForm()
 
-		expect(
-			await screen.findByText(bookDemoCopy.errors.emailRequired),
-		).toBeTruthy()
+		const emailRequired = await screen.findByText(
+			bookDemoCopy.errors.emailRequired,
+		)
+
+		expect(emailRequired).toBeTruthy()
 
 		expect(screen.getByText(bookDemoCopy.errors.companyRequired)).toBeTruthy()
 		expect(screen.getByText(bookDemoCopy.errors.positionRequired)).toBeTruthy()
@@ -57,9 +59,11 @@ describe('website/book-a-demo/book-demo-form', () => {
 		})
 		submitBookDemoForm()
 
-		expect(
-			await screen.findByText(bookDemoCopy.errors.emailFreeMail),
-		).toBeTruthy()
+		const emailFreeMail = await screen.findByText(
+			bookDemoCopy.errors.emailFreeMail,
+		)
+
+		expect(emailFreeMail).toBeTruthy()
 
 		expect(transport).not.toHaveBeenCalled()
 	})
@@ -82,11 +86,11 @@ describe('website/book-a-demo/book-demo-form', () => {
 		})
 		submitBookDemoForm()
 
-		expect(
-			await screen.findByRole('heading', {
-				name: bookDemoCopy.form.sent.title,
-			}),
-		).toBeTruthy()
+		const sentHeading = await screen.findByRole('heading', {
+			name: bookDemoCopy.form.sent.title,
+		})
+
+		expect(sentHeading).toBeTruthy()
 
 		expect(screen.getByText(bookDemoCopy.form.sent.description)).toBeTruthy()
 		expect(screen.queryByLabelText(bookDemoCopy.form.email)).toBeNull()
@@ -101,11 +105,11 @@ describe('website/book-a-demo/book-demo-form', () => {
 		})
 		submitBookDemoForm()
 
-		expect(
-			await screen.findByRole('heading', {
-				name: bookDemoCopy.form.unavailable.title,
-			}),
-		).toBeTruthy()
+		const unavailableHeading = await screen.findByRole('heading', {
+			name: bookDemoCopy.form.unavailable.title,
+		})
+
+		expect(unavailableHeading).toBeTruthy()
 
 		expect(
 			screen.getByText(bookDemoCopy.form.unavailable.description),

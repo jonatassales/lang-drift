@@ -54,6 +54,7 @@ export const workflowChoicesAtom = atom<WorkflowChoices>(initialWorkflowChoices)
 // The lines of the run the session is playing, or none before a run.
 export const runScriptAtom = atom((get) => {
 	const { ran } = get(microruntimeSessionAtom)
+
 	if (!ran) return []
 
 	return runSession(ran)
@@ -63,6 +64,7 @@ export const runScriptAtom = atom((get) => {
 // session has moved on to the workflow, so the plan cards keep their end.
 export const planPlayedCountAtom = atom((get) => {
 	const { playedCount, stage } = get(microruntimeSessionAtom)
+
 	if (stage === 'plan') return playedCount
 
 	return planSession.length
@@ -70,6 +72,7 @@ export const planPlayedCountAtom = atom((get) => {
 
 export const runPlayedCountAtom = atom((get) => {
 	const { playedCount, stage } = get(microruntimeSessionAtom)
+
 	if (stage !== 'running') return 0
 
 	return playedCount
@@ -92,6 +95,7 @@ export const sessionEndedAtom = atom((get) => {
 // True while a run is starting or playing: the choices it reads are locked.
 export const runInProgressAtom = atom((get) => {
 	const { stage } = get(microruntimeSessionAtom)
+
 	if (stage === 'plan') return false
 
 	return !get(sessionEndedAtom)
@@ -101,6 +105,7 @@ export const runInProgressAtom = atom((get) => {
 // the team, or the last run has ended.
 export const canPlayWorkflowAtom = atom((get) => {
 	const { stage } = get(microruntimeSessionAtom)
+
 	if (stage === 'launching') return false
 
 	return get(sessionEndedAtom)
@@ -110,6 +115,7 @@ export const canPlayWorkflowAtom = atom((get) => {
 // one the session's act is filling; during a run, the Workflow card.
 export const openCardAtom = atom((get) => {
 	const { openedCard, playedCount, stage } = get(microruntimeSessionAtom)
+
 	if (openedCard) return openedCard
 	if (stage !== 'plan') return 'workflow'
 
@@ -204,6 +210,7 @@ export const playWorkflowAtom = atom(null, (get, set) => {
 // terminal remounts empty and types the run.
 export const startRunAtom = atom(null, (get, set) => {
 	const session = get(microruntimeSessionAtom)
+
 	if (session.stage !== 'launching') return
 
 	set(microruntimeSessionAtom, {

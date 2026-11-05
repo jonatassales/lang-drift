@@ -40,6 +40,7 @@ export class LocaleService {
 			(entry) => entry.prefix === `/${lowerSegment}`,
 		)
 		const needsCanonicalRedirect = supported && segment !== lowerSegment
+
 		if (needsCanonicalRedirect) {
 			const canonical = new URL(request.url)
 			canonical.pathname = canonical.pathname.replace(
@@ -67,6 +68,7 @@ export class LocaleService {
 		const unavailable = !explicit && !saved.found && browser === 'zh-CN'
 		const locale = this.#resolveTargetLocale(explicit, saved, browser)
 		const target = this.#localizedUrl(request, locale)
+
 		if (unavailable) target.searchParams.set('availability', 'zh-CN')
 		const response = explicit
 			? this.#nextResponse(intlMiddleware(request))
@@ -79,6 +81,7 @@ export class LocaleService {
 
 		const shouldWrite =
 			!this.#isPrefetch(request) && (!saved.found || saved.value !== locale)
+
 		if (shouldWrite) {
 			const writer = cookieServiceFactory(request, response)
 			writer.set(localeCookie, locale, { ttlSeconds: localeTtlSeconds })
@@ -94,8 +97,10 @@ export class LocaleService {
 		browser: WebsiteLocale | 'zh-CN' | undefined,
 	): WebsiteLocale {
 		if (explicit) return explicit
+
 		const hasValidSavedLocale =
 			saved.found && routing.locales.includes(saved.value as WebsiteLocale)
+
 		if (hasValidSavedLocale) {
 			return saved.value as WebsiteLocale
 		}
@@ -117,6 +122,7 @@ export class LocaleService {
 				let quality = 1
 				for (const parameter of parameters) {
 					const [key, rawQuality] = parameter.trim().split('=')
+
 					if (key !== 'q') continue
 
 					const parsed = Number(rawQuality)
@@ -139,7 +145,9 @@ export class LocaleService {
 
 		for (const range of ranges) {
 			if (/^zh-(cn|hans|sg)(-|$)/.test(range.tag)) return 'zh-CN'
+
 			const match = this.#matchLocaleTag(range.tag)
+
 			if (match) return match
 		}
 
@@ -148,6 +156,7 @@ export class LocaleService {
 
 	#matchLocaleTag(tag: string): WebsiteLocale | undefined {
 		const exact = routing.locales.find((locale) => locale.toLowerCase() === tag)
+
 		if (exact) return exact
 
 		const portuguese =
@@ -186,6 +195,7 @@ export class LocaleService {
 	#localizedUrl(request: NextRequest, locale: WebsiteLocale): URL {
 		const url = new URL(request.url)
 		const pathname = request.nextUrl.pathname
+
 		if (pathname === '/') {
 			url.pathname = localePath[locale]
 

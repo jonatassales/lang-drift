@@ -6,6 +6,7 @@ import {
 
 export function workflowModel(id: WorkflowModelId): WorkflowModel {
 	const model = workflowModels.find((candidate) => candidate.id === id)
+
 	if (!model) throw new Error(`Unknown workflow model: ${id}`)
 
 	return model

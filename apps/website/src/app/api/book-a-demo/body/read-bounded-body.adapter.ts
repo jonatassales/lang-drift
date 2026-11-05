@@ -7,6 +7,7 @@ export async function readBoundedBody(
 	signal: AbortSignal,
 ): Promise<string> {
 	if (!body) throw new BodyError(400)
+
 	const reader = body.getReader()
 	const decoder = new TextDecoder('utf-8', { fatal: true })
 	let size = 0
@@ -24,8 +25,10 @@ export async function readBoundedBody(
 
 			signal.throwIfAborted()
 			if (result.done) break
+
 			size += result.value.byteLength
 			if (size > maximum) throw new BodyError(413)
+
 			text += decoder.decode(result.value, { stream: true })
 		}
 		text += decoder.decode()

@@ -64,7 +64,9 @@ export function WebsiteHeader() {
 	// Observe scroll sentinel at top of viewport to apply scrolled glass styling.
 	useEffect(() => {
 		const sentinel = sentinelRef.current
+
 		if (!sentinel) return
+
 		const observer = new IntersectionObserver(([entry]) => {
 			setScrolled(!entry.isIntersecting)
 		})
@@ -84,8 +86,10 @@ export function WebsiteHeader() {
 	// Restore focus to trigger when drawer changes locale.
 	useEffect(() => {
 		if (drawerFocus.locale !== locale) return
+
 		const frame = requestAnimationFrame(() => {
 			if (drawerFocus.locale !== locale) return
+
 			triggerRef.current?.focus({ preventScroll: true })
 			drawerFocus.locale = undefined
 		})
@@ -96,8 +100,11 @@ export function WebsiteHeader() {
 	// Manage modal dialog lifecycle and body scroll lock for navigation drawer.
 	useEffect(() => {
 		if (!drawerOpen) return
+
 		const drawer = drawerRef.current
+
 		if (!drawer) return
+
 		const previousOverflow = document.body.style.overflow
 		drawer.showModal()
 		closeRef.current?.focus()

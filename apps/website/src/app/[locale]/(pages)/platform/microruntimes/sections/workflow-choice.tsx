@@ -32,6 +32,7 @@ export function WorkflowChoice<Value extends string>(
 		const option = options.find(
 			(candidate) => candidate.value === event.target.value,
 		)
+
 		if (option) {
 			onChange(option.value)
 		}

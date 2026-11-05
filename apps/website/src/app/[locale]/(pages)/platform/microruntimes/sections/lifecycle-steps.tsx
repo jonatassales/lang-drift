@@ -28,6 +28,7 @@ export function LifecycleSteps(props: LifecycleStepsProps) {
 		const stageId = event.currentTarget.dataset.id as
 			| LifecycleStageId
 			| undefined
+
 		if (stageId) {
 			setSelectedId(stageId)
 		}

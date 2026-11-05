@@ -32,6 +32,7 @@ export function DeliveryReceipt(props: DeliveryReceiptProps) {
 
 	const selectedId = useAtomValue(selectedWorkItemAtom)
 	const item = workItems.find((workItem) => workItem.id === selectedId)
+
 	if (!item) return null
 
 	const receipt = createTranslator({

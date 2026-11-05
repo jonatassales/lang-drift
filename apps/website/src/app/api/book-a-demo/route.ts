@@ -21,6 +21,7 @@ export async function POST(request: Request): Promise<Response> {
 		interceptOrigin(request) ??
 		interceptContentType(request) ??
 		interceptBodySize(request)
+
 	if (refused) return refused
 
 	const read = await interceptBody(request)
@@ -28,6 +29,7 @@ export async function POST(request: Request): Promise<Response> {
 	if (read instanceof Response) return read
 
 	const accepted = interceptSchema(read.body)
+
 	if (accepted instanceof Response) return accepted
 
 	let status: number

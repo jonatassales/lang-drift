@@ -70,7 +70,9 @@ describe('the website security headers', () => {
 		async (route) => {
 			const headers = await headersAt(route)
 
-			expect(await policyAt(route)).toEqual(productionPolicy)
+			const policy = await policyAt(route)
+
+			expect(policy).toEqual(productionPolicy)
 
 			for (const [name, value] of Object.entries(otherHeaders)) {
 				expect(headers.get(name)).toBe(value)
@@ -89,13 +91,17 @@ describe('the website security headers', () => {
 	it('adds nothing on a production deployment', async () => {
 		vi.stubEnv('VERCEL_ENV', 'production')
 
-		expect(await policyAt('/en/')).toEqual(productionPolicy)
+		const policy = await policyAt('/en/')
+
+		expect(policy).toEqual(productionPolicy)
 	})
 
 	it('lets the development server evaluate and reload, and nothing more', async () => {
 		vi.stubEnv('NODE_ENV', 'development')
 
-		expect(await policyAt('/en/')).toEqual({
+		const policy = await policyAt('/en/')
+
+		expect(policy).toEqual({
 			...productionPolicy,
 			'script-src': [
 				"'self'",
@@ -115,7 +121,9 @@ describe('the website security headers', () => {
 	it('lets a preview deployment load the Vercel Toolbar, and nothing more', async () => {
 		vi.stubEnv('VERCEL_ENV', 'preview')
 
-		expect(await policyAt('/en/')).toEqual({
+		const policy = await policyAt('/en/')
+
+		expect(policy).toEqual({
 			...productionPolicy,
 			'script-src': [
 				"'self'",

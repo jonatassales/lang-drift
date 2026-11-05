@@ -6,6 +6,7 @@ export function declaresOversizedBody(
 	limit: number,
 ): boolean {
 	const declared = request.headers.get('content-length')
+
 	if (!declared) return false
 
 	return !/^\d+$/.test(declared) || Number(declared) > limit
