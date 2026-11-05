@@ -12,7 +12,7 @@ cd "$DRIFT_PROJECT_ROOT"
 # held by a .gitkeep are never examined. The allowlist below lists what the
 # owner keeps on purpose.
 
-allowlist=platform/cli/src/exceptions/dead-code.allow
+allowlist=packages/drift/src/exceptions/dead-code.allow
 findings=$(mktemp)
 sources=$(mktemp)
 # drift's own EXIT trap prints the queued results, so this one chains to it.

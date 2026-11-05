@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="/platform/docs/assets/images/langdrift-banner-dark.png">
-    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: Plataforma FinOps Agêntica" width="820">
+    <source media="(prefers-color-scheme: dark)" srcset="/packages/docs/assets/images/langdrift-banner-dark.png">
+    <img src="/packages/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: Plataforma FinOps Agêntica" width="820">
   </picture>
 </p>
 
@@ -13,9 +13,9 @@
 <p align="center">
   <a href="/README.md">English</a> ·
   <strong>Português (Brasil)</strong> ·
-  <a href="/platform/docs/README.zh-hant.md">繁體中文</a> ·
-  <a href="/platform/docs/README.ja.md">日本語</a> ·
-  <a href="/platform/docs/README.vi.md">Tiếng Việt</a>
+  <a href="/packages/docs/README.zh-hant.md">繁體中文</a> ·
+  <a href="/packages/docs/README.ja.md">日本語</a> ·
+  <a href="/packages/docs/README.vi.md">Tiếng Việt</a>
 </p>
 
 <p align="center">
@@ -69,7 +69,7 @@ npx @langdrift/cli agent plan <caminho-do-ticket.md> --component name=console,pa
 > **Dica:** Use `--no-judge` para gerar o plano por heurística sem realizar chamadas de LLM, sem nenhum custo.
 
 <p align="center">
-  <img src="/platform/docs/assets/images/ex-agent-plan.webp" alt="Terminal executando ex agent plan no ticket 0070. Ele lê sete documentos vinculados, aplica o envelope de 2000 milicores e 3072 MiB do time e o orçamento de $25.00 por execução, sugere claude-sonnet-5-5 com esforço médio, dimensiona apps/console para 500m e 1024 MiB e encerra com uma proposta de plano, revisão 1." width="820">
+  <img src="/packages/docs/assets/images/ex-agent-plan.webp" alt="Terminal executando ex agent plan no ticket 0070. Ele lê sete documentos vinculados, aplica o envelope de 2000 milicores e 3072 MiB do time e o orçamento de $25.00 por execução, sugere claude-sonnet-5-5 com esforço médio, dimensiona apps/console para 500m e 1024 MiB e encerra com uma proposta de plano, revisão 1." width="820">
 </p>
 
 O plano é salvo em `.langdrift/microruntimes/runtimes/<runtime-id>/runtime.md`. O bloco `langdrift` contém a configuração executável:

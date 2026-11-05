@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="/platform/docs/assets/images/langdrift-banner-dark.png">
-    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: Nền tảng FinOps Tác tử" width="820">
+    <source media="(prefers-color-scheme: dark)" srcset="/packages/docs/assets/images/langdrift-banner-dark.png">
+    <img src="/packages/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: Nền tảng FinOps Tác tử" width="820">
   </picture>
 </p>
 
@@ -12,9 +12,9 @@
 
 <p align="center">
   <a href="/README.md">English</a> ·
-  <a href="/platform/docs/README.pt-br.md">Português (Brasil)</a> ·
-  <a href="/platform/docs/README.zh-hant.md">繁體中文</a> ·
-  <a href="/platform/docs/README.ja.md">日本語</a> ·
+  <a href="/packages/docs/README.pt-br.md">Português (Brasil)</a> ·
+  <a href="/packages/docs/README.zh-hant.md">繁體中文</a> ·
+  <a href="/packages/docs/README.ja.md">日本語</a> ·
   <strong>Tiếng Việt</strong>
 </p>
 
@@ -69,7 +69,7 @@ npx @langdrift/cli agent plan <đường-dẫn-đến-ticket.md> --component nam
 > **Mẹo:** Sử dụng `--no-judge` để tạo kế hoạch thuần túy theo kinh nghiệm heuristics mà không cần gọi LLM, hoàn toàn không phát sinh chi phí.
 
 <p align="center">
-  <img src="/platform/docs/assets/images/ex-agent-plan.webp" alt="Terminal running ex agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
+  <img src="/packages/docs/assets/images/ex-agent-plan.webp" alt="Terminal running ex agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
 </p>
 
 Kế hoạch được lưu trong `.langdrift/microruntimes/runtimes/<runtime-id>/runtime.md`. Khối `langdrift` chứa cấu hình có thể thực thi:

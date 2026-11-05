@@ -7,7 +7,7 @@ set -f
 drift_need rg
 cd "$DRIFT_PROJECT_ROOT"
 
-# Runs the detectors of platform/cli/src/quality/rule-detectors.tsv, the one
+# Runs the detectors of packages/drift/src/quality/rule-detectors.tsv, the one
 # source drift quality check and drift quality coverage read. Into <workdir>
 # it writes rules (the rule files measured, in the detectors' order), and per
 # rule file scope/<rule> (the paths its detectors look at) and

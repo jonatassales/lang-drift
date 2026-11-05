@@ -1,13 +1,13 @@
 #!/bin/sh
 # shellcheck disable=SC2034 # Its variables are read by the scripts that source it.
 
-: "${DRIFT_PROJECT_ROOT:?DRIFT_PROJECT_ROOT must be set by platform/cli/src/drift.sh}"
-: "${DRIFT_CLI_DIR:?DRIFT_CLI_DIR must be set by platform/cli/src/drift.sh}"
+: "${DRIFT_PROJECT_ROOT:?DRIFT_PROJECT_ROOT must be set by packages/drift/src/drift.sh}"
+: "${DRIFT_CLI_DIR:?DRIFT_CLI_DIR must be set by packages/drift/src/drift.sh}"
 
 . "$DRIFT_CLI_DIR/core/output.sh"
 
-# Git hooks live under platform/cli/.husky.
-DRIFT_HOOKS_DIR=platform/cli/.husky
+# Git hooks live under packages/drift/.husky.
+DRIFT_HOOKS_DIR=packages/drift/.husky
 
 drift_die() {
   drift_print_error "drift: $1"

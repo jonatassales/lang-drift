@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="/platform/docs/assets/images/langdrift-banner-dark.png">
-    <img src="/platform/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: エージェント型 FinOps プラットフォーム" width="820">
+    <source media="(prefers-color-scheme: dark)" srcset="/packages/docs/assets/images/langdrift-banner-dark.png">
+    <img src="/packages/docs/assets/images/langdrift-banner-light.png" alt="LangDrift: エージェント型 FinOps プラットフォーム" width="820">
   </picture>
 </p>
 
@@ -12,10 +12,10 @@
 
 <p align="center">
   <a href="/README.md">English</a> ·
-  <a href="/platform/docs/README.pt-br.md">Português (Brasil)</a> ·
-  <a href="/platform/docs/README.zh-hant.md">繁體中文</a> ·
+  <a href="/packages/docs/README.pt-br.md">Português (Brasil)</a> ·
+  <a href="/packages/docs/README.zh-hant.md">繁體中文</a> ·
   <strong>日本語</strong> ·
-  <a href="/platform/docs/README.vi.md">Tiếng Việt</a>
+  <a href="/packages/docs/README.vi.md">Tiếng Việt</a>
 </p>
 
 <p align="center">
@@ -69,7 +69,7 @@ npx @langdrift/cli agent plan <path-to-ticket.md> --component name=console,path=
 > **ヒント:** `--no-judge` を付けると LLM 呼び出しを行わずにヒューリスティックのみで計画を作成できるため、費用はかかりません。
 
 <p align="center">
-  <img src="/platform/docs/assets/images/ex-agent-plan.webp" alt="Terminal running ex agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
+  <img src="/packages/docs/assets/images/ex-agent-plan.webp" alt="Terminal running ex agent plan on ticket 0070. It reads seven linked documents, applies the team's 2000 millicore, 3072 MiB envelope and $25.00 per-run budget, suggests claude-sonnet-5-5 at medium effort, sizes apps/console at 500m and 1024 MiB, and ends with a proposed plan, revision 1." width="820">
 </p>
 
 計画は `.langdrift/microruntimes/runtimes/<runtime-id>/runtime.md` に出力されます。`langdrift` ブロックに実行可能な設定が含まれます:

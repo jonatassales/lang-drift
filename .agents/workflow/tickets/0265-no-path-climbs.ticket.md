@@ -20,3 +20,5 @@
 
 - `platform/cli/drift quality check filesystem`
 - `pnpm turbo run check typecheck test build --filter=console`
+
+> **Note, 2026-11-05.** `drift` moved from `platform/cli` to `packages/drift` (ticket 0309) at the same depth, so the `../../..` root climb this ticket removes is unchanged; read its paths under `packages/drift/`.

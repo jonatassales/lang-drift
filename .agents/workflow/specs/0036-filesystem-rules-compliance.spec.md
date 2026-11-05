@@ -77,3 +77,5 @@ Bring every tracked path to the filesystem rules and make `drift quality check f
 - **Go hyphens.** Hyphenated Go file names are accepted by `go build`, `go vet` and `go test`; only `_test.go` and the build-constraint suffixes carry meaning, and the kebab-case detector already exempts them.
 - **Proper names in paths.** Nothing in this spec touches a Next.js route segment (`[locale]`, `[...path]`), which the detector already exempts.
 - **`packages/tokens/shared/`** is not a bucket: "shared token" is a glossary term, and the folder holds the tokens every theme shares.
+
+> **Note, 2026-11-05.** `drift` moved from `platform/cli` to `packages/drift` (ticket 0309) at the same depth, so the `../../..` root climb this ticket removes is unchanged; read its paths under `packages/drift/`.

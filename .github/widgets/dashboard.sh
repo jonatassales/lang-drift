@@ -2,7 +2,7 @@
 set -eu
 
 : "${DRIFT_PROJECT_ROOT:=$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-: "${DRIFT_CLI_DIR:=$DRIFT_PROJECT_ROOT/platform/cli/src}"
+: "${DRIFT_CLI_DIR:=$DRIFT_PROJECT_ROOT/packages/drift/src}"
 . "$DRIFT_CLI_DIR/core/common.sh"
 
 widgets_dir="$DRIFT_PROJECT_ROOT/.github/widgets"

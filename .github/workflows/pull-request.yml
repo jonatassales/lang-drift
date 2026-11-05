@@ -39,9 +39,9 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: platform/cli/drift git lint-history "$BASE_SHA" "$HEAD_SHA"
+        run: packages/drift/drift git lint-history "$BASE_SHA" "$HEAD_SHA"
       - name: Workflows
-        run: platform/cli/drift check workflows
+        run: packages/drift/drift check workflows
 
   harness-score:
     name: Harness - Score
@@ -53,7 +53,7 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/setup-workspace
       - name: Harness rules audit
-        run: platform/cli/drift quality coverage >>"$GITHUB_STEP_SUMMARY"
+        run: packages/drift/drift quality coverage >>"$GITHUB_STEP_SUMMARY"
 
   delivery-intelligence:
     name: Delivery - Dashboard
@@ -75,4 +75,4 @@ jobs:
           WIDGET_PULL_REQUEST: ${{ github.event.pull_request.number }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: platform/cli/drift widget dashboard --publish >>"$GITHUB_STEP_SUMMARY"
+        run: packages/drift/drift widget dashboard --publish >>"$GITHUB_STEP_SUMMARY"

@@ -17,7 +17,7 @@
 00-general	One-line literal with several fields in TypeScript	code	lines	apps,packages	*.ts,*.tsx	\{\s*[A-Za-z_$][\w$]*\s*:\s*[^,{}\n]+,\s*[A-Za-z_$][\w$]*\s*:[^\n]*\}
 00-general	One-line literal with several fields in Go	code	lines	apps,packages	*.go	\b[A-Za-z_]\w*\{[A-Za-z_]\w*:\s*[^{}\n]*,\s*[A-Za-z_]\w*:|\bmap\[[^\]\n]+\][^{\n]*\{[^}\n]*:[^}\n]*,[^}\n]*:
 00-general	else after an exit	code	multiline	apps,packages	*.ts,*.tsx,*.go	\b(return|throw|continue|break)\b[^\n]*\n\s*\}\s*else\b
-00-general	else after an exit in shell	code	multiline	platform,.github	*.sh	\b(exit|return)\b[^\n]*\n\s*else\b
+00-general	else after an exit in shell	code	multiline	packages,.github	*.sh	\b(exit|return)\b[^\n]*\n\s*else\b
 00-general	Fallback for an environment variable	code	lines	apps,packages	*.ts,*.tsx	process\.env\.[A-Z_][A-Z0-9_]*\s*(\?\?|\|\|)
 00-general	Empty catch	code	multiline	apps,packages	*.ts,*.tsx	catch\s*(\([^)]*\))?\s*\{\s*\}
 00-general	Value discarded with _ in Go (check it is not an error)	code	lines	apps,packages	*.go	\b_\s*=\s*[A-Za-z_]|,\s*_\s*:?=
@@ -26,12 +26,12 @@
 00-general	An environment module	code	lines	apps,packages	*.ts,*.tsx	\b(getEnv|requireEnv|readEnv)\b
 01-filesystem	../ in a TypeScript or JavaScript import	code	lines	apps,packages	*.ts,*.tsx,*.js,*.mjs	(\bfrom\s+|\bimport\(|\brequire\()['"]\.\./
 01-filesystem	../ in a CSS import	code	lines	apps,packages	*.css	@import\s+['"]\.\./
-01-filesystem	../ in a shell path	code	lines	platform,.github	*.sh,!**/check-biome.sh	^[^#\n]*["'/]\.\./
+01-filesystem	../ in a shell path	code	lines	packages,.github	*.sh,!**/check-biome.sh	^[^#\n]*["'/]\.\./
 01-filesystem	Name not in kebab-case	code	names	-	-	-
 01-filesystem	Markdown without a type suffix	code	markdown	-	-	-
 01-filesystem	File in a bucket directory	all	tracked	-	-	(^|/)(utils|helpers|common|misc)/
-02-tooling	Automation script that is not shell	all	tracked	-	-	^platform/.*\.(js|mjs|cjs|ts|mts)$
-02-tooling	npm, npx, yarn, bun or corepack in tooling	code	lines	.github,platform,package.json	*.yml,*.yaml,*.sh,package.json	(^|[\s;&|(])(npx|yarn|bun|bunx|corepack)\s+[^\s]|\bnpm\s+(run|install|i|ci|exec)\b
+02-tooling	Automation script that is not shell	all	tracked	-	-	^packages/drift/.*\.(js|mjs|cjs|ts|mts)$
+02-tooling	npm, npx, yarn, bun or corepack in tooling	code	lines	.github,packages,package.json	*.yml,*.yaml,*.sh,package.json	(^|[\s;&|(])(npx|yarn|bun|bunx|corepack)\s+[^\s]|\bnpm\s+(run|install|i|ci|exec)\b
 02-tooling	actions/setup-node in a workflow	code	lines	.github	*.yml,*.yaml	uses:\s*actions/setup-node
 02-tooling	Lockfile of another package manager	all	tracked	-	-	(^|/)(package-lock\.json|npm-shrinkwrap\.json|yarn\.lock|bun\.lockb?)$
 03-tailwind	Stylesheet with hand-written rules	code	files	apps,packages	*.css	^\s*[^@/\s}][^{]*\{
