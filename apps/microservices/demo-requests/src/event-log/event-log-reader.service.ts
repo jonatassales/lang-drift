@@ -2,13 +2,13 @@ import type { OnApplicationShutdown } from '@nestjs/common'
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { Observable } from 'rxjs'
 
-import { demoRequestStream } from 'streaming'
+import { demoRequestStream } from 'infra/streaming'
 import type {
 	StreamConnection,
 	StreamEntry,
 	StreamItem,
-} from 'streaming/transport'
-import { parseStreamEntry } from 'streaming/transport'
+} from 'infra/streaming/transport'
+import { parseStreamEntry } from 'infra/streaming/transport'
 
 import { aggregateIdOf } from './aggregate-id-of.compute.js'
 import type { EventLogConnectionOpener } from './event-log-connection-opener.factory.js'

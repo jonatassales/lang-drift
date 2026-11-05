@@ -2,7 +2,7 @@ import type {
 	StreamConnection,
 	StreamItem,
 	StreamReadReply,
-} from 'streaming/transport'
+} from 'infra/streaming/transport'
 
 export interface ReaderConnectionScript {
 	ranges?: StreamItem[][]

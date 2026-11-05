@@ -15,7 +15,7 @@ const envelope = {
 	payload: {},
 }
 
-describe('events/transport/parse-stream-entry.compute', () => {
+describe('infra/streaming/transport/parse-stream-entry.compute', () => {
 	it('reads the type, the aggregate id and the envelope out of the entry fields', () => {
 		const entry = parseStreamEntry('1762178700000-0', [
 			'type',

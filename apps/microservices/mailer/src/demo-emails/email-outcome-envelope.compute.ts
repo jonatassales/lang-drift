@@ -2,12 +2,12 @@ import type {
 	DemoRequestEmailKind,
 	DemoRequestEvent,
 	DemoRequestReceived,
-} from 'streaming'
+} from 'infra/streaming'
 import {
 	createEnvelope,
 	demoRequestEventNames,
 	demoRequestEventSchema,
-} from 'streaming'
+} from 'infra/streaming'
 
 export interface SentOutcome {
 	kind: DemoRequestEmailKind

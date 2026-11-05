@@ -3,7 +3,6 @@ packages:
   - apps/microservices/*
   - packages/*
   - lib/*
-  - infrastructure/*
 
 engineStrict: true
 

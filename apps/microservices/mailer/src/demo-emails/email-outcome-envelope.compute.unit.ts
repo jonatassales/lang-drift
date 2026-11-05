@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import type { DemoRequestReceived } from 'streaming'
-import { demoRequestEventSchema } from 'streaming'
+import type { DemoRequestReceived } from 'infra/streaming'
+import { demoRequestEventSchema } from 'infra/streaming'
 
 import { emailOutcomeEnvelope } from './email-outcome-envelope.compute.js'
 

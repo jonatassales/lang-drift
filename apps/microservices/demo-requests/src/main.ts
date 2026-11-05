@@ -12,8 +12,8 @@ import {
 	demoRequestArchiveGroup,
 	demoRequestDeadLetterStream,
 	demoRequestStream,
-} from 'streaming'
-import { RedisStreamsServer } from 'streaming/transport'
+} from 'infra/streaming'
+import { RedisStreamsServer } from 'infra/streaming/transport'
 
 // A hybrid application: the HTTP routes, plus the archive consumer group on
 // the Redis Streams transport, in one process.

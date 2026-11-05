@@ -71,7 +71,7 @@ function harness(
 	}
 }
 
-describe('events/transport/redis-streams.strategy', () => {
+describe('infra/streaming/transport/redis-streams.strategy', () => {
 	it('creates the consumer group with MKSTREAM and tolerates one that exists', async () => {
 		const { server, commands, blocking } = harness(
 			{},

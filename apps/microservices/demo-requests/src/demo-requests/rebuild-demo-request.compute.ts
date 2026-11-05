@@ -1,5 +1,5 @@
-import type { DemoRequestEvent } from 'streaming'
-import { demoRequestEventNames } from 'streaming'
+import type { DemoRequestEvent } from 'infra/streaming'
+import { demoRequestEventNames } from 'infra/streaming'
 
 import type {
 	DemoRequestEmail,

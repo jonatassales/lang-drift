@@ -52,7 +52,7 @@ const emailFailed = {
 	},
 }
 
-describe('events/events/demo-request-event.validation', () => {
+describe('infra/streaming/events/demo-request-event.validation', () => {
 	it('accepts a received event and narrows it by type', () => {
 		const result = demoRequestEventSchema.parse(received)
 

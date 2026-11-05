@@ -13,5 +13,5 @@ Scripts, package management, mechanical checks and commits. Loaded in every sess
 - **Subject:** imperative mood, at most 72 characters (ideally 60), no trailing period.
 - **Blank lines:** exactly one between the subject and the body, and between the body and the trailers.
 - **Body:** hard-wrapped at 72 characters (the linter allows at most 100).
-- **Ticket trailer:** a commit touching `apps/`, `packages/`, `lib/` or `infrastructure/` ends with `Ticket: <NNNN>` after a blank line.
+- **Ticket trailer:** a commit touching `apps/`, `packages/` or `lib/` ends with `Ticket: <NNNN>` after a blank line.
 - **No AI signatures:** no `Co-Authored-By`, `Generated with` or assistant markers in commits or pull requests.

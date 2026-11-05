@@ -64,7 +64,7 @@ is_framework_file() {
 
 # The JavaScript workspaces: a folder with a manifest and no Go module. An
 # `if` keeps a root with no workspace yet from ending the loop on a false test.
-workspaces=$(for workspace in apps/* apps/microservices/* packages/* lib/* infrastructure/*; do
+workspaces=$(for workspace in apps/* apps/microservices/* packages/* lib/*; do
   if [ -f "$workspace/package.json" ] && [ ! -f "$workspace/go.mod" ]; then
     printf '%s\n' "$workspace"
   fi
@@ -77,7 +77,7 @@ for workspace in $workspaces; do
 done | while IFS= read -r source; do cat "$source"; done >"$sources"
 
 check_aliases() {
-  for paths in $(git ls-files -- 'apps/*/tsconfig.paths.json' 'apps/microservices/*/tsconfig.paths.json' 'packages/*/tsconfig.paths.json' 'lib/*/tsconfig.paths.json' 'infrastructure/*/tsconfig.paths.json'); do
+  for paths in $(git ls-files -- 'apps/*/tsconfig.paths.json' 'apps/microservices/*/tsconfig.paths.json' 'packages/*/tsconfig.paths.json' 'lib/*/tsconfig.paths.json'); do
     workspace=${paths%/*}
     jq -r '.compilerOptions.paths // {} | keys[]' "$paths" | while IFS= read -r alias; do
       prefix=${alias%\*}

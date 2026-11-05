@@ -18,7 +18,7 @@
 		"reflect-metadata": "0.2.2",
 		"resend": "6.37.0",
 		"rxjs": "7.8.2",
-		"streaming": "workspace:*"
+		"infra": "workspace:*"
 	},
 	"devDependencies": {
 		"@nestjs/cli": "12.0.11",

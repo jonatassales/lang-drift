@@ -1,4 +1,4 @@
-import type { demoRequestLocales } from 'streaming'
+import type { demoRequestLocales } from 'infra/streaming'
 
 export type MailLocale = (typeof demoRequestLocales)[number]
 

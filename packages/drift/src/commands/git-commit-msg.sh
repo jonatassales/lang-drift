@@ -13,7 +13,7 @@ if drift_has_ai_signature < "$message"; then
   drift_die "$DRIFT_AI_SIGNATURE_ERROR"
 fi
 
-# 2. Changes under apps/, packages/, lib/ or infrastructure/ name the ticket they implement.
+# 2. Changes under apps/, packages/ or lib/ name the ticket they implement.
 if git diff --cached --name-only | drift_touches_workspaces && ! drift_names_ticket < "$message"; then
   drift_die "$DRIFT_TICKET_ERROR"
 fi

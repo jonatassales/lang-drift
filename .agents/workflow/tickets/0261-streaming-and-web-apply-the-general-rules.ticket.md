@@ -21,3 +21,5 @@
 
 - `pnpm turbo run check typecheck test --filter=streaming --filter=web`
 - `platform/cli/drift quality check general`
+
+> **Note, 2026-11-05.** `packages/streaming` moved into the `infra` package (ticket 0310): read its paths under `packages/infra/src/streaming/`, the strategy and barrel under `transport/`, imported as `infra/streaming/transport`.
