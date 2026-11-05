@@ -163,6 +163,8 @@ func headline(lap execution.Lap) string {
 		return lap.Run + " ran"
 	case execution.Failed:
 		return "the lap failed"
+	case execution.Abandoned:
+		return "the lap was abandoned while it waited"
 	}
 
 	return "outcome unknown"
@@ -194,6 +196,8 @@ func outcomeWords(lap execution.Lap) string {
 		return "completed, " + finops.Dollars(lap.ObservedCents) + " observed of " + finops.Dollars(lap.Reserved) + " reserved, " + finops.Dollars(max(0, lap.Reserved-lap.ObservedCents)) + " released"
 	case lap.Outcome == execution.Unknown:
 		return "unknown, the cleanup was not confirmed, " + finops.Dollars(lap.Reserved) + " reserved and held"
+	case lap.Outcome == execution.Abandoned:
+		return "abandoned while it waited, " + finops.Dollars(lap.ObservedCents) + " observed of " + finops.Dollars(lap.Reserved) + " reserved"
 	}
 
 	return lap.Outcome

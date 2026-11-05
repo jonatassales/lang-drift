@@ -114,6 +114,13 @@ const (
 	NextMerge          = "nextMerge"
 )
 
+// The stop command's own lines: the website's session never stops a run.
+const (
+	StopCommand  = "stopCommand"
+	LapAbandoned = "lapAbandoned"
+	NextPlan     = "nextPlan"
+)
+
 // PlanBlocked is the plan's own line when a check fails: the website has no
 // such line, since its session never fails.
 const PlanBlocked = "blocked"

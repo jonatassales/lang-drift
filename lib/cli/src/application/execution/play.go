@@ -40,6 +40,11 @@ type playing struct {
 	checksWait time.Duration
 	pushed     bool
 	now        func() harness.Timestamp
+	// abandonment is how an abandoned lap settled, once dft agent stop let
+	// it go; its ledger line takes it as written.
+	abandonment *finops.Abandonment
+	// stopRequest says who asked for the runtime to stop, when a person did.
+	stopRequest string
 }
 
 // play drives the lap through its phases in the order NextPhase decides:
@@ -457,6 +462,12 @@ func (playing *playing) settleLine() {
 		line.TokensThousands.Observed = nil
 		if !lap.Unmeasured && (lap.InputTokens > 0 || lap.OutputTokens > 0) {
 			line.TokensThousands.Observed = &finops.TokensThousands{Input: thousands(lap.InputTokens), Output: thousands(lap.OutputTokens)}
+		}
+
+		if playing.abandonment != nil {
+			closeAbandoned(line, lap, *playing.abandonment)
+
+			return
 		}
 
 		if lap.Ended == nil || lap.Unmeasured {

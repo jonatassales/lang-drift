@@ -90,6 +90,7 @@ const (
 	Completed    = "completed"
 	Failed       = "failed"
 	Unknown      = "unknown"
+	Abandoned    = finops.LapAbandoned
 )
 
 // NothingPaid reports whether the lap paid nothing: a gate stopped it before

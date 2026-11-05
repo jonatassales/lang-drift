@@ -213,6 +213,23 @@ var catalog = map[string]line{
 	key(session.RunSession, session.ChecksUnknown): {session.Warning, func(data session.Data) string {
 		return "checks     unknown · " + text(data, "reason")
 	}},
+	key(session.RunSession, session.StopCommand): {session.Command, func(data session.Data) string {
+		return "dft agent stop " + text(data, "runtime")
+	}},
+	key(session.RunSession, session.LapAbandoned): {session.Success, func(data session.Data) string {
+		if text(data, "outcome") != finops.LapAbandoned {
+			return "✓ stopped    lap " + text(data, "lap") + " · by " + text(data, "by") + " · outcome unknown, the reservation is held"
+		}
+
+		if data["held"] == true {
+			return "✓ abandoned  lap " + text(data, "lap") + " · by " + text(data, "by") + " · a call's spend is unknown, the reservation is held"
+		}
+
+		return "✓ abandoned  lap " + text(data, "lap") + " · by " + text(data, "by") + " · " + finops.Dollars(number(data, "releasedCents")) + " released to the envelope"
+	}},
+	key(session.RunSession, session.NextPlan): {session.Comment, func(data session.Data) string {
+		return "# next: dft agent plan plans " + text(data, "runtime") + " again"
+	}},
 	key(session.RunSession, session.RuntimeStopped): {session.Output, func(data session.Data) string {
 		return "runtime    stopped · " + strconv.Itoa(number(data, "removed")) + " Deployments removed · " + text(data, "left")
 	}},

@@ -26,6 +26,7 @@ func (cliApplication *application) agentCommand() *cobra.Command {
 		agentRoot.AddCommand(
 			catalog.NewAgentRunCommand(cliApplication.useCases.Execution, &cliApplication.globals),
 			catalog.NewAgentConfirmCommand(cliApplication.useCases.Execution, &cliApplication.globals),
+			catalog.NewAgentStopCommand(cliApplication.useCases.Execution, &cliApplication.globals),
 			catalog.NewAgentStatusCommand(cliApplication.useCases.Execution, &cliApplication.globals),
 		)
 	}
