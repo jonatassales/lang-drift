@@ -3,14 +3,16 @@ import { cleanup, render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
+interface LinkMockProps {
+	children: ReactNode
+	className?: string
+	href: string
+	onBlur?: () => void
+	onClick?: () => void
+}
+
 vi.mock('@i18n/navigation', () => ({
-	Link: (props: {
-		children: ReactNode
-		className?: string
-		href: string
-		onBlur?: () => void
-		onClick?: () => void
-	}) => (
+	Link: (props: LinkMockProps) => (
 		<a className={props.className} href={props.href}>
 			{props.children}
 		</a>

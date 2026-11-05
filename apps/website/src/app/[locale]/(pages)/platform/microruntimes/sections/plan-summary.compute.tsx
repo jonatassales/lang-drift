@@ -1,13 +1,14 @@
 import type { ReactNode } from 'react'
 
-import {
-	revealed,
-	suggestedTotals,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+import { revealed } from '@routes/platform/microruntimes/content/revealed.compute'
+import { suggestedTotals } from '@routes/platform/microruntimes/content/suggested-totals.compute'
 
 import { CardValue } from './card-value'
 import { resolvedComponents } from './resolved-components.compute'
-import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
+import type {
+	TicketCardCopy,
+	TicketCardFormat,
+} from './ticket-card-format.compute'
 
 export function planSummary(
 	copy: TicketCardCopy,

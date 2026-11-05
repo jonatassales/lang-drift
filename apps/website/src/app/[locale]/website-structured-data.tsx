@@ -1,4 +1,4 @@
-import type { PageId } from '@app/metadata/page-metadata'
+import type { PageId } from '@app/metadata/page-path.compute'
 import { pageStructuredData } from '@app/metadata/page-structured-data.map'
 import { serializeJsonLd } from '@app/metadata/serialize-json-ld.compute'
 import type { WebsiteLocale } from '@i18n/routing'

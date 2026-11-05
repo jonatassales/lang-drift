@@ -1,4 +1,4 @@
-import { bookDemoReply } from '@api/book-a-demo/book-demo-reply.response'
+import { bookDemoReply } from '@api/book-a-demo/book-demo-reply.map'
 import { fieldErrorsOf } from '@api/book-a-demo/field-errors-of.compute'
 import type { BookDemoSubmission } from '@routes/book-a-demo/form.types'
 import { bookDemoSubmissionSchema } from '@routes/book-a-demo/form.validation'

@@ -12,7 +12,7 @@ import {
 	stubDesktopQuery,
 } from '@layout/website-header/testdata/stub-desktop-query.mock'
 
-import { drawerFocus } from './drawer-focus'
+import { drawerFocus } from './drawer-focus.state'
 
 const intl = vi.hoisted(() => ({
 	locale: 'en',

@@ -2,15 +2,20 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 
-import { pageMetadata, socialImages } from '@app/metadata/page-metadata'
+import { pageMetadata } from '@app/metadata/page-metadata.map'
+import { socialImages } from '@app/metadata/social-images.adapter'
 import { routing } from '@i18n/routing'
 
-interface PricingPageMetadataProps {
-	params: Promise<{ locale: string }>
+interface LocaleRouteParams {
+	locale: string
+}
+
+interface BookDemoPageMetadataProps {
+	params: Promise<LocaleRouteParams>
 }
 
 export async function generateMetadata(
-	props: PricingPageMetadataProps,
+	props: BookDemoPageMetadataProps,
 	parent: ResolvingMetadata,
 ): Promise<Metadata> {
 	const { params } = props
@@ -21,5 +26,5 @@ export async function generateMetadata(
 
 	const images = await socialImages(parent)
 
-	return pageMetadata('pricing', locale, images)
+	return pageMetadata('book-a-demo', locale, images)
 }

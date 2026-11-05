@@ -3,9 +3,9 @@ import { describe, expect, it } from 'vitest'
 import { bookDemoMessages } from '@i18n/messages/index'
 import { errorsOf } from '@routes/book-a-demo/testdata/errors-of.compute'
 
-import { bookDemoErrorCodes } from './form.types'
+import { bookDemoErrorCodes } from './book-demo-error-codes.data'
 import { bookDemoSchema, bookDemoSubmissionSchema } from './form.validation'
-import { positionIds } from './positions'
+import { positionIds } from './position-ids.data'
 
 const valid = {
 	company: 'Acme',

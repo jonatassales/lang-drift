@@ -1,14 +1,17 @@
-import type { PlanEffort } from '@routes/platform/microruntimes/content/microruntimes-content'
+import type { PlanEffort } from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import {
 	budgetCents,
 	expectedTokens,
-	type WorkflowFigures,
-} from '@routes/platform/microruntimes/content/microruntimes-workflow'
+} from '@routes/platform/microruntimes/content/microruntimes-workflow.data'
+import type { WorkflowFigures } from '@routes/platform/microruntimes/content/workflow-figures.compute'
 import { Eyebrow } from 'web/ui/eyebrow'
 import { ShareBar } from 'web/ui/share-bar'
 import { cn } from 'web/utilities'
 
-import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
+import type {
+	TicketCardCopy,
+	TicketCardFormat,
+} from './ticket-card-format.compute'
 
 // What the chosen run is expected to cost and what the gate would reserve
 // of the budget the design doc set, with the tokens behind the estimate.

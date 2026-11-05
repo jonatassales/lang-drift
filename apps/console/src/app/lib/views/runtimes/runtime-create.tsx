@@ -6,27 +6,26 @@ import { useState } from 'react'
 import { ErrorNotice } from '@components/error-notice/error-notice'
 import { linkClass } from '@components/form-styles/form-styles'
 import { PageHeading } from '@components/page-heading/page-heading'
+import type { ProductEnvelope } from '@data/product-envelopes.types'
 import { useResource } from '@data/resource.hook'
-import type { Product, Runtime } from '@data/types'
+import type { SavedRuntimeEnvelope } from '@data/runtime-envelopes.types'
+import type { Runtime } from '@data/types'
 import { Link } from '@i18n/navigation'
 
 import { ConnectionInstructions } from './connection-instructions'
 import { RuntimeForm } from './runtime-form'
 
 interface RuntimeCreateProps {
-	initial: Promise<{ product: Product }>
+	initial: Promise<ProductEnvelope>
 	productId: string
 }
 
 export function RuntimeCreate(props: RuntimeCreateProps) {
 	const { productId, initial } = props
 
-	const [created, setCreated] = useState<{
-		runtime: Runtime
-		secret?: string
-	} | null>(null)
+	const [created, setCreated] = useState<SavedRuntimeEnvelope | null>(null)
 
-	const product = useResource<{ product: Product }>(
+	const product = useResource<ProductEnvelope>(
 		`products/${productId}`,
 		0,
 		initial,

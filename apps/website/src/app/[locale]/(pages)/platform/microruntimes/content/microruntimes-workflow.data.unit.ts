@@ -6,15 +6,15 @@ import { choices } from '@routes/platform/microruntimes/content/testdata/choices
 import {
 	budgetCents,
 	initialWorkflowChoices,
-	type RunMessageId,
-	runSession,
-	stageProgress,
 	workflowEfforts,
-	workflowFigures,
 	workflowModels,
-} from './microruntimes-workflow'
+} from './microruntimes-workflow.data'
+import type { RunMessageId } from './microruntimes-workflow.types'
+import { runSession } from './run-session.compute'
+import { stageProgress } from './stage-progress.compute'
+import { workflowFigures } from './workflow-figures.compute'
 
-describe('website/platform/microruntimes/content/microruntimes-workflow', () => {
+describe('website/platform/microruntimes/content/microruntimes-workflow.data', () => {
 	it('prices each model and effort at list prices, in cents', () => {
 		const estimates = workflowModels.map((model) =>
 			workflowEfforts.map(

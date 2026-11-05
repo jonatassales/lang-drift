@@ -1,9 +1,7 @@
 import { Link } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
-import {
-	type FinopsMessages,
-	sourceIds,
-} from '@routes/platform/finops/content/finops-content'
+import { sourceIds } from '@routes/platform/finops/content/finops-content.data'
+import type { FinopsMessages } from '@routes/platform/finops/content/finops-content.types'
 import { Eyebrow } from 'web/ui/eyebrow'
 
 // What would feed the ledger, as a plain list under a label that says the

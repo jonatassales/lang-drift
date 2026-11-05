@@ -2,10 +2,10 @@ import { useAtomValue, useSetAtom } from 'jotai'
 
 import {
 	workflowEfforts,
-	workflowFigures,
-	workflowModel,
 	workflowModels,
-} from '@routes/platform/microruntimes/content/microruntimes-workflow'
+} from '@routes/platform/microruntimes/content/microruntimes-workflow.data'
+import { workflowFigures } from '@routes/platform/microruntimes/content/workflow-figures.compute'
+import { workflowModel } from '@routes/platform/microruntimes/content/workflow-model.compute'
 import {
 	canPlayWorkflowAtom,
 	chooseEffortAtom,
@@ -21,7 +21,10 @@ import {
 
 import { CardSection } from './card-section'
 import { playLabel } from './play-label.compute'
-import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
+import type {
+	TicketCardCopy,
+	TicketCardFormat,
+} from './ticket-card-format.compute'
 import { WorkflowChoice } from './workflow-choice'
 import { WorkflowResult } from './workflow-result'
 import { WorkflowSpend } from './workflow-spend'

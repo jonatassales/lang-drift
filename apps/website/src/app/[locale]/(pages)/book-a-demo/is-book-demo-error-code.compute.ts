@@ -1,7 +1,5 @@
-import {
-	type BookDemoErrorCode,
-	bookDemoErrorCodes,
-} from '@routes/book-a-demo/form.types'
+import { bookDemoErrorCodes } from './book-demo-error-codes.data'
+import type { BookDemoErrorCode } from './form.types'
 
 export function isBookDemoErrorCode(
 	value: unknown,

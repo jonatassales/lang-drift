@@ -1,13 +1,13 @@
+import { hasPlayed } from '@routes/platform/microruntimes/content/has-played.compute'
 import {
 	documentIds,
 	documentReads,
 	episodes,
-	hasPlayed,
-	revealed,
 	similarityThreshold,
 	ticketPlan,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
-import { workflowModel } from '@routes/platform/microruntimes/content/microruntimes-workflow'
+} from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import { revealed } from '@routes/platform/microruntimes/content/revealed.compute'
+import { workflowModel } from '@routes/platform/microruntimes/content/workflow-model.compute'
 import { Eyebrow } from 'web/ui/eyebrow'
 
 import { CardSection } from './card-section'
@@ -15,7 +15,10 @@ import { CardValue, revealState } from './card-value'
 import { DocumentRow } from './document-row'
 import { EpisodeRow } from './episode-row'
 import { extractedFact } from './extracted-fact.compute'
-import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
+import type {
+	TicketCardCopy,
+	TicketCardFormat,
+} from './ticket-card-format.compute'
 
 export { analysisSummary } from './analysis-summary.compute'
 

@@ -13,7 +13,7 @@ import { DemoButton } from './demo-button'
 import { LanguagePill } from './language-pill'
 import { panelSurface } from './panel-surface.data'
 import { PlatformMenu } from './platform-menu'
-import { platformProducts } from './platform-products'
+import { platformProducts } from './platform-products.data'
 import { useNavigationDrawer } from './use-navigation-drawer.hook'
 
 // Entries without a destination yet read like their neighbors but do not

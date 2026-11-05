@@ -1,10 +1,8 @@
 import { render } from '@testing-library/react'
 
 import { finopsMessages } from '@i18n/messages/index'
-import {
-	gateExample,
-	gateFigures,
-} from '@routes/platform/finops/content/finops-content'
+import { gateExample } from '@routes/platform/finops/content/finops-content.data'
+import { gateFigures } from '@routes/platform/finops/content/gate-figures.compute'
 import { GateFlow } from '@routes/platform/finops/sections/gate-flow'
 
 export function mountGateFlow() {

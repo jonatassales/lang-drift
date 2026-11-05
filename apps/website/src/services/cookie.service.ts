@@ -74,6 +74,16 @@ const sameSiteLabels: Record<SameSite, string> = {
 	none: 'None',
 }
 
+interface StoredEnvelope {
+	expiresAt: unknown
+	value: unknown
+	version: unknown
+}
+
+interface EnvelopeContent {
+	value: unknown
+}
+
 export class CookieService {
 	readonly #crypto: CryptoService
 	readonly #store: CookieStore
@@ -276,7 +286,7 @@ export class CookieService {
 		return parts.join('; ')
 	}
 
-	#readEnvelope(value: unknown): { value: unknown } | undefined {
+	#readEnvelope(value: unknown): EnvelopeContent | undefined {
 		const isNonObject =
 			typeof value !== 'object' || value === null || Array.isArray(value)
 
@@ -291,11 +301,7 @@ export class CookieService {
 			return undefined
 		}
 
-		const record = value as {
-			version: unknown
-			value: unknown
-			expiresAt: unknown
-		}
+		const record = value as StoredEnvelope
 
 		if (record.version !== 1) return undefined
 		if (!this.#isLiveExpiry(record.expiresAt)) return undefined

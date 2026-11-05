@@ -12,10 +12,6 @@ import { pageUrl } from './page-url.compute'
 import pages from './pages.json'
 import site from './site.json'
 
-export { pageUrl } from './page-url.compute'
-export { socialImages } from './social-images.compute'
-export type { InheritedSocialImages, PageId }
-
 const indexRobots: Metadata['robots'] = {
 	index: true,
 	follow: true,

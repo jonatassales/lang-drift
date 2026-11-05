@@ -8,11 +8,11 @@ import languageLabels from '@i18n/messages/language-labels.json'
 import { Link, usePathname } from '@i18n/navigation'
 import {
 	LanguageSwitcher,
+	type LanguageSwitcherLinkOption,
 	type LanguageSwitcherLinkProps,
-	type LanguageSwitcherOption,
 } from 'web/ui/language-switcher'
 
-import { drawerFocus } from './drawer-focus'
+import { drawerFocus } from './drawer-focus.state'
 import { persistLanguagePreference } from './persist-language-preference.adapter'
 
 const languages = [
@@ -99,7 +99,7 @@ export function LanguagePill(props: LanguagePillProps) {
 	}
 
 	function renderLanguageLink(
-		language: LanguageSwitcherOption & { href: string },
+		language: LanguageSwitcherLinkOption,
 		linkProps: LanguageSwitcherLinkProps,
 	) {
 		return (

@@ -10,7 +10,7 @@ import { routing } from '@i18n/routing'
 import { generateMetadata as notFoundMetadata } from '@layout/not-found'
 
 import locales from './locales.json'
-import { pageMetadata } from './page-metadata'
+import { pageMetadata } from './page-metadata.map'
 import pages from './pages.json'
 import site from './site.json'
 

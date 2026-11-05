@@ -3,13 +3,16 @@ import type { ReactNode } from 'react'
 import {
 	documentIds,
 	episodes,
-	revealed,
 	ticketPlan,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
-import { workflowModel } from '@routes/platform/microruntimes/content/microruntimes-workflow'
+} from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import { revealed } from '@routes/platform/microruntimes/content/revealed.compute'
+import { workflowModel } from '@routes/platform/microruntimes/content/workflow-model.compute'
 
 import { CardValue } from './card-value'
-import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
+import type {
+	TicketCardCopy,
+	TicketCardFormat,
+} from './ticket-card-format.compute'
 
 const suggestedModel = workflowModel(ticketPlan.model)
 const keptCount = episodes.filter(

@@ -8,8 +8,12 @@ import { ProductDetail } from '@views/products/product-detail'
 
 export { generateMetadata } from './page.metadata'
 
+interface ProductRouteParams {
+	id: string
+}
+
 interface ProductPageProps {
-	params: Promise<{ id: string }>
+	params: Promise<ProductRouteParams>
 }
 
 export default async function Page(props: ProductPageProps) {

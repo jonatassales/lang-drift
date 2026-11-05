@@ -1,6 +1,6 @@
-import type { RunMessageId } from '@routes/platform/microruntimes/content/microruntimes-workflow'
+import type { RunMessageId } from '@routes/platform/microruntimes/content/microruntimes-workflow.types'
 
-import type { TicketCardCopy } from './ticket-card-format'
+import type { TicketCardCopy } from './ticket-card-format.compute'
 
 type HasPlayed = (message: RunMessageId) => boolean
 

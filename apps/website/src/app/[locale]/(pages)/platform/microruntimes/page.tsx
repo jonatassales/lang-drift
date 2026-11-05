@@ -13,9 +13,9 @@ import {
 	lifecyclePhaseIds,
 	lifecycleScenarioIds,
 	ownershipRowIds,
-	type StateCardId,
 	stateCardIds,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+} from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import type { StateCardId } from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import { AuthoringFlow } from '@routes/platform/microruntimes/sections/authoring-flow'
 import { LifecycleSteps } from '@routes/platform/microruntimes/sections/lifecycle-steps'
 import { RuntimeDescriptorCard } from '@routes/platform/microruntimes/sections/runtime-descriptor-card'
@@ -31,7 +31,7 @@ import { Eyebrow } from 'web/ui/eyebrow'
 import { MicroruntimesIcon } from 'web/ui/icons/platform'
 import { cn } from 'web/utilities'
 
-export { generateMetadata } from './page.metadata'
+export { generateMetadata } from './page-metadata.map'
 
 const stateTones: Record<StateCardId, string> = {
 	requested: 'text-foreground',
@@ -41,8 +41,12 @@ const stateTones: Record<StateCardId, string> = {
 
 const headerCell = 'px-5 py-3 font-normal'
 
+interface LocaleRouteParams {
+	locale: string
+}
+
 interface MicroruntimesPageProps {
-	params: Promise<{ locale: string }>
+	params: Promise<LocaleRouteParams>
 }
 
 export default async function MicroruntimesPage(props: MicroruntimesPageProps) {

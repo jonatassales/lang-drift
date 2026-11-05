@@ -19,10 +19,15 @@ export interface LanguageSwitcherOption<Locale extends string = string> {
 	href?: string
 }
 
-export type LanguageSwitcherLinkProps = Omit<
-	ComponentPropsWithoutRef<'a'>,
-	'href'
-> & { href: string }
+export interface LanguageSwitcherLinkOption<Locale extends string = string>
+	extends LanguageSwitcherOption<Locale> {
+	href: string
+}
+
+export interface LanguageSwitcherLinkProps
+	extends Omit<ComponentPropsWithoutRef<'a'>, 'href'> {
+	href: string
+}
 
 export interface BaseLanguageSwitcherProps {
 	className?: string
@@ -34,9 +39,9 @@ export interface NavigationLanguageSwitcherProps<Locale extends string = string>
 	extends BaseLanguageSwitcherProps {
 	disabled?: never
 	onLocaleChange?: never
-	options: readonly (LanguageSwitcherOption<Locale> & { href: string })[]
+	options: readonly LanguageSwitcherLinkOption<Locale>[]
 	renderLink?: (
-		option: LanguageSwitcherOption<Locale> & { href: string },
+		option: LanguageSwitcherLinkOption<Locale>,
 		linkProps: LanguageSwitcherLinkProps,
 	) => ReactNode
 }

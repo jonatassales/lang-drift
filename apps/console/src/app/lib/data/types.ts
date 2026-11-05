@@ -176,6 +176,11 @@ export type RecommendationLimitationCode =
 	| 'memory_observation_missing'
 	| 'agent_quality_unmeasured'
 
+export interface RecommendationEvidence {
+	basis: 'observed_resource' | 'historical_configuration' | 'ticket_inference'
+	episodeIds: string[]
+}
+
 export interface Recommendation {
 	ticket?: {
 		name: string
@@ -201,16 +206,7 @@ export interface Recommendation {
 	}
 	limitations?: string[]
 	evidence?: Partial<
-		Record<
-			'cpu' | 'memoryMiB' | 'model' | 'effort',
-			{
-				basis:
-					| 'observed_resource'
-					| 'historical_configuration'
-					| 'ticket_inference'
-				episodeIds: string[]
-			}
-		>
+		Record<'cpu' | 'memoryMiB' | 'model' | 'effort', RecommendationEvidence>
 	>
 }
 

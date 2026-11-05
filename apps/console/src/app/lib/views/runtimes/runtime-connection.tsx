@@ -2,12 +2,12 @@
 
 import { use } from 'react'
 
-import type { Product } from '@data/types'
+import type { ProductEnvelope } from '@data/product-envelopes.types'
 
 import { ConnectionInstructions } from './connection-instructions'
 
 interface RuntimeConnectionProps {
-	initial: Promise<{ product: Product }>
+	initial: Promise<ProductEnvelope>
 }
 
 export function RuntimeConnection(props: RuntimeConnectionProps) {

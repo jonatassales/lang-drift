@@ -4,7 +4,7 @@ import { renderedGraph } from '@app/metadata/testdata/rendered-graph.compute'
 import { routing } from '@i18n/routing'
 
 import organization from './organization.json'
-import { pageMetadata } from './page-metadata'
+import { pageMetadata } from './page-metadata.map'
 import pages from './pages.json'
 import { serializeJsonLd } from './serialize-json-ld.compute'
 import site from './site.json'

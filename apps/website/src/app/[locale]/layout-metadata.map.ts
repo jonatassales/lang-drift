@@ -5,8 +5,12 @@ import { hasLocale } from 'next-intl'
 import site from '@app/metadata/site.json'
 import { routing } from '@i18n/routing'
 
+interface LocaleRouteParams {
+	locale: string
+}
+
 interface LayoutMetadataProps {
-	params: Promise<{ locale: string }>
+	params: Promise<LocaleRouteParams>
 }
 
 export async function generateMetadata(

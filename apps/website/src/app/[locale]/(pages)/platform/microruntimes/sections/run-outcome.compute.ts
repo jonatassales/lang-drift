@@ -2,7 +2,7 @@ import type { MicroruntimeSession } from '@app/atoms/microruntime-session.atom'
 import type {
 	RunLine,
 	WorkflowChoices,
-} from '@routes/platform/microruntimes/content/microruntimes-workflow'
+} from '@routes/platform/microruntimes/content/microruntimes-workflow.types'
 
 export interface RunOutcome {
 	choices: WorkflowChoices

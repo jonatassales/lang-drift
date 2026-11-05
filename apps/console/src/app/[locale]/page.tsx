@@ -1,7 +1,11 @@
 import { redirect } from '@i18n/navigation'
 
+interface LocaleRouteParams {
+	locale: string
+}
+
 interface HomeProps {
-	params: Promise<{ locale: string }>
+	params: Promise<LocaleRouteParams>
 }
 
 export default async function Home(props: HomeProps) {

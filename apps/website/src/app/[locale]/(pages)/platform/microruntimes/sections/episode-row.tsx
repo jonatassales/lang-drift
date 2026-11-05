@@ -1,7 +1,7 @@
 import type {
 	Episode,
 	EpisodeVerdict,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+} from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import { ShareBar } from 'web/ui/share-bar'
 import { cn } from 'web/utilities'
 

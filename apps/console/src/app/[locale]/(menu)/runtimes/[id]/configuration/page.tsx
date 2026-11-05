@@ -9,8 +9,12 @@ import { RuntimeEdit } from '@views/runtimes/runtime-edit'
 
 export { generateMetadata } from './page.metadata'
 
+interface RuntimeRouteParams {
+	id: string
+}
+
 interface PageProps {
-	params: Promise<{ id: string }>
+	params: Promise<RuntimeRouteParams>
 }
 
 export default async function Page(props: PageProps) {

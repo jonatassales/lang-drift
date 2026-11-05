@@ -1,19 +1,19 @@
 import { atom } from 'jotai'
 
-import {
-	type PlanEffort,
-	type PlanPhaseId,
-	phaseOf,
-	planSession,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
-import {
-	type HumanStageId,
-	initialWorkflowChoices,
-	isRequiredHumanStage,
-	runSession,
-	type WorkflowChoices,
-	type WorkflowModelId,
-} from '@routes/platform/microruntimes/content/microruntimes-workflow'
+import { isRequiredHumanStage } from '@routes/platform/microruntimes/content/is-required-human-stage.compute'
+import { planSession } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import type {
+	PlanEffort,
+	PlanPhaseId,
+} from '@routes/platform/microruntimes/content/microruntimes-content.types'
+import { initialWorkflowChoices } from '@routes/platform/microruntimes/content/microruntimes-workflow.data'
+import type {
+	HumanStageId,
+	WorkflowChoices,
+	WorkflowModelId,
+} from '@routes/platform/microruntimes/content/microruntimes-workflow.types'
+import { phaseOf } from '@routes/platform/microruntimes/content/phase-of.compute'
+import { runSession } from '@routes/platform/microruntimes/content/run-session.compute'
 
 // The Microruntimes hero's simulated session: the plan it types first, then,
 // once the visitor plays the workflow, the run. The session holds how many

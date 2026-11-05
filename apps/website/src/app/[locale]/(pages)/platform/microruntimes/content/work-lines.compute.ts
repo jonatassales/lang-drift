@@ -1,8 +1,5 @@
-import {
-	type RunLine,
-	type WorkflowChoices,
-	workStageIds,
-} from './microruntimes-workflow'
+import { workStageIds } from './microruntimes-workflow.data'
+import type { RunLine, WorkflowChoices } from './microruntimes-workflow.types'
 import { stageLines } from './stage-lines.compute'
 
 // The dev ticket: the terminal waits while the person writes the reserved

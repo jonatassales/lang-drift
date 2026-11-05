@@ -26,6 +26,12 @@ const defaultContext = 'value'
 const ivBytes = 12
 const tagBytes = 16
 
+interface TokenParts {
+	authTag: Buffer
+	ciphertext: Buffer
+	initializationVector: Buffer
+}
+
 // V8 serialization drops symbol keys and non-enumerable properties, runs visited
 // getters, and does not keep prototypes, methods, descriptors, or object identity.
 // This token is Node-only. It is not a protocol for Go or browsers.
@@ -119,13 +125,7 @@ export class CryptoService {
 		)
 	}
 
-	#parseToken(token: string):
-		| {
-				initializationVector: Buffer
-				ciphertext: Buffer
-				authTag: Buffer
-		  }
-		| undefined {
+	#parseToken(token: string): TokenParts | undefined {
 		if (typeof token !== 'string') return undefined
 
 		const segments = token.split('.')

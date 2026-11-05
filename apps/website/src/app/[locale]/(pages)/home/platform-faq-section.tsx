@@ -6,8 +6,8 @@ import {
 	safeSeatMessages,
 } from '@i18n/messages/index'
 import type { WebsiteLocale } from '@i18n/routing'
-import { finopsFaqIds } from '@routes/platform/finops/content/finops-content'
-import { microruntimesFaqIds } from '@routes/platform/microruntimes/content/microruntimes-content'
+import { finopsFaqIds } from '@routes/platform/finops/content/finops-content.data'
+import { microruntimesFaqIds } from '@routes/platform/microruntimes/content/microruntimes-content.data'
 import { FaqSectionShell } from '@routes/platform/product-page/faq-section-shell'
 import { safeSeatFaqIds } from '@routes/platform/safe-seat/safe-seat-content.data'
 

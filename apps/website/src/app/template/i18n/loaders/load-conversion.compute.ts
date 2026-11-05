@@ -1,7 +1,7 @@
 import type conversionJson from '@i18n/messages/conversion.json'
 import type { ConversionCopy } from '@i18n/messages/messages.types'
 
-import { triple } from './triple.validator'
+import { triple } from './triple.compute'
 
 export function loadConversion(
 	locale: (typeof conversionJson)['en'],

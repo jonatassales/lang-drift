@@ -4,10 +4,8 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { createTranslator } from 'next-intl'
 import { useEffect, useRef } from 'react'
 
-import {
-	type MicroruntimesMessages,
-	planSession,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+import { planSession } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import type { MicroruntimesMessages } from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import {
 	microruntimeSessionAtom,
 	recordPlayedCountAtom,

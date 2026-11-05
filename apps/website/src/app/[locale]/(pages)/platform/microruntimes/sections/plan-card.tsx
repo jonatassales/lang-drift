@@ -1,9 +1,7 @@
-import {
-	headroom,
-	revealed,
-	suggestedTotals,
-	ticketPlan,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+import { headroom } from '@routes/platform/microruntimes/content/headroom.compute'
+import { ticketPlan } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import { revealed } from '@routes/platform/microruntimes/content/revealed.compute'
+import { suggestedTotals } from '@routes/platform/microruntimes/content/suggested-totals.compute'
 import { Eyebrow } from 'web/ui/eyebrow'
 import { ShareBar } from 'web/ui/share-bar'
 import { cn } from 'web/utilities'
@@ -12,7 +10,10 @@ import { CardSection } from './card-section'
 import { CardValue, type CardValueState, revealState } from './card-value'
 import { ComponentsManifest } from './components-manifest'
 import { resolvedComponents } from './resolved-components.compute'
-import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
+import type {
+	TicketCardCopy,
+	TicketCardFormat,
+} from './ticket-card-format.compute'
 
 export { planSummary } from './plan-summary.compute'
 

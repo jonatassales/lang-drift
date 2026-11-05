@@ -1,10 +1,12 @@
 import { ProductBreadcrumb } from '@components/navigation/product-breadcrumb'
 
+interface BreadcrumbRouteParams {
+	locale: string
+	segments: string[]
+}
+
 interface BreadcrumbPageProps {
-	params: Promise<{
-		locale: string
-		segments: string[]
-	}>
+	params: Promise<BreadcrumbRouteParams>
 }
 
 export default async function BreadcrumbPage(props: BreadcrumbPageProps) {

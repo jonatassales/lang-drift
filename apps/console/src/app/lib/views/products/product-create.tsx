@@ -7,8 +7,9 @@ import { ErrorNotice } from '@components/error-notice/error-notice'
 import { fieldClass, labelClass } from '@components/form-styles/form-styles'
 import { PageHeading } from '@components/page-heading/page-heading'
 import { mutation } from '@data/api'
+import type { ProductEnvelope } from '@data/product-envelopes.types'
 import { type ReadResult, readResult } from '@data/read-result'
-import type { FolderListing, Product } from '@data/types'
+import type { FolderListing } from '@data/types'
 import { useRouter } from '@i18n/navigation'
 import { Button } from 'web/ui/button'
 import { Card } from 'web/ui/card'
@@ -51,7 +52,7 @@ export function ProductCreate(props: ProductCreateProps) {
 		setError(null)
 		startTransition(async () => {
 			try {
-				const result = await mutation<{ product: Product }>(
+				const result = await mutation<ProductEnvelope>(
 					productId ? `products/${productId}/folder` : 'products',
 					'POST',
 					{

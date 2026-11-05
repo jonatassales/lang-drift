@@ -1,8 +1,5 @@
-import {
-	type RunLine,
-	stageWork,
-	type workStageIds,
-} from './microruntimes-workflow'
+import { stageWork, type workStageIds } from './microruntimes-workflow.data'
+import type { RunLine } from './microruntimes-workflow.types'
 
 // One stage: the wait for the owner when the stage asks for a person, then
 // the stage's own work.

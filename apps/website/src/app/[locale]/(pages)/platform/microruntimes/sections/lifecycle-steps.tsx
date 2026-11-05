@@ -3,11 +3,11 @@
 import { useAtom } from 'jotai'
 import type { MouseEvent } from 'react'
 
-import {
-	type LifecycleStageId,
-	lifecycleStageIds,
-	type MicroruntimesMessages,
-} from '@routes/platform/microruntimes/content/microruntimes-content'
+import { lifecycleStageIds } from '@routes/platform/microruntimes/content/microruntimes-content.data'
+import type {
+	LifecycleStageId,
+	MicroruntimesMessages,
+} from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import { ChoiceButton } from '@routes/platform/product-page/choice-button'
 import { selectedLifecycleStageAtom } from '@state'
 import { Eyebrow } from 'web/ui/eyebrow'

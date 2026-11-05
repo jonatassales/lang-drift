@@ -1,6 +1,7 @@
 export type {
 	ActionLanguageSwitcherProps,
 	BaseLanguageSwitcherProps,
+	LanguageSwitcherLinkOption,
 	LanguageSwitcherLinkProps,
 	LanguageSwitcherOption,
 	LanguageSwitcherProps,

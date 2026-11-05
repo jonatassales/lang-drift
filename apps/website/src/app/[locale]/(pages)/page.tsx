@@ -13,10 +13,14 @@ import { PlatformFaqSection } from '@routes/home/platform-faq-section'
 import { PlatformHero } from '@routes/home/platform-hero'
 import { ScrollHint } from 'web/ui/scroll-hint'
 
-export { generateMetadata } from './page.metadata'
+export { generateMetadata } from './page-metadata.map'
+
+interface LocaleRouteParams {
+	locale: string
+}
 
 interface WebsitePageProps {
-	params: Promise<{ locale: string }>
+	params: Promise<LocaleRouteParams>
 }
 
 export default async function WebsitePage(props: WebsitePageProps) {

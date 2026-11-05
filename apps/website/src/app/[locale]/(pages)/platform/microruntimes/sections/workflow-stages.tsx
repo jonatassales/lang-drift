@@ -1,18 +1,23 @@
 import { type ChangeEvent, useId } from 'react'
 
+import { isRequiredHumanStage } from '@routes/platform/microruntimes/content/is-required-human-stage.compute'
 import {
-	type HumanStageId,
-	isRequiredHumanStage,
-	type RunLine,
-	stageProgress,
 	stageSkills,
-	type WorkflowChoices,
 	workflowStageIds,
-} from '@routes/platform/microruntimes/content/microruntimes-workflow'
+} from '@routes/platform/microruntimes/content/microruntimes-workflow.data'
+import type {
+	HumanStageId,
+	RunLine,
+	WorkflowChoices,
+} from '@routes/platform/microruntimes/content/microruntimes-workflow.types'
+import { stageProgress } from '@routes/platform/microruntimes/content/stage-progress.compute'
 import { cn } from 'web/utilities'
 
 import { ReadMark } from './read-mark'
-import type { TicketCardCopy, TicketCardFormat } from './ticket-card-format'
+import type {
+	TicketCardCopy,
+	TicketCardFormat,
+} from './ticket-card-format.compute'
 
 const skillText = 'font-mono text-[10px] text-muted-foreground'
 

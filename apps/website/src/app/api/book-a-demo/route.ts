@@ -8,7 +8,7 @@ import { interceptOrigin } from '@api/book-a-demo/interceptors/intercept-origin.
 import { interceptSchema } from '@api/book-a-demo/interceptors/intercept-schema.interceptor'
 import { forwardDemoRequest } from '@infra/demo-requests/forward-demo-request.adapter'
 
-import { bookDemoReply } from './book-demo-reply.response'
+import { bookDemoReply } from './book-demo-reply.map'
 import { errorReason } from './error-reason.fmt'
 
 export const runtime = 'nodejs'

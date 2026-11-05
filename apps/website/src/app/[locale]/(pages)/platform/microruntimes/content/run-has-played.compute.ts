@@ -1,4 +1,4 @@
-import type { RunLine, RunMessageId } from './microruntimes-workflow'
+import type { RunLine, RunMessageId } from './microruntimes-workflow.types'
 
 // True once the run has completed a line with this message.
 export function runHasPlayed(

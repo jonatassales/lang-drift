@@ -3,7 +3,7 @@
 import { act, cleanup, fireEvent, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { planSession } from '@routes/platform/microruntimes/content/microruntimes-content'
+import { planSession } from '@routes/platform/microruntimes/content/microruntimes-content.data'
 import { advanceTerminal } from '@routes/platform/microruntimes/sections/testdata/advance-terminal.mock'
 import { mountSessionTerminal } from '@routes/platform/microruntimes/sections/testdata/mount-session-terminal.mock'
 import {

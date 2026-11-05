@@ -182,7 +182,7 @@ import request from '@i18n/request'
 import proxy from '@proxy/locale'
 import header from '@layout/website-header/website-header'
 import home from '@routes/home/finops-section'
-import reply from '@api/book-a-demo/book-demo-reply.response'
+import reply from '@api/book-a-demo/book-demo-reply.map'
 import type { Product } from '@data/products'
 EOF
   if organize "$fixture"; then
@@ -193,7 +193,7 @@ EOF
 import scoped from '@testing-library/react'
 import React from 'react'
 
-import reply from '@api/book-a-demo/book-demo-reply.response'
+import reply from '@api/book-a-demo/book-demo-reply.map'
 import app from '@app/page'
 import components from '@components/button'
 import type { Product } from '@data/products'

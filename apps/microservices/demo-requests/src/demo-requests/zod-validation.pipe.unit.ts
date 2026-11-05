@@ -5,6 +5,11 @@ import { demoRequestSubmissionSchema } from 'infra/streaming'
 
 import { ZodValidationPipe } from './zod-validation.pipe.js'
 
+interface RefusalBody {
+	code: string
+	fieldErrors: Record<string, string>
+}
+
 const pipe = new ZodValidationPipe(demoRequestSubmissionSchema)
 
 describe('demo-requests/demo-requests/zod-validation.pipe', () => {
@@ -38,10 +43,7 @@ describe('demo-requests/demo-requests/zod-validation.pipe', () => {
 		}
 
 		expect(refusal).toBeInstanceOf(BadRequestException)
-		const body = (refusal as BadRequestException).getResponse() as {
-			code: string
-			fieldErrors: Record<string, string>
-		}
+		const body = (refusal as BadRequestException).getResponse() as RefusalBody
 		expect(body.code).toBe('VALIDATION_ERROR')
 		expect(Object.keys(body.fieldErrors).sort()).toEqual(['company', 'email'])
 	})
