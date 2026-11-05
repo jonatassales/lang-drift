@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] Each new row prints the known sites of its class in the current tree and nothing from a named negative set.
 - [ ] The guard-after-declaration program excludes Go, whose `if err != nil` sits under its assignment by the rule's own example.

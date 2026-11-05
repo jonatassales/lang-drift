@@ -6,7 +6,7 @@
 
 **Blocked by:** 0236, 0245.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] `platform/cli/drift quality detectors` passes, and fails when a fixture's expected set is edited.
 - [ ] Every awk detector, including the existing ones, has a fixture set it must report and one it must not; 0236's compound-condition fixtures are the owner's and are run, not written, here.

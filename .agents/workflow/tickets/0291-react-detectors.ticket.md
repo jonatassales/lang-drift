@@ -6,7 +6,7 @@
 
 **Blocked by:** 0246, 0286, 0287, 0288, 0289, 0290.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] `platform/cli/drift quality check react` reports nothing.
 - [ ] `platform/cli/drift quality detectors` covers every new awk program with a compliant and a violating component.

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0246.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] No file under `platform/cli/src/core/` declares more than one function.
 - [ ] `drift doctor`, `drift check biome`, `drift check localization`, `drift quality check`, `drift quality coverage` and `drift quality dead-code` behave as before.

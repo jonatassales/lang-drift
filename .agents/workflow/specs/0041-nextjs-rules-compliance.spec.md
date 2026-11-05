@@ -2,6 +2,8 @@
 
 **Status:** ready-for-agent
 
+> **Note, 2026-11-05.** The owner closed 0230, 0231, 0232, 0233, 0235 as won't fix: the work goes to the published packages, `@langdrift/cli` and `@langdrift/core`, until the runtime runs.
+
 ## Tickets
 
 - [ ] 0229: the website's lib folder dissolves into its route owners

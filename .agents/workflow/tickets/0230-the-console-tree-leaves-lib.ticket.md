@@ -6,7 +6,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] `apps/console/src/app/lib/` no longer exists and no file imports through a removed alias.
 - [ ] The console-stubs bridge lives under `apps/console/src/infra/console-stubs/`.

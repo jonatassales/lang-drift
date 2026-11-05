@@ -6,7 +6,7 @@
 
 **Blocked by:** 0267, 0268, 0269.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] Each new row reports its class in the tree before its fix and nothing after.
 - [ ] `platform/cli/drift quality check tooling` reports nothing.

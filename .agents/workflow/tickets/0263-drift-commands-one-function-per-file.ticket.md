@@ -6,7 +6,7 @@
 
 **Blocked by:** 0262.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] No shell file under `platform/` declares more than one function.
 - [ ] Every `drift` command behaves as before, including the fixture-driven `drift check biome` and `drift quality detectors`.

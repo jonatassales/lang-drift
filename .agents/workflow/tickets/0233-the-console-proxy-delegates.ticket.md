@@ -6,7 +6,7 @@
 
 **Blocked by:** 0230.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] `apps/console/src/proxy.ts` holds the matcher and a delegation, and sets no header or cookie itself.
 - [ ] The composed function has a test for the cookie hardening and the headers.

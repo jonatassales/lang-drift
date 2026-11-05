@@ -2,6 +2,8 @@
 
 **Status:** ready-for-agent
 
+> **Note, 2026-11-05.** The owner closed 0207 as won't fix: the work goes to the published packages, `@langdrift/cli` and `@langdrift/core`, until the runtime runs.
+
 ## Problem Statement
 
 A team that delivers with coding agents through `ex` can hand an agent the whole of every ticket. The work ships, but the people who own it stop writing it. They stop practicing the reasoning that lets them read, debug and explain the code at the moment an incident needs them. Bainbridge described this irony of automation in 1983. A 2026 randomized trial found that developers who learned a library with an AI assistant scored lower on a quiz of concepts, code reading and debugging, with no significant gain in speed. Developers also misjudge how much AI tools help them, so their own impression cannot settle the question. The evidence, and its limits, is in the research note `safe-seat.research.md`.

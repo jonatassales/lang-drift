@@ -6,7 +6,7 @@
 
 **Blocked by:** 0230.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] No `route.ts` in the console is a forwarder: each HTTP method's dispatch, validation and reply sit in the file.
 - [ ] The product `executions`, `history` and `secrets` routes are removed and the catch-all answers their paths with the same responses.

@@ -6,7 +6,7 @@
 
 **Blocked by:** 0229, 0230, 0231, 0232, 0233, 0234.
 
-**Status:** ready-for-agent
+**Status:** wontfix. The owner closed it on 2026-11-05: the work goes to the published packages, @langdrift/cli and @langdrift/core, until the runtime runs.
 
 - [ ] Each new detector, run against the commit before 0229 merged, reports that tree's violations, recorded as local evidence under `.audits/`.
 - [ ] `platform/cli/drift quality check 06-nextjs` reports nothing under `apps/`.

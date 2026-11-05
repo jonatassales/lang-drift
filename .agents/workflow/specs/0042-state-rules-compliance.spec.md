@@ -2,6 +2,8 @@
 
 **Status:** ready-for-agent
 
+> **Note, 2026-11-05.** The owner closed 0293, 0295, 0296, 0297, 0298 as won't fix: the work goes to the published packages, `@langdrift/cli` and `@langdrift/core`, until the runtime runs.
+
 ## Tickets
 
 - [ ] 0292: the Microruntimes session is fine-grained atoms
