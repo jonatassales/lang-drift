@@ -1,0 +1,24 @@
+# 0239: the website's files hold one responsibility each
+
+**Spec:** .agents/workflow/specs/0034-general-rules-compliance-in-apps.spec.md
+
+**What to build:** The website closes its structural general-rule findings: a test's helpers move to `testdata/` beside it, one function per file (fakes and drivers as `.mock.ts`, computations as `.compute.ts`); the files whose stem does not name their export are renamed after it with their responsibility's suffix, and `form-state.data` renames its export (`bookDemoFormState`); `BodyError` leaves the bounded body reader; every compound condition gets a name and every chained ternary becomes a lookup or guards; the language preference is persisted through an adapter that returns whether the write took; the body-reader cancel and the Turnstile prepare get a named rejection handler that reports through the existing observability path; the early-access form refuses a missing site key as a guard, so its `try` wraps only the Turnstile controller.
+
+**Blocked by:** 0229, 0232, 0234, 0236.
+
+**Status:** ready-for-agent
+
+- [ ] No test file under `apps/website` declares a helper function.
+- [ ] Every website file is named after its export.
+- [ ] No empty or comment-only `catch` and no discarded rejection remains in the website.
+- [ ] The storage adapter answers `false` when `localStorage` throws, with a unit test.
+- [ ] `pnpm turbo run check typecheck test build --filter=website` passes and no page changes in the built-in browser.
+
+## Dev part
+
+**Override:** No part qualifies: the ticket moves, renames or reshapes existing code without changing what it does, and a rename or a migration is never a dev part (policy, Categories). 2026-11-04.
+
+## Verification
+
+- `pnpm turbo run check typecheck test build --filter=website`
+- `platform/cli/drift quality check general`
