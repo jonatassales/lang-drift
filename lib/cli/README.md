@@ -108,10 +108,10 @@ npx @langdrift/cli agent run <runtime-id>
 During execution, `ex` coordinates the entire delivery lifecycle:
 
 1. **Gate check:** Verifies that list prices cover the run and reserves the estimated cost against the ticket allocation and period envelope.
-2. **Workflow stages:** Drives the coding agent through the stages defined in your workflow. When human approval is required, execution pauses until confirmed via terminal prompt or `npx @langdrift/cli agent confirm <runtime-id> <stage>`.
-3. **Local runtime:** Builds each component from its Dockerfile and starts the components in a local kind cluster, each named after its component, waiting on their readiness probes until healthy.
+2. **Local runtime:** Before any stage, builds each component from its Dockerfile and starts the components in a local kind cluster, each named after its component, waiting on their readiness probes until healthy. The bring-up has its own 20-minute timeout, enough for four image builds; a bring-up that fails or times out ends the lap as failed, takes down what started, releases the reservation and keeps the evidence, and no stage is played.
+3. **Workflow stages:** Drives the coding agent through the stages defined in your workflow, with the runtime up. When human approval is required, execution pauses with the runtime running until confirmed via terminal prompt or `npx @langdrift/cli agent confirm <runtime-id> <stage>`. A stage that fails ends the lap as failed the same way; the next run opens a new lap and plays the stage again.
 4. **Delivery observation:** Observes Git commits, branches, and PR checks read-only.
-5. **Settlement:** Tears down local runtime resources, returns unspent budget reservations, and records the run in the audit ledger.
+5. **Settlement:** Tears down local runtime resources, returns unspent budget reservations, and records the run in the audit ledger. A lap whose spend is unknown, because a call was cut off, holds its reservation instead.
 
 ### 4. Inspect status and diagnostics
 

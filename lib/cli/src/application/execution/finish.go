@@ -2,6 +2,7 @@ package execution
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -29,15 +30,11 @@ const (
 	CheckPending = "pending"
 )
 
-// finish is the run after its stages: the runtime comes up, the
+// finish is the run after its stages, with the runtime already up: the
 // implementation is complete, delivery is observed, the runtime goes down,
 // the reservation settles and the run remembers. Each part plays on from
 // where an earlier run of the lap left it.
 func (playing *playing) finish(ctx context.Context) (StartResult, error) {
-	if err := playing.bringUp(ctx); err != nil {
-		return playing.result(), err
-	}
-
 	playing.completed()
 
 	if err := playing.observeDelivery(ctx); err != nil {
@@ -51,12 +48,19 @@ func (playing *playing) finish(ctx context.Context) (StartResult, error) {
 	return playing.release()
 }
 
+// bringUpTimeout bounds the runtime's bring-up: the cluster, the image
+// builds of up to four components, the start and the wait for readiness.
+const bringUpTimeout = 20 * time.Minute
+
 // bringUp materializes the runtime from its fence, builds and starts it,
 // and prints that it is ready, with what the plan proposed for it.
 func (playing *playing) bringUp(ctx context.Context) error {
 	if playing.lap.Ready != nil {
 		return nil
 	}
+
+	ctx, cancel := context.WithTimeout(ctx, bringUpTimeout)
+	defer cancel()
 
 	if playing.lap.Execution == "" {
 		if err := playing.start(ctx); err != nil {
@@ -460,8 +464,60 @@ func (playing *playing) observed() *run.Observed {
 	return observed
 }
 
-// abort records a run that stopped in the runtime's lifecycle; the lap stays
-// open and the next run plays on from the same point.
+// failLap ends a lap that a bring-up or a stage failed: the runtime goes
+// down when it started, the lap ends as failed, what the reservation did
+// not spend returns to the budget, and the evidence stays. The next run
+// opens a new lap and plays on from the first stage not done. A cleanup
+// nobody confirmed leaves the outcome unknown and holds the reservation.
+func (playing *playing) failLap(ctx context.Context, cause error) (StartResult, error) {
+	if playing.lap.Execution != "" {
+		if err := playing.takeDown(ctx); err != nil {
+			return playing.result(), errors.Join(cause, err)
+		}
+	}
+
+	now := playing.now()
+	lap := &playing.lap
+	lap.Ended = &now
+
+	// An unconfirmed cleanup leaves the outcome and the reservation waiting.
+	if lap.Outcome != Unknown {
+		lap.Outcome = Failed
+		lap.Steps = append(lap.Steps, playing.failureStep(now))
+	}
+
+	playing.record.State, playing.record.Outcome = run.StateFailed, text(run.StateFailed)
+
+	if err := playing.persist(); err != nil {
+		return playing.result(), errors.Join(cause, err)
+	}
+
+	return playing.result(), cause
+}
+
+// failureStep settles a failed lap's reservation: held when a call was cut
+// off and its spend is unknown, released otherwise.
+func (playing *playing) failureStep(at harness.Timestamp) Step {
+	lap := playing.lap
+	if lap.Unmeasured {
+		return Step{
+			Name: "Held",
+			At:   at,
+			Note: "a call was cut off and its spend is unknown; the reservation is held",
+		}
+	}
+
+	released := max(0, lap.Reserved-lap.ObservedCents)
+
+	return Step{
+		Name: "Released",
+		At:   at,
+		Note: finops.Dollars(released) + " of the reservation returned to the budget",
+	}
+}
+
+// abort records a run that stopped in the runtime's lifecycle; the loop
+// then fails the lap.
 func (playing *playing) abort(cause error) error {
 	playing.record.State, playing.record.Outcome = run.StateFailed, text(run.StateFailed)
 	if err := playing.persist(); err != nil {

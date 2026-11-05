@@ -336,17 +336,17 @@ func TestRunStopsWhenTheRuntimeDoesNotComeUp(t *testing.T) {
 	if status != 1 || !strings.Contains(stderr, "did not come up") || !strings.Contains(stderr, "docker build") {
 		t.Fatalf("a runtime that did not come up gave %d: %s\n%s", status, stderr, stdout)
 	}
-	if record := runRecord(t, p); record.State != "failed" || record.Laps[0].Outcome != "open" {
-		t.Errorf("run record = %+v", record)
+	if record := runRecord(t, p); record.State != "failed" || record.Laps[0].Outcome != "failed" || len(driver.calls) != 0 || lifecycle.downs != 0 {
+		t.Errorf("after a runtime that did not come up: %+v, %d calls, %d downs", record, len(driver.calls), lifecycle.downs)
 	}
 
 	lifecycle.failUp = nil
-	status, stdout, stderr = p.exWith(deps, "agent", "run", "console-microruntime")
+	status, stdout, stderr = p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
 	if status != 0 {
-		t.Fatalf("the resumed run gave %d: %s\n%s", status, stderr, stdout)
+		t.Fatalf("the next run gave %d: %s\n%s", status, stderr, stdout)
 	}
-	expectLines(t, stdout, "agent › lap        0001 open · $11.40 reserved · resumed", "runtime    console-microruntime · revision 1 · 1 Deployments ready · 500m · 1024 MiB", "✓ ready      #19 for review · $1.60 released to the envelope")
-	if len(driver.calls) != 6 || lifecycle.ups != 2 {
-		t.Errorf("the resumed run made %d calls and %d ups", len(driver.calls), lifecycle.ups)
+	expectLines(t, stdout, "agent › gate       reserved $11.40 of $25.00 · opened", "runtime    console-microruntime · revision 1 · 1 Deployments ready · 500m · 1024 MiB", "✓ ready      #19 for review · $1.60 released to the envelope")
+	if len(driver.calls) != 6 || lifecycle.ups != 2 || runRecord(t, p).Laps[1].Number != "0002" {
+		t.Errorf("the next run made %d calls and %d ups", len(driver.calls), lifecycle.ups)
 	}
 }

@@ -28,6 +28,8 @@ func TestRunPausesAtTheGateThenOpensALap(t *testing.T) {
 	t.Parallel()
 
 	p, deps := plannedProject(t)
+	lifecycle := websiteLifecycle()
+	deps.Lifecycle = lifecycle
 	folder := filepath.Join(p.root, ".langdrift", "microruntimes", "runtimes", "console-microruntime")
 
 	status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime", "--model", "claude-opus-5-5", "--effort", "high")
@@ -108,6 +110,11 @@ func TestRunPausesAtTheGateThenOpensALap(t *testing.T) {
 			t.Errorf("the session did not print %q:\n%s", line, stdout)
 		}
 	}
+	// The runtime comes up before the first stage, which waits for the owner.
+	ready, waiting := strings.Index(stdout, "runtime    console-microruntime"), strings.Index(stdout, "agent › waiting    planning")
+	if ready < 0 || waiting < 0 || ready > waiting || lifecycle.ups != 1 {
+		t.Errorf("the runtime was not up before the first wait (%d ups):\n%s", lifecycle.ups, stdout)
+	}
 
 	decodeStrict(t, mustRead(t, filepath.Join(folder, "run.json")), &record)
 	if record.State != "waiting" || len(record.Laps) != 2 || record.Laps[1].Outcome != "open" || record.Laps[1].ReservedCents != 1140 || record.Laps[1].Choice.Overrode != nil || record.Window.Started == nil {
@@ -124,7 +131,8 @@ func TestRunPausesAtTheGateThenOpensALap(t *testing.T) {
 		t.Errorf("lap 0002:\n%s", second)
 	}
 
-	if status, stdout, stderr := p.exWith(deps, "agent", "status", "console-microruntime"); status != 0 || !strings.Contains(stdout, `"number": "0002"`) || !strings.Contains(stdout, `"state": "waiting"`) {
+	// The status shows the runtime up, by its execution, and the stage waiting.
+	if status, stdout, stderr := p.exWith(deps, "agent", "status", "console-microruntime"); status != 0 || !strings.Contains(stdout, `"number": "0002"`) || !strings.Contains(stdout, `"state": "waiting"`) || !strings.Contains(stdout, `"execution": "exec-`) || stageState(runRecord(t, p), "planning").State != "waiting" || lifecycle.downs != 0 {
 		t.Errorf("ex agent status = %d\n%s%s", status, stdout, stderr)
 	}
 

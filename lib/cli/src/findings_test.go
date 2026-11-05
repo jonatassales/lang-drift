@@ -64,55 +64,71 @@ func TestPlanningSpendCountsByPeriod(t *testing.T) {
 	}
 }
 
-// A call the driver cut off leaves what it used unknown: the next paid call
-// pauses at FG-04 instead of counting it as zero.
+// A call the driver cut off leaves what it used unknown: the lap fails with
+// its reservation held instead of counting the call as zero, and the next
+// run opens a new lap.
 func TestAnInterruptedCallLeavesTheSpendUnknown(t *testing.T) {
 	t.Parallel()
 
 	p, deps := plannedProject(t)
 	driver := websiteDriver()
 	driver.cutOff["to-spec"] = true
-	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, websiteLifecycle(), websiteDelivery(), time.Millisecond
+	lifecycle := websiteLifecycle()
+	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, lifecycle, websiteDelivery(), time.Millisecond
 
 	if status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 1 || !strings.Contains(stderr, "interrupted") {
 		t.Fatalf("an interrupted call gave %d: %s\n%s", status, stderr, stdout)
 	}
-
-	driver.cutOff = map[string]bool{}
-	status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime")
-	if status != 3 || !strings.Contains(stderr, "FG-04") {
-		t.Fatalf("the next call after an interrupted one gave %d: %s\n%s", status, stderr, stdout)
+	if record := runRecord(t, p); record.State != "failed" || record.Laps[0].Outcome != "failed" || lifecycle.downs != 1 {
+		t.Errorf("after an interrupted call: %+v, %d downs", record, lifecycle.downs)
 	}
-	expectLines(t, stdout, "agent › gate       paused · FG-04 · observed spend is unknown; a call reported no usage")
+	lap := string(mustRead(t, filepath.Join(runtimeFolder(p), "laps", "0001.lap.md")))
+	if !strings.Contains(lap, "| Held | ") || strings.Contains(lap, "| Released | ") {
+		t.Errorf("the interrupted lap did not hold its reservation:\n%s", lap)
+	}
 	if line := ledgerOf(t, p).Laps[0]; line.TokensThousands.Observed != nil || line.Cents.Variance != nil {
 		t.Errorf("an interrupted lap's line = %+v", line)
 	}
+
+	driver.cutOff = map[string]bool{}
+	status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
+	if status != 0 {
+		t.Fatalf("the next run after an interrupted one gave %d: %s\n%s", status, stderr, stdout)
+	}
+	if runRecord(t, p).Laps[1].Number != "0002" || ledgerOf(t, p).Laps[0].TokensThousands.Observed != nil {
+		t.Errorf("the next run did not open lap 0002 over the held lap 0001:\n%s", stdout)
+	}
 }
 
-// A runtime that started but was not ready is looked at again on the next
-// run, never taken for ready.
-func TestARuntimeThatWasNotReadyIsObservedAgain(t *testing.T) {
+// A runtime that started but was not ready fails the lap before any stage:
+// it is taken down, the reservation returns, and the next run opens a new
+// lap that brings it up again.
+func TestARuntimeThatIsNotReadyFailsTheLap(t *testing.T) {
 	t.Parallel()
 
 	p, deps := plannedProject(t)
 	lifecycle := websiteLifecycle()
 	lifecycle.notReady = 1
-	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = websiteDriver(), lifecycle, websiteDelivery(), time.Millisecond
+	driver := websiteDriver()
+	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, lifecycle, websiteDelivery(), time.Millisecond
 
 	if status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 1 || !strings.Contains(stderr, "not ready") {
 		t.Fatalf("a runtime that was not ready gave %d: %s\n%s", status, stderr, stdout)
 	}
+	if record := runRecord(t, p); record.State != "failed" || record.Laps[0].Outcome != "failed" || len(driver.calls) != 0 || lifecycle.downs != 1 {
+		t.Errorf("after a runtime that was not ready: %+v, %d calls, %d downs", record, len(driver.calls), lifecycle.downs)
+	}
+	if lap := string(mustRead(t, filepath.Join(runtimeFolder(p), "laps", "0001.lap.md"))); !strings.Contains(lap, "| Released | ") {
+		t.Errorf("the failed lap released nothing:\n%s", lap)
+	}
 
-	status, stdout, stderr := p.exWith(deps, "agent", "run", "console-microruntime")
+	status, stdout, stderr := p.exInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
 	if status != 0 {
-		t.Fatalf("the resumed run gave %d: %s\n%s", status, stderr, stdout)
+		t.Fatalf("the next run gave %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout, "runtime    console-microruntime · revision 1 · 1 Deployments ready · 500m · 1024 MiB", "✓ ready      #19 for review · $1.60 released to the envelope")
-	if lifecycle.ups != 1 {
-		t.Errorf("the runtime was brought up %d times, want once", lifecycle.ups)
-	}
-	if lap := string(mustRead(t, filepath.Join(runtimeFolder(p), "laps", "0001.lap.md"))); !strings.Contains(lap, "| Ready | ") {
-		t.Errorf("the lap has no Ready step:\n%s", lap)
+	if lifecycle.ups != 2 || runRecord(t, p).Laps[1].Number != "0002" {
+		t.Errorf("the next run brought the runtime up %d times in total, want twice, in lap 0002", lifecycle.ups)
 	}
 }
 
