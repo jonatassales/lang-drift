@@ -120,7 +120,7 @@ check_exports() {
           while IFS= read -r name; do
             case "$name" in
               generateMetadata | generateStaticParams | generateViewport | metadata | viewport | \
-                dynamic | revalidate | runtime | config | proxy | middleware | \
+                dynamic | revalidate | runtime | maxDuration | config | proxy | middleware | \
                 GET | HEAD | POST | PUT | PATCH | DELETE | OPTIONS)
                 continue
                 ;;

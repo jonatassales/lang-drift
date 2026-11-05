@@ -7,7 +7,8 @@
 			"@ui/*": ["./src/app/lib/ui/*"],
 			"@i18n/*": ["./src/app/template/i18n/*"],
 			"@proxy/*": ["./src/proxy/*"],
-			"@data/*": ["./src/app/lib/data/*"]
+			"@data/*": ["./src/app/lib/data/*"],
+			"@infra/*": ["./src/infra/*"]
 		}
 	}
 }

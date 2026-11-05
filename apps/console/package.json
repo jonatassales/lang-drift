@@ -8,26 +8,31 @@
 		"start": "next start --hostname 127.0.0.1 --port 3001",
 		"typecheck": "tsc --noEmit",
 		"typegen": "next typegen",
-		"test": "node --test 'src/**/*.test.ts'"
+		"test": "node --import tsx --test 'src/**/*.test.ts'"
 	},
 	"dependencies": {
-		"tokens": "workspace:*",
-		"web": "workspace:*",
+		"@anthropic-ai/sdk": "1.1.0",
 		"@vercel/analytics": "^2.0.1",
 		"next": "16.4.3",
 		"next-intl": "4.14.5",
 		"react": "19.3.0",
 		"react-dom": "19.3.0",
 		"server-only": "^0.0.1",
-		"sinapsi": "0.4.0"
+		"sinapsi": "0.4.0",
+		"tokens": "workspace:*",
+		"web": "workspace:*",
+		"zod": "^4.6.7"
 	},
 	"devDependencies": {
+		"@langdrift/core": "workspace:*",
 		"@tailwindcss/postcss": "4.3.3",
 		"@types/node": "^24",
 		"@types/react": "19.3.0",
 		"@types/react-dom": "19.3.0",
+		"ajv": "8.20.0",
 		"postcss": "8.5.29",
 		"tailwindcss": "4.3.3",
+		"tsx": "4.23.15",
 		"typescript": "6.0.3"
 	}
 }
