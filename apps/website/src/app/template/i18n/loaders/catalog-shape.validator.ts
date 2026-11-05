@@ -1,7 +1,5 @@
 import bookDemoJson from '@i18n/messages/book-a-demo.json'
 import conversionJson from '@i18n/messages/conversion.json'
-import earlyAccessJson from '@i18n/messages/early-access.json'
-import earlyAccessSentJson from '@i18n/messages/early-access-sent.json'
 import finopsJson from '@i18n/messages/finops.json'
 import footerJson from '@i18n/messages/footer.json'
 import headerJson from '@i18n/messages/header.json'
@@ -33,8 +31,6 @@ export function assertCatalogShape(
 assertCatalogShape('header', headerJson)
 assertCatalogShape('privacy', privacyJson)
 assertCatalogShape('conversion', conversionJson)
-assertCatalogShape('early-access', earlyAccessJson)
-assertCatalogShape('early-access-sent', earlyAccessSentJson)
 assertCatalogShape('footer', footerJson)
 assertCatalogShape('platform', platformJson)
 assertCatalogShape('route-state', routeStateJson)

@@ -4,6 +4,7 @@ import { useAtom } from 'jotai'
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
+import { ProductBadge } from '@components/product-badge'
 import { Link } from '@i18n/navigation'
 import { themeAtom } from '@state'
 import { Brand } from 'web/ui/brand'
@@ -13,7 +14,6 @@ import { drawerFocus } from './website-header/drawer-focus'
 import { LanguagePill } from './website-header/language-pill'
 import { PlatformMenu } from './website-header/platform-menu'
 import { platformProducts } from './website-header/platform-products'
-import { ProductBadge } from './website-header/product-badge'
 import { panelSurface } from './website-header/surface'
 
 // Entries without a destination yet read like their neighbors but do not

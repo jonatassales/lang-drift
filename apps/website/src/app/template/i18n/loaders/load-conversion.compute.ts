@@ -11,11 +11,11 @@ export function loadConversion(
 		plans: {
 			...locale.plans,
 			cards: {
-				trial: {
-					...locale.plans.cards.trial,
+				starter: {
+					...locale.plans.cards.starter,
 					items: triple(
-						locale.plans.cards.trial.items,
-						'plans.cards.trial.items',
+						locale.plans.cards.starter.items,
+						'plans.cards.starter.items',
 					),
 				},
 				plus: {

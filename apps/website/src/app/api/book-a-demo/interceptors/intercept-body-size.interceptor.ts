@@ -1,5 +1,5 @@
+import { declaresOversizedBody } from '@app/api/book-a-demo/body/declares-oversized-body.validation'
 import { reply } from '@components/book-a-demo/book-demo-reply.response'
-import { declaresOversizedBody } from '@components/early-access/declares-oversized-body.validation'
 
 import { bodyLimit } from './body-limit.data'
 

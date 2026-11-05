@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
-// import { EarlyAccessSection } from '@components/early-access/section'
 import { PlansSection } from '@components/plans-section'
 import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'

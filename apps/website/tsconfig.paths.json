@@ -4,7 +4,6 @@
 			"@app/*": ["./src/app/*"],
 			"@components/*": ["./src/app/lib/components/*"],
 			"@factories/*": ["./src/factories/*"],
-			"@event-testdata/*": ["./src/app/lib/components/early-access/testdata/*"],
 			"@i18n/*": ["./src/app/template/i18n/*"],
 			"@infra/*": ["./src/infra/*"],
 			"@services/*": ["./src/services/*"],

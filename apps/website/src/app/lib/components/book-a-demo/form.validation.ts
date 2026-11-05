@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-import { earlyAccessEmailSchema } from '@components/early-access/form.validation'
 import { routing } from '@i18n/routing'
 
+import { emailSchema } from './email.validation'
 import { positionIds } from './positions'
 
 // Providers that hand out addresses to anyone; a demo request names a company.
@@ -44,9 +44,9 @@ const freeMailDomains = new Set([
 	'bol.com.br',
 ])
 
-// The early-access rules say what a valid address is and lowercase its
-// domain; a demo request adds that the domain is not a free-mail provider.
-const companyEmailSchema = earlyAccessEmailSchema.refine(
+// A demo request takes a deliverable address whose domain is not a free-mail
+// provider.
+const companyEmailSchema = emailSchema.refine(
 	(email) => !freeMailDomains.has(email.slice(email.indexOf('@') + 1)),
 	{ error: 'emailFreeMail' },
 )

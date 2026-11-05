@@ -1,10 +1,8 @@
 # Website
 
-The LangDrift site, started as today's langdrift.md and reshaped into one agentic FinOps platform page. It is the public, localized LangDrift website: the home page, the FinOps and Microruntimes pages, pricing, privacy and the early-access flow. Demo calls to action lead to `/book-a-demo/`, whose form validates a request and forwards it to the demo-requests service under `apps/microservices`; while that service is not reachable, the form shows the return-soon notice.
+The LangDrift site, started as today's langdrift.md and reshaped into one agentic FinOps platform page. It is the public, localized LangDrift website: the home page, the platform pages, pricing and privacy. Demo calls to action lead to `/book-a-demo/`, which shows a return-soon card while demo requests are paused. Its form stays commented out in the page until demos open; it validates a request and forwards it to the demo-requests service under `apps/microservices`, and shows the return-soon notice while that service is not reachable.
 
-Early access posts to a private registry service outside this repository. Admission → Turnstile Siteverify → registration in the registry, which persists the contact and sends the confirmation. The website holds no email credentials and never sends mail itself: the demo-requests service records a request and its mailer sends the emails. HTTP 202 confirms persistence, not delivery.
-
-Sign-up is paused in code until feature flags have a proper home: the section shows the return-soon notice, the privacy page states the pause and `/api/early-access/` answers 503. The code that opens it stays commented where it lives: the form in `early-access/section.tsx`, the active notice in the privacy page and the real handler in `api/early-access/route.ts`.
+The website holds no email credentials and never sends mail itself: the demo-requests service records a request and its mailer sends the emails. HTTP 202 confirms persistence, not delivery.
 
 ## Development
 
@@ -25,18 +23,8 @@ Run from the repository root:
 | Variable | Requirement |
 | --- | --- |
 | `CRYPTO_SECRET` | Server-only 32-byte AES key in canonical base64; the locale proxy needs it. In development, it is generated on the fly if unset. In production, provide a 32-byte key from `openssl rand -base64 32`. Every instance of a deploy uses the same key. |
-| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | The Invisible production widget; Cloudflare's official Invisible test key locally. |
-| `TURNSTILE_SECRET_KEY` | Server-only widget secret; production rejects test keys. |
-| `TURNSTILE_EXPECTED_HOSTNAME` | Exact approved hostname; `localhost` for local fixtures. |
-| `TURNSTILE_VERIFY_URL` | In production, exactly `https://challenges.cloudflare.com/turnstile/v0/siteverify`. |
-| `EARLY_ACCESS_PUBLIC_ORIGIN` | Exact canonical browser origin; HTTPS in production. |
-| `EARLY_ACCESS_REGISTRY_URL` | Private authenticated registry origin; HTTPS in production. |
-| `EARLY_ACCESS_REGISTRY_KEY` | Server-only website credential for the registry, at least 32 characters. |
-| `EARLY_ACCESS_MODE` | `test` selects the test fixtures outside development; anything else behaves as production. |
 | `DEMO_REQUESTS_URL` | Origin of the demo-requests service the edge forwards accepted demo requests to; unset, the form answers that requests are paused. |
 | `DEMO_REQUESTS_TOKEN` | Server-only bearer token the demo-requests service expects, at least 32 characters. |
-
-Production fails closed until a trusted ingress contract for the host exists. Registry admission is never exposed to browsers, and client-supplied IP headers never count as proof.
 
 `next start` serves the website correctly as its script runs it. Do not bind it with `--hostname 127.0.0.1`: Next renames a loopback host `localhost`, mistakes next-intl's rewrite to `/pt-BR` or `/zh-Hant` for an external one, and every `pt-br` and `zh-hant` page loops on 308 (ticket 0121). Vercel is unaffected.
 
@@ -51,7 +39,7 @@ Every response carries one header set, from `headers()` in `next.config.ts`; the
 | `X-Content-Type-Options` | `nosniff` |
 | `Referrer-Policy` | `strict-origin-when-cross-origin` |
 | `X-Frame-Options` | `DENY` |
-| `Permissions-Policy` | `camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()` |
+| `Permissions-Policy` | `camera=(), microphone=(), geolocation=(), payment=(), usb=()` |
 | `Cross-Origin-Opener-Policy` | `same-origin` |
 
 `X-Powered-By` is off.
@@ -105,36 +93,9 @@ The proxy stores the language preference for 180 days in an encrypted, httpOnly 
 
 Copy lives in JSON under `src/app/template/i18n/messages/`; localized metadata lives under `src/app/metadata/`. Some catalog families are read directly by server components rather than through the next-intl provider. [The localization rule](/.claude/rules/08-localization.rule.md) and [the SEO rule](/.claude/rules/09-seo.rule.md) set the requirements.
 
-## Early access
+## Privacy
 
-The early-access flow below stays paused until it is separately authorized.
-
-**Submission:**
-
-1. Focus prepares Invisible Turnstile lazily.
-2. A valid submission takes a local lock, runs one challenge and sends JSON to `/api/early-access/`.
-3. A spinner, live feedback, `aria-busy`, disabled controls and reduced-motion behavior cover verification, submission and navigation.
-4. An error keeps the address, and a retry runs a fresh challenge.
-5. Unmounting cancels client work. A cancellation after the server has persisted the request does not undo it; repeated requests keep the original intent.
-
-**The route:**
-
-- It checks the exact origin and host, a body of at most 4 KiB, strict field types and properties, and address limits before registry admission.
-- A rejected admission never calls Siteverify.
-- Siteverify has a 2.5 s timeout and strict success, hostname and action checks. Only verified tokens reach registration, and tokens never enter the registry, logs, URLs or browser storage.
-- A registry 429 returns `Retry-After`; a 503 means unavailable.
-- No result reveals whether an address already exists.
-
-## Privacy and release
-
-The localized `/privacy/` page and the footer links disclose Cloudflare Invisible Turnstile and link its [Privacy Addendum](https://www.cloudflare.com/en-gb/turnstile-privacy-policy/). The notice describes private contact persistence and the queued confirmation.
-
-Before sign-up opens:
-
-- Retention, deletion, operator and legal details need owner review. No global compliance claim is made.
-- Production needs approved widget hostnames, pre-clearance off, TLS and private connectivity to the registry, proof of the WAF and proxy chain, and a controlled real-widget smoke test on the approved hostname.
-- Local fixtures prove none of these.
-- The policy must then allow Turnstile. Add `https://challenges.cloudflare.com` to `script-src` and replace `frame-src 'none'` with it, then check the whole list against [Cloudflare's guidance](https://developers.cloudflare.com/turnstile/reference/content-security-policy/).
+The localized `/privacy/` page says what the site receives: the connection information every request carries, an email you choose to send, and the theme preference kept in local storage. It changes, with a new date, whenever the site starts collecting something else.
 
 ## After deploying
 

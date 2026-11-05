@@ -8,7 +8,7 @@ afterEach(() => {
 	cleanup()
 })
 
-describe('website/src/app/lib/components/website-header/product-badge', () => {
+describe('website/lib/components/product-badge', () => {
 	it('renders children with discreet badge styling', () => {
 		render(<ProductBadge>Coming soon</ProductBadge>)
 

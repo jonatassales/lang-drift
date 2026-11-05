@@ -5,11 +5,16 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import type { BookDemoMessages } from '@i18n/messages/messages.types'
-import { useRouter } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
 import { Toast } from 'web/ui/toast'
 
-import type { BookDemoData, BookDemoField, BookDemoInput } from './form.types'
+import { DemoNotice } from './demo-notice'
+import type {
+	BookDemoData,
+	BookDemoField,
+	BookDemoInput,
+	BookDemoOutcome,
+} from './form.types'
 import { bookDemoSchema } from './form.validation'
 import { initialBookDemoInput } from './form-state.data'
 import { isBookDemoErrorCode } from './is-book-demo-error-code.validation'
@@ -34,12 +39,11 @@ const errorText = 'm-0 text-xs text-status-danger'
 export function BookDemoForm(props: BookDemoFormProps) {
 	const { copy, locale } = props
 
-	const [outcome, setOutcome] = useState<'idle' | 'unavailable'>('idle')
+	const [outcome, setOutcome] = useState<BookDemoOutcome>('idle')
 	const [errorMessage, setErrorMessage] = useState<string | null>(null)
 	const noticeRef = useRef<HTMLHeadingElement>(null)
 	const fieldId = useId()
 
-	const router = useRouter()
 	const { formState, handleSubmit, register } = useForm<
 		BookDemoInput,
 		unknown,
@@ -50,9 +54,10 @@ export function BookDemoForm(props: BookDemoFormProps) {
 		resolver: zodResolver(bookDemoSchema),
 	})
 
-	// Focus the unavailable heading if the demo request submission is temporarily unavailable.
+	// Focus the notice heading once the request is sent or found unavailable,
+	// so a screen reader announces the outcome that replaced the form.
 	useEffect(() => {
-		if (outcome === 'unavailable') noticeRef.current?.focus()
+		if (outcome !== 'idle') noticeRef.current?.focus()
 	}, [outcome])
 
 	function errorOf(field: BookDemoField) {
@@ -80,7 +85,7 @@ export function BookDemoForm(props: BookDemoFormProps) {
 			})
 
 			if (response.ok) {
-				router.push('/early-access-sent')
+				setOutcome('sent')
 
 				return
 			}
@@ -97,19 +102,10 @@ export function BookDemoForm(props: BookDemoFormProps) {
 		}
 	}
 
-	if (outcome === 'unavailable') {
+	if (outcome !== 'idle') {
 		return (
 			<div>
-				<h2
-					className="m-0 text-2xl font-medium tracking-tight outline-none"
-					ref={noticeRef}
-					tabIndex={-1}
-				>
-					{copy.form.unavailable.title}
-				</h2>
-				<p className="mt-3 mb-0 text-base leading-relaxed text-muted-foreground">
-					{copy.form.unavailable.description}
-				</p>
+				<DemoNotice copy={copy.form[outcome]} headingRef={noticeRef} />
 			</div>
 		)
 	}

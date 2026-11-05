@@ -44,37 +44,14 @@ export default async function PrivacyPage(props: PrivacyPageProps) {
 							{copy.title}
 						</h1>
 						<p className="text-sm">
-							<time dateTime="2026-11-01">{copy.updated}</time>
+							<time dateTime="2026-11-04">{copy.updated}</time>
 						</p>
 						<p>{copy.introduction}</p>
 					</header>
 					<section aria-labelledby="privacy-information" className="mb-10">
 						<h2 id="privacy-information">{copy.overviewTitle}</h2>
 						<p>{copy.overview}</p>
-						{/* Sign-up is paused until feature flags have a proper home. When it opens, show copy.active instead. */}
 						<p>{copy.paused}</p>
-						{/* <p>{copy.active}</p> */}
-					</section>
-					<section aria-labelledby="privacy-turnstile" className="mb-10">
-						<h2 id="privacy-turnstile">{copy.turnstileTitle}</h2>
-						{copy.turnstile.map((paragraph) => (
-							<p key={paragraph}>{paragraph}</p>
-						))}
-						<p>
-							{copy.addendumIntroduction}{' '}
-							<a className={link} href={copy.addendumUrl}>
-								{copy.addendumLabel}
-							</a>
-							.
-						</p>
-						<p>
-							<a
-								className={link}
-								href="https://www.cloudflare.com/privacypolicy/"
-							>
-								{copy.providerPolicy}
-							</a>
-						</p>
 					</section>
 					<section aria-labelledby="privacy-preferences" className="mb-10">
 						<h2 id="privacy-preferences">{copy.preferencesTitle}</h2>

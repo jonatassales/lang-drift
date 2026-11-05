@@ -2,12 +2,15 @@ import { notFound } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
-import { BookDemoForm } from '@components/book-a-demo/form'
+// Demo requests return with the form below, once demos open again.
+// import { BookDemoForm } from '@components/book-a-demo/form'
+import { DemoNotice } from '@components/book-a-demo/demo-notice'
 import { SkipLink } from '@components/skip-link'
 import { WebsiteFooter } from '@components/website-footer'
 import { WebsiteHeader } from '@components/website-header'
 import { WebsiteStructuredData } from '@components/website-structured-data'
 import { bookDemoMessages } from '@i18n/messages/index'
+import { Link } from '@i18n/navigation'
 import { routing } from '@i18n/routing'
 
 export { generateMetadata } from './page.metadata'
@@ -51,7 +54,17 @@ export default async function BookDemoPage(props: BookDemoPageProps) {
 							className="scroll-mt-24 rounded-2xl border border-border bg-card p-6 sm:p-8"
 							id="book-a-demo-form"
 						>
-							<BookDemoForm copy={copy} locale={locale} />
+							<DemoNotice copy={copy.paused} />
+							<Link
+								className="mt-6 inline-flex min-h-11 items-center text-sm font-medium text-foreground underline decoration-border underline-offset-4 hover:decoration-primary focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
+								href="/"
+							>
+								{copy.paused.home}
+							</Link>
+							{/* Demo requests return here once demos open again. The form's zod
+							schema then reaches the client bundle, and zod probes for eval:
+							set it jitless (z.config) first, so the CSP reports nothing. */}
+							{/* <BookDemoForm copy={copy} locale={locale} /> */}
 						</div>
 					</div>
 				</section>

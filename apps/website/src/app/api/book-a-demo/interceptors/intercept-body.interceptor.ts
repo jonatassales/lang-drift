@@ -1,9 +1,9 @@
-import { reply } from '@components/book-a-demo/book-demo-reply.response'
-import { parseSubmissionJSON } from '@components/early-access/parse-submission-json.compute'
+import { parseSubmissionJSON } from '@app/api/book-a-demo/body/parse-submission-json.compute'
 import {
 	BodyError,
 	readBoundedBody,
-} from '@components/early-access/request.body'
+} from '@app/api/book-a-demo/body/request.body'
+import { reply } from '@components/book-a-demo/book-demo-reply.response'
 
 import { bodyLimit } from './body-limit.data'
 

@@ -364,12 +364,12 @@ export const documentReads = {
 export const ticketPlan = {
 	ticket: {
 		number: '0031',
-		slug: 'early-access-runtime',
+		slug: 'book-a-demo-runtime',
 	},
 	artifacts: {
-		prd: '0002-PRD-early-access.prd.md',
-		designDoc: '0005-DD-early-access-runtime.dd.md',
-		spec: '0011-SPEC-early-access-runtime.spec.md',
+		prd: '0002-PRD-book-a-demo.prd.md',
+		designDoc: '0005-DD-book-a-demo-runtime.dd.md',
+		spec: '0011-SPEC-book-a-demo-runtime.spec.md',
 		guardrail: '0001-finops.gr.md',
 	} satisfies Record<DocumentId, string>,
 	guardrailCriteria: ['FIN-02', 'FIN-03', 'FIN-04'],
