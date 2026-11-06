@@ -151,7 +151,7 @@ func TestRunWaitsForTheOwnerThenPlaysTheStages(t *testing.T) {
 	if status != 0 {
 		t.Fatalf("dft agent run = %d: %s\n%s", status, stderr, stdout)
 	}
-	expectLines(t, stdout, "agent › gate       reserved $11.40 of $25.00 · opened", "agent › waiting    planning · the owner confirms")
+	expectLines(t, stdout, "console › gate       reserved $11.40 of $25.00 · opened", "console › waiting    planning · the owner confirms")
 	if len(driver.calls) != 0 {
 		t.Errorf("the run called the driver before the owner confirmed: %+v", driver.calls)
 	}
@@ -165,7 +165,7 @@ func TestRunWaitsForTheOwnerThenPlaysTheStages(t *testing.T) {
 	if status != 0 {
 		t.Fatalf("a run over the waiting lap gave %d:\n%s", status, stdout)
 	}
-	expectLines(t, stdout, "agent › lap        0001 open · $11.40 reserved · resumed", "agent › waiting    planning · the owner confirms")
+	expectLines(t, stdout, "console › lap        0001 open · $11.40 reserved · resumed", "console › waiting    planning · the owner confirms")
 
 	status, stdout, stderr = p.dftWith(deps, "agent", "confirm", "console-microruntime", "planning")
 	if status != 0 || !strings.Contains(stdout, "✓ confirmed  planning · by owner\n") {
@@ -186,13 +186,13 @@ func TestRunWaitsForTheOwnerThenPlaysTheStages(t *testing.T) {
 		t.Fatalf("the resumed run gave %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout,
-		"agent › lap        0001 open · $11.40 reserved · resumed",
-		"agent › grilling   3 open questions settled",
-		"agent › to-spec    0011-SPEC revised · 3 acceptance criteria",
-		"agent › to-tickets 3 tickets · blocking edges recorded",
-		"agent › implement  tdd · 5 components · 14 files · 32 tests green",
-		"agent › tdd        32 tests green · nothing left to refactor",
-		"agent › code-review 2 findings · fixed",
+		"console › lap        0001 open · $11.40 reserved · resumed",
+		"console › grilling   3 open questions settled",
+		"console › to-spec    0011-SPEC revised · 3 acceptance criteria",
+		"console › to-tickets 3 tickets · blocking edges recorded",
+		"console › implement  tdd · 5 components · 14 files · 32 tests green",
+		"console › tdd        32 tests green · nothing left to refactor",
+		"console › code-review 2 findings · fixed",
 		"✓ completed  implementation · $9.80 observed of $11.40 reserved · usage record",
 	)
 	if strings.Contains(stdout, "waiting") || strings.Contains(stdout, "confirmed") {
@@ -284,16 +284,16 @@ func TestRunConfirmsOnTheTerminal(t *testing.T) {
 	if status != 0 || !strings.Contains(stderr, "Confirm planning? [y/N]: ") || strings.Contains(stdout, "confirmed") {
 		t.Fatalf("a declined confirmation gave %d: %s\n%s", status, stderr, stdout)
 	}
-	expectLines(t, stdout, "agent › waiting    planning · the owner confirms")
+	expectLines(t, stdout, "console › waiting    planning · the owner confirms")
 
 	status, stdout, stderr = p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm", "--by", "jonatas")
 	if status != 0 {
 		t.Fatalf("a confirmed run gave %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout,
-		"agent › waiting    planning · the owner confirms",
+		"console › waiting    planning · the owner confirms",
 		"✓ confirmed  planning · by jonatas",
-		"agent › grilling   3 open questions settled",
+		"console › grilling   3 open questions settled",
 		"✓ completed  implementation · $9.80 observed of $11.40 reserved · usage record",
 	)
 }
@@ -320,7 +320,7 @@ func TestRunPausesThePaidCallsAtTheReservation(t *testing.T) {
 	if status != 3 || !strings.Contains(stderr, "FG-04") || len(driver.calls) != 1 {
 		t.Fatalf("the exhausted lap gave %d with %d calls: %s\n%s", status, len(driver.calls), stderr, stdout)
 	}
-	expectLines(t, stdout, "agent › grilling   3 open questions settled", "agent › gate       paused · FG-04 · observed 1400 reached the reservation 1140")
+	expectLines(t, stdout, "console › grilling   3 open questions settled", "console › gate       paused · FG-04 · observed 1400 reached the reservation 1140")
 
 	record := runRecord(t, p)
 	if lap := record.Laps[0]; record.State != "paused" || lap.Outcome != "paused-at-gate" || lap.Gate == nil || *lap.Gate != "FG-04" || lap.NothingPaid || lap.ObservedCents != 1400 {
@@ -353,15 +353,15 @@ func TestRunPausesThePaidCallsAtTheReservation(t *testing.T) {
 	if status != 3 || !strings.Contains(stderr, "FG-05") {
 		t.Fatalf("a lap over an unacknowledged overspend gave %d: %s\n%s", status, stderr, stdout)
 	}
-	expectLines(t, stdout, "agent › gate       blocked · FG-05 · FG-05 require-owner")
+	expectLines(t, stdout, "console › gate       blocked · FG-05 · FG-05 require-owner")
 
 	status, stdout, stderr = p.dftWith(deps, "agent", "run", "console-microruntime", "--acknowledge-overspend")
 	if status != 0 {
 		t.Fatalf("the acknowledged lap gave %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout,
-		"agent › gate       reserved $11.40 of $25.00 · opened",
-		"agent › to-spec    0011-SPEC revised · 3 acceptance criteria",
+		"console › gate       reserved $11.40 of $25.00 · opened",
+		"console › to-spec    0011-SPEC revised · 3 acceptance criteria",
 		"✓ completed  implementation · $9.00 observed of $11.40 reserved · usage record",
 	)
 	if strings.Contains(stdout, "grilling") || strings.Contains(stdout, "waiting") {
@@ -400,8 +400,8 @@ func TestRunPausesWhenACallReportsNoUsage(t *testing.T) {
 		t.Fatalf("an unmeasured call gave %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout,
-		"agent › grilling   3 open questions settled · no usage reported",
-		"agent › gate       paused · FG-04 · observed spend is unknown; a call reported no usage",
+		"console › grilling   3 open questions settled · no usage reported",
+		"console › gate       paused · FG-04 · observed spend is unknown; a call reported no usage",
 	)
 
 	ledger := ledgerOf(t, p)
@@ -422,8 +422,8 @@ func TestRunPausesWhenACallReportsNoUsage(t *testing.T) {
 		t.Fatalf("the allowed lap gave %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout,
-		"agent › to-spec    0011-SPEC revised · 3 acceptance criteria · no usage reported",
-		"agent › to-tickets 3 tickets · blocking edges recorded",
+		"console › to-spec    0011-SPEC revised · 3 acceptance criteria · no usage reported",
+		"console › to-tickets 3 tickets · blocking edges recorded",
 		"✓ completed  implementation · $7.90 observed of $11.40 reserved · usage record",
 	)
 	if line := ledgerOf(t, p).Laps[1]; line.TokensThousands.Observed != nil || line.Cents.Observed != 790 {
@@ -467,7 +467,7 @@ func TestRunRunsTheHooksAndReplaysAFailedStage(t *testing.T) {
 	if status != 1 || !strings.Contains(stderr, "hook platform/hooks/lint.sh of stage implement exited 1") {
 		t.Fatalf("a failing hook gave %d: %s\n%s", status, stderr, stdout)
 	}
-	expectLines(t, stdout, "agent › to-spec    0011-SPEC revised · 3 acceptance criteria", "agent › hook       platform/hooks/lint.sh · exit 1")
+	expectLines(t, stdout, "console › to-spec    0011-SPEC revised · 3 acceptance criteria", "console › hook       platform/hooks/lint.sh · exit 1")
 	if record := runRecord(t, p); stageState(record, "implement").State != "failed" || stageState(record, "tickets").State != "done" || record.Laps[1].Number != "0002" || record.Laps[1].Outcome != "failed" {
 		t.Errorf("after the failed hook: %+v, laps %+v", record.Stages, record.Laps)
 	}
@@ -478,9 +478,9 @@ func TestRunRunsTheHooksAndReplaysAFailedStage(t *testing.T) {
 		t.Fatalf("the replayed stage gave %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout,
-		"agent › hook       platform/hooks/lint.sh · exit 0",
-		"agent › implement  tdd · 5 components · 14 files · 32 tests green",
-		"agent › gate       reserved $11.40 of $25.00 · opened",
+		"console › hook       platform/hooks/lint.sh · exit 0",
+		"console › implement  tdd · 5 components · 14 files · 32 tests green",
+		"console › gate       reserved $11.40 of $25.00 · opened",
 		"✓ completed  implementation · $7.10 observed of $11.40 reserved · usage record",
 	)
 	if record := runRecord(t, p); len(record.Laps) != 3 || record.Laps[0].Outcome != "failed" || record.Laps[2].Number != "0003" {

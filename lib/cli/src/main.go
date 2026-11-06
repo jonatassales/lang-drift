@@ -30,6 +30,7 @@ func main() {
 			Input:       process.Input{Context: applicationContext, File: os.Stdin},
 			Output:      os.Stdout,
 			Diagnostics: os.Stderr,
+			Terminal:    support.IsTerminal(os.Stdout),
 		},
 		cases,
 	)

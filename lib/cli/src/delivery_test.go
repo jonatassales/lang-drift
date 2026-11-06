@@ -121,7 +121,7 @@ func TestRunBringsTheRuntimeUpObservesDeliveryAndRemembers(t *testing.T) {
 		t.Fatalf("dft agent run = %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout,
-		"agent › code-review 2 findings · fixed",
+		"console › code-review 2 findings · fixed",
 		"runtime    console-microruntime · revision 1 · 1 Deployments ready · 500m · 1024 MiB",
 		"✓ completed  implementation · $9.80 observed of $11.40 reserved · usage record",
 		"✓ pushed     feat/0070-console-microruntime · 3f9c2e1",
@@ -245,10 +245,10 @@ func TestRunBringsTheRuntimeUpObservesDeliveryAndRemembers(t *testing.T) {
 		t.Fatalf("the next plan gave %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout,
-		"agent › 1 candidates · similarity 0.81 to 0.81",
-		"agent › dropped 0 below 0.55 · kept 1",
-		"agent › 1 episodes cited · 1 with measured resources",
-		"agent › reasoning · 1 cited episodes measured cpu and memory · sizing follows their peaks with headroom",
+		"console › 1 candidates · similarity 0.81 to 0.81",
+		"console › dropped 0 below 0.55 · kept 1",
+		"console › 1 episodes cited · 1 with measured resources",
+		"console › reasoning · 1 cited episodes measured cpu and memory · sizing follows their peaks with headroom",
 	)
 }
 
@@ -309,7 +309,7 @@ func TestRunLeavesWhatItCannotObserveUnknown(t *testing.T) {
 		t.Fatalf("the lap after the unknown one gave %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout,
-		"agent › gate       reserved $11.40 of $25.00 · opened",
+		"console › gate       reserved $11.40 of $25.00 · opened",
 		"runtime    console-microruntime · revision 1 · 1 Deployments ready · 500m · 1024 MiB",
 		"✓ ready      #19 for review · $11.40 released to the envelope",
 	)
@@ -345,7 +345,7 @@ func TestRunStopsWhenTheRuntimeDoesNotComeUp(t *testing.T) {
 	if status != 0 {
 		t.Fatalf("the next run gave %d: %s\n%s", status, stderr, stdout)
 	}
-	expectLines(t, stdout, "agent › gate       reserved $11.40 of $25.00 · opened", "runtime    console-microruntime · revision 1 · 1 Deployments ready · 500m · 1024 MiB", "✓ ready      #19 for review · $1.60 released to the envelope")
+	expectLines(t, stdout, "console › gate       reserved $11.40 of $25.00 · opened", "runtime    console-microruntime · revision 1 · 1 Deployments ready · 500m · 1024 MiB", "✓ ready      #19 for review · $1.60 released to the envelope")
 	if len(driver.calls) != 6 || lifecycle.ups != 2 || runRecord(t, p).Laps[1].Number != "0002" {
 		t.Errorf("the next run made %d calls and %d ups", len(driver.calls), lifecycle.ups)
 	}

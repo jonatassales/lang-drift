@@ -9,6 +9,7 @@ import (
 	gatesapp "github.com/jonatassales/tao/lib/cli/src/application/gates"
 	"github.com/jonatassales/tao/lib/cli/src/application/inputs"
 	"github.com/jonatassales/tao/lib/cli/src/application/plan"
+	"github.com/jonatassales/tao/lib/cli/src/application/session"
 	"github.com/jonatassales/tao/lib/cli/src/application/setup"
 	"github.com/jonatassales/tao/lib/cli/src/domain/rag"
 	collectioninfra "github.com/jonatassales/tao/lib/cli/src/infrastructure/collection"
@@ -45,6 +46,9 @@ type dependencies struct {
 	Delivery  execution.DeliveryObserver
 	// Poll is how often the checks are looked at; zero takes the default.
 	Poll time.Duration
+	// Observer sees every session event the output prints, as a test does;
+	// nil observes nothing.
+	Observer session.Sink
 }
 
 // useCases is the production composition.
@@ -140,6 +144,7 @@ func useCasesWith(deps dependencies) (cli.UseCases, lifecycles) {
 	}
 
 	cases := cli.UseCases{
+		Observer: deps.Observer,
 		ProjectInit: setup.SetUpProject{
 			Initialize: application.InitializeProject{
 				Projects:  projects,

@@ -10,7 +10,6 @@ import (
 	"github.com/jonatassales/tao/lib/cli/src/application/plan"
 	"github.com/jonatassales/tao/lib/cli/src/domain/collection"
 	runrecord "github.com/jonatassales/tao/lib/cli/src/domain/run"
-	"github.com/jonatassales/tao/lib/cli/src/presentation/cli/session"
 	"github.com/jonatassales/tao/lib/cli/src/presentation/cli/support"
 
 	"github.com/spf13/cobra"
@@ -40,7 +39,7 @@ func NewAgentPlanCommand(planner Planner, globals *support.Globals) *cobra.Comma
 			request.Ticket = arguments[0]
 			request.Components = parsed
 			request.Limits.MaxBytes = maxBytes
-			request.Session = session.For(command.OutOrStdout(), globals.JSON)
+			request.Session = sessionOf(command, globals)
 
 			return runSession(command, globals, func(ctx context.Context, project application.ProjectSelection) (plan.Result, error) {
 				request.Project = project

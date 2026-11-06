@@ -86,14 +86,14 @@ func TestPlanRetrievesTheWebsitesEpisodes(t *testing.T) {
 	}
 
 	for _, line := range []string{
-		"agent › RAG over project episodes · a model and effort for this ticket",
-		"agent › embedding the ticket intent · 1 query vector",
-		"agent › vector search · project episodes · top 6 by cosine similarity",
-		"agent › 6 candidates · similarity 0.81 to 0.42",
-		"agent › judging · 3 share the stack and scale · 3 differ: below 0.55",
-		"agent › dropped 3 below 0.55 · kept 3",
-		"agent › 3 episodes cited · none with measured resources",
-		"agent › reasoning · no cited episode measured cpu or memory · sizing follows the inputs, not history",
+		"console › RAG over project episodes · a model and effort for this ticket",
+		"console › embedding the ticket intent · 1 query vector",
+		"console › vector search · project episodes · top 6 by cosine similarity",
+		"console › 6 candidates · similarity 0.81 to 0.42",
+		"console › judging · 3 share the stack and scale · 3 differ: below 0.55",
+		"console › dropped 3 below 0.55 · kept 3",
+		"console › 3 episodes cited · none with measured resources",
+		"console › reasoning · no cited episode measured cpu or memory · sizing follows the inputs, not history",
 		"✓ suggests   claude-sonnet-5-5 · effort medium",
 	} {
 		if !strings.Contains(stdout, line+"\n") {
@@ -132,9 +132,9 @@ func TestPlanCitesAMeasuredRun(t *testing.T) {
 	}
 
 	for _, line := range []string{
-		"agent › 1 candidates · similarity",
-		"agent › 1 episodes cited · 1 with measured resources",
-		"agent › reasoning · 1 cited episodes measured cpu and memory · sizing follows their peaks with headroom",
+		"console › 1 candidates · similarity",
+		"console › 1 episodes cited · 1 with measured resources",
+		"console › reasoning · 1 cited episodes measured cpu and memory · sizing follows their peaks with headroom",
 		"✓ .                     Next.js+Go · web 650m · 1152 MiB",
 	} {
 		if !strings.Contains(stdout, line) {

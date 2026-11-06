@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"path"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -76,6 +77,8 @@ func (service Service) Start(ctx context.Context, request StartRequest) (StartRe
 	if err != nil {
 		return StartResult{}, err
 	}
+
+	session.Announce(request.Session, filepath.Base(owner.Root))
 
 	runtime, err := microruntime.ParseIdentifier(request.Runtime)
 	if err != nil {
@@ -167,7 +170,6 @@ func (service Service) Start(ctx context.Context, request StartRequest) (StartRe
 		}
 
 		playing.lap = open
-		emit(sink, session.RunCommand, session.Data{"runtime": runtime.String()})
 		emit(sink, session.RunScope, session.Data{"ticket": ticketReference(planned), "by": planned.Suggestion.AuthorizedBy})
 		emit(sink, session.Intent, session.Data{"model": open.Choice.Model, "effort": open.Choice.Effort, "revision": config.Revision})
 		emit(sink, session.LapResumed, session.Data{"lap": open.Number, "reservedCents": open.Reserved})
@@ -194,7 +196,6 @@ func (service Service) Start(ctx context.Context, request StartRequest) (StartRe
 		lap.ModelName = price.Name
 	}
 
-	emit(sink, session.RunCommand, session.Data{"runtime": runtime.String()})
 	emit(sink, session.RunScope, session.Data{"ticket": ticketReference(planned), "by": planned.Suggestion.AuthorizedBy})
 	emit(sink, session.Intent, session.Data{"model": lap.Choice.Model, "effort": lap.Choice.Effort, "revision": config.Revision})
 

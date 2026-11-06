@@ -3,6 +3,7 @@ package plan
 import (
 	"context"
 	"fmt"
+	"path/filepath"
 	"strings"
 
 	"github.com/jonatassales/tao/lib/cli/src/application"
@@ -90,6 +91,8 @@ func (service Service) Plan(ctx context.Context, request Request) (Result, error
 	if err != nil {
 		return Result{}, err
 	}
+
+	session.Announce(request.Session, filepath.Base(owner.Root))
 
 	guards, err := LoadGuardrails(service.Inputs, owner)
 	if err != nil {

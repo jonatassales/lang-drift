@@ -37,13 +37,17 @@ func TestRunPausesAtTheGateThenOpensALap(t *testing.T) {
 		t.Fatalf("a paused lap gave %d: %s\n%s", status, stderr, stdout)
 	}
 
+	startsOnTheScope := strings.HasPrefix(stdout, "# run · ")
+	if !startsOnTheScope || strings.Contains(stdout, "dft agent run") {
+		t.Errorf("the run does not open on its scope, or echoes the command:\n%s", stdout)
+	}
+
 	for _, line := range []string{
-		"dft agent run console-microruntime",
 		"# run · 0070-console-microruntime · the recorded intent, authorized by owner",
-		"agent › intent     claude-opus-5-5 · effort high · runtime.md revision 1",
-		"agent › estimate   $34.00 · 6M input · 500K output · list prices · FIN-02",
-		"agent › budget     $25.00 per run · set by owner · FIN-03",
-		"agent › gate       reservation $40.80 exceeds the $25.00 budget · paused",
+		"console › intent     claude-opus-5-5 · effort high · runtime.md revision 1",
+		"console › estimate   $34.00 · 6M input · 500K output · list prices · FIN-02",
+		"console › budget     $25.00 per run · set by owner · FIN-03",
+		"console › gate       reservation $40.80 exceeds the $25.00 budget · paused",
 		"# needs a decision: raise the budget or lower the effort · nothing was paid for",
 	} {
 		if !strings.Contains(stdout, line+"\n") {
@@ -102,16 +106,16 @@ func TestRunPausesAtTheGateThenOpensALap(t *testing.T) {
 	}
 
 	for _, line := range []string{
-		"agent › intent     claude-sonnet-5-5 · effort medium · runtime.md revision 1",
-		"agent › estimate   $9.50 · 3.5M input · 250K output · list prices · FIN-02",
-		"agent › gate       reserved $11.40 of $25.00 · opened",
+		"console › intent     claude-sonnet-5-5 · effort medium · runtime.md revision 1",
+		"console › estimate   $9.50 · 3.5M input · 250K output · list prices · FIN-02",
+		"console › gate       reserved $11.40 of $25.00 · opened",
 	} {
 		if !strings.Contains(stdout, line+"\n") {
 			t.Errorf("the session did not print %q:\n%s", line, stdout)
 		}
 	}
 	// The runtime comes up before the first stage, which waits for the owner.
-	ready, waiting := strings.Index(stdout, "runtime    console-microruntime"), strings.Index(stdout, "agent › waiting    planning")
+	ready, waiting := strings.Index(stdout, "runtime    console-microruntime"), strings.Index(stdout, "console › waiting    planning")
 	if ready < 0 || waiting < 0 || ready > waiting || lifecycle.ups != 1 {
 		t.Errorf("the runtime was not up before the first wait (%d ups):\n%s", lifecycle.ups, stdout)
 	}
@@ -138,7 +142,7 @@ func TestRunPausesAtTheGateThenOpensALap(t *testing.T) {
 
 	// With a lap open, a run plays on with it: the first stage waits for the owner.
 	status, stdout, stderr = p.dftWith(deps, "agent", "run", "console-microruntime")
-	if status != 0 || !strings.Contains(stdout, "agent › lap        0002 open · $11.40 reserved · resumed\n") || !strings.Contains(stdout, "agent › waiting    planning · the owner confirms\n") {
+	if status != 0 || !strings.Contains(stdout, "console › lap        0002 open · $11.40 reserved · resumed\n") || !strings.Contains(stdout, "console › waiting    planning · the owner confirms\n") {
 		t.Errorf("a run over the open lap gave %d: %s\n%s", status, stderr, stdout)
 	}
 
@@ -165,7 +169,7 @@ func TestRunRefusesWhatItCannotRun(t *testing.T) {
 		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
 	status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime", "--model", "claude-mythos-5-1")
-	if status != 3 || !strings.Contains(stderr, "FG-01") || !strings.Contains(stdout, "agent › gate       blocked · FG-01") {
+	if status != 3 || !strings.Contains(stderr, "FG-01") || !strings.Contains(stdout, "console › gate       blocked · FG-01") {
 		t.Errorf("an unpriced model gave %d: %s\n%s", status, stderr, stdout)
 	}
 }

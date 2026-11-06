@@ -83,10 +83,10 @@ func TestPlanJudgesTheSourcesAndSuggests(t *testing.T) {
 	}
 
 	for _, line := range []string{
-		"agent › tool call: read 0010-exphere-and-the-langdrift-folder.spec.md · summary of 0010-exphere-and-the-langdrift-folder.spec.md",
-		"agent › judging · FIN-02 estimate before a paid call · FIN-03 a budget before a paid run · FIN-04 size cpu and memory to the load",
-		"agent › weighing effort · one component, no broker wiring: high effort is not warranted",
-		"agent › weighing model · Opus 5.5 at high effort reserves more than the per-run budget",
+		"console › tool call: read 0010-exphere-and-the-langdrift-folder.spec.md · summary of 0010-exphere-and-the-langdrift-folder.spec.md",
+		"console › judging · FIN-02 estimate before a paid call · FIN-03 a budget before a paid run · FIN-04 size cpu and memory to the load",
+		"console › weighing effort · one component, no broker wiring: high effort is not warranted",
+		"console › weighing model · Opus 5.5 at high effort reserves more than the per-run budget",
 		"✓ suggests   claude-sonnet-5-5 · effort medium",
 	} {
 		if !strings.Contains(stdout, line+"\n") {
@@ -97,8 +97,8 @@ func TestPlanJudgesTheSourcesAndSuggests(t *testing.T) {
 		t.Errorf("a figure was reported as differing:\n%s", stdout)
 	}
 
-	judged := strings.Index(stdout, "agent › judging · ")
-	reasoning := strings.Index(stdout, "agent › reasoning · ")
+	judged := strings.Index(stdout, "console › judging · ")
+	reasoning := strings.Index(stdout, "console › reasoning · ")
 	if judged < 0 || reasoning < judged {
 		t.Errorf("the reasoning line printed before the judged answer, or not at all:\n%s", stdout)
 	}
@@ -264,7 +264,7 @@ func TestPlanIsRefusedWhenTheConsoleDoesNotJudge(t *testing.T) {
 				t.Errorf("the session carries the secret:\n%s%s", stdout, stderr)
 			}
 
-			if strings.Contains(stdout, "agent › reasoning") {
+			if strings.Contains(stdout, "console › reasoning") {
 				t.Errorf("a refused plan printed a reasoning line:\n%s", stdout)
 			}
 

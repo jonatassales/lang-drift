@@ -16,6 +16,9 @@ type Options struct {
 	Input       io.Reader
 	Output      io.Writer
 	Diagnostics io.Writer
+
+	// Terminal says Output is a terminal.
+	Terminal bool
 }
 
 // WithDefaults initializes optional I/O streams.

@@ -1,28 +1,17 @@
 // Package session renders the events of a plan or a run as the website's
-// terminal prints them: the same words, with the actor named agent and true
+// terminal prints them: the same words, with the actor named console and true
 // figures, for people, or one JSON event per line for a console.
 package session
 
 import (
 	"fmt"
 	"strings"
-	"unicode/utf8"
 
 	"github.com/jonatassales/tao/lib/cli/src/application/session"
 )
 
 // Actor is who the lines say acted.
-const Actor = "agent › "
-
-// pad right-pads text with spaces to width, as the website aligns its columns.
-func pad(text string, width int) string {
-	columns := utf8.RuneCountInString(text)
-	if columns >= width {
-		return text
-	}
-
-	return text + strings.Repeat(" ", width-columns)
-}
+const Actor = "console › "
 
 func text(data session.Data, key string) string {
 	switch value := data[key].(type) {

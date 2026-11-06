@@ -16,12 +16,12 @@ func TestHumanPrintsOneLinePerEvent(t *testing.T) {
 	t.Parallel()
 
 	var out bytes.Buffer
-	sink := session.For(&out, false)
+	sink := session.For(&out, false, false)
 
-	sink.Emit(app.Event{Session: app.PlanSession, ID: app.PlanCommand, Data: app.Data{"ticket": "0070-console-microruntime"}})
 	sink.Emit(app.Event{Session: app.PlanSession, ID: app.PlanScope})
+	sink.Emit(app.Event{Session: app.PlanSession, ID: app.ReadTicket, Data: app.Data{"ticket": "0031-TICKET-book-a-demo-runtime"}})
 
-	want := "dft agent plan 0070-console-microruntime\n# plan only · nothing is built or started · the planner's calls are paid and gated\n"
+	want := "# plan only · nothing is built, started or paid for in this step\nconsole › tool call: read 0031-TICKET-book-a-demo-runtime\n"
 	if out.String() != want {
 		t.Fatalf("printed %q, want %q", out.String(), want)
 	}
