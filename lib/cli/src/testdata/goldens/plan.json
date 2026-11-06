@@ -1,0 +1,212 @@
+[
+	{
+		"id": "scope",
+		"kind": "comment",
+		"text": "# plan only \u00b7 nothing is built, started or paid for in this step"
+	},
+	{
+		"id": "readTicket",
+		"kind": "output",
+		"text": "console \u203a tool call: read 0031-TICKET-book-a-demo-runtime"
+	},
+	{
+		"id": "links",
+		"kind": "output",
+		"text": "console \u203a ready-for-agent \u00b7 links 0002-PRD \u00b7 0005-DD \u00b7 0011-SPEC \u00b7 guardrail 0001-finops"
+	},
+	{
+		"id": "analysis",
+		"kind": "comment",
+		"text": "# analysis \u00b7 reading the linked documents, then the project's episodes"
+	},
+	{
+		"id": "readPrd",
+		"kind": "output",
+		"text": "console \u203a tool call: read 0002-PRD \u00b7 use case: book-a-demo request"
+	},
+	{
+		"id": "readDesignDoc",
+		"kind": "output",
+		"text": "console \u203a tool call: read 0005-DD \u00b7 envelope cpuMillis 2000 \u00b7 memoryMiB 3072 \u00b7 set by the team"
+	},
+	{
+		"id": "readSpec",
+		"kind": "output",
+		"text": "console \u203a tool call: read 0011-SPEC \u00b7 5 components named \u00b7 3 acceptance criteria"
+	},
+	{
+		"id": "reads",
+		"kind": "success",
+		"text": "\u2713 read       4 documents \u00b7 nothing outside the ticket's links"
+	},
+	{
+		"id": "guardrail",
+		"kind": "output",
+		"text": "reads      harness/guardrails/0001-finops.gr.md \u00b7 FIN-02 \u00b7 FIN-04"
+	},
+	{
+		"id": "judgeGuardrail",
+		"kind": "output",
+		"text": "console \u203a judging \u00b7 FIN-02 estimate before a paid call \u00b7 FIN-03 a budget before a paid run \u00b7 FIN-04 size cpu and memory to the load"
+	},
+	{
+		"id": "bounds",
+		"kind": "output",
+		"text": "bounded    cpuMillis 2000 \u00b7 memoryMiB 3072 \u00b7 set by the team in the design doc"
+	},
+	{
+		"id": "budget",
+		"kind": "output",
+		"text": "budget     $25.00 per run for model calls \u00b7 set by the team in the design doc"
+	},
+	{
+		"id": "memory",
+		"kind": "output",
+		"text": "console \u203a RAG over project episodes \u00b7 a model and effort for this ticket"
+	},
+	{
+		"id": "embed",
+		"kind": "output",
+		"text": "console \u203a embedding the ticket intent \u00b7 1 query vector"
+	},
+	{
+		"id": "vectorSearch",
+		"kind": "output",
+		"text": "console \u203a vector search \u00b7 project episodes \u00b7 top 6 by cosine similarity"
+	},
+	{
+		"id": "candidates",
+		"kind": "output",
+		"text": "console \u203a 6 candidates \u00b7 similarity 0.81 to 0.42"
+	},
+	{
+		"id": "judgeRelevance",
+		"kind": "output",
+		"text": "console \u203a judging \u00b7 3 share the stack and scale \u00b7 3 differ: other runtime, no broker, docs only"
+	},
+	{
+		"id": "drop",
+		"kind": "output",
+		"text": "console \u203a dropped 3 below 0.55 \u00b7 kept 3"
+	},
+	{
+		"id": "episodes",
+		"kind": "output",
+		"text": "console \u203a 3 episodes cited \u00b7 none with measured resources"
+	},
+	{
+		"id": "reasonResources",
+		"kind": "output",
+		"text": "console \u203a reasoning \u00b7 no cited episode measured cpu or memory \u00b7 sizing follows the spec, not history"
+	},
+	{
+		"id": "weighEffort",
+		"kind": "output",
+		"text": "console \u203a weighing effort \u00b7 low skips the broker wiring \u00b7 high is not warranted by 5 components"
+	},
+	{
+		"id": "weighModel",
+		"kind": "output",
+		"text": "console \u203a weighing model \u00b7 Haiku 5.5 retries the broker wiring \u00b7 Opus 5.5 costs more per outcome"
+	},
+	{
+		"id": "suggest",
+		"kind": "success",
+		"text": "\u2713 suggests   claude-sonnet-5-5 \u00b7 effort medium"
+	},
+	{
+		"id": "planning",
+		"kind": "comment",
+		"text": "# plan \u00b7 resolving the components, then sizing them inside the envelope"
+	},
+	{
+		"id": "resolve",
+		"kind": "output",
+		"text": "console \u203a resolving 5 components named in the spec \u00b7 paths, images, ports"
+	},
+	{
+		"id": "inspectGo",
+		"kind": "output",
+		"text": "console \u203a tool call: inspect services/signup-api \u00b7 go.mod \u00b7 :8080"
+	},
+	{
+		"id": "go",
+		"kind": "success",
+		"text": "\u2713 services/signup-api   Go \u00b7 api        250m \u00b7 256 MiB"
+	},
+	{
+		"id": "inspectNode",
+		"kind": "output",
+		"text": "console \u203a tool call: inspect services/notify-api \u00b7 package.json \u00b7 :8081"
+	},
+	{
+		"id": "node",
+		"kind": "success",
+		"text": "\u2713 services/notify-api   Node.js \u00b7 api   300m \u00b7 512 MiB"
+	},
+	{
+		"id": "inspectNats",
+		"kind": "output",
+		"text": "console \u203a tool call: inspect platform/nats \u00b7 nats.conf \u00b7 :4222"
+	},
+	{
+		"id": "nats",
+		"kind": "success",
+		"text": "\u2713 platform/nats         NATS \u00b7 broker   200m \u00b7 256 MiB"
+	},
+	{
+		"id": "inspectRedis",
+		"kind": "output",
+		"text": "console \u203a tool call: inspect platform/redis \u00b7 redis.conf \u00b7 :6379"
+	},
+	{
+		"id": "redis",
+		"kind": "success",
+		"text": "\u2713 platform/redis        Redis \u00b7 cache   200m \u00b7 256 MiB"
+	},
+	{
+		"id": "inspectNext",
+		"kind": "output",
+		"text": "console \u203a tool call: inspect apps/signup \u00b7 next.config.ts \u00b7 :3000"
+	},
+	{
+		"id": "next",
+		"kind": "success",
+		"text": "\u2713 apps/signup           Next.js \u00b7 web   500m \u00b7 1024 MiB"
+	},
+	{
+		"id": "crossCheck",
+		"kind": "output",
+		"text": "console \u203a cross-checking \u00b7 5 ports distinct \u00b7 5 images resolved \u00b7 no collisions"
+	},
+	{
+		"id": "size",
+		"kind": "success",
+		"text": "\u2713 size       1450m of 2000m \u00b7 2304 of 3072 MiB \u00b7 5 one-replica Deployments \u00b7 proposed shares"
+	},
+	{
+		"id": "limits",
+		"kind": "warning",
+		"text": "limits     gpu and disk are not runtime.md fields \u00b7 none requested"
+	},
+	{
+		"id": "price",
+		"kind": "output",
+		"text": "estimate   runtime has no price source \u00b7 cpu and memory stay in millicores and MiB"
+	},
+	{
+		"id": "validate",
+		"kind": "output",
+		"text": "console \u203a tool call: validate runtime.md draft against the schema \u00b7 0 errors"
+	},
+	{
+		"id": "draft",
+		"kind": "success",
+		"text": "\u2713 plan       runtime.md draft, revision 1 \u00b7 proposed to the console"
+	},
+	{
+		"id": "handoff",
+		"kind": "comment",
+		"text": "# next: once the team authorizes, dft agent run applies the recorded intent"
+	}
+]

@@ -1,0 +1,32 @@
+[
+	{
+		"id": "scope",
+		"kind": "comment",
+		"text": "# run \u00b7 0031-TICKET-book-a-demo-runtime \u00b7 the recorded intent, authorized by the team"
+	},
+	{
+		"id": "intent",
+		"kind": "output",
+		"text": "console \u203a intent     claude-opus-5-5 \u00b7 effort high \u00b7 runtime.md revision 1"
+	},
+	{
+		"id": "estimate",
+		"kind": "output",
+		"text": "console \u203a estimate   $34.00 \u00b7 6M input \u00b7 500K output \u00b7 list prices \u00b7 FIN-02"
+	},
+	{
+		"id": "budget",
+		"kind": "output",
+		"text": "console \u203a budget     $25.00 per run \u00b7 set by the team \u00b7 FIN-03"
+	},
+	{
+		"id": "gatePaused",
+		"kind": "warning",
+		"text": "console \u203a gate       reservation $40.80 exceeds the $25.00 budget \u00b7 paused"
+	},
+	{
+		"id": "paused",
+		"kind": "comment",
+		"text": "# needs a decision: raise the budget or lower the effort \u00b7 nothing was paid for"
+	}
+]

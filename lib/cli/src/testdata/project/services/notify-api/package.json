@@ -1,0 +1,7 @@
+{
+	"name": "notify-api",
+	"version": "1.0.0",
+	"scripts": {
+		"start": "PORT=8081 node index.js"
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"name": "signup",
+	"version": "1.0.0",
+	"scripts": {
+		"start": "-p 3000 next start"
+	},
+	"dependencies": {
+		"next": "15.0.0"
+	}
+}

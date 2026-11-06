@@ -1,0 +1,127 @@
+[
+	{
+		"id": "scope",
+		"kind": "comment",
+		"text": "# run \u00b7 0031-TICKET-book-a-demo-runtime \u00b7 the recorded intent, authorized by the team"
+	},
+	{
+		"id": "intent",
+		"kind": "output",
+		"text": "console \u203a intent     claude-sonnet-5-5 \u00b7 effort medium \u00b7 runtime.md revision 1"
+	},
+	{
+		"id": "estimate",
+		"kind": "output",
+		"text": "console \u203a estimate   $9.50 \u00b7 3.5M input \u00b7 250K output \u00b7 list prices \u00b7 FIN-02"
+	},
+	{
+		"id": "budget",
+		"kind": "output",
+		"text": "console \u203a budget     $25.00 per run \u00b7 set by the team \u00b7 FIN-03"
+	},
+	{
+		"id": "gateOpened",
+		"kind": "success",
+		"text": "console \u203a gate       reserved $11.40 of $25.00 \u00b7 opened"
+	},
+	{
+		"id": "waiting",
+		"kind": "output",
+		"text": "console \u203a waiting    planning \u00b7 the owner confirms"
+	},
+	{
+		"id": "confirmed",
+		"kind": "success",
+		"text": "\u2713 confirmed  planning \u00b7 by the owner"
+	},
+	{
+		"id": "grilling",
+		"kind": "output",
+		"text": "console \u203a grilling   3 open questions settled"
+	},
+	{
+		"id": "toSpec",
+		"kind": "output",
+		"text": "console \u203a to-spec    0011-SPEC revised \u00b7 3 acceptance criteria"
+	},
+	{
+		"id": "toTickets",
+		"kind": "output",
+		"text": "console \u203a to-tickets 3 tickets \u00b7 blocking edges recorded"
+	},
+	{
+		"id": "hook",
+		"kind": "output",
+		"text": "console \u203a hook       effort recorded \u00b7 implement unblocked"
+	},
+	{
+		"id": "implement",
+		"kind": "output",
+		"text": "console \u203a implement  tdd \u00b7 5 components \u00b7 14 files \u00b7 boundary only \u00b7 stops at the reserved part"
+	},
+	{
+		"id": "devTicketWaiting",
+		"kind": "output",
+		"text": "console \u203a waiting    dev-ticket \u00b7 the person writes the reserved part"
+	},
+	{
+		"id": "devTicketClosed",
+		"kind": "success",
+		"text": "\u2713 closed     dev-ticket \u00b7 written without an agent \u00b7 no paid call"
+	},
+	{
+		"id": "codeReview",
+		"kind": "output",
+		"text": "console \u203a code-review 2 findings \u00b7 fixed"
+	},
+	{
+		"id": "runtimeReady",
+		"kind": "output",
+		"text": "runtime    book-a-demo-runtime \u00b7 revision 1 \u00b7 5 Deployments ready \u00b7 1450m \u00b7 2304 MiB"
+	},
+	{
+		"id": "completed",
+		"kind": "success",
+		"text": "\u2713 completed  implementation \u00b7 $9.80 observed of $11.40 reserved \u00b7 usage record"
+	},
+	{
+		"id": "pushed",
+		"kind": "success",
+		"text": "\u2713 pushed     feat/0031-book-a-demo-runtime \u00b7 3f9c2e1"
+	},
+	{
+		"id": "pullRequest",
+		"kind": "success",
+		"text": "\u2713 pr #19     feat(demo): run book a demo as a microruntime"
+	},
+	{
+		"id": "checks",
+		"kind": "output",
+		"text": "checks     build \u00b7 check \u00b7 test \u00b7 guardrails \u00b7 running"
+	},
+	{
+		"id": "checksPassed",
+		"kind": "success",
+		"text": "\u2713 checks     4 of 4 passed"
+	},
+	{
+		"id": "safeSeatMet",
+		"kind": "success",
+		"text": "\u2713 Safe Seat  met"
+	},
+	{
+		"id": "runtimeStopped",
+		"kind": "output",
+		"text": "runtime    stopped \u00b7 5 Deployments removed \u00b7 nothing left"
+	},
+	{
+		"id": "readyForReview",
+		"kind": "success",
+		"text": "\u2713 ready      #19 for review \u00b7 $1.60 released to the envelope"
+	},
+	{
+		"id": "nextReview",
+		"kind": "comment",
+		"text": "# next: the owner reviews #19 and decides whether to merge"
+	}
+]
