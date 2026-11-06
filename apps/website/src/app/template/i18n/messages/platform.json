@@ -3,7 +3,7 @@
 		"skip": "Skip to platform overview",
 		"hero": {
 			"titleStart": "Agentic",
-			"words": ["DevEx", "FinOps", "Runtime"],
+			"words": ["DevEx", "LLMOps", "FinOps", "Runtime", "CI Gates"],
 			"titleEnd": "Platform"
 		},
 		"sections": {
@@ -22,7 +22,7 @@
 		"skip": "Ir para a visão geral da plataforma",
 		"hero": {
 			"titleStart": "Agentic",
-			"words": ["DevEx", "FinOps", "Runtime"],
+			"words": ["DevEx", "LLMOps", "FinOps", "Runtime", "CI Gates"],
 			"titleEnd": "Platform"
 		},
 		"sections": {
@@ -41,7 +41,7 @@
 		"skip": "跳至平台總覽",
 		"hero": {
 			"titleStart": "Agentic",
-			"words": ["DevEx", "FinOps", "Runtime"],
+			"words": ["DevEx", "LLMOps", "FinOps", "Runtime", "CI Gates"],
 			"titleEnd": "Platform"
 		},
 		"sections": {
@@ -60,7 +60,7 @@
 		"skip": "プラットフォーム概要へスキップ",
 		"hero": {
 			"titleStart": "Agentic",
-			"words": ["DevEx", "FinOps", "Runtime"],
+			"words": ["DevEx", "LLMOps", "FinOps", "Runtime", "CI Gates"],
 			"titleEnd": "Platform"
 		},
 		"sections": {
@@ -79,7 +79,7 @@
 		"skip": "Chuyển đến tổng quan nền tảng",
 		"hero": {
 			"titleStart": "Agentic",
-			"words": ["DevEx", "FinOps", "Runtime"],
+			"words": ["DevEx", "LLMOps", "FinOps", "Runtime", "CI Gates"],
 			"titleEnd": "Platform"
 		},
 		"sections": {
