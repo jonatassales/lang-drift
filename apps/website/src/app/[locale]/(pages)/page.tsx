@@ -8,7 +8,7 @@ import { SkipLink } from '@layout/skip-link'
 import { WebsiteFooter } from '@layout/website-footer'
 import { WebsiteHeader } from '@layout/website-header/website-header'
 import { WebsiteStructuredData } from '@layout/website-structured-data'
-import { FinopsSection } from '@routes/home/finops-section'
+import { LlmopsSection } from '@routes/home/llmops-section'
 import { PlatformFaqSection } from '@routes/home/platform-faq-section'
 import { PlatformHero } from '@routes/home/platform-hero'
 import { ScrollHint } from 'web/ui/scroll-hint'
@@ -39,7 +39,7 @@ export default async function WebsitePage(props: WebsitePageProps) {
 			<WebsiteHeader />
 			<main id="top">
 				<PlatformHero locale={locale} />
-				<FinopsSection locale={locale} />
+				<LlmopsSection locale={locale} />
 				<PlatformFaqSection locale={locale} />
 			</main>
 			<WebsiteFooter locale={locale} />

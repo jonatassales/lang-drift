@@ -21,7 +21,7 @@ describe('website/home/platform-faq-section', () => {
 
 			const tabs = screen.getAllByRole('tab').map((tab) => tab.textContent)
 
-			expect(tabs).toEqual([names.microruntimes, names.finops, names.safeSeat])
+			expect(tabs).toEqual([names.microruntimes, names.llmops, names.safeSeat])
 		},
 	)
 })

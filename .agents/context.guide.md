@@ -209,15 +209,23 @@ A job in `pull-request.yml`, whose top-level `permissions:` stays `contents: rea
 ### Platform
 
 **Platform product**:
-LangDrift's offering under the shared brand, named `LangDrift <Product>`: today only LangDrift FinOps, with Microruntimes as its engine. It has its pages on the site and its workspaces in the console.
+LangDrift's offering under the shared brand, named `LangDrift <Product>`: today LangDrift LLMOps and LangDrift FinOps, with Microruntimes as their engine. It has its pages on the site and its workspaces in the console.
 _Avoid_: Module, vertical, sub-app
 
 **Console**:
 The one authenticated LangDrift surface on langdrift.md where a team manages FinOps and its microruntimes, behind one account and one shell. It lives in `apps/console`, imported from Exphere's console.
 _Avoid_: Dashboard (for the whole), admin, control panel
 
+**LLMOps**:
+The platform product that holds reasoning and AI processing spend, model calls, tiers, effort and tokens, in a team envelope: estimated, reserved before each paid call and reconciled with a receipt.
+_Avoid_: AI FinOps, token FinOps
+
+**FinOps**:
+The platform product that holds hardware and computational spend, CPU, memory, GPU and the environments microruntimes, runners and clusters occupy, in a team envelope, metered while they run.
+_Avoid_: Cloud costs (for the whole), LLM spend
+
 **Safe Seat**:
-The LangDrift FinOps harness capability that keeps a person writing a part of every ticket by hand, so the team keeps understanding and debugging what it ships.
+The LangDrift LLMOps harness capability that keeps a person writing a part of every ticket by hand, so the team keeps understanding and debugging what it ships.
 _Avoid_: SS, health, wellness, quota
 
 ### Apps

@@ -1,4 +1,4 @@
-// Amounts on the FinOps page are simulated US dollars, whole only.
+// Amounts on the LLMOps and FinOps pages are US dollars, whole only.
 export function dollars(locale: string) {
 	return new Intl.NumberFormat(locale, {
 		currency: 'USD',

@@ -5,10 +5,10 @@ import type {
 	chainPillarIds,
 	envelopeSegmentIds,
 	failureScenarioIds,
-	finopsFaqIds,
 	gateStepIds,
+	llmopsFaqIds,
 	workItems,
-} from './finops-content.data'
+} from './llmops-content.data'
 
 export type EnvelopeSegmentId = (typeof envelopeSegmentIds)[number]
 
@@ -58,7 +58,7 @@ export type ChainPillarId = (typeof chainPillarIds)[number]
 
 export type FailureScenarioId = (typeof failureScenarioIds)[number]
 
-export type FinopsFaqId = (typeof finopsFaqIds)[number]
+export type LlmopsFaqId = (typeof llmopsFaqIds)[number]
 
 export type GateStepId = (typeof gateStepIds)[number]
 
@@ -86,7 +86,7 @@ export interface WorkItemCopy {
 	title: string
 }
 
-export interface FinopsMessages {
+export interface LlmopsMessages {
 	skip: string
 	hero: {
 		taglineStart: string
@@ -164,6 +164,6 @@ export interface FinopsMessages {
 		}
 	}
 	faq: {
-		items: Record<FinopsFaqId, FaqItemCopy>
+		items: Record<LlmopsFaqId, FaqItemCopy>
 	}
 }

@@ -1,9 +1,9 @@
 import bookDemoJson from '@i18n/messages/book-a-demo.json'
 import ciGatesJson from '@i18n/messages/ci-gates.json'
 import cliJson from '@i18n/messages/cli.json'
-import finopsJson from '@i18n/messages/finops.json'
 import footerJson from '@i18n/messages/footer.json'
 import headerJson from '@i18n/messages/header.json'
+import llmopsJson from '@i18n/messages/llmops.json'
 import type {
 	BookDemoMessages,
 	FooterMessages,
@@ -18,7 +18,7 @@ import safeSeatJson from '@i18n/messages/safe-seat.json'
 import type { WebsiteLocale } from '@i18n/routing'
 import type { CiGatesMessages } from '@routes/platform/ci-gates/ci-gates-messages.types'
 import type { CliMessages } from '@routes/platform/cli/cli-messages.types'
-import type { FinopsMessages } from '@routes/platform/finops/content/finops-content.types'
+import type { LlmopsMessages } from '@routes/platform/llmops/content/llmops-content.types'
 import type { MicroruntimesMessages } from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import type { SafeSeatMessages } from '@routes/platform/safe-seat/safe-seat-messages.types'
 
@@ -32,8 +32,8 @@ export const footerMessages: Record<WebsiteLocale, FooterMessages> =
 	assertCatalogShape('footer', footerJson)
 export const platformMessages: Record<WebsiteLocale, PlatformMessages> =
 	assertCatalogShape('platform', platformJson)
-export const finopsMessages: Record<WebsiteLocale, FinopsMessages> =
-	assertCatalogShape('finops', finopsJson)
+export const llmopsMessages: Record<WebsiteLocale, LlmopsMessages> =
+	assertCatalogShape('llmops', llmopsJson)
 export const microruntimesMessages: Record<
 	WebsiteLocale,
 	MicroruntimesMessages

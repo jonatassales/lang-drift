@@ -10,12 +10,12 @@ interface LocaleRouteParams {
 	locale: string
 }
 
-interface FinopsPageMetadataProps {
+interface LlmopsPageMetadataProps {
 	params: Promise<LocaleRouteParams>
 }
 
 export async function generateMetadata(
-	props: FinopsPageMetadataProps,
+	props: LlmopsPageMetadataProps,
 	parent: ResolvingMetadata,
 ): Promise<Metadata> {
 	const { params } = props
@@ -26,5 +26,5 @@ export async function generateMetadata(
 
 	const images = await socialImages(parent)
 
-	return pageMetadata('finops', locale, images)
+	return pageMetadata('llmops', locale, images)
 }

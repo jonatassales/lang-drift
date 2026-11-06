@@ -5,10 +5,10 @@ import type {
 	FailureScenarioId,
 	WorkItem,
 	WorkItemId,
-} from './finops-content.types'
+} from './llmops-content.types'
 
-// FinOps content: the ids, amounts and states the FinOps page and
-// its demos render. Sentences live in the finops catalog; this module holds
+// LLMOps content: the ids, amounts and states the LLMOps page and
+// its demos render. Sentences live in the llmops catalog; this module holds
 // what a reader does not read as prose. Amounts are simulated US dollars, and
 // an observed spend of null is unknown, never zero.
 
@@ -92,7 +92,7 @@ export const chainPillarIds = [
 // The two ways delivery leaves the plan. The case that lands inside the
 // envelope is the hero's receipt and the gate's figures, not a scenario.
 export const failureScenarioIds = ['pause-and-replan', 'unknown-spend'] as const
-export const finopsFaqIds = [
+export const llmopsFaqIds = [
 	'budget',
 	'spending',
 	'unknown',

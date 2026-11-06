@@ -2,45 +2,67 @@
 	"home": {
 		"en": {
 			"title": "LangDrift — Agentic Platform",
-			"description": "LangDrift is the agentic FinOps platform: Microruntimes bound each run, and FinOps keeps agent-assisted delivery inside a team budget. One domain, one console."
+			"description": "LangDrift is the agentic FinOps platform: Microruntimes bound each run, LLMOps keeps reasoning spend inside a team budget and FinOps meters the hardware. One domain, one console."
 		},
 		"pt-BR": {
 			"title": "LangDrift — Agentic Platform",
-			"description": "LangDrift é a plataforma agêntica de FinOps: o Microruntimes delimita cada execução e o FinOps mantém a entrega assistida por agentes dentro do orçamento do time. Um domínio, um console."
+			"description": "LangDrift é a plataforma agêntica de FinOps: o Microruntimes delimita cada execução, o LLMOps mantém o gasto com raciocínio dentro do orçamento do time e o FinOps mede o hardware. Um domínio, um console."
 		},
 		"zh-Hant": {
 			"title": "LangDrift — Agentic Platform",
-			"description": "LangDrift 是代理式 FinOps 平台：Microruntimes 為每次執行劃定邊界，FinOps 讓代理協助的交付留在團隊預算之內。同一網域，同一主控台。"
+			"description": "LangDrift 是代理式 FinOps 平台：Microruntimes 為每次執行劃定邊界，LLMOps 讓推理支出留在團隊預算之內，FinOps 計量硬體。同一網域，同一主控台。"
 		},
 		"ja": {
 			"title": "LangDrift — Agentic Platform",
-			"description": "LangDrift はエージェンティック FinOps プラットフォームです。Microruntimes が各実行に境界を引き、FinOps がエージェント支援の開発をチーム予算の内側に保ちます。ひとつのドメイン、ひとつのコンソール。"
+			"description": "LangDrift はエージェンティック FinOps プラットフォームです。Microruntimes が各実行に境界を引き、LLMOps が推論の支出をチーム予算の内側に保ち、FinOps がハードウェアを計測します。ひとつのドメイン、ひとつのコンソール。"
 		},
 		"vi": {
 			"title": "LangDrift — Agentic Platform",
-			"description": "LangDrift là nền tảng FinOps tác tử: Microruntimes giới hạn từng lần chạy, FinOps giữ việc giao hàng có tác tử hỗ trợ trong ngân sách của đội. Một tên miền, một bảng điều khiển."
+			"description": "LangDrift là nền tảng FinOps tác tử: Microruntimes giới hạn từng lần chạy, LLMOps giữ chi tiêu suy luận trong ngân sách của đội và FinOps đo phần cứng. Một tên miền, một bảng điều khiển."
+		}
+	},
+	"llmops": {
+		"en": {
+			"title": "LangDrift LLMOps — Fund the how.",
+			"description": "Agent-assisted delivery accountable to a team budget: what the team can fund, what each piece of work consumed, and whether the outcome was worth it."
+		},
+		"pt-BR": {
+			"title": "LangDrift LLMOps — Financie o como.",
+			"description": "Entrega assistida por agentes responsável perante um orçamento de time: o que o time pode financiar, o que cada trabalho consumiu e se o resultado valeu a pena."
+		},
+		"zh-Hant": {
+			"title": "LangDrift LLMOps — 為「怎麼做」出資。",
+			"description": "讓代理協助的交付對團隊預算負責：團隊能投入多少、每項工作消耗了多少，以及成果是否值得。"
+		},
+		"ja": {
+			"title": "LangDrift LLMOps — 「どう作るか」に資金を。",
+			"description": "エージェント支援の開発をチーム予算に対して説明可能に。チームが投じられる額、各作業が消費した額、そして成果にその価値があったか。"
+		},
+		"vi": {
+			"title": "LangDrift LLMOps — Cấp vốn cho cách làm.",
+			"description": "Giao hàng có tác tử hỗ trợ chịu trách nhiệm trước ngân sách của đội: đội có thể chi bao nhiêu, mỗi phần việc đã tiêu bao nhiêu, và kết quả có đáng không."
 		}
 	},
 	"finops": {
 		"en": {
-			"title": "LangDrift FinOps — Fund the how.",
-			"description": "Agent-assisted delivery accountable to a team budget: what the team can fund, what each piece of work consumed, and whether the outcome was worth it."
+			"title": "LangDrift FinOps — Meter the hardware.",
+			"description": "Hardware spend accountable to a team budget: the CPU, memory and GPU each environment holds while it runs, its idle hours, and what stays unknown until a meter reports."
 		},
 		"pt-BR": {
-			"title": "LangDrift FinOps — Financie o como.",
-			"description": "Entrega assistida por agentes responsável perante um orçamento de time: o que o time pode financiar, o que cada trabalho consumiu e se o resultado valeu a pena."
+			"title": "LangDrift FinOps — Meça o hardware.",
+			"description": "Gasto com hardware que presta contas ao orçamento do time: a CPU, a memória e a GPU que cada ambiente ocupa enquanto roda, suas horas ociosas e o que continua desconhecido até um medidor reportar."
 		},
 		"zh-Hant": {
-			"title": "LangDrift FinOps — 為「怎麼做」出資。",
-			"description": "讓代理協助的交付對團隊預算負責：團隊能投入多少、每項工作消耗了多少，以及成果是否值得。"
+			"title": "LangDrift FinOps — 計量硬體。",
+			"description": "讓硬體支出對團隊預算負責：每個環境運行時占用的 CPU、記憶體與 GPU，它的閒置時數，以及在計量回報之前維持未知的部分。"
 		},
 		"ja": {
-			"title": "LangDrift FinOps — 「どう作るか」に資金を。",
-			"description": "エージェント支援の開発をチーム予算に対して説明可能に。チームが投じられる額、各作業が消費した額、そして成果にその価値があったか。"
+			"title": "LangDrift FinOps — ハードウェアを計測する。",
+			"description": "ハードウェアの支出をチーム予算に対して説明可能に。各環境が動いている間に占める CPU、メモリ、GPU、そのアイドル時間、そしてメーターが報告するまで不明のままのもの。"
 		},
 		"vi": {
-			"title": "LangDrift FinOps — Cấp vốn cho cách làm.",
-			"description": "Giao hàng có tác tử hỗ trợ chịu trách nhiệm trước ngân sách của đội: đội có thể chi bao nhiêu, mỗi phần việc đã tiêu bao nhiêu, và kết quả có đáng không."
+			"title": "LangDrift FinOps — Đo phần cứng.",
+			"description": "Chi tiêu phần cứng chịu trách nhiệm trước ngân sách của đội: CPU, bộ nhớ và GPU mà mỗi môi trường chiếm khi đang chạy, số giờ nhàn rỗi, và những gì vẫn chưa rõ cho đến khi đồng hồ đo báo cáo."
 		}
 	},
 	"microruntimes": {

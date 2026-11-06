@@ -1,6 +1,7 @@
 export { CiGatesIcon } from './ci-gates-icon'
 export { CliIcon } from './cli-icon'
 export { FinopsIcon } from './finops-icon'
+export { LlmopsIcon } from './llmops-icon'
 export { MicroruntimesIcon } from './microruntimes-icon'
 export type { PlatformIconProps } from './platform-icon-props'
 export { SafeSeatIcon } from './safe-seat-icon'

@@ -46,6 +46,51 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/"/>
   </url>
   <url>
+    <loc>https://langdrift.md/en/platform/llmops/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/llmops/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/pt-br/platform/llmops/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/llmops/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/zh-hant/platform/llmops/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/llmops/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/ja/platform/llmops/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/llmops/"/>
+  </url>
+  <url>
+    <loc>https://langdrift.md/vi/platform/llmops/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://langdrift.md/zh-hant/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://langdrift.md/ja/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://langdrift.md/vi/platform/llmops/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://langdrift.md/en/platform/llmops/"/>
+  </url>
+  <url>
     <loc>https://langdrift.md/en/platform/finops/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://langdrift.md/en/platform/finops/"/>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://langdrift.md/pt-br/platform/finops/"/>

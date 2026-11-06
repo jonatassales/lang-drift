@@ -96,7 +96,7 @@
 		"flow": {
 			"kicker": "Planned flow",
 			"title": "How Safe Seat will work",
-			"lead": "Safe Seat runs inside the LangDrift FinOps harness, through the LangDrift CLI and the console. This is the design; it is not available yet.",
+			"lead": "Safe Seat runs inside the LangDrift LLMOps harness, through the LangDrift CLI and the console. This is the design; it is not available yet.",
 			"steps": {
 				"plan": {
 					"eyebrow": "Plan",
@@ -219,7 +219,7 @@
 				},
 				"available": {
 					"question": "Can I use Safe Seat today?",
-					"answer": "Not yet. Safe Seat is in development as part of LangDrift FinOps. The Safe Seat page describes the planned design."
+					"answer": "Not yet. Safe Seat is in development as part of LangDrift LLMOps. The Safe Seat page describes the planned design."
 				},
 				"outside": {
 					"question": "Does it see what I do outside the LangDrift CLI?",
@@ -325,7 +325,7 @@
 		"flow": {
 			"kicker": "Fluxo planejado",
 			"title": "Como o Safe Seat vai funcionar",
-			"lead": "O Safe Seat roda dentro do harness do LangDrift FinOps, pela LangDrift CLI e pelo console. Este é o desenho; ainda não está disponível.",
+			"lead": "O Safe Seat roda dentro do harness do LangDrift LLMOps, pela LangDrift CLI e pelo console. Este é o desenho; ainda não está disponível.",
 			"steps": {
 				"plan": {
 					"eyebrow": "Plano",
@@ -448,7 +448,7 @@
 				},
 				"available": {
 					"question": "Já posso usar o Safe Seat?",
-					"answer": "Ainda não. O Safe Seat está em desenvolvimento como parte do LangDrift FinOps. A página do Safe Seat descreve o desenho planejado."
+					"answer": "Ainda não. O Safe Seat está em desenvolvimento como parte do LangDrift LLMOps. A página do Safe Seat descreve o desenho planejado."
 				},
 				"outside": {
 					"question": "Ele vê o que eu faço fora da LangDrift CLI?",
@@ -554,7 +554,7 @@
 		"flow": {
 			"kicker": "規劃中的流程",
 			"title": "Safe Seat 將如何運作",
-			"lead": "Safe Seat 在 LangDrift FinOps 的 harness 中運作，透過 LangDrift CLI 與主控台。這是設計，目前尚未推出。",
+			"lead": "Safe Seat 在 LangDrift LLMOps 的 harness 中運作，透過 LangDrift CLI 與主控台。這是設計，目前尚未推出。",
 			"steps": {
 				"plan": {
 					"eyebrow": "計畫",
@@ -677,7 +677,7 @@
 				},
 				"available": {
 					"question": "現在可以使用 Safe Seat 嗎？",
-					"answer": "還不行。Safe Seat 正在作為 LangDrift FinOps 的一部分開發中。Safe Seat 頁面描述的是規劃中的設計。"
+					"answer": "還不行。Safe Seat 正在作為 LangDrift LLMOps 的一部分開發中。Safe Seat 頁面描述的是規劃中的設計。"
 				},
 				"outside": {
 					"question": "它看得到我在 LangDrift CLI 之外做的事嗎？",
@@ -783,7 +783,7 @@
 		"flow": {
 			"kicker": "計画中の流れ",
 			"title": "Safe Seat の仕組み",
-			"lead": "Safe Seat は LangDrift FinOps のハーネスの中で、LangDrift CLI とコンソールを通じて動きます。これは設計であり、まだ提供されていません。",
+			"lead": "Safe Seat は LangDrift LLMOps のハーネスの中で、LangDrift CLI とコンソールを通じて動きます。これは設計であり、まだ提供されていません。",
 			"steps": {
 				"plan": {
 					"eyebrow": "計画",
@@ -906,7 +906,7 @@
 				},
 				"available": {
 					"question": "Safe Seat は今使えますか？",
-					"answer": "まだです。Safe Seat は LangDrift FinOps の一部として開発中です。Safe Seat のページは計画中の設計を説明しています。"
+					"answer": "まだです。Safe Seat は LangDrift LLMOps の一部として開発中です。Safe Seat のページは計画中の設計を説明しています。"
 				},
 				"outside": {
 					"question": "LangDrift CLI の外での作業も見えるのですか？",
@@ -1012,7 +1012,7 @@
 		"flow": {
 			"kicker": "Quy trình dự kiến",
 			"title": "Safe Seat sẽ hoạt động thế nào",
-			"lead": "Safe Seat chạy bên trong harness của LangDrift FinOps, qua LangDrift CLI và bảng điều khiển. Đây là thiết kế; hiện chưa có sẵn.",
+			"lead": "Safe Seat chạy bên trong harness của LangDrift LLMOps, qua LangDrift CLI và bảng điều khiển. Đây là thiết kế; hiện chưa có sẵn.",
 			"steps": {
 				"plan": {
 					"eyebrow": "Kế hoạch",
@@ -1135,7 +1135,7 @@
 				},
 				"available": {
 					"question": "Tôi có thể dùng Safe Seat ngay bây giờ không?",
-					"answer": "Chưa. Safe Seat đang được phát triển như một phần của LangDrift FinOps. Trang Safe Seat mô tả thiết kế dự kiến."
+					"answer": "Chưa. Safe Seat đang được phát triển như một phần của LangDrift LLMOps. Trang Safe Seat mô tả thiết kế dự kiến."
 				},
 				"outside": {
 					"question": "Nó có thấy những gì tôi làm bên ngoài LangDrift CLI không?",

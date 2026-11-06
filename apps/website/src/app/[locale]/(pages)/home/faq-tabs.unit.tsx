@@ -2,12 +2,12 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
-import { finopsMessages, microruntimesMessages } from '@i18n/messages/index'
+import { llmopsMessages, microruntimesMessages } from '@i18n/messages/index'
 
 import { FaqTabs } from './faq-tabs'
 
 const microruntimes = microruntimesMessages.en.faq.items
-const finops = finopsMessages.en.faq.items
+const llmops = llmopsMessages.en.faq.items
 
 const groups = [
 	{
@@ -25,14 +25,14 @@ const groups = [
 		label: 'Microruntimes',
 	},
 	{
-		id: 'finops',
+		id: 'llmops',
 		items: [
 			{
 				id: 'budget',
-				...finops.budget,
+				...llmops.budget,
 			},
 		],
-		label: 'FinOps',
+		label: 'LLMOps',
 	},
 ]
 
@@ -48,19 +48,19 @@ describe('website/home/faq-tabs', () => {
 			screen.getByRole('button', { name: microruntimes.what.question }),
 		).toBeTruthy()
 		expect(
-			screen.queryByRole('button', { name: finops.budget.question }),
+			screen.queryByRole('button', { name: llmops.budget.question }),
 		).toBeNull()
 
-		fireEvent.click(screen.getByRole('tab', { name: 'FinOps' }))
+		fireEvent.click(screen.getByRole('tab', { name: 'LLMOps' }))
 
 		expect(
-			screen.getByRole('button', { name: finops.budget.question }),
+			screen.getByRole('button', { name: llmops.budget.question }),
 		).toBeTruthy()
 		expect(
 			screen.queryByRole('button', { name: microruntimes.what.question }),
 		).toBeNull()
 		expect(
-			screen.getByRole('tab', { name: 'FinOps' }).getAttribute('aria-selected'),
+			screen.getByRole('tab', { name: 'LLMOps' }).getAttribute('aria-selected'),
 		).toBe('true')
 	})
 
@@ -73,7 +73,7 @@ describe('website/home/faq-tabs', () => {
 		expect(question().getAttribute('aria-expanded')).toBe('true')
 		expect(screen.getByText(microruntimes.what.answer)).toBeTruthy()
 
-		fireEvent.click(screen.getByRole('tab', { name: 'FinOps' }))
+		fireEvent.click(screen.getByRole('tab', { name: 'LLMOps' }))
 		fireEvent.click(screen.getByRole('tab', { name: 'Microruntimes' }))
 
 		expect(question().getAttribute('aria-expanded')).toBe('false')
@@ -87,10 +87,10 @@ describe('website/home/faq-tabs', () => {
 		fireEvent.keyDown(microruntimesTab, { key: 'ArrowRight' })
 
 		expect(
-			screen.getByRole('tab', { name: 'FinOps' }).getAttribute('aria-selected'),
+			screen.getByRole('tab', { name: 'LLMOps' }).getAttribute('aria-selected'),
 		).toBe('true')
 		expect(
-			screen.getByRole('button', { name: finops.budget.question }),
+			screen.getByRole('button', { name: llmops.budget.question }),
 		).toBeTruthy()
 	})
 })

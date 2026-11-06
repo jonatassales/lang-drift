@@ -3,10 +3,10 @@
 import { useAtomValue } from 'jotai'
 import { createTranslator } from 'next-intl'
 
+import { dollars } from '@app/template/formatters/dollars.fmt'
 import type { WebsiteLocale } from '@i18n/routing'
-import { dollars } from '@routes/platform/finops/content/dollars.fmt'
-import { workItems } from '@routes/platform/finops/content/finops-content.data'
-import type { FinopsMessages } from '@routes/platform/finops/content/finops-content.types'
+import { workItems } from '@routes/platform/llmops/content/llmops-content.data'
+import type { LlmopsMessages } from '@routes/platform/llmops/content/llmops-content.types'
 import { selectedWorkItemAtom } from '@state'
 import { DetailList } from 'web/ui/detail-list'
 import { Eyebrow } from 'web/ui/eyebrow'
@@ -16,10 +16,10 @@ import { Eyebrow } from 'web/ui/eyebrow'
 // Its head stacks at every width, so it reads the same docked beside the
 // ledger and under it.
 interface DeliveryReceiptProps {
-	copy: FinopsMessages['receipt']
-	/** 2 under the FinOps page's title, 3 under a home section's heading. */
+	copy: LlmopsMessages['receipt']
+	/** 2 under the LLMOps page's title, 3 under a home section's heading. */
 	headingLevel?: 2 | 3
-	items: FinopsMessages['ledger']['items']
+	items: LlmopsMessages['ledger']['items']
 	locale: WebsiteLocale
 }
 
@@ -33,7 +33,7 @@ export function DeliveryReceipt(props: DeliveryReceiptProps) {
 
 	if (!item) return null
 
-	const receipt = createTranslator({
+	const translate = createTranslator({
 		locale,
 		messages: copy,
 	})
@@ -83,7 +83,7 @@ export function DeliveryReceipt(props: DeliveryReceiptProps) {
 						term: copy.labels.reserved,
 					},
 					{
-						detail: receipt('modelValue', {
+						detail: translate('modelValue', {
 							effort: copy.efforts[item.effort],
 							tier: copy.tiers[item.tier],
 						}),
@@ -91,7 +91,7 @@ export function DeliveryReceipt(props: DeliveryReceiptProps) {
 						term: copy.labels.modelEffort,
 					},
 					{
-						detail: receipt('retries', { count: item.retries }),
+						detail: translate('retries', { count: item.retries }),
 						id: 'retries',
 						term: copy.labels.retries,
 					},

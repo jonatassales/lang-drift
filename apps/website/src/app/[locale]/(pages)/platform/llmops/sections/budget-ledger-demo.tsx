@@ -3,20 +3,21 @@
 import { useAtom } from 'jotai'
 import type { MouseEvent } from 'react'
 
+import { dollars } from '@app/template/formatters/dollars.fmt'
 import type { WebsiteLocale } from '@i18n/routing'
-import { dollars } from '@routes/platform/finops/content/dollars.fmt'
-import { envelopeSegments } from '@routes/platform/finops/content/envelope-segments.compute'
+import { envelopeSegments } from '@routes/platform/llmops/content/envelope-segments.compute'
 import {
 	envelope,
 	envelopeSegmentIds,
 	workItems,
-} from '@routes/platform/finops/content/finops-content.data'
+} from '@routes/platform/llmops/content/llmops-content.data'
 import type {
 	EnvelopeSegmentId,
-	FinopsMessages,
+	LlmopsMessages,
 	WorkItemId,
-} from '@routes/platform/finops/content/finops-content.types'
+} from '@routes/platform/llmops/content/llmops-content.types'
 import { ChoiceButton } from '@routes/platform/product-page/choice-button'
+import { EnvelopeBar } from '@routes/platform/product-page/envelope-bar'
 import { selectedWorkItemAtom } from '@state'
 import { Eyebrow } from 'web/ui/eyebrow'
 import { cn } from 'web/utilities'
@@ -30,11 +31,11 @@ const segmentColors: Record<EnvelopeSegmentId, string> = {
 
 const amountColumn = 'font-mono text-[13px] tabular-nums sm:text-right'
 
-// The FinOps hero demo: a simulated team envelope as a stacked bar, then
+// The LLMOps hero demo: a simulated team envelope as a stacked bar, then
 // the work items drawing on it. Selecting an item drives the receipt docked
 // beside it.
 interface BudgetLedgerDemoProps {
-	copy: FinopsMessages['ledger']
+	copy: LlmopsMessages['ledger']
 	locale: WebsiteLocale
 }
 
@@ -52,14 +53,13 @@ export function BudgetLedgerDemo(props: BudgetLedgerDemoProps) {
 	}
 
 	const money = dollars(locale)
-	const percent = new Intl.NumberFormat(locale, {
-		maximumFractionDigits: 0,
-		style: 'percent',
-	})
-	const segments = envelopeSegments(envelope)
-	const barLabel = envelopeSegmentIds
-		.map((id) => `${copy.segments[id]} ${money.format(segments[id])}`)
-		.join(', ')
+	const amounts = envelopeSegments(envelope)
+	const segments = envelopeSegmentIds.map((id) => ({
+		amount: amounts[id],
+		color: segmentColors[id],
+		id,
+		label: copy.segments[id],
+	}))
 
 	return (
 		<article className="rounded-2xl border border-border bg-card p-5 sm:p-7">
@@ -78,40 +78,11 @@ export function BudgetLedgerDemo(props: BudgetLedgerDemoProps) {
 				</div>
 			</header>
 
-			<div
-				aria-label={barLabel}
-				className="mt-6 flex h-3 overflow-hidden rounded-full bg-foreground/5"
-				role="img"
-			>
-				{envelopeSegmentIds.map((id) => (
-					<span
-						className={cn('h-full', segmentColors[id])}
-						key={id}
-						style={{
-							flexBasis: `${(segments[id] / envelope.authorized) * 100}%`,
-						}}
-					/>
-				))}
-			</div>
-			<ul className="m-0 mt-4 grid list-none grid-cols-2 gap-x-6 gap-y-3 p-0 sm:grid-cols-4">
-				{envelopeSegmentIds.map((id) => (
-					<li className="grid gap-1" key={id}>
-						<span className="flex items-center gap-2 text-[12px] text-muted-foreground">
-							<span
-								aria-hidden="true"
-								className={cn('size-2 rounded-full', segmentColors[id])}
-							/>
-							{copy.segments[id]}
-						</span>
-						<span className="font-mono text-[14px] tabular-nums">
-							{money.format(segments[id])}
-							<span className="ml-2 text-[11px] text-muted-foreground">
-								{percent.format(segments[id] / envelope.authorized)}
-							</span>
-						</span>
-					</li>
-				))}
-			</ul>
+			<EnvelopeBar
+				authorized={envelope.authorized}
+				locale={locale}
+				segments={segments}
+			/>
 
 			<div className="mt-7 border-t border-border pt-4">
 				<div

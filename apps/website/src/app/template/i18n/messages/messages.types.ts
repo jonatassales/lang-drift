@@ -6,11 +6,13 @@ export interface HeaderMessages {
 	navigation: string
 	platform: string
 	platformMenu: string
+	llmops: string
 	finops: string
 	microruntimes: string
 	ciGates: string
 	safeSeat: string
 	comingSoon: string
+	llmopsDescription: string
 	finopsDescription: string
 	microruntimesDescription: string
 	cli: string
@@ -128,10 +130,10 @@ export interface PlatformMessages {
 		words: string[]
 		titleEnd: string
 	}
-	// The home sections' own copy; the headline FinOps reuses lives in its
+	// The home sections' own copy; the headline LLMOps reuses lives in its
 	// catalog.
 	sections: {
-		finops: { description: string; link: string }
+		llmops: { description: string; link: string }
 	}
 	faq: {
 		title: string

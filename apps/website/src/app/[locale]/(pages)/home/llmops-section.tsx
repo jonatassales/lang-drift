@@ -1,23 +1,23 @@
-import { finopsMessages, platformMessages } from '@i18n/messages/index'
+import { llmopsMessages, platformMessages } from '@i18n/messages/index'
 import type { WebsiteLocale } from '@i18n/routing'
 import { platformProduct } from '@layout/website-header/platform-product.compute'
-import { BudgetLedgerDemo } from '@routes/platform/finops/sections/budget-ledger-demo'
-import { DeliveryReceipt } from '@routes/platform/finops/sections/delivery-receipt'
+import { BudgetLedgerDemo } from '@routes/platform/llmops/sections/budget-ledger-demo'
+import { DeliveryReceipt } from '@routes/platform/llmops/sections/delivery-receipt'
 
 import { HomeProductSection } from './home-product-section'
 
-// The FinOps page's opening on the home: the envelope statement, each
+// The LLMOps page's opening on the home: the envelope statement, each
 // sentence on its own line, over the budget ledger with the delivery receipt
 // docked beside it from `lg`, the receipt following the selected work item.
-interface FinopsSectionProps {
+interface LlmopsSectionProps {
 	locale: WebsiteLocale
 }
 
-export function FinopsSection(props: FinopsSectionProps) {
+export function LlmopsSection(props: LlmopsSectionProps) {
 	const { locale } = props
 
-	const copy = finopsMessages[locale]
-	const sections = platformMessages[locale].sections.finops
+	const copy = llmopsMessages[locale]
+	const sections = platformMessages[locale].sections.llmops
 
 	return (
 		<HomeProductSection
@@ -28,10 +28,10 @@ export function FinopsSection(props: FinopsSectionProps) {
 					<span className="block">{copy.hero.taglineEnd}</span>
 				</>
 			}
-			id="finops"
+			id="llmops"
 			link={sections.link}
 			locale={locale}
-			product={platformProduct('finops')}
+			product={platformProduct('llmops')}
 			summary={copy.hero.summary}
 		>
 			<div className="grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">

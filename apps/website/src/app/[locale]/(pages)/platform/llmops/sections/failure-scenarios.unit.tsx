@@ -3,16 +3,16 @@
 import { cleanup, render, screen, within } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
-import { finopsMessages } from '@i18n/messages/index'
+import { llmopsMessages } from '@i18n/messages/index'
 
 import { FailureScenarios } from './failure-scenarios'
 
 afterEach(cleanup)
 
-describe('website/platform/finops/sections/failure-scenarios', () => {
+describe('website/platform/llmops/sections/failure-scenarios', () => {
 	it('walks both failures through the chain and ends each in the state it leaves', () => {
 		const { container } = render(
-			<FailureScenarios copy={finopsMessages.en.failures} />,
+			<FailureScenarios copy={llmopsMessages.en.failures} />,
 		)
 		const [pause, unknown] = screen.getAllByRole('article')
 

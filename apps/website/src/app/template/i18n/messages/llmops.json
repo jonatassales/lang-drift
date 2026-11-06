@@ -118,7 +118,7 @@
 		"budget": {
 			"kicker": "Know who funds it",
 			"title": "The budget belongs to the team.",
-			"lead": "Work varies in complexity, so the authorized envelope is shared by the team, not split into equal quotas per developer or per ticket. Features receive allocations that can change; nobody receives an independent right to spend. This is the funding model LangDrift FinOps is designed around; it is not available yet.",
+			"lead": "Work varies in complexity, so the authorized envelope is shared by the team, not split into equal quotas per developer or per ticket. Features receive allocations that can change; nobody receives an independent right to spend. This is the funding model LangDrift LLMOps is designed around; it is not available yet.",
 			"terms": {
 				"envelope": {
 					"term": "Team envelope",
@@ -197,8 +197,8 @@
 					"answer": "An authorized amount, for a period, that the whole team's agent-assisted work draws from. Allocations to features are suggestions inside it; no developer or ticket gets an independent right to spend."
 				},
 				"spending": {
-					"question": "Does FinOps mean spending less?",
-					"answer": "No. It means knowing what was spent, on what, and whether the outcome was worth it. A more capable model can cost less overall when it avoids retries; FinOps measures the result, not the token price."
+					"question": "Does LLMOps mean spending less?",
+					"answer": "No. It means knowing what was spent, on what, and whether the outcome was worth it. A more capable model can cost less overall when it avoids retries; LLMOps measures the result, not the token price."
 				},
 				"unknown": {
 					"question": "What does “unknown” mean on a receipt?",
@@ -209,12 +209,12 @@
 					"answer": "No. An agent can estimate, recommend and run permitted work. Widening funding, scope or access takes a separately authorized policy decision by the team's owner."
 				},
 				"license": {
-					"question": "How is LangDrift FinOps licensed?",
+					"question": "How is LangDrift LLMOps licensed?",
 					"answer": "LangDrift is open-source software licensed under the Apache License, Version 2.0. The code is available on GitHub to inspect, run and modify."
 				},
 				"availability": {
-					"question": "Can I use LangDrift FinOps today?",
-					"answer": "The FinOps page describes the intended model. The ledger, the gate and the integrations it shows are not available yet, and demo requests are paused for now."
+					"question": "Can I use LangDrift LLMOps today?",
+					"answer": "The LLMOps page describes the intended model. The ledger, the gate and the integrations it shows are not available yet, and demo requests are paused for now."
 				}
 			}
 		}
@@ -338,7 +338,7 @@
 		"budget": {
 			"kicker": "Saiba quem financia",
 			"title": "O orçamento pertence ao time.",
-			"lead": "Os trabalhos variam em complexidade, então o envelope autorizado é compartilhado pelo time, não dividido em cotas iguais por desenvolvedor ou por ticket. Features recebem alocações que podem mudar; ninguém recebe um direito independente de gastar. Este é o modelo de financiamento para o qual o LangDrift FinOps está sendo projetado; ele ainda não está disponível.",
+			"lead": "Os trabalhos variam em complexidade, então o envelope autorizado é compartilhado pelo time, não dividido em cotas iguais por desenvolvedor ou por ticket. Features recebem alocações que podem mudar; ninguém recebe um direito independente de gastar. Este é o modelo de financiamento para o qual o LangDrift LLMOps está sendo projetado; ele ainda não está disponível.",
 			"terms": {
 				"envelope": {
 					"term": "Envelope do time",
@@ -417,8 +417,8 @@
 					"answer": "Um valor autorizado, por um período, do qual todo o trabalho assistido por agentes do time é financiado. Alocações para features são sugestões dentro dele; nenhum desenvolvedor ou ticket recebe um direito independente de gastar."
 				},
 				"spending": {
-					"question": "FinOps significa gastar menos?",
-					"answer": "Não. Significa saber o que foi gasto, em quê, e se o resultado valeu a pena. Um modelo mais capaz pode custar menos no total quando evita retentativas; o FinOps mede o resultado, não o preço do token."
+					"question": "LLMOps significa gastar menos?",
+					"answer": "Não. Significa saber o que foi gasto, em quê, e se o resultado valeu a pena. Um modelo mais capaz pode custar menos no total quando evita retentativas; o LLMOps mede o resultado, não o preço do token."
 				},
 				"unknown": {
 					"question": "O que significa “desconhecido” em um recibo?",
@@ -429,12 +429,12 @@
 					"answer": "Não. Um agente pode estimar, recomendar e executar o trabalho permitido. Ampliar financiamento, escopo ou acesso exige uma decisão de política autorizada separadamente pelo responsável do time."
 				},
 				"license": {
-					"question": "Como o LangDrift FinOps é licenciado?",
+					"question": "Como o LangDrift LLMOps é licenciado?",
 					"answer": "O LangDrift é um software de código aberto licenciado sob a Licença Apache, Versão 2.0. O código está disponível no GitHub para inspeção, execução e modificação."
 				},
 				"availability": {
-					"question": "Posso usar o LangDrift FinOps hoje?",
-					"answer": "A página do FinOps descreve o modelo pretendido. O livro-razão, o gate e as integrações que ela mostra ainda não estão disponíveis, e os pedidos de demonstração estão pausados por enquanto."
+					"question": "Posso usar o LangDrift LLMOps hoje?",
+					"answer": "A página do LLMOps descreve o modelo pretendido. O livro-razão, o gate e as integrações que ela mostra ainda não estão disponíveis, e os pedidos de demonstração estão pausados por enquanto."
 				}
 			}
 		}
@@ -558,7 +558,7 @@
 		"budget": {
 			"kicker": "知道誰出資",
 			"title": "預算屬於團隊。",
-			"lead": "工作的複雜度各不相同，所以授權額度由整個團隊共享，而不是按開發者或工單平均分配。功能得到可以調整的分配；沒有人得到獨立的花費權。這是 LangDrift FinOps 所依循設計的資金模型，目前尚未提供。",
+			"lead": "工作的複雜度各不相同，所以授權額度由整個團隊共享，而不是按開發者或工單平均分配。功能得到可以調整的分配；沒有人得到獨立的花費權。這是 LangDrift LLMOps 所依循設計的資金模型，目前尚未提供。",
 			"terms": {
 				"envelope": {
 					"term": "團隊預算額度",
@@ -637,8 +637,8 @@
 					"answer": "在一個期間內授權的金額，整個團隊由代理協助的工作都從這裡支出。功能的分配只是其中的建議；沒有任何開發者或工單得到獨立的花費權。"
 				},
 				"spending": {
-					"question": "FinOps 代表少花錢嗎？",
-					"answer": "不是。它代表知道花了多少、花在哪裡，以及成果是否值得。更有能力的模型若能避免重試，總成本可能更低；FinOps 衡量的是結果，不是 token 單價。"
+					"question": "LLMOps 代表少花錢嗎？",
+					"answer": "不是。它代表知道花了多少、花在哪裡，以及成果是否值得。更有能力的模型若能避免重試，總成本可能更低；LLMOps 衡量的是結果，不是 token 單價。"
 				},
 				"unknown": {
 					"question": "收據上的「未知」是什麼意思？",
@@ -649,12 +649,12 @@
 					"answer": "不行。代理可以估算、建議並執行被允許的工作。擴大資金、範圍或存取權，需要團隊負責人另行授權的政策決定。"
 				},
 				"license": {
-					"question": "LangDrift FinOps 的授權方式為何？",
+					"question": "LangDrift LLMOps 的授權方式為何？",
 					"answer": "LangDrift 是依據 Apache 授權條款第 2.0 版授權的開源軟體。原始碼公開在 GitHub 上，可供檢視、執行與修改。"
 				},
 				"availability": {
-					"question": "我今天可以使用 LangDrift FinOps 嗎？",
-					"answer": "FinOps 頁面描述預期中的模型。頁面展示的帳本、閘門與整合尚未可用，示範申請目前暫停。"
+					"question": "我今天可以使用 LangDrift LLMOps 嗎？",
+					"answer": "LLMOps 頁面描述預期中的模型。頁面展示的帳本、閘門與整合尚未可用，示範申請目前暫停。"
 				}
 			}
 		}
@@ -778,7 +778,7 @@
 		"budget": {
 			"kicker": "誰が資金を出すかを知る",
 			"title": "予算はチームのものです。",
-			"lead": "作業の複雑さはさまざまなので、承認された予算枠はチームで共有され、開発者やチケットごとの均等な割り当てには分けられません。機能には変更可能な配分が与えられます。独立した支出の権利は誰にも与えられません。これは LangDrift FinOps が前提として設計している資金モデルで、まだ提供されていません。",
+			"lead": "作業の複雑さはさまざまなので、承認された予算枠はチームで共有され、開発者やチケットごとの均等な割り当てには分けられません。機能には変更可能な配分が与えられます。独立した支出の権利は誰にも与えられません。これは LangDrift LLMOps が前提として設計している資金モデルで、まだ提供されていません。",
 			"terms": {
 				"envelope": {
 					"term": "チームの予算枠",
@@ -857,8 +857,8 @@
 					"answer": "ある期間に承認された金額で、チームのエージェント支援の作業すべてがそこから支出されます。機能への配分はその中での提案にすぎません。開発者やチケットが独立した支出の権利を得ることはありません。"
 				},
 				"spending": {
-					"question": "FinOps は支出を減らすことですか？",
-					"answer": "いいえ。何に、いくら使い、成果にその価値があったかを知ることです。能力の高いモデルは再試行を避けて総コストを下げることがあります。FinOps が測るのはトークン単価ではなく結果です。"
+					"question": "LLMOps は支出を減らすことですか？",
+					"answer": "いいえ。何に、いくら使い、成果にその価値があったかを知ることです。能力の高いモデルは再試行を避けて総コストを下げることがあります。LLMOps が測るのはトークン単価ではなく結果です。"
 				},
 				"unknown": {
 					"question": "レシートの「不明」とは何ですか？",
@@ -869,12 +869,12 @@
 					"answer": "いいえ。エージェントは見積もり、推奨し、許可された作業を実行できます。資金、スコープ、アクセスを広げるには、チームの責任者による別途承認されたポリシーの決定が必要です。"
 				},
 				"license": {
-					"question": "LangDrift FinOps のライセンスはどうなっていますか？",
+					"question": "LangDrift LLMOps のライセンスはどうなっていますか？",
 					"answer": "LangDrift は Apache License, Version 2.0 の下で提供されるオープンソースソフトウェアです。コードは GitHub で公開されており、閲覧、実行、変更できます。"
 				},
 				"availability": {
-					"question": "LangDrift FinOps は今日から使えますか？",
-					"answer": "FinOps のページは想定するモデルを説明しています。そこに示した台帳、ゲート、連携はまだ利用できず、デモの申し込みは当面停止しています。"
+					"question": "LangDrift LLMOps は今日から使えますか？",
+					"answer": "LLMOps のページは想定するモデルを説明しています。そこに示した台帳、ゲート、連携はまだ利用できず、デモの申し込みは当面停止しています。"
 				}
 			}
 		}
@@ -998,7 +998,7 @@
 		"budget": {
 			"kicker": "Biết ai cấp vốn",
 			"title": "Ngân sách thuộc về đội.",
-			"lead": "Công việc khác nhau về độ phức tạp, nên hạn mức được phê duyệt là của chung cả đội, không chia thành các phần bằng nhau cho từng lập trình viên hay từng ticket. Các tính năng nhận phân bổ có thể thay đổi; không ai nhận quyền chi tiêu độc lập. Đây là mô hình cấp vốn mà LangDrift FinOps được thiết kế theo; nó chưa khả dụng.",
+			"lead": "Công việc khác nhau về độ phức tạp, nên hạn mức được phê duyệt là của chung cả đội, không chia thành các phần bằng nhau cho từng lập trình viên hay từng ticket. Các tính năng nhận phân bổ có thể thay đổi; không ai nhận quyền chi tiêu độc lập. Đây là mô hình cấp vốn mà LangDrift LLMOps được thiết kế theo; nó chưa khả dụng.",
 			"terms": {
 				"envelope": {
 					"term": "Hạn mức của đội",
@@ -1077,8 +1077,8 @@
 					"answer": "Một số tiền được phê duyệt cho một kỳ, mà toàn bộ công việc có tác tử hỗ trợ của đội rút từ đó. Phân bổ cho tính năng là các đề xuất bên trong nó; không lập trình viên hay ticket nào nhận quyền chi tiêu độc lập."
 				},
 				"spending": {
-					"question": "FinOps có nghĩa là chi ít hơn?",
-					"answer": "Không. Nó có nghĩa là biết đã chi bao nhiêu, cho việc gì, và kết quả có đáng không. Một mô hình mạnh hơn có thể tốn ít hơn về tổng thể khi nó tránh được các lần thử lại; FinOps đo kết quả, không đo giá token."
+					"question": "LLMOps có nghĩa là chi ít hơn?",
+					"answer": "Không. Nó có nghĩa là biết đã chi bao nhiêu, cho việc gì, và kết quả có đáng không. Một mô hình mạnh hơn có thể tốn ít hơn về tổng thể khi nó tránh được các lần thử lại; LLMOps đo kết quả, không đo giá token."
 				},
 				"unknown": {
 					"question": "“Chưa rõ” trên biên lai nghĩa là gì?",
@@ -1089,12 +1089,12 @@
 					"answer": "Không. Tác tử có thể ước tính, đề xuất và chạy công việc được phép. Mở rộng vốn, phạm vi hay quyền truy cập cần một quyết định chính sách được người phụ trách đội phê duyệt riêng."
 				},
 				"license": {
-					"question": "LangDrift FinOps được cấp phép như thế nào?",
+					"question": "LangDrift LLMOps được cấp phép như thế nào?",
 					"answer": "LangDrift là phần mềm nguồn mở được cấp phép theo Giấy phép Apache, Phiên bản 2.0. Mã nguồn có sẵn trên GitHub để kiểm tra, chạy và sửa đổi."
 				},
 				"availability": {
-					"question": "Tôi có thể dùng LangDrift FinOps hôm nay không?",
-					"answer": "Trang FinOps mô tả mô hình dự kiến. Sổ cái, cổng kiểm soát và các tích hợp trên trang chưa khả dụng, và yêu cầu demo hiện đang tạm dừng."
+					"question": "Tôi có thể dùng LangDrift LLMOps hôm nay không?",
+					"answer": "Trang LLMOps mô tả mô hình dự kiến. Sổ cái, cổng kiểm soát và các tích hợp trên trang chưa khả dụng, và yêu cầu demo hiện đang tạm dừng."
 				}
 			}
 		}

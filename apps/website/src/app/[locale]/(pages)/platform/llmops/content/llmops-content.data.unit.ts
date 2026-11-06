@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { envelopeSegments } from './envelope-segments.compute'
+import { gateFigures } from './gate-figures.compute'
 import {
 	envelope,
 	failureScenarioIds,
@@ -8,10 +9,9 @@ import {
 	gateExample,
 	initialWorkItemId,
 	workItems,
-} from './finops-content.data'
-import { gateFigures } from './gate-figures.compute'
+} from './llmops-content.data'
 
-describe('website/platform/finops/content/finops-content.data', () => {
+describe('website/platform/llmops/content/llmops-content.data', () => {
 	it('splits the envelope into segments that sum to the authorized amount', () => {
 		const segments = envelopeSegments(envelope)
 		const total =

@@ -2,14 +2,14 @@ import {
 	chainPillarIds,
 	failureScenarioIds,
 	failureStatusTones,
-} from '@routes/platform/finops/content/finops-content.data'
-import type { FinopsMessages } from '@routes/platform/finops/content/finops-content.types'
+} from '@routes/platform/llmops/content/llmops-content.data'
+import type { LlmopsMessages } from '@routes/platform/llmops/content/llmops-content.types'
 import { DetailList } from 'web/ui/detail-list'
 
 // The two ways delivery leaves the plan, side by side: each walks the chain
 // from intent to outcome and ends in the state it leaves behind.
 interface FailureScenariosProps {
-	copy: FinopsMessages['failures']
+	copy: LlmopsMessages['failures']
 }
 
 export function FailureScenarios(props: FailureScenariosProps) {
