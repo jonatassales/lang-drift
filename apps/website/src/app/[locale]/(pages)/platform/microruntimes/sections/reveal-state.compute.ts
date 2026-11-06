@@ -1,9 +1,9 @@
-export type CardValueState = 'unset' | 'resolving' | 'set'
+import type { RevealValueState } from 'web/ui/reveal-value'
 
 export function revealState(
 	valueShown: boolean,
 	skeletonShown = false,
-): CardValueState {
+): RevealValueState {
 	if (valueShown) return 'set'
 	if (skeletonShown) return 'resolving'
 

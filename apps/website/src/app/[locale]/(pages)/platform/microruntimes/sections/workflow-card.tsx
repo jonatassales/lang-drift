@@ -18,8 +18,8 @@ import {
 	toggleHumanStageAtom,
 	workflowChoicesAtom,
 } from '@state'
+import { CardSection } from 'web/ui/card-section'
 
-import { CardSection } from './card-section'
 import { playLabel } from './play-label.compute'
 import type {
 	TicketCardCopy,

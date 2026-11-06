@@ -1,30 +1,23 @@
 import type { ReactNode } from 'react'
 
-import type { MicroruntimesMessages } from '@routes/platform/microruntimes/content/microruntimes-content.types'
 import { cn } from 'web/utilities'
 
-import type { CardValueState } from './reveal-state.compute'
+import type { RevealValueLabels } from './reveal-value-labels.type'
+import type { RevealValueState } from './reveal-value-state.type'
 
-export { type CardValueState, revealState } from './reveal-state.compute'
-
-export type CardValueLabels = Pick<
-	MicroruntimesMessages['session']['card'],
-	'notSet' | 'resolving'
->
-
-// One value on the ticket card as the session reveals it: a dash while
-// nothing is set, a pulsing skeleton while the console resolves it, then the
-// value fading in. Screen readers get the state as words.
-interface CardValueProps {
+// One value as it is revealed: a dash while nothing is known, a pulsing
+// skeleton while it resolves, then the value fading in. A value not known
+// is never drawn as zero. Screen readers get the state as words.
+export interface RevealValueProps {
 	children?: ReactNode
 	className?: string
-	labels: CardValueLabels
-	state: CardValueState
+	labels: RevealValueLabels
+	state: RevealValueState
 	/** The skeleton's width class while the value resolves. */
 	width?: string
 }
 
-export function CardValue(props: CardValueProps) {
+export function RevealValue(props: RevealValueProps) {
 	const { children, className, labels, state, width = 'w-24' } = props
 
 	if (state === 'unset') {

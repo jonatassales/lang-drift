@@ -2,10 +2,9 @@ import type {
 	Episode,
 	EpisodeVerdict,
 } from '@routes/platform/microruntimes/content/microruntimes-content.types'
+import type { RevealValueLabels, RevealValueState } from 'web/ui/reveal-value'
 import { ShareBar } from 'web/ui/share-bar'
 import { cn } from 'web/utilities'
-
-import type { CardValueLabels, CardValueState } from './card-value'
 
 const skeletonBar = 'h-2.5 rounded bg-foreground/10'
 const rowGrid =
@@ -23,10 +22,10 @@ const verdictTones: Record<EpisodeVerdict, string> = {
 // precedents.
 interface EpisodeRowProps {
 	episode: Episode
-	labels: CardValueLabels
+	labels: RevealValueLabels
 	/** The similarity in the visitor's locale. */
 	similarity: string
-	state: Exclude<CardValueState, 'unset'>
+	state: Exclude<RevealValueState, 'unset'>
 	/** The judgment of the episode, once the agent has made it. */
 	verdict?: { kind: EpisodeVerdict; label: string; reason?: string }
 }

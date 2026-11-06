@@ -11,9 +11,9 @@ import type {
 	WorkflowChoices,
 } from '@routes/platform/microruntimes/content/microruntimes-workflow.types'
 import { stageProgress } from '@routes/platform/microruntimes/content/stage-progress.compute'
+import { CheckMark } from 'web/ui/check-mark'
 import { cn } from 'web/utilities'
 
-import { ReadMark } from './read-mark'
 import type {
 	TicketCardCopy,
 	TicketCardFormat,
@@ -65,7 +65,7 @@ export function WorkflowStages(props: WorkflowStagesProps) {
 					if (stage === 'merge') {
 						return (
 							<li className="flex min-h-7 items-center gap-2" key={stage}>
-								<ReadMark label={workflow.mergeLocked} />
+								<CheckMark label={workflow.mergeLocked} />
 								<span className="text-[12px]">{workflow.stages.merge}</span>
 								<span className={skillText} aria-hidden="true">
 									{workflow.mergeLocked}
@@ -90,7 +90,7 @@ export function WorkflowStages(props: WorkflowStagesProps) {
 								<span>{workflow.stages['dev-ticket']}</span>
 								<span className={skillText}>{workflow.personDriven}</span>
 								{progress === 'done' && (
-									<ReadMark label={workflow.stages['dev-ticket']} />
+									<CheckMark label={workflow.stages['dev-ticket']} />
 								)}
 								{progress === 'active' && (
 									<span className="text-[10px] text-status-warning">
@@ -138,7 +138,7 @@ export function WorkflowStages(props: WorkflowStagesProps) {
 								<span>{workflow.stages[stage]}</span>
 								{skills && <span className={skillText}>{skills}</span>}
 								{progress === 'done' && !waiting && (
-									<ReadMark label={workflow.stages[stage]} />
+									<CheckMark label={workflow.stages[stage]} />
 								)}
 								{waiting && (
 									<span className="text-[10px] text-status-warning">

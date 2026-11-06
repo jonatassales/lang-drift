@@ -3,11 +3,12 @@ import {
 	ticketPlan,
 } from '@routes/platform/microruntimes/content/microruntimes-content.data'
 import { revealed } from '@routes/platform/microruntimes/content/revealed.compute'
+import { CardSection } from 'web/ui/card-section'
 import { DetailList } from 'web/ui/detail-list'
 import { Eyebrow } from 'web/ui/eyebrow'
+import { RevealValue } from 'web/ui/reveal-value'
 
-import { CardSection } from './card-section'
-import { CardValue, revealState } from './card-value'
+import { revealState } from './reveal-state.compute'
 import type { TicketCardCopy } from './ticket-card-format.compute'
 
 export { ticketSummary } from './ticket-summary.compute'
@@ -50,14 +51,14 @@ export function TicketCard(props: TicketCardProps) {
 					className="mt-1"
 					items={documentIds.map((id) => ({
 						detail: (
-							<CardValue
+							<RevealValue
 								className={fileName}
 								labels={copy}
 								state={linksState}
 								width="w-56"
 							>
 								{ticketPlan.artifacts[id]}
-							</CardValue>
+							</RevealValue>
 						),
 						id,
 						term: copy.ticket.artifacts[id],

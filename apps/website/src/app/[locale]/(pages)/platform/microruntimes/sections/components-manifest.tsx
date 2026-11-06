@@ -2,11 +2,12 @@ import { hasPlayed } from '@routes/platform/microruntimes/content/has-played.com
 import { ticketPlan } from '@routes/platform/microruntimes/content/microruntimes-content.data'
 import { revealed } from '@routes/platform/microruntimes/content/revealed.compute'
 import { suggestedTotals } from '@routes/platform/microruntimes/content/suggested-totals.compute'
+import { CardSection } from 'web/ui/card-section'
 import { Eyebrow } from 'web/ui/eyebrow'
+import { RevealValue } from 'web/ui/reveal-value'
 
-import { CardSection } from './card-section'
-import { CardValue, revealState } from './card-value'
 import { ComponentRow } from './component-row'
+import { revealState } from './reveal-state.compute'
 import type {
 	TicketCardCopy,
 	TicketCardFormat,
@@ -43,7 +44,7 @@ export function ComponentsManifest(props: ComponentsManifestProps) {
 				<Eyebrow>{copy.plan.columns.memory}</Eyebrow>
 			</div>
 			{state === 'unset' ? (
-				<CardValue
+				<RevealValue
 					className="mt-2 block font-mono text-[12px]"
 					labels={copy}
 					state="unset"
@@ -66,7 +67,7 @@ export function ComponentsManifest(props: ComponentsManifestProps) {
 							/>
 						))}
 					</ul>
-					<CardValue
+					<RevealValue
 						className="mt-2 block border-t border-border pt-2 text-[12px] text-muted-foreground"
 						labels={copy}
 						state={state}
@@ -84,7 +85,7 @@ export function ComponentsManifest(props: ComponentsManifestProps) {
 									cpu: format.formatNumber.format(resolvedTotals.cpuMillis),
 									memory: format.formatNumber.format(resolvedTotals.memoryMiB),
 								})}
-					</CardValue>
+					</RevealValue>
 				</>
 			)}
 		</CardSection>
