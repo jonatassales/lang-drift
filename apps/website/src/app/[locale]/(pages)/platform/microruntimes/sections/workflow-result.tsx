@@ -12,9 +12,9 @@ import { runHasPlayed } from '@routes/platform/microruntimes/content/run-has-pla
 import type { WorkflowFigures } from '@routes/platform/microruntimes/content/workflow-figures.compute'
 import { Eyebrow } from 'web/ui/eyebrow'
 import { GitPullRequest } from 'web/ui/icons/server'
+import { RevealValue } from 'web/ui/reveal-value'
 import { cn } from 'web/utilities'
 
-import { CardValue } from './card-value'
 import { pullRequestState } from './pull-request-state.compute'
 import type {
 	TicketCardCopy,
@@ -94,13 +94,13 @@ export function WorkflowResult(props: WorkflowResultProps) {
 					<div className="grid gap-1" key={cell.id}>
 						<Eyebrow as="dt">{workflow.result[cell.id]}</Eyebrow>
 						<dd className="m-0">
-							<CardValue
+							<RevealValue
 								className={figure}
 								labels={copy}
 								state={cell.shown ? 'set' : 'unset'}
 							>
 								{format.money(cell.value)}
-							</CardValue>
+							</RevealValue>
 						</dd>
 					</div>
 				))}
@@ -136,7 +136,7 @@ export function WorkflowResult(props: WorkflowResultProps) {
 						)}
 					</>
 				) : (
-					<CardValue
+					<RevealValue
 						className="font-mono text-[12px]"
 						labels={copy}
 						state="unset"
@@ -145,7 +145,7 @@ export function WorkflowResult(props: WorkflowResultProps) {
 			</div>
 			<div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 border-t border-border pt-2.5">
 				<Eyebrow>{workflow.safeSeat}</Eyebrow>
-				<CardValue
+				<RevealValue
 					className={cn(
 						'text-[11px]',
 						safeSeatMet ? 'text-status-success' : 'text-muted-foreground',
@@ -154,7 +154,7 @@ export function WorkflowResult(props: WorkflowResultProps) {
 					state={safeSeatMet ? 'set' : 'unset'}
 				>
 					{workflow.safeSeatMet}
-				</CardValue>
+				</RevealValue>
 			</div>
 		</div>
 	)

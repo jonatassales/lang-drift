@@ -2,8 +2,8 @@ import type { ReactNode } from 'react'
 
 import { cn } from 'web/utilities'
 
-// One section of the ticket card, under a hairline rule.
-interface CardSectionProps {
+// One section of a card, under a hairline rule.
+export interface CardSectionProps {
 	children: ReactNode
 	className?: string
 }

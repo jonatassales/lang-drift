@@ -8,13 +8,14 @@ import {
 } from '@routes/platform/microruntimes/content/microruntimes-content.data'
 import { revealed } from '@routes/platform/microruntimes/content/revealed.compute'
 import { workflowModel } from '@routes/platform/microruntimes/content/workflow-model.compute'
+import { CardSection } from 'web/ui/card-section'
 import { Eyebrow } from 'web/ui/eyebrow'
+import { RevealValue } from 'web/ui/reveal-value'
 
-import { CardSection } from './card-section'
-import { CardValue, revealState } from './card-value'
 import { DocumentRow } from './document-row'
 import { EpisodeRow } from './episode-row'
 import { extractedFact } from './extracted-fact.compute'
+import { revealState } from './reveal-state.compute'
 import type {
 	TicketCardCopy,
 	TicketCardFormat,
@@ -94,7 +95,7 @@ export function AnalysisCard(props: AnalysisCardProps) {
 					</span>
 				</div>
 				{episodesState === 'unset' ? (
-					<CardValue
+					<RevealValue
 						className="mt-2 block font-mono text-[12px]"
 						labels={copy}
 						state="unset"
@@ -126,14 +127,14 @@ export function AnalysisCard(props: AnalysisCardProps) {
 				<div className="mt-1 flex flex-wrap items-baseline justify-between gap-x-3 border-t border-border pt-2">
 					<Eyebrow>{analysis.measured}</Eyebrow>
 					<span className="flex flex-wrap items-baseline gap-x-2">
-						<CardValue
+						<RevealValue
 							className="font-mono text-[12px]"
 							labels={copy}
 							state={citedState}
 							width="w-24"
 						>
 							{analysis.measuredNone}
-						</CardValue>
+						</RevealValue>
 						{measured && (
 							<span className="text-[11px] text-muted-foreground motion-safe:transition-opacity motion-safe:duration-300 starting:opacity-0">
 								{analysis.measuredReasoning}
@@ -146,7 +147,7 @@ export function AnalysisCard(props: AnalysisCardProps) {
 			<CardSection className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 pt-3">
 				<div className="grid gap-1.5">
 					<Eyebrow>{analysis.suggestedModel}</Eyebrow>
-					<CardValue
+					<RevealValue
 						className="grid gap-0.5"
 						labels={copy}
 						state={suggestionState}
@@ -156,18 +157,18 @@ export function AnalysisCard(props: AnalysisCardProps) {
 						<span className="font-mono text-[11px] text-muted-foreground">
 							{suggestedModel.id}
 						</span>
-					</CardValue>
+					</RevealValue>
 				</div>
 				<div className="grid gap-1.5">
 					<Eyebrow>{analysis.suggestedEffort}</Eyebrow>
-					<CardValue
+					<RevealValue
 						className="font-mono text-[14px]"
 						labels={copy}
 						state={suggestionState}
 						width="w-16"
 					>
 						{analysis.efforts[ticketPlan.effort]}
-					</CardValue>
+					</RevealValue>
 				</div>
 				{suggestionState === 'set' && (
 					<p className="col-span-2 m-0 text-[11px] text-muted-foreground">

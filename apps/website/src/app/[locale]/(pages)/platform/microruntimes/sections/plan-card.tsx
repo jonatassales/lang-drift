@@ -2,14 +2,15 @@ import { headroom } from '@routes/platform/microruntimes/content/headroom.comput
 import { ticketPlan } from '@routes/platform/microruntimes/content/microruntimes-content.data'
 import { revealed } from '@routes/platform/microruntimes/content/revealed.compute'
 import { suggestedTotals } from '@routes/platform/microruntimes/content/suggested-totals.compute'
+import { CardSection } from 'web/ui/card-section'
 import { Eyebrow } from 'web/ui/eyebrow'
+import { RevealValue, type RevealValueState } from 'web/ui/reveal-value'
 import { ShareBar } from 'web/ui/share-bar'
 import { cn } from 'web/utilities'
 
-import { CardSection } from './card-section'
-import { CardValue, type CardValueState, revealState } from './card-value'
 import { ComponentsManifest } from './components-manifest'
 import { resolvedComponents } from './resolved-components.compute'
+import { revealState } from './reveal-state.compute'
 import type {
 	TicketCardCopy,
 	TicketCardFormat,
@@ -20,7 +21,7 @@ export { planSummary } from './plan-summary.compute'
 interface ReportCell {
 	detail: string
 	id: string
-	state: CardValueState
+	state: RevealValueState
 	term: string
 	tone?: 'warning'
 }
@@ -118,14 +119,14 @@ export function PlanCard(props: PlanCardProps) {
 			<div className="grid gap-1.5">
 				<Eyebrow>{plan.proposed}</Eyebrow>
 				<p className="m-0 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-					<CardValue
+					<RevealValue
 						className={`${figure} text-[28px] leading-none font-medium tracking-[-0.02em]`}
 						labels={copy}
 						state={totalsState}
 						width="w-48"
 					>
 						{format.figures(totals)}
-					</CardValue>
+					</RevealValue>
 					{drafted && (
 						<span className={`${fade} text-[12px] text-status-warning`}>
 							{plan.pendingAuthorization}
@@ -139,7 +140,7 @@ export function PlanCard(props: PlanCardProps) {
 					<div className="grid gap-1" key={row.id}>
 						<span className="flex items-baseline justify-between gap-3 text-[12px]">
 							<span>{row.label}</span>
-							<CardValue
+							<RevealValue
 								className={figure}
 								labels={copy}
 								state={totalsState}
@@ -149,7 +150,7 @@ export function PlanCard(props: PlanCardProps) {
 									bounded: row.bounded,
 									suggested: row.suggested,
 								})}
-							</CardValue>
+							</RevealValue>
 						</span>
 						<ShareBar share={totalsState === 'set' ? row.share : 0} />
 					</div>
@@ -184,14 +185,14 @@ export function PlanCard(props: PlanCardProps) {
 										: 'text-foreground',
 								)}
 							>
-								<CardValue
+								<RevealValue
 									className={figure}
 									labels={copy}
 									state={cell.state}
 									width="w-24"
 								>
 									{cell.detail}
-								</CardValue>
+								</RevealValue>
 							</dd>
 						</div>
 					))}

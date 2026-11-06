@@ -2,8 +2,8 @@ import type { ReactNode } from 'react'
 
 import { revealed } from '@routes/platform/microruntimes/content/revealed.compute'
 import { suggestedTotals } from '@routes/platform/microruntimes/content/suggested-totals.compute'
+import { RevealValue } from 'web/ui/reveal-value'
 
-import { CardValue } from './card-value'
 import { resolvedComponents } from './resolved-components.compute'
 import type {
 	TicketCardCopy,
@@ -17,7 +17,7 @@ export function planSummary(
 ): ReactNode {
 	const resolved = resolvedComponents(playedCount)
 
-	if (resolved.length === 0) return <CardValue labels={copy} state="unset" />
+	if (resolved.length === 0) return <RevealValue labels={copy} state="unset" />
 
 	const figures = format.figures(suggestedTotals(resolved))
 

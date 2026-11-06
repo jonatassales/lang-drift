@@ -7,8 +7,8 @@ import {
 } from '@routes/platform/microruntimes/content/microruntimes-content.data'
 import { revealed } from '@routes/platform/microruntimes/content/revealed.compute'
 import { workflowModel } from '@routes/platform/microruntimes/content/workflow-model.compute'
+import { RevealValue } from 'web/ui/reveal-value'
 
-import { CardValue } from './card-value'
 import type {
 	TicketCardCopy,
 	TicketCardFormat,
@@ -42,5 +42,5 @@ export function analysisSummary(
 		})
 	}
 
-	return <CardValue labels={copy} state="unset" />
+	return <RevealValue labels={copy} state="unset" />
 }

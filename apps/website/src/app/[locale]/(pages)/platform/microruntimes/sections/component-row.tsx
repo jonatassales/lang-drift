@@ -12,9 +12,8 @@ import {
 	RedisIcon,
 	type TechnologyIconProps,
 } from 'web/ui/icons/technology'
+import type { RevealValueLabels, RevealValueState } from 'web/ui/reveal-value'
 import { ShareBar } from 'web/ui/share-bar'
-
-import type { CardValueLabels, CardValueState } from './card-value'
 
 const technologyIcons: Record<
 	Technology,
@@ -41,11 +40,11 @@ interface ComponentRowProps {
 	cpu: string
 	/** The kind's label from the catalog. */
 	kind: string
-	labels: CardValueLabels
+	labels: RevealValueLabels
 	memory: string
 	/** The component's share of the CPU envelope, from 0 to 1. */
 	share: number
-	state: Exclude<CardValueState, 'unset'>
+	state: Exclude<RevealValueState, 'unset'>
 }
 
 export function ComponentRow(props: ComponentRowProps) {

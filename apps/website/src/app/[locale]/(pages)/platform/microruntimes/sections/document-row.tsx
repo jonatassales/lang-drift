@@ -1,8 +1,12 @@
-import { CardValue, type CardValueLabels } from './card-value'
-import { ReadMark } from './read-mark'
+import { CheckMark } from 'web/ui/check-mark'
+import { RevealValue, type RevealValueLabels } from 'web/ui/reveal-value'
 
 const note =
 	'text-[11px] text-muted-foreground motion-safe:transition-opacity motion-safe:duration-300 starting:opacity-0'
+
+interface DocumentRowLabels extends RevealValueLabels {
+	readMark: string
+}
 
 // One linked document in the analysis, on one line: its file name, a dash
 // until the agent reads it, then the read mark and what the read
@@ -13,7 +17,7 @@ interface DocumentRowProps {
 	file: string
 	/** The agent's judgment of the document, once it has made one. */
 	judgment?: string
-	labels: CardValueLabels & { readMark: string }
+	labels: DocumentRowLabels
 	read: boolean
 }
 
@@ -26,11 +30,11 @@ export function DocumentRow(props: DocumentRowProps) {
 				<span className="font-mono text-[12px]">{file}</span>
 				{read ? (
 					<>
-						<ReadMark label={labels.readMark} />
+						<CheckMark label={labels.readMark} />
 						<span className={note}>{extracted}</span>
 					</>
 				) : (
-					<CardValue className="text-[11px]" labels={labels} state="unset" />
+					<RevealValue className="text-[11px]" labels={labels} state="unset" />
 				)}
 			</span>
 			{judgment && <span className={note}>{judgment}</span>}
