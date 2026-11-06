@@ -35,7 +35,7 @@ func TestSessionWritesTheExpectedTree(t *testing.T) {
 	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", consoleComponent); status != 0 {
 		t.Fatalf("dft agent plan = %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime", "--model", "claude-opus-5-5", "--effort", "high"); status != 3 {
+	if status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime", "--model", "claude-opus-5-5", "--effort", "high"); status != 0 {
 		t.Fatalf("the first lap gave %d: %s\n%s", status, stderr, stdout)
 	}
 	if status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 0 {

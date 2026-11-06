@@ -115,7 +115,7 @@ func TestGatesReport(test *testing.T) {
 		test.Setenv("HEAD_SHA", head)
 
 		status, _, stderr := consumer.dft("", "gates", "report")
-		if status != 2 || !strings.Contains(stderr, "BASE_SHA") {
+		if status != 1 || !strings.Contains(stderr, "BASE_SHA") {
 			test.Errorf("dft gates report without BASE_SHA = %d, %s", status, stderr)
 		}
 	})

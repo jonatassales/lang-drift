@@ -174,10 +174,10 @@ func TestRunWaitsForTheOwnerThenPlaysTheStages(t *testing.T) {
 	if planning := stageState(runRecord(t, p), "planning"); planning.State != "active" || planning.ConfirmedBy == nil || *planning.ConfirmedBy != "owner" {
 		t.Errorf("planning after the confirmation = %+v", planning)
 	}
-	if status, _, stderr := p.dftWith(deps, "agent", "confirm", "console-microruntime", "planning"); status != 3 || !strings.Contains(stderr, "not waiting") {
+	if status, _, stderr := p.dftWith(deps, "agent", "confirm", "console-microruntime", "planning"); status != 1 || !strings.Contains(stderr, "not waiting") {
 		t.Errorf("a second confirmation gave %d: %s", status, stderr)
 	}
-	if status, _, stderr := p.dftWith(deps, "agent", "confirm", "console-microruntime", "deploy"); status != 2 {
+	if status, _, stderr := p.dftWith(deps, "agent", "confirm", "console-microruntime", "deploy"); status != 1 {
 		t.Errorf("confirming an unknown stage gave %d: %s", status, stderr)
 	}
 
@@ -264,7 +264,7 @@ func TestRunWaitsForTheOwnerThenPlaysTheStages(t *testing.T) {
 		t.Errorf("stage evidence = %d files, %v; want one per call", len(entries), err)
 	}
 
-	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 3 || !strings.Contains(stderr, "finished") || len(driver.calls) != 6 {
+	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 1 || !strings.Contains(stderr, "finished") || len(driver.calls) != 6 {
 		t.Errorf("a run after the run finished gave %d with %d calls: %s", status, len(driver.calls), stderr)
 	}
 
@@ -299,8 +299,9 @@ func TestRunConfirmsOnTheTerminal(t *testing.T) {
 }
 
 // FG-04 pauses the paid calls once what the lap observed reached its
-// reservation: the lap ends with its overspend on the ledger, and the next
-// lap needs the owner to acknowledge it, FG-05, before it plays on.
+// reservation: the run stops after the call, the lap ends with its
+// overspend on the ledger, and the next lap needs the owner to acknowledge
+// it, FG-05, before it plays on.
 func TestRunPausesThePaidCallsAtTheReservation(t *testing.T) {
 	t.Parallel()
 
@@ -317,10 +318,12 @@ func TestRunPausesThePaidCallsAtTheReservation(t *testing.T) {
 	}
 
 	status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime")
-	if status != 3 || !strings.Contains(stderr, "FG-04") || len(driver.calls) != 1 {
+	if status != 1 || !strings.Contains(stderr, "FG-04 paused the paid calls · observed 1400 reached the reservation 1140") || len(driver.calls) != 1 {
 		t.Fatalf("the exhausted lap gave %d with %d calls: %s\n%s", status, len(driver.calls), stderr, stdout)
 	}
-	expectLines(t, stdout, "console › grilling   3 open questions settled", "console › gate       paused · FG-04 · observed 1400 reached the reservation 1140")
+	if !strings.HasSuffix(stdout, "console › grilling   3 open questions settled\n") {
+		t.Errorf("the exhausted lap printed past its last call:\n%s", stdout)
+	}
 
 	record := runRecord(t, p)
 	if lap := record.Laps[0]; record.State != "paused" || lap.Outcome != "paused-at-gate" || lap.Gate == nil || *lap.Gate != "FG-04" || lap.NothingPaid || lap.ObservedCents != 1400 {
@@ -350,10 +353,12 @@ func TestRunPausesThePaidCallsAtTheReservation(t *testing.T) {
 	}
 
 	status, stdout, stderr = p.dftWith(deps, "agent", "run", "console-microruntime")
-	if status != 3 || !strings.Contains(stderr, "FG-05") {
+	if status != 1 || !strings.Contains(stderr, "FG-05") {
 		t.Fatalf("a lap over an unacknowledged overspend gave %d: %s\n%s", status, stderr, stdout)
 	}
-	expectLines(t, stdout, "console › gate       blocked · FG-05 · FG-05 require-owner")
+	if strings.Contains(stdout, "console › gate") {
+		t.Errorf("a blocked lap printed a gate line:\n%s", stdout)
+	}
 
 	status, stdout, stderr = p.dftWith(deps, "agent", "run", "console-microruntime", "--acknowledge-overspend")
 	if status != 0 {
@@ -378,8 +383,9 @@ func TestRunPausesThePaidCallsAtTheReservation(t *testing.T) {
 }
 
 // A call that reports no usage leaves the spend unknown, which is never
-// zero: FG-04 pauses the next paid call unless the driver allows it, and the
-// ledger shows no tokens and no variance for the lap.
+// zero: FG-04 pauses the next paid call unless the driver allows it, the run
+// stops after the call, and the ledger shows no tokens and no variance for
+// the lap.
 func TestRunPausesWhenACallReportsNoUsage(t *testing.T) {
 	t.Parallel()
 
@@ -396,13 +402,12 @@ func TestRunPausesWhenACallReportsNoUsage(t *testing.T) {
 	}
 
 	status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime")
-	if status != 3 || !strings.Contains(stderr, "FG-04") {
+	if status != 1 || !strings.Contains(stderr, "FG-04 paused the paid calls · observed spend is unknown; a call reported no usage") {
 		t.Fatalf("an unmeasured call gave %d: %s\n%s", status, stderr, stdout)
 	}
-	expectLines(t, stdout,
-		"console › grilling   3 open questions settled · no usage reported",
-		"console › gate       paused · FG-04 · observed spend is unknown; a call reported no usage",
-	)
+	if !strings.HasSuffix(stdout, "console › grilling   3 open questions settled · no usage reported\n") {
+		t.Errorf("the unmeasured lap printed past its last call:\n%s", stdout)
+	}
 
 	ledger := ledgerOf(t, p)
 	if line := ledger.Laps[0]; line.TokensThousands.Observed != nil || line.Cents.Variance != nil || line.Cents.Observed != 0 || line.Cents.Recovered != 0 || line.Cents.Overspend != 0 || line.NothingPaid {
@@ -464,10 +469,13 @@ func TestRunRunsTheHooksAndReplaysAFailedStage(t *testing.T) {
 	driver.exits = map[string]int{}
 	driver.hookExit = 1
 	status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime")
-	if status != 1 || !strings.Contains(stderr, "hook platform/hooks/lint.sh of stage implement exited 1") {
+	if status != 1 || !strings.Contains(stderr, "Hook platform/hooks/lint.sh of stage implement exited 1") {
 		t.Fatalf("a failing hook gave %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout, "console › to-spec    0011-SPEC revised · 3 acceptance criteria", "console › hook       platform/hooks/lint.sh · exit 1")
+	if strings.Contains(stdout, "runtime    stopped") {
+		t.Errorf("a failed lap printed the runtime's stop:\n%s", stdout)
+	}
 	if record := runRecord(t, p); stageState(record, "implement").State != "failed" || stageState(record, "tickets").State != "done" || record.Laps[1].Number != "0002" || record.Laps[1].Outcome != "failed" {
 		t.Errorf("after the failed hook: %+v, laps %+v", record.Stages, record.Laps)
 	}

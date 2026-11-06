@@ -31,7 +31,7 @@ func TestReplanKeepsTheRecordsAndRefusesAnOpenLap(t *testing.T) {
 	if status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 0 {
 		t.Fatalf("dft agent run = %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", consoleComponent); status != 3 || !strings.Contains(stderr, "waiting with a lap open") {
+	if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", consoleComponent); status != 1 || !strings.Contains(stderr, "waiting with a lap open") {
 		t.Errorf("a plan over an open lap gave %d: %s", status, stderr)
 	}
 
@@ -95,7 +95,7 @@ func TestGatePausesOnTheAllocationAndThePeriod(t *testing.T) {
 
 	budget("50000", "2500", "1000")
 	status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-again")
-	if status != 3 || !strings.Contains(stderr, "ticket allocation") {
+	if status != 0 || stderr != "" {
 		t.Fatalf("a reservation over the allocation gave %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout, "console › gate       reservation $11.40 exceeds the $10.00 allocation · paused")
@@ -105,7 +105,7 @@ func TestGatePausesOnTheAllocationAndThePeriod(t *testing.T) {
 
 	budget("2000", "2000", "2000")
 	status, stdout, stderr = p.dftWith(deps, "agent", "run", "console-again")
-	if status != 3 || !strings.Contains(stderr, "left of the period") {
+	if status != 0 || stderr != "" {
 		t.Fatalf("a reservation over the period gave %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout, "console › gate       reservation $11.40 exceeds the $9.95 left of the period · paused")
@@ -113,7 +113,7 @@ func TestGatePausesOnTheAllocationAndThePeriod(t *testing.T) {
 	// The planner's own reservation, 15 cents, meets the same gate.
 	budget("985", "985", "985")
 	deps.Judge = &scriptedJudge{answers: sampleAnswers(t)}
-	if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--runtime", "console-third", "--component", consoleComponent); status != 3 || !strings.Contains(stderr, "left of the period") || !strings.Contains(stderr, "nothing was paid") {
+	if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--runtime", "console-third", "--component", consoleComponent); status != 1 || !strings.Contains(stderr, "left of the period") || !strings.Contains(stderr, "nothing was paid") {
 		t.Errorf("a planning reservation over the period gave %d: %s", status, stderr)
 	}
 }
@@ -229,12 +229,12 @@ func TestPlanReadsTheDockerfileAndNamesWhatItLacks(t *testing.T) {
 		"--component", "name=console,path=.",
 		"--component", "name=web,path=apps/console",
 		"--component", "name=extub,path=apps/extub,dockerfile=Dockerfile.local,readiness=tcp")
-	if status != 3 || !strings.Contains(stderr, "blocked") {
+	if status != 1 || !strings.Contains(stderr, "blocked") || !strings.Contains(stderr, "readiness-known failed") {
 		t.Fatalf("a component without readiness gave %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout, "console › tool call: inspect apps/console · package.json · :3002")
-	if !strings.Contains(stdout, "✗ plan       runtime.md draft, revision 1 · blocked · readiness-known failed\n") {
-		t.Errorf("the plan did not say which check blocked it:\n%s", stdout)
+	if !strings.HasSuffix(stdout, validatedLine) {
+		t.Errorf("a blocked plan printed past the validate line:\n%s", stdout)
 	}
 
 	var planned run.Plan
@@ -307,7 +307,7 @@ func TestPlanRefusesAComponentFlagItCannotRead(t *testing.T) {
 	p, deps := seedProject(t)
 
 	for _, component := range []string{"path=.", "name=console", "name=console,path=.,readiness=grpc", "name=console,path=.,image=x:1"} {
-		if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", component); status != 2 {
+		if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", component); status != 1 {
 			t.Errorf("--component %s gave %d: %s", component, status, stderr)
 		}
 	}

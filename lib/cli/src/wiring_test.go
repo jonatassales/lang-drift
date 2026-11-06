@@ -149,7 +149,7 @@ func TestCommandsStopBeforeInfrastructureWithoutAProject(t *testing.T) {
 		{"cluster", "inspect"},
 		{"agent", "status", "demo"},
 	} {
-		if status, _, stderr := p.dft("", arguments...); status != 4 || !strings.Contains(stderr, "no LangDrift project") {
+		if status, _, stderr := p.dft("", arguments...); status != 1 || !strings.Contains(stderr, "No LangDrift project") {
 			t.Errorf("dft %v = %d, %q; want the missing project reported", arguments, status, stderr)
 		}
 	}
@@ -171,15 +171,15 @@ func TestCommandsStopBeforeInfrastructureWithoutACluster(t *testing.T) {
 		arguments []string
 		stderr    string
 	}{
-		// A missing record is a missing prerequisite: exit 4 by contract.
-		{arguments: []string{"cluster", "inspect"}, stderr: "no cluster is recorded"},
-		{arguments: []string{"runtime", "up", "demo"}, stderr: "no cluster is recorded"},
-		{arguments: []string{"runtime", "down", "demo"}, stderr: "runtime demo has no execution record"},
-		{arguments: []string{"runtime", "inspect", "demo"}, stderr: "runtime demo has no execution record"},
+		// A missing record stops the command: exit 1, naming what is missing.
+		{arguments: []string{"cluster", "inspect"}, stderr: "No cluster is recorded"},
+		{arguments: []string{"runtime", "up", "demo"}, stderr: "No cluster is recorded"},
+		{arguments: []string{"runtime", "down", "demo"}, stderr: "Runtime demo has no execution record"},
+		{arguments: []string{"runtime", "inspect", "demo"}, stderr: "Runtime demo has no execution record"},
 	}
 
 	for _, tt := range tests {
-		if status, _, stderr := p.dft("", tt.arguments...); status != 4 || !strings.Contains(stderr, tt.stderr) {
+		if status, _, stderr := p.dft("", tt.arguments...); status != 1 || !strings.Contains(stderr, tt.stderr) {
 			t.Errorf("dft %v = %d, %q; want %q", tt.arguments, status, stderr, tt.stderr)
 		}
 	}

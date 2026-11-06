@@ -617,7 +617,6 @@ func (planning *planning) check() error {
 	planning.state = Proposed
 	if failing := failingChecks(planning.checks); len(failing) > 0 {
 		planning.state = Blocked
-		planning.emit(session.PlanBlocked, session.Data{"revision": revision, "checks": failing})
 	} else {
 		planning.emit(session.Draft, session.Data{"revision": revision})
 		planning.emit(session.Handoff, nil)

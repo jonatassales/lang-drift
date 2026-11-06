@@ -231,7 +231,7 @@ func TestRunBringsTheRuntimeUpObservesDeliveryAndRemembers(t *testing.T) {
 	if status, stdout, stderr := p.dftWith(deps, "agent", "reindex"); status != 0 || !strings.Contains(stdout, `"episodes": 1`) {
 		t.Errorf("dft agent reindex = %d: %s\n%s", status, stderr, stdout)
 	}
-	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 3 || !strings.Contains(stderr, "finished") {
+	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 1 || !strings.Contains(stderr, "finished") {
 		t.Errorf("a run over the finished run gave %d: %s", status, stderr)
 	}
 
@@ -254,7 +254,8 @@ func TestRunBringsTheRuntimeUpObservesDeliveryAndRemembers(t *testing.T) {
 
 // What the run cannot observe stays unknown: a branch without an upstream,
 // a forge without its CLI, a cleanup nobody confirmed; the reservation is
-// held, and the next lap may play on once the owner looked.
+// held, the run stops with no line of its own, and the next lap may play on
+// once the owner looked.
 func TestRunLeavesWhatItCannotObserveUnknown(t *testing.T) {
 	t.Parallel()
 
@@ -265,17 +266,16 @@ func TestRunLeavesWhatItCannotObserveUnknown(t *testing.T) {
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = websiteDriver(), lifecycle, delivery, time.Millisecond
 
 	status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
-	if status != 0 {
+	if status != 1 || !strings.Contains(stderr, "The runtime's cleanup was not confirmed: 2 of 4 owned resources removed.\n") {
 		t.Fatalf("dft agent run = %d: %s\n%s", status, stderr, stdout)
 	}
 	expectLines(t, stdout,
 		"pushed     unknown · no upstream",
 		"pr         unknown · gh is not installed",
 		"checks     unknown · no pull request",
-		"runtime    unknown · the cleanup was not confirmed: 2 of 4 owned resources removed · the reservation is held",
 	)
-	if strings.Contains(stdout, "✓ ready") || strings.Contains(stdout, "# next") {
-		t.Errorf("an unknown outcome printed a ready line:\n%s", stdout)
+	if !strings.HasSuffix(stdout, "checks     unknown · no pull request\n") {
+		t.Errorf("an unconfirmed cleanup printed past the delivery lines:\n%s", stdout)
 	}
 
 	record := runRecord(t, p)

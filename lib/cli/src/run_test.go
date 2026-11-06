@@ -33,13 +33,18 @@ func TestRunPausesAtTheGateThenOpensALap(t *testing.T) {
 	folder := filepath.Join(p.root, ".langdrift", "microruntimes", "runtimes", "console-microruntime")
 
 	status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime", "--model", "claude-opus-5-5", "--effort", "high")
-	if status != 3 || !strings.Contains(stderr, "FG-03") || !strings.Contains(stderr, "nothing was paid") {
+	if status != 0 || stderr != "" {
 		t.Fatalf("a paused lap gave %d: %s\n%s", status, stderr, stdout)
 	}
 
 	startsOnTheScope := strings.HasPrefix(stdout, "# run · ")
 	if !startsOnTheScope || strings.Contains(stdout, "dft agent run") {
 		t.Errorf("the run does not open on its scope, or echoes the command:\n%s", stdout)
+	}
+
+	endsOnThePause := strings.HasSuffix(stdout, "console › gate       reservation $40.80 exceeds the $25.00 budget · paused\n# needs a decision: raise the budget or lower the effort · nothing was paid for\n")
+	if !endsOnThePause {
+		t.Errorf("the run does not end on the paused gate and its decision:\n%s", stdout)
 	}
 
 	for _, line := range []string{
@@ -146,7 +151,7 @@ func TestRunPausesAtTheGateThenOpensALap(t *testing.T) {
 		t.Errorf("a run over the open lap gave %d: %s\n%s", status, stderr, stdout)
 	}
 
-	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime", "--model", "claude-opus-5-5"); status != 3 || !strings.Contains(stderr, "is open") {
+	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime", "--model", "claude-opus-5-5"); status != 1 || !strings.Contains(stderr, "is open") {
 		t.Errorf("a new choice over the open lap gave %d: %s", status, stderr)
 	}
 }
@@ -156,20 +161,21 @@ func TestRunRefusesWhatItCannotRun(t *testing.T) {
 
 	p, deps := seedProject(t)
 
-	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 4 || !strings.Contains(stderr, "runtime.md") {
+	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 1 || !strings.Contains(stderr, "runtime.md") {
 		t.Errorf("an unplanned runtime gave %d: %s", status, stderr)
 	}
 
-	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime", "--effort", "max"); status != 2 {
+	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime", "--effort", "max"); status != 1 {
 		t.Errorf("an unknown effort gave %d: %s", status, stderr)
 	}
 
-	// A model the price list does not cover blocks at FG-01, nothing paid.
+	// A model the price list does not cover blocks at FG-01, nothing paid:
+	// the run stops with no gate line of its own.
 	if status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent); status != 0 {
 		t.Fatalf("dft agent plan = %d\n%s%s", status, stdout, stderr)
 	}
 	status, stdout, stderr := p.dftWith(deps, "agent", "run", "console-microruntime", "--model", "claude-mythos-5-1")
-	if status != 3 || !strings.Contains(stderr, "FG-01") || !strings.Contains(stdout, "console › gate       blocked · FG-01") {
+	if status != 1 || !strings.Contains(stderr, "FG-01") || strings.Contains(stdout, "console › gate") {
 		t.Errorf("an unpriced model gave %d: %s\n%s", status, stderr, stdout)
 	}
 }

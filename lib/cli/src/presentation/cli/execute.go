@@ -71,18 +71,9 @@ func Execute(
 		)
 	}
 
-	if executionError == nil {
-		return 0
+	if interrupted := applicationContext.Err(); interrupted != nil {
+		executionError = errors.Join(interrupted, executionError)
 	}
 
-	exitStatus := exitCode(applicationContext, executionError)
-
-	reportError(
-		options.Diagnostics,
-		executionError,
-		exitStatus,
-		cliApplication.globals.JSON,
-	)
-
-	return exitStatus
+	return Stop(executionError, options.Diagnostics)
 }
