@@ -1,6 +1,6 @@
 # LangDrift
 
-LangDrift is an agentic FinOps platform: one brand, one domain and one console. This repository, code name **Tao**, builds the next LangDrift. This file holds the ideas an agent must carry into any task here; the mechanics live in [`.agents/context.guide.md`](.agents/context.guide.md).
+LangDrift is an agentic FinOps platform: one brand, one domain and one console. This repository, code name **Tao**, builds the next LangDrift. This file holds the ideas an agent must carry into any task here; the mechanics live in [`.agents/context.md`](.agents/context.md).
 
 ## The idea
 
@@ -42,7 +42,7 @@ A pnpm and Turborepo monorepo. `apps/website` is the platform site, one page wit
 
 - **Rules first.** [`.claude/rules/`](.claude/rules/) holds the rules that apply to every task and are loaded in every session. Read them before touching code.
 - **The owner writes application code.** Agents edit app code only when the task asks for it. Repetitive work may be delegated when the task names its scope.
-- **A request to build or change application code enters the spec-driven workflow** instead of producing code: `grilling` (plus `domain-modeling` when terms or decisions settle), then `to-spec`, `to-tickets`, `implement`, `code-review`. [`.agents/policies/human-in-the-loop.policy.md`](.agents/policies/human-in-the-loop.policy.md) says where the owner takes part and what runs on its own.
+- **A request to build or change application code enters the spec-driven workflow** instead of producing code: `grilling` (plus `domain-modeling` when terms or decisions settle), then `to-spec`, `to-tickets`, `implement`, `code-review`. [`.agents/policy/human-in-the-loop.policy.md`](.agents/policy/human-in-the-loop.policy.md) says where the owner takes part and what runs on its own.
 - **Open decisions stay open.** Pricing, limits, auth provider and formulas are the owner's to close. Rules are added only when the owner asks, and the harness stays a draft until the owner promotes a piece of it to a rule.
 - **Nothing carries an AI signature**: no `Co-Authored-By`, no "Generated with", in commits, pull requests or contributions. Inside the workflow, commit, push and pull request follow the policy above; outside it, each needs explicit authorization every time. Merge and release always do.
 - **Secrets stay out of reach.** Do not read or edit values in `.env` files, and keep credentials out of code, logs and evidence.
@@ -51,16 +51,16 @@ A pnpm and Turborepo monorepo. `apps/website` is the platform site, one page wit
 
 | When you need | Read |
 | --- | --- |
-| Layout, toolchain, commands, the `drift` CLI, design tokens, CI and Git mechanics | [`.agents/context.guide.md`](.agents/context.guide.md) |
-| The project vocabulary | [`.agents/context.guide.md`](.agents/context.guide.md), `## Glossary` |
-| PRDs and ADRs | `.agents/prds/`, `.agents/adrs/` |
-| Specs, tickets, technical design docs and research notes | `.agents/workflow/` |
+| Layout, toolchain, commands, the `drift` CLI, design tokens, CI and Git mechanics | [`.agents/context.md`](.agents/context.md) |
+| The project vocabulary | [`.agents/context.md`](.agents/context.md), `## Glossary` |
+| PRDs and ADRs | `.agents/prd/`, `.agents/adr/` |
+| Specs, tickets, technical design docs and research notes | `.agents/specs/`, `.agents/tickets/`, `.agents/dd/`, `.agents/research/` |
 | The website's environment contract and sign-up pause | [`apps/website/README.md`](apps/website/README.md) |
 | The LangDrift CLI and the Microruntimes contracts | [`lib/cli/README.md`](lib/cli/README.md), [`lib/core/contracts/go/README.md`](lib/core/contracts/go/README.md) |
 
 ## Commands
 
-Run from the repository root. `pnpm website` serves the site on port 3000, `pnpm console` the console on 3001 with its stub API on 3401, so both run at once. [`.agents/context.guide.md`](.agents/context.guide.md) has the full table and what each command touches.
+Run from the repository root. `pnpm website` serves the site on port 3000, `pnpm console` the console on 3001 with its stub API on 3401, so both run at once. [`.agents/context.md`](.agents/context.md) has the full table and what each command touches.
 
 ```bash
 pnpm install

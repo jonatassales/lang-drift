@@ -10,7 +10,7 @@ metadata:
 
 Break a plan, spec, or conversation into a set of **tickets**: tracer-bullet vertical slices, each declaring the tickets that **block** it.
 
-The issue tracker and triage label vocabulary are defined in the `Spec-driven development` section of `.agents/context.guide.md`.
+The issue tracker and triage label vocabulary are defined in the `Spec-driven development` section of `.agents/context.md`.
 
 ## Process
 
@@ -43,7 +43,7 @@ Give each ticket its **blocking edges**: the other tickets that must complete be
 
 Give each ticket its **simulation alignment**, as ADR 0005 and item 4 of `.claude/rules/12-console.rule.md` require. A ticket that removes what the code does beyond the simulation, builds what the simulation shows and the code lacks, or changes what differs says which of the three it is. Its acceptance criteria quote the exact terminal lines and card fields of the home simulation it must produce.
 
-Give each ticket its **dev part**: the problem in it that the owner writes by hand, as `.agents/policies/safe-seat.policy.md` sets out.
+Give each ticket its **dev part**: the problem in it that the owner writes by hand, as `.agents/policy/safe-seat.policy.md` sets out.
 
 - The problem has its own goal and acceptance criteria.
 - Its category is one of those in the policy's Categories section: `core-domain`, `hard-part` or `new-stack`.
@@ -66,7 +66,7 @@ Draft the breakdown as a numbered list. For each ticket, note:
 - **Alignment**: remove, build or change, and the simulated lines and fields it produces
 - **Dev part**: its category and paths, or its override
 
-Check it yourself, or with the owner if `.agents/policies/human-in-the-loop.policy.md` puts a checkpoint here:
+Check it yourself, or with the owner if `.agents/policy/human-in-the-loop.policy.md` puts a checkpoint here:
 
 - Does the granularity feel right? (too coarse / too fine)
 - Are the blocking edges correct: does each ticket only depend on tickets that genuinely gate it?
@@ -77,9 +77,9 @@ Revise until every answer holds, then publish.
 
 ### 5. Publish the tickets to the configured tracker
 
-Publish the approved tickets. **How** depends on the tracker configured in `.agents/context.guide.md`; the tickets are the same either way, only the shape of the blocking edges changes:
+Publish the approved tickets. **How** depends on the tracker configured in `.agents/context.md`; the tickets are the same either way, only the shape of the blocking edges changes:
 
-- **Local files** → write one file per ticket at `.agents/workflow/tickets/<NNNN>-<slug>.ticket.md`, continuing the repository-wide ticket sequence in dependency order (blockers first). Each file's "Blocked by" lists the numbers/titles it depends on. Use the per-ticket file template below: one ticket per file, never a single combined file.
+- **Local files** → write one file per ticket at `.agents/tickets/<NNNN>-<slug>.ticket.md`, continuing the repository-wide ticket sequence in dependency order (blockers first). Each file's "Blocked by" lists the numbers/titles it depends on. Use the per-ticket file template below: one ticket per file, never a single combined file.
 - **A real issue tracker (GitHub, Linear, …)** → publish one issue per ticket in dependency order (blockers first) so each ticket's blocking edges can reference real identifiers. Use the platform's native blocking relationship where it has one; otherwise set each ticket's "Blocked by" to the blocking issues. If the source was an existing issue, make each ticket its sub-issue (tracker doc's operation). Apply the `ready-for-agent` triage label unless instructed otherwise; the tickets are agent-grabbable by construction.
 
 Work the **frontier**: any ticket whose blockers are all done. For a purely linear chain that means top to bottom.

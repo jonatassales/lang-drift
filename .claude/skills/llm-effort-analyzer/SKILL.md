@@ -169,7 +169,7 @@ Do not bury the recommendation under a generic explanation of LLMs.
 ## Record the analysis
 
 After giving the recommendation, write it to
-`.agents/workflow/.effort-log/<session_id>.md`, using this session's id. Content:
+`.agents/.effort-log/<session_id>.md`, using this session's id. Content:
 the one-line recommendation, the target task in one sentence, and today's date.
 This file is what `.claude/hooks/guard-implement-effort.sh` checks before letting
 the `implement` skill run; without it, that skill is blocked for this session.

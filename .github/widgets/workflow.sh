@@ -20,7 +20,7 @@ fi
 ticket_file=""
 ticket_title="Delivery Ticket"
 if [ -n "$ticket" ]; then
-  match=$(find "$DRIFT_PROJECT_ROOT/.agents/workflow/tickets" -type f -name "$ticket-*.ticket.md" 2>/dev/null | head -n 1 || true)
+  match=$(find "$DRIFT_PROJECT_ROOT/.agents/tickets" -type f -name "$ticket-*.ticket.md" 2>/dev/null | head -n 1 || true)
   if [ -n "$match" ] && [ -f "$match" ]; then
     ticket_file="$match"
     raw_title=$(grep -m 1 '^# ' "$ticket_file" | sed 's/^# //' || true)
@@ -33,7 +33,7 @@ spec_name="Autonomous delivery"
 if [ -n "$ticket_file" ]; then
   spec_ref=$(grep -m 1 -E 'Spec:[[:space:]]*[0-9]+' "$ticket_file" | sed -E 's/.*Spec:[[:space:]]*([0-9]+).*/\1/' || true)
   if [ -n "$spec_ref" ]; then
-    match=$(find "$DRIFT_PROJECT_ROOT/.agents/workflow/specs" -type f -name "$spec_ref-*.spec.md" 2>/dev/null | head -n 1 || true)
+    match=$(find "$DRIFT_PROJECT_ROOT/.agents/specs" -type f -name "$spec_ref-*.spec.md" 2>/dev/null | head -n 1 || true)
     if [ -n "$match" ] && [ -f "$match" ]; then
       spec_file="$match"
       raw_spec_title=$(grep -m 1 '^# ' "$spec_file" | sed 's/^# //' || true)

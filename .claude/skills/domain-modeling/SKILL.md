@@ -12,8 +12,8 @@ Actively build and sharpen the project's domain model as you design. This is the
 
 ## Where the domain model lives
 
-- **Glossary**: the `## Glossary` section of `.agents/context.guide.md`. Edit only that section.
-- **ADRs**: `.agents/adrs/<NNNN>-<slug>.adr.md`.
+- **Glossary**: the `## Glossary` section of `.agents/context.md`. Edit only that section.
+- **ADRs**: `.agents/adr/<NNNN>-<slug>.adr.md`.
 
 Create them lazily: add the glossary section when the first term is resolved, and the `adrs/` folder when the first ADR is needed.
 

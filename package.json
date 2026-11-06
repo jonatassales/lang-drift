@@ -4,13 +4,6 @@
 	"engines": {
 		"node": ">=24"
 	},
-	"devEngines": {
-		"packageManager": {
-			"name": "pnpm",
-			"version": "^12.4.2",
-			"onFail": "download"
-		}
-	},
 	"scripts": {
 		"postinstall": "sh packages/drift/drift.sh setup",
 		"prepare": "husky packages/drift/.husky",

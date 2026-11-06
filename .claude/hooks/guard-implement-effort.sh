@@ -7,7 +7,7 @@
 #
 # Marker convention: the llm-effort-analyzer skill
 # (.claude/skills/llm-effort-analyzer/SKILL.md) ends by creating
-# .agents/workflow/.effort-log/<session_id>.md. This hook checks that file
+# .agents/.effort-log/<session_id>.md. This hook checks that file
 # exists before letting "implement" run.
 #
 # Unverified assumption, flagged on purpose: tool_input.name is the field
@@ -39,12 +39,12 @@ esac
 
 SESSION_ID="$(printf '%s' "$INPUT" | jq -r '.session_id // empty')"
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-.}"
-MARKER="$PROJECT_DIR/.agents/workflow/.effort-log/$SESSION_ID.md"
+MARKER="$PROJECT_DIR/.agents/.effort-log/$SESSION_ID.md"
 
 if [ -f "$MARKER" ]; then
   exit 0
 fi
 
-REASON="No LLM-effort analysis is recorded for this session. Run the llm-effort-analyzer skill, which records its result at .agents/workflow/.effort-log/$SESSION_ID.md, before running implement."
+REASON="No LLM-effort analysis is recorded for this session. Run the llm-effort-analyzer skill, which records its result at .agents/.effort-log/$SESSION_ID.md, before running implement."
 jq -n --arg reason "$REASON" '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$reason}}'
 exit 0

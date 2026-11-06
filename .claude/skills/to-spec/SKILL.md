@@ -8,7 +8,7 @@ metadata:
 
 This skill takes the current conversation context and codebase understanding and produces a spec. Do NOT interview the user; just synthesize what you already know.
 
-The issue tracker and triage label vocabulary are defined in the `Spec-driven development` section of `.agents/context.guide.md`.
+The issue tracker and triage label vocabulary are defined in the `Spec-driven development` section of `.agents/context.md`.
 
 ## Process
 
@@ -16,7 +16,7 @@ The issue tracker and triage label vocabulary are defined in the `Spec-driven de
 
 2. Sketch out the seams at which you're going to test the feature. Existing seams should be preferred to new ones. Use the highest seam possible. If new seams are needed, propose them at the highest point you can. The fewer seams across the codebase, the better - the ideal number is one.
 
-Record the seams in the Testing Decisions. Confirm them with the owner only if `.agents/policies/human-in-the-loop.policy.md` puts a checkpoint here.
+Record the seams in the Testing Decisions. Confirm them with the owner only if `.agents/policy/human-in-the-loop.policy.md` puts a checkpoint here.
 
 3. Write the spec using the template below, then publish it to the project issue tracker. Apply the `ready-for-agent` triage label - no need for additional triage.
 

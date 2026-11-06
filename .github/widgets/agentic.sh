@@ -11,7 +11,7 @@ head_sha=${2:-${HEAD_SHA:-HEAD}}
 # Effort log inspection
 model="Gemini 3.8 Flash (High)"
 effort="high"
-latest_effort=$(find "$DRIFT_PROJECT_ROOT/.agents/workflow/.effort-log" -type f -name "*.md" ! -name ".gitkeep" 2>/dev/null | sort -r | head -n 1 || true)
+latest_effort=$(find "$DRIFT_PROJECT_ROOT/.agents/.effort-log" -type f -name "*.md" ! -name ".gitkeep" 2>/dev/null | sort -r | head -n 1 || true)
 if [ -n "$latest_effort" ] && [ -f "$latest_effort" ]; then
   raw_model=$(grep -m 1 'Recommendation:' "$latest_effort" | sed -E 's/.*Use \*\*([^*]+)\*\*.*/\1/' || true)
   [ -z "$raw_model" ] || model="$raw_model"

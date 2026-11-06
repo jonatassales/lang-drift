@@ -10,7 +10,7 @@ head_sha=${2:-${HEAD_SHA:-HEAD}}
 
 # Look for latest effort log
 effort_file=""
-latest_effort=$(find "$DRIFT_PROJECT_ROOT/.agents/workflow/.effort-log" -type f -name "*.md" ! -name ".gitkeep" 2>/dev/null | sort -r | head -n 1 || true)
+latest_effort=$(find "$DRIFT_PROJECT_ROOT/.agents/.effort-log" -type f -name "*.md" ! -name ".gitkeep" 2>/dev/null | sort -r | head -n 1 || true)
 if [ -n "$latest_effort" ] && [ -f "$latest_effort" ]; then
   effort_file="$latest_effort"
 fi

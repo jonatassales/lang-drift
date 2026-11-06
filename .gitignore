@@ -14,7 +14,7 @@ coverage/
 
 # Local experiment and diagnostic output (testing rules, item 3)
 .audits/
-.lab
+.lab/
 
 # Environment: shared development defaults are tracked; only .env is ignored
 .env
@@ -23,7 +23,7 @@ coverage/
 .DS_Store
 
 # Per-session markers written by the LLM effort analyzer
-.agents/workflow/.effort-log/*
+.agents/.effort-log/*
 
 
 # The LangDrift folder is machine-local; dft regenerates it (spec 0016)
