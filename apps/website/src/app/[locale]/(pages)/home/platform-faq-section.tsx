@@ -1,4 +1,5 @@
 import {
+	finopsMessages,
 	headerMessages,
 	llmopsMessages,
 	microruntimesMessages,
@@ -6,6 +7,7 @@ import {
 	safeSeatMessages,
 } from '@i18n/messages/index'
 import type { WebsiteLocale } from '@i18n/routing'
+import { finopsFaqIds } from '@routes/platform/finops/content/finops-content.data'
 import { llmopsFaqIds } from '@routes/platform/llmops/content/llmops-content.data'
 import { microruntimesFaqIds } from '@routes/platform/microruntimes/content/microruntimes-content.data'
 import { FaqSectionShell } from '@routes/platform/product-page/faq-section-shell'
@@ -26,6 +28,7 @@ export function PlatformFaqSection(props: PlatformFaqSectionProps) {
 	const names = headerMessages[locale]
 	const microruntimes = microruntimesMessages[locale].faq.items
 	const llmops = llmopsMessages[locale].faq.items
+	const finops = finopsMessages[locale].faq.items
 	const safeSeat = safeSeatMessages[locale].faq.items
 	const groups = [
 		{
@@ -43,6 +46,14 @@ export function PlatformFaqSection(props: PlatformFaqSectionProps) {
 				...llmops[id],
 			})),
 			label: names.llmops,
+		},
+		{
+			id: 'finops',
+			items: finopsFaqIds.map((id) => ({
+				id,
+				...finops[id],
+			})),
+			label: names.finops,
 		},
 		{
 			id: 'safe-seat',

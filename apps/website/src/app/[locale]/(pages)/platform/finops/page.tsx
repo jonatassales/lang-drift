@@ -1,0 +1,103 @@
+import { notFound } from 'next/navigation'
+import { hasLocale } from 'next-intl'
+import { setRequestLocale } from 'next-intl/server'
+
+import { finopsMessages, headerMessages } from '@i18n/messages/index'
+import { routing } from '@i18n/routing'
+import { SkipLink } from '@layout/skip-link'
+import { WebsiteFooter } from '@layout/website-footer'
+import { WebsiteHeader } from '@layout/website-header/website-header'
+import { WebsiteStructuredData } from '@layout/website-structured-data'
+import { ComputeLedgerDemo } from '@routes/platform/finops/sections/compute-ledger-demo'
+import { ComputeSources } from '@routes/platform/finops/sections/compute-sources'
+import { ComputeTerms } from '@routes/platform/finops/sections/compute-terms'
+import { EnvironmentReceipt } from '@routes/platform/finops/sections/environment-receipt'
+import { FailureScenarios } from '@routes/platform/finops/sections/failure-scenarios'
+import { ProductHeading } from '@routes/platform/product-heading'
+import { ProductSection } from '@routes/platform/product-page/product-section'
+import { ProductTagline } from '@routes/platform/product-tagline'
+import { FinopsIcon } from 'web/ui/icons/platform'
+
+export { generateMetadata } from './page-metadata.map'
+
+interface LocaleRouteParams {
+	locale: string
+}
+
+interface FinopsPageProps {
+	params: Promise<LocaleRouteParams>
+}
+
+export default async function FinopsPage(props: FinopsPageProps) {
+	const { params } = props
+
+	const { locale } = await params
+
+	if (!hasLocale(routing.locales, locale)) notFound()
+
+	setRequestLocale(locale)
+
+	const copy = finopsMessages[locale]
+
+	return (
+		<>
+			<WebsiteStructuredData locale={locale} page="finops" />
+			<SkipLink href="#failures">{copy.skip}</SkipLink>
+			<WebsiteHeader />
+			<main id="top">
+				<section
+					aria-describedby="finops-hero-summary"
+					aria-labelledby="finops-hero-heading"
+					className="mx-auto max-w-[1280px] px-[clamp(18px,3vw,36px)] pt-[58px] pb-[70px] max-md:pt-10 max-md:pb-12"
+				>
+					<ProductHeading icon={FinopsIcon} id="finops-hero-heading">
+						{headerMessages[locale].finops}
+					</ProductHeading>
+					<ProductTagline
+						end={copy.hero.taglineEnd}
+						start={copy.hero.taglineStart}
+					/>
+					<div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+						<ComputeLedgerDemo copy={copy.ledger} locale={locale} />
+						<EnvironmentReceipt
+							copy={copy.receipt}
+							environmentsCopy={copy.ledger.environments}
+							locale={locale}
+						/>
+					</div>
+					<p className="sr-only" id="finops-hero-summary">
+						{copy.hero.summary}
+					</p>
+				</section>
+
+				<ProductSection
+					id="failures"
+					kicker={copy.failures.kicker}
+					lead={copy.failures.lead}
+					title={copy.failures.title}
+				>
+					<FailureScenarios copy={copy.failures} />
+				</ProductSection>
+
+				<ProductSection
+					id="budget"
+					kicker={copy.budget.kicker}
+					lead={copy.budget.lead}
+					title={copy.budget.title}
+				>
+					<ComputeTerms copy={copy.budget.terms} />
+				</ProductSection>
+
+				<ProductSection
+					id="sources"
+					kicker={copy.sources.kicker}
+					lead={copy.sources.lead}
+					title={copy.sources.title}
+				>
+					<ComputeSources copy={copy.sources} locale={locale} />
+				</ProductSection>
+			</main>
+			<WebsiteFooter locale={locale} />
+		</>
+	)
+}

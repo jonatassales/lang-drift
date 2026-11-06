@@ -1,0 +1,892 @@
+{
+	"en": {
+		"skip": "Skip to how it holds",
+		"hero": {
+			"taglineStart": "One compute envelope.",
+			"taglineEnd": "Every environment metered while it runs.",
+			"summary": "A team compute envelope of 8,000 dollars split into used, idle, held and available, followed by four environments with their requested ceiling and observed cost. One environment's meter stopped reporting, so its cost is unknown and its ceiling stays held. Selecting an environment updates the receipt beside the ledger, or under it on a narrow screen: its ceiling, observed cost, CPU, memory and GPU hours, peak, idle time, cleanup and source."
+		},
+		"ledger": {
+			"label": "Compute envelope",
+			"period": "This month",
+			"authorized": "Authorized",
+			"segments": {
+				"used": "Used",
+				"idle": "Idle",
+				"held": "Held",
+				"available": "Available"
+			},
+			"columns": {
+				"environment": "Environment",
+				"ceiling": "Ceiling",
+				"observed": "Observed"
+			},
+			"unknown": "Unknown",
+			"meterSilent": "meter not reporting",
+			"usage": "{cpu, number} CPU·h · {memory, number} GB·h · {gpu, number} GPU·h",
+			"selectHint": "Select an environment to read its receipt.",
+			"environments": {
+				"checkout-microruntime": {
+					"title": "Checkout retries microruntime",
+					"owner": "Payments"
+				},
+				"ci-runners": {
+					"title": "CI runners",
+					"owner": "Platform"
+				},
+				"preview-cluster": {
+					"title": "Preview cluster",
+					"owner": "Growth"
+				},
+				"embedding-gpu-job": {
+					"title": "Embedding GPU job",
+					"owner": "Search"
+				}
+			}
+		},
+		"receipt": {
+			"selected": "Selected environment",
+			"labels": {
+				"ceiling": "Requested ceiling",
+				"observed": "Observed cost",
+				"cpu": "CPU",
+				"memory": "Memory",
+				"gpu": "GPU",
+				"peak": "Peak",
+				"idle": "Idle",
+				"cleanup": "Cleanup",
+				"source": "Source"
+			},
+			"cpuHours": "{hours, number} CPU·h",
+			"memoryHours": "{hours, number} GB·h",
+			"gpuHours": "{hours, number} GPU·h",
+			"peakCores": "{cores, number} vCPU",
+			"idleValue": "{hours, number} h · {cost}",
+			"unknownUsage": "Unknown",
+			"unknownObserved": "Unknown · meter not reporting",
+			"cleanup": {
+				"done": "Released",
+				"pending": "Still running after its run",
+				"unknown": "Unconfirmed"
+			}
+		},
+		"failures": {
+			"kicker": "Intent → Delivery → Evidence → Outcome",
+			"title": "The envelope holds when an environment does not stop.",
+			"lead": "Two ways hardware leaves the plan: an environment that outlives the run it served, and a meter that stops reporting. Both walk the same chain, from intent to outcome.",
+			"selector": "Scenario",
+			"pillars": {
+				"intent": "Intent",
+				"delivery": "Delivery",
+				"evidence": "Evidence",
+				"outcome": "Outcome"
+			},
+			"scenarios": {
+				"orphaned-environment": {
+					"tabLabel": "Left running",
+					"context": "A preview cluster kept its nodes after the pull request it served was merged.",
+					"intent": "The ticket asked for a preview environment for one pull request, with an 1,800-dollar ceiling for the month.",
+					"delivery": "The run finished and the pull request merged, but the cluster's cleanup was never confirmed. Its nodes kept running, idle, at the team's expense.",
+					"evidence": "The receipt shows 96 idle hours and cleanup still pending, with the cluster's own metrics as the source.",
+					"outcome": "Idle spend is reported as idle, apart from used. The owner decides whether to release the cluster; the agent cannot widen its quota to keep it."
+				},
+				"silent-meter": {
+					"tabLabel": "Meter stopped",
+					"context": "The metrics agent on a GPU pool stopped reporting halfway through an embedding job.",
+					"intent": "The job had a 1,400-dollar ceiling to build a search index.",
+					"delivery": "Without usage records, nobody can say what the job consumed. The run does not start another GPU job against an unknown balance.",
+					"evidence": "The receipt shows the job's usage as unknown, with the pool as the source to reconcile against, until the metrics or the cloud bill arrive.",
+					"outcome": "Unknown is reported as unknown. It never becomes zero, and the job's whole ceiling stays held, out of the available amount, until a record settles it."
+				}
+			}
+		},
+		"budget": {
+			"kicker": "Know who funds it",
+			"title": "Hardware answers to the same team.",
+			"lead": "Compute is funded the way reasoning is: one authorized envelope for the team, with ceilings for the environments that draw on it. What an environment holds while it runs is part of the spend, not an afterthought. This is the model LangDrift FinOps is designed around; it is not available yet.",
+			"terms": {
+				"envelope": {
+					"term": "Compute envelope",
+					"title": "One authorized amount for the team's hardware, per period",
+					"description": "Every environment, runner and cluster the team's work runs on draws from it. Its owner answers for deviations."
+				},
+				"quota": {
+					"term": "Quota",
+					"title": "The ceiling an environment asks for before it starts",
+					"description": "Requested from the work's needs and comparable runs. An environment that would exceed it pauses for a decision instead of growing."
+				},
+				"cleanup": {
+					"term": "Cleanup",
+					"title": "Release as a spend control",
+					"description": "An environment ends when its run does. A cleanup that is not confirmed stays visible, and its idle hours count against the envelope."
+				}
+			}
+		},
+		"sources": {
+			"kicker": "What feeds the ledger",
+			"title": "Evidence over assertion.",
+			"lead": "A receipt is only as good as its meters. Each source is named, dated and kept apart from the others, so a meter that stops reporting stays visible as a gap instead of blending into a total.",
+			"intended": "Intended sources",
+			"intendedModel": "These are the sources the model intends. Where one is not connected, the ledger shows the gap rather than an estimate dressed as a measurement.",
+			"microruntimesLink": "See LangDrift Microruntimes",
+			"items": {
+				"microruntimes": {
+					"title": "Microruntimes",
+					"description": "CPU and memory observations from the bounded environments that ran the work, with their cleanup state."
+				},
+				"cluster": {
+					"title": "Cluster metrics",
+					"description": "Node hours, peaks and idle time from the clusters the team's environments run on."
+				},
+				"runners": {
+					"title": "CI runners",
+					"description": "Runner minutes and machine sizes from the team's own CI."
+				},
+				"billing": {
+					"title": "Cloud billing",
+					"description": "The provider's bill closes the month. Until then, every amount is provisional and says so."
+				}
+			}
+		},
+		"faq": {
+			"items": {
+				"scope": {
+					"question": "What does LangDrift FinOps cover?",
+					"answer": "Hardware and computational spend: the CPU, memory and GPU that the team's environments, runners and clusters occupy. Model calls and reasoning spend belong to LangDrift LLMOps."
+				},
+				"llmops": {
+					"question": "How is FinOps different from LLMOps?",
+					"answer": "LLMOps holds what reasoning costs, call by call, against the team's envelope. FinOps holds what the hardware costs while it runs. Both keep unknown as unknown, and both answer to the team."
+				},
+				"unknown": {
+					"question": "What does “unknown” mean on a FinOps receipt?",
+					"answer": "An environment whose meter stopped reporting. Its usage stays unknown, with its ceiling held, until a record settles it. It is never shown as zero."
+				},
+				"idle": {
+					"question": "Why does idle time count?",
+					"answer": "An environment that keeps running after its work is done is still paid for. FinOps shows idle hours apart from used ones, so the team can release them instead of averaging them away."
+				},
+				"license": {
+					"question": "How is LangDrift FinOps licensed?",
+					"answer": "LangDrift is open-source software licensed under the Apache License, Version 2.0. The code is available on GitHub to inspect, run and modify."
+				},
+				"availability": {
+					"question": "Can I use LangDrift FinOps today?",
+					"answer": "The FinOps page describes the intended model. The compute ledger and the integrations it shows are not available yet, and demo requests are paused for now."
+				}
+			}
+		}
+	},
+	"pt-BR": {
+		"skip": "Ir para como o envelope se sustenta",
+		"hero": {
+			"taglineStart": "Um envelope de computação.",
+			"taglineEnd": "Cada ambiente medido enquanto roda.",
+			"summary": "Um envelope de computação do time de 8.000 dólares dividido em usado, ocioso, retido e disponível, seguido de quatro ambientes com o teto solicitado e o custo observado. O medidor de um ambiente parou de reportar, então seu custo é desconhecido e seu teto continua retido. Selecionar um ambiente atualiza o recibo ao lado do livro-razão, ou abaixo dele numa tela estreita: o teto, o custo observado, as horas de CPU, memória e GPU, o pico, o tempo ocioso, a limpeza e a fonte."
+		},
+		"ledger": {
+			"label": "Envelope de computação",
+			"period": "Este mês",
+			"authorized": "Autorizado",
+			"segments": {
+				"used": "Usado",
+				"idle": "Ocioso",
+				"held": "Retido",
+				"available": "Disponível"
+			},
+			"columns": {
+				"environment": "Ambiente",
+				"ceiling": "Teto",
+				"observed": "Observado"
+			},
+			"unknown": "Desconhecido",
+			"meterSilent": "medidor sem reportar",
+			"usage": "{cpu, number} CPU·h · {memory, number} GB·h · {gpu, number} GPU·h",
+			"selectHint": "Selecione um ambiente para ler o recibo.",
+			"environments": {
+				"checkout-microruntime": {
+					"title": "Microruntime das retentativas do checkout",
+					"owner": "Pagamentos"
+				},
+				"ci-runners": {
+					"title": "Runners de CI",
+					"owner": "Plataforma"
+				},
+				"preview-cluster": {
+					"title": "Cluster de preview",
+					"owner": "Growth"
+				},
+				"embedding-gpu-job": {
+					"title": "Job de embeddings em GPU",
+					"owner": "Busca"
+				}
+			}
+		},
+		"receipt": {
+			"selected": "Ambiente selecionado",
+			"labels": {
+				"ceiling": "Teto solicitado",
+				"observed": "Custo observado",
+				"cpu": "CPU",
+				"memory": "Memória",
+				"gpu": "GPU",
+				"peak": "Pico",
+				"idle": "Ocioso",
+				"cleanup": "Limpeza",
+				"source": "Fonte"
+			},
+			"cpuHours": "{hours, number} CPU·h",
+			"memoryHours": "{hours, number} GB·h",
+			"gpuHours": "{hours, number} GPU·h",
+			"peakCores": "{cores, number} vCPU",
+			"idleValue": "{hours, number} h · {cost}",
+			"unknownUsage": "Desconhecido",
+			"unknownObserved": "Desconhecido · medidor sem reportar",
+			"cleanup": {
+				"done": "Liberado",
+				"pending": "Ainda rodando depois da execução",
+				"unknown": "Não confirmada"
+			}
+		},
+		"failures": {
+			"kicker": "Intenção → Entrega → Evidência → Resultado",
+			"title": "O envelope se sustenta quando um ambiente não para.",
+			"lead": "Duas formas de o hardware sair do plano: um ambiente que sobrevive à execução que serviu e um medidor que para de reportar. As duas percorrem a mesma cadeia, da intenção ao resultado.",
+			"selector": "Cenário",
+			"pillars": {
+				"intent": "Intenção",
+				"delivery": "Entrega",
+				"evidence": "Evidência",
+				"outcome": "Resultado"
+			},
+			"scenarios": {
+				"orphaned-environment": {
+					"tabLabel": "Ficou rodando",
+					"context": "Um cluster de preview manteve seus nós depois que o pull request que ele servia foi mergeado.",
+					"intent": "O ticket pediu um ambiente de preview para um pull request, com teto de 1.800 dólares no mês.",
+					"delivery": "A execução terminou e o pull request foi mergeado, mas a limpeza do cluster nunca foi confirmada. Os nós continuaram rodando, ociosos, às custas do time.",
+					"evidence": "O recibo mostra 96 horas ociosas e a limpeza ainda pendente, com as métricas do próprio cluster como fonte.",
+					"outcome": "O gasto ocioso é reportado como ocioso, separado do usado. O dono decide se libera o cluster; o agente não pode ampliar a cota para mantê-lo."
+				},
+				"silent-meter": {
+					"tabLabel": "Medidor parou",
+					"context": "O agente de métricas de um pool de GPU parou de reportar no meio de um job de embeddings.",
+					"intent": "O job tinha teto de 1.400 dólares para construir um índice de busca.",
+					"delivery": "Sem registros de uso, ninguém sabe dizer o que o job consumiu. A execução não inicia outro job de GPU contra um saldo desconhecido.",
+					"evidence": "O recibo mostra o uso do job como desconhecido, com o pool como fonte para reconciliar, até chegarem as métricas ou a fatura da nuvem.",
+					"outcome": "Desconhecido é reportado como desconhecido. Nunca vira zero, e todo o teto do job continua retido, fora do disponível, até que um registro o resolva."
+				}
+			}
+		},
+		"budget": {
+			"kicker": "Saiba quem financia",
+			"title": "O hardware presta contas ao mesmo time.",
+			"lead": "A computação é financiada como o raciocínio: um envelope autorizado para o time, com tetos para os ambientes que consomem dele. O que um ambiente ocupa enquanto roda faz parte do gasto, não é um detalhe posterior. Este é o modelo para o qual o LangDrift FinOps está sendo projetado; ele ainda não está disponível.",
+			"terms": {
+				"envelope": {
+					"term": "Envelope de computação",
+					"title": "Um valor autorizado para o hardware do time, por período",
+					"description": "Todo ambiente, runner e cluster em que o trabalho do time roda consome dele. O dono responde pelos desvios."
+				},
+				"quota": {
+					"term": "Cota",
+					"title": "O teto que um ambiente pede antes de começar",
+					"description": "Solicitado a partir das necessidades do trabalho e de execuções comparáveis. Um ambiente que o excederia pausa à espera de uma decisão em vez de crescer."
+				},
+				"cleanup": {
+					"term": "Limpeza",
+					"title": "Liberar como controle de gasto",
+					"description": "Um ambiente termina quando sua execução termina. Uma limpeza não confirmada continua visível, e suas horas ociosas contam contra o envelope."
+				}
+			}
+		},
+		"sources": {
+			"kicker": "O que alimenta o livro-razão",
+			"title": "Evidência acima de afirmação.",
+			"lead": "Um recibo vale o que valem seus medidores. Cada fonte é nomeada, datada e mantida separada das outras, para que um medidor que para de reportar continue visível como lacuna em vez de se misturar a um total.",
+			"intended": "Fontes previstas",
+			"intendedModel": "Estas são as fontes que o modelo prevê. Onde uma não está conectada, o livro-razão mostra a lacuna em vez de uma estimativa disfarçada de medição.",
+			"microruntimesLink": "Conheça o LangDrift Microruntimes",
+			"items": {
+				"microruntimes": {
+					"title": "Microruntimes",
+					"description": "Observações de CPU e memória dos ambientes delimitados que executaram o trabalho, com o estado da limpeza."
+				},
+				"cluster": {
+					"title": "Métricas de cluster",
+					"description": "Horas de nó, picos e tempo ocioso dos clusters em que os ambientes do time rodam."
+				},
+				"runners": {
+					"title": "Runners de CI",
+					"description": "Minutos de runner e tamanhos de máquina do próprio CI do time."
+				},
+				"billing": {
+					"title": "Faturamento da nuvem",
+					"description": "A fatura do provedor fecha o mês. Até lá, todo valor é provisório e diz isso."
+				}
+			}
+		},
+		"faq": {
+			"items": {
+				"scope": {
+					"question": "O que o LangDrift FinOps cobre?",
+					"answer": "O gasto com hardware e computação: a CPU, a memória e a GPU que os ambientes, runners e clusters do time ocupam. Chamadas de modelo e gasto com raciocínio pertencem ao LangDrift LLMOps."
+				},
+				"llmops": {
+					"question": "Qual a diferença entre FinOps e LLMOps?",
+					"answer": "O LLMOps mantém o custo do raciocínio, chamada a chamada, contra o envelope do time. O FinOps mantém o custo do hardware enquanto ele roda. Os dois tratam desconhecido como desconhecido, e os dois prestam contas ao time."
+				},
+				"unknown": {
+					"question": "O que significa “desconhecido” num recibo do FinOps?",
+					"answer": "Um ambiente cujo medidor parou de reportar. Seu uso continua desconhecido, com o teto retido, até que um registro o resolva. Nunca aparece como zero."
+				},
+				"idle": {
+					"question": "Por que o tempo ocioso conta?",
+					"answer": "Um ambiente que continua rodando depois que o trabalho acabou continua sendo pago. O FinOps mostra as horas ociosas separadas das usadas, para que o time as libere em vez de diluí-las numa média."
+				},
+				"license": {
+					"question": "Como o LangDrift FinOps é licenciado?",
+					"answer": "O LangDrift é software de código aberto licenciado sob a Apache License, Version 2.0. O código está disponível no GitHub para inspecionar, executar e modificar."
+				},
+				"availability": {
+					"question": "Posso usar o LangDrift FinOps hoje?",
+					"answer": "A página do FinOps descreve o modelo pretendido. O livro-razão de computação e as integrações que ela mostra ainda não estão disponíveis, e os pedidos de demonstração estão pausados por enquanto."
+				}
+			}
+		}
+	},
+	"zh-Hant": {
+		"skip": "跳至信封如何守住",
+		"hero": {
+			"taglineStart": "一個運算信封。",
+			"taglineEnd": "每個環境在運行時就被計量。",
+			"summary": "一個 8,000 美元的團隊運算信封，分為已用、閒置、保留與可用，接著是四個環境及其申請上限與觀測成本。其中一個環境的計量停止回報，因此成本未知，其上限持續保留。選取一個環境會更新帳本旁的收據（窄螢幕時位於下方）：上限、觀測成本、CPU、記憶體與 GPU 時數、峰值、閒置時間、清理狀態與來源。"
+		},
+		"ledger": {
+			"label": "運算信封",
+			"period": "本月",
+			"authorized": "已授權",
+			"segments": {
+				"used": "已用",
+				"idle": "閒置",
+				"held": "保留",
+				"available": "可用"
+			},
+			"columns": {
+				"environment": "環境",
+				"ceiling": "上限",
+				"observed": "觀測"
+			},
+			"unknown": "未知",
+			"meterSilent": "計量未回報",
+			"usage": "{cpu, number} CPU·h · {memory, number} GB·h · {gpu, number} GPU·h",
+			"selectHint": "選取一個環境以查看其收據。",
+			"environments": {
+				"checkout-microruntime": {
+					"title": "結帳重試 microruntime",
+					"owner": "支付"
+				},
+				"ci-runners": {
+					"title": "CI 執行器",
+					"owner": "平台"
+				},
+				"preview-cluster": {
+					"title": "預覽叢集",
+					"owner": "成長"
+				},
+				"embedding-gpu-job": {
+					"title": "Embedding GPU 作業",
+					"owner": "搜尋"
+				}
+			}
+		},
+		"receipt": {
+			"selected": "已選取的環境",
+			"labels": {
+				"ceiling": "申請上限",
+				"observed": "觀測成本",
+				"cpu": "CPU",
+				"memory": "記憶體",
+				"gpu": "GPU",
+				"peak": "峰值",
+				"idle": "閒置",
+				"cleanup": "清理",
+				"source": "來源"
+			},
+			"cpuHours": "{hours, number} CPU·h",
+			"memoryHours": "{hours, number} GB·h",
+			"gpuHours": "{hours, number} GPU·h",
+			"peakCores": "{cores, number} vCPU",
+			"idleValue": "{hours, number} 小時 · {cost}",
+			"unknownUsage": "未知",
+			"unknownObserved": "未知 · 計量未回報",
+			"cleanup": {
+				"done": "已釋放",
+				"pending": "執行結束後仍在運行",
+				"unknown": "未確認"
+			}
+		},
+		"failures": {
+			"kicker": "意圖 → 交付 → 證據 → 成果",
+			"title": "環境不停止時，信封依然守得住。",
+			"lead": "硬體偏離計畫的兩種方式：環境在它服務的執行結束後仍存活，以及計量停止回報。兩者都走同一條鏈，從意圖到成果。",
+			"selector": "情境",
+			"pillars": {
+				"intent": "意圖",
+				"delivery": "交付",
+				"evidence": "證據",
+				"outcome": "成果"
+			},
+			"scenarios": {
+				"orphaned-environment": {
+					"tabLabel": "持續運行",
+					"context": "一個預覽叢集在它服務的 pull request 合併後仍保留著節點。",
+					"intent": "工單為一個 pull request 申請預覽環境，本月上限 1,800 美元。",
+					"delivery": "執行結束、pull request 已合併，但叢集的清理從未被確認。節點持續閒置運行，費用由團隊承擔。",
+					"evidence": "收據顯示 96 小時閒置與尚待完成的清理，來源是叢集本身的指標。",
+					"outcome": "閒置支出以閒置呈報，與已用分開。由負責人決定是否釋放叢集；代理不能為了保留它而擴大配額。"
+				},
+				"silent-meter": {
+					"tabLabel": "計量停止",
+					"context": "一個 GPU 池上的指標代理在 embedding 作業進行到一半時停止回報。",
+					"intent": "這個作業有 1,400 美元的上限，用來建立搜尋索引。",
+					"delivery": "沒有使用紀錄，沒有人能說出作業消耗了多少。執行不會對著未知的餘額啟動另一個 GPU 作業。",
+					"evidence": "收據將作業的用量顯示為未知，並以該 GPU 池作為對帳來源，直到指標或雲端帳單到來。",
+					"outcome": "未知就呈報為未知。它絕不會變成零，作業的整個上限持續保留、不計入可用金額，直到有紀錄確定為止。"
+				}
+			}
+		},
+		"budget": {
+			"kicker": "知道由誰出資",
+			"title": "硬體對同一個團隊負責。",
+			"lead": "運算的出資方式和推理一樣：團隊有一個已授權的信封，取用它的環境各有上限。環境運行時占用的資源就是支出的一部分，不是事後才想到的細節。這是 LangDrift FinOps 所依循設計的模型，目前尚未提供。",
+			"terms": {
+				"envelope": {
+					"term": "運算信封",
+					"title": "團隊硬體在每個期間的一筆授權金額",
+					"description": "團隊工作所運行的每個環境、執行器與叢集都從中取用。由負責人為偏差負責。"
+				},
+				"quota": {
+					"term": "クォータ",
+					"title": "環境在啟動前申請的上限",
+					"description": "依工作需求與可比較的執行來申請。會超出上限的環境會暫停等待決定，而不是持續擴張。"
+				},
+				"cleanup": {
+					"term": "清理",
+					"title": "以釋放作為支出控制",
+					"description": "環境隨其執行結束而結束。未確認的清理會持續可見，其閒置時數計入信封。"
+				}
+			}
+		},
+		"sources": {
+			"kicker": "帳本的資料來源",
+			"title": "證據勝於斷言。",
+			"lead": "收據的可信度取決於它的計量。每個來源都有名稱、日期，並與其他來源分開，因此停止回報的計量會以缺口的形式持續可見，而不會混入總額。",
+			"intended": "預期來源",
+			"intendedModel": "這些是模型預期的來源。尚未連接的來源，帳本會顯示缺口，而不是把估算偽裝成測量。",
+			"microruntimesLink": "查看 LangDrift Microruntimes",
+			"items": {
+				"microruntimes": {
+					"title": "Microruntimes",
+					"description": "執行工作的有界環境所觀測到的 CPU 與記憶體，以及其清理狀態。"
+				},
+				"cluster": {
+					"title": "叢集指標",
+					"description": "團隊環境所在叢集的節點時數、峰值與閒置時間。"
+				},
+				"runners": {
+					"title": "CI 執行器",
+					"description": "團隊自有 CI 的執行器分鐘數與機器規格。"
+				},
+				"billing": {
+					"title": "雲端帳單",
+					"description": "供應商的帳單為當月結算。在此之前，每個金額都是暫定的，並如實標示。"
+				}
+			}
+		},
+		"faq": {
+			"items": {
+				"scope": {
+					"question": "LangDrift FinOps 涵蓋哪些範圍？",
+					"answer": "硬體與運算支出：團隊的環境、執行器與叢集所占用的 CPU、記憶體與 GPU。模型呼叫與推理支出屬於 LangDrift LLMOps。"
+				},
+				"llmops": {
+					"question": "FinOps 和 LLMOps 有什麼不同？",
+					"answer": "LLMOps 逐次呼叫地把推理成本放進團隊的信封。FinOps 則在硬體運行時就掌握它的成本。兩者都讓未知維持未知，也都對團隊負責。"
+				},
+				"unknown": {
+					"question": "FinOps 收據上的「未知」是什麼意思？",
+					"answer": "一個計量停止回報的環境。它的用量維持未知、上限持續保留，直到有紀錄確定為止。它絕不會顯示為零。"
+				},
+				"idle": {
+					"question": "為什麼閒置時間也要計算？",
+					"answer": "工作完成後仍在運行的環境依然要付費。FinOps 將閒置時數與已用時數分開顯示，讓團隊可以釋放它們，而不是把它們平均掉。"
+				},
+				"license": {
+					"question": "LangDrift FinOps 的授權方式為何？",
+					"answer": "LangDrift 是以 Apache License, Version 2.0 授權的開源軟體。程式碼在 GitHub 上公開，可供檢視、執行與修改。"
+				},
+				"availability": {
+					"question": "我今天可以使用 LangDrift FinOps 嗎？",
+					"answer": "FinOps 頁面描述預期中的模型。頁面展示的運算帳本與整合尚未可用，示範申請目前暫停。"
+				}
+			}
+		}
+	},
+	"ja": {
+		"skip": "エンベロープの守り方へ移動",
+		"hero": {
+			"taglineStart": "ひとつのコンピュートエンベロープ。",
+			"taglineEnd": "どの環境も、動いている間に計測する。",
+			"summary": "8,000 ドルのチームのコンピュートエンベロープを使用済み、アイドル、保留、利用可能に分け、その下に 4 つの環境を要求上限と観測コストとともに並べます。ひとつの環境はメーターの報告が止まったため、コストは不明で、その上限は保留されたままです。環境を選ぶと台帳の横（狭い画面では下）のレシートが更新されます。上限、観測コスト、CPU・メモリ・GPU の時間、ピーク、アイドル時間、クリーンアップ、ソースです。"
+		},
+		"ledger": {
+			"label": "コンピュートエンベロープ",
+			"period": "今月",
+			"authorized": "承認済み",
+			"segments": {
+				"used": "使用済み",
+				"idle": "アイドル",
+				"held": "保留",
+				"available": "利用可能"
+			},
+			"columns": {
+				"environment": "環境",
+				"ceiling": "上限",
+				"observed": "観測"
+			},
+			"unknown": "不明",
+			"meterSilent": "メーター報告なし",
+			"usage": "{cpu, number} CPU·h · {memory, number} GB·h · {gpu, number} GPU·h",
+			"selectHint": "環境を選ぶとレシートを確認できます。",
+			"environments": {
+				"checkout-microruntime": {
+					"title": "チェックアウト再試行の microruntime",
+					"owner": "決済"
+				},
+				"ci-runners": {
+					"title": "CI ランナー",
+					"owner": "プラットフォーム"
+				},
+				"preview-cluster": {
+					"title": "プレビュークラスター",
+					"owner": "グロース"
+				},
+				"embedding-gpu-job": {
+					"title": "埋め込み GPU ジョブ",
+					"owner": "検索"
+				}
+			}
+		},
+		"receipt": {
+			"selected": "選択した環境",
+			"labels": {
+				"ceiling": "要求上限",
+				"observed": "観測コスト",
+				"cpu": "CPU",
+				"memory": "メモリ",
+				"gpu": "GPU",
+				"peak": "ピーク",
+				"idle": "アイドル",
+				"cleanup": "クリーンアップ",
+				"source": "ソース"
+			},
+			"cpuHours": "{hours, number} CPU·h",
+			"memoryHours": "{hours, number} GB·h",
+			"gpuHours": "{hours, number} GPU·h",
+			"peakCores": "{cores, number} vCPU",
+			"idleValue": "{hours, number} 時間 · {cost}",
+			"unknownUsage": "不明",
+			"unknownObserved": "不明 · メーター報告なし",
+			"cleanup": {
+				"done": "解放済み",
+				"pending": "実行後も稼働中",
+				"unknown": "未確認"
+			}
+		},
+		"failures": {
+			"kicker": "意図 → デリバリー → 証跡 → 成果",
+			"title": "環境が止まらなくても、エンベロープは守られる。",
+			"lead": "ハードウェアが計画から外れる 2 つの形です。担当した実行が終わっても残り続ける環境と、報告を止めたメーター。どちらも意図から成果まで同じ連鎖をたどります。",
+			"selector": "シナリオ",
+			"pillars": {
+				"intent": "意図",
+				"delivery": "デリバリー",
+				"evidence": "証跡",
+				"outcome": "成果"
+			},
+			"scenarios": {
+				"orphaned-environment": {
+					"tabLabel": "稼働しっぱなし",
+					"context": "プレビュークラスターが、担当したプルリクエストのマージ後もノードを保持し続けました。",
+					"intent": "チケットはひとつのプルリクエスト用のプレビュー環境を、月 1,800 ドルの上限で求めていました。",
+					"delivery": "実行は終わりプルリクエストもマージされましたが、クラスターのクリーンアップは確認されませんでした。ノードはアイドルのまま、チームの費用で動き続けました。",
+					"evidence": "レシートには 96 時間のアイドルと未完了のクリーンアップが、クラスター自身のメトリクスをソースとして示されます。",
+					"outcome": "アイドルの支出は使用分と分けてアイドルとして報告されます。クラスターを解放するかはオーナーが決めます。エージェントが維持のためにクォータを広げることはできません。"
+				},
+				"silent-meter": {
+					"tabLabel": "メーター停止",
+					"context": "GPU プールのメトリクスエージェントが、埋め込みジョブの途中で報告を止めました。",
+					"intent": "このジョブには検索インデックスを構築するための 1,400 ドルの上限がありました。",
+					"delivery": "使用記録がなければ、ジョブが何を消費したかは誰にも言えません。実行は不明な残高に対して別の GPU ジョブを始めません。",
+					"evidence": "レシートはジョブの使用量を不明と示し、照合先のソースとしてプールを挙げます。メトリクスかクラウドの請求書が届くまでそのままです。",
+					"outcome": "不明は不明として報告されます。ゼロになることはなく、ジョブの上限全体が記録で確定するまで保留され、利用可能額から外れます。"
+				}
+			}
+		},
+		"budget": {
+			"kicker": "誰が資金を出すか",
+			"title": "ハードウェアも同じチームに責任を負う。",
+			"lead": "コンピュートも推論と同じように資金を受けます。チームに承認されたエンベロープがひとつあり、そこから引き出す環境ごとに上限があります。環境が動いている間に占めるものは支出の一部であり、後回しの細部ではありません。これは LangDrift FinOps が前提として設計しているモデルで、まだ提供されていません。",
+			"terms": {
+				"envelope": {
+					"term": "コンピュートエンベロープ",
+					"title": "期間ごとのチームのハードウェアに対するひとつの承認額",
+					"description": "チームの作業が動く環境、ランナー、クラスターはすべてここから引き出します。逸脱にはオーナーが責任を負います。"
+				},
+				"quota": {
+					"term": "クォータ",
+					"title": "環境が起動前に求める上限",
+					"description": "作業の必要と比較可能な実行から要求されます。上限を超えそうな環境は拡大せず、判断を待って一時停止します。"
+				},
+				"cleanup": {
+					"term": "クリーンアップ",
+					"title": "支出の制御としての解放",
+					"description": "環境は実行が終わると終わります。確認されていないクリーンアップは見えたままで、そのアイドル時間はエンベロープに計上されます。"
+				}
+			}
+		},
+		"sources": {
+			"kicker": "台帳を支えるもの",
+			"title": "主張より証跡。",
+			"lead": "レシートの確かさはメーター次第です。各ソースには名前と日付があり、互いに分けて保たれるので、報告を止めたメーターは合計に紛れず、欠落として見えたままになります。",
+			"intended": "想定しているソース",
+			"intendedModel": "これらはモデルが想定しているソースです。接続されていないソースについては、測定を装った見積もりではなく、欠落を台帳に示します。",
+			"microruntimesLink": "LangDrift Microruntimes を見る",
+			"items": {
+				"microruntimes": {
+					"title": "Microruntimes",
+					"description": "作業を実行した境界付き環境から観測した CPU とメモリ、そしてクリーンアップの状態。"
+				},
+				"cluster": {
+					"title": "クラスターメトリクス",
+					"description": "チームの環境が動くクラスターのノード時間、ピーク、アイドル時間。"
+				},
+				"runners": {
+					"title": "CI ランナー",
+					"description": "チーム自身の CI のランナー時間とマシンサイズ。"
+				},
+				"billing": {
+					"title": "クラウドの請求",
+					"description": "プロバイダーの請求書で月が締まります。それまでの金額はすべて暫定で、そのように示されます。"
+				}
+			}
+		},
+		"faq": {
+			"items": {
+				"scope": {
+					"question": "LangDrift FinOps は何を対象にしますか？",
+					"answer": "ハードウェアとコンピュートの支出です。チームの環境、ランナー、クラスターが占める CPU、メモリ、GPU が対象です。モデル呼び出しと推論の支出は LangDrift LLMOps の対象です。"
+				},
+				"llmops": {
+					"question": "FinOps と LLMOps の違いは？",
+					"answer": "LLMOps は推論のコストを呼び出しごとにチームのエンベロープに対して管理します。FinOps はハードウェアのコストを動いている間に管理します。どちらも不明を不明として扱い、どちらもチームに責任を負います。"
+				},
+				"unknown": {
+					"question": "FinOps のレシートの「不明」とは？",
+					"answer": "メーターが報告を止めた環境です。使用量は不明のまま、上限は保留されたまま、記録で確定するまで続きます。ゼロとして表示されることはありません。"
+				},
+				"idle": {
+					"question": "なぜアイドル時間を数えるのですか？",
+					"answer": "作業が終わっても動き続ける環境には、それでも費用がかかります。FinOps はアイドル時間を使用時間と分けて示すので、チームは平均に埋もれさせずに解放できます。"
+				},
+				"license": {
+					"question": "LangDrift FinOps のライセンスはどうなっていますか？",
+					"answer": "LangDrift は Apache License, Version 2.0 でライセンスされたオープンソースソフトウェアです。コードは GitHub で公開されており、調べる、動かす、変更することができます。"
+				},
+				"availability": {
+					"question": "LangDrift FinOps は今日から使えますか？",
+					"answer": "FinOps のページは想定するモデルを説明しています。そこに示したコンピュート台帳と連携はまだ利用できず、デモの申し込みは当面停止しています。"
+				}
+			}
+		}
+	},
+	"vi": {
+		"skip": "Chuyển đến cách phong bì được giữ vững",
+		"hero": {
+			"taglineStart": "Một phong bì điện toán.",
+			"taglineEnd": "Mỗi môi trường được đo ngay khi đang chạy.",
+			"summary": "Một phong bì điện toán của đội trị giá 8.000 đô la chia thành đã dùng, nhàn rỗi, đang giữ và khả dụng, tiếp theo là bốn môi trường với mức trần yêu cầu và chi phí quan sát được. Đồng hồ đo của một môi trường đã ngừng báo cáo, nên chi phí của nó chưa rõ và mức trần của nó vẫn bị giữ. Chọn một môi trường sẽ cập nhật biên lai bên cạnh sổ cái, hoặc bên dưới trên màn hình hẹp: mức trần, chi phí quan sát, số giờ CPU, bộ nhớ và GPU, mức đỉnh, thời gian nhàn rỗi, việc dọn dẹp và nguồn."
+		},
+		"ledger": {
+			"label": "Phong bì điện toán",
+			"period": "Tháng này",
+			"authorized": "Được phê duyệt",
+			"segments": {
+				"used": "Đã dùng",
+				"idle": "Nhàn rỗi",
+				"held": "Đang giữ",
+				"available": "Khả dụng"
+			},
+			"columns": {
+				"environment": "Môi trường",
+				"ceiling": "Mức trần",
+				"observed": "Quan sát"
+			},
+			"unknown": "Chưa rõ",
+			"meterSilent": "đồng hồ không báo cáo",
+			"usage": "{cpu, number} CPU·h · {memory, number} GB·h · {gpu, number} GPU·h",
+			"selectHint": "Chọn một môi trường để đọc biên lai.",
+			"environments": {
+				"checkout-microruntime": {
+					"title": "Microruntime thử lại thanh toán",
+					"owner": "Thanh toán"
+				},
+				"ci-runners": {
+					"title": "CI runner",
+					"owner": "Nền tảng"
+				},
+				"preview-cluster": {
+					"title": "Cụm xem trước",
+					"owner": "Tăng trưởng"
+				},
+				"embedding-gpu-job": {
+					"title": "Tác vụ GPU embedding",
+					"owner": "Tìm kiếm"
+				}
+			}
+		},
+		"receipt": {
+			"selected": "Môi trường đã chọn",
+			"labels": {
+				"ceiling": "Mức trần yêu cầu",
+				"observed": "Chi phí quan sát",
+				"cpu": "CPU",
+				"memory": "Bộ nhớ",
+				"gpu": "GPU",
+				"peak": "Đỉnh",
+				"idle": "Nhàn rỗi",
+				"cleanup": "Dọn dẹp",
+				"source": "Nguồn"
+			},
+			"cpuHours": "{hours, number} CPU·h",
+			"memoryHours": "{hours, number} GB·h",
+			"gpuHours": "{hours, number} GPU·h",
+			"peakCores": "{cores, number} vCPU",
+			"idleValue": "{hours, number} giờ · {cost}",
+			"unknownUsage": "Chưa rõ",
+			"unknownObserved": "Chưa rõ · đồng hồ không báo cáo",
+			"cleanup": {
+				"done": "Đã giải phóng",
+				"pending": "Vẫn chạy sau khi lần chạy kết thúc",
+				"unknown": "Chưa xác nhận"
+			}
+		},
+		"failures": {
+			"kicker": "Ý định → Giao hàng → Bằng chứng → Kết quả",
+			"title": "Phong bì vẫn giữ vững khi một môi trường không dừng.",
+			"lead": "Hai cách phần cứng rời khỏi kế hoạch: một môi trường tồn tại lâu hơn lần chạy mà nó phục vụ, và một đồng hồ đo ngừng báo cáo. Cả hai đi qua cùng một chuỗi, từ ý định đến kết quả.",
+			"selector": "Kịch bản",
+			"pillars": {
+				"intent": "Ý định",
+				"delivery": "Giao hàng",
+				"evidence": "Bằng chứng",
+				"outcome": "Kết quả"
+			},
+			"scenarios": {
+				"orphaned-environment": {
+					"tabLabel": "Bị bỏ chạy",
+					"context": "Một cụm xem trước vẫn giữ các node sau khi pull request mà nó phục vụ đã được merge.",
+					"intent": "Ticket yêu cầu một môi trường xem trước cho một pull request, với mức trần 1.800 đô la cho tháng.",
+					"delivery": "Lần chạy kết thúc và pull request đã được merge, nhưng việc dọn dẹp cụm chưa bao giờ được xác nhận. Các node tiếp tục chạy, nhàn rỗi, bằng tiền của đội.",
+					"evidence": "Biên lai cho thấy 96 giờ nhàn rỗi và việc dọn dẹp vẫn đang chờ, với chính số liệu của cụm làm nguồn.",
+					"outcome": "Chi tiêu nhàn rỗi được báo cáo là nhàn rỗi, tách khỏi phần đã dùng. Chủ sở hữu quyết định có giải phóng cụm hay không; tác tử không thể nới hạn mức để giữ nó lại."
+				},
+				"silent-meter": {
+					"tabLabel": "Đồng hồ ngừng",
+					"context": "Tác tử thu thập số liệu trên một pool GPU ngừng báo cáo giữa chừng một tác vụ embedding.",
+					"intent": "Tác vụ có mức trần 1.400 đô la để xây dựng một chỉ mục tìm kiếm.",
+					"delivery": "Không có bản ghi sử dụng, không ai có thể nói tác vụ đã tiêu thụ bao nhiêu. Lần chạy không khởi động thêm tác vụ GPU nào trên một số dư chưa rõ.",
+					"evidence": "Biên lai hiển thị mức sử dụng của tác vụ là chưa rõ, với pool làm nguồn để đối chiếu, cho đến khi số liệu hoặc hóa đơn đám mây đến.",
+					"outcome": "Chưa rõ được báo cáo là chưa rõ. Nó không bao giờ thành 0, và toàn bộ mức trần của tác vụ vẫn bị giữ, ngoài phần khả dụng, cho đến khi một bản ghi xác định nó."
+				}
+			}
+		},
+		"budget": {
+			"kicker": "Biết ai cấp vốn",
+			"title": "Phần cứng chịu trách nhiệm trước cùng một đội.",
+			"lead": "Điện toán được cấp vốn như suy luận: một phong bì được phê duyệt cho đội, với mức trần cho các môi trường rút từ nó. Những gì một môi trường chiếm khi đang chạy là một phần của chi tiêu, không phải chuyện tính sau. Đây là mô hình mà LangDrift FinOps được thiết kế theo; nó chưa khả dụng.",
+			"terms": {
+				"envelope": {
+					"term": "Phong bì điện toán",
+					"title": "Một khoản được phê duyệt cho phần cứng của đội, theo kỳ",
+					"description": "Mọi môi trường, runner và cụm mà công việc của đội chạy trên đó đều rút từ khoản này. Chủ sở hữu chịu trách nhiệm về các sai lệch."
+				},
+				"quota": {
+					"term": "Hạn mức",
+					"title": "Mức trần một môi trường yêu cầu trước khi khởi động",
+					"description": "Được yêu cầu dựa trên nhu cầu của công việc và các lần chạy tương đương. Môi trường sắp vượt mức sẽ tạm dừng chờ quyết định thay vì tiếp tục mở rộng."
+				},
+				"cleanup": {
+					"term": "Dọn dẹp",
+					"title": "Giải phóng như một biện pháp kiểm soát chi tiêu",
+					"description": "Một môi trường kết thúc khi lần chạy của nó kết thúc. Việc dọn dẹp chưa được xác nhận vẫn hiển thị, và số giờ nhàn rỗi của nó được tính vào phong bì."
+				}
+			}
+		},
+		"sources": {
+			"kicker": "Điều gì nuôi sổ cái",
+			"title": "Bằng chứng hơn khẳng định.",
+			"lead": "Một biên lai chỉ tốt bằng các đồng hồ đo của nó. Mỗi nguồn được đặt tên, ghi ngày và giữ tách biệt với các nguồn khác, để một đồng hồ ngừng báo cáo vẫn hiển thị như một khoảng trống thay vì hòa vào tổng.",
+			"intended": "Nguồn dự kiến",
+			"intendedModel": "Đây là các nguồn mà mô hình dự kiến. Nơi nào một nguồn chưa được kết nối, sổ cái hiển thị khoảng trống thay vì một ước tính đội lốt phép đo.",
+			"microruntimesLink": "Xem LangDrift Microruntimes",
+			"items": {
+				"microruntimes": {
+					"title": "Microruntimes",
+					"description": "Quan sát CPU và bộ nhớ từ các môi trường có giới hạn đã chạy công việc, cùng trạng thái dọn dẹp."
+				},
+				"cluster": {
+					"title": "Số liệu cụm",
+					"description": "Giờ node, mức đỉnh và thời gian nhàn rỗi từ các cụm mà môi trường của đội chạy trên đó."
+				},
+				"runners": {
+					"title": "CI runner",
+					"description": "Số phút runner và kích thước máy từ CI của chính đội."
+				},
+				"billing": {
+					"title": "Hóa đơn đám mây",
+					"description": "Hóa đơn của nhà cung cấp chốt tháng. Trước đó, mọi khoản đều là tạm tính và được ghi rõ như vậy."
+				}
+			}
+		},
+		"faq": {
+			"items": {
+				"scope": {
+					"question": "LangDrift FinOps bao gồm những gì?",
+					"answer": "Chi tiêu phần cứng và điện toán: CPU, bộ nhớ và GPU mà các môi trường, runner và cụm của đội chiếm dụng. Lệnh gọi mô hình và chi tiêu suy luận thuộc về LangDrift LLMOps."
+				},
+				"llmops": {
+					"question": "FinOps khác LLMOps như thế nào?",
+					"answer": "LLMOps giữ chi phí suy luận, theo từng lệnh gọi, trong phong bì của đội. FinOps giữ chi phí phần cứng ngay khi nó đang chạy. Cả hai đều giữ chưa rõ là chưa rõ, và cả hai đều chịu trách nhiệm trước đội."
+				},
+				"unknown": {
+					"question": "“Chưa rõ” trên biên lai FinOps nghĩa là gì?",
+					"answer": "Một môi trường có đồng hồ đo đã ngừng báo cáo. Mức sử dụng của nó vẫn chưa rõ, mức trần vẫn bị giữ, cho đến khi một bản ghi xác định nó. Nó không bao giờ hiển thị là 0."
+				},
+				"idle": {
+					"question": "Vì sao thời gian nhàn rỗi được tính?",
+					"answer": "Một môi trường vẫn chạy sau khi công việc đã xong thì vẫn phải trả tiền. FinOps hiển thị giờ nhàn rỗi tách khỏi giờ đã dùng, để đội có thể giải phóng chúng thay vì để chúng chìm vào mức trung bình."
+				},
+				"license": {
+					"question": "LangDrift FinOps được cấp phép như thế nào?",
+					"answer": "LangDrift là phần mềm mã nguồn mở được cấp phép theo Apache License, Version 2.0. Mã nguồn có trên GitHub để kiểm tra, chạy và sửa đổi."
+				},
+				"availability": {
+					"question": "Tôi có thể dùng LangDrift FinOps hôm nay không?",
+					"answer": "Trang FinOps mô tả mô hình dự kiến. Sổ cái điện toán và các tích hợp trên trang chưa khả dụng, và yêu cầu demo hiện đang tạm dừng."
+				}
+			}
+		}
+	}
+}

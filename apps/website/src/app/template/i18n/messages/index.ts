@@ -2,6 +2,7 @@ export {
 	bookDemoMessages,
 	ciGatesMessages,
 	cliMessages,
+	finopsMessages,
 	footerMessages,
 	headerMessages,
 	llmopsMessages,
