@@ -6,9 +6,9 @@
 
 ## Tickets
 
-- 0334: the reveal value, check mark and card section move to web.
-- 0335: the expandable card moves to web.
-- 0336: the select field moves to web, blocked by 0334.
+- 0337: the reveal value, check mark and card section move to web.
+- 0338: the expandable card moves to web.
+- 0339: the select field moves to web, blocked by 0337.
 
 ## Problem Statement
 

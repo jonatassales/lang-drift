@@ -1,10 +1,10 @@
-# 0336: the select field moves to web
+# 0339: the select field moves to web
 
-**Spec:** .agents/workflow/specs/0067-the-session-panel-primitives-move-to-web.spec.md
+**Spec:** .agents/workflow/specs/0068-the-session-panel-primitives-move-to-web.spec.md
 
 **What to build:** `packages/web` gains `SelectField`, under its own `web/ui/select-field` entry: a native select with a label, a caret, an optional note and a locked state, generic over its option values. The Workflow card's model and effort choices compose it in place of the website's local workflow choice, which is deleted. The choices reprice the run and lock while it plays, exactly as before.
 
-**Blocked by:** 0334. Both tickets change the Workflow card.
+**Blocked by:** 0337. Both tickets change the Workflow card.
 
 **Status:** ready-for-agent
 
