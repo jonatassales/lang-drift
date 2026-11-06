@@ -1,89 +1,73 @@
 import type { FaqItemCopy } from '@routes/platform/product-page/faq-item-copy.type'
 
 import type {
-	budgetTermIds,
 	chainPillarIds,
-	envelopeSegmentIds,
+	computeSegmentIds,
+	computeTermIds,
+	environments,
 	failureScenarioIds,
 	finopsFaqIds,
-	gateStepIds,
-	workItems,
+	sourceIds,
 } from './finops-content.data'
 
-export type EnvelopeSegmentId = (typeof envelopeSegmentIds)[number]
-
-export interface Envelope {
-	authorized: number
-	protected: number
-	reserved: number
-	spent: number
-}
-
-export type ModelTier = 'standard' | 'deep'
-
-export type Effort = 'low' | 'medium' | 'high'
+export type ComputeSegmentId = (typeof computeSegmentIds)[number]
 
 export type CleanupState = 'done' | 'pending' | 'unknown'
 
-export interface WorkItem {
+// One environment the team's hardware ran in. Its usage and observed cost are
+// null while its meter does not report: unknown, never zero.
+export interface Environment {
+	ceiling: number
 	cleanup: CleanupState
-	effort: Effort
-	estimate: number
-	evidencePath: string
+	cpuHours: number | null
+	gpuHours: number | null
 	id: string
+	idle: number
+	idleHours: number | null
+	memoryGbHours: number | null
 	observed: number | null
-	reserved: number
-	retries: number
-	tier: ModelTier
-	verified: boolean
+	peakCores: number | null
+	source: string
 }
 
-export type WorkItemId = (typeof workItems)[number]['id']
-
-// A work item whose spend is known: the provider's usage record arrived.
-export interface ObservedWorkItem extends WorkItem {
-	observed: number
+export interface ComputeEnvelope {
+	authorized: number
+	environments: readonly Environment[]
 }
 
-export interface GateFigures {
-	proposed: number
-	reserved: number
-	observed: number
-	released: number
-}
+export type ComputeEnvelopeSegments = Record<ComputeSegmentId, number>
 
-export type BudgetTermId = (typeof budgetTermIds)[number]
+export type EnvironmentId = (typeof environments)[number]['id']
 
 export type ChainPillarId = (typeof chainPillarIds)[number]
 
 export type FailureScenarioId = (typeof failureScenarioIds)[number]
 
+export type ComputeTermId = (typeof computeTermIds)[number]
+
+export type SourceId = (typeof sourceIds)[number]
+
 export type FinopsFaqId = (typeof finopsFaqIds)[number]
 
-export type GateStepId = (typeof gateStepIds)[number]
+export interface EnvironmentCopy {
+	owner: string
+	title: string
+}
 
-export interface BudgetTermCopy {
+export interface ComputeTermCopy {
 	term: string
 	title: string
 	description: string
 }
 
-export interface GateStepCopy {
-	eyebrow: string
+export interface FailureScenarioCopy extends Record<ChainPillarId, string> {
+	context: string
+	tabLabel: string
+}
+
+export interface SourceCopy {
 	title: string
 	description: string
-	figure: string
-}
-
-export interface FailureScenarioCopy extends Record<ChainPillarId, string> {
-	title: string
-	context: string
-	status: { term: string; detail: string }
-}
-
-export interface WorkItemCopy {
-	owner: string
-	title: string
 }
 
 export interface FinopsMessages {
@@ -97,58 +81,53 @@ export interface FinopsMessages {
 		label: string
 		period: string
 		authorized: string
-		segments: Record<EnvelopeSegmentId, string>
+		segments: Record<ComputeSegmentId, string>
 		columns: {
-			item: string
-			estimate: string
-			reserved: string
+			environment: string
+			ceiling: string
 			observed: string
 		}
 		unknown: string
-		awaitingReconciliation: string
+		meterSilent: string
+		usage: string
 		selectHint: string
-		items: Record<WorkItemId, WorkItemCopy>
+		environments: Record<EnvironmentId, EnvironmentCopy>
+	}
+	receipt: {
+		selected: string
+		labels: {
+			ceiling: string
+			observed: string
+			cpu: string
+			memory: string
+			gpu: string
+			peak: string
+			idle: string
+			cleanup: string
+			source: string
+		}
+		cpuHours: string
+		memoryHours: string
+		gpuHours: string
+		peakCores: string
+		idleValue: string
+		unknownUsage: string
+		unknownObserved: string
+		cleanup: Record<CleanupState, string>
 	}
 	failures: {
 		kicker: string
 		title: string
 		lead: string
+		selector: string
 		pillars: Record<ChainPillarId, string>
 		scenarios: Record<FailureScenarioId, FailureScenarioCopy>
-	}
-	receipt: {
-		selected: string
-		labels: {
-			estimate: string
-			reserved: string
-			observed: string
-			modelEffort: string
-			retries: string
-			verification: string
-			cleanup: string
-			evidence: string
-		}
-		tiers: Record<ModelTier, string>
-		efforts: Record<Effort, string>
-		modelValue: string
-		verification: { verified: string; pending: string }
-		cleanup: Record<CleanupState, string>
-		retries: string
-		unknownObserved: string
 	}
 	budget: {
 		kicker: string
 		title: string
 		lead: string
-		terms: Record<BudgetTermId, BudgetTermCopy>
-	}
-	authorization: {
-		kicker: string
-		title: string
-		lead: string
-		steps: Record<GateStepId, GateStepCopy>
-		released: string
-		source: string
+		terms: Record<ComputeTermId, ComputeTermCopy>
 	}
 	sources: {
 		kicker: string
@@ -156,12 +135,8 @@ export interface FinopsMessages {
 		lead: string
 		intended: string
 		intendedModel: string
-		items: {
-			providers: { title: string; description: string }
-			microruntimes: { title: string; description: string; link: string }
-			evidence: { title: string; description: string }
-			billing: { title: string; description: string }
-		}
+		microruntimesLink: string
+		items: Record<SourceId, SourceCopy>
 	}
 	faq: {
 		items: Record<FinopsFaqId, FaqItemCopy>

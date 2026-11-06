@@ -8,14 +8,11 @@ import { SkipLink } from '@layout/skip-link'
 import { WebsiteFooter } from '@layout/website-footer'
 import { WebsiteHeader } from '@layout/website-header/website-header'
 import { WebsiteStructuredData } from '@layout/website-structured-data'
-import { gateExample } from '@routes/platform/finops/content/finops-content.data'
-import { gateFigures } from '@routes/platform/finops/content/gate-figures.compute'
-import { BudgetLedgerDemo } from '@routes/platform/finops/sections/budget-ledger-demo'
-import { BudgetTerms } from '@routes/platform/finops/sections/budget-terms'
-import { DeliveryReceipt } from '@routes/platform/finops/sections/delivery-receipt'
+import { ComputeLedgerDemo } from '@routes/platform/finops/sections/compute-ledger-demo'
+import { ComputeSources } from '@routes/platform/finops/sections/compute-sources'
+import { ComputeTerms } from '@routes/platform/finops/sections/compute-terms'
+import { EnvironmentReceipt } from '@routes/platform/finops/sections/environment-receipt'
 import { FailureScenarios } from '@routes/platform/finops/sections/failure-scenarios'
-import { GateFlow } from '@routes/platform/finops/sections/gate-flow'
-import { SourceList } from '@routes/platform/finops/sections/source-list'
 import { ProductHeading } from '@routes/platform/product-heading'
 import { ProductSection } from '@routes/platform/product-page/product-section'
 import { ProductTagline } from '@routes/platform/product-tagline'
@@ -37,13 +34,15 @@ export default async function FinopsPage(props: FinopsPageProps) {
 	const { locale } = await params
 
 	if (!hasLocale(routing.locales, locale)) notFound()
+
 	setRequestLocale(locale)
+
 	const copy = finopsMessages[locale]
 
 	return (
 		<>
 			<WebsiteStructuredData locale={locale} page="finops" />
-			<SkipLink href="#authorization">{copy.skip}</SkipLink>
+			<SkipLink href="#failures">{copy.skip}</SkipLink>
 			<WebsiteHeader />
 			<main id="top">
 				<section
@@ -59,10 +58,10 @@ export default async function FinopsPage(props: FinopsPageProps) {
 						start={copy.hero.taglineStart}
 					/>
 					<div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-						<BudgetLedgerDemo copy={copy.ledger} locale={locale} />
-						<DeliveryReceipt
+						<ComputeLedgerDemo copy={copy.ledger} locale={locale} />
+						<EnvironmentReceipt
 							copy={copy.receipt}
-							items={copy.ledger.items}
+							environmentsCopy={copy.ledger.environments}
 							locale={locale}
 						/>
 					</div>
@@ -70,20 +69,6 @@ export default async function FinopsPage(props: FinopsPageProps) {
 						{copy.hero.summary}
 					</p>
 				</section>
-
-				<ProductSection
-					id="authorization"
-					kicker={copy.authorization.kicker}
-					lead={copy.authorization.lead}
-					title={copy.authorization.title}
-				>
-					<GateFlow
-						copy={copy.authorization}
-						exampleTitle={copy.ledger.items[gateExample.id].title}
-						figures={gateFigures(gateExample)}
-						locale={locale}
-					/>
-				</ProductSection>
 
 				<ProductSection
 					id="failures"
@@ -100,7 +85,7 @@ export default async function FinopsPage(props: FinopsPageProps) {
 					lead={copy.budget.lead}
 					title={copy.budget.title}
 				>
-					<BudgetTerms copy={copy.budget.terms} />
+					<ComputeTerms copy={copy.budget.terms} />
 				</ProductSection>
 
 				<ProductSection
@@ -109,7 +94,7 @@ export default async function FinopsPage(props: FinopsPageProps) {
 					lead={copy.sources.lead}
 					title={copy.sources.title}
 				>
-					<SourceList copy={copy.sources} locale={locale} />
+					<ComputeSources copy={copy.sources} locale={locale} />
 				</ProductSection>
 			</main>
 			<WebsiteFooter locale={locale} />

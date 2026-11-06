@@ -1,87 +1,77 @@
-import type { DetailTone } from 'web/ui/detail-list'
-
 import type {
-	Envelope,
-	FailureScenarioId,
-	WorkItem,
-	WorkItemId,
+	ComputeEnvelope,
+	Environment,
+	EnvironmentId,
 } from './finops-content.types'
 
-// FinOps content: the ids, amounts and states the FinOps page and
-// its demos render. Sentences live in the finops catalog; this module holds
-// what a reader does not read as prose. Amounts are simulated US dollars, and
-// an observed spend of null is unknown, never zero.
+// FinOps content: the ids, amounts and usage the FinOps page and its demos
+// render. Sentences live in the finops catalog; this module holds what a
+// reader does not read as prose. Amounts are US dollars, and usage or an
+// observed cost of null is unknown, never zero.
 
-export const envelopeSegmentIds = [
-	'spent',
-	'reserved',
-	'protected',
-	'available',
-] as const
+export const computeSegmentIds = ['used', 'idle', 'held', 'available'] as const
 
-export const envelope: Envelope = {
-	authorized: 12000,
-	protected: 1200,
-	reserved: 2150,
-	spent: 6480,
+export const environments = [
+	{
+		ceiling: 420,
+		cleanup: 'done',
+		cpuHours: 96,
+		gpuHours: 0,
+		id: 'checkout-microruntime',
+		idle: 18,
+		idleHours: 3,
+		memoryGbHours: 384,
+		observed: 312,
+		peakCores: 4,
+		source: 'microruntimes/checkout-retries',
+	},
+	{
+		ceiling: 1600,
+		cleanup: 'done',
+		cpuHours: 1480,
+		gpuHours: 0,
+		id: 'ci-runners',
+		idle: 210,
+		idleHours: 41,
+		memoryGbHours: 2960,
+		observed: 1240,
+		peakCores: 16,
+		source: 'ci/runner-minutes',
+	},
+	{
+		ceiling: 1800,
+		cleanup: 'pending',
+		cpuHours: 2210,
+		gpuHours: 0,
+		id: 'preview-cluster',
+		idle: 640,
+		idleHours: 96,
+		memoryGbHours: 8840,
+		observed: 1530,
+		peakCores: 24,
+		source: 'cluster/preview',
+	},
+	{
+		ceiling: 1400,
+		cleanup: 'unknown',
+		cpuHours: null,
+		gpuHours: null,
+		id: 'embedding-gpu-job',
+		idle: 0,
+		idleHours: null,
+		memoryGbHours: null,
+		observed: null,
+		peakCores: null,
+		source: 'cloud/gpu-pool',
+	},
+] as const satisfies readonly Environment[]
+
+export const teamComputeEnvelope: ComputeEnvelope = {
+	authorized: 8000,
+	environments,
 }
 
-export const workItems = [
-	{
-		cleanup: 'done',
-		effort: 'high',
-		estimate: 1800,
-		evidencePath: 'receipts/2026-10-14/checkout-retries',
-		id: 'checkout-retries',
-		observed: 2460,
-		reserved: 2600,
-		retries: 2,
-		tier: 'deep',
-		verified: true,
-	},
-	{
-		cleanup: 'unknown',
-		effort: 'medium',
-		estimate: 900,
-		evidencePath: 'receipts/2026-10-21/invoice-export',
-		id: 'invoice-export',
-		observed: null,
-		reserved: 1100,
-		retries: 1,
-		tier: 'standard',
-		verified: false,
-	},
-	{
-		cleanup: 'done',
-		effort: 'medium',
-		estimate: 2400,
-		evidencePath: 'receipts/2026-10-17/tenant-migration',
-		id: 'tenant-migration',
-		observed: 2210,
-		reserved: 2400,
-		retries: 0,
-		tier: 'deep',
-		verified: true,
-	},
-	{
-		cleanup: 'done',
-		effort: 'low',
-		estimate: 300,
-		evidencePath: 'receipts/2026-10-20/onboarding-copy',
-		id: 'onboarding-copy',
-		observed: 240,
-		reserved: 350,
-		retries: 0,
-		tier: 'standard',
-		verified: true,
-	},
-] as const satisfies readonly WorkItem[]
-
-export const initialWorkItemId: WorkItemId = 'checkout-retries'
-
-// The work item the gate section walks through: the first in the ledger, the
-// one it selects first, delivered inside the envelope.
-export const gateExample = workItems[0]
+export const initialEnvironmentId: EnvironmentId = 'checkout-microruntime'
 
 export const chainPillarIds = [
 	'intent',
@@ -89,30 +79,24 @@ export const chainPillarIds = [
 	'evidence',
 	'outcome',
 ] as const
-// The two ways delivery leaves the plan. The case that lands inside the
-// envelope is the hero's receipt and the gate's figures, not a scenario.
-export const failureScenarioIds = ['pause-and-replan', 'unknown-spend'] as const
+// The two ways hardware leaves the plan: an environment that outlives its
+// run, and a meter that stops reporting.
+export const failureScenarioIds = [
+	'orphaned-environment',
+	'silent-meter',
+] as const
+export const computeTermIds = ['envelope', 'quota', 'cleanup'] as const
+export const sourceIds = [
+	'microruntimes',
+	'cluster',
+	'runners',
+	'billing',
+] as const
 export const finopsFaqIds = [
-	'budget',
-	'spending',
+	'scope',
+	'llmops',
 	'unknown',
-	'authorization',
+	'idle',
 	'license',
 	'availability',
 ] as const
-
-export const budgetTermIds = ['envelope', 'allocation', 'reservation'] as const
-export const gateStepIds = ['recommend', 'gate', 'reconcile'] as const
-export const sourceIds = [
-	'providers',
-	'microruntimes',
-	'evidence',
-	'billing',
-] as const
-
-// The state each failure leaves behind: a paused job needs a decision; an
-// unknown charge waits for a usage record.
-export const failureStatusTones: Record<FailureScenarioId, DetailTone> = {
-	'pause-and-replan': 'danger',
-	'unknown-spend': 'warning',
-}

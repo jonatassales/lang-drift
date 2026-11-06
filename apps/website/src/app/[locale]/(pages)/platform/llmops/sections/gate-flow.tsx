@@ -1,14 +1,14 @@
 import { createTranslator } from 'next-intl'
 import { Fragment } from 'react'
 
+import { dollars } from '@app/template/formatters/dollars.fmt'
 import type { WebsiteLocale } from '@i18n/routing'
-import { dollars } from '@routes/platform/finops/content/dollars.fmt'
-import { gateStepIds } from '@routes/platform/finops/content/finops-content.data'
+import { gateStepIds } from '@routes/platform/llmops/content/llmops-content.data'
 import type {
-	FinopsMessages,
 	GateFigures,
 	GateStepId,
-} from '@routes/platform/finops/content/finops-content.types'
+	LlmopsMessages,
+} from '@routes/platform/llmops/content/llmops-content.types'
 import { Eyebrow } from 'web/ui/eyebrow'
 import { ArrowRightIcon } from 'web/ui/icons/arrow'
 
@@ -33,7 +33,7 @@ const arrow = (
 // reserves, the evidence closes. Each step carries the amount one work item
 // had at that point, so the amounts move across the row.
 interface GateFlowProps {
-	copy: FinopsMessages['authorization']
+	copy: LlmopsMessages['authorization']
 	exampleTitle: string
 	figures: GateFigures
 	locale: WebsiteLocale

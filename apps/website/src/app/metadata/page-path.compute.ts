@@ -6,6 +6,7 @@ export type PageId = keyof typeof pages
 
 // Pages whose URL is not their id, so the metadata JSON stores no route path.
 const nestedPagePath: Partial<Record<PageId, string>> = {
+	llmops: 'platform/llmops/',
 	finops: 'platform/finops/',
 	microruntimes: 'platform/microruntimes/',
 	'safe-seat': 'platform/safe-seat/',

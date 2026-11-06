@@ -5,6 +5,7 @@ export {
 	finopsMessages,
 	footerMessages,
 	headerMessages,
+	llmopsMessages,
 	microruntimesMessages,
 	platformMessages,
 	privacyMessages,

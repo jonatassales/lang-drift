@@ -5,6 +5,7 @@ import {
 	CiGatesIcon,
 	CliIcon,
 	FinopsIcon,
+	LlmopsIcon,
 	MicroruntimesIcon,
 	SafeSeatIcon,
 } from './index'
@@ -14,6 +15,7 @@ describe('web/ui/icons/platform/platform-icons', () => {
 		['CiGatesIcon', CiGatesIcon],
 		['CliIcon', CliIcon],
 		['FinopsIcon', FinopsIcon],
+		['LlmopsIcon', LlmopsIcon],
 		['MicroruntimesIcon', MicroruntimesIcon],
 		['SafeSeatIcon', SafeSeatIcon],
 	])('%s renders a decorative monochrome svg', (_name, Icon) => {

@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 
-import { cleanup, render, screen, within } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
 import { finopsMessages } from '@i18n/messages/index'
@@ -10,30 +10,24 @@ import { FailureScenarios } from './failure-scenarios'
 afterEach(cleanup)
 
 describe('website/platform/finops/sections/failure-scenarios', () => {
-	it('walks both failures through the chain and ends each in the state it leaves', () => {
-		const { container } = render(
-			<FailureScenarios copy={finopsMessages.en.failures} />,
-		)
-		const [pause, unknown] = screen.getAllByRole('article')
+	it('walks each hardware failure through the chain from intent to outcome', () => {
+		const copy = finopsMessages.en.failures
 
-		expect(within(pause).getByRole('heading', { level: 3 }).textContent).toBe(
-			'Pause and replan',
-		)
+		render(<FailureScenarios copy={copy} />)
+
 		expect(
-			within(pause)
-				.getAllByRole('term')
-				.map((term) => term.textContent),
-		).toEqual(['Intent', 'Delivery', 'Evidence', 'Outcome', 'Needs attention'])
-		expect(within(pause).getAllByRole('definition').at(-1)?.textContent).toBe(
-			'The reindexing job is paused before its next retry would exceed the reservation; a decision is pending.',
-		)
+			screen
+				.getAllByRole('heading', { level: 3 })
+				.map((heading) => heading.textContent),
+		).toEqual(['1Intent', '2Delivery', '3Evidence', '4Outcome'])
+		expect(
+			screen.getByText(copy.scenarios['orphaned-environment'].context),
+		).toBeTruthy()
 
-		expect(within(unknown).getByRole('heading', { level: 3 }).textContent).toBe(
-			'Unknown after a timeout',
-		)
-		expect(within(unknown).getAllByRole('definition').at(-1)?.textContent).toBe(
-			'Unknown · awaiting reconciliation',
-		)
-		expect(container.textContent).not.toMatch(/\$0\b/)
+		fireEvent.click(screen.getByRole('tab', { name: 'Meter stopped' }))
+
+		expect(
+			screen.getByText(copy.scenarios['silent-meter'].outcome),
+		).toBeTruthy()
 	})
 })

@@ -24,9 +24,12 @@ vi.mock('next-intl', () => ({
 		const messages: Record<string, string> = {
 			platform: 'Platform',
 			platformMenu: 'Platform products',
+			llmops: 'LLMOps',
+			llmopsDescription:
+				'Fund the reasoning: model calls accountable to a team budget.',
 			finops: 'FinOps',
 			finopsDescription:
-				'Fund the how: agent-assisted delivery accountable to a team budget.',
+				'Meter the hardware: CPU, memory and GPU held to a team budget while they run.',
 			microruntimes: 'Microruntimes',
 			microruntimesDescription:
 				'Bounded, consumer-owned execution around the software you already have.',
@@ -38,7 +41,7 @@ vi.mock('next-intl', () => ({
 				'Pull request reports and delivery evidence in your own CI.',
 			safeSeat: 'Safe Seat',
 			safeSeatDescription:
-				'Part of LangDrift FinOps: every ticket keeps a part a person writes by hand.',
+				'Part of LangDrift LLMOps: every ticket keeps a part a person writes by hand.',
 			comingSoon: 'Coming soon',
 		}
 
@@ -53,7 +56,7 @@ afterEach(() => {
 })
 
 describe('website/website-header/platform-menu', () => {
-	it('lists the engine first and links every product, Safe Seat alone coming soon', () => {
+	it('lists the products before the utilities and links each, Safe Seat alone coming soon', () => {
 		render(<PlatformMenu />)
 
 		const hrefs = screen
@@ -61,18 +64,29 @@ describe('website/website-header/platform-menu', () => {
 			.map((link) => link.getAttribute('href'))
 
 		expect(hrefs).toEqual([
-			'/platform/microruntimes',
+			'/platform/llmops',
 			'/platform/finops',
+			'/platform/safe-seat',
+			'/platform/microruntimes',
 			'/platform/cli',
 			'/platform/ci-gates',
-			'/platform/safe-seat',
 		])
 		expect(screen.getAllByText('Coming soon')).toHaveLength(1)
 	})
 
-	it('describes CI Gates and Safe Seat', () => {
+	it('describes LLMOps, FinOps, CI Gates and Safe Seat', () => {
 		render(<PlatformMenu />)
 
+		expect(
+			screen.getByText(
+				'Fund the reasoning: model calls accountable to a team budget.',
+			),
+		).toBeDefined()
+		expect(
+			screen.getByText(
+				'Meter the hardware: CPU, memory and GPU held to a team budget while they run.',
+			),
+		).toBeDefined()
 		expect(
 			screen.getByText(
 				'Pull request reports and delivery evidence in your own CI.',
@@ -80,7 +94,7 @@ describe('website/website-header/platform-menu', () => {
 		).toBeDefined()
 		expect(
 			screen.getByText(
-				'Part of LangDrift FinOps: every ticket keeps a part a person writes by hand.',
+				'Part of LangDrift LLMOps: every ticket keeps a part a person writes by hand.',
 			),
 		).toBeDefined()
 		expect(screen.queryByText('Voice AI Interfaces')).toBeNull()

@@ -1,7 +1,7 @@
 import { Link } from '@i18n/navigation'
 import type { WebsiteLocale } from '@i18n/routing'
-import { sourceIds } from '@routes/platform/finops/content/finops-content.data'
-import type { FinopsMessages } from '@routes/platform/finops/content/finops-content.types'
+import { sourceIds } from '@routes/platform/llmops/content/llmops-content.data'
+import type { LlmopsMessages } from '@routes/platform/llmops/content/llmops-content.types'
 import { Eyebrow } from 'web/ui/eyebrow'
 import { TextLink } from 'web/ui/text-link'
 
@@ -9,7 +9,7 @@ import { TextLink } from 'web/ui/text-link'
 // sources are intended, closed by the line that says a missing one stays
 // visible as a gap.
 interface SourceListProps {
-	copy: FinopsMessages['sources']
+	copy: LlmopsMessages['sources']
 	locale: WebsiteLocale
 }
 

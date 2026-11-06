@@ -7,9 +7,9 @@
 			"titleEnd": "Platform"
 		},
 		"sections": {
-			"finops": {
-				"description": "LangDrift FinOps holds a team’s spend in one envelope. Every paid call is estimated, reserved against the envelope before it runs and reconciled with a receipt afterwards; a spend that cannot be observed stays unknown, never zero.",
-				"link": "Explore FinOps"
+			"llmops": {
+				"description": "LangDrift LLMOps holds a team’s spend in one envelope. Every paid call is estimated, reserved against the envelope before it runs and reconciled with a receipt afterwards; a spend that cannot be observed stays unknown, never zero.",
+				"link": "Explore LLMOps"
 			}
 		},
 		"faq": {
@@ -26,9 +26,9 @@
 			"titleEnd": "Platform"
 		},
 		"sections": {
-			"finops": {
-				"description": "O LangDrift FinOps mantém o gasto do time em um único envelope. Cada chamada paga é estimada, reservada contra o envelope antes de rodar e reconciliada com um recibo depois; um gasto que não pode ser observado permanece desconhecido, nunca zero.",
-				"link": "Explorar o FinOps"
+			"llmops": {
+				"description": "O LangDrift LLMOps mantém o gasto do time em um único envelope. Cada chamada paga é estimada, reservada contra o envelope antes de rodar e reconciliada com um recibo depois; um gasto que não pode ser observado permanece desconhecido, nunca zero.",
+				"link": "Explorar o LLMOps"
 			}
 		},
 		"faq": {
@@ -45,9 +45,9 @@
 			"titleEnd": "Platform"
 		},
 		"sections": {
-			"finops": {
-				"description": "LangDrift FinOps 把團隊的支出放在同一個信封裡。每一次付費呼叫都會先估算、在執行前對信封預留、事後以收據對帳；無法觀測的支出維持未知，絕不是零。",
-				"link": "探索 FinOps"
+			"llmops": {
+				"description": "LangDrift LLMOps 把團隊的支出放在同一個信封裡。每一次付費呼叫都會先估算、在執行前對信封預留、事後以收據對帳；無法觀測的支出維持未知，絕不是零。",
+				"link": "探索 LLMOps"
 			}
 		},
 		"faq": {
@@ -64,9 +64,9 @@
 			"titleEnd": "Platform"
 		},
 		"sections": {
-			"finops": {
-				"description": "LangDrift FinOps はチームの支出をひとつのエンベロープにまとめます。有料呼び出しはすべて見積もられ、実行前にエンベロープに対して予約され、実行後にレシートで照合されます。観測できない支出は不明のままで、ゼロにはなりません。",
-				"link": "FinOps を見る"
+			"llmops": {
+				"description": "LangDrift LLMOps はチームの支出をひとつのエンベロープにまとめます。有料呼び出しはすべて見積もられ、実行前にエンベロープに対して予約され、実行後にレシートで照合されます。観測できない支出は不明のままで、ゼロにはなりません。",
+				"link": "LLMOps を見る"
 			}
 		},
 		"faq": {
@@ -83,9 +83,9 @@
 			"titleEnd": "Platform"
 		},
 		"sections": {
-			"finops": {
-				"description": "LangDrift FinOps giữ chi tiêu của đội trong một phong bì duy nhất. Mỗi lệnh gọi có trả phí đều được ước tính, được giữ chỗ trong phong bì trước khi chạy và được đối chiếu bằng biên lai sau đó; khoản chi không quan sát được giữ nguyên là chưa rõ, không bao giờ là 0.",
-				"link": "Khám phá FinOps"
+			"llmops": {
+				"description": "LangDrift LLMOps giữ chi tiêu của đội trong một phong bì duy nhất. Mỗi lệnh gọi có trả phí đều được ước tính, được giữ chỗ trong phong bì trước khi chạy và được đối chiếu bằng biên lai sau đó; khoản chi không quan sát được giữ nguyên là chưa rõ, không bao giờ là 0.",
+				"link": "Khám phá LLMOps"
 			}
 		},
 		"faq": {

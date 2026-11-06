@@ -1,53 +1,80 @@
 {
 	"en": {
-		"skip": "Skip to how it works",
+		"skip": "Skip to how it holds",
 		"hero": {
-			"taglineStart": "One team envelope.",
-			"taglineEnd": "Every paid call reserved before it runs.",
-			"summary": "A team budget of 12,000 dollars split into spent, reserved, protected and available, followed by four work items with their estimate, reservation and observed spend. One item's spend is unknown and awaits reconciliation. Selecting an item updates the delivery receipt beside the ledger, or under it on a narrow screen: its estimate, reservation, observed spend, model tier and effort, retries, verification, cleanup and evidence. Every amount is simulated."
+			"taglineStart": "One compute envelope.",
+			"taglineEnd": "Every environment metered while it runs.",
+			"summary": "A team compute envelope of 8,000 dollars split into used, idle, held and available, followed by four environments with their requested ceiling and observed cost. One environment's meter stopped reporting, so its cost is unknown and its ceiling stays held. Selecting an environment updates the receipt beside the ledger, or under it on a narrow screen: its ceiling, observed cost, CPU, memory and GPU hours, peak, idle time, cleanup and source."
 		},
 		"ledger": {
-			"label": "Team envelope",
+			"label": "Compute envelope",
 			"period": "This month",
 			"authorized": "Authorized",
 			"segments": {
-				"spent": "Spent",
-				"reserved": "Reserved",
-				"protected": "Protected",
+				"used": "Used",
+				"idle": "Idle",
+				"held": "Held",
 				"available": "Available"
 			},
 			"columns": {
-				"item": "Work item",
-				"estimate": "Estimate",
-				"reserved": "Reserved",
+				"environment": "Environment",
+				"ceiling": "Ceiling",
 				"observed": "Observed"
 			},
 			"unknown": "Unknown",
-			"awaitingReconciliation": "awaiting reconciliation",
-			"selectHint": "Select a work item to read its receipt.",
-			"items": {
-				"checkout-retries": {
-					"title": "Checkout retries",
+			"meterSilent": "meter not reporting",
+			"usage": "{cpu, number} CPU·h · {memory, number} GB·h · {gpu, number} GPU·h",
+			"selectHint": "Select an environment to read its receipt.",
+			"environments": {
+				"checkout-microruntime": {
+					"title": "Checkout retries microruntime",
 					"owner": "Payments"
 				},
-				"invoice-export": {
-					"title": "Invoice export job",
-					"owner": "Billing"
-				},
-				"tenant-migration": {
-					"title": "Tenant migration",
+				"ci-runners": {
+					"title": "CI runners",
 					"owner": "Platform"
 				},
-				"onboarding-copy": {
-					"title": "Onboarding copy",
+				"preview-cluster": {
+					"title": "Preview cluster",
 					"owner": "Growth"
+				},
+				"embedding-gpu-job": {
+					"title": "Embedding GPU job",
+					"owner": "Search"
 				}
+			}
+		},
+		"receipt": {
+			"selected": "Selected environment",
+			"labels": {
+				"ceiling": "Requested ceiling",
+				"observed": "Observed cost",
+				"cpu": "CPU",
+				"memory": "Memory",
+				"gpu": "GPU",
+				"peak": "Peak",
+				"idle": "Idle",
+				"cleanup": "Cleanup",
+				"source": "Source"
+			},
+			"cpuHours": "{hours, number} CPU·h",
+			"memoryHours": "{hours, number} GB·h",
+			"gpuHours": "{hours, number} GPU·h",
+			"peakCores": "{cores, number} vCPU",
+			"idleValue": "{hours, number} h · {cost}",
+			"unknownUsage": "Unknown",
+			"unknownObserved": "Unknown · meter not reporting",
+			"cleanup": {
+				"done": "Released",
+				"pending": "Still running after its run",
+				"unknown": "Unconfirmed"
 			}
 		},
 		"failures": {
 			"kicker": "Intent → Delivery → Evidence → Outcome",
-			"title": "The envelope holds when the plan does not.",
-			"lead": "Two ways delivery leaves the plan: a job that keeps failing, and a paid call whose cost nobody knows yet. Both walk the same chain, from intent to outcome. The work that lands inside the envelope is the receipt above.",
+			"title": "The envelope holds when an environment does not stop.",
+			"lead": "Two ways hardware leaves the plan: an environment that outlives the run it served, and a meter that stops reporting. Both walk the same chain, from intent to outcome.",
+			"selector": "Scenario",
 			"pillars": {
 				"intent": "Intent",
 				"delivery": "Delivery",
@@ -55,158 +82,89 @@
 				"outcome": "Outcome"
 			},
 			"scenarios": {
-				"pause-and-replan": {
-					"title": "Pause and replan",
-					"context": "A search reindexing job keeps failing, and each retry costs more than planned.",
-					"intent": "The ticket asked for a nightly reindex with a 600-dollar allocation. The intent never changed; the plan did.",
-					"delivery": "The next retry would exceed the 750-dollar reservation. The gate pauses the job instead of extending it; the agent proposes a smaller scope and a deterministic step in place of a model call.",
-					"evidence": "The pause is on the receipt, with the failed attempts, the reservation that held and the alternative plan awaiting a decision.",
-					"outcome": "No further spend until the owner decides. The team can accept the smaller scope, raise the allocation or stop; the agent cannot choose for them.",
-					"status": {
-						"term": "Needs attention",
-						"detail": "The reindexing job is paused before its next retry would exceed the reservation; a decision is pending."
-					}
+				"orphaned-environment": {
+					"tabLabel": "Left running",
+					"context": "A preview cluster kept its nodes after the pull request it served was merged.",
+					"intent": "The ticket asked for a preview environment for one pull request, with an 1,800-dollar ceiling for the month.",
+					"delivery": "The run finished and the pull request merged, but the cluster's cleanup was never confirmed. Its nodes kept running, idle, at the team's expense.",
+					"evidence": "The receipt shows 96 idle hours and cleanup still pending, with the cluster's own metrics as the source.",
+					"outcome": "Idle spend is reported as idle, apart from used. The owner decides whether to release the cluster; the agent cannot widen its quota to keep it."
 				},
-				"unknown-spend": {
-					"title": "Unknown after a timeout",
-					"context": "A provider call in the invoice export job timed out. The work may have been charged; nobody knows yet.",
-					"intent": "The export ticket still has its 900-dollar allocation; the only question is what the timed-out call cost.",
-					"delivery": "The agent does not retry a paid call whose result is unknown. The reservation stays held until the provider's usage record arrives.",
-					"evidence": "The receipt shows the attempt as unknown, with the request id to reconcile against, and keeps showing it until a usage record settles it.",
-					"outcome": "Unknown is reported as unknown. It never becomes zero spend, and the envelope's available amount excludes the held reservation until reconciliation.",
-					"status": {
-						"term": "Observed spend",
-						"detail": "Unknown · awaiting reconciliation"
-					}
+				"silent-meter": {
+					"tabLabel": "Meter stopped",
+					"context": "The metrics agent on a GPU pool stopped reporting halfway through an embedding job.",
+					"intent": "The job had a 1,400-dollar ceiling to build a search index.",
+					"delivery": "Without usage records, nobody can say what the job consumed. The run does not start another GPU job against an unknown balance.",
+					"evidence": "The receipt shows the job's usage as unknown, with the pool as the source to reconcile against, until the metrics or the cloud bill arrive.",
+					"outcome": "Unknown is reported as unknown. It never becomes zero, and the job's whole ceiling stays held, out of the available amount, until a record settles it."
 				}
 			}
-		},
-		"receipt": {
-			"selected": "Selected work item",
-			"labels": {
-				"estimate": "Estimate",
-				"reserved": "Reserved",
-				"observed": "Observed spend",
-				"modelEffort": "Model tier · effort",
-				"retries": "Retries",
-				"verification": "Verification",
-				"cleanup": "Cleanup",
-				"evidence": "Evidence"
-			},
-			"tiers": {
-				"standard": "Standard",
-				"deep": "Deep reasoning"
-			},
-			"efforts": {
-				"low": "Low",
-				"medium": "Medium",
-				"high": "High"
-			},
-			"modelValue": "{tier} · {effort}",
-			"verification": {
-				"verified": "Passed",
-				"pending": "Pending"
-			},
-			"cleanup": {
-				"done": "Microruntime cleaned up",
-				"pending": "Cleanup pending",
-				"unknown": "Cleanup unconfirmed"
-			},
-			"retries": "{count, plural, =0 {No retries} one {# retry} other {# retries}}",
-			"unknownObserved": "Unknown · awaiting reconciliation"
 		},
 		"budget": {
 			"kicker": "Know who funds it",
-			"title": "The budget belongs to the team.",
-			"lead": "Work varies in complexity, so the authorized envelope is shared by the team, not split into equal quotas per developer or per ticket. Features receive allocations that can change; nobody receives an independent right to spend. This is the funding model LangDrift FinOps is designed around; it is not available yet.",
+			"title": "Hardware answers to the same team.",
+			"lead": "Compute is funded the way reasoning is: one authorized envelope for the team, with ceilings for the environments that draw on it. What an environment holds while it runs is part of the spend, not an afterthought. This is the model LangDrift FinOps is designed around; it is not available yet.",
 			"terms": {
 				"envelope": {
-					"term": "Team envelope",
-					"title": "One authorized amount, one period, one owner",
-					"description": "The funding authority names the team, the amount, the period and who answers for deviations. Everything else is subordinate to it."
+					"term": "Compute envelope",
+					"title": "One authorized amount for the team's hardware, per period",
+					"description": "Every environment, runner and cluster the team's work runs on draws from it. Its owner answers for deviations."
 				},
-				"allocation": {
-					"term": "Allocation",
-					"title": "A suggested share of the envelope for a piece of work",
-					"description": "Proposed from the intent, comparable history and the required quality. It guides the plan; it is not a grant, and it can be revised."
+				"quota": {
+					"term": "Quota",
+					"title": "The ceiling an environment asks for before it starts",
+					"description": "Requested from the work's needs and comparable runs. An environment that would exceed it pauses for a decision instead of growing."
 				},
-				"reservation": {
-					"term": "Reservation",
-					"title": "An atomic hold before a paid call",
-					"description": "Taken against the envelope with an idempotency key and released when observed usage is reconciled. Parallel agents cannot spend the same amount twice."
+				"cleanup": {
+					"term": "Cleanup",
+					"title": "Release as a spend control",
+					"description": "An environment ends when its run does. A cleanup that is not confirmed stays visible, and its idle hours count against the envelope."
 				}
 			}
-		},
-		"authorization": {
-			"kicker": "Recommendation is not authorization",
-			"title": "An agent recommends. A control decides.",
-			"lead": "A model may read the intent, compare similar work and propose a model, an effort and an allocation with its reasoning. Whether a paid action is permitted is decided by deterministic code against the policy, never by the model’s confidence. The gate below is the intended design, not a shipped control.",
-			"steps": {
-				"recommend": {
-					"eyebrow": "01 · The agent recommends",
-					"title": "Model, effort, allocation, rationale",
-					"description": "Which capabilities the step needs, whether a cheaper model is plausible, how much context is necessary, and what makes the estimate uncertain.",
-					"figure": "Proposed"
-				},
-				"gate": {
-					"eyebrow": "02 · The gate reserves",
-					"title": "Policy revision, price source, idempotency key",
-					"description": "The gate identifies the billable operation, resolves a price and a maximum, reserves the funds atomically, and refuses or pauses anything outside policy.",
-					"figure": "Reserved"
-				},
-				"reconcile": {
-					"eyebrow": "03 · The evidence closes",
-					"title": "Observed usage reconciled, the rest released",
-					"description": "Usage from the provider replaces the estimate, the unused reservation returns to the envelope, and unknown outcomes stay unknown until a record settles them.",
-					"figure": "Observed"
-				}
-			},
-			"released": "Released to the envelope",
-			"source": "Figures from the {item} receipt at the top of the page."
 		},
 		"sources": {
 			"kicker": "What feeds the ledger",
 			"title": "Evidence over assertion.",
-			"lead": "A receipt is only as good as its sources. Each one is named, dated and kept apart from the others, so a missing source stays visible as missing instead of blending into a total.",
+			"lead": "A receipt is only as good as its meters. Each source is named, dated and kept apart from the others, so a meter that stops reporting stays visible as a gap instead of blending into a total.",
 			"intended": "Intended sources",
 			"intendedModel": "These are the sources the model intends. Where one is not connected, the ledger shows the gap rather than an estimate dressed as a measurement.",
+			"microruntimesLink": "See LangDrift Microruntimes",
 			"items": {
-				"providers": {
-					"title": "Model providers",
-					"description": "Usage records and price snapshots per call, with the request id to reconcile a timeout against."
-				},
 				"microruntimes": {
 					"title": "Microruntimes",
-					"description": "CPU and memory observations from the bounded environments that ran the checks, with their cleanup state.",
-					"link": "See LangDrift Microruntimes"
+					"description": "CPU and memory observations from the bounded environments that ran the work, with their cleanup state."
 				},
-				"evidence": {
-					"title": "Delivery evidence",
-					"description": "The spec, the ticket, the pull request and the verification run each attempt refers to."
+				"cluster": {
+					"title": "Cluster metrics",
+					"description": "Node hours, peaks and idle time from the clusters the team's environments run on."
+				},
+				"runners": {
+					"title": "CI runners",
+					"description": "Runner minutes and machine sizes from the team's own CI."
 				},
 				"billing": {
-					"title": "Billing",
-					"description": "Invoice reconciliation closes the month. Until then, every amount is provisional and says so."
+					"title": "Cloud billing",
+					"description": "The provider's bill closes the month. Until then, every amount is provisional and says so."
 				}
 			}
 		},
 		"faq": {
 			"items": {
-				"budget": {
-					"question": "What is a team budget?",
-					"answer": "An authorized amount, for a period, that the whole team's agent-assisted work draws from. Allocations to features are suggestions inside it; no developer or ticket gets an independent right to spend."
+				"scope": {
+					"question": "What does LangDrift FinOps cover?",
+					"answer": "Hardware and computational spend: the CPU, memory and GPU that the team's environments, runners and clusters occupy. Model calls and reasoning spend belong to LangDrift LLMOps."
 				},
-				"spending": {
-					"question": "Does FinOps mean spending less?",
-					"answer": "No. It means knowing what was spent, on what, and whether the outcome was worth it. A more capable model can cost less overall when it avoids retries; FinOps measures the result, not the token price."
+				"llmops": {
+					"question": "How is FinOps different from LLMOps?",
+					"answer": "LLMOps holds what reasoning costs, call by call, against the team's envelope. FinOps holds what the hardware costs while it runs. Both keep unknown as unknown, and both answer to the team."
 				},
 				"unknown": {
-					"question": "What does “unknown” mean on a receipt?",
-					"answer": "A paid call whose cost has no usage record yet, for example after a timeout. It stays unknown, with its reservation held, until a record settles it. It is never shown as zero."
+					"question": "What does “unknown” mean on a FinOps receipt?",
+					"answer": "An environment whose meter stopped reporting. Its usage stays unknown, with its ceiling held, until a record settles it. It is never shown as zero."
 				},
-				"authorization": {
-					"question": "Can an agent raise the budget?",
-					"answer": "No. An agent can estimate, recommend and run permitted work. Widening funding, scope or access takes a separately authorized policy decision by the team's owner."
+				"idle": {
+					"question": "Why does idle time count?",
+					"answer": "An environment that keeps running after its work is done is still paid for. FinOps shows idle hours apart from used ones, so the team can release them instead of averaging them away."
 				},
 				"license": {
 					"question": "How is LangDrift FinOps licensed?",
@@ -214,60 +172,87 @@
 				},
 				"availability": {
 					"question": "Can I use LangDrift FinOps today?",
-					"answer": "The FinOps page describes the intended model. The ledger, the gate and the integrations it shows are not available yet, and demo requests are paused for now."
+					"answer": "The FinOps page describes the intended model. The compute ledger and the integrations it shows are not available yet, and demo requests are paused for now."
 				}
 			}
 		}
 	},
 	"pt-BR": {
-		"skip": "Pular para como funciona",
+		"skip": "Ir para como o envelope se sustenta",
 		"hero": {
-			"taglineStart": "Um único envelope para o time.",
-			"taglineEnd": "Toda chamada paga é reservada antes de rodar.",
-			"summary": "Um orçamento de time de 12.000 dólares dividido em gasto, reservado, protegido e disponível, seguido de quatro itens de trabalho com estimativa, reserva e gasto observado. O gasto de um item é desconhecido e aguarda reconciliação. Selecionar um item atualiza o recibo de entrega ao lado do livro-razão, ou abaixo dele em telas estreitas: estimativa, reserva, gasto observado, nível do modelo e esforço, retentativas, verificação, limpeza e evidência. Todos os valores são simulados."
+			"taglineStart": "Um envelope de computação.",
+			"taglineEnd": "Cada ambiente medido enquanto roda.",
+			"summary": "Um envelope de computação do time de 8.000 dólares dividido em usado, ocioso, retido e disponível, seguido de quatro ambientes com o teto solicitado e o custo observado. O medidor de um ambiente parou de reportar, então seu custo é desconhecido e seu teto continua retido. Selecionar um ambiente atualiza o recibo ao lado do livro-razão, ou abaixo dele numa tela estreita: o teto, o custo observado, as horas de CPU, memória e GPU, o pico, o tempo ocioso, a limpeza e a fonte."
 		},
 		"ledger": {
-			"label": "Envelope do time",
+			"label": "Envelope de computação",
 			"period": "Este mês",
 			"authorized": "Autorizado",
 			"segments": {
-				"spent": "Gasto",
-				"reserved": "Reservado",
-				"protected": "Protegido",
+				"used": "Usado",
+				"idle": "Ocioso",
+				"held": "Retido",
 				"available": "Disponível"
 			},
 			"columns": {
-				"item": "Item de trabalho",
-				"estimate": "Estimativa",
-				"reserved": "Reservado",
+				"environment": "Ambiente",
+				"ceiling": "Teto",
 				"observed": "Observado"
 			},
 			"unknown": "Desconhecido",
-			"awaitingReconciliation": "aguardando reconciliação",
-			"selectHint": "Selecione um item de trabalho para ler seu recibo.",
-			"items": {
-				"checkout-retries": {
-					"title": "Retentativas no checkout",
+			"meterSilent": "medidor sem reportar",
+			"usage": "{cpu, number} CPU·h · {memory, number} GB·h · {gpu, number} GPU·h",
+			"selectHint": "Selecione um ambiente para ler o recibo.",
+			"environments": {
+				"checkout-microruntime": {
+					"title": "Microruntime das retentativas do checkout",
 					"owner": "Pagamentos"
 				},
-				"invoice-export": {
-					"title": "Job de exportação de faturas",
-					"owner": "Faturamento"
-				},
-				"tenant-migration": {
-					"title": "Migração de tenants",
+				"ci-runners": {
+					"title": "Runners de CI",
 					"owner": "Plataforma"
 				},
-				"onboarding-copy": {
-					"title": "Textos de onboarding",
+				"preview-cluster": {
+					"title": "Cluster de preview",
 					"owner": "Growth"
+				},
+				"embedding-gpu-job": {
+					"title": "Job de embeddings em GPU",
+					"owner": "Busca"
 				}
+			}
+		},
+		"receipt": {
+			"selected": "Ambiente selecionado",
+			"labels": {
+				"ceiling": "Teto solicitado",
+				"observed": "Custo observado",
+				"cpu": "CPU",
+				"memory": "Memória",
+				"gpu": "GPU",
+				"peak": "Pico",
+				"idle": "Ocioso",
+				"cleanup": "Limpeza",
+				"source": "Fonte"
+			},
+			"cpuHours": "{hours, number} CPU·h",
+			"memoryHours": "{hours, number} GB·h",
+			"gpuHours": "{hours, number} GPU·h",
+			"peakCores": "{cores, number} vCPU",
+			"idleValue": "{hours, number} h · {cost}",
+			"unknownUsage": "Desconhecido",
+			"unknownObserved": "Desconhecido · medidor sem reportar",
+			"cleanup": {
+				"done": "Liberado",
+				"pending": "Ainda rodando depois da execução",
+				"unknown": "Não confirmada"
 			}
 		},
 		"failures": {
 			"kicker": "Intenção → Entrega → Evidência → Resultado",
-			"title": "O envelope se mantém quando o plano falha.",
-			"lead": "Duas maneiras de a entrega sair do plano: um job que continua falhando e uma chamada paga cujo custo ninguém conhece ainda. As duas percorrem a mesma cadeia, da intenção ao resultado. O trabalho que fica dentro do envelope é o recibo acima.",
+			"title": "O envelope se sustenta quando um ambiente não para.",
+			"lead": "Duas formas de o hardware sair do plano: um ambiente que sobrevive à execução que serviu e um medidor que para de reportar. As duas percorrem a mesma cadeia, da intenção ao resultado.",
+			"selector": "Cenário",
 			"pillars": {
 				"intent": "Intenção",
 				"delivery": "Entrega",
@@ -275,219 +260,177 @@
 				"outcome": "Resultado"
 			},
 			"scenarios": {
-				"pause-and-replan": {
-					"title": "Pausar e replanejar",
-					"context": "Um job de reindexação da busca continua falhando, e cada retentativa custa mais do que o planejado.",
-					"intent": "O ticket pedia uma reindexação noturna com alocação de 600 dólares. A intenção nunca mudou; o plano, sim.",
-					"delivery": "A próxima retentativa excederia a reserva de 750 dólares. O gate pausa o job em vez de ampliá-la; o agente propõe um escopo menor e uma etapa determinística no lugar de uma chamada ao modelo.",
-					"evidence": "A pausa está no recibo, com as tentativas que falharam, a reserva que se manteve e o plano alternativo aguardando decisão.",
-					"outcome": "Nenhum gasto adicional até que o responsável decida. O time pode aceitar o escopo menor, aumentar a alocação ou parar; o agente não pode escolher por ele.",
-					"status": {
-						"term": "Precisa de atenção",
-						"detail": "O job de reindexação está pausado antes que a próxima retentativa exceda a reserva; há uma decisão pendente."
-					}
+				"orphaned-environment": {
+					"tabLabel": "Ficou rodando",
+					"context": "Um cluster de preview manteve seus nós depois que o pull request que ele servia foi mergeado.",
+					"intent": "O ticket pediu um ambiente de preview para um pull request, com teto de 1.800 dólares no mês.",
+					"delivery": "A execução terminou e o pull request foi mergeado, mas a limpeza do cluster nunca foi confirmada. Os nós continuaram rodando, ociosos, às custas do time.",
+					"evidence": "O recibo mostra 96 horas ociosas e a limpeza ainda pendente, com as métricas do próprio cluster como fonte.",
+					"outcome": "O gasto ocioso é reportado como ocioso, separado do usado. O dono decide se libera o cluster; o agente não pode ampliar a cota para mantê-lo."
 				},
-				"unknown-spend": {
-					"title": "Desconhecido após um timeout",
-					"context": "Uma chamada ao provedor no job de exportação de faturas expirou. O trabalho pode ter sido cobrado; ninguém sabe ainda.",
-					"intent": "O ticket de exportação mantém sua alocação de 900 dólares; a única dúvida é quanto custou a chamada que expirou.",
-					"delivery": "O agente não repete uma chamada paga cujo resultado é desconhecido. A reserva permanece retida até que o registro de uso do provedor chegue.",
-					"evidence": "O recibo mostra a tentativa como desconhecida, com o id da requisição para reconciliar, e continua mostrando até que um registro de uso a resolva.",
-					"outcome": "Desconhecido é reportado como desconhecido. Nunca vira gasto zero, e o valor disponível do envelope exclui a reserva retida até a reconciliação.",
-					"status": {
-						"term": "Gasto observado",
-						"detail": "Desconhecido · aguardando reconciliação"
-					}
+				"silent-meter": {
+					"tabLabel": "Medidor parou",
+					"context": "O agente de métricas de um pool de GPU parou de reportar no meio de um job de embeddings.",
+					"intent": "O job tinha teto de 1.400 dólares para construir um índice de busca.",
+					"delivery": "Sem registros de uso, ninguém sabe dizer o que o job consumiu. A execução não inicia outro job de GPU contra um saldo desconhecido.",
+					"evidence": "O recibo mostra o uso do job como desconhecido, com o pool como fonte para reconciliar, até chegarem as métricas ou a fatura da nuvem.",
+					"outcome": "Desconhecido é reportado como desconhecido. Nunca vira zero, e todo o teto do job continua retido, fora do disponível, até que um registro o resolva."
 				}
 			}
-		},
-		"receipt": {
-			"selected": "Item de trabalho selecionado",
-			"labels": {
-				"estimate": "Estimativa",
-				"reserved": "Reservado",
-				"observed": "Gasto observado",
-				"modelEffort": "Nível do modelo · esforço",
-				"retries": "Retentativas",
-				"verification": "Verificação",
-				"cleanup": "Limpeza",
-				"evidence": "Evidência"
-			},
-			"tiers": {
-				"standard": "Padrão",
-				"deep": "Raciocínio profundo"
-			},
-			"efforts": {
-				"low": "Baixo",
-				"medium": "Médio",
-				"high": "Alto"
-			},
-			"modelValue": "{tier} · {effort}",
-			"verification": {
-				"verified": "Aprovada",
-				"pending": "Pendente"
-			},
-			"cleanup": {
-				"done": "Microruntime limpo",
-				"pending": "Limpeza pendente",
-				"unknown": "Limpeza não confirmada"
-			},
-			"retries": "{count, plural, =0 {Nenhuma retentativa} one {# retentativa} other {# retentativas}}",
-			"unknownObserved": "Desconhecido · aguardando reconciliação"
 		},
 		"budget": {
 			"kicker": "Saiba quem financia",
-			"title": "O orçamento pertence ao time.",
-			"lead": "Os trabalhos variam em complexidade, então o envelope autorizado é compartilhado pelo time, não dividido em cotas iguais por desenvolvedor ou por ticket. Features recebem alocações que podem mudar; ninguém recebe um direito independente de gastar. Este é o modelo de financiamento para o qual o LangDrift FinOps está sendo projetado; ele ainda não está disponível.",
+			"title": "O hardware presta contas ao mesmo time.",
+			"lead": "A computação é financiada como o raciocínio: um envelope autorizado para o time, com tetos para os ambientes que consomem dele. O que um ambiente ocupa enquanto roda faz parte do gasto, não é um detalhe posterior. Este é o modelo para o qual o LangDrift FinOps está sendo projetado; ele ainda não está disponível.",
 			"terms": {
 				"envelope": {
-					"term": "Envelope do time",
-					"title": "Um valor autorizado, um período, um responsável",
-					"description": "A autoridade de financiamento nomeia o time, o valor, o período e quem responde por desvios. Todo o resto é subordinado a ela."
+					"term": "Envelope de computação",
+					"title": "Um valor autorizado para o hardware do time, por período",
+					"description": "Todo ambiente, runner e cluster em que o trabalho do time roda consome dele. O dono responde pelos desvios."
 				},
-				"allocation": {
-					"term": "Alocação",
-					"title": "Uma parcela sugerida do envelope para um trabalho",
-					"description": "Proposta a partir da intenção, do histórico comparável e da qualidade exigida. Ela orienta o plano; não é uma concessão e pode ser revisada."
+				"quota": {
+					"term": "Cota",
+					"title": "O teto que um ambiente pede antes de começar",
+					"description": "Solicitado a partir das necessidades do trabalho e de execuções comparáveis. Um ambiente que o excederia pausa à espera de uma decisão em vez de crescer."
 				},
-				"reservation": {
-					"term": "Reserva",
-					"title": "Uma retenção atômica antes de uma chamada paga",
-					"description": "Feita contra o envelope com uma chave de idempotência e liberada quando o uso observado é reconciliado. Agentes em paralelo não conseguem gastar o mesmo valor duas vezes."
+				"cleanup": {
+					"term": "Limpeza",
+					"title": "Liberar como controle de gasto",
+					"description": "Um ambiente termina quando sua execução termina. Uma limpeza não confirmada continua visível, e suas horas ociosas contam contra o envelope."
 				}
 			}
-		},
-		"authorization": {
-			"kicker": "Recomendação não é autorização",
-			"title": "Um agente recomenda. Um controle decide.",
-			"lead": "Um modelo pode ler a intenção, comparar trabalhos semelhantes e propor um modelo, um esforço e uma alocação com seu raciocínio. Se uma ação paga é permitida, quem decide é código determinístico contra a política, nunca a confiança do modelo. O gate abaixo é o desenho pretendido, não um controle já entregue.",
-			"steps": {
-				"recommend": {
-					"eyebrow": "01 · O agente recomenda",
-					"title": "Modelo, esforço, alocação, justificativa",
-					"description": "Quais capacidades a etapa exige, se um modelo mais barato é plausível, quanto contexto é necessário e o que torna a estimativa incerta.",
-					"figure": "Proposto"
-				},
-				"gate": {
-					"eyebrow": "02 · O gate reserva",
-					"title": "Revisão da política, fonte de preço, chave de idempotência",
-					"description": "O gate identifica a operação cobrável, resolve um preço e um máximo, reserva os fundos atomicamente e recusa ou pausa qualquer coisa fora da política.",
-					"figure": "Reservado"
-				},
-				"reconcile": {
-					"eyebrow": "03 · A evidência encerra",
-					"title": "Uso observado reconciliado, o restante liberado",
-					"description": "O uso informado pelo provedor substitui a estimativa, a reserva não usada volta ao envelope, e resultados desconhecidos seguem desconhecidos até que um registro os resolva.",
-					"figure": "Observado"
-				}
-			},
-			"released": "Devolvido ao envelope",
-			"source": "Valores do recibo de “{item}”, no topo da página."
 		},
 		"sources": {
 			"kicker": "O que alimenta o livro-razão",
 			"title": "Evidência acima de afirmação.",
-			"lead": "Um recibo é tão bom quanto suas fontes. Cada uma é nomeada, datada e mantida separada das outras, para que uma fonte ausente continue visível como ausente em vez de se misturar a um total.",
-			"intended": "Fontes pretendidas",
-			"intendedModel": "Estas são as fontes que o modelo pretende usar. Onde uma não está conectada, o livro-razão mostra a lacuna, não uma estimativa disfarçada de medição.",
+			"lead": "Um recibo vale o que valem seus medidores. Cada fonte é nomeada, datada e mantida separada das outras, para que um medidor que para de reportar continue visível como lacuna em vez de se misturar a um total.",
+			"intended": "Fontes previstas",
+			"intendedModel": "Estas são as fontes que o modelo prevê. Onde uma não está conectada, o livro-razão mostra a lacuna em vez de uma estimativa disfarçada de medição.",
+			"microruntimesLink": "Conheça o LangDrift Microruntimes",
 			"items": {
-				"providers": {
-					"title": "Provedores de modelos",
-					"description": "Registros de uso e instantâneos de preço por chamada, com o id da requisição para reconciliar um timeout."
-				},
 				"microruntimes": {
 					"title": "Microruntimes",
-					"description": "Observações de CPU e memória dos ambientes delimitados que rodaram as checagens, com seu estado de limpeza.",
-					"link": "Conheça o LangDrift Microruntimes"
+					"description": "Observações de CPU e memória dos ambientes delimitados que executaram o trabalho, com o estado da limpeza."
 				},
-				"evidence": {
-					"title": "Evidência de entrega",
-					"description": "A spec, o ticket, o pull request e a execução de verificação aos quais cada tentativa se refere."
+				"cluster": {
+					"title": "Métricas de cluster",
+					"description": "Horas de nó, picos e tempo ocioso dos clusters em que os ambientes do time rodam."
+				},
+				"runners": {
+					"title": "Runners de CI",
+					"description": "Minutos de runner e tamanhos de máquina do próprio CI do time."
 				},
 				"billing": {
-					"title": "Faturamento",
-					"description": "A reconciliação da fatura fecha o mês. Até lá, todo valor é provisório e diz isso."
+					"title": "Faturamento da nuvem",
+					"description": "A fatura do provedor fecha o mês. Até lá, todo valor é provisório e diz isso."
 				}
 			}
 		},
 		"faq": {
 			"items": {
-				"budget": {
-					"question": "O que é um orçamento de time?",
-					"answer": "Um valor autorizado, por um período, do qual todo o trabalho assistido por agentes do time é financiado. Alocações para features são sugestões dentro dele; nenhum desenvolvedor ou ticket recebe um direito independente de gastar."
+				"scope": {
+					"question": "O que o LangDrift FinOps cobre?",
+					"answer": "O gasto com hardware e computação: a CPU, a memória e a GPU que os ambientes, runners e clusters do time ocupam. Chamadas de modelo e gasto com raciocínio pertencem ao LangDrift LLMOps."
 				},
-				"spending": {
-					"question": "FinOps significa gastar menos?",
-					"answer": "Não. Significa saber o que foi gasto, em quê, e se o resultado valeu a pena. Um modelo mais capaz pode custar menos no total quando evita retentativas; o FinOps mede o resultado, não o preço do token."
+				"llmops": {
+					"question": "Qual a diferença entre FinOps e LLMOps?",
+					"answer": "O LLMOps mantém o custo do raciocínio, chamada a chamada, contra o envelope do time. O FinOps mantém o custo do hardware enquanto ele roda. Os dois tratam desconhecido como desconhecido, e os dois prestam contas ao time."
 				},
 				"unknown": {
-					"question": "O que significa “desconhecido” em um recibo?",
-					"answer": "Uma chamada paga cujo custo ainda não tem registro de uso, por exemplo após um timeout. Ela segue desconhecida, com a reserva retida, até que um registro a resolva. Nunca é mostrada como zero."
+					"question": "O que significa “desconhecido” num recibo do FinOps?",
+					"answer": "Um ambiente cujo medidor parou de reportar. Seu uso continua desconhecido, com o teto retido, até que um registro o resolva. Nunca aparece como zero."
 				},
-				"authorization": {
-					"question": "Um agente pode aumentar o orçamento?",
-					"answer": "Não. Um agente pode estimar, recomendar e executar o trabalho permitido. Ampliar financiamento, escopo ou acesso exige uma decisão de política autorizada separadamente pelo responsável do time."
+				"idle": {
+					"question": "Por que o tempo ocioso conta?",
+					"answer": "Um ambiente que continua rodando depois que o trabalho acabou continua sendo pago. O FinOps mostra as horas ociosas separadas das usadas, para que o time as libere em vez de diluí-las numa média."
 				},
 				"license": {
 					"question": "Como o LangDrift FinOps é licenciado?",
-					"answer": "O LangDrift é um software de código aberto licenciado sob a Licença Apache, Versão 2.0. O código está disponível no GitHub para inspeção, execução e modificação."
+					"answer": "O LangDrift é software de código aberto licenciado sob a Apache License, Version 2.0. O código está disponível no GitHub para inspecionar, executar e modificar."
 				},
 				"availability": {
 					"question": "Posso usar o LangDrift FinOps hoje?",
-					"answer": "A página do FinOps descreve o modelo pretendido. O livro-razão, o gate e as integrações que ela mostra ainda não estão disponíveis, e os pedidos de demonstração estão pausados por enquanto."
+					"answer": "A página do FinOps descreve o modelo pretendido. O livro-razão de computação e as integrações que ela mostra ainda não estão disponíveis, e os pedidos de demonstração estão pausados por enquanto."
 				}
 			}
 		}
 	},
 	"zh-Hant": {
-		"skip": "跳到運作方式",
+		"skip": "跳至信封如何守住",
 		"hero": {
-			"taglineStart": "全隊共用一份預算額度。",
-			"taglineEnd": "每次付費呼叫，都先保留額度再執行。",
-			"summary": "一份團隊預算，總額 12,000 美元，分為已花費、已保留、受保護與可用四部分；接著是四個工作項目，各自列出估算、保留與觀測到的花費。其中一項花費未知，等待對帳。選取項目後，帳本旁的交付收據會隨之更新（窄螢幕上則在帳本下方）：估算、保留、觀測到的花費、模型層級與推理強度、重試、驗證、清理與證據。所有金額皆為模擬。"
+			"taglineStart": "一個運算信封。",
+			"taglineEnd": "每個環境在運行時就被計量。",
+			"summary": "一個 8,000 美元的團隊運算信封，分為已用、閒置、保留與可用，接著是四個環境及其申請上限與觀測成本。其中一個環境的計量停止回報，因此成本未知，其上限持續保留。選取一個環境會更新帳本旁的收據（窄螢幕時位於下方）：上限、觀測成本、CPU、記憶體與 GPU 時數、峰值、閒置時間、清理狀態與來源。"
 		},
 		"ledger": {
-			"label": "團隊預算額度",
+			"label": "運算信封",
 			"period": "本月",
 			"authorized": "已授權",
 			"segments": {
-				"spent": "已花費",
-				"reserved": "已保留",
-				"protected": "受保護",
+				"used": "已用",
+				"idle": "閒置",
+				"held": "保留",
 				"available": "可用"
 			},
 			"columns": {
-				"item": "工作項目",
-				"estimate": "估算",
-				"reserved": "已保留",
-				"observed": "觀測值"
+				"environment": "環境",
+				"ceiling": "上限",
+				"observed": "觀測"
 			},
 			"unknown": "未知",
-			"awaitingReconciliation": "等待對帳",
-			"selectHint": "選取一個工作項目以閱讀它的收據。",
-			"items": {
-				"checkout-retries": {
-					"title": "結帳重試",
+			"meterSilent": "計量未回報",
+			"usage": "{cpu, number} CPU·h · {memory, number} GB·h · {gpu, number} GPU·h",
+			"selectHint": "選取一個環境以查看其收據。",
+			"environments": {
+				"checkout-microruntime": {
+					"title": "結帳重試 microruntime",
 					"owner": "支付"
 				},
-				"invoice-export": {
-					"title": "發票匯出作業",
-					"owner": "帳務"
-				},
-				"tenant-migration": {
-					"title": "租戶遷移",
+				"ci-runners": {
+					"title": "CI 執行器",
 					"owner": "平台"
 				},
-				"onboarding-copy": {
-					"title": "新手引導文案",
+				"preview-cluster": {
+					"title": "預覽叢集",
 					"owner": "成長"
+				},
+				"embedding-gpu-job": {
+					"title": "Embedding GPU 作業",
+					"owner": "搜尋"
 				}
+			}
+		},
+		"receipt": {
+			"selected": "已選取的環境",
+			"labels": {
+				"ceiling": "申請上限",
+				"observed": "觀測成本",
+				"cpu": "CPU",
+				"memory": "記憶體",
+				"gpu": "GPU",
+				"peak": "峰值",
+				"idle": "閒置",
+				"cleanup": "清理",
+				"source": "來源"
+			},
+			"cpuHours": "{hours, number} CPU·h",
+			"memoryHours": "{hours, number} GB·h",
+			"gpuHours": "{hours, number} GPU·h",
+			"peakCores": "{cores, number} vCPU",
+			"idleValue": "{hours, number} 小時 · {cost}",
+			"unknownUsage": "未知",
+			"unknownObserved": "未知 · 計量未回報",
+			"cleanup": {
+				"done": "已釋放",
+				"pending": "執行結束後仍在運行",
+				"unknown": "未確認"
 			}
 		},
 		"failures": {
 			"kicker": "意圖 → 交付 → 證據 → 成果",
-			"title": "計畫失守時，預算額度依然守得住。",
-			"lead": "交付偏離計畫的兩種情況：一個不斷失敗的作業，以及一次還沒人知道花了多少的付費呼叫。兩者都走同一條鏈，從意圖到成果。落在預算額度之內的工作，就是上方的收據。",
+			"title": "環境不停止時，信封依然守得住。",
+			"lead": "硬體偏離計畫的兩種方式：環境在它服務的執行結束後仍存活，以及計量停止回報。兩者都走同一條鏈，從意圖到成果。",
+			"selector": "情境",
 			"pillars": {
 				"intent": "意圖",
 				"delivery": "交付",
@@ -495,439 +438,355 @@
 				"outcome": "成果"
 			},
 			"scenarios": {
-				"pause-and-replan": {
-					"title": "暫停並重新規劃",
-					"context": "一個搜尋重新索引作業持續失敗，每次重試都比計畫更貴。",
-					"intent": "工單要求每晚重新索引，分配 600 美元。意圖從未改變；改變的是計畫。",
-					"delivery": "下一次重試將超出 750 美元的保留。閘門暫停作業而不是擴大保留；代理提議縮小範圍，並以確定性步驟取代一次模型呼叫。",
-					"evidence": "暫停記錄在收據上，連同失敗的嘗試、維持住的保留，以及等待決定的替代計畫。",
-					"outcome": "在負責人決定前不再有任何花費。團隊可以接受較小的範圍、提高分配，或停止；代理不能替他們選擇。",
-					"status": {
-						"term": "需要注意",
-						"detail": "重新索引作業在下一次重試超出保留之前已暫停，等待決定。"
-					}
+				"orphaned-environment": {
+					"tabLabel": "持續運行",
+					"context": "一個預覽叢集在它服務的 pull request 合併後仍保留著節點。",
+					"intent": "工單為一個 pull request 申請預覽環境，本月上限 1,800 美元。",
+					"delivery": "執行結束、pull request 已合併，但叢集的清理從未被確認。節點持續閒置運行，費用由團隊承擔。",
+					"evidence": "收據顯示 96 小時閒置與尚待完成的清理，來源是叢集本身的指標。",
+					"outcome": "閒置支出以閒置呈報，與已用分開。由負責人決定是否釋放叢集；代理不能為了保留它而擴大配額。"
 				},
-				"unknown-spend": {
-					"title": "逾時後的未知",
-					"context": "發票匯出作業中的一次供應商呼叫逾時。這項工作可能已被計費；目前沒有人知道。",
-					"intent": "匯出工單仍保有 900 美元的分配；唯一的問題是那次逾時的呼叫花了多少。",
-					"delivery": "代理不會重試結果未知的付費呼叫。保留持續維持，直到供應商的用量記錄送達。",
-					"evidence": "收據將這次嘗試顯示為未知，附上用來對帳的請求 id，並持續顯示直到用量記錄解決它。",
-					"outcome": "未知就回報為未知。它永遠不會變成零花費，而在對帳前，額度的可用金額會排除被保留的部分。",
-					"status": {
-						"term": "觀測到的花費",
-						"detail": "未知 · 等待對帳"
-					}
+				"silent-meter": {
+					"tabLabel": "計量停止",
+					"context": "一個 GPU 池上的指標代理在 embedding 作業進行到一半時停止回報。",
+					"intent": "這個作業有 1,400 美元的上限，用來建立搜尋索引。",
+					"delivery": "沒有使用紀錄，沒有人能說出作業消耗了多少。執行不會對著未知的餘額啟動另一個 GPU 作業。",
+					"evidence": "收據將作業的用量顯示為未知，並以該 GPU 池作為對帳來源，直到指標或雲端帳單到來。",
+					"outcome": "未知就呈報為未知。它絕不會變成零，作業的整個上限持續保留、不計入可用金額，直到有紀錄確定為止。"
 				}
 			}
-		},
-		"receipt": {
-			"selected": "選取的工作項目",
-			"labels": {
-				"estimate": "估算",
-				"reserved": "已保留",
-				"observed": "觀測到的花費",
-				"modelEffort": "模型層級 · 推理強度",
-				"retries": "重試",
-				"verification": "驗證",
-				"cleanup": "清理",
-				"evidence": "證據"
-			},
-			"tiers": {
-				"standard": "標準",
-				"deep": "深度推理"
-			},
-			"efforts": {
-				"low": "低",
-				"medium": "中",
-				"high": "高"
-			},
-			"modelValue": "{tier} · {effort}",
-			"verification": {
-				"verified": "通過",
-				"pending": "待處理"
-			},
-			"cleanup": {
-				"done": "microruntime 已清理",
-				"pending": "清理待處理",
-				"unknown": "清理未確認"
-			},
-			"retries": "{count, plural, =0 {無} other {# 次重試}}",
-			"unknownObserved": "未知 · 等待對帳"
 		},
 		"budget": {
-			"kicker": "知道誰出資",
-			"title": "預算屬於團隊。",
-			"lead": "工作的複雜度各不相同，所以授權額度由整個團隊共享，而不是按開發者或工單平均分配。功能得到可以調整的分配；沒有人得到獨立的花費權。這是 LangDrift FinOps 所依循設計的資金模型，目前尚未提供。",
+			"kicker": "知道由誰出資",
+			"title": "硬體對同一個團隊負責。",
+			"lead": "運算的出資方式和推理一樣：團隊有一個已授權的信封，取用它的環境各有上限。環境運行時占用的資源就是支出的一部分，不是事後才想到的細節。這是 LangDrift FinOps 所依循設計的模型，目前尚未提供。",
 			"terms": {
 				"envelope": {
-					"term": "團隊預算額度",
-					"title": "一個授權金額、一個期間、一位負責人",
-					"description": "出資權限指明團隊、金額、期間，以及由誰對偏差負責。其他一切都從屬於它。"
+					"term": "運算信封",
+					"title": "團隊硬體在每個期間的一筆授權金額",
+					"description": "團隊工作所運行的每個環境、執行器與叢集都從中取用。由負責人為偏差負責。"
 				},
-				"allocation": {
-					"term": "分配",
-					"title": "為一項工作建議的額度份額",
-					"description": "依據意圖、可比較的歷史與所需品質提出。它引導計畫；它不是撥款，而且可以修訂。"
+				"quota": {
+					"term": "クォータ",
+					"title": "環境在啟動前申請的上限",
+					"description": "依工作需求與可比較的執行來申請。會超出上限的環境會暫停等待決定，而不是持續擴張。"
 				},
-				"reservation": {
-					"term": "保留",
-					"title": "付費呼叫前的原子性預留",
-					"description": "以冪等鍵對額度預留，在觀測用量對帳後釋放。平行運作的代理無法把同一筆金額花兩次。"
+				"cleanup": {
+					"term": "清理",
+					"title": "以釋放作為支出控制",
+					"description": "環境隨其執行結束而結束。未確認的清理會持續可見，其閒置時數計入信封。"
 				}
 			}
-		},
-		"authorization": {
-			"kicker": "建議不等於授權",
-			"title": "代理提出建議，控制做出決定。",
-			"lead": "模型可以讀取意圖、比較相似的工作，並附上推理提出模型、推理強度與分配。付費動作是否被允許，由確定性的程式碼依政策決定，絕不是由模型的信心決定。下方的閘門是預期的設計，而非已推出的控制。",
-			"steps": {
-				"recommend": {
-					"eyebrow": "01 · 代理建議",
-					"title": "模型、推理強度、分配、理由",
-					"description": "這個步驟需要哪些能力、更便宜的模型是否可行、需要多少上下文，以及估算為何不確定。",
-					"figure": "提議金額"
-				},
-				"gate": {
-					"eyebrow": "02 · 閘門保留",
-					"title": "政策版本、價格來源、冪等鍵",
-					"description": "閘門識別可計費的操作，解析價格與上限，以原子性方式保留資金，並拒絕或暫停任何超出政策的事。",
-					"figure": "已保留"
-				},
-				"reconcile": {
-					"eyebrow": "03 · 證據結案",
-					"title": "觀測用量完成對帳，其餘釋放",
-					"description": "供應商的用量取代估算，未用的保留回到額度，未知的結果保持未知，直到有記錄解決它。",
-					"figure": "觀測到的花費"
-				}
-			},
-			"released": "退回預算額度",
-			"source": "數字取自頁面頂端「{item}」的交付收據。"
 		},
 		"sources": {
 			"kicker": "帳本的資料來源",
-			"title": "證據重於宣稱。",
-			"lead": "收據的品質取決於它的來源。每個來源都有名稱與日期，並彼此分開，所以缺少的來源會一直顯示為缺少，而不是混進總額裡。",
-			"intended": "預期的來源",
-			"intendedModel": "這些是模型預期的來源。尚未連接的來源，帳本會顯示為缺口，而不是把估算偽裝成測量。",
+			"title": "證據勝於斷言。",
+			"lead": "收據的可信度取決於它的計量。每個來源都有名稱、日期，並與其他來源分開，因此停止回報的計量會以缺口的形式持續可見，而不會混入總額。",
+			"intended": "預期來源",
+			"intendedModel": "這些是模型預期的來源。尚未連接的來源，帳本會顯示缺口，而不是把估算偽裝成測量。",
+			"microruntimesLink": "查看 LangDrift Microruntimes",
 			"items": {
-				"providers": {
-					"title": "模型供應商",
-					"description": "每次呼叫的用量記錄與價格快照，附上用來對帳逾時的請求 id。"
-				},
 				"microruntimes": {
 					"title": "Microruntimes",
-					"description": "執行檢查的受限環境所回報的 CPU 與記憶體觀測，連同清理狀態。",
-					"link": "了解 LangDrift Microruntimes"
+					"description": "執行工作的有界環境所觀測到的 CPU 與記憶體，以及其清理狀態。"
 				},
-				"evidence": {
-					"title": "交付證據",
-					"description": "每次嘗試所引用的規格、工單、pull request 與驗證執行。"
+				"cluster": {
+					"title": "叢集指標",
+					"description": "團隊環境所在叢集的節點時數、峰值與閒置時間。"
+				},
+				"runners": {
+					"title": "CI 執行器",
+					"description": "團隊自有 CI 的執行器分鐘數與機器規格。"
 				},
 				"billing": {
-					"title": "帳務",
-					"description": "發票對帳為一個月結案。在那之前，每個金額都是暫定的，而且會如此標示。"
+					"title": "雲端帳單",
+					"description": "供應商的帳單為當月結算。在此之前，每個金額都是暫定的，並如實標示。"
 				}
 			}
 		},
 		"faq": {
 			"items": {
-				"budget": {
-					"question": "什麼是團隊預算？",
-					"answer": "在一個期間內授權的金額，整個團隊由代理協助的工作都從這裡支出。功能的分配只是其中的建議；沒有任何開發者或工單得到獨立的花費權。"
+				"scope": {
+					"question": "LangDrift FinOps 涵蓋哪些範圍？",
+					"answer": "硬體與運算支出：團隊的環境、執行器與叢集所占用的 CPU、記憶體與 GPU。模型呼叫與推理支出屬於 LangDrift LLMOps。"
 				},
-				"spending": {
-					"question": "FinOps 代表少花錢嗎？",
-					"answer": "不是。它代表知道花了多少、花在哪裡，以及成果是否值得。更有能力的模型若能避免重試，總成本可能更低；FinOps 衡量的是結果，不是 token 單價。"
+				"llmops": {
+					"question": "FinOps 和 LLMOps 有什麼不同？",
+					"answer": "LLMOps 逐次呼叫地把推理成本放進團隊的信封。FinOps 則在硬體運行時就掌握它的成本。兩者都讓未知維持未知，也都對團隊負責。"
 				},
 				"unknown": {
-					"question": "收據上的「未知」是什麼意思？",
-					"answer": "一次還沒有用量記錄的付費呼叫，例如逾時之後。它會保持未知、保留持續維持，直到記錄解決它。它永遠不會被顯示為零。"
+					"question": "FinOps 收據上的「未知」是什麼意思？",
+					"answer": "一個計量停止回報的環境。它的用量維持未知、上限持續保留，直到有紀錄確定為止。它絕不會顯示為零。"
 				},
-				"authorization": {
-					"question": "代理可以提高預算嗎？",
-					"answer": "不行。代理可以估算、建議並執行被允許的工作。擴大資金、範圍或存取權，需要團隊負責人另行授權的政策決定。"
+				"idle": {
+					"question": "為什麼閒置時間也要計算？",
+					"answer": "工作完成後仍在運行的環境依然要付費。FinOps 將閒置時數與已用時數分開顯示，讓團隊可以釋放它們，而不是把它們平均掉。"
 				},
 				"license": {
 					"question": "LangDrift FinOps 的授權方式為何？",
-					"answer": "LangDrift 是依據 Apache 授權條款第 2.0 版授權的開源軟體。原始碼公開在 GitHub 上，可供檢視、執行與修改。"
+					"answer": "LangDrift 是以 Apache License, Version 2.0 授權的開源軟體。程式碼在 GitHub 上公開，可供檢視、執行與修改。"
 				},
 				"availability": {
 					"question": "我今天可以使用 LangDrift FinOps 嗎？",
-					"answer": "FinOps 頁面描述預期中的模型。頁面展示的帳本、閘門與整合尚未可用，示範申請目前暫停。"
+					"answer": "FinOps 頁面描述預期中的模型。頁面展示的運算帳本與整合尚未可用，示範申請目前暫停。"
 				}
 			}
 		}
 	},
 	"ja": {
-		"skip": "仕組みへスキップ",
+		"skip": "エンベロープの守り方へ移動",
 		"hero": {
-			"taglineStart": "チームの予算枠は、ひとつ。",
-			"taglineEnd": "有料呼び出しは、実行前に必ず予約。",
-			"summary": "12,000 ドルのチーム予算を、消費済み・予約済み・保護分・利用可能に分けて示し、続いて 4 つの作業項目を見積もり・予約・観測された支出とともに示します。1 件は支出が不明で、照合待ちです。項目を選ぶと、台帳の横（狭い画面では下）にある納品レシートが更新されます。見積もり、予約、観測された支出、モデル階層と推論強度、再試行、検証、クリーンアップ、証拠です。金額はすべてシミュレーションです。"
+			"taglineStart": "ひとつのコンピュートエンベロープ。",
+			"taglineEnd": "どの環境も、動いている間に計測する。",
+			"summary": "8,000 ドルのチームのコンピュートエンベロープを使用済み、アイドル、保留、利用可能に分け、その下に 4 つの環境を要求上限と観測コストとともに並べます。ひとつの環境はメーターの報告が止まったため、コストは不明で、その上限は保留されたままです。環境を選ぶと台帳の横（狭い画面では下）のレシートが更新されます。上限、観測コスト、CPU・メモリ・GPU の時間、ピーク、アイドル時間、クリーンアップ、ソースです。"
 		},
 		"ledger": {
-			"label": "チームの予算枠",
+			"label": "コンピュートエンベロープ",
 			"period": "今月",
-			"authorized": "承認額",
+			"authorized": "承認済み",
 			"segments": {
-				"spent": "消費済み",
-				"reserved": "予約済み",
-				"protected": "保護分",
+				"used": "使用済み",
+				"idle": "アイドル",
+				"held": "保留",
 				"available": "利用可能"
 			},
 			"columns": {
-				"item": "作業項目",
-				"estimate": "見積もり",
-				"reserved": "予約済み",
-				"observed": "観測値"
+				"environment": "環境",
+				"ceiling": "上限",
+				"observed": "観測"
 			},
 			"unknown": "不明",
-			"awaitingReconciliation": "照合待ち",
-			"selectHint": "作業項目を選ぶと、そのレシートを読めます。",
-			"items": {
-				"checkout-retries": {
-					"title": "チェックアウトの再試行",
+			"meterSilent": "メーター報告なし",
+			"usage": "{cpu, number} CPU·h · {memory, number} GB·h · {gpu, number} GPU·h",
+			"selectHint": "環境を選ぶとレシートを確認できます。",
+			"environments": {
+				"checkout-microruntime": {
+					"title": "チェックアウト再試行の microruntime",
 					"owner": "決済"
 				},
-				"invoice-export": {
-					"title": "請求書エクスポートジョブ",
-					"owner": "請求"
-				},
-				"tenant-migration": {
-					"title": "テナント移行",
+				"ci-runners": {
+					"title": "CI ランナー",
 					"owner": "プラットフォーム"
 				},
-				"onboarding-copy": {
-					"title": "オンボーディング文言",
+				"preview-cluster": {
+					"title": "プレビュークラスター",
 					"owner": "グロース"
-				}
-			}
-		},
-		"failures": {
-			"kicker": "意図 → 納品 → 証拠 → 成果",
-			"title": "計画が崩れても、予算枠は崩れない。",
-			"lead": "納品が計画から外れる 2 つのケースです。失敗を繰り返すジョブと、まだ誰も費用を知らない有料呼び出し。どちらも意図から成果まで同じ連鎖をたどります。予算枠の内側に収まった作業は、上のレシートのとおりです。",
-			"pillars": {
-				"intent": "意図",
-				"delivery": "納品",
-				"evidence": "証拠",
-				"outcome": "成果"
-			},
-			"scenarios": {
-				"pause-and-replan": {
-					"title": "一時停止して再計画",
-					"context": "検索の再インデックスジョブが失敗を繰り返し、再試行のたびに計画より費用がかさみます。",
-					"intent": "チケットは 600 ドルの配分で夜間の再インデックスを求めていました。意図は変わっていません。変わったのは計画です。",
-					"delivery": "次の再試行は 750 ドルの予約を超えてしまいます。ゲートは予約を広げる代わりにジョブを一時停止し、エージェントはより小さなスコープと、モデル呼び出しに代わる決定的なステップを提案します。",
-					"evidence": "一時停止はレシートに記録され、失敗した試行、維持された予約、判断を待つ代替案が添えられます。",
-					"outcome": "責任者が決めるまで、これ以上の支出はありません。チームは小さなスコープを受け入れるか、配分を増やすか、止めるかを選べます。エージェントが代わりに選ぶことはできません。",
-					"status": {
-						"term": "要対応",
-						"detail": "再インデックスジョブは、次の再試行が予約を超える前に一時停止し、判断を待っています。"
-					}
 				},
-				"unknown-spend": {
-					"title": "タイムアウト後の不明",
-					"context": "請求書エクスポートジョブでのプロバイダー呼び出しがタイムアウトしました。課金されたかもしれませんが、まだ誰にも分かりません。",
-					"intent": "エクスポートのチケットには 900 ドルの配分が残っています。問題はただ一つ、タイムアウトした呼び出しにいくらかかったかです。",
-					"delivery": "エージェントは結果が不明な有料呼び出しを再試行しません。プロバイダーの使用量記録が届くまで、予約は保持されたままです。",
-					"evidence": "レシートはこの試行を不明として示し、照合に使うリクエスト id を添え、使用量記録が解決するまで表示し続けます。",
-					"outcome": "不明は不明として報告されます。支出ゼロになることは決してなく、照合までは保持中の予約が予算枠の利用可能額から除かれます。",
-					"status": {
-						"term": "観測された支出",
-						"detail": "不明 · 照合待ち"
-					}
+				"embedding-gpu-job": {
+					"title": "埋め込み GPU ジョブ",
+					"owner": "検索"
 				}
 			}
 		},
 		"receipt": {
-			"selected": "選択中の作業項目",
+			"selected": "選択した環境",
 			"labels": {
-				"estimate": "見積もり",
-				"reserved": "予約済み",
-				"observed": "観測された支出",
-				"modelEffort": "モデル階層 · 推論強度",
-				"retries": "再試行",
-				"verification": "検証",
+				"ceiling": "要求上限",
+				"observed": "観測コスト",
+				"cpu": "CPU",
+				"memory": "メモリ",
+				"gpu": "GPU",
+				"peak": "ピーク",
+				"idle": "アイドル",
 				"cleanup": "クリーンアップ",
-				"evidence": "証拠"
+				"source": "ソース"
 			},
-			"tiers": {
-				"standard": "標準",
-				"deep": "深い推論"
-			},
-			"efforts": {
-				"low": "低",
-				"medium": "中",
-				"high": "高"
-			},
-			"modelValue": "{tier} · {effort}",
-			"verification": {
-				"verified": "合格",
-				"pending": "保留中"
-			},
+			"cpuHours": "{hours, number} CPU·h",
+			"memoryHours": "{hours, number} GB·h",
+			"gpuHours": "{hours, number} GPU·h",
+			"peakCores": "{cores, number} vCPU",
+			"idleValue": "{hours, number} 時間 · {cost}",
+			"unknownUsage": "不明",
+			"unknownObserved": "不明 · メーター報告なし",
 			"cleanup": {
-				"done": "microruntime はクリーンアップ済み",
-				"pending": "クリーンアップ保留中",
-				"unknown": "クリーンアップ未確認"
-			},
-			"retries": "{count, plural, =0 {なし} other {# 回の再試行}}",
-			"unknownObserved": "不明 · 照合待ち"
+				"done": "解放済み",
+				"pending": "実行後も稼働中",
+				"unknown": "未確認"
+			}
 		},
-		"budget": {
-			"kicker": "誰が資金を出すかを知る",
-			"title": "予算はチームのものです。",
-			"lead": "作業の複雑さはさまざまなので、承認された予算枠はチームで共有され、開発者やチケットごとの均等な割り当てには分けられません。機能には変更可能な配分が与えられます。独立した支出の権利は誰にも与えられません。これは LangDrift FinOps が前提として設計している資金モデルで、まだ提供されていません。",
-			"terms": {
-				"envelope": {
-					"term": "チームの予算枠",
-					"title": "一つの承認額、一つの期間、一人の責任者",
-					"description": "資金の権限は、チーム、金額、期間、そして逸脱に責任を負う人を定めます。それ以外のすべてはこれに従います。"
+		"failures": {
+			"kicker": "意図 → デリバリー → 証跡 → 成果",
+			"title": "環境が止まらなくても、エンベロープは守られる。",
+			"lead": "ハードウェアが計画から外れる 2 つの形です。担当した実行が終わっても残り続ける環境と、報告を止めたメーター。どちらも意図から成果まで同じ連鎖をたどります。",
+			"selector": "シナリオ",
+			"pillars": {
+				"intent": "意図",
+				"delivery": "デリバリー",
+				"evidence": "証跡",
+				"outcome": "成果"
+			},
+			"scenarios": {
+				"orphaned-environment": {
+					"tabLabel": "稼働しっぱなし",
+					"context": "プレビュークラスターが、担当したプルリクエストのマージ後もノードを保持し続けました。",
+					"intent": "チケットはひとつのプルリクエスト用のプレビュー環境を、月 1,800 ドルの上限で求めていました。",
+					"delivery": "実行は終わりプルリクエストもマージされましたが、クラスターのクリーンアップは確認されませんでした。ノードはアイドルのまま、チームの費用で動き続けました。",
+					"evidence": "レシートには 96 時間のアイドルと未完了のクリーンアップが、クラスター自身のメトリクスをソースとして示されます。",
+					"outcome": "アイドルの支出は使用分と分けてアイドルとして報告されます。クラスターを解放するかはオーナーが決めます。エージェントが維持のためにクォータを広げることはできません。"
 				},
-				"allocation": {
-					"term": "配分",
-					"title": "ある作業への予算枠の提案上の取り分",
-					"description": "意図、比較可能な履歴、求められる品質から提案されます。計画の指針であり、交付ではなく、見直すことができます。"
-				},
-				"reservation": {
-					"term": "予約",
-					"title": "有料呼び出しの前のアトミックな確保",
-					"description": "冪等キーとともに予算枠に対して確保され、観測された使用量が照合されると解放されます。並行するエージェントが同じ金額を二度使うことはできません。"
+				"silent-meter": {
+					"tabLabel": "メーター停止",
+					"context": "GPU プールのメトリクスエージェントが、埋め込みジョブの途中で報告を止めました。",
+					"intent": "このジョブには検索インデックスを構築するための 1,400 ドルの上限がありました。",
+					"delivery": "使用記録がなければ、ジョブが何を消費したかは誰にも言えません。実行は不明な残高に対して別の GPU ジョブを始めません。",
+					"evidence": "レシートはジョブの使用量を不明と示し、照合先のソースとしてプールを挙げます。メトリクスかクラウドの請求書が届くまでそのままです。",
+					"outcome": "不明は不明として報告されます。ゼロになることはなく、ジョブの上限全体が記録で確定するまで保留され、利用可能額から外れます。"
 				}
 			}
 		},
-		"authorization": {
-			"kicker": "推奨は承認ではない",
-			"title": "エージェントが推奨し、制御が決定する。",
-			"lead": "モデルは意図を読み、類似の作業を比較し、根拠とともにモデル、推論強度、配分を提案できます。有料の行動が許されるかどうかは、ポリシーに照らして決定的なコードが判断します。モデルの自信が判断することは決してありません。以下のゲートは想定している設計であり、提供済みの制御ではありません。",
-			"steps": {
-				"recommend": {
-					"eyebrow": "01 · エージェントが推奨",
-					"title": "モデル、推論強度、配分、根拠",
-					"description": "そのステップに必要な能力、より安価なモデルが現実的か、必要なコンテキストの量、そして見積もりを不確かにしているもの。",
-					"figure": "提案額"
+		"budget": {
+			"kicker": "誰が資金を出すか",
+			"title": "ハードウェアも同じチームに責任を負う。",
+			"lead": "コンピュートも推論と同じように資金を受けます。チームに承認されたエンベロープがひとつあり、そこから引き出す環境ごとに上限があります。環境が動いている間に占めるものは支出の一部であり、後回しの細部ではありません。これは LangDrift FinOps が前提として設計しているモデルで、まだ提供されていません。",
+			"terms": {
+				"envelope": {
+					"term": "コンピュートエンベロープ",
+					"title": "期間ごとのチームのハードウェアに対するひとつの承認額",
+					"description": "チームの作業が動く環境、ランナー、クラスターはすべてここから引き出します。逸脱にはオーナーが責任を負います。"
 				},
-				"gate": {
-					"eyebrow": "02 · ゲートが予約",
-					"title": "ポリシーの版、価格の出典、冪等キー",
-					"description": "ゲートは課金対象の操作を特定し、価格と上限を解決し、資金をアトミックに予約し、ポリシー外のものは拒否または一時停止します。",
-					"figure": "予約額"
+				"quota": {
+					"term": "クォータ",
+					"title": "環境が起動前に求める上限",
+					"description": "作業の必要と比較可能な実行から要求されます。上限を超えそうな環境は拡大せず、判断を待って一時停止します。"
 				},
-				"reconcile": {
-					"eyebrow": "03 · 証拠が締める",
-					"title": "観測された使用量を照合し、残りを解放",
-					"description": "プロバイダーからの使用量が見積もりに置き換わり、未使用の予約は予算枠に戻り、不明な結果は記録が解決するまで不明のままです。",
-					"figure": "観測された支出"
+				"cleanup": {
+					"term": "クリーンアップ",
+					"title": "支出の制御としての解放",
+					"description": "環境は実行が終わると終わります。確認されていないクリーンアップは見えたままで、そのアイドル時間はエンベロープに計上されます。"
 				}
-			},
-			"released": "予算枠に戻った額",
-			"source": "数字はページ上部にある「{item}」の納品レシートのものです。"
+			}
 		},
 		"sources": {
-			"kicker": "台帳の情報源",
-			"title": "主張より証拠。",
-			"lead": "レシートの質はその情報源で決まります。各情報源には名前と日付があり、互いに分けて保たれるので、欠けている情報源は合計に紛れることなく、欠けたまま見え続けます。",
-			"intended": "想定している情報源",
-			"intendedModel": "これらはモデルが想定する情報源です。接続されていないものがあれば、台帳は測定を装った見積もりではなく、その空白を示します。",
+			"kicker": "台帳を支えるもの",
+			"title": "主張より証跡。",
+			"lead": "レシートの確かさはメーター次第です。各ソースには名前と日付があり、互いに分けて保たれるので、報告を止めたメーターは合計に紛れず、欠落として見えたままになります。",
+			"intended": "想定しているソース",
+			"intendedModel": "これらはモデルが想定しているソースです。接続されていないソースについては、測定を装った見積もりではなく、欠落を台帳に示します。",
+			"microruntimesLink": "LangDrift Microruntimes を見る",
 			"items": {
-				"providers": {
-					"title": "モデルプロバイダー",
-					"description": "呼び出しごとの使用量記録と価格スナップショット。タイムアウトを照合するためのリクエスト id 付き。"
-				},
 				"microruntimes": {
 					"title": "Microruntimes",
-					"description": "チェックを実行した境界付き環境からの CPU とメモリの観測値と、そのクリーンアップ状態。",
-					"link": "LangDrift Microruntimes を見る"
+					"description": "作業を実行した境界付き環境から観測した CPU とメモリ、そしてクリーンアップの状態。"
 				},
-				"evidence": {
-					"title": "納品の証拠",
-					"description": "各試行が参照する仕様、チケット、pull request、検証の実行。"
+				"cluster": {
+					"title": "クラスターメトリクス",
+					"description": "チームの環境が動くクラスターのノード時間、ピーク、アイドル時間。"
+				},
+				"runners": {
+					"title": "CI ランナー",
+					"description": "チーム自身の CI のランナー時間とマシンサイズ。"
 				},
 				"billing": {
-					"title": "請求",
-					"description": "請求書の照合で月を締めます。それまでは、すべての金額は暫定であり、そう表示されます。"
+					"title": "クラウドの請求",
+					"description": "プロバイダーの請求書で月が締まります。それまでの金額はすべて暫定で、そのように示されます。"
 				}
 			}
 		},
 		"faq": {
 			"items": {
-				"budget": {
-					"question": "チーム予算とは何ですか？",
-					"answer": "ある期間に承認された金額で、チームのエージェント支援の作業すべてがそこから支出されます。機能への配分はその中での提案にすぎません。開発者やチケットが独立した支出の権利を得ることはありません。"
+				"scope": {
+					"question": "LangDrift FinOps は何を対象にしますか？",
+					"answer": "ハードウェアとコンピュートの支出です。チームの環境、ランナー、クラスターが占める CPU、メモリ、GPU が対象です。モデル呼び出しと推論の支出は LangDrift LLMOps の対象です。"
 				},
-				"spending": {
-					"question": "FinOps は支出を減らすことですか？",
-					"answer": "いいえ。何に、いくら使い、成果にその価値があったかを知ることです。能力の高いモデルは再試行を避けて総コストを下げることがあります。FinOps が測るのはトークン単価ではなく結果です。"
+				"llmops": {
+					"question": "FinOps と LLMOps の違いは？",
+					"answer": "LLMOps は推論のコストを呼び出しごとにチームのエンベロープに対して管理します。FinOps はハードウェアのコストを動いている間に管理します。どちらも不明を不明として扱い、どちらもチームに責任を負います。"
 				},
 				"unknown": {
-					"question": "レシートの「不明」とは何ですか？",
-					"answer": "タイムアウト後など、まだ使用量記録のない有料呼び出しです。記録が解決するまで、予約を保持したまま不明のままになります。ゼロとして表示されることは決してありません。"
+					"question": "FinOps のレシートの「不明」とは？",
+					"answer": "メーターが報告を止めた環境です。使用量は不明のまま、上限は保留されたまま、記録で確定するまで続きます。ゼロとして表示されることはありません。"
 				},
-				"authorization": {
-					"question": "エージェントは予算を増やせますか？",
-					"answer": "いいえ。エージェントは見積もり、推奨し、許可された作業を実行できます。資金、スコープ、アクセスを広げるには、チームの責任者による別途承認されたポリシーの決定が必要です。"
+				"idle": {
+					"question": "なぜアイドル時間を数えるのですか？",
+					"answer": "作業が終わっても動き続ける環境には、それでも費用がかかります。FinOps はアイドル時間を使用時間と分けて示すので、チームは平均に埋もれさせずに解放できます。"
 				},
 				"license": {
 					"question": "LangDrift FinOps のライセンスはどうなっていますか？",
-					"answer": "LangDrift は Apache License, Version 2.0 の下で提供されるオープンソースソフトウェアです。コードは GitHub で公開されており、閲覧、実行、変更できます。"
+					"answer": "LangDrift は Apache License, Version 2.0 でライセンスされたオープンソースソフトウェアです。コードは GitHub で公開されており、調べる、動かす、変更することができます。"
 				},
 				"availability": {
 					"question": "LangDrift FinOps は今日から使えますか？",
-					"answer": "FinOps のページは想定するモデルを説明しています。そこに示した台帳、ゲート、連携はまだ利用できず、デモの申し込みは当面停止しています。"
+					"answer": "FinOps のページは想定するモデルを説明しています。そこに示したコンピュート台帳と連携はまだ利用できず、デモの申し込みは当面停止しています。"
 				}
 			}
 		}
 	},
 	"vi": {
-		"skip": "Chuyển đến cách hoạt động",
+		"skip": "Chuyển đến cách phong bì được giữ vững",
 		"hero": {
-			"taglineStart": "Một hạn mức cho cả đội.",
-			"taglineEnd": "Mọi lần gọi trả phí đều được giữ chỗ trước khi chạy.",
-			"summary": "Một ngân sách đội 12.000 đô la chia thành đã chi, đã giữ chỗ, được bảo vệ và khả dụng, tiếp theo là bốn hạng mục công việc với ước tính, khoản giữ chỗ và chi tiêu quan sát được. Chi tiêu của một hạng mục chưa rõ và đang chờ đối soát. Chọn một hạng mục sẽ cập nhật biên lai giao hàng bên cạnh sổ cái, hoặc bên dưới trên màn hình hẹp: ước tính, khoản giữ chỗ, chi tiêu quan sát được, hạng mô hình và mức nỗ lực, số lần thử lại, kiểm chứng, dọn dẹp và bằng chứng. Mọi số tiền đều được mô phỏng."
+			"taglineStart": "Một phong bì điện toán.",
+			"taglineEnd": "Mỗi môi trường được đo ngay khi đang chạy.",
+			"summary": "Một phong bì điện toán của đội trị giá 8.000 đô la chia thành đã dùng, nhàn rỗi, đang giữ và khả dụng, tiếp theo là bốn môi trường với mức trần yêu cầu và chi phí quan sát được. Đồng hồ đo của một môi trường đã ngừng báo cáo, nên chi phí của nó chưa rõ và mức trần của nó vẫn bị giữ. Chọn một môi trường sẽ cập nhật biên lai bên cạnh sổ cái, hoặc bên dưới trên màn hình hẹp: mức trần, chi phí quan sát, số giờ CPU, bộ nhớ và GPU, mức đỉnh, thời gian nhàn rỗi, việc dọn dẹp và nguồn."
 		},
 		"ledger": {
-			"label": "Hạn mức của đội",
+			"label": "Phong bì điện toán",
 			"period": "Tháng này",
 			"authorized": "Được phê duyệt",
 			"segments": {
-				"spent": "Đã chi",
-				"reserved": "Đã giữ chỗ",
-				"protected": "Được bảo vệ",
+				"used": "Đã dùng",
+				"idle": "Nhàn rỗi",
+				"held": "Đang giữ",
 				"available": "Khả dụng"
 			},
 			"columns": {
-				"item": "Hạng mục",
-				"estimate": "Ước tính",
-				"reserved": "Đã giữ chỗ",
+				"environment": "Môi trường",
+				"ceiling": "Mức trần",
 				"observed": "Quan sát"
 			},
 			"unknown": "Chưa rõ",
-			"awaitingReconciliation": "đang chờ đối soát",
-			"selectHint": "Chọn một hạng mục công việc để đọc biên lai của nó.",
-			"items": {
-				"checkout-retries": {
-					"title": "Thử lại khi thanh toán",
+			"meterSilent": "đồng hồ không báo cáo",
+			"usage": "{cpu, number} CPU·h · {memory, number} GB·h · {gpu, number} GPU·h",
+			"selectHint": "Chọn một môi trường để đọc biên lai.",
+			"environments": {
+				"checkout-microruntime": {
+					"title": "Microruntime thử lại thanh toán",
 					"owner": "Thanh toán"
 				},
-				"invoice-export": {
-					"title": "Tác vụ xuất hóa đơn",
-					"owner": "Hóa đơn"
-				},
-				"tenant-migration": {
-					"title": "Di chuyển tenant",
+				"ci-runners": {
+					"title": "CI runner",
 					"owner": "Nền tảng"
 				},
-				"onboarding-copy": {
-					"title": "Nội dung onboarding",
+				"preview-cluster": {
+					"title": "Cụm xem trước",
 					"owner": "Tăng trưởng"
+				},
+				"embedding-gpu-job": {
+					"title": "Tác vụ GPU embedding",
+					"owner": "Tìm kiếm"
 				}
+			}
+		},
+		"receipt": {
+			"selected": "Môi trường đã chọn",
+			"labels": {
+				"ceiling": "Mức trần yêu cầu",
+				"observed": "Chi phí quan sát",
+				"cpu": "CPU",
+				"memory": "Bộ nhớ",
+				"gpu": "GPU",
+				"peak": "Đỉnh",
+				"idle": "Nhàn rỗi",
+				"cleanup": "Dọn dẹp",
+				"source": "Nguồn"
+			},
+			"cpuHours": "{hours, number} CPU·h",
+			"memoryHours": "{hours, number} GB·h",
+			"gpuHours": "{hours, number} GPU·h",
+			"peakCores": "{cores, number} vCPU",
+			"idleValue": "{hours, number} giờ · {cost}",
+			"unknownUsage": "Chưa rõ",
+			"unknownObserved": "Chưa rõ · đồng hồ không báo cáo",
+			"cleanup": {
+				"done": "Đã giải phóng",
+				"pending": "Vẫn chạy sau khi lần chạy kết thúc",
+				"unknown": "Chưa xác nhận"
 			}
 		},
 		"failures": {
 			"kicker": "Ý định → Giao hàng → Bằng chứng → Kết quả",
-			"title": "Hạn mức vẫn đứng vững khi kế hoạch thì không.",
-			"lead": "Hai cách việc giao hàng rời khỏi kế hoạch: một tác vụ cứ thất bại, và một lần gọi trả phí mà chưa ai biết chi phí. Cả hai đi qua cùng một chuỗi, từ ý định đến kết quả. Phần việc nằm gọn trong hạn mức chính là biên lai ở trên.",
+			"title": "Phong bì vẫn giữ vững khi một môi trường không dừng.",
+			"lead": "Hai cách phần cứng rời khỏi kế hoạch: một môi trường tồn tại lâu hơn lần chạy mà nó phục vụ, và một đồng hồ đo ngừng báo cáo. Cả hai đi qua cùng một chuỗi, từ ý định đến kết quả.",
+			"selector": "Kịch bản",
 			"pillars": {
 				"intent": "Ý định",
 				"delivery": "Giao hàng",
@@ -935,166 +794,97 @@
 				"outcome": "Kết quả"
 			},
 			"scenarios": {
-				"pause-and-replan": {
-					"title": "Tạm dừng và lập lại kế hoạch",
-					"context": "Một tác vụ lập lại chỉ mục tìm kiếm liên tục thất bại, và mỗi lần thử lại tốn hơn dự kiến.",
-					"intent": "Ticket yêu cầu lập lại chỉ mục hằng đêm với phân bổ 600 đô la. Ý định chưa từng đổi; kế hoạch thì có.",
-					"delivery": "Lần thử lại tiếp theo sẽ vượt khoản giữ chỗ 750 đô la. Cổng kiểm soát tạm dừng tác vụ thay vì nới rộng nó; tác tử đề xuất một phạm vi nhỏ hơn và một bước tất định thay cho một lần gọi mô hình.",
-					"evidence": "Việc tạm dừng nằm trên biên lai, cùng các lần thử thất bại, khoản giữ chỗ vẫn được giữ, và kế hoạch thay thế đang chờ quyết định.",
-					"outcome": "Không chi thêm cho đến khi người phụ trách quyết định. Đội có thể chấp nhận phạm vi nhỏ hơn, tăng phân bổ, hoặc dừng; tác tử không thể chọn thay họ.",
-					"status": {
-						"term": "Cần chú ý",
-						"detail": "Tác vụ lập lại chỉ mục đang tạm dừng trước khi lần thử lại tiếp theo vượt khoản giữ chỗ; đang chờ một quyết định."
-					}
+				"orphaned-environment": {
+					"tabLabel": "Bị bỏ chạy",
+					"context": "Một cụm xem trước vẫn giữ các node sau khi pull request mà nó phục vụ đã được merge.",
+					"intent": "Ticket yêu cầu một môi trường xem trước cho một pull request, với mức trần 1.800 đô la cho tháng.",
+					"delivery": "Lần chạy kết thúc và pull request đã được merge, nhưng việc dọn dẹp cụm chưa bao giờ được xác nhận. Các node tiếp tục chạy, nhàn rỗi, bằng tiền của đội.",
+					"evidence": "Biên lai cho thấy 96 giờ nhàn rỗi và việc dọn dẹp vẫn đang chờ, với chính số liệu của cụm làm nguồn.",
+					"outcome": "Chi tiêu nhàn rỗi được báo cáo là nhàn rỗi, tách khỏi phần đã dùng. Chủ sở hữu quyết định có giải phóng cụm hay không; tác tử không thể nới hạn mức để giữ nó lại."
 				},
-				"unknown-spend": {
-					"title": "Chưa rõ sau khi hết thời gian chờ",
-					"context": "Một lần gọi nhà cung cấp trong tác vụ xuất hóa đơn đã hết thời gian chờ. Công việc có thể đã bị tính phí; chưa ai biết.",
-					"intent": "Ticket xuất hóa đơn vẫn giữ phân bổ 900 đô la; câu hỏi duy nhất là lần gọi hết thời gian chờ đó tốn bao nhiêu.",
-					"delivery": "Tác tử không thử lại một lần gọi trả phí có kết quả chưa rõ. Khoản giữ chỗ vẫn được giữ cho đến khi bản ghi sử dụng của nhà cung cấp đến.",
-					"evidence": "Biên lai hiển thị lần thử là chưa rõ, kèm id yêu cầu để đối soát, và tiếp tục hiển thị như vậy cho đến khi một bản ghi sử dụng giải quyết nó.",
-					"outcome": "Chưa rõ được báo cáo là chưa rõ. Nó không bao giờ trở thành chi tiêu bằng không, và số khả dụng của hạn mức loại trừ khoản giữ chỗ đang giữ cho đến khi đối soát xong.",
-					"status": {
-						"term": "Chi tiêu quan sát được",
-						"detail": "Chưa rõ · đang chờ đối soát"
-					}
+				"silent-meter": {
+					"tabLabel": "Đồng hồ ngừng",
+					"context": "Tác tử thu thập số liệu trên một pool GPU ngừng báo cáo giữa chừng một tác vụ embedding.",
+					"intent": "Tác vụ có mức trần 1.400 đô la để xây dựng một chỉ mục tìm kiếm.",
+					"delivery": "Không có bản ghi sử dụng, không ai có thể nói tác vụ đã tiêu thụ bao nhiêu. Lần chạy không khởi động thêm tác vụ GPU nào trên một số dư chưa rõ.",
+					"evidence": "Biên lai hiển thị mức sử dụng của tác vụ là chưa rõ, với pool làm nguồn để đối chiếu, cho đến khi số liệu hoặc hóa đơn đám mây đến.",
+					"outcome": "Chưa rõ được báo cáo là chưa rõ. Nó không bao giờ thành 0, và toàn bộ mức trần của tác vụ vẫn bị giữ, ngoài phần khả dụng, cho đến khi một bản ghi xác định nó."
 				}
 			}
-		},
-		"receipt": {
-			"selected": "Hạng mục đang chọn",
-			"labels": {
-				"estimate": "Ước tính",
-				"reserved": "Đã giữ chỗ",
-				"observed": "Chi tiêu quan sát được",
-				"modelEffort": "Hạng mô hình · mức nỗ lực",
-				"retries": "Thử lại",
-				"verification": "Kiểm chứng",
-				"cleanup": "Dọn dẹp",
-				"evidence": "Bằng chứng"
-			},
-			"tiers": {
-				"standard": "Tiêu chuẩn",
-				"deep": "Suy luận sâu"
-			},
-			"efforts": {
-				"low": "Thấp",
-				"medium": "Vừa",
-				"high": "Cao"
-			},
-			"modelValue": "{tier} · {effort}",
-			"verification": {
-				"verified": "Đạt",
-				"pending": "Đang chờ"
-			},
-			"cleanup": {
-				"done": "Đã dọn dẹp microruntime",
-				"pending": "Đang chờ dọn dẹp",
-				"unknown": "Chưa xác nhận dọn dẹp"
-			},
-			"retries": "{count, plural, =0 {Không có} other {# lần thử lại}}",
-			"unknownObserved": "Chưa rõ · đang chờ đối soát"
 		},
 		"budget": {
 			"kicker": "Biết ai cấp vốn",
-			"title": "Ngân sách thuộc về đội.",
-			"lead": "Công việc khác nhau về độ phức tạp, nên hạn mức được phê duyệt là của chung cả đội, không chia thành các phần bằng nhau cho từng lập trình viên hay từng ticket. Các tính năng nhận phân bổ có thể thay đổi; không ai nhận quyền chi tiêu độc lập. Đây là mô hình cấp vốn mà LangDrift FinOps được thiết kế theo; nó chưa khả dụng.",
+			"title": "Phần cứng chịu trách nhiệm trước cùng một đội.",
+			"lead": "Điện toán được cấp vốn như suy luận: một phong bì được phê duyệt cho đội, với mức trần cho các môi trường rút từ nó. Những gì một môi trường chiếm khi đang chạy là một phần của chi tiêu, không phải chuyện tính sau. Đây là mô hình mà LangDrift FinOps được thiết kế theo; nó chưa khả dụng.",
 			"terms": {
 				"envelope": {
-					"term": "Hạn mức của đội",
-					"title": "Một số tiền được phê duyệt, một kỳ, một người phụ trách",
-					"description": "Thẩm quyền cấp vốn nêu rõ đội, số tiền, kỳ hạn và ai chịu trách nhiệm cho các sai lệch. Mọi thứ khác đều phụ thuộc vào nó."
+					"term": "Phong bì điện toán",
+					"title": "Một khoản được phê duyệt cho phần cứng của đội, theo kỳ",
+					"description": "Mọi môi trường, runner và cụm mà công việc của đội chạy trên đó đều rút từ khoản này. Chủ sở hữu chịu trách nhiệm về các sai lệch."
 				},
-				"allocation": {
-					"term": "Phân bổ",
-					"title": "Một phần hạn mức được đề xuất cho một phần việc",
-					"description": "Được đề xuất từ ý định, lịch sử tương đương và chất lượng yêu cầu. Nó dẫn hướng kế hoạch; nó không phải khoản cấp và có thể được sửa."
+				"quota": {
+					"term": "Hạn mức",
+					"title": "Mức trần một môi trường yêu cầu trước khi khởi động",
+					"description": "Được yêu cầu dựa trên nhu cầu của công việc và các lần chạy tương đương. Môi trường sắp vượt mức sẽ tạm dừng chờ quyết định thay vì tiếp tục mở rộng."
 				},
-				"reservation": {
-					"term": "Giữ chỗ",
-					"title": "Một khoản giữ nguyên tử trước lần gọi trả phí",
-					"description": "Được trích từ hạn mức với một khóa idempotency, và được giải phóng khi mức sử dụng quan sát được đã đối soát. Các tác tử chạy song song không thể tiêu cùng một khoản hai lần."
+				"cleanup": {
+					"term": "Dọn dẹp",
+					"title": "Giải phóng như một biện pháp kiểm soát chi tiêu",
+					"description": "Một môi trường kết thúc khi lần chạy của nó kết thúc. Việc dọn dẹp chưa được xác nhận vẫn hiển thị, và số giờ nhàn rỗi của nó được tính vào phong bì."
 				}
 			}
 		},
-		"authorization": {
-			"kicker": "Đề xuất không phải là phê duyệt",
-			"title": "Tác tử đề xuất. Cơ chế kiểm soát quyết định.",
-			"lead": "Một mô hình có thể đọc ý định, so sánh các công việc tương tự và đề xuất mô hình, mức nỗ lực và phân bổ kèm lập luận. Một hành động trả phí có được phép hay không là do mã tất định quyết định theo chính sách, không bao giờ do mức độ tự tin của mô hình. Cổng kiểm soát dưới đây là thiết kế dự kiến, không phải một cơ chế đã phát hành.",
-			"steps": {
-				"recommend": {
-					"eyebrow": "01 · Tác tử đề xuất",
-					"title": "Mô hình, mức nỗ lực, phân bổ, lý do",
-					"description": "Bước này cần những năng lực nào, một mô hình rẻ hơn có khả thi không, cần bao nhiêu ngữ cảnh, và điều gì khiến ước tính không chắc chắn.",
-					"figure": "Đề xuất"
-				},
-				"gate": {
-					"eyebrow": "02 · Cổng kiểm soát giữ chỗ",
-					"title": "Phiên bản chính sách, nguồn giá, khóa idempotency",
-					"description": "Cổng kiểm soát xác định thao tác bị tính phí, xác định giá và mức tối đa, giữ chỗ tiền một cách nguyên tử, và từ chối hoặc tạm dừng bất cứ gì ngoài chính sách.",
-					"figure": "Đã giữ chỗ"
-				},
-				"reconcile": {
-					"eyebrow": "03 · Bằng chứng khép lại",
-					"title": "Mức sử dụng quan sát được đã đối soát, phần còn lại được giải phóng",
-					"description": "Mức sử dụng từ nhà cung cấp thay thế ước tính, khoản giữ chỗ chưa dùng quay về hạn mức, và các kết quả chưa rõ vẫn chưa rõ cho đến khi một bản ghi giải quyết chúng.",
-					"figure": "Quan sát được"
-				}
-			},
-			"released": "Trả lại hạn mức",
-			"source": "Số liệu lấy từ biên lai của “{item}” ở đầu trang."
-		},
 		"sources": {
-			"kicker": "Nguồn nuôi sổ cái",
-			"title": "Bằng chứng hơn lời khẳng định.",
-			"lead": "Một biên lai chỉ tốt bằng các nguồn của nó. Mỗi nguồn được đặt tên, ghi ngày và giữ tách biệt với các nguồn khác, để một nguồn thiếu vẫn hiện rõ là thiếu thay vì hòa vào một tổng số.",
-			"intended": "Các nguồn dự kiến",
-			"intendedModel": "Đây là các nguồn mà mô hình hướng tới. Nơi nào một nguồn chưa được kết nối, sổ cái cho thấy khoảng trống thay vì một ước tính khoác áo phép đo.",
+			"kicker": "Điều gì nuôi sổ cái",
+			"title": "Bằng chứng hơn khẳng định.",
+			"lead": "Một biên lai chỉ tốt bằng các đồng hồ đo của nó. Mỗi nguồn được đặt tên, ghi ngày và giữ tách biệt với các nguồn khác, để một đồng hồ ngừng báo cáo vẫn hiển thị như một khoảng trống thay vì hòa vào tổng.",
+			"intended": "Nguồn dự kiến",
+			"intendedModel": "Đây là các nguồn mà mô hình dự kiến. Nơi nào một nguồn chưa được kết nối, sổ cái hiển thị khoảng trống thay vì một ước tính đội lốt phép đo.",
+			"microruntimesLink": "Xem LangDrift Microruntimes",
 			"items": {
-				"providers": {
-					"title": "Nhà cung cấp mô hình",
-					"description": "Bản ghi sử dụng và ảnh chụp giá cho từng lần gọi, kèm id yêu cầu để đối soát khi hết thời gian chờ."
-				},
 				"microruntimes": {
 					"title": "Microruntimes",
-					"description": "Quan sát CPU và bộ nhớ từ các môi trường có ranh giới đã chạy các kiểm tra, cùng trạng thái dọn dẹp của chúng.",
-					"link": "Xem LangDrift Microruntimes"
+					"description": "Quan sát CPU và bộ nhớ từ các môi trường có giới hạn đã chạy công việc, cùng trạng thái dọn dẹp."
 				},
-				"evidence": {
-					"title": "Bằng chứng giao hàng",
-					"description": "Bản đặc tả, ticket, pull request và lượt kiểm chứng mà mỗi lần thử tham chiếu."
+				"cluster": {
+					"title": "Số liệu cụm",
+					"description": "Giờ node, mức đỉnh và thời gian nhàn rỗi từ các cụm mà môi trường của đội chạy trên đó."
+				},
+				"runners": {
+					"title": "CI runner",
+					"description": "Số phút runner và kích thước máy từ CI của chính đội."
 				},
 				"billing": {
-					"title": "Hóa đơn",
-					"description": "Đối soát hóa đơn khép lại tháng. Trước đó, mọi số tiền đều là tạm thời và được ghi rõ như vậy."
+					"title": "Hóa đơn đám mây",
+					"description": "Hóa đơn của nhà cung cấp chốt tháng. Trước đó, mọi khoản đều là tạm tính và được ghi rõ như vậy."
 				}
 			}
 		},
 		"faq": {
 			"items": {
-				"budget": {
-					"question": "Ngân sách đội là gì?",
-					"answer": "Một số tiền được phê duyệt cho một kỳ, mà toàn bộ công việc có tác tử hỗ trợ của đội rút từ đó. Phân bổ cho tính năng là các đề xuất bên trong nó; không lập trình viên hay ticket nào nhận quyền chi tiêu độc lập."
+				"scope": {
+					"question": "LangDrift FinOps bao gồm những gì?",
+					"answer": "Chi tiêu phần cứng và điện toán: CPU, bộ nhớ và GPU mà các môi trường, runner và cụm của đội chiếm dụng. Lệnh gọi mô hình và chi tiêu suy luận thuộc về LangDrift LLMOps."
 				},
-				"spending": {
-					"question": "FinOps có nghĩa là chi ít hơn?",
-					"answer": "Không. Nó có nghĩa là biết đã chi bao nhiêu, cho việc gì, và kết quả có đáng không. Một mô hình mạnh hơn có thể tốn ít hơn về tổng thể khi nó tránh được các lần thử lại; FinOps đo kết quả, không đo giá token."
+				"llmops": {
+					"question": "FinOps khác LLMOps như thế nào?",
+					"answer": "LLMOps giữ chi phí suy luận, theo từng lệnh gọi, trong phong bì của đội. FinOps giữ chi phí phần cứng ngay khi nó đang chạy. Cả hai đều giữ chưa rõ là chưa rõ, và cả hai đều chịu trách nhiệm trước đội."
 				},
 				"unknown": {
-					"question": "“Chưa rõ” trên biên lai nghĩa là gì?",
-					"answer": "Một lần gọi trả phí mà chi phí chưa có bản ghi sử dụng, ví dụ sau khi hết thời gian chờ. Nó vẫn chưa rõ, với khoản giữ chỗ được giữ, cho đến khi một bản ghi giải quyết nó. Nó không bao giờ được hiển thị là không."
+					"question": "“Chưa rõ” trên biên lai FinOps nghĩa là gì?",
+					"answer": "Một môi trường có đồng hồ đo đã ngừng báo cáo. Mức sử dụng của nó vẫn chưa rõ, mức trần vẫn bị giữ, cho đến khi một bản ghi xác định nó. Nó không bao giờ hiển thị là 0."
 				},
-				"authorization": {
-					"question": "Tác tử có thể tăng ngân sách không?",
-					"answer": "Không. Tác tử có thể ước tính, đề xuất và chạy công việc được phép. Mở rộng vốn, phạm vi hay quyền truy cập cần một quyết định chính sách được người phụ trách đội phê duyệt riêng."
+				"idle": {
+					"question": "Vì sao thời gian nhàn rỗi được tính?",
+					"answer": "Một môi trường vẫn chạy sau khi công việc đã xong thì vẫn phải trả tiền. FinOps hiển thị giờ nhàn rỗi tách khỏi giờ đã dùng, để đội có thể giải phóng chúng thay vì để chúng chìm vào mức trung bình."
 				},
 				"license": {
 					"question": "LangDrift FinOps được cấp phép như thế nào?",
-					"answer": "LangDrift là phần mềm nguồn mở được cấp phép theo Giấy phép Apache, Phiên bản 2.0. Mã nguồn có sẵn trên GitHub để kiểm tra, chạy và sửa đổi."
+					"answer": "LangDrift là phần mềm mã nguồn mở được cấp phép theo Apache License, Version 2.0. Mã nguồn có trên GitHub để kiểm tra, chạy và sửa đổi."
 				},
 				"availability": {
 					"question": "Tôi có thể dùng LangDrift FinOps hôm nay không?",
-					"answer": "Trang FinOps mô tả mô hình dự kiến. Sổ cái, cổng kiểm soát và các tích hợp trên trang chưa khả dụng, và yêu cầu demo hiện đang tạm dừng."
+					"answer": "Trang FinOps mô tả mô hình dự kiến. Sổ cái điện toán và các tích hợp trên trang chưa khả dụng, và yêu cầu demo hiện đang tạm dừng."
 				}
 			}
 		}

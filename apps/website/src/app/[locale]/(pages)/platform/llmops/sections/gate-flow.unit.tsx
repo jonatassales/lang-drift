@@ -3,11 +3,11 @@
 import { cleanup, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
-import { mountGateFlow } from '@routes/platform/finops/sections/testdata/mount-gate-flow.mock'
+import { mountGateFlow } from '@routes/platform/llmops/sections/testdata/mount-gate-flow.mock'
 
 afterEach(cleanup)
 
-describe('website/platform/finops/sections/gate-flow', () => {
+describe('website/platform/llmops/sections/gate-flow', () => {
 	it('walks the three steps in order with the example receipt figures', () => {
 		mountGateFlow()
 		const steps = screen

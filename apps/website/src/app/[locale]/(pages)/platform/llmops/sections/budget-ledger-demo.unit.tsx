@@ -3,12 +3,12 @@
 import { cleanup, fireEvent, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
-import { mountBudgetLedgerDemo } from '@routes/platform/finops/sections/testdata/mount-budget-ledger-demo.mock'
+import { mountBudgetLedgerDemo } from '@routes/platform/llmops/sections/testdata/mount-budget-ledger-demo.mock'
 import { selectedWorkItemAtom } from '@state'
 
 afterEach(cleanup)
 
-describe('website/platform/finops/sections/budget-ledger-demo', () => {
+describe('website/platform/llmops/sections/budget-ledger-demo', () => {
 	it('selects a work item and shows its receipt', () => {
 		const store = mountBudgetLedgerDemo()
 		const button = screen.getByRole('button', { name: /Tenant migration/ })
