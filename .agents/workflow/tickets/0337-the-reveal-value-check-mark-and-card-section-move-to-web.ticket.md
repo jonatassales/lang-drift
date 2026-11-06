@@ -1,6 +1,6 @@
-# 0334: the reveal value, check mark and card section move to web
+# 0337: the reveal value, check mark and card section move to web
 
-**Spec:** .agents/workflow/specs/0067-the-session-panel-primitives-move-to-web.spec.md
+**Spec:** .agents/workflow/specs/0068-the-session-panel-primitives-move-to-web.spec.md
 
 **What to build:** `packages/web` gains three dumb pieces, each with its own `web/ui/<name>` entry:
 
@@ -13,6 +13,8 @@ The website's session cards, rows, summaries and workflow parts compose these th
 **Blocked by:** None (can start immediately).
 
 **Status:** ready-for-agent
+
+**Delivered:** commit 8bdfbba, merged in PR #166, under this ticket's first number. Its `Ticket: 0334` trailer means this ticket, 0337, not ticket 0334 (the agentic word).
 
 **Alignment:** change, in code only: no simulated line or card field changes. Canonical rule (ADR 0005): what is done beyond the simulation is removed; what the simulation shows and the code lacks becomes a new ticket that builds it.
 

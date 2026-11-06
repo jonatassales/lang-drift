@@ -1,10 +1,10 @@
-# 0335: the expandable card moves to web
+# 0338: the expandable card moves to web
 
-**Spec:** .agents/workflow/specs/0067-the-session-panel-primitives-move-to-web.spec.md
+**Spec:** .agents/workflow/specs/0068-the-session-panel-primitives-move-to-web.spec.md
 
 **What to build:** `packages/web` gains `ExpandableCard`, under its own `web/ui/expandable-card` entry. It is the card that expands: a header that names the card and carries its one-line summary, over a body that slides open and shut. Which card is open is decided from outside. The website's session stack composes the four cards (Ticket, Analysis, Plan, Workflow) from it in place of its local session card, which is deleted. The hero panel opens, collapses and reopens by hand exactly as before.
 
-**Blocked by:** None (can start immediately). Like 0334 and 0336, it adds an export entry to the web package's manifest.
+**Blocked by:** None (can start immediately). Like 0337 and 0339, it adds an export entry to the web package's manifest.
 
 **Status:** ready-for-agent
 
