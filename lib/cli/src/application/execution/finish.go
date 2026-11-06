@@ -267,7 +267,7 @@ func (playing *playing) checksEnded(checks []run.CheckResult) {
 		return
 	}
 
-	emit(playing.sink, session.ChecksFailed, session.Data{"passed": passed, "total": len(checks), "failed": failed})
+	playing.stopSilently(fmt.Errorf("%w: %s failed", ErrChecksFailed, strings.Join(failed, ", ")))
 }
 
 func anyPending(checks []run.CheckResult) bool {
@@ -333,7 +333,7 @@ func (playing *playing) takeDown(ctx context.Context) error {
 		reason := fmt.Sprintf("the cleanup was not confirmed: %d of %d owned resources removed", cleanup.Removed, cleanup.Total)
 		playing.lap.Outcome = Unknown
 		playing.lap.Steps = append(playing.lap.Steps, Step{Name: "Cleaned up", At: now, Note: reason})
-		emit(playing.sink, session.RuntimeUnknown, session.Data{"reason": reason})
+		playing.stopSilently(fmt.Errorf("%w: %d of %d owned resources removed", ErrCleanupUnconfirmed, cleanup.Removed, cleanup.Total))
 
 		return playing.persist()
 	}
@@ -401,7 +401,7 @@ func (playing *playing) release() (StartResult, error) {
 		return playing.result(), err
 	}
 
-	return playing.result(), nil
+	return playing.result(), playing.stopCause
 }
 
 // ending is how the run ends: for review when a person takes part in a
@@ -470,8 +470,10 @@ func (playing *playing) observed() *run.Observed {
 // opens a new lap and plays on from the first stage not done. A cleanup
 // nobody confirmed leaves the outcome unknown and holds the reservation.
 func (playing *playing) failLap(ctx context.Context, cause error) (StartResult, error) {
+	playing.stopSilently(cause)
+
 	if playing.lap.Execution != "" {
-		if err := playing.takeDown(ctx); err != nil {
+		if err := playing.takeDown(context.WithoutCancel(ctx)); err != nil {
 			return playing.result(), errors.Join(cause, err)
 		}
 	}

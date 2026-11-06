@@ -125,7 +125,7 @@ func TestInitGeneratesTheCIGatesWorkflow(test *testing.T) {
 		consumer := newProject(test)
 
 		status, _, stderr := consumer.dft("", "init", "--ci-gates")
-		if status != 2 || !strings.Contains(stderr, "unreleased") {
+		if status != 1 || !strings.Contains(stderr, "unreleased") {
 			test.Errorf("dft init --ci-gates on 0.0.0-dev = %d, %s", status, stderr)
 		}
 

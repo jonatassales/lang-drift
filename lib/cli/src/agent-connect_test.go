@@ -26,7 +26,7 @@ func TestConnectThenPlanAsksTheConsolesJudge(t *testing.T) {
 	t.Setenv("RUNTIME_SECRET", "not-the-deployment-secret")
 
 	status, stdout, stderr := seeded.dftWith(deps, "agent", "connect", console.server.URL)
-	refusedNamingTheConsole := status == 3 && strings.Contains(stderr, console.server.URL) && strings.Contains(stderr, "refused RUNTIME_SECRET")
+	refusedNamingTheConsole := status == 1 && strings.Contains(stderr, console.server.URL) && strings.Contains(stderr, "refused RUNTIME_SECRET")
 	if !refusedNamingTheConsole {
 		t.Fatalf("a refused secret gave %d: %s\n%s", status, stderr, stdout)
 	}

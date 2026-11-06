@@ -18,7 +18,6 @@ import (
 	app "github.com/jonatassales/tao/lib/cli/src/application"
 	connectedapp "github.com/jonatassales/tao/lib/cli/src/application/connected"
 	"github.com/jonatassales/tao/lib/cli/src/application/setup"
-	"github.com/jonatassales/tao/lib/cli/src/domain/connection"
 	"github.com/jonatassales/tao/lib/cli/src/presentation/cli/support"
 )
 
@@ -195,38 +194,34 @@ func TestExecute_RendersResults(t *testing.T) {
 	}
 }
 
-func TestExecute_ClassifiesFailures(t *testing.T) {
+func TestExecute_StopsWithOneSentence(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
 		name       string
 		arguments  []string
 		failure    error
-		wantStatus int
 		wantStderr string
 	}{
-		{name: "retired runtime tree refuses with guidance", arguments: []string{"runtime", "up", "demo"}, wantStatus: 1, wantStderr: "runtime operations moved to the console"},
-		{name: "command group without a subcommand", arguments: []string{"cluster"}, wantStatus: 2, wantStderr: "dft cluster requires a subcommand"},
-		{name: "unknown subcommand", arguments: []string{"cluster", "resize"}, wantStatus: 2, wantStderr: "unknown command"},
-		{name: "unknown root command", arguments: []string{"deploy"}, wantStatus: 2, wantStderr: `unknown command "deploy"`},
-		{name: "missing argument", arguments: []string{"cluster", "load-image"}, wantStatus: 2, wantStderr: "dft cluster load-image requires 1 argument(s)"},
-		{name: "extra argument", arguments: []string{"cluster", "create", "now"}, wantStatus: 2, wantStderr: "requires 0 argument(s)"},
-		{name: "unknown flag", arguments: []string{"cluster", "create", "--force"}, wantStatus: 2, wantStderr: "unknown flag: --force"},
-		{name: "zero timeout", arguments: []string{"--timeout", "0s", "cluster", "create"}, wantStatus: 2, wantStderr: "--timeout must be positive"},
-		{name: "invalid timeout", arguments: []string{"--timeout", "soon", "cluster", "create"}, wantStatus: 2, wantStderr: "invalid argument"},
-		{name: "unknown help topic", arguments: []string{"help", "deploy"}, wantStatus: 2, wantStderr: "unknown help command"},
-		{name: "agent connect without URL", arguments: []string{"agent", "connect"}, wantStatus: 2, wantStderr: "dft agent connect requires 1 argument(s)"},
-		{name: "agent migrate without runtime", arguments: []string{"agent", "migrate"}, wantStatus: 2, wantStderr: "dft agent migrate requires 1 argument(s)"},
-		{name: "operational failure", arguments: []string{"cluster", "create"}, failure: errors.New("cluster is not ready"), wantStatus: 1, wantStderr: "dft: cluster is not ready\n"},
-		{name: "adoption refused", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("namespace exists: %w", app.ErrAdoptionRefused), wantStatus: 3, wantStderr: "refusing to adopt"},
-		{name: "target mismatch refused", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("guard: %w", app.ErrTargetMismatch), wantStatus: 3, wantStderr: "target differs"},
-		{name: "pass-through variable missing", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("component api: %w", connection.ErrPassEnvMissing), wantStatus: 3, wantStderr: "not set in the agent's environment"},
-		{name: "console access revoked", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("sync: %w", connectedapp.ErrAccessRevoked), wantStatus: 3, wantStderr: "revoked"},
-		{name: "replacement refused", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("record: %w", app.ErrAlreadyExists), wantStatus: 3, wantStderr: "already exists"},
-		{name: "missing prerequisite record", arguments: []string{"cluster", "create"}, failure: app.NotFound("no cluster for this project"), wantStatus: 4, wantStderr: "no cluster"},
-		{name: "missing tool", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("kind failed: %w", exec.ErrNotFound), wantStatus: 4, wantStderr: "executable file not found"},
-		{name: "interruption", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("await: %w", context.Canceled), wantStatus: 130},
-		{name: "deadline", arguments: []string{"cluster", "create"}, failure: context.DeadlineExceeded, wantStatus: 1, wantStderr: "deadline exceeded"},
+		{name: "retired runtime tree refuses with guidance", arguments: []string{"runtime", "up", "demo"}, wantStderr: "Runtime operations moved to the console"},
+		{name: "command group without a subcommand", arguments: []string{"cluster"}, wantStderr: "dft cluster requires a subcommand"},
+		{name: "unknown subcommand", arguments: []string{"cluster", "resize"}, wantStderr: "Unknown command"},
+		{name: "unknown root command", arguments: []string{"deploy"}, wantStderr: `Unknown command "deploy"`},
+		{name: "missing argument", arguments: []string{"cluster", "load-image"}, wantStderr: "dft cluster load-image requires 1 argument(s)"},
+		{name: "extra argument", arguments: []string{"cluster", "create", "now"}, wantStderr: "requires 0 argument(s)"},
+		{name: "unknown flag", arguments: []string{"cluster", "create", "--force"}, wantStderr: "Unknown flag: --force"},
+		{name: "zero timeout", arguments: []string{"--timeout", "0s", "cluster", "create"}, wantStderr: "--timeout must be positive"},
+		{name: "invalid timeout", arguments: []string{"--timeout", "soon", "cluster", "create"}, wantStderr: "Invalid argument"},
+		{name: "unknown help topic", arguments: []string{"help", "deploy"}, wantStderr: "Unknown help command"},
+		{name: "agent connect without URL", arguments: []string{"agent", "connect"}, wantStderr: "dft agent connect requires 1 argument(s)"},
+		{name: "agent migrate without runtime", arguments: []string{"agent", "migrate"}, wantStderr: "dft agent migrate requires 1 argument(s)"},
+		{name: "operational failure", arguments: []string{"cluster", "create"}, failure: errors.New("cluster is not ready"), wantStderr: "Cluster is not ready.\n"},
+		{name: "operational failure under --json", arguments: []string{"--json", "cluster", "create"}, failure: errors.New("cluster is not ready"), wantStderr: "Cluster is not ready.\n"},
+		{name: "refusal", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("namespace exists: %w", app.ErrAdoptionRefused), wantStderr: "Namespace exists: refusing to adopt what the LangDrift CLI did not create.\n"},
+		{name: "missing prerequisite", arguments: []string{"cluster", "create"}, failure: app.NotFound("no cluster for this project"), wantStderr: "No cluster for this project.\n"},
+		{name: "missing tool", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("kind failed: %w", exec.ErrNotFound), wantStderr: "Kind failed: executable file not found"},
+		{name: "interruption", arguments: []string{"cluster", "create"}, failure: fmt.Errorf("await: %w", context.Canceled), wantStderr: "The command was interrupted.\n"},
+		{name: "deadline", arguments: []string{"cluster", "create"}, failure: context.DeadlineExceeded, wantStderr: "Context deadline exceeded.\n"},
 	}
 
 	for _, tt := range tests {
@@ -238,8 +233,13 @@ func TestExecute_ClassifiesFailures(t *testing.T) {
 
 			status, stdout, stderr := h.run(tt.arguments...)
 
-			if status != tt.wantStatus || !strings.Contains(stderr, tt.wantStderr) {
-				t.Fatalf("status %d, stderr %q; want %d and %q", status, stderr, tt.wantStatus, tt.wantStderr)
+			if status != 1 || !strings.Contains(stderr, tt.wantStderr) {
+				t.Fatalf("status %d, stderr %q; want 1 and %q", status, stderr, tt.wantStderr)
+			}
+
+			oneSentence := strings.Count(stderr, "\n") == 1 && strings.HasSuffix(stderr, ".\n")
+			if !oneSentence || strings.Contains(stderr, "dft: ") || strings.Contains(stderr, "hint:") {
+				t.Errorf("stderr = %q, want one plain sentence", stderr)
 			}
 
 			if stdout != "" {
@@ -249,26 +249,7 @@ func TestExecute_ClassifiesFailures(t *testing.T) {
 	}
 }
 
-func TestExecute_ReportsStructuredDiagnostics(t *testing.T) {
-	t.Parallel()
-
-	h := &harness{}
-	h.clusterCreate.err = errors.New("cluster is not ready")
-
-	status, _, stderr := h.run("--json", "cluster", "create")
-
-	var diagnostic struct {
-		Error    string `json:"error"`
-		ExitCode int    `json:"exitCode"`
-	}
-
-	if err := json.Unmarshal([]byte(stderr), &diagnostic); err != nil || status != 1 ||
-		diagnostic.Error != "cluster is not ready" || diagnostic.ExitCode != 1 {
-		t.Fatalf("status %d, stderr %q; want a JSON diagnostic with exit code 1", status, stderr)
-	}
-}
-
-func TestExecute_ReportsAnInterruptedApplication(t *testing.T) {
+func TestExecute_StopsAnInterruptedApplication(t *testing.T) {
 	t.Parallel()
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -277,8 +258,9 @@ func TestExecute_ReportsAnInterruptedApplication(t *testing.T) {
 	h := &harness{}
 	h.clusterCreate.err = errors.New("stopped")
 
-	if status, _, _ := h.execute(ctx, "cluster", "create"); status != 130 {
-		t.Fatalf("status = %d, want 130 once the application context is canceled", status)
+	status, _, stderr := h.execute(ctx, "cluster", "create")
+	if status != 1 || stderr != "The command was interrupted.\n" {
+		t.Fatalf("status %d, stderr %q; want 1 and the interrupt's sentence once the application context is canceled", status, stderr)
 	}
 }
 
@@ -417,37 +399,5 @@ func TestExecute_RendersClusterInspectionForPeople(t *testing.T) {
 		if !strings.Contains(stdout, want) {
 			t.Fatalf("inspect output %q lacks %q", stdout, want)
 		}
-	}
-}
-
-func TestExecute_ErrorsCarryAHint(t *testing.T) {
-	t.Parallel()
-
-	tests := []struct {
-		name     string
-		failure  error
-		wantHint string
-	}{
-		{"refusal points at inspection", fmt.Errorf("x: %w", app.ErrAdoptionRefused), "refused to change what it does not own"},
-		{"missing prerequisite points at doctor", app.NotFound("no cluster"), "run dft doctor"},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-
-			h := &harness{}
-			h.clusterInspect.err = tt.failure
-			_, _, stderr := h.run("cluster", "inspect")
-			if !strings.Contains(stderr, "hint: ") || !strings.Contains(stderr, tt.wantHint) {
-				t.Fatalf("stderr %q lacks hint %q", stderr, tt.wantHint)
-			}
-		})
-	}
-
-	h := &harness{}
-	h.clusterInspect.err = app.NotFound("no cluster")
-	_, _, stderr := h.run("--json", "cluster", "inspect")
-	if strings.Contains(stderr, "hint") {
-		t.Fatalf("JSON diagnostics must stay structured: %q", stderr)
 	}
 }

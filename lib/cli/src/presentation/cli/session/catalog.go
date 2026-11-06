@@ -165,9 +165,6 @@ var catalog = map[string]line{
 	key(session.PlanSession, session.Handoff): {session.Comment, func(session.Data) string {
 		return Layout(Comment, Cells{Text: "next: once the team authorizes, dft agent run applies the recorded intent"})
 	}},
-	key(session.PlanSession, session.PlanBlocked): {session.Error, func(data session.Data) string {
-		return "✗ plan       runtime.md draft, revision " + strconv.Itoa(number(data, "revision")) + " · blocked · " + joined(data, "checks") + " failed"
-	}},
 
 	// The run session.
 	key(session.RunSession, session.RunScope): {session.Comment, func(data session.Data) string {
@@ -206,18 +203,6 @@ var catalog = map[string]line{
 		return Layout(Labeled, Cells{
 			Label: "gate",
 			Value: "reservation " + finops.Dollars(number(data, "reservedCents")) + " exceeds the " + finops.Dollars(boundCents) + " " + bound + " · paused",
-		})
-	}},
-	key(session.RunSession, session.GateBlocked): {session.Error, func(data session.Data) string {
-		return Layout(Labeled, Cells{
-			Label: "gate",
-			Value: "blocked · " + text(data, "gate") + " · " + text(data, "detail"),
-		})
-	}},
-	key(session.RunSession, session.GateExhausted): {session.Warning, func(data session.Data) string {
-		return Layout(Labeled, Cells{
-			Label: "gate",
-			Value: "paused · FG-04 · " + text(data, "detail"),
 		})
 	}},
 	key(session.RunSession, session.LapResumed): {session.Output, func(data session.Data) string {
@@ -353,15 +338,6 @@ var catalog = map[string]line{
 	}},
 	key(session.RunSession, session.NextReview): {session.Comment, func(data session.Data) string {
 		return Layout(Comment, Cells{Text: "next: the owner reviews " + pullRequest(data, "the branch") + " and decides whether to merge"})
-	}},
-	key(session.RunSession, session.RuntimeUnknown): {session.Warning, func(data session.Data) string {
-		return Layout(Status, Cells{
-			Label: "runtime",
-			Value: "unknown · " + text(data, "reason") + " · the reservation is held",
-		})
-	}},
-	key(session.RunSession, session.ChecksFailed): {session.Error, func(data session.Data) string {
-		return "✗ checks     " + strconv.Itoa(number(data, "passed")) + " of " + strconv.Itoa(number(data, "total")) + " passed · " + joined(data, "failed") + " failed"
 	}},
 	key(session.RunSession, session.NextMerge): {session.Comment, func(session.Data) string {
 		return Layout(Comment, Cells{Text: "next: the merge stays the owner's"})

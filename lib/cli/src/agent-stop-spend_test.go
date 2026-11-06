@@ -66,7 +66,9 @@ func TestStopKeepsTheSpendObservedBeforeTheWait(t *testing.T) {
 }
 
 // A cleanup nobody confirmed leaves the abandoned lap's outcome unknown: the
-// reservation is held, and the lap still says who stopped it and when.
+// reservation is held, and the lap still says who stopped it and when. It is
+// a stop: no line prints after the takedown, one sentence names the cause
+// and the command exits 1.
 func TestStopHoldsTheReservationWhenTheCleanupIsUnconfirmed(t *testing.T) {
 	t.Parallel()
 
@@ -83,11 +85,11 @@ func TestStopHoldsTheReservationWhenTheCleanupIsUnconfirmed(t *testing.T) {
 	}
 
 	status, stdout, stderr := seeded.dftWith(deps, "agent", "stop", "console-microruntime", "--by", "owner")
-	if status != 0 {
-		t.Fatalf("dft agent stop = %d: %s\n%s", status, stderr, stdout)
-	}
 
-	expectLines(t, stdout, "✓ stopped    lap 0001 · by owner · outcome unknown, the reservation is held")
+	stopped := status == 1 && stderr == "The runtime's cleanup was not confirmed: 2 of 4 owned resources removed.\n"
+	if !stopped || strings.Contains(stdout, "✓ stopped") {
+		t.Fatalf("dft agent stop = %d: %q\n%s", status, stderr, stdout)
+	}
 
 	record := runRecord(t, seeded)
 	unknown := record.Outcome != nil && *record.Outcome == "unknown" && record.Laps[0].Outcome == "unknown"

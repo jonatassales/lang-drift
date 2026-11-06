@@ -90,7 +90,7 @@ func TestInitRecordsTheArtifactsFolder(test *testing.T) {
 		consumer := withArtifacts(test)
 
 		status, _, stderr := consumer.dft("", "init", "--budget", "10", "--per-run", "100", "--reserve-margin", "5", "--artifacts", ".agents/workflow")
-		if status != 2 {
+		if status != 1 {
 			test.Fatalf("dft init with a per-run cap above the budget = %d, %s", status, stderr)
 		}
 
@@ -109,7 +109,7 @@ func TestInitRecordsTheArtifactsFolder(test *testing.T) {
 			}
 
 			status, _, stderr := consumer.dft("", "init", "--artifacts", path)
-			if status != 2 || !strings.Contains(stderr, "artifacts") {
+			if status != 1 || !strings.Contains(stderr, "artifacts") {
 				test.Errorf("dft init --artifacts %s = %d, %s", path, status, stderr)
 			}
 

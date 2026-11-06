@@ -177,8 +177,8 @@ func TestInputsRefuseBadValuesAsUsage(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		if status, _, stderr := p.dft("", tt.arguments...); status != 2 || !strings.Contains(stderr, tt.stderr) {
-			t.Errorf("dft %v = %d, %q; want exit 2 mentioning %q", tt.arguments, status, stderr, tt.stderr)
+		if status, _, stderr := p.dft("", tt.arguments...); status != 1 || !strings.Contains(stderr, tt.stderr) {
+			t.Errorf("dft %v = %d, %q; want exit 1 mentioning %q", tt.arguments, status, stderr, tt.stderr)
 		}
 	}
 }

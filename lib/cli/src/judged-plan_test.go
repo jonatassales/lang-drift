@@ -188,7 +188,7 @@ func TestPlanPausesAtTheGateBeforeTheJudgeRuns(t *testing.T) {
 	}
 
 	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
-	if status != 3 || !strings.Contains(stderr, "FG-03 paused") || !strings.Contains(stderr, "nothing was paid") {
+	if status != 1 || !strings.Contains(stderr, "FG-03 paused") || !strings.Contains(stderr, "nothing was paid") {
 		t.Fatalf("a paused planner gave %d: %s\n%s", status, stderr, stdout)
 	}
 
@@ -212,7 +212,7 @@ func TestPlanIsRefusedWithoutAConnection(t *testing.T) {
 	disconnectProject(t, p.root)
 
 	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent)
-	if status != 4 || !strings.Contains(stderr, "connect") {
+	if status != 1 || !strings.Contains(stderr, "connect") {
 		t.Fatalf("an unconnected plan gave %d: %s\n%s", status, stderr, stdout)
 	}
 
@@ -316,7 +316,7 @@ func TestPlanHasNoFlagToSkipTheJudge(t *testing.T) {
 	p, deps := seedProject(t)
 
 	status, _, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--no-judge", "--component", consoleComponent)
-	if status != 2 || !strings.Contains(stderr, "unknown flag: --no-judge") {
+	if status != 1 || !strings.Contains(stderr, "Unknown flag: --no-judge") {
 		t.Fatalf("--no-judge gave %d: %s", status, stderr)
 	}
 

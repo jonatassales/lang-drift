@@ -45,6 +45,9 @@ type playing struct {
 	abandonment *finops.Abandonment
 	// stopRequest says who asked for the runtime to stop, when a person did.
 	stopRequest string
+	// stopCause is why the run stopped, once a failure the simulation never
+	// shows ended it; nothing prints after it.
+	stopCause error
 }
 
 // play drives the lap through its phases in the order NextPhase decides:
@@ -292,7 +295,6 @@ func (playing *playing) gate(stage harness.Stage) error {
 	if result.Detail != nil {
 		detail = *result.Detail
 	}
-	emit(playing.sink, session.GateExhausted, session.Data{"detail": detail})
 
 	now := playing.now()
 	playing.lap.Steps = append(playing.lap.Steps, Step{Name: "Paused", At: now, Note: "FG-04: " + detail})
@@ -359,11 +361,13 @@ func (playing *playing) markFailed(stage harness.Stage, cause error) error {
 // pausedAtGate takes the runtime down after FG-04 ended the lap: the lap is
 // paused, not failed, and the next one brings the runtime up again.
 func (playing *playing) pausedAtGate(ctx context.Context, cause error) (StartResult, error) {
+	playing.stopSilently(cause)
+
 	if playing.lap.Execution == "" {
 		return playing.result(), cause
 	}
 
-	if err := playing.takeDown(ctx); err != nil {
+	if err := playing.takeDown(context.WithoutCancel(ctx)); err != nil {
 		return playing.result(), errors.Join(cause, err)
 	}
 

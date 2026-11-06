@@ -69,5 +69,5 @@ func (playing *playing) abandonLap(ctx context.Context) (StopResult, error) {
 		Status:        outcome + "; plan it again with dft agent plan",
 	}
 
-	return result, nil
+	return result, playing.stopCause
 }

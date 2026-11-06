@@ -88,6 +88,9 @@ func copyTree(t *testing.T, from, to string) {
 
 const consoleComponent = "name=console,path=.,kind=web,tech=nextjs:Next.js;go:Go"
 
+// validatedLine is the last line a plan blocked by a failing check prints.
+const validatedLine = "console › tool call: validate runtime.md draft against the schema · 0 errors\n"
+
 // The plan's first act reproduces the sample: the ticket, the sources its
 // links reach with their hashes, the context hash, the inputs and the
 // discrepancies, and the runtime file parses with the next revision.
@@ -211,11 +214,11 @@ func TestPlanRefusesWhatItCannotRead(t *testing.T) {
 
 	p, deps := seedProject(t)
 
-	if status, _, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0099-missing.ticket.md", "--component", consoleComponent); status != 4 || !strings.Contains(stderr, "no ticket") {
+	if status, _, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0099-missing.ticket.md", "--component", consoleComponent); status != 1 || !strings.Contains(stderr, "No ticket") {
 		t.Errorf("a missing ticket gave %d: %s", status, stderr)
 	}
 
-	if status, _, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md"); status != 2 || !strings.Contains(stderr, "--component") {
+	if status, _, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md"); status != 1 || !strings.Contains(stderr, "--component") {
 		t.Errorf("a plan without components gave %d: %s", status, stderr)
 	}
 
@@ -224,13 +227,13 @@ func TestPlanRefusesWhatItCannotRead(t *testing.T) {
 		t.Fatal(stderr)
 	}
 	copyTree(t, projectFixture, bare.root)
-	if status, _, stderr := bare.dft("", "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent); status != 4 || !strings.Contains(stderr, "envelope") {
+	if status, _, stderr := bare.dft("", "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md", "--component", consoleComponent); status != 1 || !strings.Contains(stderr, "envelope") {
 		t.Errorf("a plan without inputs gave %d: %s", status, stderr)
 	}
 }
 
 // A draft that fails a cross-check is written as blocked, with the failing
-// check recorded, and the command refuses.
+// check recorded, and the command stops after the validate line.
 func TestPlanBlocksADraftThatFailsACheck(t *testing.T) {
 	t.Parallel()
 
@@ -239,12 +242,12 @@ func TestPlanBlocksADraftThatFailsACheck(t *testing.T) {
 	status, stdout, stderr := p.dftWith(deps, "agent", "plan", ".agents/workflow/tickets/0070-console-microruntime.ticket.md",
 		"--component", "name=console,path=.,kind=web,port=3001",
 		"--component", "name=web,path=apps/console,port=3001,env-file=apps/console/runtime.env")
-	if status != 3 || !strings.Contains(stderr, "ports-distinct") || !strings.Contains(stderr, "dockerfiles-exist") {
+	if status != 1 || !strings.Contains(stderr, "ports-distinct") || !strings.Contains(stderr, "dockerfiles-exist") {
 		t.Fatalf("a failing draft gave %d: %s\n%s", status, stderr, stdout)
 	}
 
-	if !strings.Contains(stdout, "✗ plan       runtime.md draft, revision 1 · blocked · ports-distinct · dockerfiles-exist · readiness-known · env-file-exists failed\n") {
-		t.Errorf("the blocked line is missing:\n%s", stdout)
+	if !strings.HasSuffix(stdout, validatedLine) || strings.Contains(stdout, "blocked") {
+		t.Errorf("a blocked plan printed past the validate line:\n%s", stdout)
 	}
 
 	runtimePath := filepath.Join(p.root, ".langdrift", "microruntimes", "runtimes", "console-microruntime", "runtime.md")

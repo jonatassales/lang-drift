@@ -265,6 +265,7 @@ func (playing *playing) pause(now harness.Timestamp) (StartResult, error) {
 	lap.Gate = gate.ID
 	lap.Outcome = BlockedAt
 	lap.Ended = &now
+	ended := ErrGate
 	detail := gate.ID + " " + gate.Result
 	if gate.Detail != nil {
 		detail = *gate.Detail
@@ -272,13 +273,13 @@ func (playing *playing) pause(now harness.Timestamp) (StartResult, error) {
 
 	if gate.ID == "FG-03" {
 		bound, boundCents := exceededBound(lap.Requested, playing.bounds)
+		ended = ErrPausedAtGate
 		lap.Outcome = PausedAtGate
 		lap.Steps = append(lap.Steps, Step{Name: "Paused", At: now, Note: "FG-03: a " + finops.Dollars(lap.Requested) + " reservation exceeds the " + finops.Dollars(boundCents) + " " + bound})
 		emit(sink, session.GatePaused, session.Data{"reservedCents": lap.Requested, "perRunCents": bounded.PerRunCents, "bound": bound, "boundCents": boundCents})
 		emit(sink, session.Paused, nil)
 	} else {
 		lap.Steps = append(lap.Steps, Step{Name: "Blocked", At: now, Note: gate.ID + ": " + detail})
-		emit(sink, session.GateBlocked, session.Data{"gate": gate.ID, "detail": detail})
 	}
 
 	record.State, record.Outcome = run.StatePaused, text(run.StatePaused)
@@ -290,7 +291,7 @@ func (playing *playing) pause(now harness.Timestamp) (StartResult, error) {
 		return StartResult{}, err
 	}
 
-	return StartResult{}, fmt.Errorf("%w: %s %s · %s; nothing was paid", ErrGate, gate.ID, gate.Result, detail)
+	return StartResult{}, fmt.Errorf("%w: %s %s · %s; nothing was paid", ended, gate.ID, gate.Result, detail)
 }
 
 // persist writes the lap's private state and file, the run record and the

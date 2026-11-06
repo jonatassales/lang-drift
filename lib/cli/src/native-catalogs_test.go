@@ -2,12 +2,9 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
-	"fmt"
 	"time"
 
-	"github.com/jonatassales/tao/lib/cli/src/application"
 	"github.com/jonatassales/tao/lib/cli/src/presentation/cli"
 	"github.com/jonatassales/tao/lib/cli/src/presentation/cli/catalog"
 	"github.com/jonatassales/tao/lib/cli/src/presentation/cli/support"
@@ -31,27 +28,13 @@ func executeNativeCatalogs(ctx context.Context, args []string, options support.O
 	root.SetIn(options.Input)
 	root.SetOut(options.Output)
 	root.SetErr(options.Diagnostics)
-	if err := root.ExecuteContext(ctx); err != nil {
-		// Mirrors the real CLI's documented contract until this retained
-		// adapter is deleted with the retired runtime tree.
-		status := 1
-		var usage support.UsageError
-		switch {
-		case ctx.Err() != nil || errors.Is(err, context.Canceled):
-			status = 130
-		case errors.As(err, &usage):
-			status = 2
-		case errors.Is(err, application.ErrAdoptionRefused) || errors.Is(err, application.ErrTargetMismatch) || errors.Is(err, application.ErrConfigurationChanged) || errors.Is(err, application.ErrAlreadyExists):
-			status = 3
-		case errors.Is(err, application.ErrNotFound):
-			status = 4
-		}
-		if globals.JSON {
-			_ = json.NewEncoder(options.Diagnostics).Encode(map[string]any{"error": err.Error(), "exitCode": status})
-		} else {
-			_, _ = fmt.Fprintln(options.Diagnostics, "dft:", err)
-		}
-		return status
+
+	err := root.ExecuteContext(ctx)
+	if interrupted := ctx.Err(); interrupted != nil {
+		err = errors.Join(interrupted, err)
 	}
-	return 0
+
+	// Mirrors the real CLI's stop rule until this retained adapter is
+	// deleted with the retired runtime tree.
+	return cli.Stop(err, options.Diagnostics)
 }

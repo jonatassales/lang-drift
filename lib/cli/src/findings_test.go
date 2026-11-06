@@ -133,7 +133,8 @@ func TestARuntimeThatIsNotReadyFailsTheLap(t *testing.T) {
 }
 
 // Without a person in review, the run is ready to merge only when delivery
-// shows a pushed branch and a pull request whose checks all passed.
+// shows a pushed branch and a pull request whose checks all passed. Failed
+// checks stop the run once it has recorded the lap: it prints nothing more.
 func TestReadyToMergeNeedsACleanDelivery(t *testing.T) {
 	t.Parallel()
 
@@ -154,10 +155,12 @@ func TestReadyToMergeNeedsACleanDelivery(t *testing.T) {
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = websiteDriver(), websiteLifecycle(), delivery, time.Millisecond
 
 	status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm")
-	if status != 0 {
+	if status != 1 || !strings.Contains(stderr, "The pull request's checks failed: test failed.\n") {
 		t.Fatalf("dft agent run = %d: %s\n%s", status, stderr, stdout)
 	}
-	expectLines(t, stdout, "✗ checks     3 of 4 passed · test failed", "✓ ready      #19 for review · $1.60 released to the envelope")
+	if !strings.HasSuffix(stdout, "checks     build · check · test · guardrails · running\n") {
+		t.Errorf("failed checks printed past the running checks:\n%s", stdout)
+	}
 	if record := runRecord(t, p); *record.Outcome != "readyForReview" {
 		t.Errorf("a failed check ended %s", *record.Outcome)
 	}
@@ -191,10 +194,10 @@ func TestTheRunLockRefusesASecondOperation(t *testing.T) {
 	}
 	defer unlock()
 
-	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 3 || !strings.Contains(stderr, "busy") {
+	if status, _, stderr := p.dftWith(deps, "agent", "run", "console-microruntime"); status != 1 || !strings.Contains(stderr, "busy") {
 		t.Errorf("a run while the lock is held gave %d: %s", status, stderr)
 	}
-	if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", consoleComponent); status != 3 || !strings.Contains(stderr, "busy") {
+	if status, _, stderr := p.dftWith(deps, "agent", "plan", consoleTicket, "--component", consoleComponent); status != 1 || !strings.Contains(stderr, "busy") {
 		t.Errorf("a plan while the lock is held gave %d: %s", status, stderr)
 	}
 }
@@ -208,7 +211,7 @@ func TestAStagePausedHalfwayPlaysOnFromTheNextSkill(t *testing.T) {
 	driver.usage["implement"] = [2]int64{5_000_000, 300_000}
 	deps.Driver, deps.Lifecycle, deps.Delivery, deps.Poll = driver, websiteLifecycle(), websiteDelivery(), time.Millisecond
 
-	if status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 3 || !strings.Contains(stderr, "FG-04") {
+	if status, stdout, stderr := p.dftInput(deps, "y\n", "agent", "run", "console-microruntime", "--confirm"); status != 1 || !strings.Contains(stderr, "FG-04") {
 		t.Fatalf("the exhausted lap gave %d: %s\n%s", status, stderr, stdout)
 	}
 	if implement := stageState(runRecord(t, p), "implement"); strings.Join(implement.SkillsDone, ",") != "implement" {

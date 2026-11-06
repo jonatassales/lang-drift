@@ -137,7 +137,7 @@ func TestInitAsksForTheBudgetAndGates(test *testing.T) {
 			consumer := newProject(test)
 
 			status, _, stderr := consumer.dftInput(october, amount+"\n", "init", "--ask")
-			if status != 2 || !strings.Contains(stderr, "dollars") {
+			if status != 1 || !strings.Contains(stderr, "dollars") {
 				test.Errorf("dft init with a budget of %q = %d, %s", amount, status, stderr)
 			}
 
@@ -173,7 +173,7 @@ func TestInitAsksForTheBudgetAndGates(test *testing.T) {
 		consumer := newProject(test)
 
 		status, _, stderr := consumer.dftInput(october, "", "init", "--budget", "1500")
-		if status != 2 || !strings.Contains(stderr, "--per-run") {
+		if status != 1 || !strings.Contains(stderr, "--per-run") {
 			test.Errorf("dft init --budget alone = %d, %s", status, stderr)
 		}
 	})

@@ -119,26 +119,6 @@ const (
 	NextPlan     = "nextPlan"
 )
 
-// PlanBlocked is the plan's own line when a check fails: the website has no
-// such line, since its session never fails.
-const PlanBlocked = "blocked"
-
-// GateBlocked is the run's own line when FG-01, FG-02 or FG-05 blocks a lap
-// before anything is paid; the website's session never meets one.
-const GateBlocked = "gateBlocked"
-
-// GateExhausted is the run's own line when FG-04 pauses the paid calls of
-// an open lap: the reservation is reached, or a call reported no usage.
-const GateExhausted = "gateExhausted"
-
 // LapResumed is the run's own line when dft agent run finds a lap open and
 // plays on from where it stood.
 const LapResumed = "lapResumed"
-
-// RuntimeUnknown is the run's own line when the runtime's cleanup was not
-// confirmed: the outcome is unknown and the reservation is held.
-const RuntimeUnknown = "runtimeUnknown"
-
-// ChecksFailed is the run's own line when the pull request's checks ended
-// with a failure.
-const ChecksFailed = "checksFailed"

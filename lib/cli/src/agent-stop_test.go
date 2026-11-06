@@ -103,7 +103,7 @@ func TestStopRefusesARunThatDoesNotWait(t *testing.T) {
 		seeded, deps := plannedProject(t)
 
 		status, _, stderr := seeded.dftWith(deps, "agent", "stop", "console-microruntime")
-		if status != 3 || !strings.Contains(stderr, "is planned") {
+		if status != 1 || !strings.Contains(stderr, "is planned") {
 			t.Errorf("stopping a planned runtime gave %d: %s", status, stderr)
 		}
 	})
@@ -121,7 +121,7 @@ func TestStopRefusesARunThatDoesNotWait(t *testing.T) {
 		}
 
 		status, _, stderr := seeded.dftWith(deps, "agent", "stop", "console-microruntime")
-		if status != 3 || !strings.Contains(stderr, "is finished") {
+		if status != 1 || !strings.Contains(stderr, "is finished") {
 			t.Errorf("stopping a completed run gave %d: %s", status, stderr)
 		}
 	})
@@ -139,7 +139,7 @@ func TestStopRefusesARunThatDoesNotWait(t *testing.T) {
 		}
 
 		status, _, stderr := seeded.dftWith(deps, "agent", "stop", "console-microruntime")
-		if status != 3 || !strings.Contains(stderr, "is finished") {
+		if status != 1 || !strings.Contains(stderr, "is finished") {
 			t.Errorf("stopping an abandoned run gave %d: %s", status, stderr)
 		}
 	})
@@ -157,7 +157,7 @@ func TestStopRefusesARunThatDoesNotWait(t *testing.T) {
 		}
 
 		status, _, stderr := seeded.dftWith(deps, "agent", "stop", "console-microruntime")
-		if status != 3 || !strings.Contains(stderr, "is failed") {
+		if status != 1 || !strings.Contains(stderr, "is failed") {
 			t.Errorf("stopping a failed run gave %d: %s", status, stderr)
 		}
 	})
@@ -168,7 +168,7 @@ func TestStopRefusesARunThatDoesNotWait(t *testing.T) {
 		seeded, deps := seedProject(t)
 
 		status, _, stderr := seeded.dftWith(deps, "agent", "stop", "no-such-runtime")
-		if status != 4 || !strings.Contains(stderr, "no such runtime") {
+		if status != 1 || !strings.Contains(stderr, "No such runtime") {
 			t.Errorf("stopping an unknown runtime gave %d: %s", status, stderr)
 		}
 	})

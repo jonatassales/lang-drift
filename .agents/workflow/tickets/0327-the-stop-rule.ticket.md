@@ -37,3 +37,5 @@ The over-budget pause is a shown ending and exits 0. A person or a script sees t
 
 - [ ] `nil` and the over-budget pause return 0 and write nothing.
 - [ ] Every other error, an interrupt included, returns 1 and writes one line: a plain sentence naming the cause, with no prefix, no hint and no secret.
+
+**Override:** on 2026-11-06 the owner asked the agent to write this dev part ("You write it"), so the agent wrote `Stop` and its test.
