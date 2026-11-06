@@ -6,10 +6,12 @@ import { ChromaText } from 'web/ui/chroma-text'
 import { ElevatedFrame } from 'web/ui/elevated-frame'
 import { HeroShader } from 'web/ui/hero-shader'
 import { RotatingText } from 'web/ui/rotating-text'
+import { ShortCircuitText } from 'web/ui/short-circuit-text'
 
 // The hero is the moving headline alone, centered on the first screen over
-// the shader in its muted tone, with the rainbow flowing through the word
-// "Platform" as the page's one touch of color. Under the headline, one
+// the shader in its muted tone. Its first word, "Agentic", is in a short
+// circuit, arcing in blue bolts, and the rainbow flows through the word
+// "Platform" as the page's one touch of brand color. Under the headline, one
 // elevated frame holds the Microruntimes terminal and the ticket, plan and
 // workflow cards it plays into, side by side; its top 21rem show at the bottom
 // of the first screen. The hero starts under the transparent header, so the
@@ -45,7 +47,9 @@ export function PlatformHero(props: PlatformHeroProps) {
 						className="text-[min(3rem,11vw)] leading-none font-normal tracking-[-0.055em] text-foreground sm:text-6xl lg:text-7xl"
 						id="platform-hero-heading"
 					>
-						<span className="block">{copy.titleStart}</span>
+						<span className="block">
+							<ShortCircuitText>{copy.titleStart}</ShortCircuitText>
+						</span>
 						<RotatingText
 							className="block whitespace-nowrap"
 							suffix={<ChromaText>{copy.titleEnd}</ChromaText>}
