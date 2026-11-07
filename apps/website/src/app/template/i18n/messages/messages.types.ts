@@ -120,7 +120,6 @@ export interface FooterMessages {
 	copyright: string
 	security: string
 	license: string
-	acknowledgment: string
 }
 
 export interface PlatformMessages {

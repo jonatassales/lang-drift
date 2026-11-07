@@ -6,8 +6,7 @@
 		"social": "Follow LangDrift",
 		"copyright": "© 2026 LangDrift",
 		"security": "Security",
-		"license": "License",
-		"acknowledgment": "Inspired by LangWatch"
+		"license": "License"
 	},
 	"pt-BR": {
 		"description": "Entrega assistida por agentes, que presta contas ao orçamento do seu time.",
@@ -16,8 +15,7 @@
 		"social": "Acompanhe o LangDrift",
 		"copyright": "© 2026 LangDrift",
 		"security": "Segurança",
-		"license": "Licença",
-		"acknowledgment": "Inspirado no LangWatch"
+		"license": "Licença"
 	},
 	"zh-Hant": {
 		"description": "代理協助的交付，對您的團隊預算負責。",
@@ -26,8 +24,7 @@
 		"social": "追蹤 LangDrift",
 		"copyright": "© 2026 LangDrift",
 		"security": "安全性",
-		"license": "授權條款",
-		"acknowledgment": "靈感來自 LangWatch"
+		"license": "授權條款"
 	},
 	"ja": {
 		"description": "エージェント支援の開発に、チーム予算への説明責任を。",
@@ -36,8 +33,7 @@
 		"social": "LangDriftをフォロー",
 		"copyright": "© 2026 LangDrift",
 		"security": "セキュリティ",
-		"license": "ライセンス",
-		"acknowledgment": "LangWatch に着想を得ています"
+		"license": "ライセンス"
 	},
 	"vi": {
 		"description": "Phát triển phần mềm có tác tử hỗ trợ, chịu trách nhiệm trước ngân sách của đội bạn.",
@@ -46,7 +42,6 @@
 		"social": "Theo dõi LangDrift",
 		"copyright": "© 2026 LangDrift",
 		"security": "Bảo mật",
-		"license": "Giấy phép",
-		"acknowledgment": "Lấy cảm hứng từ LangWatch"
+		"license": "Giấy phép"
 	}
 }
