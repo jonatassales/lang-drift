@@ -2,7 +2,7 @@
 	"en": {
 		"skip": "Skip to demo availability",
 		"title": "Book a demo",
-		"lead": "We walk teams through the platform, Microruntimes and FinOps, with their questions in mind.",
+		"lead": "We walk teams through the platform, LLMOps, FinOps and Microruntimes, with their questions in mind.",
 		"form": {
 			"email": "Company email",
 			"emailPlaceholder": "you@company.com",
@@ -24,7 +24,7 @@
 		},
 		"paused": {
 			"title": "We’ll be back soon.",
-			"description": "Demo requests are paused while we prepare the next walkthrough of Microruntimes and FinOps. Please check back soon.",
+			"description": "Demo requests are paused while we prepare the next walkthrough of LLMOps, FinOps and Microruntimes. Please check back soon.",
 			"home": "Back to the home page"
 		},
 		"positions": {
@@ -54,7 +54,7 @@
 	"pt-BR": {
 		"skip": "Ir para a disponibilidade das demos",
 		"title": "Agende uma demo",
-		"lead": "Apresentamos a plataforma aos times, Microruntimes e FinOps, com as perguntas deles em mente.",
+		"lead": "Apresentamos a plataforma aos times, LLMOps, FinOps e Microruntimes, com as perguntas deles em mente.",
 		"form": {
 			"email": "E-mail corporativo",
 			"emailPlaceholder": "voce@empresa.com",
@@ -76,7 +76,7 @@
 		},
 		"paused": {
 			"title": "Voltamos em breve.",
-			"description": "As solicitações de demonstração estão pausadas enquanto preparamos a próxima apresentação de Microruntimes e FinOps. Volte em breve.",
+			"description": "As solicitações de demonstração estão pausadas enquanto preparamos a próxima apresentação de LLMOps, FinOps e Microruntimes. Volte em breve.",
 			"home": "Voltar para a página inicial"
 		},
 		"positions": {
@@ -106,7 +106,7 @@
 	"zh-Hant": {
 		"skip": "跳至展示開放狀態",
 		"title": "預約展示",
-		"lead": "我們會依照團隊的問題，帶大家導覽整個平台：Microruntimes 與 FinOps。",
+		"lead": "我們會依照團隊的問題，帶大家導覽整個平台：LLMOps、FinOps 與 Microruntimes。",
 		"form": {
 			"email": "公司電子郵件",
 			"emailPlaceholder": "you@company.com",
@@ -128,7 +128,7 @@
 		},
 		"paused": {
 			"title": "我們很快就會回來。",
-			"description": "我們正在準備 Microruntimes 與 FinOps 的下一場導覽，產品展示申請暫時停止。請稍後再回來查看。",
+			"description": "我們正在準備 LLMOps、FinOps 與 Microruntimes 的下一場導覽，產品展示申請暫時停止。請稍後再回來查看。",
 			"home": "返回首頁"
 		},
 		"positions": {
@@ -158,7 +158,7 @@
 	"ja": {
 		"skip": "デモの受付状況へスキップ",
 		"title": "デモを予約",
-		"lead": "チームの疑問に合わせて、Microruntimes と FinOps を中心にプラットフォームをご案内します。",
+		"lead": "チームの疑問に合わせて、LLMOps、FinOps、Microruntimes を中心にプラットフォームをご案内します。",
 		"form": {
 			"email": "会社のメールアドレス",
 			"emailPlaceholder": "you@company.com",
@@ -180,7 +180,7 @@
 		},
 		"paused": {
 			"title": "まもなく再開します。",
-			"description": "Microruntimes と FinOps の次回デモを準備しているため、デモのリクエストを一時停止しています。しばらくしてからもう一度ご確認ください。",
+			"description": "LLMOps、FinOps、Microruntimes の次回デモを準備しているため、デモのリクエストを一時停止しています。しばらくしてからもう一度ご確認ください。",
 			"home": "ホームに戻る"
 		},
 		"positions": {
@@ -210,7 +210,7 @@
 	"vi": {
 		"skip": "Chuyển đến tình trạng nhận demo",
 		"title": "Đặt lịch demo",
-		"lead": "Chúng tôi giới thiệu nền tảng cho các nhóm, Microruntimes và FinOps, xoay quanh những câu hỏi của họ.",
+		"lead": "Chúng tôi giới thiệu nền tảng cho các nhóm, LLMOps, FinOps và Microruntimes, xoay quanh những câu hỏi của họ.",
 		"form": {
 			"email": "Email công ty",
 			"emailPlaceholder": "ban@congty.com",
@@ -232,7 +232,7 @@
 		},
 		"paused": {
 			"title": "Chúng tôi sẽ sớm quay lại.",
-			"description": "Yêu cầu bản demo đang tạm dừng trong lúc chúng tôi chuẩn bị buổi giới thiệu tiếp theo về Microruntimes và FinOps. Vui lòng quay lại sau.",
+			"description": "Yêu cầu bản demo đang tạm dừng trong lúc chúng tôi chuẩn bị buổi giới thiệu tiếp theo về LLMOps, FinOps và Microruntimes. Vui lòng quay lại sau.",
 			"home": "Quay lại trang chủ"
 		},
 		"positions": {
