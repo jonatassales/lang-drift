@@ -13,7 +13,7 @@ Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
 
 Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
 
-The issue tracker is defined in the `Spec-driven development` section of `.agents/context.guide.md`.
+The issue tracker is defined in the `Spec-driven development` section of `.agents/context.md`.
 
 ## Process
 
@@ -31,10 +31,10 @@ Look for the originating spec, in this order:
 
 1. `Ticket: <NNNN>` trailers in the commit messages, resolved to the ticket file and the spec it names.
 2. A path the user passed as an argument.
-3. A spec file under `.agents/workflow/specs/` matching the branch name or feature.
+3. A spec file under `.agents/specs/` matching the branch name or feature.
 4. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
 
-Then read the `Dev part` section of each ticket you resolved. It names the paths the owner writes by hand, as `.agents/policies/safe-seat.policy.md` sets out, or an override with its reason and date. If you, or an agent working for you, wrote anything in a dev part's paths without an override beside its fields, report that as a Spec finding yourself. The sub-agents cannot see who wrote a line, and the commits carry no AI signature.
+Then read the `Dev part` section of each ticket you resolved. It names the paths the owner writes by hand, as `.agents/policy/safe-seat.policy.md` sets out, or an override with its reason and date. If you, or an agent working for you, wrote anything in a dev part's paths without an override beside its fields, report that as a Spec finding yourself. The sub-agents cannot see who wrote a line, and the commits carry no AI signature.
 
 ### 3. Identify the standards sources
 

@@ -6,7 +6,7 @@
 # Each check reads a commit message, or a list of changed paths, on stdin.
 
 DRIFT_AI_SIGNATURE_ERROR='Remove the AI-generated signature, trailer or footer.'
-DRIFT_TICKET_ERROR="Changes under apps/, packages/ or lib/ need a 'Ticket: <NNNN>' trailer naming a file in .agents/workflow/tickets/."
+DRIFT_TICKET_ERROR="Changes under apps/, packages/ or lib/ need a 'Ticket: <NNNN>' trailer naming a file in .agents/tickets/."
 
 # True when the message carries an AI-generated signature, trailer or footer.
 drift_has_ai_signature() {
@@ -25,7 +25,7 @@ drift_names_ticket() {
   case "$ticket" in
     '' | *[!0-9]*) return 1 ;;
   esac
-  for candidate in "$DRIFT_PROJECT_ROOT"/.agents/workflow/tickets/"$ticket"-*.ticket.md; do
+  for candidate in "$DRIFT_PROJECT_ROOT"/.agents/tickets/"$ticket"-*.ticket.md; do
     [ -f "$candidate" ] && return 0
   done
   return 1

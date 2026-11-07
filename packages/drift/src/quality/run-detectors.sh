@@ -114,8 +114,8 @@ while IFS='	' read -r rule violation scope mode roots globs pattern; do
       ;;
     markdown)
       grep '\.md$' "$tracked" | grep -v '/testdata/' |
-        grep -Ev '(^|/)(README|AGENTS|CLAUDE|SKILL|SECURITY)(\.[a-z-]+)?\.md$' |
-        grep -Ev '\.(rule|spec|ticket|adr|research|policy|prompt|guide)\.md$' >"$matches" || search_status=$?
+        grep -Ev '(^|/)(README|AGENTS|CLAUDE|SKILL|SECURITY|context)(\.[a-z-]+)?\.md$' |
+        grep -Ev '\.(rule|spec|ticket|adr|research|policy|prompt|guide|prd|tdd)\.md$' >"$matches" || search_status=$?
       ;;
     *) drift_die "Unknown detector mode $mode: $rule · $violation" ;;
   esac
