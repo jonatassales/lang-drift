@@ -1,24 +1,24 @@
 {
 	"home": {
 		"en": {
-			"title": "LangDrift — Agentic Platform",
-			"description": "LangDrift is the agentic FinOps platform: Microruntimes bound each run, LLMOps keeps reasoning spend inside a team budget and FinOps meters the hardware. One domain, one console."
+			"title": "LangDrift — Agentic LLMOps & FinOps Microruntimes",
+			"description": "LangDrift is the agentic LLMOps and FinOps platform: Microruntimes bound each run, LLMOps keeps reasoning spend inside a team budget and FinOps meters the hardware. One domain, one console."
 		},
 		"pt-BR": {
-			"title": "LangDrift — Agentic Platform",
-			"description": "LangDrift é a plataforma agêntica de FinOps: o Microruntimes delimita cada execução, o LLMOps mantém o gasto com raciocínio dentro do orçamento do time e o FinOps mede o hardware. Um domínio, um console."
+			"title": "LangDrift — Agentic LLMOps & FinOps Microruntimes",
+			"description": "LangDrift é a plataforma agêntica de LLMOps e FinOps: o Microruntimes delimita cada execução, o LLMOps mantém o gasto com raciocínio dentro do orçamento do time e o FinOps mede o hardware. Um domínio, um console."
 		},
 		"zh-Hant": {
-			"title": "LangDrift — Agentic Platform",
-			"description": "LangDrift 是代理式 FinOps 平台：Microruntimes 為每次執行劃定邊界，LLMOps 讓推理支出留在團隊預算之內，FinOps 計量硬體。同一網域，同一主控台。"
+			"title": "LangDrift — Agentic LLMOps & FinOps Microruntimes",
+			"description": "LangDrift 是代理式 LLMOps 與 FinOps 平台：Microruntimes 為每次執行劃定邊界，LLMOps 讓推理支出留在團隊預算之內，FinOps 計量硬體。同一網域，同一主控台。"
 		},
 		"ja": {
-			"title": "LangDrift — Agentic Platform",
-			"description": "LangDrift はエージェンティック FinOps プラットフォームです。Microruntimes が各実行に境界を引き、LLMOps が推論の支出をチーム予算の内側に保ち、FinOps がハードウェアを計測します。ひとつのドメイン、ひとつのコンソール。"
+			"title": "LangDrift — Agentic LLMOps & FinOps Microruntimes",
+			"description": "LangDrift はエージェンティック LLMOps・FinOps プラットフォームです。Microruntimes が各実行に境界を引き、LLMOps が推論の支出をチーム予算の内側に保ち、FinOps がハードウェアを計測します。ひとつのドメイン、ひとつのコンソール。"
 		},
 		"vi": {
-			"title": "LangDrift — Agentic Platform",
-			"description": "LangDrift là nền tảng FinOps tác tử: Microruntimes giới hạn từng lần chạy, LLMOps giữ chi tiêu suy luận trong ngân sách của đội và FinOps đo phần cứng. Một tên miền, một bảng điều khiển."
+			"title": "LangDrift — Agentic LLMOps & FinOps Microruntimes",
+			"description": "LangDrift là nền tảng LLMOps và FinOps tác tử: Microruntimes giới hạn từng lần chạy, LLMOps giữ chi tiêu suy luận trong ngân sách của đội và FinOps đo phần cứng. Một tên miền, một bảng điều khiển."
 		}
 	},
 	"llmops": {
@@ -89,24 +89,24 @@
 	},
 	"safe-seat": {
 		"en": {
-			"title": "Safe Seat — A person keeps the seat. | LangDrift FinOps",
-			"description": "Coming soon to LangDrift FinOps: every ticket reserves a part a person writes by hand, so the team keeps understanding and debugging what agents help it ship."
+			"title": "Safe Seat — A person keeps the seat. | LangDrift LLMOps",
+			"description": "Coming soon to LangDrift LLMOps: every ticket reserves a part a person writes by hand, so the team keeps understanding and debugging what agents help it ship."
 		},
 		"pt-BR": {
-			"title": "Safe Seat — Uma pessoa continua ao volante. | LangDrift FinOps",
-			"description": "Em breve no LangDrift FinOps: todo ticket reserva uma parte que uma pessoa escreve à mão, para o time continuar entendendo e depurando o que os agentes ajudam a entregar."
+			"title": "Safe Seat — Uma pessoa continua ao volante. | LangDrift LLMOps",
+			"description": "Em breve no LangDrift LLMOps: todo ticket reserva uma parte que uma pessoa escreve à mão, para o time continuar entendendo e depurando o que os agentes ajudam a entregar."
 		},
 		"zh-Hant": {
-			"title": "Safe Seat — 座位上仍然有人。| LangDrift FinOps",
-			"description": "即將在 LangDrift FinOps 推出：每張工單都保留一部分由人親手撰寫，讓團隊持續理解並能除錯代理協助交付的東西。"
+			"title": "Safe Seat — 座位上仍然有人。| LangDrift LLMOps",
+			"description": "即將在 LangDrift LLMOps 推出：每張工單都保留一部分由人親手撰寫，讓團隊持續理解並能除錯代理協助交付的東西。"
 		},
 		"ja": {
-			"title": "Safe Seat — それでも、席には人がいる。| LangDrift FinOps",
-			"description": "LangDrift FinOps に近日登場。どのチケットにも人が手で書く部分を残し、エージェントの助けで出荷するものをチームが理解し、デバッグし続けられるようにします。"
+			"title": "Safe Seat — それでも、席には人がいる。| LangDrift LLMOps",
+			"description": "LangDrift LLMOps に近日登場。どのチケットにも人が手で書く部分を残し、エージェントの助けで出荷するものをチームが理解し、デバッグし続けられるようにします。"
 		},
 		"vi": {
-			"title": "Safe Seat — Một người vẫn giữ ghế lái. | LangDrift FinOps",
-			"description": "Sắp có trong LangDrift FinOps: mỗi ticket dành riêng một phần để một người tự tay viết, để đội tiếp tục hiểu và gỡ lỗi những gì tác tử giúp mình giao."
+			"title": "Safe Seat — Một người vẫn giữ ghế lái. | LangDrift LLMOps",
+			"description": "Sắp có trong LangDrift LLMOps: mỗi ticket dành riêng một phần để một người tự tay viết, để đội tiếp tục hiểu và gỡ lỗi những gì tác tử giúp mình giao."
 		}
 	},
 	"cli": {
@@ -156,45 +156,45 @@
 	"pricing": {
 		"en": {
 			"title": "Plans — LangDrift",
-			"description": "LangDrift FinOps is coming in three plans, Starter, Plus and Pro, each built on the Microruntimes engine. Features and pricing will be announced before launch."
+			"description": "LangDrift is coming in three plans, Starter, Plus and Pro, each built on the Microruntimes engine. Features and pricing will be announced before launch."
 		},
 		"pt-BR": {
 			"title": "Planos — LangDrift",
-			"description": "O LangDrift FinOps chega em três planos, Starter, Plus e Pro, todos construídos sobre o motor Microruntimes. Recursos e preços serão anunciados antes do lançamento."
+			"description": "O LangDrift chega em três planos, Starter, Plus e Pro, todos construídos sobre o motor Microruntimes. Recursos e preços serão anunciados antes do lançamento."
 		},
 		"zh-Hant": {
 			"title": "方案 — LangDrift",
-			"description": "LangDrift FinOps 將以 Starter、Plus 與 Pro 三種方案推出，全部建立在 Microruntimes 引擎之上。功能與價格將於上市前公布。"
+			"description": "LangDrift 將以 Starter、Plus 與 Pro 三種方案推出，全部建立在 Microruntimes 引擎之上。功能與價格將於上市前公布。"
 		},
 		"ja": {
 			"title": "プラン — LangDrift",
-			"description": "LangDrift FinOps は Starter、Plus、Pro の 3 つのプランで提供予定で、どれも Microruntimes エンジンの上に構築されています。機能と価格はリリース前にお知らせします。"
+			"description": "LangDrift は Starter、Plus、Pro の 3 つのプランで提供予定で、どれも Microruntimes エンジンの上に構築されています。機能と価格はリリース前にお知らせします。"
 		},
 		"vi": {
 			"title": "Các gói — LangDrift",
-			"description": "LangDrift FinOps sẽ có ba gói Starter, Plus và Pro, tất cả đều xây dựng trên động cơ Microruntimes. Tính năng và giá sẽ được công bố trước khi ra mắt."
+			"description": "LangDrift sẽ có ba gói Starter, Plus và Pro, tất cả đều xây dựng trên động cơ Microruntimes. Tính năng và giá sẽ được công bố trước khi ra mắt."
 		}
 	},
 	"book-a-demo": {
 		"en": {
 			"title": "LangDrift — Book a demo",
-			"description": "Ask for a walkthrough of the LangDrift platform: Microruntimes and FinOps, with your questions in mind."
+			"description": "Ask for a walkthrough of the LangDrift platform: LLMOps, FinOps and Microruntimes, with your questions in mind."
 		},
 		"pt-BR": {
 			"title": "LangDrift — Agende uma demo",
-			"description": "Peça uma apresentação da plataforma LangDrift: Microruntimes e FinOps, com as suas perguntas em mente."
+			"description": "Peça uma apresentação da plataforma LangDrift: LLMOps, FinOps e Microruntimes, com as suas perguntas em mente."
 		},
 		"zh-Hant": {
 			"title": "LangDrift — 預約展示",
-			"description": "預約一次 LangDrift 平台導覽：Microruntimes 與 FinOps，圍繞你的問題。"
+			"description": "預約一次 LangDrift 平台導覽：LLMOps、FinOps 與 Microruntimes，圍繞你的問題。"
 		},
 		"ja": {
 			"title": "LangDrift — デモを予約",
-			"description": "LangDrift プラットフォームのウォークスルーをご予約ください。Microruntimes と FinOps を、あなたの質問に沿ってご案内します。"
+			"description": "LangDrift プラットフォームのウォークスルーをご予約ください。LLMOps、FinOps、Microruntimes を、あなたの質問に沿ってご案内します。"
 		},
 		"vi": {
 			"title": "LangDrift — Đặt lịch demo",
-			"description": "Yêu cầu một buổi hướng dẫn về nền tảng LangDrift: Microruntimes và FinOps, theo câu hỏi của bạn."
+			"description": "Yêu cầu một buổi hướng dẫn về nền tảng LangDrift: LLMOps, FinOps và Microruntimes, theo câu hỏi của bạn."
 		}
 	},
 	"privacy": {
