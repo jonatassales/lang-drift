@@ -20,6 +20,7 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/@langdrift/cli"><img alt="npm @langdrift/cli" src="https://img.shields.io/npm/v/@langdrift/cli?logo=npm&amp;logoColor=white&amp;label=%40langdrift%2Fcli&amp;color=CB3837&amp;labelColor=18181B" height="20"></a>
+  <a href="https://www.npmjs.com/package/@langdrift/core"><img alt="npm @langdrift/core" src="https://img.shields.io/npm/v/@langdrift/core?logo=npm&amp;logoColor=white&amp;label=%40langdrift%2Fcore&amp;color=CB3837&amp;labelColor=18181B" height="20"></a>
 </p>
 
 <p align="center">
