@@ -12,6 +12,12 @@
 			"sourceType": "github",
 			"skillPath": "skills/emil-design-eng/SKILL.md",
 			"computedHash": "2483020b5bbaab030d6b3463bfba49c8d9c2cd8dea4d9fba836dbd471f1fb706"
+		},
+		"impeccable": {
+			"source": "pbakaus/impeccable",
+			"sourceType": "github",
+			"skillPath": ".agents/skills/impeccable/SKILL.md",
+			"computedHash": "c671292d4973a711bc857fc619f015f533ca9b49afc78c25c23d5b0811194bbf"
 		}
 	}
 }
